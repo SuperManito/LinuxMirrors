@@ -1,6 +1,6 @@
 #!/bin/env bash
 ## Author: SuperManito
-## Modified: 2021-09-21
+## Modified: 2021-10-08
 ## License: GPL-2.0
 ## https://github.com/SuperManito/LinuxMirrors
 ## https://gitee.com/SuperManito/LinuxMirrors
@@ -141,15 +141,15 @@ function PermissionJudgment() {
 function TurnOffFirewall() {
     systemctl status firewalld | grep running -q
     if [ $? -eq 0 ]; then
-        CHOICE_C=$(echo -e '\n\033[37m└ 是否关闭防火墙和 SELINUX [ Y/n ]：\033[0m')
+        CHOICE_C=$(echo -e '\n\033[1m└ 是否关闭防火墙和 SELINUX [ Y/n ]：\033[0m')
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
-        [Yy]*)
+        [Yy] | [Yy][Ee][Ss])
             systemctl disable --now firewalld >/dev/null 2>&1
             [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
             ;;
-        [Nn]*) ;;
+        [Nn] | [Nn][Oo]) ;;
         *)
             echo -e '\n\033[33m------------ 输入错误，默认不关闭 ------------\033[0m'
             ;;
@@ -179,15 +179,15 @@ function BackupMirrors() {
         ## /etc/apt/sources.list
         if [ -s $DebianSourceList ]; then
             if [ -s $DebianSourceListBackup ]; then
-                CHOICE_BACKUP1=$(echo -e "\n\033[37m└ 检测到系统存在已备份的 list 源文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP1=$(echo -e "\n\033[1m└ 检测到系统存在已备份的 list 源文件，是否覆盖备份 [ Y/n ]：\033[0m")
                 read -p "${CHOICE_BACKUP1}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
-                [Yy]*)
+                [Yy] | [Yy][Ee][Ss])
                     echo -e ''
                     cp -rf $DebianSourceList $DebianSourceListBackup >/dev/null 2>&1
                     ;;
-                [Nn]*)
+                [Nn] | [Nn][Oo])
                     echo -e ''
                     ;;
                 *)
@@ -196,7 +196,7 @@ function BackupMirrors() {
                 esac
             else
                 cp -rf $DebianSourceList $DebianSourceListBackup >/dev/null 2>&1
-                echo -e "\n\033[37m└ 已备份原有 list 源文件至 $DebianSourceListBackup ... \033[0m\n"
+                echo -e "\n\033[32m------------ 已备份原有 list 源文件至 $DebianSourceListBackup ------------\033[0m\n"
                 sleep 1s
             fi
         else
@@ -207,14 +207,14 @@ function BackupMirrors() {
         ## /etc/apt/sources.list.d
         if [ -d $DebianExtendListDir ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $DebianExtendListDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP2=$(echo -e "\n\033[37m└ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP2=$(echo -e "\n\033[1m└ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份 [ Y/n ]：\033[0m")
                 read -p "${CHOICE_BACKUP2}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
-                [Yy]*)
+                [Yy] | [Yy][Ee][Ss])
                     cp -rf $DebianExtendListDir/* $DebianExtendListDirBackup >/dev/null 2>&1
                     ;;
-                [Nn]*)
+                [Nn] | [Nn][Oo])
                     echo ''
                     ;;
                 *)
@@ -224,7 +224,7 @@ function BackupMirrors() {
             else
                 [ -d $DebianExtendListDirBackup ] || mkdir -p $DebianExtendListDirBackup
                 cp -rf $DebianExtendListDir/* $DebianExtendListDirBackup >/dev/null 2>&1
-                echo -e "\033[37m└ 已备份原有 list 第三方源文件至 $DebianExtendListDirBackup 目录... \033[0m\n"
+                echo -e "\033[32m------------ 已备份原有 list 第三方源文件至 $DebianExtendListDirBackup 目录 ------------\033[0m\n"
                 sleep 1s
             fi
         fi
@@ -232,15 +232,15 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $RedHatReposDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP3=$(echo -e "\n\033[37m└ 检测到系统存在已备份的 repo 源文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP3=$(echo -e "\n\033[1m└ 检测到系统存在已备份的 repo 源文件，是否覆盖备份 [ Y/n ]：\033[0m")
                 read -p "${CHOICE_BACKUP3}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
-                [Yy]*)
+                [Yy] | [Yy][Ee][Ss])
                     cp -rf $RedHatReposDir/* $RedHatReposDirBackup >/dev/null 2>&1
                     echo -e ''
                     ;;
-                [Nn]*) ;;
+                [Nn] | [Nn][Oo]) ;;
                 *)
                     echo -e '\n\033[33m------------ 输入错误，默认不覆盖 ------------\033[0m\n'
                     ;;
@@ -248,7 +248,7 @@ function BackupMirrors() {
             else
                 [ -d $RedHatReposDirBackup ] || mkdir -p $RedHatReposDirBackup
                 cp -rf $RedHatReposDir/* $RedHatReposDirBackup >/dev/null 2>&1
-                echo -e "\n\033[37m└ 已备份原有 repo 源文件至 $RedHatReposDirBackup 目录... \033[0m\n"
+                echo -e "\n\033[32m------------ 已备份原有 repo 源文件至 $RedHatReposDirBackup 目录 ------------\033[0m\n"
                 sleep 1s
             fi
         else
@@ -300,11 +300,11 @@ function ChangeMirrors() {
 
 ## 更新软件包
 function UpgradeSoftware() {
-    CHOICE_B=$(echo -e '\n\033[37m└ 是否更新软件包 [ Y/n ]：\033[0m')
+    CHOICE_B=$(echo -e '\n\033[1m└ 是否更新软件包 [ Y/n ]：\033[0m')
     read -p "${CHOICE_B}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
-    [Yy]*)
+    [Yy] | [Yy][Ee][Ss])
         echo -e ''
         case ${SYSTEM_FACTIONS} in
         Debian)
@@ -314,11 +314,11 @@ function UpgradeSoftware() {
             yum update -y
             ;;
         esac
-        CHOICE_C=$(echo -e '\n\033[37m└ 是否清理已下载的软件包缓存 [ Y/n ]：\033[0m')
+        CHOICE_C=$(echo -e '\n\033[1m└ 是否清理已下载的软件包缓存 [ Y/n ]：\033[0m')
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
-        [Yy]*)
+        [Yy] | [Yy][Ee][Ss])
             if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
                 apt-get autoremove -y >/dev/null 2>&1
                 apt-get clean >/dev/null 2>&1
@@ -329,13 +329,13 @@ function UpgradeSoftware() {
 
             echo -e '\n[OK] 清理完毕'
             ;;
-        [Nn]*) ;;
+        [Nn] | [Nn][Oo]) ;;
         *)
             echo -e '\n\033[33m------------ 输入错误，默认不清理 ------------\033[0m'
             ;;
         esac
         ;;
-    [Nn]*) ;;
+    [Nn] | [Nn][Oo]) ;;
     *)
         echo -e '\n\033[33m------------ 输入错误，默认不更新 ------------\033[0m'
         ;;
@@ -485,7 +485,7 @@ function ChooseMirrors() {
     echo -e "            系统时间  \033[34m$(date "+%Y-%m-%d %H:%M:%S")\033[0m"
     echo -e ''
     echo -e '#####################################################'
-    CHOICE_A=$(echo -e '\n\033[37m└ 请选择并输入你想使用的软件源 [ 1-13 ]：\033[0m')
+    CHOICE_A=$(echo -e '\n\033[1m└ 请选择并输入你想使用的软件源 [ 1-13 ]：\033[0m')
     read -p "${CHOICE_A}" INPUT
     case $INPUT in
     1)
@@ -547,17 +547,17 @@ function ChooseMirrors() {
         VERIFICATION_EPELBACKUPFILES=$?
 
         if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            CHOICE_D=$(echo -e '\n\033[37m└ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源 [ Y/n ]：\033[0m')
+            CHOICE_D=$(echo -e '\n\033[1m└ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源 [ Y/n ]：\033[0m')
         else
-            CHOICE_D=$(echo -e '\n\033[37m└ 是否安装 EPEL 扩展源 [ Y/n ]：\033[0m')
+            CHOICE_D=$(echo -e '\n\033[1m└ 是否安装 EPEL 扩展源 [ Y/n ]：\033[0m')
         fi
         read -p "${CHOICE_D}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
-        [Yy]*)
+        [Yy] | [Yy][Ee][Ss])
             EPEL_INSTALL="True"
             ;;
-        [Nn]*)
+        [Nn] | [Nn][Oo])
             EPEL_INSTALL="False"
             ;;
         *)
@@ -568,14 +568,14 @@ function ChooseMirrors() {
     fi
 
     ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
-    CHOICE_E=$(echo -e "\n\033[37m└ 软件源是否使用 HTTP 协议 [ Y/n ]：\033[0m")
+    CHOICE_E=$(echo -e "\n\033[1m└ 软件源是否使用 HTTP 协议 [ Y/n ]：\033[0m")
     read -p "${CHOICE_E}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
-    [Yy]*)
+    [Yy] | [Yy][Ee][Ss])
         WEB_PROTOCOL="http"
         ;;
-    [Nn]*)
+    [Nn] | [Nn][Oo])
         WEB_PROTOCOL="https"
         ;;
     *)

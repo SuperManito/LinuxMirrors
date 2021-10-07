@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-09-21
+## Modified: 2021-10-08
 ## License: GPL-2.0
 ## https://github.com/SuperManito/LinuxMirrors
 ## https://gitee.com/SuperManito/LinuxMirrors
@@ -292,25 +292,25 @@ function DockerEngine() {
                 AuthorSignature
                 exit
             else
-                CHOICE_E=$(echo -e '\n\033[37m└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
+                CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
             fi
         else
             if [ ${DOCKER_VERSION_INSTALL_LATEST} = "True" ]; then
-                CHOICE_E=$(echo -e '\n\033[37m└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本 [ Y/n ]：\033[0m')
+                CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本 [ Y/n ]：\033[0m')
             else
-                CHOICE_E=$(echo -e '\n\033[37m└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
+                CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
             fi
         fi
         read -p "${CHOICE_E}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
-        [Yy]*)
+        [Yy] | [Yy][Ee][Ss])
             echo -en '\n[\033[34m*\033[0m] 正在卸载之前的版本... '
             RemoveOldVersion
             echo -e '\n\n[\033[32mOK\033[0m] 卸载完毕\n'
             DockerEngineInstall
             ;;
-        [Nn]*) ;;
+        [Nn] | [Nn][Oo]) ;;
         *)
             echo -e '\n\033[33m---------- 输入错误，默认不覆盖安装 ----------\033[0m\n'
             ;;
@@ -340,7 +340,7 @@ function DockerEngineInstall() {
         cat $DockerVersionFile
         echo -e '\n注：以上可供选择的安装版本由官方源提供，若系统过新可能无法安装较旧的版本'
         while true; do
-            CHOICE_F=$(echo -e '\n\033[37m└ 请根据上面的列表，输入你想要安装的具体版本号：\033[0m\n')
+            CHOICE_F=$(echo -e '\n\033[1m└ 请根据上面的列表，输入你想要安装的具体版本号：\033[0m\n')
             read -p "${CHOICE_F}" DOCKER_VERSION
             echo ''
             cat $DockerVersionFile | grep -Ew "${DOCKER_VERSION}" >/dev/null 2>&1
@@ -389,21 +389,21 @@ function ConfigureImageAccelerator() {
     if [ ${REGISTRY_SOURCE_OFFICIAL} = "False" ]; then
         if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
             if [ -e $DockerConfigBackup ]; then
-                CHOICE_BACKUP=$(echo -e "\n\033[37m└ 检测到已备份的 Docker 配置文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP=$(echo -e "\n\033[1m└ 检测到已备份的 Docker 配置文件，是否覆盖备份 [ Y/n ]：\033[0m")
                 read -p "${CHOICE_BACKUP}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
-                [Yy]*)
+                [Yy] | [Yy][Ee][Ss])
                     cp -rf $DockerConfig $DockerConfigBackup >/dev/null 2>&1
                     ;;
-                [Nn]*) ;;
+                [Nn] | [Nn][Oo]) ;;
                 *)
                     echo -e '\n\033[33m------------ 输入错误，默认不覆盖 ------------\033[0m '
                     ;;
                 esac
             else
                 cp -rf $DockerConfig $DockerConfigBackup >/dev/null 2>&1
-                echo -e "\n\033[37m└ 已备份原有 Docker 配置文件至 $DockerConfigBackup ...... \033[0m"
+                echo -e "\n\033[1m└ 已备份原有 Docker 配置文件至 $DockerConfigBackup ...... \033[0m"
             fi
             sleep 2s
         else
@@ -526,7 +526,7 @@ function ChooseMirrors() {
     echo -e "            系统时间  $(date "+%Y-%m-%d %H:%M:%S")"
     echo -e ''
     echo -e '#####################################################'
-    CHOICE_A=$(echo -e '\n\033[37m└ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：\033[0m')
+    CHOICE_A=$(echo -e '\n\033[1m└ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：\033[0m')
     read -p "${CHOICE_A}" INPUT
     case $INPUT in
     1)
@@ -560,14 +560,14 @@ function ChooseMirrors() {
         ;;
     esac
     ## 是否手动选择安装版本
-    CHOICE_C=$(echo -e '\n\033[37m  └ 是否安装最新版本的 Docker Engine [ Y/n ]：\033[0m')
+    CHOICE_C=$(echo -e '\n\033[1m  └ 是否安装最新版本的 Docker Engine [ Y/n ]：\033[0m')
     read -p "${CHOICE_C}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
-    [Yy]*)
+    [Yy] | [Yy][Ee][Ss])
         DOCKER_VERSION_INSTALL_LATEST="True"
         ;;
-    [Nn]*)
+    [Nn] | [Nn][Oo])
         DOCKER_VERSION_INSTALL_LATEST="False"
         if [ ${SOURCE} != "download.docker.com" ]; then
             echo -e "\n\033[33m ---------- Docker CE 源已替换成官方源 ---------- \033[0m"
@@ -578,7 +578,7 @@ function ChooseMirrors() {
         echo -e '\n\033[33m---------- 输入错误，默认安装最新版本 ----------\033[0m'
         ;;
     esac
-    CHOICE_B=$(echo -e '\n\033[37m└ 请选择并输入你想使用的 Docker Hub 源 [ 1~12 ]：\033[0m')
+    CHOICE_B=$(echo -e '\n\033[1m└ 请选择并输入你想使用的 Docker Hub 源 [ 1~12 ]：\033[0m')
     read -p "${CHOICE_B}" INPUT
     case $INPUT in
     1)
@@ -637,23 +637,23 @@ function ChooseMirrors() {
         ;;
     esac
     if [ -x $DockerCompose ]; then
-        CHOICE_D=$(echo -e '\n\033[37m└ 检测到已安装 Docker Compose ，是否覆盖安装 [ Y/n ]：\033[0m')
+        CHOICE_D=$(echo -e '\n\033[1m└ 检测到已安装 Docker Compose ，是否覆盖安装 [ Y/n ]：\033[0m')
     else
-        CHOICE_D=$(echo -e '\n\033[37m└ 是否安装 Docker Compose [ Y/n ]：\033[0m')
+        CHOICE_D=$(echo -e '\n\033[1m└ 是否安装 Docker Compose [ Y/n ]：\033[0m')
     fi
     read -p "${CHOICE_D}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
-    [Yy]*)
+    [Yy] | [Yy][Ee][Ss])
         DOCKER_COMPOSE="True"
-        CHOICE_D1=$(echo -e '\n\033[37m  └ 是否使用国内代理进行下载 [ Y/n ]：\033[0m')
+        CHOICE_D1=$(echo -e '\n\033[1m  └ 是否使用国内代理进行下载 [ Y/n ]：\033[0m')
         read -p "${CHOICE_D1}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
-        [Yy]*)
+        [Yy] | [Yy][Ee][Ss])
             DOCKER_COMPOSE_DOWNLOAD_PROXY="True"
             ;;
-        [Nn]*)
+        [Nn] | [Nn][Oo])
             DOCKER_COMPOSE_DOWNLOAD_PROXY="False"
             ;;
         *)
@@ -662,7 +662,7 @@ function ChooseMirrors() {
             ;;
         esac
         ;;
-    [Nn]*)
+    [Nn] | [Nn][Oo])
         DOCKER_COMPOSE="False"
         ;;
     *)
