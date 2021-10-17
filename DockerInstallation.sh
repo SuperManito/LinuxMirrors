@@ -124,7 +124,7 @@ function EnvJudgment() {
     i686)
         SYSTEM_ARCH=x86_32
         echo -e '\n\033[31m---------- Docker Engine 不支持安装在 x86_32 架构的环境上 ----------\033[0m'
-        exit 1
+        exit
         ;;
     *)
         SYSTEM_ARCH=$Arch
@@ -194,7 +194,7 @@ function InstallationEnvironment() {
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -ne 0 ]; then
         echo -e "\n\033[31m ---------- 软件源${SYNC_TXT}出错，请先确保软件包管理工具可用 ---------- \033[0m\n"
-        exit 1
+        exit
     fi
     case ${SYSTEM_FACTIONS} in
     Debian)
@@ -435,7 +435,7 @@ function DockerCompose() {
             fi
             chmod +x $DockerCompose
         else
-            echo -e '\n[*] 由于本机非 x86架构，开始通过 pip3 安装 Docker Compose ......\n'
+            echo -e '\n[*] 由于本机非 x86 架构，开始通过 pip3 安装 Docker Compose ......\n'
             if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
                 apt-get install -y python3-pip python3-dev gcc libffi-dev openssl >/dev/null 2>&1
             elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
@@ -449,10 +449,8 @@ function DockerCompose() {
             fi
             [ $? -ne 0 ] && echo -e "\n\033[31m---------- Docker Compose 安装失败 ----------\033[0m\n\n检测到当前处理器架构为 ${Arch} ，无法保证安装结果，自行查看 pip 报错原因"
         fi
-        echo -e ''
-    else
-        echo -e ''
     fi
+    echo -e ''
 }
 
 ## 查看版本并验证安装结果
@@ -465,6 +463,17 @@ function ShowVersion() {
         echo -e '\n\033[32m---------- 安装完成 ----------\033[0m'
     else
         echo -e '\n\033[31m---------- 安装失败 ----------\033[0m'
+        case ${SYSTEM_FACTIONS} in
+        Debian)
+            echo -e "\n检查源文件： cat $DockerSourceList"
+            echo -e '请尝试手动执行安装命令： apt-get install -y docker-ce docker-ce-cli containerd.io\n'
+            echo ''
+            ;;
+        RedHat)
+            echo -e "\n检查源文件： cat $DockerRepo"
+            echo -e '请尝试手动执行安装命令： yum install -y docker-ce docker-ce-cli containerd.io\n'
+            ;;
+        esac
         exit
     fi
     systemctl status docker | grep running -q
