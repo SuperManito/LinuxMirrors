@@ -1,6 +1,6 @@
 #!/bin/env bash
 ## Author: SuperManito
-## Modified: 2021-10-08
+## Modified: 2021-10-17
 ## License: GPL-2.0
 ## https://github.com/SuperManito/LinuxMirrors
 ## https://gitee.com/SuperManito/LinuxMirrors
@@ -21,6 +21,8 @@ function AuthorSignature() {
         echo -e '\033[36m /____/\__,_/ .___/\___/_/  /_/  /_/\__,_/_/ /_/_/\__/\____/  \033[0m'
         echo -e '\033[34m           /_/                                                \033[0m\n'
     fi
+    echo -e " Github: https://github.com/SuperManito/LinuxMirrors"
+    echo -e " Gitee:  https://gitee.com/SuperManito/LinuxMirrors\n"
 }
 
 ## 定义系统判定变量
@@ -37,6 +39,7 @@ SYSTEM_FEDORA="Fedora"
 ## 定义目录和文件
 LinuxRelease=/etc/os-release
 RedHatRelease=/etc/redhat-release
+DebianVersion=/etc/debian_version
 DebianSourceList=/etc/apt/sources.list
 DebianSourceListBackup=/etc/apt/sources.list.bak
 DebianExtendListDir=/etc/apt/sources.list.d
@@ -62,8 +65,11 @@ function EnvJudgment() {
     ## 判定当前系统基于 Debian or RedHat
     if [ -f $RedHatRelease ]; then
         SYSTEM_FACTIONS=${SYSTEM_REDHAT}
-    else
+    elif [ -f $DebianVersion ]; then
         SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
+    else
+        echo -e '\n\033[31m -------- 无法判断当前运行环境，请先确认脚本是否已适配当前系统! ------------ \033[0m\n'
+        exit
     fi
     ## 定义系统名称
     SYSTEM_NAME=$(cat $LinuxRelease | grep -E "^NAME" | awk -F '\"' '{print$2}')
@@ -347,51 +353,50 @@ function UpgradeSoftware() {
 function DebianMirrors() {
     ## 修改国内源
     if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_UBUNTU} ]; then
-        echo "## 默认注释了源码仓库，如有需要可自行取消注释" >>$DebianSourceList
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse" >>$DebianSourceList
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-security main restricted universe multiverse" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-security main restricted universe multiverse" >>$DebianSourceList
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main restricted universe multiverse" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main restricted universe multiverse" >>$DebianSourceList
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main restricted universe multiverse" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main restricted universe multiverse" >>$DebianSourceList
-        echo '' >>$DebianSourceList
-        echo "## 预发布软件源，不建议启用" >>$DebianSourceList
-        echo "# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse" >>$DebianSourceList
+        echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-security main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-security main restricted universe multiverse
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main restricted universe multiverse
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main restricted universe multiverse
+
+## 预发布软件源（不建议启用）
+# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse" >>$DebianSourceList
     elif [ ${SYSTEM_JUDGMENT} = ${SYSTEM_DEBIAN} ]; then
-        echo "## 默认注释了源码仓库，如有需要可自行取消注释" >>$DebianSourceList
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free" >>$DebianSourceList
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main contrib non-free" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main contrib non-free" >>$DebianSourceList
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main contrib non-free" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main contrib non-free" >>$DebianSourceList
-        echo '' >>$DebianSourceList
-        echo "## 预发布软件源，不建议启用" >>$DebianSourceList
-        echo "# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free" >>$DebianSourceList
-        echo "# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free" >>$DebianSourceList
+        echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main contrib non-free
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main contrib non-free
+        
+## 预发布软件源（不建议启用）
+# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free" >>$DebianSourceList
     elif [ ${SYSTEM_JUDGMENT} = ${SYSTEM_KALI} ]; then
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib" >>$DebianSourceList
-        echo "deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib" >>$DebianSourceList
+        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib
+deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib" >>$DebianSourceList
     fi
 }
 
 ## 更换基于 RedHat 系 Linux 发行版的国内源
 function RedHatMirrors() {
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
-    ## 由于 RedHat 系 Linux 源文件各不相同且不易判断，故通过在删除原有源后重新创建官方源的方式更换国内源
     cd $RedHatReposDir
     case ${SYSTEM_JUDGMENT} in
     RedHat | CentOS)
-        CentOSReposCreate
+        CreateCentOSRepoFiles
         ;;
     Fedora)
-        FedoraReposCreate
+        CreateReposRepoFiles
         ;;
     esac
-    ## 修改国内源
+    ## 修改源
     if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_CENTOS} -o ${SYSTEM_JUDGMENT} = ${SYSTEM_RHEL} ]; then
         sed -i 's|^mirrorlist=|#mirrorlist=|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
         [ ${CENTOS_VERSION} -eq "8" ] && sed -i 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=http://mirror.centos.org/centos|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
@@ -589,7 +594,7 @@ function ChooseMirrors() {
 }
 
 ## 生成 CentOS 官方 repo 源文件
-function CentOSReposCreate() {
+function CreateCentOSRepoFiles() {
     if [ ${CENTOS_VERSION} -eq "8" ]; then
         CentOS8_RepoFiles='CentOS-Linux-AppStream.repo CentOS-Linux-BaseOS.repo CentOS-Linux-ContinuousRelease.repo CentOS-Linux-Debuginfo.repo CentOS-Linux-Devel.repo CentOS-Linux-Extras.repo CentOS-Linux-FastTrack.repo CentOS-Linux-HighAvailability.repo CentOS-Linux-Media.repo CentOS-Linux-Plus.repo CentOS-Linux-PowerTools.repo CentOS-Linux-Sources.repo'
         for REPOS in $CentOS8_RepoFiles; do
@@ -1025,7 +1030,7 @@ EOF
 }
 
 ## 生成 Fedora 官方 repo 源文件
-function FedoraReposCreate() {
+function CreateReposRepoFiles() {
     Fedora_RepoFiles='fedora-cisco-openh264.repo fedora.repo fedora-updates.repo fedora-modular.repo fedora-updates-modular.repo fedora-updates-testing.repo fedora-updates-testing-modular.repo'
     for REPOS in $Fedora_RepoFiles; do
         touch $REPOS

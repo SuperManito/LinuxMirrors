@@ -29,15 +29,15 @@
 </tr>
 <tr>
     <td><a href="https://www.debian.org"><img src="./icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
-    <td align="center">8.0 ~ 11.0</td>
+    <td align="center">8.0 ~ 11.1</td>
 </tr>
 <tr>
     <td><a href="https://cn.ubuntu.com"><img src="./icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
-    <td align="center">16.04 ~ 21.04</td>
+    <td align="center">16.04 ~ 21.10</td>
 </tr>
 <tr>
     <td><a href="https://www.kali.org"><img src="./icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
-    <td align="center">2.0 ~ 2021.2</td>
+    <td align="center">2.0 ~ 2021.3</td>
 </tr>
 <tr>
     <td><a href="https://www.redhat.com/zhtechnologies/linux-platforms/enterprise-linux"><img src="./icon/redhat.svg" width="16" height="16"/></a>&nbsp;RHEL</td>
@@ -99,7 +99,7 @@
 
       bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
 > __注意：__
-> - _Debian 系 Linux 默认注释了源码仓库和预发布软件源，若需启用可将 list 源文件中相关内容的所在行 `取消注释`。_
+> - _Debian 系 Linux 默认禁用了源码仓库和预发布软件源，若需启用可将 list 源文件中相关内容的所在行 `取消注释`。_
 > - _RedHat 系 Linux 配置了所有可以配置的仓库，但有一些仓库默认没有启用，若需启用可将 repo 源文件中的 `enabled=0`修改成 `enabled=1`。_
 
 ***

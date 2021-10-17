@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-10-08
+## Modified: 2021-10-17
 ## License: GPL-2.0
 ## https://github.com/SuperManito/LinuxMirrors
 ## https://gitee.com/SuperManito/LinuxMirrors
@@ -11,7 +11,7 @@ function AuthorSignature() {
     elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
         yum install -y figlet toilet >/dev/null 2>&1
     fi
-    if [[ $? -eq 0 ]]; then
+    if [ $? -eq 0 ]; then
         echo -e "\n$(toilet -f slant -F border --gay SuperManito)\n"
     else
         echo -e '\n\033[35m    _____                       __  ___            _ __       \033[0m'
@@ -21,6 +21,8 @@ function AuthorSignature() {
         echo -e '\033[36m /____/\__,_/ .___/\___/_/  /_/  /_/\__,_/_/ /_/_/\__/\____/  \033[0m'
         echo -e '\033[34m           /_/                                                \033[0m\n'
     fi
+    echo -e " Github: https://github.com/SuperManito/LinuxMirrors"
+    echo -e " Gitee:  https://gitee.com/SuperManito/LinuxMirrors\n"
 }
 
 ## 定义系统判定变量
@@ -37,6 +39,7 @@ SYSTEM_FEDORA="Fedora"
 ## 定义目录和文件
 LinuxRelease=/etc/os-release
 RedHatRelease=/etc/redhat-release
+DebianVersion=/etc/debian_version
 DebianSourceList=/etc/apt/sources.list
 DebianExtendListDir=/etc/apt/sources.list.d
 RedHatReposDir=/etc/yum.repos.d
@@ -75,8 +78,11 @@ function EnvJudgment() {
     ## 判定当前系统基于 Debian or RedHat
     if [ -f $RedHatRelease ]; then
         SYSTEM_FACTIONS=${SYSTEM_REDHAT}
-    else
+    elif [ -f $DebianVersion ]; then
         SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
+    else
+        echo -e '\n\033[31m -------- 无法判断当前运行环境，请先确认脚本是否已适配当前系统! ------------ \033[0m\n'
+        exit
     fi
     ## 定义系统名称
     SYSTEM_NAME=$(cat $LinuxRelease | grep -E "^NAME" | awk -F '\"' '{print$2}')
@@ -236,7 +242,7 @@ function DockerEngineVersionList() {
 
 ## 配置 Docker CE 源
 function ConfigureDockerCEMirror() {
-    if [ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]; then
+    if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
         SOURCE_JUDGMENT=${SOURCE}
     else
         SOURCE_JUDGMENT="download.docker.com"
@@ -278,7 +284,7 @@ function DockerEngine() {
         DOCKER_INSTALLED_VERSION=$(docker -v | grep -Eo "[0-9][0-9].[0-9][0-9].[0-9]{1,2}")
         DOCKER_VERSION_LATEST=$(cat $DockerVersionFile | head -n 1)
         if [[ ${DOCKER_INSTALLED_VERSION} == ${DOCKER_VERSION_LATEST} ]]; then
-            if [ ${DOCKER_VERSION_INSTALL_LATEST} = "True" ]; then
+            if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
                 echo -e '\n\033[32m---------- 检测到已安装最新版本的 Docker Engine，跳过安装 ----------\033[0m'
                 ConfigureImageAccelerator
                 systemctl status docker | grep running -q
@@ -295,7 +301,7 @@ function DockerEngine() {
                 CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
             fi
         else
-            if [ ${DOCKER_VERSION_INSTALL_LATEST} = "True" ]; then
+            if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
                 CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本 [ Y/n ]：\033[0m')
             else
                 CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
@@ -325,7 +331,7 @@ function DockerEngine() {
     systemctl enable --now docker >/dev/null 2>&1
 }
 function DockerEngineInstall() {
-    if [ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]; then
+    if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
         case ${SYSTEM_FACTIONS} in
         Debian)
             apt-get install -y docker-ce docker-ce-cli containerd.io
@@ -386,7 +392,7 @@ function DockerEngineInstall() {
 
 ## 修改 Docker Hub 源
 function ConfigureImageAccelerator() {
-    if [ ${REGISTRY_SOURCE_OFFICIAL} = "False" ]; then
+    if [[ ${REGISTRY_SOURCE_OFFICIAL} == "False" ]]; then
         if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
             if [ -e $DockerConfigBackup ]; then
                 CHOICE_BACKUP=$(echo -e "\n\033[1m└ 检测到已备份的 Docker 配置文件，是否覆盖备份 [ Y/n ]：\033[0m")
@@ -418,30 +424,30 @@ function ConfigureImageAccelerator() {
 
 ## 安装 Docker Compose
 function DockerCompose() {
-    if [ ${DOCKER_COMPOSE} == "True" ]; then
+    if [[ ${DOCKER_COMPOSE} == "True" ]]; then
         [ -e $DockerCompose ] && rm -rf $DockerCompose
-        if [ ${Arch} = "x86_64" ]; then
+        if [[ ${Arch} == "x86_64" ]]; then
             echo -e ''
-            if [ ${DOCKER_COMPOSE_DOWNLOAD_PROXY} = "True" ]; then
+            if [ ${DOCKER_COMPOSE_DOWNLOAD_PROXY} == "True" ]; then
                 curl -L ${PROXY_URL}${DOCKER_COMPOSE_DOWNLOAD_URL} -o $DockerCompose
             else
                 curl -L ${DOCKER_COMPOSE_DOWNLOAD_URL} -o $DockerCompose
             fi
             chmod +x $DockerCompose
         else
-            echo -e '\n[*] 正在通过 pip 安装 Docker Compose ......\n'
+            echo -e '\n[*] 由于本机非 x86架构，开始通过 pip3 安装 Docker Compose ......\n'
             if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
                 apt-get install -y python3-pip python3-dev gcc libffi-dev openssl >/dev/null 2>&1
             elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
                 yum install -y python3-pip python3-devel gcc libffi-devel openssl-devel >/dev/null 2>&1
             fi
             pip3 install --upgrade pip
-            if [ ${DOCKER_COMPOSE_DOWNLOAD_PROXY} = "True" ]; then
+            if [ ${DOCKER_COMPOSE_DOWNLOAD_PROXY} == "True" ]; then
                 pip3 install -i https://mirrors.aliyun.com/pypi/simple docker-compose
             else
                 pip3 install docker-compose
             fi
-            [ $? -ne 0 ] && echo -e "\n\033[31m---------- Docker Compose 安装失败，检测到当前处理器为 ${Arch} 架构无法保证 100% 安装成功，自行查看 pip 报错原因 ----------\033[0m\n"
+            [ $? -ne 0 ] && echo -e "\n\033[31m---------- Docker Compose 安装失败 ----------\033[0m\n\n检测到当前处理器架构为 ${Arch} ，无法保证安装结果，自行查看 pip 报错原因"
         fi
         echo -e ''
     else
@@ -454,7 +460,7 @@ function ShowVersion() {
     echo -e '\033[32m---------- 验证安装版本 ----------\033[0m\n'
     docker -v
     VERIFICATION_DOCKER=$?
-    [ ${DOCKER_COMPOSE} = "True" ] && docker-compose -v
+    [[ ${DOCKER_COMPOSE} == "True" ]] && docker-compose -v
     if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
         echo -e '\n\033[32m---------- 安装完成 ----------\033[0m'
     else
@@ -462,14 +468,14 @@ function ShowVersion() {
         exit
     fi
     systemctl status docker | grep running -q
-    if [[ $? -ne 0 ]]; then
+    if [ $? -ne 0 ]; then
         sleep 2
         systemctl disable --now docker >/dev/null 2>&1
         sleep 2
         systemctl enable --now docker >/dev/null 2>&1
         sleep 2
         systemctl status docker | grep running -q
-        if [[ $? -ne 0 ]]; then
+        if [ $? -ne 0 ]; then
             echo -e '\n\033[31m [ERROR] 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致\033[0m'
             echo -e '\n\033[31m 请执行 systemctl start docker 或 service docker start 命令尝试启动\033[0m'
             echo -e '\n\033[31m 官方安装文档：https://docs.docker.com/engine/install\033[0m'
