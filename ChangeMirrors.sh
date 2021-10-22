@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/bash
 ## Author: SuperManito
 ## Modified: 2021-10-17
 ## License: GPL-2.0
@@ -11,7 +11,7 @@ function AuthorSignature() {
     elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
         yum install -y figlet toilet >/dev/null 2>&1
     fi
-    if [ $? -eq 0 ]; then
+    if [ -x /usr/bin/toilet ]; then
         echo -e "\n$(toilet -f slant -F border --gay SuperManito)\n"
     else
         echo -e '\n\033[35m    _____                       __  ___            _ __       \033[0m'
