@@ -1,9 +1,9 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-10-17
+## Modified: 2021-10-24
 ## License: GPL-2.0
-## https://github.com/SuperManito/LinuxMirrors
-## https://gitee.com/SuperManito/LinuxMirrors
+## Github Repository: https://github.com/SuperManito/LinuxMirrors
+## Gitee Repository: https://gitee.com/SuperManito/LinuxMirrors
 
 function AuthorSignature() {
     if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
@@ -26,7 +26,7 @@ function AuthorSignature() {
 }
 
 ## 定义系统判定变量
-DebianRelease=lsb_release
+DebianRelease="lsb_release"
 Arch=$(uname -m)
 SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
@@ -62,7 +62,7 @@ DOCKER_COMPOSE_DOWNLOAD_URL=https://github.com/docker/compose/releases/download/
 ## 组合函数
 function Combin_Function() {
     PermissionJudgment
-    NetWorkJudgment && clear
+    NetWorkJudgment
     EnvJudgment
     ChooseMirrors
     InstallationEnvironment
@@ -493,6 +493,7 @@ function ShowVersion() {
 }
 
 function ChooseMirrors() {
+    clear
     echo -e '+---------------------------------------------------+'
     echo -e '|                                                   |'
     echo -e '|   =============================================   |'
@@ -537,8 +538,8 @@ function ChooseMirrors() {
     echo -e ''
     echo -e '#####################################################'
     echo -e ''
-    echo -e "            运行环境  ${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}"
-    echo -e "            系统时间  $(date "+%Y-%m-%d %H:%M:%S")"
+    echo -e "        运行环境  ${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}"
+    echo -e "        系统时间  $(date "+%Y-%m-%d %H:%M:%S")"
     echo -e ''
     echo -e '#####################################################'
     CHOICE_A=$(echo -e '\n\033[1m└ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：\033[0m')

@@ -1,9 +1,9 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-10-17
+## Modified: 2021-10-24
 ## License: GPL-2.0
-## https://github.com/SuperManito/LinuxMirrors
-## https://gitee.com/SuperManito/LinuxMirrors
+## Github Repository: https://github.com/SuperManito/LinuxMirrors
+## Gitee Repository: https://gitee.com/SuperManito/LinuxMirrors
 
 function AuthorSignature() {
     if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
@@ -26,7 +26,7 @@ function AuthorSignature() {
 }
 
 ## 定义系统判定变量
-DebianRelease=lsb_release
+DebianRelease="lsb_release"
 Arch=$(uname -m)
 SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
@@ -50,7 +50,7 @@ SelinuxConfig=/etc/selinux/config
 
 ## 组合函数
 function Combin_Function() {
-    PermissionJudgment && clear
+    PermissionJudgment
     EnvJudgment
     ChooseMirrors
     BackupMirrors
@@ -78,6 +78,15 @@ function EnvJudgment() {
     ## 判定系统名称、版本、版本号
     case ${SYSTEM_FACTIONS} in
     Debian)
+        if [ ! -x /usr/bin/lsb_release ]; then
+            apt-get install -y lsb-release
+            if [ $? -eq 0 ]; then
+                clear
+            else
+                echo -e '\n\033[31m -------- lsb-release 软件包安装失败 ------------ \033[0m'
+                echo -e "\n本脚本需要通过 lsb_release 指令判定系统类型，一般系统自带，当前可能为精简安装的系统，请自行安装！\n"
+            fi
+        fi
         SYSTEM_JUDGMENT=$(${DebianRelease} -is)
         SYSTEM_VERSION=$(${DebianRelease} -cs)
         ;;
@@ -352,7 +361,8 @@ function UpgradeSoftware() {
 ## 更换基于 Debian 系 Linux 发行版的国内源
 function DebianMirrors() {
     ## 修改国内源
-    if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_UBUNTU} ]; then
+    case ${SYSTEM_JUDGMENT} in
+    Ubuntu)
         echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
 deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
@@ -366,7 +376,8 @@ deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports mai
 ## 预发布软件源（不建议启用）
 # deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse" >>$DebianSourceList
-    elif [ ${SYSTEM_JUDGMENT} = ${SYSTEM_DEBIAN} ]; then
+        ;;
+    Debian)
         echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
 deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
@@ -378,10 +389,12 @@ deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports mai
 ## 预发布软件源（不建议启用）
 # deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free" >>$DebianSourceList
-    elif [ ${SYSTEM_JUDGMENT} = ${SYSTEM_KALI} ]; then
+        ;;
+    Kali)
         echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib
 deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib" >>$DebianSourceList
-    fi
+        ;;
+    esac
 }
 
 ## 更换基于 RedHat 系 Linux 发行版的国内源
@@ -454,6 +467,7 @@ function EPELMirrors() {
 
 ## 选择国内源
 function ChooseMirrors() {
+    clear
     echo -e '+---------------------------------------------------+'
     echo -e '|                                                   |'
     echo -e '|   =============================================   |'
@@ -486,8 +500,8 @@ function ChooseMirrors() {
     echo -e ''
     echo -e '#####################################################'
     echo -e ''
-    echo -e "            运行环境  \033[34m${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}\033[0m"
-    echo -e "            系统时间  \033[34m$(date "+%Y-%m-%d %H:%M:%S")\033[0m"
+    echo -e "        运行环境  \033[34m${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}\033[0m"
+    echo -e "        系统时间  \033[34m$(date "+%Y-%m-%d %H:%M:%S")\033[0m"
     echo -e ''
     echo -e '#####################################################'
     CHOICE_A=$(echo -e '\n\033[1m└ 请选择并输入你想使用的软件源 [ 1-13 ]：\033[0m')
