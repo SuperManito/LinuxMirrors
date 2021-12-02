@@ -84,7 +84,8 @@ function EnvJudgment() {
                 clear
             else
                 echo -e '\n\033[31m -------- lsb-release 软件包安装失败 ------------ \033[0m'
-                echo -e "\n本脚本需要通过 lsb_release 指令判定系统类型，一般系统自带，当前可能为精简安装的系统，请自行安装！\n"
+                echo -e "\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统一般系统自带，请自行安装后重新执行脚本！\n"
+                exit
             fi
         fi
         SYSTEM_JUDGMENT=$(${DebianRelease} -is)
