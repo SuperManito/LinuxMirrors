@@ -1,33 +1,28 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-10-24
+## Modified: 2021-12-15
 ## License: GPL-2.0
 ## Github Repository: https://github.com/SuperManito/LinuxMirrors
 ## Gitee Repository: https://gitee.com/SuperManito/LinuxMirrors
 
 function AuthorSignature() {
-    if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
-        apt-get install -y figlet toilet >/dev/null 2>&1
-    elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
-        yum install -y figlet toilet >/dev/null 2>&1
-    fi
-    if [ -x /usr/bin/toilet ]; then
-        echo -e "\n$(toilet -f slant -F border --gay SuperManito)\n"
-    else
-        echo -e '\n\033[35m    _____                       __  ___            _ __       \033[0m'
-        echo -e '\033[31m   / ___/__  ______  ___  _____/  |/  /___ _____  (_) /_____  \033[0m'
-        echo -e '\033[33m   \__ \/ / / / __ \/ _ \/ ___/ /|_/ / __ `/ __ \/ / __/ __ \ \033[0m'
-        echo -e '\033[32m  ___/ / /_/ / /_/ /  __/ /  / /  / / /_/ / / / / / /_/ /_/ / \033[0m'
-        echo -e '\033[36m /____/\__,_/ .___/\___/_/  /_/  /_/\__,_/_/ /_/_/\__/\____/  \033[0m'
-        echo -e '\033[34m           /_/                                                \033[0m\n'
-    fi
-    echo -e " Github: https://github.com/SuperManito/LinuxMirrors"
-    echo -e " Gitee:  https://gitee.com/SuperManito/LinuxMirrors\n"
+    echo -e "\n${GREEN} ------------ 脚本执行结束 ------------ ${PLAIN}\n"
+    echo -e '\n\033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m─┐\033[0m'
+    echo -e '\033[0;1;31;91m│\033[0m   \033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_\033[0m                       \033[0;1;34;94m__\033[0m  \033[0;1;31;91m__\033[0;1;33;93m_\033[0m            \033[0;1;33;93m_\033[0m \033[0;1;32;92m_\033[0;1;36;96m_\033[0m      \033[0;1;31;91m│\033[0m'
+    echo -e '\033[0;1;33;93m│\033[0m  \033[0;1;32;92m/\033[0m \033[0;1;36;96m_\033[0;1;34;94m__\033[0;1;35;95m/_\033[0;1;31;91m_\033[0m  \033[0;1;33;93m_\033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_\033[0m  \033[0;1;35;95m_\033[0;1;31;91m__\033[0m  \033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_/\033[0m  \033[0;1;31;91m|/\033[0m  \033[0;1;32;92m/_\033[0;1;36;96m__\033[0m \033[0;1;34;94m_\033[0;1;35;95m__\033[0;1;31;91m__\033[0m  \033[0;1;32;92m(_\033[0;1;36;96m)\033[0m \033[0;1;34;94m/_\033[0;1;35;95m__\033[0;1;31;91m__\033[0m \033[0;1;33;93m│\033[0m'
+    echo -e '\033[0;1;32;92m│\033[0m  \033[0;1;36;96m\\\033[0;1;34;94m__\033[0m \033[0;1;35;95m\\\033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m__\033[0m \033[0;1;35;95m\\\033[0;1;31;91m/\033[0m \033[0;1;33;93m_\033[0m \033[0;1;32;92m\/\033[0m \033[0;1;36;96m_\033[0;1;34;94m__\033[0;1;35;95m/\033[0m \033[0;1;31;91m/|\033[0;1;33;93m_/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m_\033[0;1;34;94m_\033[0m \033[0;1;35;95m`/\033[0m \033[0;1;31;91m_\033[0;1;33;93m_\033[0m \033[0;1;32;92m\/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m_\033[0;1;35;95m_/\033[0m \033[0;1;31;91m_\033[0;1;33;93m_\033[0m \033[0;1;32;92m\│\033[0m'
+    echo -e '\033[0;1;36;96m│\033[0m \033[0;1;34;94m__\033[0;1;35;95m_/\033[0m \033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0;1;32;92m_/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m \033[0;1;31;91m/\033[0m  \033[0;1;32;92m__\033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0m  \033[0;1;35;95m/\033[0m \033[0;1;31;91m/\033[0m  \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/_\033[0;1;35;95m/\033[0m \033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0m \033[0;1;35;95m/_\033[0;1;31;91m/\033[0m \033[0;1;33;93m/_\033[0;1;32;92m/\033[0m \033[0;1;36;96m/│\033[0m'
+    echo -e '\033[0;1;34;94m│/\033[0;1;35;95m__\033[0;1;31;91m__\033[0;1;33;93m/\\\033[0;1;32;92m__\033[0;1;36;96m,_\033[0;1;34;94m/\033[0m \033[0;1;35;95m._\033[0;1;31;91m__\033[0;1;33;93m/\\\033[0;1;32;92m__\033[0;1;36;96m_/\033[0;1;34;94m_/\033[0m  \033[0;1;31;91m/_\033[0;1;33;93m/\033[0m  \033[0;1;32;92m/\033[0;1;36;96m_/\033[0;1;34;94m\_\033[0;1;35;95m_,\033[0;1;31;91m_/\033[0;1;33;93m_/\033[0m \033[0;1;32;92m/\033[0;1;36;96m_/\033[0;1;34;94m_/\033[0;1;35;95m\_\033[0;1;31;91m_/\033[0;1;33;93m\_\033[0;1;32;92m__\033[0;1;36;96m_/\033[0m \033[0;1;34;94m│\033[0m'
+    echo -e '\033[0;1;35;95m│\033[0m          \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m                                               \033[0;1;35;95m│\033[0m'
+    echo -e '\033[0;1;31;91m└─\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m─┘\033[0m\n'
+
+    echo -e " \033[1;34mGithub\033[0m - https://github.com/SuperManito/LinuxMirrors"
+    echo -e " \033[1;34mGitee\033[0m  - https://gitee.com/SuperManito/LinuxMirrors\n"
 }
 
 ## 定义系统判定变量
 DebianRelease="lsb_release"
-Arch=$(uname -m)
+ARCH=$(uname -m)
 SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
@@ -47,6 +42,18 @@ DebianExtendListDirBackup=/etc/apt/sources.list.d.bak
 RedHatReposDir=/etc/yum.repos.d
 RedHatReposDirBackup=/etc/yum.repos.d.bak
 SelinuxConfig=/etc/selinux/config
+
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+PLAIN='\033[0m'
+BOLD='\033[1m'
+SUCCESS='[\033[32mOK\033[0m]'
+COMPLETE='[\033[32mDone\033[0m]'
+WARN='[\033[33mWARN\033[0m]'
+ERROR='[\033[31mERROR\033[0m]'
+WORKING='[\033[34m*\033[0m]'
 
 ## 组合函数
 function Combin_Function() {
@@ -68,13 +75,13 @@ function EnvJudgment() {
     elif [ -f $DebianVersion ]; then
         SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
     else
-        echo -e '\n\033[31m -------- 无法判断当前运行环境，请先确认脚本是否已适配当前系统! ------------ \033[0m\n'
+        echo -e "\n${RED} ------------ 无法判断当前运行环境，请先确认脚本是否已适配当前系统! ------------ ${PLAIN}\n"
         exit
     fi
     ## 定义系统名称
-    SYSTEM_NAME=$(cat $LinuxRelease | grep -E "^NAME" | awk -F '\"' '{print$2}')
+    SYSTEM_NAME=$(cat $LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")
     ## 定义系统版本号
-    SYSTEM_VERSION_NUMBER=$(cat $LinuxRelease | grep -E "VERSION_ID" | awk -F '\"' '{print$2}')
+    SYSTEM_VERSION_NUMBER=$(cat $LinuxRelease | grep -E "VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")
     ## 判定系统名称、版本、版本号
     case ${SYSTEM_FACTIONS} in
     Debian)
@@ -83,7 +90,7 @@ function EnvJudgment() {
             if [ $? -eq 0 ]; then
                 clear
             else
-                echo -e '\n\033[31m -------- lsb-release 软件包安装失败 ------------ \033[0m'
+                echo -e "\n${ERROR} lsb-release 软件包安装失败"
                 echo -e "\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统一般系统自带，请自行安装后重新执行脚本！\n"
                 exit
             fi
@@ -101,29 +108,29 @@ function EnvJudgment() {
         ;;
     esac
     ## 判定系统处理器架构
-    case $Arch in
+    case ${ARCH} in
     x86_64)
-        SYSTEM_ARCH=x86_64
+        SYSTEM_ARCH="x86_64"
         ;;
     aarch64)
-        SYSTEM_ARCH=ARM64
+        SYSTEM_ARCH="ARM64"
         ;;
     armv7l)
-        SYSTEM_ARCH=ARMv7
+        SYSTEM_ARCH="ARMv7"
         ;;
     armv6l)
-        SYSTEM_ARCH=ARMv6
+        SYSTEM_ARCH="ARMv6"
         ;;
     i686)
-        SYSTEM_ARCH=x86_32
+        SYSTEM_ARCH="x86_32"
         ;;
     *)
-        SYSTEM_ARCH=$Arch
+        SYSTEM_ARCH=${ARCH}
         ;;
     esac
     ## 定义软件源分支名称
     if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_UBUNTU} ]; then
-        if [ ${Arch} = "x86_64" ] || [ ${Arch} = "*i?86*" ]; then
+        if [ ${ARCH} = "x86_64" ] || [ ${ARCH} = "*i?86*" ]; then
             SOURCE_BRANCH=${SYSTEM_JUDGMENT,,}
         else
             SOURCE_BRANCH=ubuntu-ports
@@ -148,7 +155,7 @@ function EnvJudgment() {
 function PermissionJudgment() {
     ## 权限判定：
     if [ $UID -ne 0 ]; then
-        echo -e '\033[31m -------- Permission no enough, please use user ROOT! ------------ \033[0m'
+        echo -e "\n${ERROR} Permission no enough, please use user ROOT! \n"
         exit
     fi
 }
@@ -157,7 +164,7 @@ function PermissionJudgment() {
 function TurnOffFirewall() {
     systemctl status firewalld | grep running -q
     if [ $? -eq 0 ]; then
-        CHOICE_C=$(echo -e '\n\033[1m└ 是否关闭防火墙和 SELINUX [ Y/n ]：\033[0m')
+        CHOICE_C=$(echo -e "\n${BOLD}└ 是否关闭防火墙和 SELINUX [ Y/n ]：${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -167,7 +174,7 @@ function TurnOffFirewall() {
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
-            echo -e '\n\033[33m------------ 输入错误，默认不关闭 ------------\033[0m'
+            echo -e "\n${WARN} 输入错误，默认不关闭！"
             ;;
         esac
     fi
@@ -195,24 +202,21 @@ function BackupMirrors() {
         ## /etc/apt/sources.list
         if [ -s $DebianSourceList ]; then
             if [ -s $DebianSourceListBackup ]; then
-                CHOICE_BACKUP1=$(echo -e "\n\033[1m└ 检测到系统存在已备份的 list 源文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP1=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 源文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
                 read -p "${CHOICE_BACKUP1}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
                 [Yy] | [Yy][Ee][Ss])
-                    echo -e ''
                     cp -rf $DebianSourceList $DebianSourceListBackup >/dev/null 2>&1
                     ;;
-                [Nn] | [Nn][Oo])
-                    echo -e ''
-                    ;;
+                [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e '\n\033[33m------------ 输入错误，默认不覆盖 ------------\033[0m\n'
+                    echo -e "\n${WARN} 输入错误，默认不覆盖！\n"
                     ;;
                 esac
             else
                 cp -rf $DebianSourceList $DebianSourceListBackup >/dev/null 2>&1
-                echo -e "\n\033[32m------------ 已备份原有 list 源文件至 $DebianSourceListBackup ------------\033[0m\n"
+                echo -e "\n${COMPLETE} 已备份原有 list 源文件至 $DebianSourceListBackup\n"
                 sleep 1s
             fi
         else
@@ -223,24 +227,22 @@ function BackupMirrors() {
         ## /etc/apt/sources.list.d
         if [ -d $DebianExtendListDir ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $DebianExtendListDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP2=$(echo -e "\n\033[1m└ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP2=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
                 read -p "${CHOICE_BACKUP2}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
                 [Yy] | [Yy][Ee][Ss])
                     cp -rf $DebianExtendListDir/* $DebianExtendListDirBackup >/dev/null 2>&1
                     ;;
-                [Nn] | [Nn][Oo])
-                    echo ''
-                    ;;
+                [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e '\n\033[33m------------ 输入错误，默认不覆盖 ------------\033[0m\n'
+                    echo -e "\n${WARN} 输入错误，默认不覆盖！\n"
                     ;;
                 esac
             else
                 [ -d $DebianExtendListDirBackup ] || mkdir -p $DebianExtendListDirBackup
                 cp -rf $DebianExtendListDir/* $DebianExtendListDirBackup >/dev/null 2>&1
-                echo -e "\033[32m------------ 已备份原有 list 第三方源文件至 $DebianExtendListDirBackup 目录 ------------\033[0m\n"
+                echo -e "${COMPLETE} 已备份原有 list 第三方源文件至 $DebianExtendListDirBackup 目录\n"
                 sleep 1s
             fi
         fi
@@ -248,23 +250,22 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $RedHatReposDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP3=$(echo -e "\n\033[1m└ 检测到系统存在已备份的 repo 源文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 repo 源文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
                 read -p "${CHOICE_BACKUP3}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
                 [Yy] | [Yy][Ee][Ss])
                     cp -rf $RedHatReposDir/* $RedHatReposDirBackup >/dev/null 2>&1
-                    echo -e ''
                     ;;
                 [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e '\n\033[33m------------ 输入错误，默认不覆盖 ------------\033[0m\n'
+                    echo -e "\n${WARN} 输入错误，默认不覆盖！\n"
                     ;;
                 esac
             else
                 [ -d $RedHatReposDirBackup ] || mkdir -p $RedHatReposDirBackup
                 cp -rf $RedHatReposDir/* $RedHatReposDirBackup >/dev/null 2>&1
-                echo -e "\n\033[32m------------ 已备份原有 repo 源文件至 $RedHatReposDirBackup 目录 ------------\033[0m\n"
+                echo -e "\n${COMPLETE} 已备份原有 repo 源文件至 $RedHatReposDirBackup 目录"
                 sleep 1s
             fi
         else
@@ -296,7 +297,7 @@ function ChangeMirrors() {
         RedHatMirrors
         yum clean all >/dev/null 2>&1
     fi
-    echo -e "\033[32m------------ 开始${SYNC_TXT}软件源 ------------\033[0m\n"
+    echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case ${SYSTEM_FACTIONS} in
     Debian)
         apt-get update
@@ -307,16 +308,20 @@ function ChangeMirrors() {
     esac
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -eq 0 ]; then
-        echo -e "\n\033[32m------------ ${SYNC_TXT}软件源结束 ------------\033[0m"
+        echo -e "\n${SUCCESS} 软件源更换完毕"
     else
-        echo -e "\n\033[31m------------ 软件源${SYNC_TXT}失败，请重新执行脚本 ------------\033[0m\n\n如果仍然${SYNC_TXT}失败那么可能由以下原因导致\n1. 网络问题：例如网络异常、网络间歇式中断、由地区影响的网络因素等\n2. 软件源问题：所选镜像站正在维护或者不支持你的操作系统\n"
+        echo -e "\n${ERROR} 软件源${SYNC_TXT}失败\n"
+        echo -e "请再次执行脚本并更换软件源后进行尝试，如果仍然${SYNC_TXT}失败那么可能由以下原因导致"
+        echo -e "1. 网络问题：例如网络异常、网络间歇式中断、由地区影响的网络因素等"
+        echo -e "2. 软件源问题：所选镜像站正在维护，或者出现罕见的少数文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态"
+        echo ''
         exit
     fi
 }
 
 ## 更新软件包
 function UpgradeSoftware() {
-    CHOICE_B=$(echo -e '\n\033[1m└ 是否更新软件包 [ Y/n ]：\033[0m')
+    CHOICE_B=$(echo -e "\n${BOLD}└ 是否更新软件包 [ Y/n ]：${PLAIN}")
     read -p "${CHOICE_B}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
@@ -330,7 +335,7 @@ function UpgradeSoftware() {
             yum update -y
             ;;
         esac
-        CHOICE_C=$(echo -e '\n\033[1m└ 是否清理已下载的软件包缓存 [ Y/n ]：\033[0m')
+        CHOICE_C=$(echo -e "\n${BOLD}└ 是否清理已下载的软件包缓存 [ Y/n ]：${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -343,20 +348,19 @@ function UpgradeSoftware() {
                 yum clean packages -y >/dev/null 2>&1
             fi
 
-            echo -e '\n[OK] 清理完毕'
+            echo -e "\n${COMPLETE} 清理完毕"
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
-            echo -e '\n\033[33m------------ 输入错误，默认不清理 ------------\033[0m'
+            echo -e "\n${WARN} 输入错误，默认不清理！"
             ;;
         esac
         ;;
     [Nn] | [Nn][Oo]) ;;
     *)
-        echo -e '\n\033[33m------------ 输入错误，默认不更新 ------------\033[0m'
+        echo -e "\n${WARN} 输入错误，默认不更新！"
         ;;
     esac
-    echo -e '\n\033[32m------------ 软件源更换完毕 ------------\033[0m'
 }
 
 ## 更换基于 Debian 系 Linux 发行版的国内源
@@ -443,7 +447,7 @@ function RedHatMirrors() {
 function EPELMirrors() {
     ## 安装 EPEL 软件包
     if [ ${VERIFICATION_EPEL} -ne 0 ]; then
-        echo -e '\033[32m------------ 安装 epel-release 软件包 ------------\033[0m\n'
+        echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
         yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-${CENTOS_VERSION}.noarch.rpm
     fi
     ## 删除原有 EPEL 扩展 repo 源文件
@@ -463,7 +467,6 @@ function EPELMirrors() {
     esac
     sed -i "s|download.fedoraproject.org/pub|${SOURCE}|g" $RedHatReposDir/epel*
     rm -rf $RedHatReposDir/epel*rpmnew
-    echo ''
 }
 
 ## 选择国内源
@@ -501,11 +504,11 @@ function ChooseMirrors() {
     echo -e ''
     echo -e '#####################################################'
     echo -e ''
-    echo -e "        运行环境  \033[34m${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}\033[0m"
-    echo -e "        系统时间  \033[34m$(date "+%Y-%m-%d %H:%M:%S")\033[0m"
+    echo -e "        运行环境  ${BLUE}${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}${PLAIN}"
+    echo -e "        系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S")${PLAIN}"
     echo -e ''
     echo -e '#####################################################'
-    CHOICE_A=$(echo -e '\n\033[1m└ 请选择并输入你想使用的软件源 [ 1-13 ]：\033[0m')
+    CHOICE_A=$(echo -e "\n${BOLD}└ 请选择并输入你想使用的软件源 [ 1-13 ]：${PLAIN}")
     read -p "${CHOICE_A}" INPUT
     case $INPUT in
     1)
@@ -549,8 +552,8 @@ function ChooseMirrors() {
         ;;
     *)
         SOURCE="mirrors.aliyun.com"
-        echo -e '\n\033[33m------------ 输入错误，将默认使用阿里云作为国内源 ------------\033[0m'
-        sleep 1s
+        echo -e "\n${WARN} 输入错误，将默认使用 ${BLUE}阿里云${PLAIN} 作为国内源！"
+        sleep 2s
         ;;
     esac
 
@@ -567,9 +570,9 @@ function ChooseMirrors() {
         VERIFICATION_EPELBACKUPFILES=$?
 
         if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            CHOICE_D=$(echo -e '\n\033[1m└ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源 [ Y/n ]：\033[0m')
+            CHOICE_D=$(echo -e "\n${BOLD}└ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源 [ Y/n ]：${PLAIN}")
         else
-            CHOICE_D=$(echo -e '\n\033[1m└ 是否安装 EPEL 扩展源 [ Y/n ]：\033[0m')
+            CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 EPEL 扩展源 [ Y/n ]：${PLAIN}")
         fi
         read -p "${CHOICE_D}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
@@ -581,14 +584,14 @@ function ChooseMirrors() {
             EPEL_INSTALL="False"
             ;;
         *)
-            echo -e '\n\033[33m------------ 输入错误，默认不更换 ------------\033[0m'
+            echo -e "\n${WARN} 输入错误，默认不更换！"
             EPEL_INSTALL="False"
             ;;
         esac
     fi
 
     ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
-    CHOICE_E=$(echo -e "\n\033[1m└ 软件源是否使用 HTTP 协议 [ Y/n ]：\033[0m")
+    CHOICE_E=$(echo -e "\n${BOLD}└ 软件源是否使用 HTTP 协议 [ Y/n ]：${PLAIN}")
     read -p "${CHOICE_E}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
@@ -599,7 +602,7 @@ function ChooseMirrors() {
         WEB_PROTOCOL="https"
         ;;
     *)
-        echo -e "\n\033[33m------------ 输入错误，默认使用 HTTPS 协议 ------------\033[0m"
+        echo -e "\n${WARN} 输入错误，默认使用 HTTPS 协议！"
         WEB_PROTOCOL="https"
         ;;
     esac

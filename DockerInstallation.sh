@@ -1,33 +1,28 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-10-24
+## Modified: 2021-12-15
 ## License: GPL-2.0
 ## Github Repository: https://github.com/SuperManito/LinuxMirrors
 ## Gitee Repository: https://gitee.com/SuperManito/LinuxMirrors
 
 function AuthorSignature() {
-    if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
-        apt-get install -y figlet toilet >/dev/null 2>&1
-    elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
-        yum install -y figlet toilet >/dev/null 2>&1
-    fi
-    if [ -x /usr/bin/toilet ]; then
-        echo -e "\n$(toilet -f slant -F border --gay SuperManito)\n"
-    else
-        echo -e '\n\033[35m    _____                       __  ___            _ __       \033[0m'
-        echo -e '\033[31m   / ___/__  ______  ___  _____/  |/  /___ _____  (_) /_____  \033[0m'
-        echo -e '\033[33m   \__ \/ / / / __ \/ _ \/ ___/ /|_/ / __ `/ __ \/ / __/ __ \ \033[0m'
-        echo -e '\033[32m  ___/ / /_/ / /_/ /  __/ /  / /  / / /_/ / / / / / /_/ /_/ / \033[0m'
-        echo -e '\033[36m /____/\__,_/ .___/\___/_/  /_/  /_/\__,_/_/ /_/_/\__/\____/  \033[0m'
-        echo -e '\033[34m           /_/                                                \033[0m\n'
-    fi
-    echo -e " Github: https://github.com/SuperManito/LinuxMirrors"
-    echo -e " Gitee:  https://gitee.com/SuperManito/LinuxMirrors\n"
+    echo -e "\n${GREEN} ------------ 脚本执行结束 ------------ ${PLAIN}\n"
+    echo -e '\n\033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m─┐\033[0m'
+    echo -e '\033[0;1;31;91m│\033[0m   \033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_\033[0m                       \033[0;1;34;94m__\033[0m  \033[0;1;31;91m__\033[0;1;33;93m_\033[0m            \033[0;1;33;93m_\033[0m \033[0;1;32;92m_\033[0;1;36;96m_\033[0m      \033[0;1;31;91m│\033[0m'
+    echo -e '\033[0;1;33;93m│\033[0m  \033[0;1;32;92m/\033[0m \033[0;1;36;96m_\033[0;1;34;94m__\033[0;1;35;95m/_\033[0;1;31;91m_\033[0m  \033[0;1;33;93m_\033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_\033[0m  \033[0;1;35;95m_\033[0;1;31;91m__\033[0m  \033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_/\033[0m  \033[0;1;31;91m|/\033[0m  \033[0;1;32;92m/_\033[0;1;36;96m__\033[0m \033[0;1;34;94m_\033[0;1;35;95m__\033[0;1;31;91m__\033[0m  \033[0;1;32;92m(_\033[0;1;36;96m)\033[0m \033[0;1;34;94m/_\033[0;1;35;95m__\033[0;1;31;91m__\033[0m \033[0;1;33;93m│\033[0m'
+    echo -e '\033[0;1;32;92m│\033[0m  \033[0;1;36;96m\\\033[0;1;34;94m__\033[0m \033[0;1;35;95m\\\033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m__\033[0m \033[0;1;35;95m\\\033[0;1;31;91m/\033[0m \033[0;1;33;93m_\033[0m \033[0;1;32;92m\/\033[0m \033[0;1;36;96m_\033[0;1;34;94m__\033[0;1;35;95m/\033[0m \033[0;1;31;91m/|\033[0;1;33;93m_/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m_\033[0;1;34;94m_\033[0m \033[0;1;35;95m`/\033[0m \033[0;1;31;91m_\033[0;1;33;93m_\033[0m \033[0;1;32;92m\/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m_\033[0;1;35;95m_/\033[0m \033[0;1;31;91m_\033[0;1;33;93m_\033[0m \033[0;1;32;92m\│\033[0m'
+    echo -e '\033[0;1;36;96m│\033[0m \033[0;1;34;94m__\033[0;1;35;95m_/\033[0m \033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0;1;32;92m_/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m \033[0;1;31;91m/\033[0m  \033[0;1;32;92m__\033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0m  \033[0;1;35;95m/\033[0m \033[0;1;31;91m/\033[0m  \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/_\033[0;1;35;95m/\033[0m \033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0m \033[0;1;35;95m/_\033[0;1;31;91m/\033[0m \033[0;1;33;93m/_\033[0;1;32;92m/\033[0m \033[0;1;36;96m/│\033[0m'
+    echo -e '\033[0;1;34;94m│/\033[0;1;35;95m__\033[0;1;31;91m__\033[0;1;33;93m/\\\033[0;1;32;92m__\033[0;1;36;96m,_\033[0;1;34;94m/\033[0m \033[0;1;35;95m._\033[0;1;31;91m__\033[0;1;33;93m/\\\033[0;1;32;92m__\033[0;1;36;96m_/\033[0;1;34;94m_/\033[0m  \033[0;1;31;91m/_\033[0;1;33;93m/\033[0m  \033[0;1;32;92m/\033[0;1;36;96m_/\033[0;1;34;94m\_\033[0;1;35;95m_,\033[0;1;31;91m_/\033[0;1;33;93m_/\033[0m \033[0;1;32;92m/\033[0;1;36;96m_/\033[0;1;34;94m_/\033[0;1;35;95m\_\033[0;1;31;91m_/\033[0;1;33;93m\_\033[0;1;32;92m__\033[0;1;36;96m_/\033[0m \033[0;1;34;94m│\033[0m'
+    echo -e '\033[0;1;35;95m│\033[0m          \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m                                               \033[0;1;35;95m│\033[0m'
+    echo -e '\033[0;1;31;91m└─\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m─┘\033[0m\n'
+
+    echo -e " \033[1;34mGithub\033[0m - https://github.com/SuperManito/LinuxMirrors"
+    echo -e " \033[1;34mGitee\033[0m  - https://gitee.com/SuperManito/LinuxMirrors\n"
 }
 
 ## 定义系统判定变量
 DebianRelease="lsb_release"
-Arch=$(uname -m)
+ARCH=$(uname -m)
 SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
@@ -59,6 +54,18 @@ PROXY_URL=https://ghproxy.com/
 DOCKER_COMPOSE_VERSION=1.29.2
 DOCKER_COMPOSE_DOWNLOAD_URL=https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64
 
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+PLAIN='\033[0m'
+BOLD='\033[1m'
+SUCCESS='[\033[32mOK\033[0m]'
+COMPLETE='[\033[32mDone\033[0m]'
+WARN='[\033[33mWARN\033[0m]'
+ERROR='[\033[31mERROR\033[0m]'
+WORKING='[\033[34m*\033[0m]'
+
 ## 组合函数
 function Combin_Function() {
     PermissionJudgment
@@ -81,13 +88,13 @@ function EnvJudgment() {
     elif [ -f $DebianVersion ]; then
         SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
     else
-        echo -e '\n\033[31m -------- 无法判断当前运行环境，请先确认脚本是否已适配当前系统! ------------ \033[0m\n'
+        echo -e "\n${RED} ------------ 无法判断当前运行环境，请先确认脚本是否已适配当前系统！ ------------ ${PLAIN}\n"
         exit
     fi
     ## 定义系统名称
-    SYSTEM_NAME=$(cat $LinuxRelease | grep -E "^NAME" | awk -F '\"' '{print$2}')
+    SYSTEM_NAME=$(cat $LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")
     ## 定义系统版本号
-    SYSTEM_VERSION_NUMBER=$(cat $LinuxRelease | grep -E "VERSION_ID" | awk -F '\"' '{print$2}')
+    SYSTEM_VERSION_NUMBER=$(cat $LinuxRelease |  grep -E "VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")
     ## 判定系统名称、版本、版本号
     case ${SYSTEM_FACTIONS} in
     Debian)
@@ -104,30 +111,30 @@ function EnvJudgment() {
         ;;
     esac
     ## 判定系统处理器架构
-    case $Arch in
+    case ${ARCH} in
     x86_64)
-        SYSTEM_ARCH=x86_64
-        SOURCE_ARCH=amd64
+        SYSTEM_ARCH="x86_64"
+        SOURCE_ARCH="amd64"
         ;;
     aarch64)
-        SYSTEM_ARCH=ARM64
-        SOURCE_ARCH=arm64
+        SYSTEM_ARCH="ARM64"
+        SOURCE_ARCH="arm64"
         ;;
     armv7l)
-        SYSTEM_ARCH=ARMv7
-        SOURCE_ARCH=armhf
+        SYSTEM_ARCH="ARMv7"
+        SOURCE_ARCH="armhf"
         ;;
     armv6l)
-        SYSTEM_ARCH=ARMv6
-        SOURCE_ARCH=armhf
+        SYSTEM_ARCH="ARMv6"
+        SOURCE_ARCH="armhf"
         ;;
-    i686)
-        SYSTEM_ARCH=x86_32
-        echo -e '\n\033[31m---------- Docker Engine 不支持安装在 x86_32 架构的环境上 ----------\033[0m'
+    i386 | i686)
+        SYSTEM_ARCH="x86_32"
+        echo -e "\n${RED}---------- Docker Engine 不支持安装在 x86_32 架构的环境上！ ----------${PLAIN}\n"
         exit
         ;;
     *)
-        SYSTEM_ARCH=$Arch
+        SYSTEM_ARCH=${ARCH}
         SOURCE_ARCH=armhf
         ;;
     esac
@@ -151,14 +158,14 @@ function EnvJudgment() {
 ## 基础环境判断
 function PermissionJudgment() {
     if [ $UID -ne 0 ]; then
-        echo -e '\033[31m ---------- Permission no enough, please use user ROOT! ---------- \033[0m'
+        echo -e "\n${ERROR} Permission no enough, please use user ROOT! \n"
         exit
     fi
 }
 function NetWorkJudgment() {
     ping -c 1 www.baidu.com >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\033[31m ----- Network connection error, please check the network environment and try again later! ----- \033[0m"
+        echo -e "\n${RED} ----- Network connection error, please check the network environment and try again later! ----- ${PLAIN}\n"
         exit
     fi
 }
@@ -183,6 +190,7 @@ function InstallationEnvironment() {
         rm -rf $DockerRepo
         ;;
     esac
+    echo -e "${WORKING} 开始${SYNC_TXT}软件源...\n"
     case ${SYSTEM_FACTIONS} in
     Debian)
         apt-get update
@@ -193,9 +201,10 @@ function InstallationEnvironment() {
     esac
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -ne 0 ]; then
-        echo -e "\n\033[31m ---------- 软件源${SYNC_TXT}出错，请先确保软件包管理工具可用 ---------- \033[0m\n"
+        echo -e "\n${ERROR} 软件源${SYNC_TXT}出错，请先确保软件包管理工具可用！\n"
         exit
     fi
+    echo -e "\n${SUCCESS} 软件源${SYNC_TXT}结束\n"
     case ${SYSTEM_FACTIONS} in
     Debian)
         apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -285,7 +294,7 @@ function DockerEngine() {
         DOCKER_VERSION_LATEST=$(cat $DockerVersionFile | head -n 1)
         if [[ ${DOCKER_INSTALLED_VERSION} == ${DOCKER_VERSION_LATEST} ]]; then
             if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
-                echo -e '\n\033[32m---------- 检测到已安装最新版本的 Docker Engine，跳过安装 ----------\033[0m'
+                echo -e "\n${SUCCESS} 检测到已安装最新版本的 Docker Engine，跳过安装"
                 ConfigureImageAccelerator
                 systemctl status docker | grep running -q
                 if [ $? -eq 0 ]; then
@@ -298,27 +307,27 @@ function DockerEngine() {
                 AuthorSignature
                 exit
             else
-                CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
+                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：${PLAIN}")
             fi
         else
             if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
-                CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本 [ Y/n ]：\033[0m')
+                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本 [ Y/n ]：${PLAIN}")
             else
-                CHOICE_E=$(echo -e '\n\033[1m└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：\033[0m')
+                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：${PLAIN}")
             fi
         fi
         read -p "${CHOICE_E}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
-            echo -en '\n[\033[34m*\033[0m] 正在卸载之前的版本... '
+            echo -en "\n${WORKING} 正在卸载之前的版本..."
             RemoveOldVersion
-            echo -e '\n\n[\033[32mOK\033[0m] 卸载完毕\n'
+            echo -e "\n\n${SUCCESS} 卸载完毕\n"
             DockerEngineInstall
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
-            echo -e '\n\033[33m---------- 输入错误，默认不覆盖安装 ----------\033[0m\n'
+            echo -e "\n${WARN} 输入错误，默认不覆盖安装！\n"
             ;;
         esac
         rm -rf $DockerVersionFile
@@ -342,11 +351,11 @@ function DockerEngineInstall() {
         esac
     else
         DockerEngineVersionList
-        echo -e '\n\033[32m --------- 请选择你要安装的版本，如：19.03.15 ---------- \033[0m\n'
+        echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：19.03.15 ---------- ${PLAIN}\n"
         cat $DockerVersionFile
         echo -e '\n注：以上可供选择的安装版本由官方源提供，若系统过新可能无法安装较旧的版本'
         while true; do
-            CHOICE_F=$(echo -e '\n\033[1m└ 请根据上面的列表，输入你想要安装的具体版本号：\033[0m\n')
+            CHOICE_F=$(echo -e "\n${BOLD}└ 请根据上面的列表，输入你想要安装的具体版本号：${PLAIN}\n")
             read -p "${CHOICE_F}" DOCKER_VERSION
             echo ''
             cat $DockerVersionFile | grep -Ew "${DOCKER_VERSION}" >/dev/null 2>&1
@@ -356,10 +365,10 @@ function DockerEngineInstall() {
                     rm -rf $DockerVersionFile
                     break
                 else
-                    echo -e '\033[33m ---------- 请输入正确的版本号 ---------- \033[0m'
+                    echo -e "${ERROR} 请输入正确的版本号！"
                 fi
             else
-                echo -e '\033[33m ---------- 输入错误请重新输入 ---------- \033[0m'
+                echo -e "${ERROR} 输入错误请重新输入！"
             fi
         done
         case ${SYSTEM_FACTIONS} in
@@ -395,7 +404,7 @@ function ConfigureImageAccelerator() {
     if [[ ${REGISTRY_SOURCE_OFFICIAL} == "False" ]]; then
         if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
             if [ -e $DockerConfigBackup ]; then
-                CHOICE_BACKUP=$(echo -e "\n\033[1m└ 检测到已备份的 Docker 配置文件，是否覆盖备份 [ Y/n ]：\033[0m")
+                CHOICE_BACKUP=$(echo -e "\n${BOLD}└ 检测到已备份的 Docker 配置文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
                 read -p "${CHOICE_BACKUP}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -404,12 +413,12 @@ function ConfigureImageAccelerator() {
                     ;;
                 [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e '\n\033[33m------------ 输入错误，默认不覆盖 ------------\033[0m '
+                    echo -e "\n${WARN} 输入错误，默认不覆盖！"
                     ;;
                 esac
             else
                 cp -rf $DockerConfig $DockerConfigBackup >/dev/null 2>&1
-                echo -e "\n\033[1m└ 已备份原有 Docker 配置文件至 $DockerConfigBackup ...... \033[0m"
+                echo -e "\n${COMPLETE} 已备份原有 Docker 配置文件至 $DockerConfigBackup\n"
             fi
             sleep 2s
         else
@@ -426,7 +435,7 @@ function ConfigureImageAccelerator() {
 function DockerCompose() {
     if [[ ${DOCKER_COMPOSE} == "True" ]]; then
         [ -e $DockerCompose ] && rm -rf $DockerCompose
-        if [[ ${Arch} == "x86_64" ]]; then
+        if [[ ${ARCH} == "x86_64" ]]; then
             echo -e ''
             if [ ${DOCKER_COMPOSE_DOWNLOAD_PROXY} == "True" ]; then
                 curl -L ${PROXY_URL}${DOCKER_COMPOSE_DOWNLOAD_URL} -o $DockerCompose
@@ -447,7 +456,7 @@ function DockerCompose() {
             else
                 pip3 install docker-compose
             fi
-            [ $? -ne 0 ] && echo -e "\n\033[31m---------- Docker Compose 安装失败 ----------\033[0m\n\n检测到当前处理器架构为 ${Arch} ，无法保证安装结果，自行查看 pip 报错原因"
+            [ $? -ne 0 ] && echo -e "\n${ERROR} Docker Compose 安装失败\n\n检测到当前处理器架构为 ${ARCH} ，无法绝对保证安装成功，自行查看 pip 报错原因"
         fi
     fi
     echo -e ''
@@ -455,14 +464,14 @@ function DockerCompose() {
 
 ## 查看版本并验证安装结果
 function ShowVersion() {
-    echo -e '\033[32m---------- 验证安装版本 ----------\033[0m\n'
+    echo -e "${WORKING} 验证安装版本...\n"
     docker -v
     VERIFICATION_DOCKER=$?
     [[ ${DOCKER_COMPOSE} == "True" ]] && docker-compose -v
     if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
-        echo -e '\n\033[32m---------- 安装完成 ----------\033[0m'
+        echo -e "\n${SUCCESS} 安装完成"
     else
-        echo -e '\n\033[31m---------- 安装失败 ----------\033[0m'
+        echo -e "\n${ERROR} 安装失败"
         case ${SYSTEM_FACTIONS} in
         Debian)
             echo -e "\n检查源文件： cat $DockerSourceList"
@@ -485,9 +494,9 @@ function ShowVersion() {
         sleep 2
         systemctl status docker | grep running -q
         if [ $? -ne 0 ]; then
-            echo -e '\n\033[31m [ERROR] 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致\033[0m'
-            echo -e '\n\033[31m 请执行 systemctl start docker 或 service docker start 命令尝试启动\033[0m'
-            echo -e '\n\033[31m 官方安装文档：https://docs.docker.com/engine/install\033[0m'
+            echo -e "\n${ERROR} 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致"
+            echo -e "\n请执行 systemctl start docker 或 service docker start 命令尝试启动"
+            echo -e "\n官方安装文档：https://docs.docker.com/engine/install"
         fi
     fi
 }
@@ -542,7 +551,7 @@ function ChooseMirrors() {
     echo -e "        系统时间  $(date "+%Y-%m-%d %H:%M:%S")"
     echo -e ''
     echo -e '#####################################################'
-    CHOICE_A=$(echo -e '\n\033[1m└ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：\033[0m')
+    CHOICE_A=$(echo -e "\n${BOLD}└ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：${PLAIN}")
     read -p "${CHOICE_A}" INPUT
     case $INPUT in
     1)
@@ -571,12 +580,12 @@ function ChooseMirrors() {
         ;;
     *)
         SOURCE="mirrors.aliyun.com/docker-ce"
-        echo -e '\n\033[33m---------- 输入错误，默认使用阿里云 ----------\033[0m'
+        echo -e "\n${WARN} 输入错误，默认使用阿里云！"
         sleep 1s
         ;;
     esac
     ## 是否手动选择安装版本
-    CHOICE_C=$(echo -e '\n\033[1m  └ 是否安装最新版本的 Docker Engine [ Y/n ]：\033[0m')
+    CHOICE_C=$(echo -e "\n${BOLD}  └ 是否安装最新版本的 Docker Engine [ Y/n ]：${PLAIN}")
     read -p "${CHOICE_C}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
@@ -586,15 +595,15 @@ function ChooseMirrors() {
     [Nn] | [Nn][Oo])
         DOCKER_VERSION_INSTALL_LATEST="False"
         if [ ${SOURCE} != "download.docker.com" ]; then
-            echo -e "\n\033[33m ---------- Docker CE 源已替换成官方源 ---------- \033[0m"
+            echo -e "\n${WARN} Docker CE 源已替换成官方源！"
         fi
         ;;
     *)
         DOCKER_VERSION_INSTALL_LATEST="True"
-        echo -e '\n\033[33m---------- 输入错误，默认安装最新版本 ----------\033[0m'
+        echo -e "\n${WARN} 输入错误，默认安装最新版本！"
         ;;
     esac
-    CHOICE_B=$(echo -e '\n\033[1m└ 请选择并输入你想使用的 Docker Hub 源 [ 1~12 ]：\033[0m')
+    CHOICE_B=$(echo -e "\n${BOLD}└ 请选择并输入你想使用的 Docker Hub 源 [ 1~12 ]：${PLAIN}")
     read -p "${CHOICE_B}" INPUT
     case $INPUT in
     1)
@@ -648,21 +657,21 @@ function ChooseMirrors() {
     *)
         REGISTRY_SOURCE="registry.cn-hangzhou.aliyuncs.com"
         REGISTRY_SOURCE_OFFICIAL="False"
-        echo -e '\n\033[33m---------- 输入错误，默认使用阿里云（杭州） ----------\033[0m'
+        echo -e "\n${WARN} 输入错误，默认使用 ${BLUE}阿里云（杭州）${PLAIN}！"
         sleep 1s
         ;;
     esac
     if [ -x $DockerCompose ]; then
-        CHOICE_D=$(echo -e '\n\033[1m└ 检测到已安装 Docker Compose ，是否覆盖安装 [ Y/n ]：\033[0m')
+        CHOICE_D=$(echo -e "\n${BOLD}└ 检测到已安装 Docker Compose ，是否覆盖安装 [ Y/n ]：${PLAIN}")
     else
-        CHOICE_D=$(echo -e '\n\033[1m└ 是否安装 Docker Compose [ Y/n ]：\033[0m')
+        CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 Docker Compose [ Y/n ]：${PLAIN}")
     fi
     read -p "${CHOICE_D}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
     [Yy] | [Yy][Ee][Ss])
         DOCKER_COMPOSE="True"
-        CHOICE_D1=$(echo -e '\n\033[1m  └ 是否使用国内代理进行下载 [ Y/n ]：\033[0m')
+        CHOICE_D1=$(echo -e "\n${BOLD}  └ 是否使用国内代理进行下载 [ Y/n ]：${PLAIN}")
         read -p "${CHOICE_D1}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -674,7 +683,7 @@ function ChooseMirrors() {
             ;;
         *)
             DOCKER_COMPOSE_DOWNLOAD_PROXY="False"
-            echo -e '\n\033[33m---------- 输入错误，默认不使用 ----------\033[0m\n'
+            echo -e "\n${WARN} 输入错误，默认不使用！\n"
             ;;
         esac
         ;;
@@ -683,7 +692,7 @@ function ChooseMirrors() {
         ;;
     *)
         DOCKER_COMPOSE="False"
-        echo -e '\n\033[33m---------- 输入错误，默认不安装 ----------\033[0m\n'
+        echo -e "\n${WARN} 输入错误，默认不安装！\n"
         ;;
     esac
     echo -e ''

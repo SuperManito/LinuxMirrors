@@ -37,19 +37,19 @@
 </tr>
 <tr>
     <td><a href="https://www.kali.org"><img src="./icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
-    <td align="center">2.0 ~ 2021.3</td>
+    <td align="center">2.0 ~ 2021.4</td>
 </tr>
 <tr>
-    <td><a href="https://www.redhat.com/zhtechnologies/linux-platforms/enterprise-linux"><img src="./icon/redhat.svg" width="16" height="16"/></a>&nbsp;RHEL</td>
-    <td align="center">7.0 ~ 8.4</td>
+    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux"><img src="./icon/redhat.svg" width="16" height="16"/></a>&nbsp;RHEL</td>
+    <td align="center">7.0 ~ 8.5</td>
 </tr>
 <tr>
     <td><a href="https://www.centos.org"><img src="./icon/centos.svg" width="16" height="16"/></a>&nbsp;CentOS</td>
-    <td align="center">7.0 ~ 8.4</td>
+    <td align="center">7.0 ~ 8.5</td>
 </tr>
 <tr>
     <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
-    <td align="center">28 ~ 34</td>
+    <td align="center">28 ~ 35</td>
 </tr>
 </table>
 
@@ -129,15 +129,10 @@
 
 ***
 
-### 捐助作者
-<img src="./icon/thanks.jpg" width="250" height="250" alt="微信赞赏码"/><br/>
-> 项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重本人的知识成果\
-> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 __Issues__，谢谢
-
-***
-
 ### License
 Copyright © 2021, [SuperManito](https://github.com/SuperManito). Released under the [GPL-2.0](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
+> 项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重本人的知识成果\
+> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 __Issues__，谢谢
 
 ***
 
