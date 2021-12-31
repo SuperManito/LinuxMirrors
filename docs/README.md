@@ -9,27 +9,27 @@
     <td rowspan="7"> 支持<br/>版本<br/>
 </tr>
 <tr>
-    <td><a href="https://www.debian.org"><img src="../img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
+    <td><a href="https://www.debian.org"><img src="./img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
     <td align="center">8.0 ~ 11.2</td>
 </tr>
 <tr>
-    <td><a href="https://cn.ubuntu.com"><img src="../img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
+    <td><a href="https://cn.ubuntu.com"><img src="./img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
     <td align="center">16.04 ~ 21.10</td>
 </tr>
 <tr>
-    <td><a href="https://www.kali.org"><img src="../img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
+    <td><a href="https://www.kali.org"><img src="./img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
     <td align="center">2.0 ~ 2021.4</td>
 </tr>
 <tr>
-    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux"><img src="../img/icon/redhat.svg" width="16" height="16"/></a>&nbsp;Red Hat Enterprise Linux</td>
+    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux"><img src="./img/icon/redhat.svg" width="16" height="16"/></a>&nbsp;Red Hat Enterprise Linux</td>
     <td align="center">7.0 ~ 8.5</td>
 </tr>
 <tr>
-    <td><a href="https://www.centos.org"><img src="../img/icon/centos.svg" width="16" height="16"/></a>&nbsp;CentOS</td>
+    <td><a href="https://www.centos.org"><img src="./img/icon/centos.svg" width="16" height="16"/></a>&nbsp;CentOS</td>
     <td align="center">7.0 ~ 8.5</td>
 </tr>
 <tr>
-    <td><a href="https://getfedora.org/zh_Hans_CN"><img src="../img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
+    <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
     <td align="center">28 ~ 35</td>
 </tr>
 </table>
