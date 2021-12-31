@@ -1,4 +1,4 @@
-# [LinuxMirrors](./docs/img/logo.png)
+# ![LinuxMirrors](./docs/img/logo.png)
 
 <a href="https://github.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/github-1.svg" width="34" height="42"></a>
 &nbsp;<a href="https://github.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/github-2.svg" width="70" height="52"></a>
