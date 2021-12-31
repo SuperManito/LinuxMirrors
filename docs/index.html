@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>LinuxMirror · 让换源更简单</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./css/vue.css">
+  <link rel="icon" type="image/x-icon" href="./img/icon/linux.svg" />
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'LinuxMirrors',
+      repo: 'https://github.com/SuperManito/LinuxMirrors',
+      // 导航栏logo
+      logo: './img/logo.png',
+      // 加载封面
+      coverpage: true,
+      // 主题色
+      themeColor: '#1e90ff',
+      // 小屏幕设备自动合并导航栏到侧边栏
+      mergeNavbar: true,
+      // 启用自定义404页
+      notFoundPage: true,
+      // 跳转后自动移到顶部
+      auto2top: true,
+
+      // 搜索
+      search: 'auto',
+      search: {
+        maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+        placeholder: '搜索',
+        noData: '找不到结果!',
+        // 搜索标题的最大层级, 1 - 6
+        depth: 2,
+        hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
+        // 避免搜索索引冲突
+        // 同一域下的多个网站之间
+        namespace: 'website-1',
+        // 使用不同的索引作为路径前缀（namespaces）
+        // 注意：仅适用于 paths: 'auto' 模式
+        // 初始化索引时，我们从侧边栏查找第一个路径
+        // 如果它与列表中的前缀匹配，我们将切换到相应的索引
+        pathNamespaces: ['/zh-cn', '/ru-ru', '/ru-ru/v1'],
+        // 您可以提供一个正则表达式来匹配前缀。在这种情况下，
+        // 匹配到的字符串将被用来识别索引
+        pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
+      },
+
+      // 浅色｜暗黑主题
+      darklightTheme: {
+        siteFont: "PT Sans",
+        defaultTheme: 'dark',
+        codeFontFamily: 'Roboto Mono, Monaco, courier, monospace',
+        bodyFontSize: '17px',
+        light: {
+          accent: '#1e90ff',
+          toogleBackground: '#091a28',
+          background: '#ffffff',
+          textColor: '#34495e',
+          codeTextColor: '#525252',
+          codeBackgroundColor: '#f8f8f8',
+          borderColor: 'rgba(0, 0, 0, 0.07)',
+          blockQuoteColor: '#858585',
+          highlightColor: '#d22778',
+          sidebarSublink: '#7c7c7c',
+          codeTypeColor: '#091a28',
+          coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+        },
+        dark: {
+          accent: '#42b983',
+          toogleBackground: '#ffffff',
+          background: '#091a28',
+          textColor: '#b4b4b4',
+          codeTextColor: '#ffffff',
+          codeBackgroundColor: '#0e2233',
+          borderColor: '#0d2538',
+          blockQuoteColor: '#858585',
+          highlightColor: '#bb8b06',
+          sidebarSublink: '#b4b4b4',
+          codeTypeColor: '#ffffff',
+          coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+        },
+        // 底部跳转页码
+        pagination: {
+          previousText: '上一章节',
+          nextText: '下一章节',
+          crossChapter: true,
+          crossChapterText: true,
+        },
+      }
+    }
+  </script>
+
+  <!-- Docsify v4 -->
+  <script src="./js/docsify@4.js"></script>
+  <!-- 暗黑主题 -->
+  <script src="./js/dark-theme.js" type="text/javascript"></script>
+  <!-- 底部跳转页码 -->
+  <script src="./js/docsify-pagination.min.js"></script>
+  <!-- 复制到剪贴板 -->
+  <script src="./js/docsify-copy-code.min.js"></script>
+  <!-- Emoji支持 -->
+  <script src="./js/emoji.min.js"></script>
+  <!-- 搜索 -->
+  <script src="./js/search.js"></script>
+  <!-- 代码高亮 -->
+  <script src="./js/prism-bash.min.js"></script>
+  <!-- 更新日志 -->
+  <script src="./js/change-log.js"></script>
+  <!-- 离线模式 -->
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('./js/sw.js')
+    }
+  </script>
+
+</body>
+
+</html>
