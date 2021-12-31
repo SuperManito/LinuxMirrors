@@ -1,8 +1,8 @@
-# [LinuxMirrors](./img/logo.png)
+# [LinuxMirrors](./docs/img/logo.png)
 
-<a href="https://github.com/SuperManito/LinuxMirrors"><img src="./img/icon/github-1.svg" width="34" height="42"></a>
-&nbsp;<a href="https://github.com/SuperManito/LinuxMirrors"><img src="./img/icon/github-2.svg" width="70" height="52"></a>
-&nbsp;&nbsp;&nbsp;<a href="https://gitee.com/SuperManito/LinuxMirrors"><img src="./img/icon/gitee.svg" width="100" height="50"/></a>
+<a href="https://github.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/github-1.svg" width="34" height="42"></a>
+&nbsp;<a href="https://github.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/github-2.svg" width="70" height="52"></a>
+&nbsp;&nbsp;&nbsp;<a href="https://gitee.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/gitee.svg" width="100" height="50"/></a>
 - __`GNU/Linux` 一键更换国内软件源脚本__
 - __本项目旨在为从事计算机相关行业的朋友们提供便利__
 - __理论支持所有架构的环境，`arm64` 环境已经过测试__
@@ -10,7 +10,7 @@
 
 ***
 
-### 已适配的 GNU/Linux 发行版 <img src="./img/icon/linux.svg" width="16" height="16" alt="Linux Logo"/>
+### 已适配的 GNU/Linux 发行版 <img src="./docs/img/icon/linux.svg" width="16" height="16" alt="Linux Logo"/>
 <table>
 <tr>
     <td rowspan="7"> 支持<br/>版本<br/>
