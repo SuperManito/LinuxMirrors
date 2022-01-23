@@ -85,20 +85,25 @@
 
 - `GNU/Linux` 一键更换国内软件源脚本
 
-      bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
-> __注意：__
-> - _Debian 系 Linux 默认禁用了源码仓库和预发布软件源，若需启用可将 list 源文件中相关内容的所在行 `取消注释`。_
-> - _RedHat 系 Linux 配置了所有可以配置的仓库，但有一些仓库默认没有启用，若需启用可将 repo 源文件中的 `enabled=0`修改成 `enabled=1`。_
+    ```bash
+    bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
+    ```
+
+    > __注意：__
+    > - _Debian 系 Linux 默认禁用了源码仓库和预发布软件源，若需启用请将 list 源文件中相关内容的所在行 `取消注释`。_
+    > - _RedHat 系 Linux 配置了所有可以配置的仓库，但有一些仓库默认没有启用，若需启用请将 repo 源文件中的 `enabled=0`修改成 `enabled=1`。_
 
 ***
 
 ### 其它脚本
 - `Docker` 一键安装脚本
 
-      bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+    ```bash
+    bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
+    ```
 
-> `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
-> `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，简称镜像加速器。
+    > `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
+    > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，简称镜像加速器。
 
 > _注意：脚本集成安装 `Docker Engine`与 `Docker Compose`，可手动选择安装版本和下载源，还可手动选择镜像加速器，支持国内外服务器环境和 `ARM`架构处理器环境使用。_
 
@@ -107,20 +112,24 @@
 ### 常见问题与帮助
 - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
 
-         sudo apt install -y curl  或  sudo yum install -y curl
+    ```bash
+    sudo yum install -y curl || sudo apt install -y curl
+    ```
 
 - 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包
 
-         sudo apt install -y wget  或  sudo yum install -y wget
+    ```bash
+    sudo yum install -y wget || sudo apt install -y wget
+    ```
 
 - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行。
 
 ***
 
 ### License
-Copyright © 2021, [SuperManito](https://github.com/SuperManito). Released under the [GPL-2.0](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
+Copyright © 2022, [SuperManito](https://github.com/SuperManito). Released under the [GPL-2.0](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 > 项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重本人的知识成果\
-> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 __Issues__，谢谢
+> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
 
 ***
 

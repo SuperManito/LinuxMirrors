@@ -73,7 +73,7 @@
 ## 如何使用
 
 ```bash
-bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
 ```
 
 - 1. 完整复制上面的命令到终端按回车键即可执行，若无法安装 `curl` 软件包可复制源码到本地后手动执行。
@@ -82,15 +82,14 @@ bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirro
 - 4. 执行脚本过程中会自动备份原有源无需手动备份，期间会在终端输出多个主观选择交互内容，可按回车键快速确认。
 - 5. 脚本支持在原有源配置错误或者不存在的情况下使用，并且可以重复使用；脚本变更的软件源默认使用 `HTTP 协议`。
 
-> **Debian** 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用可将 `list` 源文件中相关内容的所在行**取消注释**
-
-> **RedHat** 系 Linux 配置了所有可以配置的仓库，但有一些仓库**默认没有启用**，若需启用可将 `repo` 源文件中的 `enabled=0` 修改成 `enabled=1`
+> **Debian** 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用请将 `list` 源文件中相关内容的所在行**取消注释**\
+> **RedHat** 系 Linux 配置了所有可以配置的仓库，但有一些仓库**默认没有启用**，若需启用请将 `repo` 源文件中的 `enabled=0` 修改成 `enabled=1`
 
 ## 其它脚本
 - #### `Docker` 一键安装脚本 <!-- {docsify-ignore} -->
 
     ```bash
-    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+    bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
     ```
 
 > `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
@@ -102,21 +101,21 @@ bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirro
 - #### 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包 <!-- {docsify-ignore} -->
 
     ```bash
-    sudo apt install -y curl  或  sudo yum install -y curl
+    sudo yum install -y curl || sudo apt install -y curl
     ```
 
 - #### 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包 <!-- {docsify-ignore} -->
 
     ```bash
-    sudo apt install -y wget  或  sudo yum install -y wget
+    sudo yum install -y wget || sudo apt install -y wget
     ```
 
 - #### 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行。 <!-- {docsify-ignore} -->
 
 ## License
-Copyright © 2021, [SuperManito](https://github.com/SuperManito). Released under the [GPL-2.0](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE)
+Copyright © 2022, [SuperManito](https://github.com/SuperManito). Released under the [GPL-2.0](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE)
 > 项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重本人的知识成果\
-> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 __Issues__ ，谢谢
+> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
 
 ***
 
