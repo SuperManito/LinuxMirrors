@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <div id="app">加载中，请稍后...</div>
+  <div id="app">网页加载中...</div>
   <script>
     window.$docsify = {
       name: 'LinuxMirrors',
@@ -48,6 +48,22 @@
         // 您可以提供一个正则表达式来匹配前缀。在这种情况下，
         // 匹配到的字符串将被用来识别索引
         pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
+      },
+
+      // 页脚内容
+      footer: {
+        copy: '<span>© Copyrigh 2022 </span>',
+        auth: '<a href="javascript:window.open(\'https://github.com/SuperManito\')">SuperManito</a>',
+        pre: '',
+        style: 'text-align: center;',
+        class: 'className',
+      },
+
+      // 阅读进度条
+      progress: {
+        position: "bottom",
+        color: "var(--themeColor)",
+        height: "3px",
       },
 
       // 浅色｜暗黑主题
@@ -95,12 +111,14 @@
   <!-- Docsify v4 -->
   <script src="./js/docsify@4.js"></script>
   <!-- 暗黑主题 -->
-  <script src="./js/dark-theme.js" type="text/javascript"></script>
-  <!-- 底部跳转页码 -->
-  <script src="./js/docsify-pagination.min.js"></script>
-  <!-- 复制到剪贴板 -->
+  <script src="./js/dark-theme.js"></script>
+  <!-- 页脚内容 -->
+  <script src="./js/docsify-footer-enh.min.js"></script>
+  <!-- 复制代码到剪贴板 -->
   <script src="./js/docsify-copy-code.min.js"></script>
-  <!-- Emoji支持 -->
+  <!-- 阅读进度条 -->
+  <script src="./js/docsify-progress.min.js"></script>
+  <!-- Emoji表情支持 -->
   <script src="./js/emoji.min.js"></script>
   <!-- 搜索 -->
   <script src="./js/search.js"></script>
