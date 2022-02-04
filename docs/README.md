@@ -112,11 +112,7 @@ bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/Chang
 
 - #### 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行。 <!-- {docsify-ignore} -->
 
-## License
-Copyright © 2022, [SuperManito](https://github.com/SuperManito). Released under the [GPL-2.0](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE)
-> 项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重本人的知识成果\
-> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
-
 ***
 
-__如果您觉得这个项目不错的话可以送颗 ⭐ 吗？方便分享给更多的朋友吗？__
+> 项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重本人的知识成果\
+> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
