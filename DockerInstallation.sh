@@ -1,9 +1,9 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-12-15
+## Modified: 2022-02-07
 ## License: GPL-2.0
-## Github Repository: https://github.com/SuperManito/LinuxMirrors
-## Gitee Repository: https://gitee.com/SuperManito/LinuxMirrors
+## Github: https://github.com/SuperManito/LinuxMirrors
+## Gitee: https://gitee.com/SuperManito/LinuxMirrors
 
 function AuthorSignature() {
     echo -e "\n${GREEN} ------------ 脚本执行结束 ------------ ${PLAIN}\n"
@@ -307,13 +307,13 @@ function DockerEngine() {
                 AuthorSignature
                 exit
             else
-                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：${PLAIN}")
+                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
             fi
         else
             if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
-                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本 [ Y/n ]：${PLAIN}")
+                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本? [Y/n] ${PLAIN}")
             else
-                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本 [ Y/n ]：${PLAIN}")
+                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
             fi
         fi
         read -p "${CHOICE_E}" INPUT
@@ -404,7 +404,7 @@ function ConfigureImageAccelerator() {
     if [[ ${REGISTRY_SOURCE_OFFICIAL} == "False" ]]; then
         if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
             if [ -e $DockerConfigBackup ]; then
-                CHOICE_BACKUP=$(echo -e "\n${BOLD}└ 检测到已备份的 Docker 配置文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
+                CHOICE_BACKUP=$(echo -e "\n${BOLD}└ 检测到已备份的 Docker 配置文件，是否覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -585,7 +585,7 @@ function ChooseMirrors() {
         ;;
     esac
     ## 是否手动选择安装版本
-    CHOICE_C=$(echo -e "\n${BOLD}  └ 是否安装最新版本的 Docker Engine [ Y/n ]：${PLAIN}")
+    CHOICE_C=$(echo -e "\n${BOLD}  └ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
     read -p "${CHOICE_C}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
@@ -662,16 +662,16 @@ function ChooseMirrors() {
         ;;
     esac
     if [ -x $DockerCompose ]; then
-        CHOICE_D=$(echo -e "\n${BOLD}└ 检测到已安装 Docker Compose ，是否覆盖安装 [ Y/n ]：${PLAIN}")
+        CHOICE_D=$(echo -e "\n${BOLD}└ 检测到已安装 Docker Compose ，是否覆盖安装? [Y/n] ${PLAIN}")
     else
-        CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 Docker Compose [ Y/n ]：${PLAIN}")
+        CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 Docker Compose? [Y/n] ${PLAIN}")
     fi
     read -p "${CHOICE_D}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
     [Yy] | [Yy][Ee][Ss])
         DOCKER_COMPOSE="True"
-        CHOICE_D1=$(echo -e "\n${BOLD}  └ 是否使用国内代理进行下载 [ Y/n ]：${PLAIN}")
+        CHOICE_D1=$(echo -e "\n${BOLD}  └ 是否使用国内代理进行下载? [Y/n] ${PLAIN}")
         read -p "${CHOICE_D1}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in

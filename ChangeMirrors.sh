@@ -1,9 +1,9 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2021-12-15
+## Modified: 2022-02-07
 ## License: GPL-2.0
-## Github Repository: https://github.com/SuperManito/LinuxMirrors
-## Gitee Repository: https://gitee.com/SuperManito/LinuxMirrors
+## Github: https://github.com/SuperManito/LinuxMirrors
+## Gitee: https://gitee.com/SuperManito/LinuxMirrors
 
 function AuthorSignature() {
     echo -e "\n${GREEN} ------------ 脚本执行结束 ------------ ${PLAIN}\n"
@@ -164,7 +164,7 @@ function PermissionJudgment() {
 function TurnOffFirewall() {
     systemctl status firewalld | grep running -q
     if [ $? -eq 0 ]; then
-        CHOICE_C=$(echo -e "\n${BOLD}└ 是否关闭防火墙和 SELINUX [ Y/n ]：${PLAIN}")
+        CHOICE_C=$(echo -e "\n${BOLD}└ 是否关闭防火墙和 SELINUX? [Y/n] ${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -202,7 +202,7 @@ function BackupMirrors() {
         ## /etc/apt/sources.list
         if [ -s $DebianSourceList ]; then
             if [ -s $DebianSourceListBackup ]; then
-                CHOICE_BACKUP1=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 源文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
+                CHOICE_BACKUP1=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 源文件，是否覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP1}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -227,7 +227,7 @@ function BackupMirrors() {
         ## /etc/apt/sources.list.d
         if [ -d $DebianExtendListDir ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $DebianExtendListDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP2=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
+                CHOICE_BACKUP2=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP2}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -250,7 +250,7 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $RedHatReposDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 repo 源文件，是否覆盖备份 [ Y/n ]：${PLAIN}")
+                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 repo 源文件，是否覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP3}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -321,7 +321,7 @@ function ChangeMirrors() {
 
 ## 更新软件包
 function UpgradeSoftware() {
-    CHOICE_B=$(echo -e "\n${BOLD}└ 是否更新软件包 [ Y/n ]：${PLAIN}")
+    CHOICE_B=$(echo -e "\n${BOLD}└ 是否更新软件包? [Y/n] ${PLAIN}")
     read -p "${CHOICE_B}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
@@ -335,7 +335,7 @@ function UpgradeSoftware() {
             yum update -y
             ;;
         esac
-        CHOICE_C=$(echo -e "\n${BOLD}└ 是否清理已下载的软件包缓存 [ Y/n ]：${PLAIN}")
+        CHOICE_C=$(echo -e "\n${BOLD}└ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -570,9 +570,9 @@ function ChooseMirrors() {
         VERIFICATION_EPELBACKUPFILES=$?
 
         if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            CHOICE_D=$(echo -e "\n${BOLD}└ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源 [ Y/n ]：${PLAIN}")
+            CHOICE_D=$(echo -e "\n${BOLD}└ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
         else
-            CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 EPEL 扩展源 [ Y/n ]：${PLAIN}")
+            CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 EPEL 扩展源? [Y/n] ${PLAIN}")
         fi
         read -p "${CHOICE_D}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
@@ -591,7 +591,7 @@ function ChooseMirrors() {
     fi
 
     ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
-    CHOICE_E=$(echo -e "\n${BOLD}└ 软件源是否使用 HTTP 协议 [ Y/n ]：${PLAIN}")
+    CHOICE_E=$(echo -e "\n${BOLD}└ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
     read -p "${CHOICE_E}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
