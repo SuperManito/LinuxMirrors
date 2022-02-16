@@ -25,7 +25,7 @@
 </tr>
 <tr>
     <td><a href="https://www.kali.org"><img src="./docs/img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
-    <td align="center">2.0 ~ 2021.4</td>
+    <td align="center">2.0 ~ 2022.1</td>
 </tr>
 <tr>
     <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux"><img src="./docs/img/icon/redhat.svg" width="16" height="16"/></a>&nbsp;Red Hat Enterprise Linux</td>

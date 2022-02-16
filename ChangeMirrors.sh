@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-02-07
+## Modified: 2022-02-16
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -16,7 +16,8 @@ function AuthorSignature() {
     echo -e '\033[0;1;35;95m│\033[0m          \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m                                               \033[0;1;35;95m│\033[0m'
     echo -e '\033[0;1;31;91m└─\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m─┘\033[0m\n'
 
-    echo -e " \033[1;34mGithub\033[0m - https://github.com/SuperManito/LinuxMirrors"
+    echo -e " \033[1;34m官方网站\033[0m https://supermanito.github.io/LinuxMirrors\n"
+    echo -e " \033[1;34mGitHub\033[0m - https://github.com/SuperManito/LinuxMirrors"
     echo -e " \033[1;34mGitee\033[0m  - https://gitee.com/SuperManito/LinuxMirrors\n"
 }
 
@@ -417,12 +418,19 @@ function RedHatMirrors() {
     ## 修改源
     if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_CENTOS} -o ${SYSTEM_JUDGMENT} = ${SYSTEM_RHEL} ]; then
         sed -i 's|^mirrorlist=|#mirrorlist=|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
-        [ ${CENTOS_VERSION} -eq "8" ] && sed -i 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=http://mirror.centos.org/centos|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
+        ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
+        ## 原 centos 镜像已被官方移动，从 2022-02 开始切换至 centos-vault 源
+        [ ${CENTOS_VERSION} -eq "8" ] && sed -i 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=http://mirror.centos.org/centos-vault|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
         sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $RedHatReposDir/${SYSTEM_CENTOS}-*
+        ## 更换软件源
         sed -i "s|mirror.centos.org|${SOURCE}|g" $RedHatReposDir/${SYSTEM_CENTOS}-*
-        ## Red Hat Enterprise Linux 修改版本号
-        [ ${SYSTEM_JUDGMENT} = ${SYSTEM_RHEL} ] && sed -i "s/\$releasever/${CENTOS_VERSION}/g" ${SYSTEM_CENTOS}-*
-        ## 安装/更换基于 CentOS 的 EPEL 扩展国内源
+        ## 修改版本号
+        if [ ${CENTOS_VERSION} -eq "8" ]; then
+            sed -i "s/\$releasever/8.5.2111/g" ${SYSTEM_CENTOS}-*
+        elif [ ${CENTOS_VERSION} -eq "7" ]; then
+            sed -i "s/\$releasever/7.9.2009/g" ${SYSTEM_CENTOS}-*
+        fi
+        ## 安装/更换基于 RHEL/CentOS 的 EPEL 扩展国内源
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
     elif [ ${SYSTEM_JUDGMENT} = ${SYSTEM_FEDORA} ]; then
         sed -i 's|^metalink=|#metalink=|g' \

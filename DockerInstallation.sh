@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-02-07
+## Modified: 2022-02-16
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -16,7 +16,8 @@ function AuthorSignature() {
     echo -e '\033[0;1;35;95m│\033[0m          \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m                                               \033[0;1;35;95m│\033[0m'
     echo -e '\033[0;1;31;91m└─\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m─┘\033[0m\n'
 
-    echo -e " \033[1;34mGithub\033[0m - https://github.com/SuperManito/LinuxMirrors"
+    echo -e " \033[1;34m官方网站\033[0m https://supermanito.github.io/LinuxMirrors\n"
+    echo -e " \033[1;34mGitHub\033[0m - https://github.com/SuperManito/LinuxMirrors"
     echo -e " \033[1;34mGitee\033[0m  - https://gitee.com/SuperManito/LinuxMirrors\n"
 }
 
@@ -444,7 +445,7 @@ function DockerCompose() {
             fi
             chmod +x $DockerCompose
         else
-            echo -e '\n[*] 由于本机非 x86 架构，开始通过 pip3 安装 Docker Compose ......\n'
+            echo -e "\n${WORKING} 由于本机非 x86 架构，开始通过 pip3 安装 Docker Compose ...\n"
             if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
                 apt-get install -y python3-pip python3-dev gcc libffi-dev openssl >/dev/null 2>&1
             elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
