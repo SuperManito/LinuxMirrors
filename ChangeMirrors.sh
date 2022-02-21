@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-02-16
+## Modified: 2022-02-22
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -162,7 +162,7 @@ function PermissionJudgment() {
 }
 
 ## 关闭 防火墙 和 SELINUX
-function TurnOffFirewall() {
+function CloseFirewall() {
     systemctl status firewalld | grep running -q
     if [ $? -eq 0 ]; then
         CHOICE_C=$(echo -e "\n${BOLD}└ 是否关闭防火墙和 SELINUX? [Y/n] ${PLAIN}")
@@ -296,7 +296,6 @@ function ChangeMirrors() {
         DebianMirrors
     elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
         RedHatMirrors
-        yum clean all >/dev/null 2>&1
     fi
     echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case ${SYSTEM_FACTIONS} in
@@ -418,18 +417,28 @@ function RedHatMirrors() {
     ## 修改源
     if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_CENTOS} -o ${SYSTEM_JUDGMENT} = ${SYSTEM_RHEL} ]; then
         sed -i 's|^mirrorlist=|#mirrorlist=|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
+
         ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
-        ## 原 centos 镜像已被官方移动，从 2022-02 开始切换至 centos-vault 源
-        [ ${CENTOS_VERSION} -eq "8" ] && sed -i 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=http://mirror.centos.org/centos-vault|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
+        ## 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
+        if [ ${CENTOS_VERSION} -eq "8" ]; then
+            sed -i 's|^#baseurl=http://mirror.centos.org/$contentdir|#baseurl=http://mirror.centos.org/centos-vault|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
+            sed -i "s/\$releasever/8.5.2111/g" ${SYSTEM_CENTOS}-*
+        fi
+
+        ## WEB协议
         sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $RedHatReposDir/${SYSTEM_CENTOS}-*
         ## 更换软件源
         sed -i "s|mirror.centos.org|${SOURCE}|g" $RedHatReposDir/${SYSTEM_CENTOS}-*
-        ## 修改版本号
-        if [ ${CENTOS_VERSION} -eq "8" ]; then
-            sed -i "s/\$releasever/8.5.2111/g" ${SYSTEM_CENTOS}-*
-        elif [ ${CENTOS_VERSION} -eq "7" ]; then
-            sed -i "s/\$releasever/7.9.2009/g" ${SYSTEM_CENTOS}-*
+
+        ## Red Hat Enterprise Linux 修改版本号
+        if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_RHEL} ]; then
+            if [ ${CENTOS_VERSION} -eq "8" ]; then
+                sed -i "s/\$releasever/8.5.2111/g" ${SYSTEM_CENTOS}-*
+            elif [ ${CENTOS_VERSION} -eq "7" ]; then
+                sed -i "s/\$releasever/7/g" ${SYSTEM_CENTOS}-*
+            fi
         fi
+
         ## 安装/更换基于 RHEL/CentOS 的 EPEL 扩展国内源
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
     elif [ ${SYSTEM_JUDGMENT} = ${SYSTEM_FEDORA} ]; then
@@ -449,6 +458,8 @@ function RedHatMirrors() {
             $RedHatReposDir/${SOURCE_BRANCH}-updates-testing.repo \
             $RedHatReposDir/${SOURCE_BRANCH}-updates-testing-modular.repo
     fi
+    ## 清理 YUM 缓存
+    yum clean all >/dev/null 2>&1
 }
 
 ## 安装/更换基于 RHEL/CentOS 的 EPEL (Extra Packages for Enterprise Linux) 扩展国内源
@@ -616,7 +627,7 @@ function ChooseMirrors() {
     esac
 
     ## 关闭 防火墙 和 SELINUX
-    [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ] && TurnOffFirewall
+    [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ] && CloseFirewall
 }
 
 ## 生成 CentOS 官方 repo 源文件
