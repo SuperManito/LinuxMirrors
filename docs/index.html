@@ -7,12 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="./css/vue.css">
+  <link rel="stylesheet" href="./css/vue.css" />
+  <link rel="stylesheet" href="./css/fontawesome.css" />
   <link rel="icon" type="image/x-icon" href="./img/icon/linux.svg" />
 </head>
 
 <body>
-  <div id="app">网页加载中...</div>
+  <div id="app">正在加载...</div>
   <script>
     window.$docsify = {
       name: 'LinuxMirrors',
@@ -50,9 +51,49 @@
         pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
       },
 
+      // 字数统计
+      count: {
+        countable: true,
+        position: 'bottom',
+        margin: "30px",
+        float: 'right',
+        fontsize: '1em',
+        color: 'var(--textColor)',
+        language: 'chinese',
+        localization: {
+          words: "",
+          minute: ""
+        },
+        isExpected: true
+      },
+
+      // 灵活警告插件
+      'flexible-alerts': {
+        note: {
+          label: {
+            '/': '注释'
+          }
+        },
+        tip: {
+          label: {
+            '/': '友情提示'
+          }
+        },
+        warning: {
+          label: {
+            '/': '警告'
+          }
+        },
+        attention: {
+          label: {
+            '/': '注意'
+          }
+        }
+      },
+
       // 页脚内容
       footer: {
-        copy: '<span>Copyright © 2022,</span>',
+        copy: '<span>Copyright <i class="fa-regular fa-copyright"></i> </span> 2022,</span>',
         auth: ' <a href="javascript:window.open(\'https://github.com/SuperManito\')">SuperManito</a> . Released under the <a href="javascript:window.open(\'https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE\')">GPL-2.0</a>',
         pre: '',
         style: 'text-align: center;',
@@ -113,13 +154,20 @@
   </script>
 
   <!-- Docsify v4 -->
-  <script src="./js/docsify@4.js"></script>
+  <script src="./js/docsify.min.js"></script>
   <!-- 暗黑主题 -->
   <script src="./js/dark-theme.js"></script>
+  <!-- Font Awesome 图标 -->
+  <script src="./js/docsify-fontawesome.min.js"></script>
+  <script src="./js/docsify-fontawesome.sub.js"></script>
+  <!-- 灵活警告插件 -->
+  <script src="./js/docsify-flexible-alerts.min.js"></script>
   <!-- 页脚内容 -->
   <script src="./js/docsify-footer-enh.min.js"></script>
   <!-- 复制代码到剪贴板 -->
   <script src="./js/docsify-copy-code.min.js"></script>
+  <!-- 字数统计 -->
+  <script src="./js/docsify-countable.min.js"></script>
   <!-- 阅读进度条 -->
   <script src="./js/docsify-progress.min.js"></script>
   <!-- Emoji表情支持 -->

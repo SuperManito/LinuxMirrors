@@ -34,7 +34,8 @@
 </tr>
 </table>
 
-> 目前仅支持上述基于 Debian 与 Redhat 系的发行版和及其部分衍生版本 \
+> [!NOTE|label:说明]
+> 目前仅支持上述基于 Debian 与 RedHat 系的发行版和及其部分衍生版本 \
 > 同样支持上述版本中拥有相同底层核心的其它发行版，例如 [`Armbian`](https://www.armbian.com) [`Kubuntu`](https://kubuntu.org) [`Oracle Linux`](https://www.oracle.com/cn/technical-resources) 等
 
 ## 软件源
@@ -42,22 +43,23 @@
 
 | | 镜像站名称 | 镜像站地址 | IPv6 | Kali Linux | Fedora | EPEL |
 | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| 1 | 阿里云 | [mirrors.aliyun.com](https://developer.aliyun.com/special/mirrors/notice) | √ | √ | √ | √ |
-| 2 | 腾讯云 | [mirrors.cloud.tencent.com](https://mirrors.cloud.tencent.com) | √ | √ | √ | √ |
-| 3 | 华为云 | [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com) | √ | √ | √ | √ |
-| 4 | 网易 | [mirrors.163.com](https://mirrors.163.com) |  |  | √ |  |
+| 1 | 阿里云 | [mirrors.aliyun.com](https://developer.aliyun.com/special/mirrors/notice) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 2 | 腾讯云 | [mirrors.cloud.tencent.com](https://mirrors.cloud.tencent.com) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 3 | 华为云 | [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 4 | 网易 | [mirrors.163.com](https://mirrors.163.com) |  |  | :fa-solid fa-check: |  |
 | 5 | 搜狐 | [mirrors.sohu.com](https://mirrors.sohu.com) |  |  |  |  |
-| 6 | 清华大学 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) | √ | √ | √ | √ |
-| 7 | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn) |  | √ | √ | √ |
-| 8 | 南京大学 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn) |  | √ | √ | √ |
-| 9 | 重庆大学 | [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn) |  | √ | √ | √ |
-| 10 | 兰州大学 | [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn) | √ |  | √ | √ |
-| 11 | 上海交通大学 | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn) | √ | √ | √ | √ |
-| 12 | 哈尔滨工业大学 | [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn) | √ | √ |  | √ |
-| 13 | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn) | √ | √ | √ | √ |
+| 6 | 清华大学 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 7 | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn) |  | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 8 | 南京大学 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn) |  | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 9 | 重庆大学 | [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn) |  | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 10 | 兰州大学 | [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn) | :fa-solid fa-check: |  | :fa-solid fa-check: | :fa-solid fa-check: |
+| 11 | 上海交通大学 | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 12 | 哈尔滨工业大学 | [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn) | :fa-solid fa-check: | :fa-solid fa-check: |  | :fa-solid fa-check: |
+| 13 | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
 > 所有镜像站均支持 `Debian` `Ubuntu` `CentOS` 软件源，建议优先选择由企业提供的软件源
 
-?> 如果使用过程中脚本不能正常输出中文内容则可对照此列表使用，顺序与脚本一致
+> [!TIP]
+> 如果使用过程中脚本不能正常输出中文内容则可对照此列表使用，顺序与脚本一致
 
 ## 执行流程
 - └ 选择国内源 `交互`
@@ -76,26 +78,28 @@
 bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
 ```
 
-- 1. 完整复制上面的命令到终端按回车键即可执行，若无法安装 `curl` 软件包可复制源码到本地后手动执行。
-- 2. 为了适配所有环境，建议使用 `Root` 用户执行脚本，切换命令为 `sudo -i` ，如遇报错请查看常见问题与帮助。
-- 3. 如果您使用的环境没有安装或不支持简体中文环境，请通过 `SSH客户端工具` 使用，否则将无法正确选择交互内容。
-- 4. 执行脚本过程中会自动备份原有源无需手动备份，期间会在终端输出多个主观选择交互内容，可按回车键快速确认。
-- 5. 脚本支持在原有源配置错误或者不存在的情况下使用，并且可以重复使用；脚本变更的软件源默认使用 `HTTP 协议`。
+- 完整复制上面的命令到终端按回车键即可执行，若无法安装 `curl` 软件包可复制源码到本地后手动执行
+- 为了适配所有环境，建议使用 `Root` 用户执行脚本，切换命令为 `sudo -i` ，如遇报错请查看常见问题与帮助
+- 如果您使用的环境没有安装或不支持简体中文环境，请通过 `SSH客户端工具` 使用，否则将无法正确选择交互内容
+- 执行脚本过程中会自动备份原有源无需手动备份，期间会在终端输出多个主观选择交互内容，可按回车键快速确认
+- 脚本支持在原有源配置错误或者不存在的情况下使用，并且可以重复使用；脚本变更的软件源默认使用 `HTTP 协议`
 
+> [!ATTENTION|label:未启用的源]
 > **Debian** 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用请将 `list` 源文件中相关内容的所在行**取消注释**\
 > **RedHat** 系 Linux 配置了所有可以配置的仓库，但有一些仓库**默认没有启用**，若需启用请将 `repo` 源文件中的 `enabled=0` 修改成 `enabled=1`
 
 ## 其它脚本
-- #### `Docker` 一键安装脚本 <!-- {docsify-ignore} -->
+- #### :fa-brands fa-docker:`Docker` 一键安装脚本 <!-- {docsify-ignore} -->
 
     ```bash
     bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
     ```
 
-> `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
-> `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，简称镜像加速器。
+    > [!NOTE|label:定义]
+    > `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
+    > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，简称镜像加速器。
 
-> 脚本集成安装 `Docker Engine`与 `Docker Compose`，可手动选择安装版本、下载源、镜像加速器，支持国内外服务器环境和 `ARM`架构处理器环境使用
+    > 脚本集成安装 `Docker Engine`与 `Docker Compose`，可手动选择安装版本、下载源、镜像加速器，支持国内外服务器环境和 `ARM`架构处理器环境使用
 
 ## 常见问题
 - #### 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包 <!-- {docsify-ignore} -->
