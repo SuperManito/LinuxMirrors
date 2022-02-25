@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-02-22
+## Modified: 2022-02-25
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -405,7 +405,6 @@ deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-
 ## 更换基于 RedHat 系 Linux 发行版的国内源
 function RedHatMirrors() {
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
-    cd $RedHatReposDir
     case ${SYSTEM_JUDGMENT} in
     RedHat | CentOS)
         CreateCentOSRepoFiles
@@ -414,21 +413,23 @@ function RedHatMirrors() {
         CreateReposRepoFiles
         ;;
     esac
+
     ## 修改源
+    cd $RedHatReposDir
     if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_CENTOS} -o ${SYSTEM_JUDGMENT} = ${SYSTEM_RHEL} ]; then
-        sed -i 's|^mirrorlist=|#mirrorlist=|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
+        sed -i 's|^mirrorlist=|#mirrorlist=|g' ${SYSTEM_CENTOS}-*
 
         ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
         ## 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
         if [ ${CENTOS_VERSION} -eq "8" ]; then
-            sed -i 's|^#baseurl=http://mirror.centos.org/$contentdir|#baseurl=http://mirror.centos.org/centos-vault|g' $RedHatReposDir/${SYSTEM_CENTOS}-*
+            sed -i 's|^#baseurl=http://mirror.centos.org/$contentdir|#baseurl=http://mirror.centos.org/centos-vault|g' ${SYSTEM_CENTOS}-*
             sed -i "s/\$releasever/8.5.2111/g" ${SYSTEM_CENTOS}-*
         fi
 
         ## WEB协议
-        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $RedHatReposDir/${SYSTEM_CENTOS}-*
+        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" ${SYSTEM_CENTOS}-*
         ## 更换软件源
-        sed -i "s|mirror.centos.org|${SOURCE}|g" $RedHatReposDir/${SYSTEM_CENTOS}-*
+        sed -i "s|mirror.centos.org|${SOURCE}|g" ${SYSTEM_CENTOS}-*
 
         ## Red Hat Enterprise Linux 修改版本号
         if [ ${SYSTEM_JUDGMENT} = ${SYSTEM_RHEL} ]; then
@@ -443,20 +444,20 @@ function RedHatMirrors() {
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
     elif [ ${SYSTEM_JUDGMENT} = ${SYSTEM_FEDORA} ]; then
         sed -i 's|^metalink=|#metalink=|g' \
-            $RedHatReposDir/${SOURCE_BRANCH}.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-modular.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates-modular.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates-testing.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates-testing-modular.repo
-        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $RedHatReposDir/fedora*
+            ${SOURCE_BRANCH}.repo \
+            ${SOURCE_BRANCH}-updates.repo \
+            ${SOURCE_BRANCH}-modular.repo \
+            ${SOURCE_BRANCH}-updates-modular.repo \
+            ${SOURCE_BRANCH}-updates-testing.repo \
+            ${SOURCE_BRANCH}-updates-testing-modular.repo
+        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" fedora*
         sed -i "s|download.example/pub/fedora/linux|${SOURCE}/fedora|g" \
-            $RedHatReposDir/fedora.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-modular.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates-modular.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates-testing.repo \
-            $RedHatReposDir/${SOURCE_BRANCH}-updates-testing-modular.repo
+            fedora.repo \
+            ${SOURCE_BRANCH}-updates.repo \
+            ${SOURCE_BRANCH}-modular.repo \
+            ${SOURCE_BRANCH}-updates-modular.repo \
+            ${SOURCE_BRANCH}-updates-testing.repo \
+            ${SOURCE_BRANCH}-updates-testing-modular.repo
     fi
     ## 清理 YUM 缓存
     yum clean all >/dev/null 2>&1
