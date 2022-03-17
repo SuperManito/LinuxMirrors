@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-02-25
+## Modified: 2022-03-17
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -91,7 +91,7 @@ function EnvJudgment() {
             if [ $? -eq 0 ]; then
                 clear
             else
-                echo -e "\n${ERROR} lsb-release 软件包安装失败"
+                echo -e "\n$ERROR lsb-release 软件包安装失败"
                 echo -e "\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统一般系统自带，请自行安装后重新执行脚本！\n"
                 exit
             fi
@@ -156,7 +156,7 @@ function EnvJudgment() {
 function PermissionJudgment() {
     ## 权限判定：
     if [ $UID -ne 0 ]; then
-        echo -e "\n${ERROR} Permission no enough, please use user ROOT! \n"
+        echo -e "\n$ERROR Permission no enough, please use user ROOT! \n"
         exit
     fi
 }
@@ -165,7 +165,7 @@ function PermissionJudgment() {
 function CloseFirewall() {
     systemctl status firewalld | grep running -q
     if [ $? -eq 0 ]; then
-        CHOICE_C=$(echo -e "\n${BOLD}└ 是否关闭防火墙和 SELINUX? [Y/n] ${PLAIN}")
+        CHOICE_C=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELINUX? [Y/n] ${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -175,7 +175,7 @@ function CloseFirewall() {
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
-            echo -e "\n${WARN} 输入错误，默认不关闭！"
+            echo -e "\n$WARN 输入错误，默认不关闭！"
             ;;
         esac
     fi
@@ -203,7 +203,7 @@ function BackupMirrors() {
         ## /etc/apt/sources.list
         if [ -s $DebianSourceList ]; then
             if [ -s $DebianSourceListBackup ]; then
-                CHOICE_BACKUP1=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 源文件，是否覆盖备份? [Y/n] ${PLAIN}")
+                CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 源文件，是否覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP1}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -212,12 +212,12 @@ function BackupMirrors() {
                     ;;
                 [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e "\n${WARN} 输入错误，默认不覆盖！"
+                    echo -e "\n$WARN 输入错误，默认不覆盖！"
                     ;;
                 esac
             else
                 cp -rf $DebianSourceList $DebianSourceListBackup >/dev/null 2>&1
-                echo -e "\n${COMPLETE} 已备份原有 list 源文件至 $DebianSourceListBackup"
+                echo -e "\n$COMPLETE 已备份原有 list 源文件至 $DebianSourceListBackup"
                 sleep 1s
             fi
         else
@@ -228,7 +228,7 @@ function BackupMirrors() {
         ## /etc/apt/sources.list.d
         if [ -d $DebianExtendListDir ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $DebianExtendListDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP2=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份? [Y/n] ${PLAIN}")
+                CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 第三方源文件，是否覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP2}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -237,13 +237,13 @@ function BackupMirrors() {
                     ;;
                 [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e "\n${WARN} 输入错误，默认不覆盖！"
+                    echo -e "\n$WARN 输入错误，默认不覆盖！"
                     ;;
                 esac
             else
                 [ -d $DebianExtendListDirBackup ] || mkdir -p $DebianExtendListDirBackup
                 cp -rf $DebianExtendListDir/* $DebianExtendListDirBackup >/dev/null 2>&1
-                echo -e "${COMPLETE} 已备份原有 list 第三方源文件至 $DebianExtendListDirBackup 目录"
+                echo -e "$COMPLETE 已备份原有 list 第三方源文件至 $DebianExtendListDirBackup 目录"
                 sleep 1s
             fi
         fi
@@ -251,7 +251,7 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $RedHatReposDirBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└ 检测到系统存在已备份的 repo 源文件，是否覆盖备份? [Y/n] ${PLAIN}")
+                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP3}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -260,13 +260,13 @@ function BackupMirrors() {
                     ;;
                 [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e "\n${WARN} 输入错误，默认不覆盖！"
+                    echo -e "\n$WARN 输入错误，默认不覆盖！"
                     ;;
                 esac
             else
                 [ -d $RedHatReposDirBackup ] || mkdir -p $RedHatReposDirBackup
                 cp -rf $RedHatReposDir/* $RedHatReposDirBackup >/dev/null 2>&1
-                echo -e "\n${COMPLETE} 已备份原有 repo 源文件至 $RedHatReposDirBackup 目录"
+                echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $RedHatReposDirBackup 目录"
                 sleep 1s
             fi
         else
@@ -308,9 +308,9 @@ function ChangeMirrors() {
     esac
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -eq 0 ]; then
-        echo -e "\n${SUCCESS} 软件源更换完毕"
+        echo -e "\n$COMPLETE 软件源更换完毕"
     else
-        echo -e "\n${ERROR} 软件源${SYNC_TXT}失败\n"
+        echo -e "\n$ERROR 软件源${SYNC_TXT}失败\n"
         echo -e "请再次执行脚本并更换软件源后进行尝试，如果仍然${SYNC_TXT}失败那么可能由以下原因导致"
         echo -e "1. 网络问题：例如网络异常、网络间歇式中断、由地区影响的网络因素等"
         echo -e "2. 软件源问题：所选镜像站正在维护，或者出现罕见的少数文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态"
@@ -321,7 +321,7 @@ function ChangeMirrors() {
 
 ## 更新软件包
 function UpgradeSoftware() {
-    CHOICE_B=$(echo -e "\n${BOLD}└ 是否更新软件包? [Y/n] ${PLAIN}")
+    CHOICE_B=$(echo -e "\n${BOLD}└─ 是否更新软件包? [Y/n] ${PLAIN}")
     read -p "${CHOICE_B}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
@@ -335,7 +335,7 @@ function UpgradeSoftware() {
             yum update -y
             ;;
         esac
-        CHOICE_C=$(echo -e "\n${BOLD}└ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+        CHOICE_C=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -348,17 +348,17 @@ function UpgradeSoftware() {
                 yum clean packages -y >/dev/null 2>&1
             fi
 
-            echo -e "\n${COMPLETE} 清理完毕"
+            echo -e "\n$COMPLETE 清理完毕"
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
-            echo -e "\n${WARN} 输入错误，默认不清理！"
+            echo -e "\n$WARN 输入错误，默认不清理！"
             ;;
         esac
         ;;
     [Nn] | [Nn][Oo]) ;;
     *)
-        echo -e "\n${WARN} 输入错误，默认不更新！"
+        echo -e "\n$WARN 输入错误，默认不更新！"
         ;;
     esac
 }
@@ -491,6 +491,55 @@ function EPELMirrors() {
 
 ## 选择国内源
 function ChooseMirrors() {
+
+    ## 云计算厂商的软件源
+    ## 分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
+    ## 内网地址不支持使用 HTTPS 协议
+    function Cloud_Computing_Vendors_Mirrors() {
+        ## 公网地址
+        case $1 in
+        1)
+            Extranet="mirrors.aliyun.com"
+            ;;
+        2)
+            Extranet="mirrors.cloud.tencent.com"
+            ;;
+        3)
+            Extranet="repo.huaweicloud.com"
+            ;;
+        esac
+        ## 内网地址
+        case $1 in
+        1)
+            Intranet="mirrors.cloud.aliyuncs.com"
+            ;;
+        2)
+            Intranet="mirrors.tencentyun.com"
+            ;;
+        3)
+            Intranet="mirrors.myhuaweicloud.com"
+            ;;
+        esac
+
+        CHOICE_A_TMP=$(echo -e "\n  ${BOLD}└─ 是否使用公网地址? [Y/n] ${PLAIN}")
+        read -p "${CHOICE_A_TMP}" INPUT
+        [ -z ${INPUT} ] && INPUT=Y
+        case $INPUT in
+        [Yy] | [Yy][Ee][Ss])
+            SOURCE=${Extranet}
+            ;;
+        [Nn] | [Nn][Oo])
+            SOURCE=${Intranet}
+            echo -e "\n  $WARN 已切换至内网地址，仅支持云计算厂商云服务器用户使用！"
+            NOT_SUPPORT_HTTPS="True"
+            ;;
+        *)
+            SOURCE=${Extranet}
+            echo -e "\n$WARN 输入错误，默认使用公网地址！"
+            ;;
+        esac
+    }
+
     clear
     echo -e '+---------------------------------------------------+'
     echo -e '|                                                   |'
@@ -528,17 +577,11 @@ function ChooseMirrors() {
     echo -e "        系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S")${PLAIN}"
     echo -e ''
     echo -e '#####################################################'
-    CHOICE_A=$(echo -e "\n${BOLD}└ 请选择并输入你想使用的软件源 [ 1-13 ]：${PLAIN}")
+    CHOICE_A=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-13 ]：${PLAIN}")
     read -p "${CHOICE_A}" INPUT
     case $INPUT in
-    1)
-        SOURCE="mirrors.aliyun.com"
-        ;;
-    2)
-        SOURCE="mirrors.cloud.tencent.com"
-        ;;
-    3)
-        SOURCE="repo.huaweicloud.com"
+    1 | 2 | 3)
+        Cloud_Computing_Vendors_Mirrors $INPUT
         ;;
     4)
         SOURCE="mirrors.163.com"
@@ -572,7 +615,7 @@ function ChooseMirrors() {
         ;;
     *)
         SOURCE="mirrors.aliyun.com"
-        echo -e "\n${WARN} 输入错误，将默认使用 ${BLUE}阿里云${PLAIN} 作为国内源！"
+        echo -e "\n$WARN 输入错误，将默认使用 ${BLUE}阿里云${PLAIN} 作为国内源！"
         sleep 2s
         ;;
     esac
@@ -590,9 +633,9 @@ function ChooseMirrors() {
         VERIFICATION_EPELBACKUPFILES=$?
 
         if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            CHOICE_D=$(echo -e "\n${BOLD}└ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
+            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
         else
-            CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 EPEL 扩展源? [Y/n] ${PLAIN}")
+            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 是否安装 EPEL 扩展源? [Y/n] ${PLAIN}")
         fi
         read -p "${CHOICE_D}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
@@ -604,28 +647,32 @@ function ChooseMirrors() {
             EPEL_INSTALL="False"
             ;;
         *)
-            echo -e "\n${WARN} 输入错误，默认不更换！"
+            echo -e "\n  $WARN 输入错误，默认不更换！"
             EPEL_INSTALL="False"
             ;;
         esac
     fi
 
     ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
-    CHOICE_E=$(echo -e "\n${BOLD}└ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
-    read -p "${CHOICE_E}" INPUT
-    [ -z ${INPUT} ] && INPUT=Y
-    case $INPUT in
-    [Yy] | [Yy][Ee][Ss])
+    if [[ ${NOT_SUPPORT_HTTPS} == "True" ]]; then
         WEB_PROTOCOL="http"
-        ;;
-    [Nn] | [Nn][Oo])
-        WEB_PROTOCOL="https"
-        ;;
-    *)
-        echo -e "\n${WARN} 输入错误，默认使用 HTTPS 协议！"
-        WEB_PROTOCOL="https"
-        ;;
-    esac
+    else
+        CHOICE_E=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+        read -p "${CHOICE_E}" INPUT
+        [ -z ${INPUT} ] && INPUT=Y
+        case $INPUT in
+        [Yy] | [Yy][Ee][Ss])
+            WEB_PROTOCOL="http"
+            ;;
+        [Nn] | [Nn][Oo])
+            WEB_PROTOCOL="https"
+            ;;
+        *)
+            echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
+            WEB_PROTOCOL="https"
+            ;;
+        esac
+    fi
 
     ## 关闭 防火墙 和 SELINUX
     [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ] && CloseFirewall

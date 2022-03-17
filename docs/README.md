@@ -84,12 +84,13 @@ bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/Chang
 - 执行脚本过程中会自动备份原有源无需手动备份，期间会在终端输出多个主观选择交互内容，可按回车键快速确认
 - 脚本支持在原有源配置错误或者不存在的情况下使用，并且可以重复使用；脚本变更的软件源默认使用 `HTTP 协议`
 
-> [!ATTENTION|label:未启用的源]
+> [!WARNING|label:未启用的源]
 > **Debian** 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用请将 `list` 源文件中相关内容的所在行**取消注释**\
 > **RedHat** 系 Linux 配置了所有可以配置的仓库，但有一些仓库**默认没有启用**，若需启用请将 `repo` 源文件中的 `enabled=0` 修改成 `enabled=1`
 
 ## 其它脚本
-- #### :fa-brands fa-docker:`Docker` 一键安装脚本 <!-- {docsify-ignore} -->
+
+- ### :fa-brands fa-docker: Docker 一键安装脚本 <!-- {docsify-ignore} -->
 
     ```bash
     bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
@@ -97,24 +98,25 @@ bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/Chang
 
     > [!NOTE|label:定义]
     > `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
-    > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，简称镜像加速器。
+    > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，又称镜像加速器。
 
     > 脚本集成安装 `Docker Engine`与 `Docker Compose`，可手动选择安装版本、下载源、镜像加速器，支持国内外服务器环境和 `ARM`架构处理器环境使用
 
 ## 常见问题
-- #### 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包 <!-- {docsify-ignore} -->
+
+  - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
 
     ```bash
-    sudo yum install -y curl || sudo apt install -y curl
+    sudo yum install -y curl || sudo apt-get install -y curl
     ```
 
-- #### 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包 <!-- {docsify-ignore} -->
+  - 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包
 
     ```bash
-    sudo yum install -y wget || sudo apt install -y wget
+    sudo yum install -y wget || sudo apt-get install -y wget
     ```
 
-- #### 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行。 <!-- {docsify-ignore} -->
+  - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行
 
 ***
 

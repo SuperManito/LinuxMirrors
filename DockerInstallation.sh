@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-02-22
+## Modified: 2022-03-17
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -159,7 +159,7 @@ function EnvJudgment() {
 ## 基础环境判断
 function PermissionJudgment() {
     if [ $UID -ne 0 ]; then
-        echo -e "\n${ERROR} Permission no enough, please use user ROOT! \n"
+        echo -e "\n$ERROR Permission no enough, please use user ROOT! \n"
         exit
     fi
 }
@@ -202,10 +202,10 @@ function InstallationEnvironment() {
     esac
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -ne 0 ]; then
-        echo -e "\n${ERROR} 软件源${SYNC_TXT}出错，请先确保软件包管理工具可用！\n"
+        echo -e "\n$ERROR 软件源${SYNC_TXT}出错，请先确保软件包管理工具可用！\n"
         exit
     fi
-    echo -e "\n${SUCCESS} 软件源${SYNC_TXT}结束\n"
+    echo -e "\n$COMPLETE 软件源${SYNC_TXT}结束\n"
     case ${SYSTEM_FACTIONS} in
     Debian)
         apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -299,7 +299,7 @@ function DockerEngine() {
             cat $DockerVersionFile
             echo -e '\n注：以上可供选择的安装版本由官方源提供，若系统过新可能无法安装较旧的版本'
             while true; do
-                CHOICE_F=$(echo -e "\n${BOLD}└ 请根据上面的列表，输入你想要安装的具体版本号：${PLAIN}\n")
+                CHOICE_F=$(echo -e "\n${BOLD}└─ 请根据上面的列表，输入你想要安装的具体版本号：${PLAIN}\n")
                 read -p "${CHOICE_F}" DOCKER_VERSION
                 echo ''
                 cat $DockerVersionFile | grep -Ew "${DOCKER_VERSION}" >/dev/null 2>&1
@@ -309,10 +309,10 @@ function DockerEngine() {
                         rm -rf $DockerVersionFile
                         break
                     else
-                        echo -e "${ERROR} 请输入正确的版本号！"
+                        echo -e "$ERROR 请输入正确的版本号！"
                     fi
                 else
-                    echo -e "${ERROR} 输入错误请重新输入！"
+                    echo -e "$ERROR 输入错误请重新输入！"
                 fi
             done
             case ${SYSTEM_FACTIONS} in
@@ -348,7 +348,7 @@ function DockerEngine() {
         if [[ ${REGISTRY_SOURCE_OFFICIAL} == "False" ]]; then
             if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
                 if [ -e $DockerConfigBackup ]; then
-                    CHOICE_BACKUP=$(echo -e "\n${BOLD}└ 检测到已备份的 Docker 配置文件，是否覆盖备份? [Y/n] ${PLAIN}")
+                    CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否覆盖备份? [Y/n] ${PLAIN}")
                     read -p "${CHOICE_BACKUP}" INPUT
                     [ -z ${INPUT} ] && INPUT=Y
                     case $INPUT in
@@ -357,12 +357,12 @@ function DockerEngine() {
                         ;;
                     [Nn] | [Nn][Oo]) ;;
                     *)
-                        echo -e "\n${WARN} 输入错误，默认不覆盖！"
+                        echo -e "\n$WARN 输入错误，默认不覆盖！"
                         ;;
                     esac
                 else
                     cp -rf $DockerConfig $DockerConfigBackup >/dev/null 2>&1
-                    echo -e "\n${COMPLETE} 已备份原有 Docker 配置文件至 $DockerConfigBackup\n"
+                    echo -e "\n$COMPLETE 已备份原有 Docker 配置文件至 $DockerConfigBackup\n"
                 fi
                 sleep 2s
             else
@@ -390,7 +390,7 @@ function DockerEngine() {
         DOCKER_VERSION_LATEST=$(cat $DockerVersionFile | head -n 1)
         if [[ ${DOCKER_INSTALLED_VERSION} == ${DOCKER_VERSION_LATEST} ]]; then
             if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
-                echo -e "\n${SUCCESS} 检测到已安装最新版本的 Docker Engine，跳过安装"
+                echo -e "\n$COMPLETE 检测到已安装最新版本的 Docker Engine，跳过安装"
                 ConfigureMirror
                 systemctl status docker | grep running -q
                 if [ $? -eq 0 ]; then
@@ -403,13 +403,13 @@ function DockerEngine() {
                 AuthorSignature
                 exit
             else
-                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
+                CHOICE_E=$(echo -e "\n${BOLD}└─ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
             fi
         else
             if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
-                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本? [Y/n] ${PLAIN}")
+                CHOICE_E=$(echo -e "\n${BOLD}└─ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本? [Y/n] ${PLAIN}")
             else
-                CHOICE_E=$(echo -e "\n${BOLD}└ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
+                CHOICE_E=$(echo -e "\n${BOLD}└─ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
             fi
         fi
         read -p "${CHOICE_E}" INPUT
@@ -418,12 +418,12 @@ function DockerEngine() {
         [Yy] | [Yy][Ee][Ss])
             echo -en "\n${WORKING} 正在卸载之前的版本..."
             RemoveOldVersion
-            echo -e "\n\n${SUCCESS} 卸载完毕\n"
+            echo -e "\n\n$COMPLETE 卸载完毕\n"
             Install
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
-            echo -e "\n${WARN} 输入错误，默认不覆盖安装！\n"
+            echo -e "\n$WARN 输入错误，默认不覆盖安装！\n"
             ;;
         esac
         rm -rf $DockerVersionFile
@@ -461,7 +461,7 @@ function DockerCompose() {
             else
                 pip3 install docker-compose
             fi
-            [ $? -ne 0 ] && echo -e "\n${ERROR} Docker Compose 安装失败\n\n检测到当前处理器架构为 ${ARCH} ，无法绝对保证安装成功，自行查看 pip 报错原因"
+            [ $? -ne 0 ] && echo -e "\n$ERROR Docker Compose 安装失败\n\n检测到当前处理器架构为 ${ARCH} ，无法绝对保证安装成功，自行查看 pip 报错原因"
         fi
     fi
     echo -e ''
@@ -474,9 +474,9 @@ function ShowVersion() {
     VERIFICATION_DOCKER=$?
     [[ ${DOCKER_COMPOSE} == "True" ]] && docker-compose -v
     if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
-        echo -e "\n${SUCCESS} 安装完成"
+        echo -e "\n$COMPLETE 安装完成"
     else
-        echo -e "\n${ERROR} 安装失败"
+        echo -e "\n$ERROR 安装失败"
         case ${SYSTEM_FACTIONS} in
         Debian)
             echo -e "\n检查源文件： cat $DockerSourceList"
@@ -499,7 +499,7 @@ function ShowVersion() {
         sleep 2
         systemctl status docker | grep running -q
         if [ $? -ne 0 ]; then
-            echo -e "\n${ERROR} 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致"
+            echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致"
             echo -e "\n请执行 systemctl start docker 或 service docker start 命令尝试启动"
             echo -e "\n官方安装文档：https://docs.docker.com/engine/install"
         fi
@@ -556,7 +556,7 @@ function ChooseMirrors() {
     echo -e "        系统时间  $(date "+%Y-%m-%d %H:%M:%S")"
     echo -e ''
     echo -e '#####################################################'
-    CHOICE_A=$(echo -e "\n${BOLD}└ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：${PLAIN}")
+    CHOICE_A=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：${PLAIN}")
     read -p "${CHOICE_A}" INPUT
     case $INPUT in
     1)
@@ -585,12 +585,12 @@ function ChooseMirrors() {
         ;;
     *)
         SOURCE="mirrors.aliyun.com/docker-ce"
-        echo -e "\n${WARN} 输入错误，默认使用阿里云！"
+        echo -e "\n$WARN 输入错误，默认使用阿里云！"
         sleep 1s
         ;;
     esac
     ## 是否手动选择安装版本
-    CHOICE_C=$(echo -e "\n${BOLD}  └ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
+    CHOICE_C=$(echo -e "\n  ${BOLD}└─ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
     read -p "${CHOICE_C}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
@@ -600,15 +600,15 @@ function ChooseMirrors() {
     [Nn] | [Nn][Oo])
         DOCKER_VERSION_INSTALL_LATEST="False"
         if [ ${SOURCE} != "download.docker.com" ]; then
-            echo -e "\n${WARN} Docker CE 源已替换成官方源！"
+            echo -e "\n$WARN Docker CE 源已替换成官方源！"
         fi
         ;;
     *)
         DOCKER_VERSION_INSTALL_LATEST="True"
-        echo -e "\n${WARN} 输入错误，默认安装最新版本！"
+        echo -e "\n$WARN 输入错误，默认安装最新版本！"
         ;;
     esac
-    CHOICE_B=$(echo -e "\n${BOLD}└ 请选择并输入你想使用的 Docker Hub 源 [ 1~12 ]：${PLAIN}")
+    CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Hub 源 [ 1~12 ]：${PLAIN}")
     read -p "${CHOICE_B}" INPUT
     case $INPUT in
     1)
@@ -662,21 +662,21 @@ function ChooseMirrors() {
     *)
         REGISTRY_SOURCE="registry.cn-hangzhou.aliyuncs.com"
         REGISTRY_SOURCE_OFFICIAL="False"
-        echo -e "\n${WARN} 输入错误，默认使用 ${BLUE}阿里云（杭州）${PLAIN}！"
+        echo -e "\n$WARN 输入错误，默认使用 ${BLUE}阿里云（杭州）${PLAIN}！"
         sleep 1s
         ;;
     esac
     if [ -x $DockerCompose ]; then
-        CHOICE_D=$(echo -e "\n${BOLD}└ 检测到已安装 Docker Compose ，是否覆盖安装? [Y/n] ${PLAIN}")
+        CHOICE_D=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Compose ，是否覆盖安装? [Y/n] ${PLAIN}")
     else
-        CHOICE_D=$(echo -e "\n${BOLD}└ 是否安装 Docker Compose? [Y/n] ${PLAIN}")
+        CHOICE_D=$(echo -e "\n${BOLD}└─ 是否安装 Docker Compose? [Y/n] ${PLAIN}")
     fi
     read -p "${CHOICE_D}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
     [Yy] | [Yy][Ee][Ss])
         DOCKER_COMPOSE="True"
-        CHOICE_D1=$(echo -e "\n${BOLD}  └ 是否使用国内代理进行下载? [Y/n] ${PLAIN}")
+        CHOICE_D1=$(echo -e "\n  ${BOLD}└─ 是否使用国内代理进行下载? [Y/n] ${PLAIN}")
         read -p "${CHOICE_D1}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -688,7 +688,7 @@ function ChooseMirrors() {
             ;;
         *)
             DOCKER_COMPOSE_DOWNLOAD_PROXY="False"
-            echo -e "\n${WARN} 输入错误，默认不使用！\n"
+            echo -e "\n$WARN 输入错误，默认不使用！\n"
             ;;
         esac
         ;;
@@ -697,7 +697,7 @@ function ChooseMirrors() {
         ;;
     *)
         DOCKER_COMPOSE="False"
-        echo -e "\n${WARN} 输入错误，默认不安装！\n"
+        echo -e "\n$WARN 输入错误，默认不安装！\n"
         ;;
     esac
     echo -e ''

@@ -103,26 +103,27 @@
     ```
 
     > `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
-    > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，简称镜像加速器。
+    > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，又称镜像加速器。
 
 > _注意：脚本集成安装 `Docker Engine`与 `Docker Compose`，可手动选择安装版本和下载源，还可手动选择镜像加速器，支持国内外服务器环境和 `ARM`架构处理器环境使用。_
 
 ***
 
 ### 常见问题与帮助
-- 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
+
+  - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
 
     ```bash
-    sudo yum install -y curl || sudo apt install -y curl
+    sudo yum install -y curl || sudo apt-get install -y curl
     ```
 
-- 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包
+  - 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包
 
     ```bash
-    sudo yum install -y wget || sudo apt install -y wget
+    sudo yum install -y wget || sudo apt-get install -y wget
     ```
 
-- 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行。
+  - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行
 
 ***
 
