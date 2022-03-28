@@ -10,7 +10,7 @@
 </tr>
 <tr>
     <td><a href="https://www.debian.org"><img src="./img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
-    <td align="center">8.0 ~ 11.2</td>
+    <td align="center">8.0 ~ 11.3</td>
 </tr>
 <tr>
     <td><a href="https://cn.ubuntu.com"><img src="./img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
