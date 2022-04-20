@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-03-17
+## Modified: 2022-04-20
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -49,7 +49,7 @@ BLUE='\033[34m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
 SUCCESS='[\033[32mOK\033[0m]'
-COMPLETE='[\033[32mDone\033[0m]'
+COMPLETE='[\033[32mDONE\033[0m]'
 WARN='[\033[33mWARN\033[0m]'
 ERROR='[\033[31mERROR\033[0m]'
 WORKING='[\033[34m*\033[0m]'
@@ -494,6 +494,7 @@ function ChooseMirrors() {
     ## 分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
     ## 内网地址不支持使用 HTTPS 协议
     function Cloud_Computing_Vendors_Mirrors() {
+        local Extranet Intranet
         ## 公网地址
         case $1 in
         1)
@@ -519,7 +520,7 @@ function ChooseMirrors() {
             ;;
         esac
 
-        CHOICE_A_TMP=$(echo -e "\n  ${BOLD}└─ 是否使用公网地址? [Y/n] ${PLAIN}")
+        CHOICE_A_TMP=$(echo -e "\n  ${BOLD}└─ 默认使用镜像站的公网地址，是否继续? [Y/n] ${PLAIN}")
         read -p "${CHOICE_A_TMP}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -528,7 +529,7 @@ function ChooseMirrors() {
             ;;
         [Nn] | [Nn][Oo])
             SOURCE=${Intranet}
-            echo -e "\n  $WARN 已切换至内网地址，仅支持云计算厂商云服务器用户使用！"
+            echo -e "\n  $WARN 已切换至云计算厂商镜像站的内网访问地址，仅限对应厂商云服务器用户使用！"
             NOT_SUPPORT_HTTPS="True"
             ;;
         *)
