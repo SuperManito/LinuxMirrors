@@ -76,7 +76,7 @@ bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirro
 
 > [!WARNING|label:未启用的源]
 > **Debian** 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行**取消注释**\
-> **RedHat** 系 Linux 部分仓库**默认没有启用**，若需启用请将 `/etc/yum.repos.d` 目录下相关 **repo** 文件中的 `enabled=0` 修改为 `enabled=1`
+> **RedHat** 系 Linux 部分仓库**默认没有启用**，若需启用请将 `/etc/yum.repos.d` 目录下相关 **repo** 文件中的 `enabled` 的值修改为 `1`
 
 
 ### <i class="fa-regular fa-list-tree fa-fade" style="--fa-animation-duration: 2s; --fa-fade-opacity: 0.6;" ></i> 脚本执行流程
