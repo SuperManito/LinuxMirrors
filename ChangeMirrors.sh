@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-04-20
+## Modified: 2022-06-05
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -60,12 +60,12 @@ function Combin_Function() {
 ## 系统判定变量
 function EnvJudgment() {
     ## 判定当前系统基于 Debian or RedHat
-    if [ -f $RedHatRelease ]; then
+    if [ -s $RedHatRelease ]; then
         SYSTEM_FACTIONS=${SYSTEM_REDHAT}
-    elif [ -f $DebianVersion ]; then
+    elif [ -s $DebianVersion ]; then
         SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
     else
-        echo -e "\n${RED} ------------ 无法判断当前运行环境，请先确认脚本是否已适配当前系统! ------------ ${PLAIN}\n"
+        echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本针对当前操作系统是否适配\n"
         exit
     fi
     ## 定义系统名称
@@ -141,20 +141,20 @@ function EnvJudgment() {
     esac
 }
 
-## 环境判定：
+## 环境判定
 function PermissionJudgment() {
-    ## 权限判定：
+    ## 权限判定
     if [ $UID -ne 0 ]; then
-        echo -e "\n$ERROR Permission no enough, please use user ROOT! \n"
+        echo -e "\n$ERROR 权限不足，请使用 Root 用户\n"
         exit
     fi
 }
 
-## 关闭 防火墙 和 SELINUX
+## 关闭防火墙和SELinux
 function CloseFirewall() {
     systemctl status firewalld | grep running -q
     if [ $? -eq 0 ]; then
-        CHOICE_C=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELINUX? [Y/n] ${PLAIN}")
+        CHOICE_C=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
@@ -448,7 +448,7 @@ function RedHatMirrors() {
             ${SOURCE_BRANCH}-updates-testing.repo \
             ${SOURCE_BRANCH}-updates-testing-modular.repo
     fi
-    ## 清理 YUM 缓存
+    ## 清理 yum 缓存
     yum clean all >/dev/null 2>&1
 }
 
@@ -664,7 +664,7 @@ function ChooseMirrors() {
         esac
     fi
 
-    ## 关闭 防火墙 和 SELINUX
+    ## 关闭防火墙和SELinux
     [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ] && CloseFirewall
 }
 

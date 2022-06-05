@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-03-17
+## Modified: 2022-06-05
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -82,12 +82,12 @@ function Combin_Function() {
 ## 系统判定变量
 function EnvJudgment() {
     ## 判定当前系统基于 Debian or RedHat
-    if [ -f $RedHatRelease ]; then
+    if [ -s $RedHatRelease ]; then
         SYSTEM_FACTIONS=${SYSTEM_REDHAT}
-    elif [ -f $DebianVersion ]; then
+    elif [ -s $DebianVersion ]; then
         SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
     else
-        echo -e "\n${RED} ------------ 无法判断当前运行环境，请先确认脚本是否已适配当前系统！ ------------ ${PLAIN}\n"
+        echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本针对当前操作系统是否适配！\n"
         exit
     fi
     ## 定义系统名称
@@ -157,7 +157,7 @@ function EnvJudgment() {
 ## 基础环境判断
 function PermissionJudgment() {
     if [ $UID -ne 0 ]; then
-        echo -e "\n$ERROR Permission no enough, please use user ROOT! \n"
+        echo -e "\n$ERROR 权限不足，请使用 Root 用户\n"
         exit
     fi
 }
