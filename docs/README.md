@@ -12,15 +12,15 @@
 </tr>
 <tr>
     <td><a href="https://www.debian.org"><img src="./img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
-    <td align="center">8.0 ~ 11.3</td>
+    <td align="center">8.0 ~ 11</td>
 </tr>
 <tr>
     <td><a href="https://cn.ubuntu.com"><img src="./img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
-    <td align="center">16.04 ~ 21.10</td>
+    <td align="center">16.04 ~ 22.04</td>
 </tr>
 <tr>
     <td><a href="https://www.kali.org"><img src="./img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
-    <td align="center">2.0 ~ 2022.1</td>
+    <td align="center">2.0 ~ 2022</td>
 </tr>
 <tr>
     <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux"><img src="./img/icon/redhat.svg" width="16" height="16"/></a>&nbsp;Red Hat Enterprise Linux</td>
