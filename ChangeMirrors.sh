@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2022-06-05
+## Modified: 2022-09-14
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -1374,7 +1374,7 @@ function EPELReposCreate() {
         cat >$RedHatReposDir/epel.repo <<\EOF
 [epel]
 name=Extra Packages for Enterprise Linux $releasever - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/$releasever/Everything/$basearch
+#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/$basearch
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=1
 gpgcheck=1
@@ -1382,7 +1382,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-debuginfo]
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/$releasever/Everything/$basearch/debug
+#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/$basearch/debug
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
@@ -1390,7 +1390,7 @@ gpgcheck=1
 
 [epel-source]
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/$releasever/Everything/SRPMS
+#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/SRPMS
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
@@ -1399,7 +1399,7 @@ EOF
         cat >$RedHatReposDir/epel-modular.repo <<\EOF
 [epel-modular]
 name=Extra Packages for Enterprise Linux Modular $releasever - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/$releasever/Modular/$basearch
+#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/$basearch
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=1
 gpgcheck=1
@@ -1407,7 +1407,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-modular-debuginfo]
 name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/$releasever/Modular/$basearch/debug
+#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/$basearch/debug
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
@@ -1415,7 +1415,7 @@ gpgcheck=1
 
 [epel-modular-source]
 name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/$releasever/Modular/SRPMS
+#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/SRPMS
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
