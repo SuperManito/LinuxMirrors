@@ -152,8 +152,7 @@ function PermissionJudgment() {
 
 ## 关闭防火墙和SELinux
 function CloseFirewall() {
-    systemctl status firewalld | grep running -q
-    if [ $? -eq 0 ]; then
+    if [[ $(systemctl is-active firewalld) == "active" ]]; then
         CHOICE_C=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
         read -p "${CHOICE_C}" INPUT
         [ -z ${INPUT} ] && INPUT=Y

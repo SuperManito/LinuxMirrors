@@ -171,8 +171,7 @@ function NetWorkJudgment() {
 
 ## 关闭防火墙
 function CloseFirewall() {
-    systemctl status firewalld | grep running -q
-    if [ $? -eq 0 ]; then
+    if [[ $(systemctl is-active firewalld) == "active" ]]; then
         systemctl disable --now firewalld >/dev/null 2>&1
         [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
     fi
@@ -390,8 +389,7 @@ function DockerEngine() {
             if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
                 echo -e "\n$COMPLETE 检测到已安装最新版本的 Docker Engine，跳过安装"
                 ConfigureMirror
-                systemctl status docker | grep running -q
-                if [ $? -eq 0 ]; then
+                if [[ $(systemctl is-active docker) == "active" ]]; then
                     systemctl restart docker
                 fi
                 echo ''
@@ -488,15 +486,13 @@ function ShowVersion() {
         esac
         exit
     fi
-    systemctl status docker | grep running -q
-    if [ $? -ne 0 ]; then
+    if [[ $(systemctl is-active docker) == "active" ]]; then
         sleep 2
         systemctl disable --now docker >/dev/null 2>&1
         sleep 2
         systemctl enable --now docker >/dev/null 2>&1
         sleep 2
-        systemctl status docker | grep running -q
-        if [ $? -ne 0 ]; then
+        if [[ $(systemctl is-active docker) == "active" ]]; then
             echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致"
             echo -e "\n请执行 systemctl start docker 或 service docker start 命令尝试启动"
             echo -e "\n官方安装文档：https://docs.docker.com/engine/install"
