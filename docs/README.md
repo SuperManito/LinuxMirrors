@@ -45,7 +45,7 @@
 | | 镜像站名称 | 镜像站地址 | IPv6 | Kali Linux | Fedora | EPEL |
 | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | 1 | 阿里云 | [mirrors.aliyun.com](https://developer.aliyun.com/special/mirrors/notice) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
-| 2 | 腾讯云 | [mirrors.cloud.tencent.com](https://mirrors.cloud.tencent.com) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
+| 2 | 腾讯云 | [mirrors.tencent.com](https://mirrors.tencent.com) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
 | 3 | 华为云 | [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
 | 4 | 网易 | [mirrors.163.com](https://mirrors.163.com) |  |  | :fa-solid fa-check: |  |
 | 5 | 搜狐 | [mirrors.sohu.com](https://mirrors.sohu.com) |  |  |  |  |

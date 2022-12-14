@@ -557,7 +557,7 @@ function ChooseMirrors() {
         SOURCE="mirrors.aliyun.com/docker-ce"
         ;;
     2)
-        SOURCE="mirrors.cloud.tencent.com/docker-ce"
+        SOURCE="mirrors.tencent.com/docker-ce"
         ;;
     3)
         SOURCE="repo.huaweicloud.com/docker-ce"

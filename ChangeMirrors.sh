@@ -491,7 +491,7 @@ function ChooseMirrors() {
             Extranet="mirrors.aliyun.com"
             ;;
         2)
-            Extranet="mirrors.cloud.tencent.com"
+            Extranet="mirrors.tencent.com"
             ;;
         3)
             Extranet="repo.huaweicloud.com"
