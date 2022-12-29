@@ -21,7 +21,7 @@
   </tr>
   <tr>
       <td><a href="https://cn.ubuntu.com"><img src="./docs/img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
-      <td align="center">16.04 ~ 22.04</td>
+      <td align="center">16.04 ~ 22</td>
   </tr>
   <tr>
       <td><a href="https://www.kali.org"><img src="./docs/img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
@@ -37,7 +37,7 @@
   </tr>
   <tr>
       <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./docs/img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
-      <td align="center">28 ~ 35</td>
+      <td align="center">28 ~ 37</td>
   </tr>
   </table>
 
@@ -122,13 +122,13 @@
   - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
 
     ```bash
-    sudo yum install -y curl || sudo apt-get install -y curl
+    yum install -y curl || apt-get install -y curl
     ```
 
   - 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包
 
     ```bash
-    sudo yum install -y wget || sudo apt-get install -y wget
+    yum install -y wget || apt-get install -y wget
     ```
 
   - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行

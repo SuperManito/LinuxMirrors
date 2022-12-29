@@ -16,7 +16,7 @@
 </tr>
 <tr>
     <td><a href="https://cn.ubuntu.com"><img src="./img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
-    <td align="center">16.04 ~ 22.04</td>
+    <td align="center">16.04 ~ 22</td>
 </tr>
 <tr>
     <td><a href="https://www.kali.org"><img src="./img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
@@ -32,7 +32,7 @@
 </tr>
 <tr>
     <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
-    <td align="center">28 ~ 35</td>
+    <td align="center">28 ~ 37</td>
 </tr>
 </table>
 
@@ -103,7 +103,7 @@ bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirro
     > `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包。\
     > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，又称镜像加速器。
 
-    > 脚本集成安装 `Docker Engine`与 `Docker Compose`，可手动选择安装版本、下载源、镜像加速器，支持国内外服务器环境和 `ARM`架构处理器环境使用
+    > 脚本集成安装 `Docker Engine` 与 `Docker Compose`，可手动选择安装版本、下载源、镜像加速器，支持国内外服务器环境和 `ARM` 架构处理器环境使用
 
 ***
 
@@ -112,13 +112,13 @@ bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirro
   - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
 
     ```bash
-    sudo yum install -y curl || sudo apt-get install -y curl
+    yum install -y curl || apt-get install -y curl
     ```
 
   - 如果提示 `Command 'wget' not found` 则说明当前未安装 `wget` 软件包
 
     ```bash
-    sudo yum install -y wget || sudo apt-get install -y wget
+    yum install -y wget || apt-get install -y wget
     ```
 
   - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行

@@ -7,31 +7,39 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="./css/docsify.main.css" />
-  <link rel="stylesheet" href="./css/fontawesome.css" />
-  <link rel="icon" type="image/x-icon" href="./img/icon/linux.svg" />
+  <link rel="stylesheet" href="css/docsify.css" />
+  <link rel="stylesheet" href="css/fontawesome.css" />
+  <link rel="icon" type="image/x-icon" href="img/icon/linux.svg" />
 </head>
 
 <body>
-  <div id="app">正在加载...</div>
+  <div id="app">
+    <div class="loader">
+      <div class="inner one"></div>
+      <div class="inner two"></div>
+      <div class="inner three"></div>
+    </div>
+    <span style="color: white;">正在加载</span>
+  </div>
+  <script type="text/javascript" src="themeConfig.js"></script>
   <script>
     window.$docsify = {
-      // 导航栏标题
+      // 文档标题
       name: 'LinuxMirrors',
       // 右上角仓库icon
       repo: 'https://github.com/SuperManito/LinuxMirrors',
       // 导航栏logo
-      logo: './img/logo.png',
+      logo: '',
       // 加载封面
       coverpage: true,
       // 小屏幕设备自动合并导航栏到侧边栏
       mergeNavbar: true,
+      // 隐藏侧边栏
+      hideSidebar: true,
       // 启用自定义404页
       notFoundPage: true,
       // 跳转后自动移到顶部
       auto2top: true,
-      // 隐藏侧边栏
-      hideSidebar: true,
 
       // 搜索
       search: {
@@ -44,7 +52,7 @@
         hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
         // 避免搜索索引冲突
         // 同一域下的多个网站之间
-        namespace: 'website-1',
+        namespace: 'website',
         // 使用不同的索引作为路径前缀（namespaces）
         // 注意：仅适用于 paths: 'auto' 模式
         // 初始化索引时，我们从侧边栏查找第一个路径
@@ -53,6 +61,15 @@
         // 您可以提供一个正则表达式来匹配前缀。在这种情况下，
         // 匹配到的字符串将被用来识别索引
         pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
+      },
+
+      // 选项卡
+      tabs: {
+        persist: true,
+        sync: true,
+        theme: 'classic',
+        tabComments: true,
+        tabHeadings: true
       },
 
       // 字数统计
@@ -73,11 +90,9 @@
 
       // 页脚内容
       footer: {
-        copy: '<span>Copyright 2021 ～ 2022 <i class="fa-regular fa-copyright"></i>',
-        auth: ' <a href="javascript:window.open(\'https://github.com/SuperManito\')">SuperManito</a> . Released under the <a href="javascript:window.open(\'https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE\')">GPL-2.0</a>',
-        pre: '',
-        style: 'text-align: center;',
-        class: 'className',
+        style: 'text-align: center; font-size: 16px; line-height: 1.5; margin-top: 1.5em; color: var(--sidebarSublinkColor)',
+        copy: 'Copyright 2021 ~ 2023 <i class="fa-regular fa-copyright"></i><a href="https://github.com/SuperManito" target="_blank"> SuperManito</a></br>',
+        auth: 'Released under the <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE" target="_blank">GPL-2.0</a> . Website built with  <a href="https://docsify.js.org" target="_blank" rel="noreferrer" rel="noopener">Docsify</a>'
       },
 
       // 灵活警告插件
@@ -110,80 +125,37 @@
         color: "var(--themeColor)",
         height: "2px",
       },
-      // 浅色｜暗黑主题
-      darklightTheme: {
-        siteFont: "Source Sans Pro",
-        defaultTheme: 'light',
-        codeFontFamily: 'JetBrains Mono, Consolas, Roboto Mono, Monaco, courier, monospace',
-        bodyFontSize: '17px',
-        light: {
-          themeColor: '#42b983',
-          backgroundColor: '#ffffff',
-          textColor: '#34495e',
-          codeTextColor: '#525252',
-          codeBackgroundColor: '#f8f8f8',
-          borderColor: 'rgba(0, 0, 0, 0.07)',
-          blockQuoteColor: '#858585',
-          highlightColor: '#d22778',
-          highlightBackgroundColor: '#efefef',
-          buttonBackgroundColor: '#f3f3f3ce',
-          sidebarSublinkColor: '#7c7c7c',
-          codeTypeColor: '#091a28',
-          herfColor: '#16995e',
-          hrColor: '#afafaf',
-          coverBackground: 'linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)',
-          toogleImage: 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMzNDQ5NWUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iZmVhdGhlciBmZWF0aGVyLW1vb24iPjxwYXRoIGQ9Ik0yMSAxMi43OUE5IDkgMCAxIDEgMTEuMjEgMyA3IDcgMCAwIDAgMjEgMTIuNzl6Ij48L3BhdGg+PC9zdmc+")',
-        },
-        dark: {
-          themeColor: '#4894df',
-          backgroundColor: '#0F172A',
-          textColor: '#b4b4b4',
-          codeTextColor: '#ffffff',
-          codeBackgroundColor: '#071426',
-          borderColor: '#112436',
-          blockQuoteColor: '#858585',
-          highlightColor: '#c4882e',
-          highlightBackgroundColor: '#122d44',
-          buttonBackgroundColor: '#a8a8a825',
-          sidebarSublinkColor: '#b4b4b4',
-          codeTypeColor: '#ffffff',
-          herfColor: '#2973b7',
-          hrColor: '#464646',
-          coverBackground: 'linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)',
-          toogleImage: 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iZmVhdGhlciBmZWF0aGVyLXN1biI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNSI+PC9jaXJjbGU+PGxpbmUgeDE9IjEyIiB5MT0iMSIgeDI9IjEyIiB5Mj0iMyI+PC9saW5lPjxsaW5lIHgxPSIxMiIgeTE9IjIxIiB4Mj0iMTIiIHkyPSIyMyI+PC9saW5lPjxsaW5lIHgxPSI0LjIyIiB5MT0iNC4yMiIgeDI9IjUuNjQiIHkyPSI1LjY0Ij48L2xpbmU+PGxpbmUgeDE9IjE4LjM2IiB5MT0iMTguMzYiIHgyPSIxOS43OCIgeTI9IjE5Ljc4Ij48L2xpbmU+PGxpbmUgeDE9IjEiIHkxPSIxMiIgeDI9IjMiIHkyPSIxMiI+PC9saW5lPjxsaW5lIHgxPSIyMSIgeTE9IjEyIiB4Mj0iMjMiIHkyPSIxMiI+PC9saW5lPjxsaW5lIHgxPSI0LjIyIiB5MT0iMTkuNzgiIHgyPSI1LjY0IiB5Mj0iMTguMzYiPjwvbGluZT48bGluZSB4MT0iMTguMzYiIHkxPSI1LjY0IiB4Mj0iMTkuNzgiIHkyPSI0LjIyIj48L2xpbmU+PC9zdmc+")',
-        }
-      }
+
+      // 主题配置
+      darklightTheme: themeConfig
     }
   </script>
-  <!-- Docsify v4.12 -->
-  <script src="./js/docsify.min.js"></script>
+  <!-- Docsify v4.13 -->
+  <script src="js/docsify.js"></script>
   <!-- 暗黑主题 -->
-  <script src="./js/docsify-darklightTheme.js"></script>
-  <!-- Font Awesome 图标 -->
-  <script src="./js/docsify-fontawesome.min.js"></script>
-  <script src="./js/docsify-fontawesome.sub.js"></script>
+  <script src="js/docsify-darklightTheme.js"></script>
   <!-- 灵活警告UI插件 -->
-  <script src="./js/docsify-flexible-alerts.min.js"></script>
+  <script src="js/docsify-flexible-alerts.js"></script>
   <!-- 页脚内容 -->
-  <script src="./js/docsify-footer-enh.min.js"></script>
+  <script src="js/docsify-footer.js"></script>
   <!-- 复制代码到剪贴板 -->
-  <script src="./js/docsify-copy-code.min.js"></script>
+  <script src="js/docsify-copy-code.js"></script>
   <!-- 字数统计 -->
-  <script src="./js/docsify-countable.min.js"></script>
+  <script src="js/docsify-countable.js"></script>
   <!-- 阅读进度条 -->
-  <script src="./js/docsify-progress.min.js"></script>
+  <script src="js/docsify-progress.js"></script>
   <!-- Emoji表情支持 -->
-  <script src="./js/docsify-emoji.min.js"></script>
+  <script src="js/docsify-emoji.js"></script>
   <!-- 搜索 -->
-  <script src="./js/docsify-search.js"></script>
+  <script src="js/docsify-search.js"></script>
   <!-- 代码高亮 -->
-  <script src="./js/prism-bash.min.js"></script>
+  <script src="js/prism-bash.min.js"></script>
   <!-- Font Awesome 图标 -->
-  <script src="./js/fontawesome.min.js"></script>
-  <script src="./js/fontawesome.sub.js"></script>
+  <script src="js/fontawesome.min.js"></script>
+  <script src="js/fontawesome.sub.js"></script>
   <!-- 本地离线缓存模式 -->
   <script>
-    if (typeof navigator.serviceWorker !== 'undefined') {navigator.serviceWorker.register('./js/docsify-serviceWorker.js')}
+    if (typeof navigator.serviceWorker !== 'undefined') {navigator.serviceWorker.register('js/docsify-serviceWorker.js')}
   </script>
 
 </body>
