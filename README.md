@@ -1,8 +1,5 @@
 # ![LinuxMirrors](./docs/img/logo.png)
 
-<a href="https://github.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/github-1.svg" width="34" height="42"></a>
-&nbsp;<a href="https://github.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/github-2.svg" width="70" height="52"></a>
-&nbsp;&nbsp;&nbsp;<a href="https://gitee.com/SuperManito/LinuxMirrors"><img src="./docs/img/icon/gitee.svg" width="100" height="50"/></a>
 - __`GNU/Linux` 一键更换国内软件源脚本__
 - __本项目旨在为从事计算机相关行业的朋友们提供便利__
 - __理论支持所有架构的环境，ARM 环境已经过测试__
@@ -13,7 +10,7 @@
 
   <table>
   <tr>
-      <td rowspan="7"> 支持<br/>版本<br/>
+      <td rowspan="8"> 支持<br/>版本<br/>
   </tr>
   <tr>
       <td><a href="https://www.debian.org"><img src="./docs/img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
@@ -21,11 +18,11 @@
   </tr>
   <tr>
       <td><a href="https://cn.ubuntu.com"><img src="./docs/img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
-      <td align="center">16.04 ~ 22</td>
+      <td align="center">16.04 ~ 23</td>
   </tr>
   <tr>
       <td><a href="https://www.kali.org"><img src="./docs/img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
-      <td align="center">2.0 ~ 2022</td>
+      <td align="center">2.0 ~ 2023</td>
   </tr>
   <tr>
       <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux"><img src="./docs/img/icon/redhat.svg" width="16" height="16"/></a>&nbsp;Red Hat Enterprise Linux</td>
@@ -34,6 +31,10 @@
   <tr>
       <td><a href="https://www.centos.org"><img src="./docs/img/icon/centos.svg" width="16" height="16"/></a>&nbsp;CentOS</td>
       <td align="center">7.0 ~ 8.5</td>
+  </tr>
+  <tr>
+      <td><a href="https://www.centos.org"><img src="./docs/img/icon/centos.svg" width="16" height="16"/></a>&nbsp;CentOS Stream</td>
+      <td align="center">8 ~ 9</td>
   </tr>
   <tr>
       <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./docs/img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
@@ -52,7 +53,7 @@
   | 2 | 腾讯云 | [mirrors.tencent.com](https://mirrors.tencent.com) | ✓ | ✓ | ✓ | ✓ |
   | 3 | 华为云 | [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com) | ✓ | ✓ | ✓ | ✓ |
   | 4 | 网易 | [mirrors.163.com](https://mirrors.163.com) |  |  | ✓ |  |
-  | 5 | 搜狐 | [mirrors.sohu.com](https://mirrors.sohu.com) |  |  |  |  |
+  | 5 | 搜狐 | [mirrors.sohu.com](https://mirrors.sohu.com) |  |  | ✓ |  |
   | 6 | 清华大学 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) | ✓ | ✓ | ✓ | ✓ |
   | 7 | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn) |  | ✓ | ✓ | ✓ |
   | 8 | 南京大学 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn) |  | ✓ | ✓ | ✓ |

@@ -8,7 +8,7 @@
 
 <table>
 <tr>
-    <td rowspan="7"> 支持<br/>版本<br/>
+    <td rowspan="8"> 支持<br/>版本<br/>
 </tr>
 <tr>
     <td><a href="https://www.debian.org"><img src="./img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
@@ -16,11 +16,11 @@
 </tr>
 <tr>
     <td><a href="https://cn.ubuntu.com"><img src="./img/icon/ubuntu.svg" width="16" height="16"/></a>&nbsp;Ubuntu</td>
-    <td align="center">16.04 ~ 22</td>
+    <td align="center">16.04 ~ 23</td>
 </tr>
 <tr>
     <td><a href="https://www.kali.org"><img src="./img/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
-    <td align="center">2.0 ~ 2022</td>
+    <td align="center">2.0 ~ 2023</td>
 </tr>
 <tr>
     <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux"><img src="./img/icon/redhat.svg" width="16" height="16"/></a>&nbsp;Red Hat Enterprise Linux</td>
@@ -30,6 +30,10 @@
     <td><a href="https://www.centos.org"><img src="./img/icon/centos.svg" width="16" height="16"/></a>&nbsp;CentOS</td>
     <td align="center">7.0 ~ 8.5</td>
 </tr>
+  <tr>
+      <td><a href="https://www.centos.org"><img src="./docs/img/icon/centos.svg" width="16" height="16"/></a>&nbsp;CentOS Stream</td>
+      <td align="center">8 ~ 9</td>
+  </tr>
 <tr>
     <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
     <td align="center">28 ~ 37</td>
@@ -48,7 +52,7 @@
 | 2 | 腾讯云 | [mirrors.tencent.com](https://mirrors.tencent.com) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
 | 3 | 华为云 | [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
 | 4 | 网易 | [mirrors.163.com](https://mirrors.163.com) |  |  | :fa-solid fa-check: |  |
-| 5 | 搜狐 | [mirrors.sohu.com](https://mirrors.sohu.com) |  |  |  |  |
+| 5 | 搜狐 | [mirrors.sohu.com](https://mirrors.sohu.com) |  |  | :fa-solid fa-check: |  |
 | 6 | 清华大学 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
 | 7 | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn) |  | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
 | 8 | 南京大学 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn) |  | :fa-solid fa-check: | :fa-solid fa-check: | :fa-solid fa-check: |
