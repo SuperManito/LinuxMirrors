@@ -422,6 +422,7 @@ function RedHatMirrors() {
         # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
         if [ ${SYSTEM_VERSION_NUMBER} -eq "8" ]; then
             sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' ${SYSTEM_CENTOS}-*
+            sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' ${SYSTEM_CENTOS}-Sources.repo # 单独处理 CentOS-Sources.repo
             sed -i "s/\$releasever/8.5.2111/g" ${SYSTEM_CENTOS}-*
         fi
 
@@ -447,17 +448,24 @@ function RedHatMirrors() {
         ;;
     "CentOS Stream")
         case ${SYSTEM_VERSION_NUMBER} in
+        # CentOS Stream 9 使用的是 centos-stream 镜像，而 CentOS Stream 8 使用的是 centos 镜像
         9)
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' centos*
+            sed -i 's|^metalink=|#metalink=|g' \
+                centos.repo \
+                centos-addons.repo
 
             # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" centos*
+            sed -i "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                centos.repo \
+                centos-addons.repo
             # 更换软件源
-            sed -i "s|mirror.centos.org|${SOURCE}|g" centos*
+            sed -i "s|mirror.stream.centos.org|${SOURCE}/centos-stream|g" \
+                centos.repo \
+                centos-addons.repo
             ;;
         8)
             sed -i 's|^mirrorlist=|#mirrorlist=|g' ${SYSTEM_CENTOS}-*
-            sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' ${SYSTEM_CENTOS}-* # 单独处理 CentOS-Stream-Sources.repo
+            sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' ${SYSTEM_CENTOS}-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
 
             # 更换 WEB 协议（HTTP/HTTPS）
             sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" ${SYSTEM_CENTOS}-*
@@ -479,8 +487,13 @@ function RedHatMirrors() {
             fedora-updates-testing-modular.repo
 
         # 更换 WEB 协议（HTTP/HTTPS）
-        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" fedora*
-
+        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+            fedora.repo \
+            fedora-updates.repo \
+            fedora-modular.repo \
+            fedora-updates-modular.repo \
+            fedora-updates-testing.repo \
+            fedora-updates-testing-modular.repo
         # 更换软件源
         sed -i "s|download.example/pub/fedora/linux|${SOURCE}/fedora|g" \
             fedora.repo \
@@ -1156,146 +1169,14 @@ EOF
 function GenRepoFiles_CentOSStream() {
     case ${SYSTEM_VERSION_NUMBER} in
     9)
-        local CentOSStream9_RepoFiles="centos-addons.repo centos.repo"
+        local CentOSStream9_RepoFiles="centos.repo centos-addons.repo"
         for REPOS in $CentOSStream9_RepoFiles; do
             touch $REPOS
         done
-        cat >$Dir_RedHatRepos/centos-addons.repo <<\EOF
-[highavailability]
-name=CentOS Stream $releasever - HighAvailability
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
-
-[highavailability-debug]
-name=CentOS Stream $releasever - HighAvailability - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[highavailability-source]
-name=CentOS Stream $releasever - HighAvailability - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[nfv]
-name=CentOS Stream $releasever - NFV
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
-
-[nfv-debug]
-name=CentOS Stream $releasever - NFV - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[nfv-source]
-name=CentOS Stream $releasever - NFV - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[rt]
-name=CentOS Stream $releasever - RT
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
-
-[rt-debug]
-name=CentOS Stream $releasever - RT - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[rt-source]
-name=CentOS Stream $releasever - RT - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[resilientstorage]
-name=CentOS Stream $releasever - ResilientStorage
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
-
-[resilientstorage-debug]
-name=CentOS Stream $releasever - ResilientStorage - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[resilientstorage-source]
-name=CentOS Stream $releasever - ResilientStorage - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-
-[extras-common]
-name=CentOS Stream $releasever - Extras packages
-metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=1
-
-[extras-common-source]
-name=CentOS Stream $releasever - Extras packages - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
-EOF
-
         cat >$Dir_RedHatRepos/centos.repo <<\EOF
 [baseos]
 name=CentOS Stream $releasever - BaseOS
+#baseurl=https://mirror.stream.centos.org/$releasever-stream/BaseOS/$basearch/os/
 metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-$stream&arch=$basearch&protocol=https,http
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 gpgcheck=1
@@ -1324,6 +1205,7 @@ enabled=0
 
 [appstream]
 name=CentOS Stream $releasever - AppStream
+#baseurl=https://mirror.stream.centos.org/$releasever-stream/AppStream/$basearch/os/
 metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-$stream&arch=$basearch&protocol=https,http
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 gpgcheck=1
@@ -1352,6 +1234,7 @@ enabled=0
 
 [crb]
 name=CentOS Stream $releasever - CRB
+#baseurl=https://mirror.stream.centos.org/$releasever-stream/CRB/$basearch/os/
 metalink=https://mirrors.centos.org/metalink?repo=centos-crb-$stream&arch=$basearch&protocol=https,http
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 gpgcheck=1
@@ -1373,6 +1256,143 @@ enabled=0
 name=CentOS Stream $releasever - CRB - Source
 metalink=https://mirrors.centos.org/metalink?repo=centos-crb-source-$stream&arch=source&protocol=https,http
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+EOF
+        cat >$Dir_RedHatRepos/centos-addons.repo <<\EOF
+[highavailability]
+name=CentOS Stream $releasever - HighAvailability
+#baseurl=https://mirror.stream.centos.org/$releasever-stream/HighAvailability/$basearch/os/
+metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[highavailability-debug]
+name=CentOS Stream $releasever - HighAvailability - Debug
+metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-debug-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[highavailability-source]
+name=CentOS Stream $releasever - HighAvailability - Source
+metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-source-$stream&arch=source&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[nfv]
+name=CentOS Stream $releasever - NFV
+#baseurl=https://mirror.stream.centos.org/$releasever-stream/NFV/$basearch/os/
+metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[nfv-debug]
+name=CentOS Stream $releasever - NFV - Debug
+metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-debug-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[nfv-source]
+name=CentOS Stream $releasever - NFV - Source
+metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-source-$stream&arch=source&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[rt]
+name=CentOS Stream $releasever - RT
+#baseurl=https://mirror.stream.centos.org/$releasever-stream/RT/$basearch/os/
+metalink=https://mirrors.centos.org/metalink?repo=centos-rt-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[rt-debug]
+name=CentOS Stream $releasever - RT - Debug
+metalink=https://mirrors.centos.org/metalink?repo=centos-rt-debug-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[rt-source]
+name=CentOS Stream $releasever - RT - Source
+metalink=https://mirrors.centos.org/metalink?repo=centos-rt-source-$stream&arch=source&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[resilientstorage]
+name=CentOS Stream $releasever - ResilientStorage
+#baseurl=https://mirror.stream.centos.org/$releasever-stream/ResilientStorage/$basearch/os/
+metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[resilientstorage-debug]
+name=CentOS Stream $releasever - ResilientStorage - Debug
+metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-debug-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[resilientstorage-source]
+name=CentOS Stream $releasever - ResilientStorage - Source
+metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-source-$stream&arch=source&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[extras-common]
+name=CentOS Stream $releasever - Extras packages
+#baseurl=https://mirror.stream.centos.org/SIGs/$releasever-stream/extras/$basearch/extras-common/
+metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-$stream&arch=$basearch&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=1
+
+[extras-common-source]
+name=CentOS Stream $releasever - Extras packages - Source
+metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-source-$stream&arch=source&protocol=https,http
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
 gpgcheck=1
 repo_gpgcheck=0
 metadata_expire=6h
