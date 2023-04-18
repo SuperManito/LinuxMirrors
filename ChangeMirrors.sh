@@ -15,6 +15,7 @@ SYSTEM_REDHAT="RedHat"
 SYSTEM_RHEL="RedHat"
 SYSTEM_CENTOS="CentOS"
 SYSTEM_CENTOS_STREAM="CentOS Stream"
+SYSTEM_ROCKY="Rocky"
 SYSTEM_FEDORA="Fedora"
 
 ## 定义目录和文件
@@ -52,7 +53,7 @@ function Combin_Function() {
     EnvJudgment
     ChooseMirrors
     BackupMirrors
-    RemoveOldMirrorsFiles
+    RemoveOldMirrors
     ChangeMirrors
     UpgradeSoftware
     AuthorSignature
@@ -90,15 +91,9 @@ function EnvJudgment() {
         SYSTEM_VERSION="$(${DebianRelease_CMD} -cs)"
         ;;
     "${SYSTEM_REDHAT}")
-        SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | sed 's/ //g' | cut -c1-6)"
-        if [[ "${SYSTEM_JUDGMENT}" = ${SYSTEM_CENTOS} || "${SYSTEM_JUDGMENT}" = ${SYSTEM_RHEL} ]]; then
-            SYSTEM_VERSION_NUMBER="${SYSTEM_VERSION_NUMBER}"
-            # 判断是否为 CentOS Stream
-            cat $File_RedHatRelease | grep -q "Stream"
-            [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
-        else
-            SYSTEM_VERSION_NUMBER=""
-        fi
+        SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
+        cat $File_RedHatRelease | grep -q "${SYSTEM_CENTOS_STREAM}"
+        [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
         ;;
     esac
     ## 判定系统处理器架构
@@ -278,7 +273,7 @@ function BackupMirrors() {
 }
 
 ## 删除原有源
-function RemoveOldMirrorsFiles() {
+function RemoveOldMirrors() {
     case ${SYSTEM_FACTIONS} in
     "${SYSTEM_DEBIAN}")
         [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
@@ -361,7 +356,6 @@ function UpgradeSoftware() {
                 yum autoremove -y >/dev/null 2>&1
                 yum clean packages -y >/dev/null 2>&1
             fi
-
             echo -e "\n$COMPLETE 清理完毕"
             ;;
         [Nn] | [Nn][Oo]) ;;
@@ -380,7 +374,7 @@ function UpgradeSoftware() {
 function DebianMirrors() {
     ## 修改国内源
     case "${SYSTEM_JUDGMENT}" in
-    Ubuntu)
+    "${SYSTEM_UBUNTU}")
         echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
 deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
@@ -408,7 +402,7 @@ deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports mai
 # deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free" >>$File_DebianSourceList
         ;;
-    Kali)
+    "${SYSTEM_KALI}")
         echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib
 deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib" >>$File_DebianSourceList
         ;;
@@ -425,6 +419,9 @@ function RedHatMirrors() {
     "${SYSTEM_CENTOS_STREAM}")
         GenRepoFiles_CentOSStream
         ;;
+    "${SYSTEM_ROCKY}")
+        GenRepoFiles_RockyLinux
+        ;;
     "${SYSTEM_FEDORA}")
         GenRepoFiles_Fedora
         ;;
@@ -433,12 +430,12 @@ function RedHatMirrors() {
     ## 修改源
     cd $Dir_RedHatRepos
     case "${SYSTEM_JUDGMENT}" in
-    RedHat | CentOS)
+    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}")
         sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
 
         ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
         # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
-        if [ ${SYSTEM_VERSION_NUMBER} -eq "8" ]; then
+        if [ ${SYSTEM_VERSION_NUMBER:0:1} -eq "8" ]; then
             sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
             sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
             sed -i "s/\$releasever/8.5.2111/g" CentOS-*
@@ -451,7 +448,7 @@ function RedHatMirrors() {
 
         # Red Hat Enterprise Linux 修改版本号
         if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_RHEL} ]; then
-            case ${SYSTEM_VERSION_NUMBER} in
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
             8)
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
                 ;;
@@ -461,12 +458,12 @@ function RedHatMirrors() {
             esac
         fi
 
-        ## 安装/更换基于 RHEL/CentOS 的 EPEL 扩展国内源
+        # EPEL 扩展软件包（安装/换源）
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
         ;;
-    "CentOS Stream")
-        case ${SYSTEM_VERSION_NUMBER} in
+    "${SYSTEM_CENTOS_STREAM}")
         # CentOS Stream 9 使用的是 centos-stream 镜像，而 CentOS Stream 8 使用的是 centos 镜像
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
             sed -i 's|^metalink=|#metalink=|g' \
                 centos.repo \
@@ -492,10 +489,45 @@ function RedHatMirrors() {
             ;;
         esac
 
-        ## 安装/更换基于 RHEL/CentOS 的 EPEL 扩展国内源
+        # EPEL 扩展软件包（安装/换源）
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
         ;;
-    Fedora)
+    "${SYSTEM_ROCKY}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            sed -i 's|^mirrorlist=|#mirrorlist=|g' \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+
+            # 更换 WEB 协议（HTTP/HTTPS）
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+            # 更换软件源
+            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/rocky|g" \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+            ;;
+        8)
+            sed -i 's|^mirrorlist=|#mirrorlist=|g' Rocky-*
+
+            # 更换 WEB 协议（HTTP/HTTPS）
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" Rocky-*
+            # 更换软件源
+            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/rocky|g" Rocky-*
+            ;;
+        esac
+
+        # EPEL 扩展软件包（安装/换源）
+        [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
+        ;;
+    "${SYSTEM_FEDORA}")
         sed -i 's|^metalink=|#metalink=|g' \
             fedora.repo \
             fedora-updates.repo \
@@ -527,23 +559,23 @@ function RedHatMirrors() {
     yum clean all >/dev/null 2>&1
 }
 
-## 安装/更换基于 RHEL/CentOS 的 EPEL (Extra Packages for Enterprise Linux) 扩展国内源
+## 安装/更换基于 RHEL/CentOS 等红帽系 Linux 的 EPEL (Extra Packages for Enterprise Linux) 扩展国内源
 function EPELMirrors() {
     ## 安装 EPEL 软件包
     if [ ${VERIFICATION_EPEL} -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
-        yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER}.noarch.rpm
+        yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
     fi
     ## 删除原有 EPEL 扩展 repo 源文件
     [ ${VERIFICATION_EPELFILES} -eq 0 ] && rm -rf $Dir_RedHatRepos/epel*
     [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_RedHatReposBackup/epel*
     ## 生成官方 EPEL 扩展 repo 源文件
-    EPELReposCreate
+    GenRepoFiles_EPEL
 
     sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
 
     # 更换 WEB 协议（HTTP/HTTPS）
-    case ${SYSTEM_VERSION_NUMBER} in
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
     9 | 8)
         sed -i "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" $Dir_RedHatRepos/epel*
         ;;
@@ -552,7 +584,7 @@ function EPELMirrors() {
         ;;
     esac
     # 修改源
-    case ${SYSTEM_VERSION_NUMBER} in
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
     9)
         sed -i "s|download.example/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
         ;;
@@ -686,8 +718,9 @@ function ChooseMirrors() {
         ;;
     esac
 
-    ## 更换基于 RHEL/CentOS 的 EPEL (Extra Packages for Enterprise Linux) 扩展国内源
-    if [[ "${SYSTEM_JUDGMENT}" = ${SYSTEM_CENTOS} || "${SYSTEM_JUDGMENT}" = ${SYSTEM_RHEL} || "${SYSTEM_JUDGMENT}" = ${SYSTEM_CENTOS_STREAM} ]]; then
+    # 适用于 RHEL/CentOS/Rocky 的 EPEL 扩展软件包（安装/换源）
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}")
         ## 判断是否已安装 EPEL 软件包
         rpm -qa | grep epel-release -q
         VERIFICATION_EPEL=$?
@@ -717,7 +750,8 @@ function ChooseMirrors() {
             EPEL_INSTALL="False"
             ;;
         esac
-    fi
+        ;;
+    esac
 
     ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
     if [[ ${NOT_SUPPORT_HTTPS} == "True" ]]; then
@@ -746,7 +780,7 @@ function ChooseMirrors() {
 
 ## 生成 CentOS 官方 repo 源文件
 function GenRepoFiles_CentOS() {
-    case ${SYSTEM_VERSION_NUMBER} in
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
     8)
         cat >$Dir_RedHatRepos/CentOS-Linux-AppStream.repo <<\EOF
 # CentOS-Linux-AppStream.repo
@@ -1177,7 +1211,7 @@ EOF
 
 ## 生成 CentOS Stream 官方 repo 源文件
 function GenRepoFiles_CentOSStream() {
-    case ${SYSTEM_VERSION_NUMBER} in
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
     9)
         cat >$Dir_RedHatRepos/centos.repo <<\EOF
 [baseos]
@@ -1677,6 +1711,692 @@ EOF
     esac
 }
 
+## 生成 Rocky Linux 官方 repo 源文件
+function GenRepoFiles_RockyLinux() {
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    9)
+        cat >$Dir_RedHatRepos/rocky.repo <<\EOF
+# rocky.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[baseos]
+name=Rocky Linux $releasever - BaseOS
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/os/
+gpgcheck=1
+enabled=1
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[baseos-debug]
+name=Rocky Linux $releasever - BaseOS - Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[baseos-source]
+name=Rocky Linux $releasever - BaseOS - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[appstream]
+name=Rocky Linux $releasever - AppStream
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/os/
+gpgcheck=1
+enabled=1
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[appstream-debug]
+name=Rocky Linux $releasever - AppStream - Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[appstream-source]
+name=Rocky Linux $releasever - AppStream - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[crb]
+name=Rocky Linux $releasever - CRB
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[crb-debug]
+name=Rocky Linux $releasever - CRB - Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[crb-source]
+name=Rocky Linux $releasever - CRB - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=CRB-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+EOF
+        cat >$Dir_RedHatRepos/rocky-addons.repo <<\EOF
+# rocky-addons.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[highavailability]
+name=Rocky Linux $releasever - High Availability
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[highavailability-debug]
+name=Rocky Linux $releasever - High Availability - Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[highavailability-source]
+name=Rocky Linux $releasever - High Availability - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=HighAvailability-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[resilientstorage]
+name=Rocky Linux $releasever - Resilient Storage
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[resilientstorage-debug]
+name=Rocky Linux $releasever - Resilient Storage - Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[resilientstorage-source]
+name=Rocky Linux $releasever - Resilient Storage - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=ResilientStorage-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[nfv]
+name=Rocky Linux $releasever - NFV
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[nfv-debug]
+name=Rocky Linux $releasever - NFV Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[nfv-source]
+name=Rocky Linux $releasever - NFV Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[rt]
+name=Rocky Linux $releasever - Realtime
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[rt-debug]
+name=Rocky Linux $releasever - Realtime Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[rt-source]
+name=Rocky Linux $releasever - Realtime Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[sap]
+name=Rocky Linux $releasever - SAP
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[sap-debug]
+name=Rocky Linux $releasever - SAP Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[sap-source]
+name=Rocky Linux $releasever - SAP Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[saphana]
+name=Rocky Linux $releasever - SAPHANA
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[saphana-debug]
+name=Rocky Linux $releasever - SAPHANA Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[saphana-source]
+name=Rocky Linux $releasever - SAPHANA Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+EOF
+        cat >$Dir_RedHatRepos/rocky-devel.repo <<\EOF
+# rocky-devel.repo
+#
+# devel and no-package-left-behind
+
+[devel]
+name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/devel/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+EOF
+        cat >$Dir_RedHatRepos/rocky-extras.repo <<\EOF
+# rocky-extras.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[extras]
+name=Rocky Linux $releasever - Extras
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/os/
+gpgcheck=1
+enabled=1
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[extras-debug]
+name=Rocky Linux $releasever - Extras Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[extras-source]
+name=Rocky Linux $releasever - Extras Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[plus]
+name=Rocky Linux $releasever - Plus
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=plus-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[plus-debug]
+name=Rocky Linux $releasever - Plus - Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=plus-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[plus-source]
+name=Rocky Linux $releasever - Plus - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=plus-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+EOF
+        ;;
+    8)
+        cat >$Dir_RedHatRepos/Rocky-AppStream.repo <<\EOF
+# Rocky-AppStream.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[appstream]
+name=Rocky Linux $releasever - AppStream
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/os/
+gpgcheck=1
+enabled=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-BaseOS.repo <<\EOF
+# Rocky-BaseOS.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[baseos]
+name=Rocky Linux $releasever - BaseOS
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/os/
+gpgcheck=1
+enabled=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-Debuginfo.repo <<\EOF
+# Rocky-Debuginfo.repo
+#
+
+[baseos-debug]
+name=Rocky Linux $releasever - BaseOS - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[appstream-debug]
+name=Rocky Linux $releasever - AppStream - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[ha-debug]
+name=Rocky Linux $releasever - High Availability - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever-debug
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[powertools-debug]
+name=Rocky Linux $releasever - PowerTools - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=PowerTools-$releasever-debug
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/PowerTools/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[resilient-storage-debug]
+name=Rocky Linux $releasever - Resilient Storage - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever-debug
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-Devel.repo <<\EOF
+# Rocky-Devel.repo
+#
+
+[devel]
+name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT AND KOJI USE
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=Devel-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/Devel/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-Extras.repo <<\EOF
+# Rocky-Extras.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[extras]
+name=Rocky Linux $releasever - Extras
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/os/
+gpgcheck=1
+enabled=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-HighAvailability.repo <<\EOF
+# Rocky-HighAvailability.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[ha]
+name=Rocky Linux $releasever - HighAvailability
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-Media.repo <<\EOF
+# Rocky-Media.repo
+#
+# You can use this repo to install items directly off the installation media.
+# Verify your mount point matches one of the below file:// paths.
+
+[media-baseos]
+name=Rocky Linux $releasever - Media - BaseOS
+baseurl=file:///media/Rocky/BaseOS
+        file:///media/cdrom/BaseOS
+        file:///media/cdrecorder/BaseOS
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[media-appstream]
+name=Rocky Linux $releasever - Media - AppStream
+baseurl=file:///media/Rocky/AppStream
+        file:///media/cdrom/AppStream
+        file:///media/cdrecorder/AppStream
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-NFV.repo <<\EOF
+# Rocky-NFV.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[nfv]
+name=Rocky Linux $releasever - NFV
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/nfv/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-Plus.repo <<\EOF
+# Rocky-Plus.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[plus]
+name=Rocky Linux $releasever - Plus
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=rockyplus-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-PowerTools.repo <<\EOF
+# Rocky-PowerTools.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[powertools]
+name=Rocky Linux $releasever - PowerTools
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=PowerTools-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/PowerTools/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-ResilientStorage.repo <<\EOF
+# Rocky-ResilientStorage.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[resilient-storage]
+name=Rocky Linux $releasever - ResilientStorage
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-RT.repo <<\EOF
+# Rocky-RT.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[rt]
+name=Rocky Linux $releasever - Realtime
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        cat >$Dir_RedHatRepos/Rocky-Sources.repo <<\EOF
+# Rocky-Sources.repo
+
+[baseos-source]
+name=Rocky Linux $releasever - BaseOS - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/source/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[appstream-source]
+name=Rocky Linux $releasever - AppStream - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/source/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+#[extras-source]
+#name=Rocky Linux $releasever - Extras - Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=extras-$releasever-source
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/source/tree/
+#gpgcheck=1
+#enabled=0
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+#[plus-source]
+#name=Rocky Linux $releasever - Plus - Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=plus-$releasever-source
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/Plus/source/tree/
+#gpgcheck=1
+#enabled=0
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[ha-source]
+name=Rocky Linux $releasever - High Availability - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=HighAvailability-$releasever-source
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/source/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[powertools-source]
+name=Rocky Linux $releasever - PowerTools - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=PowerTools-$releasever-source
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/PowerTools/source/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+
+[resilient-storage-source]
+name=Rocky Linux $releasever - Resilient Storage - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=ResilientStorage-$releasever-source
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/source/tree/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+EOF
+        ;;
+    esac
+}
+
 ## 生成 Fedora 官方 repo 源文件
 function GenRepoFiles_Fedora() {
     cat >$Dir_RedHatRepos/fedora-cisco-openh264.repo <<\EOF
@@ -1933,10 +2653,8 @@ EOF
 }
 
 ## 生成 EPEL 扩展 repo 官方源文件
-function EPELReposCreate() {
-    cd $Dir_RedHatRepos
-
-    case ${SYSTEM_VERSION_NUMBER} in
+function GenRepoFiles_EPEL() {
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
     9)
         cat >$Dir_RedHatRepos/epel.repo <<\EOF
 [epel]
