@@ -8,7 +8,6 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="css/docsify.css" />
-  <link rel="stylesheet" href="css/fontawesome.css" />
   <link rel="icon" type="image/x-icon" href="img/icon/linux.svg" />
 </head>
 
@@ -44,23 +43,26 @@
       // 搜索
       search: {
         paths: 'auto',
-        maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+        maxAge: 86400000,
         placeholder: '在此输入搜索内容',
         noData: '找不到结果！',
-        // 搜索标题的最大层级, 1 - 6
-        depth: 2,
+        depth: 6,
         hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
-        // 避免搜索索引冲突
-        // 同一域下的多个网站之间
         namespace: 'website',
-        // 使用不同的索引作为路径前缀（namespaces）
-        // 注意：仅适用于 paths: 'auto' 模式
-        // 初始化索引时，我们从侧边栏查找第一个路径
-        // 如果它与列表中的前缀匹配，我们将切换到相应的索引
-        pathNamespaces: ['/zh-cn', '/ru-ru', '/ru-ru/v1'],
-        // 您可以提供一个正则表达式来匹配前缀。在这种情况下，
-        // 匹配到的字符串将被用来识别索引
-        pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
+        pathNamespaces: ['/zh-cn'],
+        pathNamespaces: /^(\/(zh-cn))?(\/(v1|v2))?/
+      },
+
+      // 页面自定义标题
+      customPageTitle: {
+        suffix: 'Hellworld', // title suffix.
+      },
+
+      // 页脚内容
+      footer: {
+        style: 'text-align: center; font-size: 16px; line-height: 1.5; margin-top: 1.5em; color: var(--sidebarSublinkColor)',
+        copy: 'Copyright 2021 ~ 2023 <i class="fa-regular fa-copyright"></i><a href="https://github.com/SuperManito" target="_blank"> SuperManito</a></br>',
+        auth: 'Released under the <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE" target="_blank">GPL-2.0</a> . Website built with  <a href="https://docsify.js.org" target="_blank" rel="noreferrer" rel="noopener">Docsify</a>'
       },
 
       // 选项卡
@@ -76,7 +78,7 @@
       count: {
         countable: true,
         position: 'bottom',
-        margin: "30px",
+        margin: "0",
         float: 'right',
         fontsize: '1em',
         color: 'var(--textColor)',
@@ -88,11 +90,11 @@
         isExpected: true
       },
 
-      // 页脚内容
-      footer: {
-        style: 'text-align: center; font-size: 16px; line-height: 1.5; margin-top: 1.5em; color: var(--sidebarSublinkColor)',
-        copy: 'Copyright 2021 ~ 2023 <i class="fa-regular fa-copyright"></i><a href="https://github.com/SuperManito" target="_blank"> SuperManito</a></br>',
-        auth: 'Released under the <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE" target="_blank">GPL-2.0</a> . Website built with  <a href="https://docsify.js.org" target="_blank" rel="noreferrer" rel="noopener">Docsify</a>'
+      // 分页导航
+      pagination: {
+        previousText: '上一页',
+        nextText: '下一页',
+        crossChapter: true,
       },
 
       // 灵活警告插件
@@ -104,7 +106,7 @@
         },
         tip: {
           label: {
-            '/': '友情提示'
+            '/': '提示'
           }
         },
         warning: {
@@ -131,32 +133,32 @@
     }
   </script>
   <!-- Docsify v4.13 -->
-  <script src="js/docsify.js"></script>
-  <!-- 暗黑主题 -->
-  <script src="js/docsify-darklightTheme.js"></script>
-  <!-- 灵活警告UI插件 -->
-  <script src="js/docsify-flexible-alerts.js"></script>
-  <!-- 页脚内容 -->
-  <script src="js/docsify-footer.js"></script>
-  <!-- 复制代码到剪贴板 -->
-  <script src="js/docsify-copy-code.js"></script>
-  <!-- 字数统计 -->
-  <script src="js/docsify-countable.js"></script>
-  <!-- 阅读进度条 -->
-  <script src="js/docsify-progress.js"></script>
-  <!-- Emoji表情支持 -->
-  <script src="js/docsify-emoji.js"></script>
-  <!-- 搜索 -->
-  <script src="js/docsify-search.js"></script>
-  <!-- 代码高亮 -->
-  <script src="js/prism-bash.min.js"></script>
+  <script type="text/javascript" src="js/docsify.js"></script>
   <!-- Font Awesome 图标 -->
-  <script src="js/fontawesome.min.js"></script>
-  <script src="js/fontawesome.sub.js"></script>
+  <script type="text/javascript" src="js/docsify-fontawesome.js"></script>
+  <script type="text/javascript" src="js/fontawesome-kit.js"></script>
+  <!-- 主题 -->
+  <script type="text/javascript" src="js/docsify-darklightTheme.js"></script>
+  <!-- 灵活警告 -->
+  <script type="text/javascript" src="js/docsify-flexible-alerts.js"></script>
+  <!-- 页脚内容 -->
+  <script type="text/javascript" src="js/docsify-footer.js"></script>
+  <!-- 复制按钮 -->
+  <script type="text/javascript" src="js/docsify-copyButton.js"></script>
+  <!-- 字数统计 -->
+  <script type="text/javascript" src="js/docsify-countable.js"></script>
+  <!-- 阅读进度条 -->
+  <script type="text/javascript" src="js/docsify-progress.js"></script>
+  <!-- Emoji表情支持 -->
+  <script type="text/javascript" src="js/docsify-emoji.js"></script>
+  <!-- 搜索 -->
+  <script type="text/javascript" src="js/docsify-search.js"></script>
   <!-- 本地离线缓存模式 -->
   <script>
     if (typeof navigator.serviceWorker !== 'undefined') {navigator.serviceWorker.register('js/docsify-serviceWorker.js')}
   </script>
+  <!-- 代码块高亮 -->
+  <script type="text/javascript" src="js/prism-bash.min.js"></script>
 
 </body>
 
