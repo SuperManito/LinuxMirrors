@@ -75,7 +75,7 @@ function EnvJudgment() {
     SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 判定系统名称、版本、版本号
     case ${SYSTEM_FACTIONS} in
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -eq 0 ]; then
@@ -134,7 +134,7 @@ function EnvJudgment() {
     fi
     ## 定义软件源同步/更新文字
     case ${SYSTEM_FACTIONS} in
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         SYNC_TXT="更新"
         ;;
     "${SYSTEM_REDHAT}")
@@ -174,7 +174,7 @@ function CloseFirewall() {
 ## 备份原有源
 function BackupMirrors() {
     case ${SYSTEM_FACTIONS} in
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         ## 判断 /etc/apt/sources.list.d 目录下是否存在文件
         [ -d $Dir_DebianExtendSource ] && ls $Dir_DebianExtendSource | grep *.list -q
         VERIFICATION_FILES=$?
@@ -193,7 +193,7 @@ function BackupMirrors() {
     esac
 
     case ${SYSTEM_FACTIONS} in
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         ## /etc/apt/sources.list
         if [ -s $File_DebianSourceList ]; then
             if [ -s $File_DebianSourceListBackup ]; then
@@ -280,7 +280,7 @@ function BackupMirrors() {
 ## 删除原有源
 function RemoveOldMirrorsFiles() {
     case ${SYSTEM_FACTIONS} in
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
         ;;
     "${SYSTEM_REDHAT}")
@@ -303,7 +303,7 @@ function RemoveOldMirrorsFiles() {
 ## 换源
 function ChangeMirrors() {
     case ${SYSTEM_FACTIONS} in
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         DebianMirrors
         ;;
     "${SYSTEM_REDHAT}")
@@ -312,7 +312,7 @@ function ChangeMirrors() {
     esac
     echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case ${SYSTEM_FACTIONS} in
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         apt-get update
         ;;
     "${SYSTEM_REDHAT}")
@@ -342,7 +342,7 @@ function UpgradeSoftware() {
     [Nn] | [Nn][Oo])
         echo -e ''
         case ${SYSTEM_FACTIONS} in
-        "${SYSTEM_Debian}")
+        "${SYSTEM_DEBIAN}")
             apt-get upgrade -y
             ;;
         "${SYSTEM_REDHAT}")
@@ -395,7 +395,7 @@ deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports mai
 # deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse" >>$File_DebianSourceList
         ;;
-    "${SYSTEM_Debian}")
+    "${SYSTEM_DEBIAN}")
         echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
 deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
