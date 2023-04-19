@@ -39,7 +39,7 @@
     <td align="center">8.0 ~ 9</td>
 </tr>
 <tr>
-    <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
+    <td><a href="https://fedoraproject.org/zh-Hans"><img src="./img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
     <td align="center">28 ~ 37</td>
 </tr>
 </table>

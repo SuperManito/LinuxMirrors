@@ -41,14 +41,12 @@
       <td align="center">8.0 ~ 9</td>
   </tr>
   <tr>
-      <td><a href="https://getfedora.org/zh_Hans_CN"><img src="./docs/img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
+      <td><a href="https://fedoraproject.org/zh-Hans"><img src="./docs/img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
       <td align="center">28 ~ 37</td>
   </tr>
   </table>
 
-  > 目前仅支持上述基于 Debian 与 RedHat 系的发行版和及其部分衍生版本
-
-***
+  目前仅支持上述基于 Debian 与 RedHat 系的发行版和及其部分衍生版本
 
 - ### 使用方法
 
@@ -66,8 +64,8 @@
 
     </br>
 
-    > __未启用的源：__\
-    > _Debian 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行**取消注释**_\
+    > __未启用的源：__  
+    > _Debian 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行**取消注释**_  
     > _RedHat 系 Linux 部分仓库**默认没有启用**，若需启用请将 `/etc/yum.repos.d` 目录下相关 **repo** 文件中的 `enabled` 值修改为 `1`_
 
   - #### 脚本当前使用的开源镜像站
@@ -88,8 +86,8 @@
     |  12   |  哈尔滨工业大学   |             [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn)              |   ✓   |     ✓      |             |        |   ✓   |
     |  13   | 中国科学技术大学  |            [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn)             |   ✓   |     ✓      |      ✓      |   ✓    |   ✓   |
 
-    > 以上为脚本当前使用的开源镜像站，所有镜像站均支持 `Debian` `Ubuntu` `CentOS` 软件源 \
-    > 如果使用过程中脚本不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可
+    以上为脚本当前使用的开源镜像站，所有镜像站均支持 `Debian` `Ubuntu` `CentOS` 软件源  
+    如果使用过程中脚本不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可
 
   - #### 常见问题与帮助
 
@@ -143,10 +141,10 @@
     bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
     ```
 
-    > `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包\
-    > `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，又称镜像加速器
+    `Docker CE`：Docker Community Edition 镜像仓库，用于下载并安装 Docker 相关软件包  
+    `Docker Hub`：Docker Hub 镜像仓库，默认为官方提供的公共库，用于切换下载镜像时的来源仓库，又称镜像加速器
 
-    > __注意：__\
+    > __注意：__  
     > 脚本集成安装 `Docker Engine` 与 `Docker Compose`，可手动选择安装版本和下载源，还可手动选择镜像加速器，支持国内外服务器环境和 `ARM`架构处理器环境使用。
 
 ***
@@ -154,7 +152,8 @@
 ### LICENSE
 
 Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [GPL-2.0](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
-> 项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重作者的知识成果  
-> 建议通过命令直接调用脚本，如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
+
+项目已设立开源许可协议，传播时需在显著位置标注来源和作者，请尊重作者的知识成果  
+建议通过命令直接调用脚本，如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
 
 __如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__
