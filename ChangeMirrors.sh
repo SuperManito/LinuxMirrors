@@ -47,7 +47,7 @@ ERROR='[\033[31mERROR\033[0m]'
 WORKING='[\033[34m*\033[0m]'
 
 function AuthorSignature() {
-    echo -e "\n${GREEN} ------------ 脚本执行结束 ------------ ${PLAIN}\n"
+    echo -e "\n$COMPLETE 脚本执行结束\n"
     echo -e " \033[1;34m官方网站\033[0m https://supermanito.github.io/LinuxMirrors\n"
 }
 
@@ -94,7 +94,7 @@ function EnvJudgment() {
             fi
         fi
         SYSTEM_JUDGMENT="$(${DebianRelease_CMD} -is)"
-        SYSTEM_VERSION="$(${DebianRelease_CMD} -cs)"
+        SYSTEM_VERSION_CODENAME="$(${DebianRelease_CMD} -cs)"
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
@@ -430,35 +430,35 @@ function DebianMirrors() {
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_UBUNTU}")
         echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main restricted universe multiverse
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-security main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-security main restricted universe multiverse
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main restricted universe multiverse
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main restricted universe multiverse
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main restricted universe multiverse
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-security main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-security main restricted universe multiverse
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main restricted universe multiverse
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main restricted universe multiverse
 
 ## 预发布软件源（不建议启用）
-# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-proposed main restricted universe multiverse" >>$File_DebianSourceList
+# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-proposed main restricted universe multiverse
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-proposed main restricted universe multiverse" >>$File_DebianSourceList
         ;;
     "${SYSTEM_DEBIAN}")
         echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main contrib non-free
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-updates main contrib non-free
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION}-backports main contrib non-free
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main contrib non-free
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main contrib non-free
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main contrib non-free
 
 ## 预发布软件源（不建议启用）
-# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION}/updates main contrib non-free" >>$File_DebianSourceList
+# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION_CODENAME}/updates main contrib non-free
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION_CODENAME}/updates main contrib non-free" >>$File_DebianSourceList
         ;;
     "${SYSTEM_KALI}")
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib
-deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION} main non-free contrib" >>$File_DebianSourceList
+        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib
+deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib" >>$File_DebianSourceList
         ;;
     esac
 }
@@ -512,7 +512,7 @@ function RedHatMirrors() {
             esac
         fi
 
-        # EPEL 扩展软件包（安装/换源）
+        # EPEL 附加软件包（安装/换源）
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
         ;;
     "${SYSTEM_CENTOS_STREAM}")
@@ -543,7 +543,7 @@ function RedHatMirrors() {
             ;;
         esac
 
-        # EPEL 扩展软件包（安装/换源）
+        # EPEL 附加软件包（安装/换源）
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
         ;;
     "${SYSTEM_ROCKY}")
@@ -578,7 +578,7 @@ function RedHatMirrors() {
             ;;
         esac
 
-        # EPEL 扩展软件包（安装/换源）
+        # EPEL 附加软件包（安装/换源）
         [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
         ;;
     "${SYSTEM_FEDORA}")
@@ -624,17 +624,17 @@ function openEulerMirrors() {
     sed -i "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" openEuler.repo
 }
 
-## 安装/更换基于 RHEL/CentOS 等红帽系 Linux 的 EPEL (Extra Packages for Enterprise Linux) 扩展国内源
+## 安装/更换基于 RHEL/CentOS 等红帽系 Linux 的 EPEL (Extra Packages for Enterprise Linux) 附加软件包国内源
 function EPELMirrors() {
     ## 安装 EPEL 软件包
     if [ ${VERIFICATION_EPEL} -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
         yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
     fi
-    ## 删除原有 EPEL 扩展 repo 源文件
+    ## 删除原有 EPEL 附加软件包 repo 源文件
     [ ${VERIFICATION_EPELFILES} -eq 0 ] && rm -rf $Dir_RedHatRepos/epel*
     [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_RedHatReposBackup/epel*
-    ## 生成官方 EPEL 扩展 repo 源文件
+    ## 生成官方 EPEL 附加软件包 repo 源文件
     GenRepoFiles_EPEL
 
     sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
@@ -714,15 +714,11 @@ function ChooseMirrors() {
     }
 
     clear
-    echo -e '+-----------------------------------------------+'
-    echo -e '|                                               |'
-    echo -e '|   =========================================   |'
-    echo -e '|                                               |'
-    echo -e '|     欢迎使用 Linux 一键更换国内软件源脚本     |'
-    echo -e '|                                               |'
-    echo -e '|   =========================================   |'
-    echo -e '|                                               |'
-    echo -e '+-----------------------------------------------+'
+    echo -e '+-------------------------------------+'
+    echo -e '|                                     |'
+    echo -e '|  欢迎使用 Linux 一键更换国内软件源  |'
+    echo -e '|                                     |'
+    echo -e '+-------------------------------------+'
     echo -e ''
     echo -e ' ❖   阿里云                  1)'
     echo -e ' ❖   腾讯云                  2)'
@@ -791,23 +787,23 @@ function ChooseMirrors() {
         ;;
     esac
 
-    # 适用于 RHEL/CentOS/Rocky 的 EPEL 扩展软件包（安装/换源）
+    # 适用于 RHEL/CentOS/Rocky 的 EPEL 附加软件包（安装/换源）
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}")
         ## 判断是否已安装 EPEL 软件包
         rpm -qa | grep epel-release -q
         VERIFICATION_EPEL=$?
-        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 扩展 repo 源文件
+        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
         [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
         VERIFICATION_EPELFILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 扩展 repo 源文件
+        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
         [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
         VERIFICATION_EPELBACKUPFILES=$?
 
         if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 扩展源，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
+            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
         else
-            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 是否安装 EPEL 扩展源? [Y/n] ${PLAIN}")
+            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
         fi
         read -p "${CHOICE_D}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
@@ -2788,7 +2784,7 @@ gpgkey=http://repo.openeuler.org/openEuler-$releasever/source/RPM-GPG-KEY-openEu
 EOF
 }
 
-## 生成 EPEL 扩展 repo 官方源文件
+## 生成 EPEL 附加软件包官方 repo 源文件
 function GenRepoFiles_EPEL() {
     case ${SYSTEM_VERSION_NUMBER:0:1} in
     9)
