@@ -724,23 +724,25 @@ function ChooseMirrors() {
     echo -e '|                                               |'
     echo -e '+-----------------------------------------------+'
     echo -e ''
-    echo -e ' ❖   阿里云              1)'
-    echo -e ' ❖   腾讯云              2)'
-    echo -e ' ❖   华为云              3)'
-    echo -e ' ❖   网易                4)'
-    echo -e ' ❖   搜狐                5)'
-    echo -e ' ❖   清华大学            6)'
-    echo -e ' ❖   浙江大学            7)'
-    echo -e ' ❖   南京大学            8)'
-    echo -e ' ❖   重庆大学            9)'
-    echo -e ' ❖   兰州大学           10)'
-    echo -e ' ❖   上海交通大学       11)'
-    echo -e ' ❖   哈尔滨工业大学     12)'
-    echo -e ' ❖   中国科学技术大学   13)'
+    echo -e ' ❖   阿里云                  1)'
+    echo -e ' ❖   腾讯云                  2)'
+    echo -e ' ❖   华为云                  3)'
+    echo -e ' ❖   网易                    4)'
+    echo -e ' ❖   搜狐                    5)'
+    echo -e ' ❖   清华大学                6)'
+    echo -e ' ❖   北京大学                7)'
+    echo -e ' ❖   浙江大学                8)'
+    echo -e ' ❖   南京大学                9)'
+    echo -e ' ❖   重庆大学               10)'
+    echo -e ' ❖   兰州大学               11)'
+    echo -e ' ❖   上海交通大学           12)'
+    echo -e ' ❖   哈尔滨工业大学         13)'
+    echo -e ' ❖   中国科学技术大学       14)'
+    echo -e ' ❖   中国科学院软件研究所   15)'
     echo -e ''
     echo -e " 运行环境  ${BLUE}${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}${PLAIN}"
-    echo -e " 系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S")${PLAIN}"
-    CHOICE_A=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-13 ]：${PLAIN}")
+    echo -e " 系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S")${PLAIN} ${BLUE}$(cat /etc/timezone)${PLAIN}"
+    CHOICE_A=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-15 ]：${PLAIN}")
     read -p "${CHOICE_A}" INPUT
     case $INPUT in
     1 | 2 | 3)
@@ -756,25 +758,31 @@ function ChooseMirrors() {
         SOURCE="mirrors.tuna.tsinghua.edu.cn"
         ;;
     7)
-        SOURCE="mirrors.zju.edu.cn"
+        SOURCE="mirrors.pku.edu.cn"
         ;;
     8)
-        SOURCE="mirrors.nju.edu.cn"
+        SOURCE="mirrors.zju.edu.cn"
         ;;
     9)
-        SOURCE="mirrors.cqu.edu.cn"
+        SOURCE="mirrors.nju.edu.cn"
         ;;
     10)
-        SOURCE="mirror.lzu.edu.cn"
+        SOURCE="mirrors.cqu.edu.cn"
         ;;
     11)
-        SOURCE="mirror.sjtu.edu.cn"
+        SOURCE="mirror.lzu.edu.cn"
         ;;
     12)
-        SOURCE="mirrors.hit.edu.cn"
+        SOURCE="mirror.sjtu.edu.cn"
         ;;
     13)
+        SOURCE="mirrors.hit.edu.cn"
+        ;;
+    14)
         SOURCE="mirrors.ustc.edu.cn"
+        ;;
+    15)
+        SOURCE="mirror.iscas.ac.cn"
         ;;
     *)
         SOURCE="mirrors.aliyun.com"
