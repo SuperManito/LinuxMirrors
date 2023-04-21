@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-04-18
+## Modified: 2023-04-21
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
@@ -17,10 +17,12 @@ SYSTEM_CENTOS="CentOS"
 SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
 SYSTEM_FEDORA="Fedora"
+SYSTEM_OPENEULER="openEuler"
 
 ## 定义目录和文件
 File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
+File_openEulerRelease=/etc/openEuler-release
 File_DebianVersion=/etc/debian_version
 File_DebianSourceList=/etc/apt/sources.list
 File_DebianSourceListBackup=/etc/apt/sources.list.bak
@@ -28,6 +30,8 @@ Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 Dir_RedHatRepos=/etc/yum.repos.d
 Dir_RedHatReposBackup=/etc/yum.repos.d.bak
+Dir_openEulerRepos=/etc/yum.repos.d
+Dir_openEulerReposBackup=/etc/yum.repos.d.bak
 SelinuxConfig=/etc/selinux/config
 
 RED='\033[31m'
@@ -66,6 +70,8 @@ function EnvJudgment() {
         SYSTEM_FACTIONS=${SYSTEM_REDHAT}
     elif [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
+    elif [ -s $File_openEulerRelease ]; then
+        SYSTEM_FACTIONS=${SYSTEM_OPENEULER}
     else
         echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统\n"
         exit
@@ -94,6 +100,9 @@ function EnvJudgment() {
         SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
         cat $File_RedHatRelease | grep -q "${SYSTEM_CENTOS_STREAM}"
         [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
+        ;;
+    "${SYSTEM_OPENEULER}")
+        SYSTEM_JUDGMENT="$(cat $File_openEulerRelease | awk -F ' ' '{printf$1}')"
         ;;
     esac
     ## 判定系统处理器架构
@@ -125,14 +134,14 @@ function EnvJudgment() {
             SOURCE_BRANCH=ubuntu-ports
         fi
     else
-        SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
+        SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
     fi
     ## 定义软件源同步/更新文字
     case ${SYSTEM_FACTIONS} in
     "${SYSTEM_DEBIAN}")
         SYNC_TXT="更新"
         ;;
-    "${SYSTEM_REDHAT}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
         SYNC_TXT="同步"
         ;;
     esac
@@ -168,6 +177,9 @@ function CloseFirewall() {
 
 ## 备份原有源
 function BackupMirrors() {
+    local VERIFICATION_FILES=1
+    local VERIFICATION_BACKUPFILES=1
+
     case ${SYSTEM_FACTIONS} in
     "${SYSTEM_DEBIAN}")
         ## 判断 /etc/apt/sources.list.d 目录下是否存在文件
@@ -183,6 +195,14 @@ function BackupMirrors() {
         VERIFICATION_FILES=$?
         ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
         [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep repo -q
+        VERIFICATION_BACKUPFILES=$?
+        ;;
+    "${SYSTEM_OPENEULER}")
+        ## 判断 /etc/yum.repos.d 目录下是否存在文件
+        [ -d $Dir_openEulerRepos ] && ls $Dir_openEulerRepos | grep repo -q
+        VERIFICATION_FILES=$?
+        ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
+        [ -d $Dir_openEulerReposBackup ] && ls $Dir_openEulerReposBackup | grep repo -q
         VERIFICATION_BACKUPFILES=$?
         ;;
     esac
@@ -269,6 +289,34 @@ function BackupMirrors() {
             [ -d $Dir_RedHatRepos ] || mkdir -p $Dir_RedHatRepos
         fi
         ;;
+    "${SYSTEM_OPENEULER}")
+        ## /etc/yum.repos.d
+        if [ ${VERIFICATION_FILES} -eq 0 ]; then
+            if [ -d $Dir_openEulerReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
+                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                read -p "${CHOICE_BACKUP3}" INPUT
+                [ -z ${INPUT} ] && INPUT=Y
+                case $INPUT in
+                [Yy] | [Yy][Ee][Ss]) ;;
+                [Nn] | [Nn][Oo])
+                    echo ''
+                    cp -rvf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不覆盖！"
+                    ;;
+                esac
+            else
+                [ ! -d $Dir_openEulerReposBackup ] && mkdir -p $Dir_openEulerReposBackup
+                echo ''
+                cp -vrf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openEulerReposBackup 目录"
+                sleep 1s
+            fi
+        else
+            [ -d $Dir_openEulerRepos ] || mkdir -p $Dir_openEulerRepos
+        fi
+        ;;
     esac
 }
 
@@ -292,6 +340,9 @@ function RemoveOldMirrors() {
             fi
         fi
         ;;
+    "${SYSTEM_OPENEULER}")
+        [ -d $Dir_openEulerRepos ] && rm -rf $Dir_openEulerRepos/*
+        ;;
     esac
 }
 
@@ -304,13 +355,16 @@ function ChangeMirrors() {
     "${SYSTEM_REDHAT}")
         RedHatMirrors
         ;;
+    "${SYSTEM_OPENEULER}")
+        openEulerMirrors
+        ;;
     esac
     echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case ${SYSTEM_FACTIONS} in
     "${SYSTEM_DEBIAN}")
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
         yum makecache
         ;;
     esac
@@ -340,7 +394,7 @@ function UpgradeSoftware() {
         "${SYSTEM_DEBIAN}")
             apt-get upgrade -y
             ;;
-        "${SYSTEM_REDHAT}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
             yum update -y
             ;;
         esac
@@ -474,7 +528,7 @@ function RedHatMirrors() {
                 centos.repo \
                 centos-addons.repo
             # 更换软件源
-            sed -i "s|mirror.stream.centos.org|${SOURCE}/centos-stream|g" \
+            sed -i "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
                 centos.repo \
                 centos-addons.repo
             ;;
@@ -508,7 +562,7 @@ function RedHatMirrors() {
                 rocky-devel.repo \
                 rocky-extras.repo
             # 更换软件源
-            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/rocky|g" \
+            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
                 rocky.repo \
                 rocky-addons.repo \
                 rocky-devel.repo \
@@ -520,7 +574,7 @@ function RedHatMirrors() {
             # 更换 WEB 协议（HTTP/HTTPS）
             sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" Rocky-*
             # 更换软件源
-            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/rocky|g" Rocky-*
+            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" Rocky-*
             ;;
         esac
 
@@ -545,7 +599,7 @@ function RedHatMirrors() {
             fedora-updates-testing.repo \
             fedora-updates-testing-modular.repo
         # 更换软件源
-        sed -i "s|download.example/pub/fedora/linux|${SOURCE}/fedora|g" \
+        sed -i "s|download.example/pub/fedora/linux|${SOURCE}/${SOURCE_BRANCH}|g" \
             fedora.repo \
             fedora-updates.repo \
             fedora-modular.repo \
@@ -557,6 +611,17 @@ function RedHatMirrors() {
 
     ## 清理 yum 缓存
     yum clean all >/dev/null 2>&1
+}
+
+## 更换基于 openEuler 系 Linux 发行版的国内源
+function openEulerMirrors() {
+    GenRepoFiles_openEuler
+    cd $Dir_openEulerRepos
+
+    # 更换 WEB 协议（HTTP/HTTPS）
+    sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" openEuler.repo
+    # 更换软件源
+    sed -i "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" openEuler.repo
 }
 
 ## 安装/更换基于 RHEL/CentOS 等红帽系 Linux 的 EPEL (Extra Packages for Enterprise Linux) 扩展国内源
@@ -775,7 +840,7 @@ function ChooseMirrors() {
     fi
 
     ## 关闭防火墙和SELinux
-    [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ] && CloseFirewall
+    [[ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} || ${SYSTEM_FACTIONS} = ${SYSTEM_OPENEULER} ]] && CloseFirewall
 }
 
 ## 生成 CentOS 官方 repo 源文件
@@ -2649,6 +2714,69 @@ gpgcheck=1
 metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
 skip_if_unavailable=False
+EOF
+}
+
+## 生成 openEuler 官方 repo 源文件
+function GenRepoFiles_openEuler() {
+    cat >$Dir_openEulerRepos/openEuler.repo <<\EOF
+#generic-repos is licensed under the Mulan PSL v2.
+#You can use this software according to the terms and conditions of the Mulan PSL v2.
+#You may obtain a copy of Mulan PSL v2 at:
+#    http://license.coscl.org.cn/MulanPSL2
+#THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+#PURPOSE.
+#See the Mulan PSL v2 for more details.
+
+[OS]
+name=OS
+baseurl=http://repo.openeuler.org/openEuler-$releasever/OS/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-$releasever/OS/$basearch/RPM-GPG-KEY-openEuler
+
+[everything]
+name=everything
+baseurl=http://repo.openeuler.org/openEuler-$releasever/everything/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-$releasever/everything/$basearch/RPM-GPG-KEY-openEuler
+
+[EPOL]
+name=EPOL
+baseurl=http://repo.openeuler.org/openEuler-$releasever/EPOL/main/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-$releasever/OS/$basearch/RPM-GPG-KEY-openEuler
+
+[debuginfo]
+name=debuginfo
+baseurl=http://repo.openeuler.org/openEuler-$releasever/debuginfo/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-$releasever/debuginfo/$basearch/RPM-GPG-KEY-openEuler
+
+[source]
+name=source
+baseurl=http://repo.openeuler.org/openEuler-$releasever/source/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-$releasever/source/RPM-GPG-KEY-openEuler
+
+[update]
+name=update
+baseurl=http://repo.openeuler.org/openEuler-$releasever/update/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-$releasever/OS/$basearch/RPM-GPG-KEY-openEuler
+
+[update-source]
+name=update-source
+baseurl=http://repo.openeuler.org/openEuler-$releasever/update/source/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-$releasever/source/RPM-GPG-KEY-openEuler
 EOF
 }
 

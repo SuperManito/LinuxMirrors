@@ -10,7 +10,7 @@
 
   <table>
   <tr>
-      <td rowspan="9"> 支持<br/>版本<br/>
+      <td rowspan="10"> 支持<br/>版本<br/>
   </tr>
   <tr>
       <td><a href="https://www.debian.org"><img src="./docs/img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
@@ -44,9 +44,13 @@
       <td><a href="https://fedoraproject.org/zh-Hans"><img src="./docs/img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
       <td align="center">28 ~ 37</td>
   </tr>
+  <tr>
+      <td><a href="https://www.openeuler.org/zh"><img src="./docs/img/icon/openEuler.ico" width="16" height="16"/></a>&nbsp;openEuler</td>
+      <td align="center">21.03 ~ 23</td>
+  </tr>
   </table>
 
-  目前仅支持上述基于 Debian 与 RedHat 系的发行版和及其部分衍生版本
+  目前仅支持上述基于 Debian、RedHat、openEuler 的发行版和及其部分衍生版本
 
 - ### 使用方法
 
@@ -68,23 +72,23 @@
     > _Debian 系 Linux 默认禁用了**源码仓库**和**预发布软件源**，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行**取消注释**_  
     > _RedHat 系 Linux 部分仓库**默认没有启用**，若需启用请将 `/etc/yum.repos.d` 目录下相关 **repo** 文件中的 `enabled` 值修改为 `1`_
 
-  - #### 脚本当前使用的开源镜像站
+  - #### 软件源
 
-    |       |    镜像站名称    |                                 镜像站地址                                  | IPv6  | Kali Linux | Rocky Linux | Fedora | EPEL  |
-    | :---: | :-------------: | :-----------------------------------------------------------------------: | :---: | :--------: | :---------: | :----: | :---: |
-    |   1   |      阿里云      |             [mirrors.aliyun.com](https://mirrors.aliyun.com)              |   ✓   |     ✓      |             |   ✓    |   ✓   |
-    |   2   |      腾讯云      |            [mirrors.tencent.com](https://mirrors.tencent.com)             |   ✓   |     ✓      |      ✓      |   ✓    |   ✓   |
-    |   3   |      华为云      |        [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com)         |   ✓   |     ✓      |             |   ✓    |   ✓   |
-    |   4   |       网易       |                [mirrors.163.com](https://mirrors.163.com)                 |       |            |      ✓      |   ✓    |       |
-    |   5   |       搜狐       |               [mirrors.sohu.com](https://mirrors.sohu.com)                |       |            |             |   ✓    |       |
-    |   6   |     清华大学     |   [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn)    |   ✓   |     ✓      |             |   ✓    |   ✓   |
-    |   7   |     浙江大学     |             [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn)              |       |     ✓      |      ✓      |   ✓    |   ✓   |
-    |   8   |     南京大学     |             [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn)              |       |     ✓      |      ✓      |   ✓    |   ✓   |
-    |   9   |     重庆大学     |             [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn)              |       |     ✓      |             |   ✓    |   ✓   |
-    |  10   |     兰州大学     |              [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn)               |   ✓   |            |      ✓      |   ✓    |   ✓   |
-    |  11   |   上海交通大学    |             [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn)              |   ✓   |     ✓      |      ✓      |   ✓    |   ✓   |
-    |  12   |  哈尔滨工业大学   |             [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn)              |   ✓   |     ✓      |             |        |   ✓   |
-    |  13   | 中国科学技术大学  |            [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn)             |   ✓   |     ✓      |      ✓      |   ✓    |   ✓   |
+    |       |    镜像站名称    |                                 镜像站地址                                  | IPv6  | Kali Linux | Rocky Linux | Fedora | openEuler | EPEL  |
+    | :---: | :-------------: | :-----------------------------------------------------------------------: | :---: | :--------: | :---------: | :----: | :-------: | :---: |
+    |   1   |      阿里云      |             [mirrors.aliyun.com](https://mirrors.aliyun.com)              |   ✓   |     ✓      |             |   ✓    |     ✓     |   ✓   |
+    |   2   |      腾讯云      |            [mirrors.tencent.com](https://mirrors.tencent.com)             |   ✓   |     ✓      |      ✓      |   ✓    |           |   ✓   |
+    |   3   |      华为云      |        [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com)         |   ✓   |     ✓      |             |   ✓    |     ✓     |   ✓   |
+    |   4   |       网易       |                [mirrors.163.com](https://mirrors.163.com)                 |       |            |      ✓      |   ✓    |     ✓    |       |
+    |   5   |       搜狐       |               [mirrors.sohu.com](https://mirrors.sohu.com)                |       |            |             |   ✓    |          |       |
+    |   6   |     清华大学     |   [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn)    |   ✓   |     ✓      |             |   ✓    |     ✓     |   ✓   |
+    |   7   |     浙江大学     |             [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn)              |       |     ✓      |      ✓      |   ✓    |     ✓     |   ✓   |
+    |   8   |     南京大学     |             [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn)              |       |     ✓      |      ✓      |   ✓    |     ✓     |   ✓   |
+    |   9   |     重庆大学     |             [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn)              |       |     ✓      |             |   ✓    |           |   ✓   |
+    |  10   |     兰州大学     |              [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn)               |   ✓   |            |      ✓      |   ✓    |     ✓     |   ✓   |
+    |  11   |   上海交通大学    |             [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn)              |   ✓   |     ✓      |      ✓      |   ✓    |     ✓     |   ✓   |
+    |  12   |  哈尔滨工业大学   |             [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn)              |   ✓   |     ✓      |             |        |     ✓     |   ✓   |
+    |  13   | 中国科学技术大学  |            [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn)             |   ✓   |     ✓      |      ✓      |   ✓    |     ✓     |   ✓   |
 
     以上为脚本当前使用的开源镜像站，所有镜像站均支持 `Debian` `Ubuntu` `CentOS` 软件源  
     如果使用过程中脚本不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可
@@ -113,7 +117,7 @@
         cp -rvf /etc/apt/sources.list.bak /etc/apt/sources.list
         ```
 
-      - RedHat 系
+      - RedHat 系 / openEuler
 
         ```
         cp -rvf /etc/yum.repos.d.bak /etc/yum.repos.d

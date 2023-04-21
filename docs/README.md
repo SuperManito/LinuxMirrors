@@ -8,7 +8,7 @@
 
 <table>
 <tr>
-    <td rowspan="9"> 支持<br/>版本<br/>
+    <td rowspan="10"> 支持<br/>版本<br/>
 </tr>
 <tr>
     <td><a href="https://www.debian.org"><img src="./img/icon/debian.svg" width="16" height="16"/></a>&nbsp;Debian</td>
@@ -42,10 +42,14 @@
     <td><a href="https://fedoraproject.org/zh-Hans"><img src="./img/icon/fedora.ico" width="16" height="16"/></a>&nbsp;Fedora</td>
     <td align="center">28 ~ 37</td>
 </tr>
+<tr>
+    <td><a href="https://www.openeuler.org/zh"><img src="./img/icon/openEuler.ico" width="16" height="16"/></a>&nbsp;openEuler</td>
+    <td align="center">21.03 ~ 23</td>
+</tr>
 </table>
 
 > [!NOTE|label:说明]
-> 目前仅支持上述基于 Debian 与 RedHat 系的发行版和及其部分衍生版本
+> 目前仅支持上述基于 Debian、RedHat、openEuler 的发行版和及其部分衍生版本
 
 ## <i class="fa-solid fa-wheelchair-move fa-bounce" style=" --fa-bounce-start-scale-x: 1; --fa-bounce-start-scale-y: 1; --fa-bounce-jump-scale-x: 1; --fa-bounce-jump-scale-y: 1; --fa-bounce-land-scale-x: 1; --fa-bounce-land-scale-y: 1; " ></i> 使用方法
 
