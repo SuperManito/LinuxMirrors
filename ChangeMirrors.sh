@@ -1,13 +1,11 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-04-21
+## Modified: 2023-05-01
 ## License: GPL-2.0
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Gitee: https://gitee.com/SuperManito/LinuxMirrors
 
 ## 定义系统判定变量
-ARCH=$(uname -m)
-DebianRelease_CMD="lsb_release"
 SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
@@ -18,6 +16,7 @@ SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENEULER="openEuler"
+SYSTEM_OPENSUSE="openSUSE"
 
 ## 定义目录和文件
 File_LinuxRelease=/etc/os-release
@@ -32,8 +31,10 @@ Dir_RedHatRepos=/etc/yum.repos.d
 Dir_RedHatReposBackup=/etc/yum.repos.d.bak
 Dir_openEulerRepos=/etc/yum.repos.d
 Dir_openEulerReposBackup=/etc/yum.repos.d.bak
-SelinuxConfig=/etc/selinux/config
+Dir_openSUSERepos=/etc/zypp/repos.d
+Dir_openSUSEReposBackup=/etc/zypp/repos.d.bak
 
+## 定义颜色变量
 RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
@@ -51,50 +52,42 @@ function AuthorSignature() {
     echo -e " \033[1;34m官方网站\033[0m https://supermanito.github.io/LinuxMirrors\n"
 }
 
-## 组合函数
-function Combin_Function() {
-    PermissionJudgment
-    EnvJudgment
-    ChooseMirrors
-    BackupMirrors
-    RemoveOldMirrors
-    ChangeMirrors
-    UpgradeSoftware
-    AuthorSignature
-}
-
 ## 系统判定变量
 function EnvJudgment() {
-    ## 判定当前系统基于 Debian or RedHat
-    if [ -s $File_RedHatRelease ]; then
-        SYSTEM_FACTIONS=${SYSTEM_REDHAT}
-    elif [ -s $File_DebianVersion ]; then
-        SYSTEM_FACTIONS=${SYSTEM_DEBIAN}
-    elif [ -s $File_openEulerRelease ]; then
-        SYSTEM_FACTIONS=${SYSTEM_OPENEULER}
-    else
-        echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统\n"
-        exit
-    fi
     ## 定义系统名称
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    cat $File_LinuxRelease | grep "PRETTY_NAME=" -q
+    [ $? -eq 0 ] && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统版本号
-    SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    ## 定义系统ID
+    SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    ## 判定当前系统派系（Debian/RedHat/openEuler/openSUSE）
+    if [ -s $File_RedHatRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
+    elif [ -s $File_DebianVersion ]; then
+        SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
+    elif [ -s $File_openEulerRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
+    else
+        echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统\n"
+        exit 1
+    fi
     ## 判定系统名称、版本、版本号
-    case ${SYSTEM_FACTIONS} in
+    case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
-            if [ $? -eq 0 ]; then
-                clear
-            else
+            if [ $? -ne 0 ]; then
                 echo -e "\n$ERROR lsb-release 软件包安装失败"
                 echo -e "\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！\n"
-                exit
+                exit 1
             fi
         fi
-        SYSTEM_JUDGMENT="$(${DebianRelease_CMD} -is)"
-        SYSTEM_VERSION_CODENAME="$(${DebianRelease_CMD} -cs)"
+        SYSTEM_JUDGMENT="$(lsb_release -is)"
+        SYSTEM_VERSION_CODENAME="$(lsb_release -cs)"
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
@@ -104,9 +97,12 @@ function EnvJudgment() {
     "${SYSTEM_OPENEULER}")
         SYSTEM_JUDGMENT="$(cat $File_openEulerRelease | awk -F ' ' '{printf$1}')"
         ;;
+    "${SYSTEM_OPENSUSE}")
+        SYSTEM_JUDGMENT="${SYSTEM_OPENSUSE}"
+        ;;
     esac
     ## 判定系统处理器架构
-    case ${ARCH} in
+    case $(uname -m) in
     x86_64)
         SYSTEM_ARCH="x86_64"
         ;;
@@ -123,12 +119,12 @@ function EnvJudgment() {
         SYSTEM_ARCH="x86_32"
         ;;
     *)
-        SYSTEM_ARCH=${ARCH}
+        SYSTEM_ARCH=$(uname -m)
         ;;
     esac
     ## 定义软件源分支名称
     if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_UBUNTU} ]; then
-        if [ ${ARCH} = "x86_64" ] || [ ${ARCH} = "*i?86*" ]; then
+        if [ ${SYSTEM_ARCH} = "x86_64" ] || [ $(uname -m) = "*i?86*" ]; then
             SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
         else
             SOURCE_BRANCH=ubuntu-ports
@@ -137,11 +133,11 @@ function EnvJudgment() {
         SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
     fi
     ## 定义软件源同步/更新文字
-    case ${SYSTEM_FACTIONS} in
+    case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         SYNC_TXT="更新"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}")
         SYNC_TXT="同步"
         ;;
     esac
@@ -151,27 +147,30 @@ function EnvJudgment() {
 function PermissionJudgment() {
     ## 权限判定
     if [ $UID -ne 0 ]; then
-        echo -e "\n$ERROR 权限不足，请使用 Root 用户\n"
-        exit
+        echo -e "\n$ERROR 权限不足，请使用 Root 用户运行本脚本\n"
+        exit 1
     fi
 }
 
 ## 关闭防火墙和SELinux
 function CloseFirewall() {
-    if [[ $(systemctl is-active firewalld) == "active" ]]; then
-        CHOICE_C=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-        read -p "${CHOICE_C}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
-        case $INPUT in
-        [Yy] | [Yy][Ee][Ss])
-            systemctl disable --now firewalld >/dev/null 2>&1
-            [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-            ;;
-        [Nn] | [Nn][Oo]) ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不关闭！"
-            ;;
-        esac
+    local SelinuxConf=/etc/selinux/config
+    if [ -x /usr/bin/systemctl ]; then
+        if [[ $(systemctl is-active firewalld) == "active" ]]; then
+            local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+            read -p "${CHOICE}" INPUT
+            [ -z ${INPUT} ] && INPUT=Y
+            case $INPUT in
+            [Yy] | [Yy][Ee][Ss])
+                systemctl disable --now firewalld >/dev/null 2>&1
+                [ -s $SelinuxConf ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不关闭！"
+                ;;
+            esac
+        fi
     fi
 }
 
@@ -180,7 +179,7 @@ function BackupMirrors() {
     local VERIFICATION_FILES=1
     local VERIFICATION_BACKUPFILES=1
 
-    case ${SYSTEM_FACTIONS} in
+    case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         ## 判断 /etc/apt/sources.list.d 目录下是否存在文件
         [ -d $Dir_DebianExtendSource ] && ls $Dir_DebianExtendSource | grep *.list -q
@@ -205,14 +204,22 @@ function BackupMirrors() {
         [ -d $Dir_openEulerReposBackup ] && ls $Dir_openEulerReposBackup | grep repo -q
         VERIFICATION_BACKUPFILES=$?
         ;;
+    "${SYSTEM_OPENSUSE}")
+        ## 判断 /etc/zypp/repos.d 目录下是否存在文件
+        [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos | grep repo -q
+        VERIFICATION_FILES=$?
+        ## 判断 /etc/zypp/repos.d.bak 目录下是否存在文件
+        [ -d $Dir_openSUSEReposBackup ] && ls $Dir_openSUSEReposBackup | grep repo -q
+        VERIFICATION_BACKUPFILES=$?
+        ;;
     esac
 
-    case ${SYSTEM_FACTIONS} in
+    case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         ## /etc/apt/sources.list
         if [ -s $File_DebianSourceList ]; then
             if [ -s $File_DebianSourceListBackup ]; then
-                CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP1}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -239,7 +246,7 @@ function BackupMirrors() {
         ## /etc/apt/sources.list.d
         if [ -d $Dir_DebianExtendSource ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $Dir_DebianExtendSourceBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP2}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -265,7 +272,7 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $Dir_RedHatReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP3}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -293,8 +300,8 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $Dir_openEulerReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                read -p "${CHOICE_BACKUP3}" INPUT
+                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                read -p "${CHOICE_BACKUP4}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
                 [Yy] | [Yy][Ee][Ss]) ;;
@@ -317,12 +324,40 @@ function BackupMirrors() {
             [ -d $Dir_openEulerRepos ] || mkdir -p $Dir_openEulerRepos
         fi
         ;;
+    "${SYSTEM_OPENSUSE}")
+        ## /etc/zypp/repos.d
+        if [ ${VERIFICATION_FILES} -eq 0 ]; then
+            if [ -d $Dir_openSUSEReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
+                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                read -p "${CHOICE_BACKUP4}" INPUT
+                [ -z ${INPUT} ] && INPUT=Y
+                case $INPUT in
+                [Yy] | [Yy][Ee][Ss]) ;;
+                [Nn] | [Nn][Oo])
+                    echo ''
+                    cp -rvf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不覆盖！"
+                    ;;
+                esac
+            else
+                [ ! -d $Dir_openSUSEReposBackup ] && mkdir -p $Dir_openSUSEReposBackup
+                echo ''
+                cp -vrf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openSUSEReposBackup 目录"
+                sleep 1s
+            fi
+        else
+            [ -d $Dir_openSUSERepos ] || mkdir -p $Dir_openSUSERepos
+        fi
+        ;;
     esac
 }
 
 ## 删除原有源
 function RemoveOldMirrors() {
-    case ${SYSTEM_FACTIONS} in
+    case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
         ;;
@@ -343,12 +378,15 @@ function RemoveOldMirrors() {
     "${SYSTEM_OPENEULER}")
         [ -d $Dir_openEulerRepos ] && rm -rf $Dir_openEulerRepos/*
         ;;
+    "${SYSTEM_OPENSUSE}")
+        [ -d $Dir_openSUSERepos ] && rm -rf $Dir_openSUSERepos/repo-*
+        ;;
     esac
 }
 
 ## 换源
 function ChangeMirrors() {
-    case ${SYSTEM_FACTIONS} in
+    case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         DebianMirrors
         ;;
@@ -358,18 +396,23 @@ function ChangeMirrors() {
     "${SYSTEM_OPENEULER}")
         openEulerMirrors
         ;;
+    "${SYSTEM_OPENSUSE}")
+        openSUSEMirrors
+        ;;
     esac
     echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
-    case ${SYSTEM_FACTIONS} in
+    case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         apt-get update
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
         yum makecache
         ;;
+    "${SYSTEM_OPENSUSE}")
+        zypper ref
+        ;;
     esac
-    VERIFICATION_SOURCESYNC=$?
-    if [ ${VERIFICATION_SOURCESYNC} -eq 0 ]; then
+    if [ $? -eq 0 ]; then
         echo -e "\n$COMPLETE 软件源更换完毕"
     else
         echo -e "\n$ERROR 软件源${SYNC_TXT}失败\n"
@@ -383,33 +426,42 @@ function ChangeMirrors() {
 
 ## 更新软件包
 function UpgradeSoftware() {
-    CHOICE_B=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
-    read -p "${CHOICE_B}" INPUT
+    local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
+    read -p "${CHOICE_A}" INPUT
     [ -z ${INPUT} ] && INPUT=Y
     case $INPUT in
     [Yy] | [Yy][Ee][Ss]) ;;
     [Nn] | [Nn][Oo])
         echo -e ''
-        case ${SYSTEM_FACTIONS} in
+        case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
             apt-get upgrade -y
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
             yum update -y
             ;;
+        "${SYSTEM_OPENSUSE}")
+            zypper update -y
+            ;;
         esac
-        CHOICE_C=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-        read -p "${CHOICE_C}" INPUT
+        local CHOICE_B=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+        read -p "${CHOICE_B}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
-            if [ ${SYSTEM_FACTIONS} = ${SYSTEM_DEBIAN} ]; then
+            case "${SYSTEM_FACTIONS}" in
+            "${SYSTEM_DEBIAN}")
                 apt-get autoremove -y >/dev/null 2>&1
                 apt-get clean >/dev/null 2>&1
-            elif [ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} ]; then
+                ;;
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
                 yum autoremove -y >/dev/null 2>&1
                 yum clean packages -y >/dev/null 2>&1
-            fi
+                ;;
+            "${SYSTEM_OPENSUSE}")
+                zypper clean >/dev/null 2>&1
+                ;;
+            esac
             echo -e "\n$COMPLETE 清理完毕"
             ;;
         [Nn] | [Nn][Oo]) ;;
@@ -457,8 +509,9 @@ deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-back
 # deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION_CODENAME}/updates main contrib non-free" >>$File_DebianSourceList
         ;;
     "${SYSTEM_KALI}")
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib
-deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib" >>$File_DebianSourceList
+        echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
+deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib
+# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib" >>$File_DebianSourceList
         ;;
     esac
 }
@@ -468,13 +521,13 @@ function RedHatMirrors() {
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}")
-        GenRepoFiles_CentOS
+        GenRepoFiles_CentOS ${SYSTEM_VERSION_NUMBER:0:1}
         ;;
     "${SYSTEM_CENTOS_STREAM}")
-        GenRepoFiles_CentOSStream
+        GenRepoFiles_CentOSStream ${SYSTEM_VERSION_NUMBER:0:1}
         ;;
     "${SYSTEM_ROCKY}")
-        GenRepoFiles_RockyLinux
+        GenRepoFiles_RockyLinux ${SYSTEM_VERSION_NUMBER:0:1}
         ;;
     "${SYSTEM_FEDORA}")
         GenRepoFiles_Fedora
@@ -608,9 +661,6 @@ function RedHatMirrors() {
             fedora-updates-testing-modular.repo
         ;;
     esac
-
-    ## 清理 yum 缓存
-    yum clean all >/dev/null 2>&1
 }
 
 ## 更换基于 openEuler 系 Linux 发行版的国内源
@@ -622,6 +672,104 @@ function openEulerMirrors() {
     sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" openEuler.repo
     # 更换软件源
     sed -i "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" openEuler.repo
+}
+
+## 更换基于 openSUSE 系 Linux 发行版的国内源
+function openSUSEMirrors() {
+    case "${SYSTEM_ID}" in
+    "opensuse-leap")
+        GenRepoFiles_openSUSE "leap" "${SYSTEM_VERSION_NUMBER}"
+        ;;
+    "opensuse-tumbleweed")
+        GenRepoFiles_openSUSE "tumbleweed"
+        ;;
+    esac
+    cd $Dir_openSUSERepos
+
+    # 更换 WEB 协议（HTTP/HTTPS）
+    sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" repo-*
+    # 更换软件源
+    case "${SYSTEM_ID}" in
+    opensuse-leap)
+        case "${SYSTEM_VERSION_NUMBER}" in
+        15.[0-2])
+            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                repo-debug-non-oss.repo \
+                repo-debug.repo \
+                repo-debug-update-non-oss.repo \
+                repo-debug-update.repo \
+                repo-non-oss.repo \
+                repo-oss.repo \
+                repo-source-non-oss.repo \
+                repo-source.repo \
+                repo-update-non-oss.repo \
+                repo-update.repo
+            ;;
+        *)
+            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                repo-backports-debug-update.repo \
+                repo-backports-update.repo \
+                repo-debug-non-oss.repo \
+                repo-debug.repo \
+                repo-debug-update-non-oss.repo \
+                repo-debug-update.repo \
+                repo-non-oss.repo \
+                repo-oss.repo \
+                repo-sle-debug-update.repo \
+                repo-sle-update.repo \
+                repo-source.repo \
+                repo-update-non-oss.repo \
+                repo-update.repo
+            ;;
+        esac
+        ;;
+    opensuse-tumbleweed)
+        sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+            repo-debug.repo \
+            repo-non-oss.repo \
+            repo-openh264.repo \
+            repo-oss.repo \
+            repo-source.repo \
+            repo-update.repo
+        ;;
+    esac
+}
+
+# 适用于 RHEL/CentOS(Stream)/RockyLinux 的 EPEL 附加软件包（安装/换源）
+function ChooseInstallEPEL() {
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}")
+        ## 判断是否已安装 EPEL 软件包
+        rpm -qa | grep epel-release -q
+        VERIFICATION_EPEL=$?
+        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
+        [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
+        VERIFICATION_EPELFILES=$?
+        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
+        [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
+        VERIFICATION_EPELBACKUPFILES=$?
+
+        if [ ${VERIFICATION_EPEL} -eq 0 ]; then
+            local CHOICE=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
+        else
+            local CHOICE=$(echo -e "\n  ${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+        fi
+        read -p "${CHOICE}" INPUT
+        [ -z ${INPUT} ] && INPUT=Y
+        case $INPUT in
+        [Yy] | [Yy][Ee][Ss])
+            EPEL_INSTALL="True"
+            ;;
+        [Nn] | [Nn][Oo])
+            EPEL_INSTALL="False"
+            ;;
+        *)
+            echo -e "\n  $WARN 输入错误，默认不更换！"
+            EPEL_INSTALL="False"
+            ;;
+        esac
+        ;;
+    esac
 }
 
 ## 安装/更换基于 RHEL/CentOS 等红帽系 Linux 的 EPEL (Extra Packages for Enterprise Linux) 附加软件包国内源
@@ -704,7 +852,7 @@ function ChooseMirrors() {
         [Nn] | [Nn][Oo])
             SOURCE=${Intranet}
             echo -e "\n  $WARN 已切换至云计算厂商镜像站的内网访问地址，仅限对应厂商云服务器用户使用！"
-            NOT_SUPPORT_HTTPS="True"
+            ONLY_HTTP="True"
             ;;
         *)
             SOURCE=${Extranet}
@@ -713,13 +861,21 @@ function ChooseMirrors() {
         esac
     }
 
+    function WelcomeTitle() {
+        echo -e '+-------------------------------------+'
+        echo -e '|                                     |'
+        echo -e '|  欢迎使用 Linux 一键更换国内软件源  |'
+        echo -e '|                                     |'
+        echo -e '+-------------------------------------+'
+        echo -e ''
+        echo -e " 运行环境  ${BLUE}${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"} ${SYSTEM_ARCH}${PLAIN}"
+        echo -e " 系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S") $(timedatectl status | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')${PLAIN}"
+        echo -e ''
+    }
+
     clear
-    echo -e '+-------------------------------------+'
-    echo -e '|                                     |'
-    echo -e '|  欢迎使用 Linux 一键更换国内软件源  |'
-    echo -e '|                                     |'
-    echo -e '+-------------------------------------+'
-    echo -e ''
+    WelcomeTitle
+
     echo -e ' ❖   阿里云                  1)'
     echo -e ' ❖   腾讯云                  2)'
     echo -e ' ❖   华为云                  3)'
@@ -735,11 +891,8 @@ function ChooseMirrors() {
     echo -e ' ❖   哈尔滨工业大学         13)'
     echo -e ' ❖   中国科学技术大学       14)'
     echo -e ' ❖   中国科学院软件研究所   15)'
-    echo -e ''
-    echo -e " 运行环境  ${BLUE}${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER} ${SYSTEM_ARCH}${PLAIN}"
-    echo -e " 系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S")${PLAIN} ${BLUE}$(cat /etc/timezone)${PLAIN}"
-    CHOICE_A=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-15 ]：${PLAIN}")
-    read -p "${CHOICE_A}" INPUT
+    local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-15 ]：${PLAIN}")
+    read -p "${CHOICE}" INPUT
     case $INPUT in
     1 | 2 | 3)
         Cloud_Computing_Vendors_Mirrors $INPUT
@@ -786,48 +939,15 @@ function ChooseMirrors() {
         sleep 2s
         ;;
     esac
+}
 
-    # 适用于 RHEL/CentOS/Rocky 的 EPEL 附加软件包（安装/换源）
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}")
-        ## 判断是否已安装 EPEL 软件包
-        rpm -qa | grep epel-release -q
-        VERIFICATION_EPEL=$?
-        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
-        VERIFICATION_EPELFILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
-        VERIFICATION_EPELBACKUPFILES=$?
-
-        if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
-        else
-            CHOICE_D=$(echo -e "\n  ${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
-        fi
-        read -p "${CHOICE_D}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
-        case $INPUT in
-        [Yy] | [Yy][Ee][Ss])
-            EPEL_INSTALL="True"
-            ;;
-        [Nn] | [Nn][Oo])
-            EPEL_INSTALL="False"
-            ;;
-        *)
-            echo -e "\n  $WARN 输入错误，默认不更换！"
-            EPEL_INSTALL="False"
-            ;;
-        esac
-        ;;
-    esac
-
-    ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
-    if [[ ${NOT_SUPPORT_HTTPS} == "True" ]]; then
+## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
+function ChooseWebProtocol() {
+    if [[ ${ONLY_HTTP} == "True" ]]; then
         WEB_PROTOCOL="http"
     else
-        CHOICE_E=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
-        read -p "${CHOICE_E}" INPUT
+        local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+        read -p "${CHOICE}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
@@ -842,14 +962,11 @@ function ChooseMirrors() {
             ;;
         esac
     fi
-
-    ## 关闭防火墙和SELinux
-    [[ ${SYSTEM_FACTIONS} = ${SYSTEM_REDHAT} || ${SYSTEM_FACTIONS} = ${SYSTEM_OPENEULER} ]] && CloseFirewall
 }
 
 ## 生成 CentOS 官方 repo 源文件
 function GenRepoFiles_CentOS() {
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    case $1 in
     8)
         cat >$Dir_RedHatRepos/CentOS-Linux-AppStream.repo <<\EOF
 # CentOS-Linux-AppStream.repo
@@ -1280,7 +1397,7 @@ EOF
 
 ## 生成 CentOS Stream 官方 repo 源文件
 function GenRepoFiles_CentOSStream() {
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    case $1 in
     9)
         cat >$Dir_RedHatRepos/centos.repo <<\EOF
 [baseos]
@@ -1782,7 +1899,7 @@ EOF
 
 ## 生成 Rocky Linux 官方 repo 源文件
 function GenRepoFiles_RockyLinux() {
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    case $1 in
     9)
         cat >$Dir_RedHatRepos/rocky.repo <<\EOF
 # rocky.repo
@@ -2784,6 +2901,285 @@ gpgkey=http://repo.openeuler.org/openEuler-$releasever/source/RPM-GPG-KEY-openEu
 EOF
 }
 
+## 生成 openSUSE 官方 repo 源文件
+function GenRepoFiles_openSUSE() {
+    case $1 in
+    leap)
+        case $2 in
+        15.[0-2])
+            cat >$Dir_openSUSERepos/repo-debug-non-oss.repo <<\EOF
+[repo-debug-non-oss]
+name=Debug Repository (Non-OSS)
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/non-oss/
+type=NONE
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-debug.repo <<\EOF
+[repo-debug]
+name=Debug Repository
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/oss/
+type=NONE
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-debug-update-non-oss.repo <<\EOF
+[repo-debug-update-non-oss]
+name=Update Repository (Debug, Non-OSS)
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
+type=NONE
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-debug-update.repo <<\EOF
+[repo-debug-update]
+name=Update Repository (Debug)
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
+type=NONE
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-non-oss.repo <<\EOF
+[repo-non-oss]
+name=Non-OSS Repository
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-oss.repo <<\EOF
+[repo-oss]
+name=Main Repository
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-source-non-oss.repo <<\EOF
+[repo-source-non-oss]
+name=Source Repository (Non-OSS)
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/non-oss/
+type=NONE
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-source.repo <<\EOF
+[repo-source]
+name=Source Repository
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/oss/
+type=NONE
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-update-non-oss.repo <<\EOF
+[repo-update-non-oss]
+name=Update Repository (Non-Oss)
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-update.repo <<\EOF
+[repo-update]
+name=Main Update Repository
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/update/leap/$releasever/oss/
+type=rpm-md
+keeppackages=0
+EOF
+            ;;
+        *)
+            cat >$Dir_openSUSERepos/repo-backports-debug-update.repo <<\EOF
+[repo-backports-debug-update]
+name=Update repository with updates for openSUSE Leap debuginfo packages from openSUSE Backports
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/update/leap/$releasever/backports_debug/
+type=NONE
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-backports-update.repo <<\EOF
+[repo-backports-update]
+name=Update repository of openSUSE Backports
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/update/leap/$releasever/backports/
+path=/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-debug-non-oss.repo <<\EOF
+[repo-debug-non-oss]
+name=Debug Repository (Non-OSS)
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/non-oss/
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-debug.repo <<\EOF
+[repo-debug]
+name=Debug Repository
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/oss/
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-debug-update-non-oss.repo <<\EOF
+[repo-debug-update-non-oss]
+name=Update Repository (Debug, Non-OSS)
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-debug-update.repo <<\EOF
+[repo-debug-update]
+name=Update Repository (Debug)
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-non-oss.repo <<\EOF
+[repo-non-oss]
+name=Non-OSS Repository
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-oss.repo <<\EOF
+[repo-oss]
+name=Main Repository
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-sle-debug-update.repo <<\EOF
+[repo-sle-debug-update]
+name=Update repository with debuginfo for updates from SUSE Linux Enterprise 15
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/update/leap/$releasever/sle/
+path=/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-sle-update.repo <<\EOF
+[repo-sle-update]
+name=Update repository with updates from SUSE Linux Enterprise 15
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/update/leap/$releasever/sle/
+path=/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-source.repo <<\EOF
+[repo-source]
+name=Source Repository
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/oss/
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-update-non-oss.repo <<\EOF
+[repo-update-non-oss]
+name=Update Repository (Non-Oss)
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
+type=rpm-md
+keeppackages=0
+EOF
+            cat >$Dir_openSUSERepos/repo-update.repo <<\EOF
+[repo-update]
+name=Main Update Repository
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/update/leap/$releasever/oss/
+type=rpm-md
+keeppackages=0
+EOF
+            ;;
+        esac
+        ;;
+    tumbleweed)
+        cat >$Dir_openSUSERepos/repo-debug.repo <<\EOF
+[repo-debug]
+name=openSUSE-Tumbleweed-Debug
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/debug/tumbleweed/repo/oss/
+path=/
+keeppackages=0
+EOF
+        cat >$Dir_openSUSERepos/repo-non-oss.repo <<\EOF
+[repo-non-oss]
+name=openSUSE-Tumbleweed-Non-Oss
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/tumbleweed/repo/non-oss/
+path=/
+type=rpm-md
+keeppackages=0
+EOF
+        cat >$Dir_openSUSERepos/repo-openh264.repo <<\EOF
+[repo-openh264]
+name=Open H.264 Codec (openSUSE Tumbleweed)
+enabled=1
+autorefresh=1
+baseurl=http://codecs.opensuse.org/openh264/openSUSE_Tumbleweed
+path=/
+type=rpm-md
+keeppackages=0
+EOF
+        cat >$Dir_openSUSERepos/repo-oss.repo <<\EOF
+[repo-oss]
+name=openSUSE-Tumbleweed-Oss
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/tumbleweed/repo/oss/
+path=/
+type=rpm-md
+keeppackages=0
+EOF
+        cat >$Dir_openSUSERepos/repo-source.repo <<\EOF
+[repo-source]
+name=openSUSE-Tumbleweed-Source
+enabled=0
+autorefresh=1
+baseurl=http://download.opensuse.org/source/tumbleweed/repo/oss/
+path=/
+keeppackages=0
+EOF
+        cat >$Dir_openSUSERepos/repo-update.repo <<\EOF
+[repo-update]
+name=openSUSE-Tumbleweed-Update
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/update/tumbleweed/
+path=/
+type=rpm-md
+keeppackages=0
+EOF
+        ;;
+    esac
+}
+
 ## 生成 EPEL 附加软件包官方 repo 源文件
 function GenRepoFiles_EPEL() {
     case ${SYSTEM_VERSION_NUMBER:0:1} in
@@ -3039,6 +3435,21 @@ gpgcheck=1
 EOF
         ;;
     esac
+}
+
+## 组合函数
+function Combin_Function() {
+    PermissionJudgment
+    EnvJudgment
+    ChooseMirrors
+    ChooseWebProtocol
+    ChooseInstallEPEL
+    CloseFirewall
+    BackupMirrors
+    RemoveOldMirrors
+    ChangeMirrors
+    UpgradeSoftware
+    AuthorSignature
 }
 
 Combin_Function
