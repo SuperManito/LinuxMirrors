@@ -80,23 +80,23 @@
 
   - #### 软件源
 
-    |       |     镜像站名称     |                               镜像站地址                               | IPv6  | Kali Linux | Rocky Linux | Fedora | openEuler | openSUSE  | EPEL  |
-    | :---: | :---------------: | :------------------------------------------------------------------: | :---: | :--------: | :---------: | :----: | :-------: | :-------: | :---: |
-    |   1   |        阿里云      |           [mirrors.aliyun.com](https://mirrors.aliyun.com)           |   ✓   |     ✓      |             |   ✓    |     ✓     |           |   ✓   |
-    |   2   |        腾讯云      |          [mirrors.tencent.com](https://mirrors.tencent.com)          |   ✓   |     ✓      |      ✓      |   ✓    |           |           |   ✓   |
-    |   3   |        华为云      |      [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com)      |   ✓   |     ✓      |             |   ✓    |     ✓     |           |   ✓   |
-    |   4   |         网易       |              [mirrors.163.com](https://mirrors.163.com)              |       |            |      ✓      |   ✓    |     ✓    |           |       |
-    |   5   |         搜狐       |             [mirrors.sohu.com](https://mirrors.sohu.com)             |       |            |             |   ✓    |          |           |       |
-    |   6   |       清华大学     | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) |   ✓   |     ✓      |             |   ✓    |     ✓     |           |   ✓   |
-    |   7   |       北京大学     |           [mirrors.pku.edu.cn](https://mirrors.pku.edu.cn/Mirrors)   |   ✓   |            |             |        |     ✓     |           |   ✓   |
-    |   8   |       浙江大学     |           [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn)           |       |     ✓      |      ✓      |   ✓    |     ✓     |           |   ✓   |
-    |   9   |       南京大学     |           [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn)           |       |     ✓      |      ✓      |   ✓    |     ✓     |           |   ✓   |
-    |  10   |       重庆大学     |           [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn)           |       |     ✓      |             |   ✓    |           |           |   ✓   |
-    |  11   |       兰州大学     |            [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn)            |   ✓   |            |      ✓      |   ✓    |     ✓     |           |   ✓   |
-    |  12   |     上海交通大学    |           [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn)           |   ✓   |     ✓      |      ✓      |   ✓    |     ✓     |           |   ✓   |
-    |  13   |    哈尔滨工业大学   |           [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn)           |   ✓   |     ✓      |             |        |     ✓     |           |   ✓   |
-    |  14   |   中国科学技术大学  |          [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn)          |   ✓   |     ✓      |      ✓      |   ✓    |     ✓     |           |   ✓   |
-    |  15   | 中国科学院软件研究所 |           [mirror.iscas.ac.cn](https://mirror.iscas.ac.cn)           |       |     ✓      |      ✓      |   ✓    |     ✓     |           |   ✓   |
+    |       |     镜像站名称     |                               镜像站地址                               | IPv6  | Kali Linux | Rocky Linux | Fedora | openEuler | openSUSE | EPEL  |
+    | :---: | :---------------: | :------------------------------------------------------------------: | :---: | :--------: | :---------: | :----: | :-------: | :------: | :---: |
+    |   1   |        阿里云      |           [mirrors.aliyun.com](https://mirrors.aliyun.com)           |   ✓   |     ✓      |             |   ✓    |     ✓     |    ✓     |   ✓   |
+    |   2   |        腾讯云      |          [mirrors.tencent.com](https://mirrors.tencent.com)          |   ✓   |     ✓      |      ✓      |   ✓    |           |    ✓     |   ✓   |
+    |   3   |        华为云      |      [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com)      |   ✓   |     ✓      |             |   ✓    |     ✓     |    ✓     |   ✓   |
+    |   4   |         网易       |              [mirrors.163.com](https://mirrors.163.com)              |       |            |      ✓      |   ✓    |     ✓    |          |       |
+    |   5   |         搜狐       |             [mirrors.sohu.com](https://mirrors.sohu.com)             |       |            |             |   ✓    |          |    ✓     |       |
+    |   6   |       清华大学     | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) |   ✓   |     ✓      |             |   ✓    |     ✓     |    ✓     |   ✓   |
+    |   7   |       北京大学     |           [mirrors.pku.edu.cn](https://mirrors.pku.edu.cn/Mirrors)   |   ✓   |            |             |        |     ✓     |    ✓     |   ✓   |
+    |   8   |       浙江大学     |           [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn)           |       |     ✓      |      ✓      |   ✓    |     ✓     |    ✓     |   ✓   |
+    |   9   |       南京大学     |           [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn)           |       |     ✓      |      ✓      |   ✓    |     ✓     |    ✓     |   ✓   |
+    |  10   |       重庆大学     |           [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn)           |       |     ✓      |             |   ✓    |           |    ✓     |   ✓   |
+    |  11   |       兰州大学     |            [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn)            |   ✓   |            |      ✓      |   ✓    |     ✓     |    ✓     |   ✓   |
+    |  12   |     上海交通大学    |           [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn)           |   ✓   |     ✓      |      ✓      |   ✓    |     ✓     |    ✓     |   ✓   |
+    |  13   |    哈尔滨工业大学   |           [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn)           |   ✓   |     ✓      |             |        |     ✓     |    ✓     |   ✓   |
+    |  14   |   中国科学技术大学  |          [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn)          |   ✓   |     ✓      |      ✓      |   ✓    |     ✓     |    ✓     |   ✓   |
+    |  15   | 中国科学院软件研究所 |           [mirror.iscas.ac.cn](https://mirror.iscas.ac.cn)           |       |     ✓      |      ✓      |   ✓    |     ✓     |    ✓     |   ✓   |
 
     以上为脚本当前使用的开源镜像站，所有镜像站均支持 `Debian` `Ubuntu` `CentOS` 软件源  
     如果使用过程中脚本不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可  
