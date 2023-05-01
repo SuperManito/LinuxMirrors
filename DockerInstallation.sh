@@ -513,7 +513,7 @@ function ChooseMirrors() {
         echo -e ' ❖   中科大           8)'
         echo -e ' ❖   中科院           9)'
         echo -e ' ❖   官方            10)'
-        local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1~8 ]：${PLAIN}")
+        local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1~10 ]：${PLAIN}")
         read -p "${CHOICE_B}" INPUT
         case $INPUT in
         1)
@@ -565,7 +565,7 @@ function ChooseMirrors() {
     echo -e ' ❖   中科大           9)'
     echo -e ' ❖   谷歌云          10)'
     echo -e ' ❖   官方            11)'
-    local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Hub 源 [ 1~12 ]：${PLAIN}")
+    local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Hub 源 [ 1~11 ]：${PLAIN}")
     read -p "${CHOICE_C}" INPUT
     case $INPUT in
     1)
