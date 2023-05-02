@@ -3711,6 +3711,7 @@ function CommandOptions() {
             ;;
         --help)
             Output_Help_Info
+            exit
             ;;
         *)
             Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
