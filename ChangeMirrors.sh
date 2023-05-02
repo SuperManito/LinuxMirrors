@@ -1,11 +1,11 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-02
+## Modified: 2023-05-03
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 
-## 国内软件源列表
-# 格式："软件源名称@软件源地址"
+## 软件源列表
+# 国内格式："软件源名称@软件源地址"
 mirror_list_default=(
     "阿里云@mirrors.aliyun.com"
     "腾讯云@mirrors.tencent.com"
@@ -22,6 +22,39 @@ mirror_list_default=(
     "哈尔滨工业大学@mirrors.hit.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
+)
+# 海外格式："洲 · 软件源名称（国家/地区）@软件源地址"，请根据地理位置、国家/地区进行排序以便于用户选择
+mirror_list_abroad=(
+    "亚洲 · 科盈电信 [香港]@mirror.hkt.cc"
+    "亚洲 · xTom [香港]@mirrors.xtom.hk"
+    "亚洲 · 自由软件实验室(NCHC) [台湾]@free.nchc.org.tw"
+    "亚洲 · AniGil Linux Archive [韩国]@mirror.anigil.com"
+    "亚洲 · 工业网络安全卓越中心(ICSCoE) [日本]@ftp.udx.icscoe.jp/Linux"
+    "亚洲 · 北陆先端科学技术大学院(JAIST) [日本]@ftp.jaist.ac.jp/pub/Linux"
+    "亚洲 · xTom [日本]@mirrors.xtom.jp"
+    "亚洲 · GB Network Solutions [马来西亚]@mirrors.gbnetwork.com"
+    "北美 · Linux Kernel [美国]@mirrors.kernel.org"
+    "北美 · 麻省理工学院(MIT) [美国]@mirrors.mit.edu"
+    "北美 · 普林斯顿大学数学系 [美国]@mirror.math.princeton.edu/pub"
+    "北美 · Fremont Cabal 互联网交换中心 [美国]@mirror.fcix.net"
+    "北美 · xTom [美国]@mirrors.xtom.com"
+    "北美 · 不列颠哥伦比亚大学 [加拿大]@mirror.it.ubc.ca"
+    "南美 · 蓬塔格罗萨州立大学 [巴西]@mirror.uepg.br"
+    "欧洲 · Vorboss Ltd [英国]@mirror.vorboss.net"
+    "欧洲 · xTom [德国]@mirrors.xtom.de"
+    "欧洲 · 亚琛工业大学(RWTH Aachen) [德国]@ftp.halifax.rwth-aachen.de"
+    "欧洲 · 德累斯顿大学(AG DSN) [德国]@ftp.agdsn.de"
+    "欧洲 · xTom [荷兰]@mirrors.xtom.nl"
+    "欧洲 · DataPacket [荷兰]@mirror.datapacket.com"
+    "欧洲 · xTom [爱沙尼亚]@mirrors.xtom.ee"
+    "欧洲 · Dotsrc [丹麦]@mirrors.dotsrc.org"
+    "欧洲 · ia64 [俄罗斯]@mirror.linux-ia64.org"
+    "欧洲 · Truenetwork [俄罗斯]@mirror.truenetwork.ru"
+    "欧洲 · Belgian Research Network [比利时]@ftp.belnet.be/mirror"
+    "欧洲 · 克里特大学计算机中心 [希腊]@ftp.cc.uoc.gr/mirrors/linux"
+    "澳洲 · Fremont Cabal 互联网交换中心 [澳大利亚]@gsl-syd.mm.fcix.net"
+    "澳洲 · xTom [澳大利亚]@mirrors.xtom.au"
+    "澳洲 · Free Software Mirror Group [新西兰]@mirror.fsmg.org.nz"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
@@ -174,14 +207,16 @@ function EnvJudgment() {
         ;;
     esac
     ## 定义软件源分支名称
-    if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_UBUNTU} ]; then
-        if [ ${SYSTEM_ARCH} = "x86_64" ] || [ $(uname -m) = "*i?86*" ]; then
-            SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
+    if [[ -z "${SOURCE_BRANCH}" ]]; then
+        if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_UBUNTU} ]; then
+            if [ ${SYSTEM_ARCH} = "x86_64" ] || [ $(uname -m) = "*i?86*" ]; then
+                SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
+            else
+                SOURCE_BRANCH=ubuntu-ports
+            fi
         else
-            SOURCE_BRANCH=ubuntu-ports
+            SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
         fi
-    else
-        SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
     fi
     ## 定义软件源同步/更新文字
     case "${SYSTEM_FACTIONS}" in
@@ -198,7 +233,7 @@ function EnvJudgment() {
 function ChooseMirrors() {
     ## 打印软件源列表
     function PrintMirrorsList() {
-        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums i j
+        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
         ## 计算字符串长度
         function StringLength() {
             local text=$1
@@ -206,11 +241,15 @@ function ChooseMirrors() {
         }
 
         echo -e ''
-        local list_arr=($(eval echo \${$1[*]}))
+
+        local list_arr=()
+        for ((a = 0; a < "$(eval echo \${#$1[@]})"; a++)); do
+            list_arr[$a]="$(eval echo \${$1[a]})"
+        done
         if [ -x /usr/bin/printf ]; then
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 软件源名称
-                # tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}') # 软件源地址
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
+                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
                 arr_num=$((i + 1))
                 default_mirror_name_length=${2:-"30"} # 默认软件源名称打印长度
                 ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
@@ -230,8 +269,8 @@ function ChooseMirrors() {
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 软件源名称
-                tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}')  # 软件源地址
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
+                tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')  # 软件源地址
                 arr_num=$((i + 1))
 
                 echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
@@ -258,10 +297,10 @@ function ChooseMirrors() {
         done
         if [[ ${USE_INTRANET_SOURCE} == "true" ]]; then
             SOURCE="${intranet_source}"
-        elif [[ -z ${USE_INTRANET_SOURCE} ]]; then
+        elif [[ -z "${USE_INTRANET_SOURCE}" ]]; then
             local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
             read -p "${CHOICE}" INPUT
-            [ -z ${INPUT} ] && INPUT=Y
+            [[ -z "${INPUT}" ]] && INPUT=Y
             case $INPUT in
             [Yy] | [Yy][Ee][Ss]) ;;
             [Nn] | [Nn][Oo])
@@ -290,9 +329,14 @@ function ChooseMirrors() {
 
     clear
     Title
-    if [ -z ${SOURCE} ]; then
-        local mirror_list_name="mirror_list_default"
-        PrintMirrorsList "${mirror_list_name}" 31
+    if [[ -z "${SOURCE}" ]]; then
+        if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
+            local mirror_list_name="mirror_list_abroad"
+            PrintMirrorsList "${mirror_list_name}" 50
+        else
+            local mirror_list_name="mirror_list_default"
+            PrintMirrorsList "${mirror_list_name}" 31
+        fi
 
         local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
@@ -300,7 +344,7 @@ function ChooseMirrors() {
             case $INPUT in
             [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
                 local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
-                if [ -z $tmp_source ]; then
+                if [[ -z "${tmp_source}" ]]; then
                     echo -e "\n$WARN 请输入有效的数字序号！"
                 else
                     SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
@@ -324,13 +368,13 @@ function ChooseMirrors() {
 
 ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
 function ChooseWebProtocol() {
-    if [ -z $WEB_PROTOCOL ]; then
+    if [[ -z "${WEB_PROTOCOL}" ]]; then
         if [[ ${ONLY_HTTP} == "True" ]]; then
             WEB_PROTOCOL="http"
         else
             local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
             read -p "${CHOICE}" INPUT
-            [ -z ${INPUT} ] && INPUT=Y
+            [[ -z "${INPUT}" ]] && INPUT=Y
             case $INPUT in
             [Yy] | [Yy][Ee][Ss])
                 WEB_PROTOCOL="http"
@@ -350,7 +394,7 @@ function ChooseWebProtocol() {
 
 # 适用于 RHEL/CentOS(Stream)/RockyLinux 的 EPEL 附加软件包（安装/换源）
 function ChooseInstallEPEL() {
-    if [ -z $INSTALL_EPEL ]; then
+    if [[ -z "${INSTALL_EPEL}" ]]; then
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}")
             ## 判断是否已安装 EPEL 软件包
@@ -369,7 +413,7 @@ function ChooseInstallEPEL() {
                 local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
             fi
             read -p "${CHOICE}" INPUT
-            [ -z ${INPUT} ] && INPUT=Y
+            [[ -z "${INPUT}" ]] && INPUT=Y
             case $INPUT in
             [Yy] | [Yy][Ee][Ss])
                 INSTALL_EPEL="True"
@@ -399,10 +443,10 @@ function CloseFirewall() {
         if [[ $(systemctl is-active firewalld) == "active" ]]; then
             if [[ ${CLOSE_FIREWALL} == "true" ]]; then
                 Main
-            elif [[ -z ${CLOSE_FIREWALL} ]]; then
+            elif [[ -z "${CLOSE_FIREWALL}" ]]; then
                 local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
                 read -p "${CHOICE}" INPUT
-                [ -z ${INPUT} ] && INPUT=Y
+                [[ -z "${INPUT}" ]] && INPUT=Y
                 case $INPUT in
                 [Yy] | [Yy][Ee][Ss])
                     Main
@@ -419,7 +463,7 @@ function CloseFirewall() {
 
 ## 备份原有软件源
 function BackupOriginMirrors() {
-    if [[ $BACKUP == "true" || -z $BACKUP ]]; then
+    if [[ $BACKUP == "true" || -z "${BACKUP}" ]]; then
         local VERIFICATION_FILES=1
         local VERIFICATION_BACKUPFILES=1
 
@@ -463,10 +507,10 @@ function BackupOriginMirrors() {
             ## /etc/apt/sources.list
             if [ -s $File_DebianSourceList ]; then
                 if [ -s $File_DebianSourceListBackup ]; then
-                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
                         local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP1}" INPUT
-                        [ -z ${INPUT} ] && INPUT=Y
+                        [[ -z "${INPUT}" ]] && INPUT=Y
                         case $INPUT in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
@@ -492,10 +536,10 @@ function BackupOriginMirrors() {
             ## /etc/apt/sources.list.d
             if [ -d $Dir_DebianExtendSource ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_DebianExtendSourceBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
                         local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP2}" INPUT
-                        [ -z ${INPUT} ] && INPUT=Y
+                        [[ -z "${INPUT}" ]] && INPUT=Y
                         case $INPUT in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
@@ -520,10 +564,10 @@ function BackupOriginMirrors() {
             ## /etc/yum.repos.d
             if [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_RedHatReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
                         local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP3}" INPUT
-                        [ -z ${INPUT} ] && INPUT=Y
+                        [[ -z "${INPUT}" ]] && INPUT=Y
                         case $INPUT in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
@@ -550,10 +594,10 @@ function BackupOriginMirrors() {
             ## /etc/yum.repos.d
             if [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_openEulerReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
                         local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP4}" INPUT
-                        [ -z ${INPUT} ] && INPUT=Y
+                        [[ -z "${INPUT}" ]] && INPUT=Y
                         case $INPUT in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
@@ -580,10 +624,10 @@ function BackupOriginMirrors() {
             ## /etc/zypp/repos.d
             if [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_openSUSEReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
                         local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP4}" INPUT
-                        [ -z ${INPUT} ] && INPUT=Y
+                        [[ -z "${INPUT}" ]] && INPUT=Y
                         case $INPUT in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
@@ -714,14 +758,14 @@ function UpdateSoftware() {
     function MainInteraction() {
         local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
         read -p "${CHOICE}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
+        [[ -z "${INPUT}" ]] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss]) ;;
         [Nn] | [Nn][Oo])
             Main
             if [[ ${CLEAN_CACHE} == "true" ]]; then
                 CleanCache
-            elif [[ -z ${CLEAN_CACHE} ]]; then
+            elif [[ -z "${CLEAN_CACHE}" ]]; then
                 CleanCacheInteraction
             fi
             ;;
@@ -733,7 +777,7 @@ function UpdateSoftware() {
     function CleanCacheInteraction() {
         local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
         read -p "${CHOICE}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
+        [[ -z "${INPUT}" ]] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
             CleanCache
@@ -749,10 +793,10 @@ function UpdateSoftware() {
         Main
         if [[ ${CLEAN_CACHE} == "true" ]]; then
             CleanCache
-        elif [[ -z ${CLEAN_CACHE} ]]; then
+        elif [[ -z "${CLEAN_CACHE}" ]]; then
             CleanCacheInteraction
         fi
-    elif [[ -z ${UPDATA_SOFTWARE} ]]; then
+    elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
         MainInteraction
     fi
 }
@@ -786,12 +830,20 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
-deb ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}" >>$File_DebianSourceList
+        if [[ ${USE_ABROAD_SOURCE} == "true" ]]; then
+            echo "# deb ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# # deb-src ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+
+deb https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# deb-src https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
+        else
+            echo "deb ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
 # deb-src ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
 
 # deb https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
 # # deb-src https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
+        fi
         ;;
     "${SYSTEM_UBUNTU}")
         source_suffix="main restricted universe multiverse"
@@ -3557,7 +3609,9 @@ function CommandOptions() {
         echo -e "
 选项命令(参数名/含义/参数值)：
 
-  --source                 指定软件源地址           地址字符串
+  --source                 指定软件源地址           地址
+  --branch                 指定软件源分支           分支名
+  --abroad                 使用海外软件源           无
   --web-protocol           指定 WEB 协议            http 或 https
   --intranet               使用内网地址             true 或 false
   --install-epel           安装 EPEL 附加软件包     true 或 false
@@ -3579,6 +3633,10 @@ function CommandOptions() {
     ## 判断参数
     while [ $# -gt 0 ]; do
         case $1 in
+        ## 海外模式
+        --abroad)
+            USE_ABROAD_SOURCE="true"
+            ;;
         ## 指定软件源地址
         --source)
             if [ $2 ]; then
@@ -3589,6 +3647,15 @@ function CommandOptions() {
                     SOURCE="$2"
                     shift
                 fi
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        ## 指定软件源分支
+        --branch)
+            if [ $2 ]; then
+                SOURCE_BRANCH="$2"
+                shift
             else
                 Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
