@@ -4,8 +4,8 @@
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 
-## 国内镜像站列表
-# 格式："镜像站名称@镜像站地址"
+## 国内软件源列表
+# 格式："软件源名称@软件源地址"
 mirror_list_default=(
     "阿里云@mirrors.aliyun.com"
     "腾讯云@mirrors.tencent.com"
@@ -24,16 +24,16 @@ mirror_list_default=(
     "中国科学院软件研究所@mirror.iscas.ac.cn"
 )
 
-## 配置需要区分公网地址和内网地址的镜像站（不分地域）
-# 配置方法：需要同时在两个数组变量中分别定义镜像站地址，并且保证排列顺序一致
-# 工作原理：当检测到用户所选择的镜像站地址在 “镜像站公网地址列表” 中时就会询问是否切换为内网地址，然后从 “镜像站内网地址列表” 相同的位置提取内网地址
-# 镜像站公网地址列表
+## 配置需要区分公网地址和内网地址的软件源（不分地域）
+# 配置方法：需要同时在两个数组变量中分别定义软件源地址，并且保证排列顺序一致
+# 工作原理：当检测到用户所选择的软件源地址在 “软件源公网地址列表” 中时就会询问是否切换为内网地址，然后从 “软件源内网地址列表” 相同的位置提取内网地址
+# 软件源公网地址列表
 mirror_list_extranet=(
     "mirrors.aliyun.com"
     "mirrors.tencent.com"
     "repo.huaweicloud.com"
 )
-# 镜像站内网地址列表
+# 软件源内网地址列表
 mirror_list_intranet=(
     "mirrors.cloud.aliyuncs.com"
     "mirrors.tencentyun.com"
@@ -84,9 +84,23 @@ WARN='[\033[33mWARN\033[0m]'
 ERROR='[\033[31mERROR\033[0m]'
 WORKING='[\033[34m*\033[0m]'
 
+function StartTitle() {
+    echo -e ' +-----------------------------------+'
+    echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
+    echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
+    echo -e ' +-----------------------------------+'
+}
+
 function AuthorSignature() {
-    echo -e "\n$COMPLETE 脚本执行结束\n"
-    echo -e " \033[1;34m官方网站\033[0m https://supermanito.github.io/LinuxMirrors\n"
+    echo -e "[\033[1;34m官网\033[0m] https://supermanito.github.io/LinuxMirrors\n"
+}
+
+## 权限判定
+function PermissionJudgment() {
+    if [ $UID -ne 0 ]; then
+        echo -e "\n$ERROR 权限不足，请使用 Root 用户运行本脚本\n"
+        exit 1
+    fi
 }
 
 ## 系统判定变量
@@ -180,220 +194,424 @@ function EnvJudgment() {
     esac
 }
 
-## 环境判定
-function PermissionJudgment() {
-    ## 权限判定
-    if [ $UID -ne 0 ]; then
-        echo -e "\n$ERROR 权限不足，请使用 Root 用户运行本脚本\n"
-        exit 1
+## 选择软件源
+function ChooseMirrors() {
+    ## 打印软件源列表
+    function PrintMirrorsList() {
+        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums i j
+        ## 计算字符串长度
+        function StringLength() {
+            local text=$1
+            echo "${#text}"
+        }
+
+        echo -e ''
+        local list_arr=($(eval echo \${$1[*]}))
+        if [ -x /usr/bin/printf ]; then
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 软件源名称
+                # tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}') # 软件源地址
+                arr_num=$((i + 1))
+                default_mirror_name_length=${2:-"30"} # 默认软件源名称打印长度
+                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
+                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
+                # 非一般字符长度
+                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!]||g;"))
+                ## 填充空格
+                tmp_spaces_nums=$(($(($default_mirror_name_length - ${tmp_mirror_name_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
+                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
+                    tmp_mirror_name="${tmp_mirror_name} "
+                done
+
+                printf " ❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+            done
+        else
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 软件源名称
+                tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}')  # 软件源地址
+                arr_num=$((i + 1))
+
+                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
+            done
+        fi
+    }
+
+    ## 选择软件源内网地址
+    # 例如部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
+    # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
+    function ChooseMirrorIntranetAddress() {
+        local intranet_source
+        for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
+            if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
+                # echo "${SOURCE}"
+                intranet_source="${mirror_list_intranet[i]}"
+                # echo "${intranet_source}"
+                # exit
+                ONLY_HTTP="True"
+                break
+            else
+                continue
+            fi
+        done
+        if [[ ${USE_INTRANET_SOURCE} == "true" ]]; then
+            SOURCE="${intranet_source}"
+        elif [[ -z ${USE_INTRANET_SOURCE} ]]; then
+            local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
+            read -p "${CHOICE}" INPUT
+            [ -z ${INPUT} ] && INPUT=Y
+            case $INPUT in
+            [Yy] | [Yy][Ee][Ss]) ;;
+            [Nn] | [Nn][Oo])
+                SOURCE="${intranet_source}"
+                echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不使用内网地址！"
+                ;;
+            esac
+        fi
+    }
+
+    function Title() {
+        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
+        local arch="${SYSTEM_ARCH}"
+        local date="$(date "+%Y-%m-%d %H:%M:%S")"
+        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+
+        StartTitle
+        echo -e ' 欢迎使用 GNU/Linux 一键更换软件源脚本'
+        echo -e ''
+        echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
+        echo -e " 系统时间 ${BLUE}${date} ${timezone}${PLAIN}"
+    }
+
+    clear
+    Title
+    if [ -z ${SOURCE} ]; then
+        local mirror_list_name="mirror_list_default"
+        PrintMirrorsList "${mirror_list_name}" 31
+
+        local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        while true; do
+            read -p "${CHOICE}" INPUT
+            case $INPUT in
+            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                if [ -z $tmp_source ]; then
+                    echo -e "\n$WARN 请输入有效的数字序号！"
+                else
+                    SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                    # echo "${SOURCE}"
+                    # exit
+                    break
+                fi
+                ;;
+            *)
+                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                ;;
+            esac
+        done
+    fi
+
+    ## 选择软件源内网地址
+    if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
+        ChooseMirrorIntranetAddress
+    fi
+}
+
+## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
+function ChooseWebProtocol() {
+    if [ -z $WEB_PROTOCOL ]; then
+        if [[ ${ONLY_HTTP} == "True" ]]; then
+            WEB_PROTOCOL="http"
+        else
+            local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+            read -p "${CHOICE}" INPUT
+            [ -z ${INPUT} ] && INPUT=Y
+            case $INPUT in
+            [Yy] | [Yy][Ee][Ss])
+                WEB_PROTOCOL="http"
+                ;;
+            [Nn] | [Nn][Oo])
+                WEB_PROTOCOL="https"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
+                WEB_PROTOCOL="https"
+                ;;
+            esac
+        fi
+    fi
+    WEB_PROTOCOL="${WEB_PROTOCOL,,}"
+}
+
+# 适用于 RHEL/CentOS(Stream)/RockyLinux 的 EPEL 附加软件包（安装/换源）
+function ChooseInstallEPEL() {
+    if [ -z $INSTALL_EPEL ]; then
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}")
+            ## 判断是否已安装 EPEL 软件包
+            rpm -qa | grep epel-release -q
+            VERIFICATION_EPEL=$?
+            ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
+            [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
+            VERIFICATION_EPELFILES=$?
+            ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
+            [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
+            VERIFICATION_EPELBACKUPFILES=$?
+
+            if [ ${VERIFICATION_EPEL} -eq 0 ]; then
+                local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+            fi
+            read -p "${CHOICE}" INPUT
+            [ -z ${INPUT} ] && INPUT=Y
+            case $INPUT in
+            [Yy] | [Yy][Ee][Ss])
+                INSTALL_EPEL="True"
+                ;;
+            [Nn] | [Nn][Oo])
+                INSTALL_EPEL="False"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不更换！"
+                INSTALL_EPEL="False"
+                ;;
+            esac
+            ;;
+        esac
     fi
 }
 
 ## 关闭防火墙和SELinux
 function CloseFirewall() {
-    local SelinuxConf=/etc/selinux/config
+    function Main() {
+        local SelinuxConf=/etc/selinux/config
+        systemctl disable --now firewalld >/dev/null 2>&1
+        [ -s $SelinuxConf ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
+    }
+
     if [ -x /usr/bin/systemctl ]; then
         if [[ $(systemctl is-active firewalld) == "active" ]]; then
-            local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-            read -p "${CHOICE}" INPUT
-            [ -z ${INPUT} ] && INPUT=Y
-            case $INPUT in
-            [Yy] | [Yy][Ee][Ss])
-                systemctl disable --now firewalld >/dev/null 2>&1
-                [ -s $SelinuxConf ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不关闭！"
-                ;;
-            esac
+            if [[ ${CLOSE_FIREWALL} == "true" ]]; then
+                Main
+            elif [[ -z ${CLOSE_FIREWALL} ]]; then
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+                read -p "${CHOICE}" INPUT
+                [ -z ${INPUT} ] && INPUT=Y
+                case $INPUT in
+                [Yy] | [Yy][Ee][Ss])
+                    Main
+                    ;;
+                [Nn] | [Nn][Oo]) ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不关闭！"
+                    ;;
+                esac
+            fi
         fi
     fi
 }
 
-## 备份原有源
-function BackupMirrors() {
-    local VERIFICATION_FILES=1
-    local VERIFICATION_BACKUPFILES=1
+## 备份原有软件源
+function BackupOriginMirrors() {
+    if [[ $BACKUP == "true" || -z $BACKUP ]]; then
+        local VERIFICATION_FILES=1
+        local VERIFICATION_BACKUPFILES=1
 
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        ## 判断 /etc/apt/sources.list.d 目录下是否存在文件
-        [ -d $Dir_DebianExtendSource ] && ls $Dir_DebianExtendSource | grep *.list -q
-        VERIFICATION_FILES=$?
-        ## 判断 /etc/apt/sources.list.d.bak 目录下是否存在文件
-        [ -d $Dir_DebianExtendSourceBackup ] && ls $Dir_DebianExtendSourceBackup | grep *.list -q
-        VERIFICATION_BACKUPFILES=$?
-        ;;
-    "${SYSTEM_REDHAT}")
-        ## 判断 /etc/yum.repos.d 目录下是否存在文件
-        [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep repo -q
-        VERIFICATION_FILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
-        [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep repo -q
-        VERIFICATION_BACKUPFILES=$?
-        ;;
-    "${SYSTEM_OPENEULER}")
-        ## 判断 /etc/yum.repos.d 目录下是否存在文件
-        [ -d $Dir_openEulerRepos ] && ls $Dir_openEulerRepos | grep repo -q
-        VERIFICATION_FILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
-        [ -d $Dir_openEulerReposBackup ] && ls $Dir_openEulerReposBackup | grep repo -q
-        VERIFICATION_BACKUPFILES=$?
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        ## 判断 /etc/zypp/repos.d 目录下是否存在文件
-        [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos | grep repo -q
-        VERIFICATION_FILES=$?
-        ## 判断 /etc/zypp/repos.d.bak 目录下是否存在文件
-        [ -d $Dir_openSUSEReposBackup ] && ls $Dir_openSUSEReposBackup | grep repo -q
-        VERIFICATION_BACKUPFILES=$?
-        ;;
-    esac
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            ## 判断 /etc/apt/sources.list.d 目录下是否存在文件
+            [ -d $Dir_DebianExtendSource ] && ls $Dir_DebianExtendSource | grep *.list -q
+            VERIFICATION_FILES=$?
+            ## 判断 /etc/apt/sources.list.d.bak 目录下是否存在文件
+            [ -d $Dir_DebianExtendSourceBackup ] && ls $Dir_DebianExtendSourceBackup | grep *.list -q
+            VERIFICATION_BACKUPFILES=$?
+            ;;
+        "${SYSTEM_REDHAT}")
+            ## 判断 /etc/yum.repos.d 目录下是否存在文件
+            [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep repo -q
+            VERIFICATION_FILES=$?
+            ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
+            [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep repo -q
+            VERIFICATION_BACKUPFILES=$?
+            ;;
+        "${SYSTEM_OPENEULER}")
+            ## 判断 /etc/yum.repos.d 目录下是否存在文件
+            [ -d $Dir_openEulerRepos ] && ls $Dir_openEulerRepos | grep repo -q
+            VERIFICATION_FILES=$?
+            ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
+            [ -d $Dir_openEulerReposBackup ] && ls $Dir_openEulerReposBackup | grep repo -q
+            VERIFICATION_BACKUPFILES=$?
+            ;;
+        "${SYSTEM_OPENSUSE}")
+            ## 判断 /etc/zypp/repos.d 目录下是否存在文件
+            [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos | grep repo -q
+            VERIFICATION_FILES=$?
+            ## 判断 /etc/zypp/repos.d.bak 目录下是否存在文件
+            [ -d $Dir_openSUSEReposBackup ] && ls $Dir_openSUSEReposBackup | grep repo -q
+            VERIFICATION_BACKUPFILES=$?
+            ;;
+        esac
 
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        ## /etc/apt/sources.list
-        if [ -s $File_DebianSourceList ]; then
-            if [ -s $File_DebianSourceListBackup ]; then
-                local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                read -p "${CHOICE_BACKUP1}" INPUT
-                [ -z ${INPUT} ] && INPUT=Y
-                case $INPUT in
-                [Yy] | [Yy][Ee][Ss]) ;;
-                [Nn] | [Nn][Oo])
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            ## /etc/apt/sources.list
+            if [ -s $File_DebianSourceList ]; then
+                if [ -s $File_DebianSourceListBackup ]; then
+                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                        local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        read -p "${CHOICE_BACKUP1}" INPUT
+                        [ -z ${INPUT} ] && INPUT=Y
+                        case $INPUT in
+                        [Yy] | [Yy][Ee][Ss]) ;;
+                        [Nn] | [Nn][Oo])
+                            echo ''
+                            cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
+                            ;;
+                        *)
+                            echo -e "\n$WARN 输入错误，默认不覆盖！"
+                            ;;
+                        esac
+                    fi
+                else
                     echo ''
                     cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
-                    ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不覆盖！"
-                    ;;
-                esac
+                    echo -e "\n$COMPLETE 已备份原有 list 源文件至 $File_DebianSourceListBackup"
+                    sleep 1s
+                fi
             else
-                echo ''
-                cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
-                echo -e "\n$COMPLETE 已备份原有 list 源文件至 $File_DebianSourceListBackup"
-                sleep 1s
+                [ ! -f $File_DebianSourceList ] && touch $File_DebianSourceList
+                echo -e ''
             fi
-        else
-            [ ! -f $File_DebianSourceList ] && touch $File_DebianSourceList
-            echo -e ''
-        fi
 
-        ## /etc/apt/sources.list.d
-        if [ -d $Dir_DebianExtendSource ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
-            if [ -d $Dir_DebianExtendSourceBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                read -p "${CHOICE_BACKUP2}" INPUT
-                [ -z ${INPUT} ] && INPUT=Y
-                case $INPUT in
-                [Yy] | [Yy][Ee][Ss]) ;;
-                [Nn] | [Nn][Oo])
+            ## /etc/apt/sources.list.d
+            if [ -d $Dir_DebianExtendSource ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
+                if [ -d $Dir_DebianExtendSourceBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
+                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                        local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        read -p "${CHOICE_BACKUP2}" INPUT
+                        [ -z ${INPUT} ] && INPUT=Y
+                        case $INPUT in
+                        [Yy] | [Yy][Ee][Ss]) ;;
+                        [Nn] | [Nn][Oo])
+                            echo ''
+                            cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
+                            ;;
+                        *)
+                            echo -e "\n$WARN 输入错误，默认不覆盖！"
+                            ;;
+                        esac
+                    fi
+                else
+                    [ ! -d $Dir_DebianExtendSourceBackup ] && mkdir -p $Dir_DebianExtendSourceBackup
                     echo ''
                     cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
-                    ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不覆盖！"
-                    ;;
-                esac
-            else
-                [ ! -d $Dir_DebianExtendSourceBackup ] && mkdir -p $Dir_DebianExtendSourceBackup
-                echo ''
-                cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
-                echo -e "$COMPLETE 已备份原有 list 第三方源文件至 $Dir_DebianExtendSourceBackup 目录"
-                sleep 1s
+                    echo -e "$COMPLETE 已备份原有 list 第三方源文件至 $Dir_DebianExtendSourceBackup 目录"
+                    sleep 1s
+                fi
             fi
-        fi
-        ;;
-    "${SYSTEM_REDHAT}")
-        ## /etc/yum.repos.d
-        if [ ${VERIFICATION_FILES} -eq 0 ]; then
-            if [ -d $Dir_RedHatReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                read -p "${CHOICE_BACKUP3}" INPUT
-                [ -z ${INPUT} ] && INPUT=Y
-                case $INPUT in
-                [Yy] | [Yy][Ee][Ss]) ;;
-                [Nn] | [Nn][Oo])
+            ;;
+        "${SYSTEM_REDHAT}")
+            ## /etc/yum.repos.d
+            if [ ${VERIFICATION_FILES} -eq 0 ]; then
+                if [ -d $Dir_RedHatReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
+                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                        local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        read -p "${CHOICE_BACKUP3}" INPUT
+                        [ -z ${INPUT} ] && INPUT=Y
+                        case $INPUT in
+                        [Yy] | [Yy][Ee][Ss]) ;;
+                        [Nn] | [Nn][Oo])
+                            echo ''
+                            cp -rvf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                            ;;
+                        *)
+                            echo -e "\n$WARN 输入错误，默认不覆盖！"
+                            ;;
+                        esac
+                    fi
+                else
+                    [ ! -d $Dir_RedHatReposBackup ] && mkdir -p $Dir_RedHatReposBackup
                     echo ''
-                    cp -rvf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
-                    ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不覆盖！"
-                    ;;
-                esac
+                    cp -vrf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                    echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_RedHatReposBackup 目录"
+                    sleep 1s
+                fi
             else
-                [ ! -d $Dir_RedHatReposBackup ] && mkdir -p $Dir_RedHatReposBackup
-                echo ''
-                cp -vrf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
-                echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_RedHatReposBackup 目录"
-                sleep 1s
+                [ -d $Dir_RedHatRepos ] || mkdir -p $Dir_RedHatRepos
             fi
-        else
-            [ -d $Dir_RedHatRepos ] || mkdir -p $Dir_RedHatRepos
-        fi
-        ;;
-    "${SYSTEM_OPENEULER}")
-        ## /etc/yum.repos.d
-        if [ ${VERIFICATION_FILES} -eq 0 ]; then
-            if [ -d $Dir_openEulerReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                read -p "${CHOICE_BACKUP4}" INPUT
-                [ -z ${INPUT} ] && INPUT=Y
-                case $INPUT in
-                [Yy] | [Yy][Ee][Ss]) ;;
-                [Nn] | [Nn][Oo])
+            ;;
+        "${SYSTEM_OPENEULER}")
+            ## /etc/yum.repos.d
+            if [ ${VERIFICATION_FILES} -eq 0 ]; then
+                if [ -d $Dir_openEulerReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
+                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                        local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        read -p "${CHOICE_BACKUP4}" INPUT
+                        [ -z ${INPUT} ] && INPUT=Y
+                        case $INPUT in
+                        [Yy] | [Yy][Ee][Ss]) ;;
+                        [Nn] | [Nn][Oo])
+                            echo ''
+                            cp -rvf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                            ;;
+                        *)
+                            echo -e "\n$WARN 输入错误，默认不覆盖！"
+                            ;;
+                        esac
+                    fi
+                else
+                    [ ! -d $Dir_openEulerReposBackup ] && mkdir -p $Dir_openEulerReposBackup
                     echo ''
-                    cp -rvf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
-                    ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不覆盖！"
-                    ;;
-                esac
+                    cp -vrf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                    echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openEulerReposBackup 目录"
+                    sleep 1s
+                fi
             else
-                [ ! -d $Dir_openEulerReposBackup ] && mkdir -p $Dir_openEulerReposBackup
-                echo ''
-                cp -vrf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
-                echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openEulerReposBackup 目录"
-                sleep 1s
+                [ -d $Dir_openEulerRepos ] || mkdir -p $Dir_openEulerRepos
             fi
-        else
-            [ -d $Dir_openEulerRepos ] || mkdir -p $Dir_openEulerRepos
-        fi
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        ## /etc/zypp/repos.d
-        if [ ${VERIFICATION_FILES} -eq 0 ]; then
-            if [ -d $Dir_openSUSEReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                read -p "${CHOICE_BACKUP4}" INPUT
-                [ -z ${INPUT} ] && INPUT=Y
-                case $INPUT in
-                [Yy] | [Yy][Ee][Ss]) ;;
-                [Nn] | [Nn][Oo])
+            ;;
+        "${SYSTEM_OPENSUSE}")
+            ## /etc/zypp/repos.d
+            if [ ${VERIFICATION_FILES} -eq 0 ]; then
+                if [ -d $Dir_openSUSEReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
+                    if [ -z $IGNORE_BACKUP_TIPS ]; then
+                        local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        read -p "${CHOICE_BACKUP4}" INPUT
+                        [ -z ${INPUT} ] && INPUT=Y
+                        case $INPUT in
+                        [Yy] | [Yy][Ee][Ss]) ;;
+                        [Nn] | [Nn][Oo])
+                            echo ''
+                            cp -rvf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                            ;;
+                        *)
+                            echo -e "\n$WARN 输入错误，默认不覆盖！"
+                            ;;
+                        esac
+                    fi
+                else
+                    [ ! -d $Dir_openSUSEReposBackup ] && mkdir -p $Dir_openSUSEReposBackup
                     echo ''
-                    cp -rvf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
-                    ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不覆盖！"
-                    ;;
-                esac
+                    cp -vrf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                    echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openSUSEReposBackup 目录"
+                    sleep 1s
+                fi
             else
-                [ ! -d $Dir_openSUSEReposBackup ] && mkdir -p $Dir_openSUSEReposBackup
-                echo ''
-                cp -vrf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
-                echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openSUSEReposBackup 目录"
-                sleep 1s
+                [ -d $Dir_openSUSERepos ] || mkdir -p $Dir_openSUSERepos
             fi
-        else
-            [ -d $Dir_openSUSERepos ] || mkdir -p $Dir_openSUSERepos
-        fi
-        ;;
-    esac
+            ;;
+        esac
+    fi
 }
 
-## 删除原有源
-function RemoveOldMirrors() {
+## 移除原有软件源
+function RemoveOriginMirrors() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
@@ -455,20 +673,15 @@ function ChangeMirrors() {
         echo -e "\n$ERROR 软件源${SYNC_TXT}失败\n"
         echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_TXT}失败那么可能由以下原因导致"
         echo -e "1. 网络问题：例如连接异常、网络间歇式中断、由地区影响的网络因素等"
-        echo -e "2. 软件源问题：所选镜像站正在维护，或者出现罕见的少数文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态"
-        echo ''
-        exit
+        echo -e "2. 软件源问题：例如正在维护，或者出现罕见的文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态，请前往镜像站对应路径验证"
+        echo -e "\n软件源地址："${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"\n"
+        exit 1
     fi
 }
 
 ## 更新软件包
-function UpgradeSoftware() {
-    local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
-    read -p "${CHOICE_A}" INPUT
-    [ -z ${INPUT} ] && INPUT=Y
-    case $INPUT in
-    [Yy] | [Yy][Ee][Ss]) ;;
-    [Nn] | [Nn][Oo])
+function UpdateSoftware() {
+    function Main() {
         echo -e ''
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
@@ -481,37 +694,76 @@ function UpgradeSoftware() {
             zypper update -y
             ;;
         esac
-        local CHOICE_B=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-        read -p "${CHOICE_B}" INPUT
+    }
+    function CleanCache() {
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            apt-get autoremove -y >/dev/null 2>&1
+            apt-get clean >/dev/null 2>&1
+            ;;
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+            yum autoremove -y >/dev/null 2>&1
+            yum clean packages -y >/dev/null 2>&1
+            ;;
+        "${SYSTEM_OPENSUSE}")
+            zypper clean >/dev/null 2>&1
+            ;;
+        esac
+        echo -e "\n$COMPLETE 清理完毕"
+    }
+    function MainInteraction() {
+        local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
+        read -p "${CHOICE}" INPUT
+        [ -z ${INPUT} ] && INPUT=Y
+        case $INPUT in
+        [Yy] | [Yy][Ee][Ss]) ;;
+        [Nn] | [Nn][Oo])
+            Main
+            if [[ ${CLEAN_CACHE} == "true" ]]; then
+                CleanCache
+            elif [[ -z ${CLEAN_CACHE} ]]; then
+                CleanCacheInteraction
+            fi
+            ;;
+        *)
+            echo -e "\n$WARN 输入错误，默认不更新！"
+            ;;
+        esac
+    }
+    function CleanCacheInteraction() {
+        local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+        read -p "${CHOICE}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
-            case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}")
-                apt-get autoremove -y >/dev/null 2>&1
-                apt-get clean >/dev/null 2>&1
-                ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
-                yum autoremove -y >/dev/null 2>&1
-                yum clean packages -y >/dev/null 2>&1
-                ;;
-            "${SYSTEM_OPENSUSE}")
-                zypper clean >/dev/null 2>&1
-                ;;
-            esac
-            echo -e "\n$COMPLETE 清理完毕"
+            CleanCache
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
             echo -e "\n$WARN 输入错误，默认不清理！"
             ;;
         esac
-        ;;
-    *)
-        echo -e "\n$WARN 输入错误，默认不更新！"
-        ;;
-    esac
+    }
+
+    if [[ ${UPDATA_SOFTWARE} == "true" ]]; then
+        Main
+        if [[ ${CLEAN_CACHE} == "true" ]]; then
+            CleanCache
+        elif [[ -z ${CLEAN_CACHE} ]]; then
+            CleanCacheInteraction
+        fi
+    elif [[ -z ${UPDATA_SOFTWARE} ]]; then
+        MainInteraction
+    fi
 }
+
+## 运行结束
+function RunEnd() {
+    echo -e "\n$COMPLETE 脚本执行结束\n"
+    AuthorSignature
+}
+
+##############################################################################
 
 ## 更换基于 Debian 系 Linux 发行版的软件源
 function DebianMirrors() {
@@ -571,6 +823,43 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 
 ## 更换基于 RedHat 系 Linux 发行版软件源
 function RedHatMirrors() {
+    ## 安装/更换 EPEL (Extra Packages for Enterprise Linux) 附加软件包软件源
+    function EPELMirrors() {
+        ## 安装 EPEL 软件包
+        if [ ${VERIFICATION_EPEL} -ne 0 ]; then
+            echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
+            yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
+        fi
+        ## 删除原有 repo 源文件
+        [ ${VERIFICATION_EPELFILES} -eq 0 ] && rm -rf $Dir_RedHatRepos/epel*
+        [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_RedHatReposBackup/epel*
+        ## 生成 repo 源文件
+        GenRepoFiles_EPEL
+
+        sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
+
+        # 更换 WEB 协议（HTTP/HTTPS）
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9 | 8)
+            sed -i "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" $Dir_RedHatRepos/epel*
+            ;;
+        7)
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $Dir_RedHatRepos/epel*
+            ;;
+        esac
+        # 修改源
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            sed -i "s|download.example/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
+            ;;
+        8 | 7)
+            sed -i "s|download.fedoraproject.org/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
+            ;;
+        esac
+
+        rm -rf $Dir_RedHatRepos/epel*rpmnew
+    }
+
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}")
@@ -619,7 +908,7 @@ function RedHatMirrors() {
         fi
 
         # EPEL 附加软件包（安装/换源）
-        [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
+        [ ${INSTALL_EPEL} = "True" ] && EPELMirrors
         ;;
     "${SYSTEM_CENTOS_STREAM}")
         # CentOS Stream 9 使用的是 centos-stream 镜像，而 CentOS Stream 8 使用的是 centos 镜像
@@ -650,7 +939,7 @@ function RedHatMirrors() {
         esac
 
         # EPEL 附加软件包（安装/换源）
-        [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
+        [ ${INSTALL_EPEL} = "True" ] && EPELMirrors
         ;;
     "${SYSTEM_ROCKY}")
         case ${SYSTEM_VERSION_NUMBER:0:1} in
@@ -685,7 +974,7 @@ function RedHatMirrors() {
         esac
 
         # EPEL 附加软件包（安装/换源）
-        [ ${EPEL_INSTALL} = "True" ] && EPELMirrors
+        [ ${INSTALL_EPEL} = "True" ] && EPELMirrors
         ;;
     "${SYSTEM_FEDORA}")
         sed -i 's|^metalink=|#metalink=|g' \
@@ -786,231 +1075,6 @@ function openSUSEMirrors() {
             repo-update.repo
         ;;
     esac
-}
-
-# 适用于 RHEL/CentOS(Stream)/RockyLinux 的 EPEL 附加软件包（安装/换源）
-function ChooseInstallEPEL() {
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}")
-        ## 判断是否已安装 EPEL 软件包
-        rpm -qa | grep epel-release -q
-        VERIFICATION_EPEL=$?
-        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
-        VERIFICATION_EPELFILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
-        VERIFICATION_EPELBACKUPFILES=$?
-
-        if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            local CHOICE=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
-        else
-            local CHOICE=$(echo -e "\n  ${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
-        fi
-        read -p "${CHOICE}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
-        case $INPUT in
-        [Yy] | [Yy][Ee][Ss])
-            EPEL_INSTALL="True"
-            ;;
-        [Nn] | [Nn][Oo])
-            EPEL_INSTALL="False"
-            ;;
-        *)
-            echo -e "\n  $WARN 输入错误，默认不更换！"
-            EPEL_INSTALL="False"
-            ;;
-        esac
-        ;;
-    esac
-}
-
-## 安装/更换 EPEL (Extra Packages for Enterprise Linux) 附加软件包软件源
-function EPELMirrors() {
-    ## 安装 EPEL 软件包
-    if [ ${VERIFICATION_EPEL} -ne 0 ]; then
-        echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
-        yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
-    fi
-    ## 删除原有 repo 源文件
-    [ ${VERIFICATION_EPELFILES} -eq 0 ] && rm -rf $Dir_RedHatRepos/epel*
-    [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_RedHatReposBackup/epel*
-    ## 生成 repo 源文件
-    GenRepoFiles_EPEL
-
-    sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
-
-    # 更换 WEB 协议（HTTP/HTTPS）
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
-    9 | 8)
-        sed -i "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" $Dir_RedHatRepos/epel*
-        ;;
-    7)
-        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $Dir_RedHatRepos/epel*
-        ;;
-    esac
-    # 修改源
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
-    9)
-        sed -i "s|download.example/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
-        ;;
-    8 | 7)
-        sed -i "s|download.fedoraproject.org/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
-        ;;
-    esac
-
-    rm -rf $Dir_RedHatRepos/epel*rpmnew
-}
-
-## 选择软件源
-function ChooseMirrors() {
-
-    ## 打印软件源/镜像站列表
-    function PrintMirrorsList() {
-        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums i j
-
-        ## 计算字符串长度
-        function StringLength() {
-            local text=$1
-            echo "${#text}"
-        }
-
-        local list_arr=($(eval echo \${$1[*]}))
-        if [ -x /usr/bin/printf ]; then
-            for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 镜像站名称
-                # tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}') # 镜像站地址
-
-                arr_num=$((i + 1))
-                default_mirror_name_length=${2:-"30"} # 默认镜像站名称打印长度
-                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
-                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
-                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!]||g;"))
-                ## 填充空格
-                tmp_spaces_nums=$(($(($default_mirror_name_length - ${tmp_mirror_name_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
-                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
-                    tmp_mirror_name="${tmp_mirror_name} "
-                done
-                printf " ❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
-            done
-        else
-            for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 镜像站名称
-                tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}')  # 镜像站地址
-                arr_num=$((i + 1))
-                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
-            done
-        fi
-    }
-
-    ## 选择镜像站内网地址
-    # 部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
-    # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
-    function ChooseMirrorIntranetAddress() {
-        local CHOICE=$(echo -e "\n  ${BOLD}└─ 默认使用镜像站的公网地址，是否继续? [Y/n] ${PLAIN}")
-        read -p "${CHOICE}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
-        case $INPUT in
-        [Yy] | [Yy][Ee][Ss]) ;;
-        [Nn] | [Nn][Oo])
-            for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
-                if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
-                    # echo "${SOURCE}"
-                    SOURCE="${mirror_list_intranet[i]}"
-                    # echo "${SOURCE}"
-                    # exit
-                    echo -e "\n  $WARN 已切换至内网专用地址，仅限在特定环境下使用！"
-                    ONLY_HTTP="True"
-                    break
-                else
-                    continue
-                fi
-            done
-            ;;
-        *)
-            SOURCE=${Extranet}
-            echo -e "\n$WARN 输入错误，默认不使用内网地址！"
-            ;;
-        esac
-    }
-
-    function WelcomeTitle() {
-        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
-        local arch="${SYSTEM_ARCH}"
-        local date="$(date "+%Y-%m-%d %H:%M:%S")"
-        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
-
-        echo -e '+-----------------------------------------+'
-        echo -e '|                                         |'
-        echo -e '|            LinuxMirrors MIT             |'
-        echo -e '|                                         |'
-        echo -e '|  欢迎使用 GNU/Linux 一键更换软件源脚本  |'
-        echo -e '|                                         |'
-        echo -e '+-----------------------------------------+'
-        echo -e ''
-        echo -e " 运行环境  ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e " 系统时间  ${BLUE}${date} ${timezone}${PLAIN}"
-        echo -e ''
-    }
-
-    clear
-    WelcomeTitle
-    if [ -z ${SOURCE} ]; then
-        local mirror_list_name="mirror_list_default"
-        PrintMirrorsList "${mirror_list_name}" 31
-
-        local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
-        while true; do
-            read -p "${CHOICE}" INPUT
-            case $INPUT in
-            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
-                if [ -z $tmp_source ]; then
-                    echo -e "\n$WARN 请输入有效的数字序号！"
-                else
-                    SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
-                    # echo "${SOURCE}"
-                    # exit
-                    break
-                fi
-                ;;
-            *)
-                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
-                ;;
-            esac
-        done
-
-        ## 选择镜像站内网地址
-        if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
-            ChooseMirrorIntranetAddress
-        fi
-    fi
-}
-
-## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
-function ChooseWebProtocol() {
-    if [[ ${ONLY_HTTP} == "True" ]]; then
-        WEB_PROTOCOL="http"
-    else
-        local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
-        read -p "${CHOICE}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
-        case $INPUT in
-        [Yy] | [Yy][Ee][Ss])
-            WEB_PROTOCOL="http"
-            ;;
-        [Nn] | [Nn][Oo])
-            WEB_PROTOCOL="https"
-            ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
-            WEB_PROTOCOL="https"
-            ;;
-        esac
-    fi
 }
 
 ## 生成 CentOS 官方 repo 源文件
@@ -3486,6 +3550,176 @@ EOF
     esac
 }
 
+## 处理命令选项
+function CommandOptions() {
+    ## 命令帮助
+    function Output_Help_Info() {
+        echo -e "
+选项命令(参数名/含义/参数值)：
+
+  --source                 指定软件源地址           地址字符串
+  --web-protocol           指定 WEB 协议            http 或 https
+  --intranet               使用内网地址             true 或 false
+  --install-epel           安装 EPEL 附加软件包     true 或 false
+  --close-firewall         关闭防火墙               true 或 false
+  --backup                 备份原有软件源           true 或 false
+  --ignore-backup-tips     忽略覆盖备份提示         无
+  --updata-software        更新软件包               true 或 false
+  --clean-cache            清理下载缓存             true 或 false
+  
+问题报告 https://github.com/SuperManito/LinuxMirrors/issues
+  "
+    }
+    ## 报错退出
+    function Output_Command_Error() {
+        echo -e "\n$ERROR $1\n"
+        exit 1
+    }
+
+    ## 判断参数
+    while [ $# -gt 0 ]; do
+        case $1 in
+        ## 指定软件源地址
+        --source)
+            if [ $2 ]; then
+                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Command_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE="$2"
+                    shift
+                fi
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        ## 优先使用内网地址
+        --intranet)
+            if [ $2 ]; then
+                case $2 in
+                [Tt]rue | [Ff]alse)
+                    USE_INTRANET_SOURCE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## WEB 协议（HTTP/HTTPS）
+        --web-protocol)
+            if [ $2 ]; then
+                case $2 in
+                http | https | HTTP | HTTPS)
+                    WEB_PROTOCOL="$2"
+                    shift
+                    ;;
+                *)
+                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
+            fi
+            ;;
+        ## 安装 EPEL 附加软件包
+        --install-epel)
+            if [ $2 ]; then
+                case $2 in
+                [Tt]rue | [Ff]alse)
+                    INSTALL_EPEL="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 关闭防火墙
+        --close-firewall)
+            if [ $2 ]; then
+                case $2 in
+                [Tt]rue | [Ff]alse)
+                    CLOSE_FIREWALL="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 备份原有软件源
+        --backup)
+            if [ $2 ]; then
+                case $2 in
+                [Tt]rue | [Ff]alse)
+                    BACKUP="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 忽略覆盖备份提示
+        --ignore-backup-tips)
+            IGNORE_BACKUP_TIPS="true"
+            ;;
+        ## 更新软件包
+        --updata-software)
+            if [ $2 ]; then
+                case $2 in
+                [Tt]rue | [Ff]alse)
+                    UPDATA_SOFTWARE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 清理下载缓存
+        --clean-cache)
+            if [ $2 ]; then
+                case $2 in
+                [Tt]rue | [Ff]alse)
+                    CLEAN_CACHE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        --help)
+            Output_Help_Info
+            ;;
+        *)
+            Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
+            ;;
+        esac
+        shift
+    done
+}
+
 ## 组合函数
 function Combin_Function() {
     PermissionJudgment
@@ -3494,11 +3728,12 @@ function Combin_Function() {
     ChooseWebProtocol
     ChooseInstallEPEL
     CloseFirewall
-    BackupMirrors
-    RemoveOldMirrors
+    BackupOriginMirrors
+    RemoveOriginMirrors
     ChangeMirrors
-    UpgradeSoftware
-    AuthorSignature
+    UpdateSoftware
+    RunEnd
 }
 
+CommandOptions "$@"
 Combin_Function
