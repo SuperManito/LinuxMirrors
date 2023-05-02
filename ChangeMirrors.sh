@@ -1,9 +1,46 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-01
-## License: GPL-2.0
+## Modified: 2023-05-02
+## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
-## Gitee: https://gitee.com/SuperManito/LinuxMirrors
+
+## 国内镜像站列表
+# 格式："镜像站名称@镜像站地址"
+mirror_list_default=(
+    "阿里云@mirrors.aliyun.com"
+    "腾讯云@mirrors.tencent.com"
+    "华为云@repo.huaweicloud.com"
+    "网易@mirrors.163.com"
+    "搜狐@mirrors.sohu.com"
+    "清华大学@mirrors.tuna.tsinghua.edu.cn"
+    "北京大学@mirrors.pku.edu.cn"
+    "浙江大学@mirrors.zju.edu.cn"
+    "南京大学@mirrors.nju.edu.cn"
+    "重庆大学@mirrors.cqu.edu.cn"
+    "兰州大学@mirror.lzu.edu.cn"
+    "上海交通大学@mirror.sjtu.edu.cn"
+    "哈尔滨工业大学@mirrors.hit.edu.cn"
+    "中国科学技术大学@mirrors.ustc.edu.cn"
+    "中国科学院软件研究所@mirror.iscas.ac.cn"
+)
+
+## 配置需要区分公网地址和内网地址的镜像站（不分地域）
+# 配置方法：需要同时在两个数组变量中分别定义镜像站地址，并且保证排列顺序一致
+# 工作原理：当检测到用户所选择的镜像站地址在 “镜像站公网地址列表” 中时就会询问是否切换为内网地址，然后从 “镜像站内网地址列表” 相同的位置提取内网地址
+# 镜像站公网地址列表
+mirror_list_extranet=(
+    "mirrors.aliyun.com"
+    "mirrors.tencent.com"
+    "repo.huaweicloud.com"
+)
+# 镜像站内网地址列表
+mirror_list_intranet=(
+    "mirrors.cloud.aliyuncs.com"
+    "mirrors.tencentyun.com"
+    "mirrors.myhuaweicloud.com"
+)
+
+##############################################################################
 
 ## 定义系统判定变量
 SYSTEM_DEBIAN="Debian"
@@ -219,7 +256,7 @@ function BackupMirrors() {
         ## /etc/apt/sources.list
         if [ -s $File_DebianSourceList ]; then
             if [ -s $File_DebianSourceListBackup ]; then
-                local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP1}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -246,7 +283,7 @@ function BackupMirrors() {
         ## /etc/apt/sources.list.d
         if [ -d $Dir_DebianExtendSource ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $Dir_DebianExtendSourceBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP2}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -272,7 +309,7 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $Dir_RedHatReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP3}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -300,7 +337,7 @@ function BackupMirrors() {
         ## /etc/yum.repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $Dir_openEulerReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP4}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -328,7 +365,7 @@ function BackupMirrors() {
         ## /etc/zypp/repos.d
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
             if [ -d $Dir_openSUSEReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -p "${CHOICE_BACKUP4}" INPUT
                 [ -z ${INPUT} ] && INPUT=Y
                 case $INPUT in
@@ -476,47 +513,63 @@ function UpgradeSoftware() {
     esac
 }
 
-## 更换基于 Debian 系 Linux 发行版的国内源
+## 更换基于 Debian 系 Linux 发行版的软件源
 function DebianMirrors() {
-    ## 修改国内源
+    local source_suffix
+    local TIPS="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
+    local basic_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_UBUNTU}")
-        echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main restricted universe multiverse
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-security main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-security main restricted universe multiverse
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main restricted universe multiverse
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main restricted universe multiverse
-
-## 预发布软件源（不建议启用）
-# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-proposed main restricted universe multiverse
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-proposed main restricted universe multiverse" >>$File_DebianSourceList
-        ;;
     "${SYSTEM_DEBIAN}")
-        echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main contrib non-free
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-updates main contrib non-free
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME}-backports main contrib non-free
+        case "${SYSTEM_VERSION_NUMBER}" in
+        12)
+            source_suffix="main contrib non-free non-free-firmware"
+            ;;
+        *)
+            source_suffix="main contrib non-free"
+            ;;
+        esac
+        echo "${TIPS}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
+deb ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# deb-src ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+
+# deb https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# # deb-src https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
+        ;;
+    "${SYSTEM_UBUNTU}")
+        source_suffix="main restricted universe multiverse"
+        echo "${TIPS}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+
+# deb http://security.ubuntu.com/ubuntu ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# # deb-src http://security.ubuntu.com/ubuntu ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
 
 ## 预发布软件源（不建议启用）
-# deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION_CODENAME}/updates main contrib non-free
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}-security ${SYSTEM_VERSION_CODENAME}/updates main contrib non-free" >>$File_DebianSourceList
+# deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-proposed ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-proposed ${source_suffix}" >>$File_DebianSourceList
         ;;
     "${SYSTEM_KALI}")
-        echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
-deb ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib
-# deb-src ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} main non-free contrib" >>$File_DebianSourceList
+        source_suffix="main non-free contrib"
+        echo "${TIPS}
+deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}" >>$File_DebianSourceList
         ;;
     esac
 }
 
-## 更换基于 RedHat 系 Linux 发行版的国内源
+## 更换基于 RedHat 系 Linux 发行版软件源
 function RedHatMirrors() {
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
@@ -663,7 +716,7 @@ function RedHatMirrors() {
     esac
 }
 
-## 更换基于 openEuler 系 Linux 发行版的国内源
+## 更换基于 openEuler 系 Linux 发行版的软件源
 function openEulerMirrors() {
     GenRepoFiles_openEuler
     cd $Dir_openEulerRepos
@@ -674,7 +727,7 @@ function openEulerMirrors() {
     sed -i "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" openEuler.repo
 }
 
-## 更换基于 openSUSE 系 Linux 发行版的国内源
+## 更换基于 openSUSE 系 Linux 发行版的软件源
 function openSUSEMirrors() {
     case "${SYSTEM_ID}" in
     "opensuse-leap")
@@ -750,7 +803,7 @@ function ChooseInstallEPEL() {
         VERIFICATION_EPELBACKUPFILES=$?
 
         if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-            local CHOICE=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖为国内源? [Y/n] ${PLAIN}")
+            local CHOICE=$(echo -e "\n  ${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
         else
             local CHOICE=$(echo -e "\n  ${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
         fi
@@ -772,17 +825,17 @@ function ChooseInstallEPEL() {
     esac
 }
 
-## 安装/更换基于 RHEL/CentOS 等红帽系 Linux 的 EPEL (Extra Packages for Enterprise Linux) 附加软件包国内源
+## 安装/更换 EPEL (Extra Packages for Enterprise Linux) 附加软件包软件源
 function EPELMirrors() {
     ## 安装 EPEL 软件包
     if [ ${VERIFICATION_EPEL} -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
         yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
     fi
-    ## 删除原有 EPEL 附加软件包 repo 源文件
+    ## 删除原有 repo 源文件
     [ ${VERIFICATION_EPELFILES} -eq 0 ] && rm -rf $Dir_RedHatRepos/epel*
     [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_RedHatReposBackup/epel*
-    ## 生成官方 EPEL 附加软件包 repo 源文件
+    ## 生成 repo 源文件
     GenRepoFiles_EPEL
 
     sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
@@ -809,136 +862,132 @@ function EPELMirrors() {
     rm -rf $Dir_RedHatRepos/epel*rpmnew
 }
 
-## 选择国内源
+## 选择软件源
 function ChooseMirrors() {
 
-    ## 云计算厂商的软件源
-    # 分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
-    # 内网地址不支持使用 HTTPS 协议
-    function Cloud_Computing_Vendors_Mirrors() {
-        local Extranet Intranet
-        ## 公网地址
-        case $1 in
-        1)
-            Extranet="mirrors.aliyun.com"
-            ;;
-        2)
-            Extranet="mirrors.tencent.com"
-            ;;
-        3)
-            Extranet="repo.huaweicloud.com"
-            ;;
-        esac
-        ## 内网地址
-        case $1 in
-        1)
-            Intranet="mirrors.cloud.aliyuncs.com"
-            ;;
-        2)
-            Intranet="mirrors.tencentyun.com"
-            ;;
-        3)
-            Intranet="mirrors.myhuaweicloud.com"
-            ;;
-        esac
+    ## 打印软件源/镜像站列表
+    function PrintMirrorsList() {
+        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums i j
 
-        CHOICE_A_TMP=$(echo -e "\n  ${BOLD}└─ 默认使用镜像站的公网地址，是否继续? [Y/n] ${PLAIN}")
-        read -p "${CHOICE_A_TMP}" INPUT
+        ## 计算字符串长度
+        function StringLength() {
+            local text=$1
+            echo "${#text}"
+        }
+
+        local list_arr=($(eval echo \${$1[*]}))
+        if [ -x /usr/bin/printf ]; then
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 镜像站名称
+                # tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}') # 镜像站地址
+
+                arr_num=$((i + 1))
+                default_mirror_name_length=${2:-"30"} # 默认镜像站名称打印长度
+                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
+                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
+                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!]||g;"))
+                ## 填充空格
+                tmp_spaces_nums=$(($(($default_mirror_name_length - ${tmp_mirror_name_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
+                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
+                    tmp_mirror_name="${tmp_mirror_name} "
+                done
+                printf " ❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+            done
+        else
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo ${list_arr[i]} | awk -F '@' '{print$1}') # 镜像站名称
+                tmp_mirror_url=$(echo ${list_arr[i]} | awk -F '@' '{print$2}')  # 镜像站地址
+                arr_num=$((i + 1))
+                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
+            done
+        fi
+    }
+
+    ## 选择镜像站内网地址
+    # 部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
+    # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
+    function ChooseMirrorIntranetAddress() {
+        local CHOICE=$(echo -e "\n  ${BOLD}└─ 默认使用镜像站的公网地址，是否继续? [Y/n] ${PLAIN}")
+        read -p "${CHOICE}" INPUT
         [ -z ${INPUT} ] && INPUT=Y
         case $INPUT in
-        [Yy] | [Yy][Ee][Ss])
-            SOURCE=${Extranet}
-            ;;
+        [Yy] | [Yy][Ee][Ss]) ;;
         [Nn] | [Nn][Oo])
-            SOURCE=${Intranet}
-            echo -e "\n  $WARN 已切换至云计算厂商镜像站的内网访问地址，仅限对应厂商云服务器用户使用！"
-            ONLY_HTTP="True"
+            for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
+                if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
+                    # echo "${SOURCE}"
+                    SOURCE="${mirror_list_intranet[i]}"
+                    # echo "${SOURCE}"
+                    # exit
+                    echo -e "\n  $WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                    ONLY_HTTP="True"
+                    break
+                else
+                    continue
+                fi
+            done
             ;;
         *)
             SOURCE=${Extranet}
-            echo -e "\n$WARN 输入错误，默认使用公网地址！"
+            echo -e "\n$WARN 输入错误，默认不使用内网地址！"
             ;;
         esac
     }
 
     function WelcomeTitle() {
-        echo -e '+-------------------------------------+'
-        echo -e '|                                     |'
-        echo -e '|  欢迎使用 Linux 一键更换国内软件源  |'
-        echo -e '|                                     |'
-        echo -e '+-------------------------------------+'
+        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
+        local arch="${SYSTEM_ARCH}"
+        local date="$(date "+%Y-%m-%d %H:%M:%S")"
+        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+
+        echo -e '+-----------------------------------------+'
+        echo -e '|                                         |'
+        echo -e '|            LinuxMirrors MIT             |'
+        echo -e '|                                         |'
+        echo -e '|  欢迎使用 GNU/Linux 一键更换软件源脚本  |'
+        echo -e '|                                         |'
+        echo -e '+-----------------------------------------+'
         echo -e ''
-        echo -e " 运行环境  ${BLUE}${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"} ${SYSTEM_ARCH}${PLAIN}"
-        echo -e " 系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S") $(timedatectl status | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')${PLAIN}"
+        echo -e " 运行环境  ${BLUE}${system_name} ${arch}${PLAIN}"
+        echo -e " 系统时间  ${BLUE}${date} ${timezone}${PLAIN}"
         echo -e ''
     }
 
     clear
     WelcomeTitle
+    if [ -z ${SOURCE} ]; then
+        local mirror_list_name="mirror_list_default"
+        PrintMirrorsList "${mirror_list_name}" 31
 
-    echo -e ' ❖   阿里云                  1)'
-    echo -e ' ❖   腾讯云                  2)'
-    echo -e ' ❖   华为云                  3)'
-    echo -e ' ❖   网易                    4)'
-    echo -e ' ❖   搜狐                    5)'
-    echo -e ' ❖   清华大学                6)'
-    echo -e ' ❖   北京大学                7)'
-    echo -e ' ❖   浙江大学                8)'
-    echo -e ' ❖   南京大学                9)'
-    echo -e ' ❖   重庆大学               10)'
-    echo -e ' ❖   兰州大学               11)'
-    echo -e ' ❖   上海交通大学           12)'
-    echo -e ' ❖   哈尔滨工业大学         13)'
-    echo -e ' ❖   中国科学技术大学       14)'
-    echo -e ' ❖   中国科学院软件研究所   15)'
-    local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-15 ]：${PLAIN}")
-    read -p "${CHOICE}" INPUT
-    case $INPUT in
-    1 | 2 | 3)
-        Cloud_Computing_Vendors_Mirrors $INPUT
-        ;;
-    4)
-        SOURCE="mirrors.163.com"
-        ;;
-    5)
-        SOURCE="mirrors.sohu.com"
-        ;;
-    6)
-        SOURCE="mirrors.tuna.tsinghua.edu.cn"
-        ;;
-    7)
-        SOURCE="mirrors.pku.edu.cn"
-        ;;
-    8)
-        SOURCE="mirrors.zju.edu.cn"
-        ;;
-    9)
-        SOURCE="mirrors.nju.edu.cn"
-        ;;
-    10)
-        SOURCE="mirrors.cqu.edu.cn"
-        ;;
-    11)
-        SOURCE="mirror.lzu.edu.cn"
-        ;;
-    12)
-        SOURCE="mirror.sjtu.edu.cn"
-        ;;
-    13)
-        SOURCE="mirrors.hit.edu.cn"
-        ;;
-    14)
-        SOURCE="mirrors.ustc.edu.cn"
-        ;;
-    15)
-        SOURCE="mirror.iscas.ac.cn"
-        ;;
-    *)
-        SOURCE="mirrors.aliyun.com"
-        echo -e "\n$WARN 输入错误，将默认使用 ${BLUE}阿里云${PLAIN} 作为国内源！"
-        sleep 2s
-        ;;
-    esac
+        local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        while true; do
+            read -p "${CHOICE}" INPUT
+            case $INPUT in
+            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                if [ -z $tmp_source ]; then
+                    echo -e "\n$WARN 请输入有效的数字序号！"
+                else
+                    SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                    # echo "${SOURCE}"
+                    # exit
+                    break
+                fi
+                ;;
+            *)
+                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                ;;
+            esac
+        done
+
+        ## 选择镜像站内网地址
+        if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
+            ChooseMirrorIntranetAddress
+        fi
+    fi
 }
 
 ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）

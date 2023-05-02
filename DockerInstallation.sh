@@ -1,9 +1,8 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-01
-## License: GPL-2.0
+## Modified: 2023-05-02
+## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
-## Gitee: https://gitee.com/SuperManito/LinuxMirrors
 
 function AuthorSignature() {
     echo -e "\n$COMPLETE 脚本执行结束\n"
@@ -471,14 +470,19 @@ function ShowVersion() {
 function ChooseMirrors() {
 
     function WelcomeTitle() {
+        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
+        local arch="${SYSTEM_ARCH}"
+        local date="$(date "+%Y-%m-%d %H:%M:%S")"
+        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+
         echo -e '+------------------------------------+'
         echo -e '|                                    |'
         echo -e '|    欢迎使用 Docker 一键安装脚本    |'
         echo -e '|                                    |'
         echo -e '+------------------------------------+'
         echo -e ''
-        echo -e " 运行环境  ${BLUE}${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"} ${SYSTEM_ARCH}${PLAIN}"
-        echo -e " 系统时间  ${BLUE}$(date "+%Y-%m-%d %H:%M:%S") $(timedatectl status | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')${PLAIN}"
+        echo -e " 运行环境  ${BLUE}${system_name} ${arch}${PLAIN}"
+        echo -e " 系统时间  ${BLUE}${date} ${timezone}${PLAIN}"
         echo -e ''
     }
     clear

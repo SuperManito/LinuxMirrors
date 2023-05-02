@@ -1,5 +1,6 @@
-# ![LinuxMirrors](./img/logo.png)
-
+<img src="./img/logo.png"/>
+</br>
+</br>
 <div style="color: black"><strong>脚本一键更换 Linux 软件源</strong></br><strong>让换源更简单</strong></div>
 
 <a href="https://github.com/SuperManito/LinuxMirrors"><img src="./img/icon/github-1.svg" width="34" height="42"></a>
