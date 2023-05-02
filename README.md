@@ -41,7 +41,7 @@
   </tr>
   <tr>
       <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="./docs/img/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
-      <td align="center">28 ~ 37</td>
+      <td align="center">30 ~ 38</td>
   </tr>
   <tr>
       <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/img/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;openEuler</td>
