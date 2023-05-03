@@ -13,8 +13,6 @@
 - __GNU/Linux 一键更换系统软件源脚本__
 - __本项目旨在为从事计算机相关行业的朋友们提供便利__
 
-***
-
 - ### 适配系统及版本号 <img src="./docs/assets/images/icon/linux.svg" width="16" height="16" style="vertical-align: -0.15em" alt="Linux Logo"/>
 
   <table>
@@ -63,10 +61,10 @@
   </tr>
   </table>
 
-- ### [软件源](/mirrors.html)
-- ### [使用方法](/use/main.html)
-- ### [常见问题](/help.html)
-- ### [其它脚本](/other.html)
+- ### [软件源](https://supermanito.github.io/LinuxMirrors/mirrors.html)
+- ### [使用方法](https://supermanito.github.io/LinuxMirrors/use/main.html)
+- ### [常见问题](https://supermanito.github.io/LinuxMirrors/help.html)
+- ### [其它脚本](https://supermanito.github.io/LinuxMirrors/other.html)
 
 ***
 
