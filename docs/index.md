@@ -4,11 +4,8 @@ hide:
   - toc
 ---
 
-![](./assets/images/logo.png)
-
-GNU/Linux 一键更换系统软件源脚本  
-本项目旨在为从事计算机相关行业的朋友们提供便利
-
+![](./assets/images/logo.png)  
+GNU/Linux 一键更换系统软件源脚本
 
 ## 适配系统及版本号
 

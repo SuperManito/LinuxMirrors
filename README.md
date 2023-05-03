@@ -6,12 +6,12 @@
 
 <p align="center">
   <strong>
-    <a href="https://supermanito.github.io/LinuxMirrors">官方网站</a> 
+    <a href="https://supermanito.github.io/LinuxMirrors">官方网站</a></br></br>
+    GNU/Linux 一键更换系统软件源脚本</br>
+    本项目旨在为从事计算机相关行业的朋友们提供便利
   </strong>
 </p>
 
-- __GNU/Linux 一键更换系统软件源脚本__
-- __本项目旨在为从事计算机相关行业的朋友们提供便利__
 
 - ### 适配系统及版本号 <img src="./docs/assets/images/icon/linux.svg" width="16" height="16" style="vertical-align: -0.15em" alt="Linux Logo"/>
 
@@ -71,8 +71,6 @@
 ### LICENSE
 
 Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
-
-项目已设立开源许可协议，传播时请在显著位置标注来源和作者，请尊重作者的知识成果，建议通过命令直接调用脚本  
 如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)，如果您需要提交您的代码，请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
 
 __如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__

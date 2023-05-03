@@ -4,14 +4,14 @@
 | `--source` | 指定软件源地址 | 地址 |
 | `--branch` | 指定软件源分支 | 分支名 |
 | `--abroad` | 使用海外软件源 | 无 |
-| `--web-protocol` | 指定 WEB 协议 | http 或 https |
-| `--intranet` | 使用内网地址 | true 或 false |
-| `--install-epel` | 安装 EPEL 附加软件包 | true 或 false |
-| `--close-firewall` | 关闭防火墙 | true 或 false |
-| `--backup` | 备份原有软件源 | true 或 false |
+| `--web-protocol` | 指定 WEB 协议 | `http` 或 `https` |
+| `--intranet` | 使用内网地址 | `true` 或 `false` |
+| `--install-epel` | 安装 EPEL 附加软件包 | `true` 或 `false` |
+| `--close-firewall` | 关闭防火墙 | `true` 或 `false` |
+| `--backup` | 备份原有软件源 | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示 | 无 |
-| `--updata-software` | 更新软件包 | true 或 false |
-| `--clean-cache` | 清理下载缓存 | true 或 false |
+| `--updata-software` | 更新软件包 | `true` 或 `false` |
+| `--clean-cache` | 清理下载缓存 | `true` 或 `false` |
 
 ## 示例
 
@@ -20,7 +20,7 @@
 若不想通过交互选择默认提供的软件源，你可以使用该命令选项指定软件源地址
 
 ``` bash
-bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 ```
 
 ### 指定软件源分支
@@ -88,8 +88,8 @@ bash ChangeMirrors.sh \
 
 ``` sh title="参考命令" linenums="1"
 bash ChangeMirrors.sh \
-  --source <软件源域名> \
-  --web-protocol <http/https> \
+  --source mirror.example.com \
+  --web-protocol http \
   --intranet false \
   --install-epel true \
   --close-firewall true \
