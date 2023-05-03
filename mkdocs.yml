@@ -1,0 +1,121 @@
+site_name: LinuxMirrors
+repo_name: 主要托管仓库
+repo_url: https://github.com/SuperManito/LinuxMirrors
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2021 - 2023 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a>
+theme:
+  name: material
+  language: zh
+  favicon: assets/favicon.ico
+  icon:
+    logo: material/linux
+    edit: material/file-document-edit-outline
+    view: material/file-eye-outline
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - header.autohide
+    - navigation.tabs
+    - navigation.expand
+    - navigation.path
+    - navigation.instant
+    - navigation.indexes
+    - navigation.footer
+    - navigation.tracking
+    - navigation.sections
+    - content.tooltips
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - announce.dismiss
+extra:
+  generator: false
+  homepage: https://supermanito.github.io/LinuxMirrors
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/SuperManito/LinuxMirrors
+extra_css:
+  - stylesheets/extra.css
+markdown_extensions:
+  - toc:
+      permalink: '#'
+      permalink_title: 复制链接
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - abbr
+  - tables
+  - def_list
+  - attr_list
+  - footnotes
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.betterem
+  - pymdownx.snippets
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      use_pygments: true
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - tags
+  - glightbox
+  - offline
+nav:
+  - '介绍': index.md
+  - '软件源': mirrors.md
+  - '使用方法': 
+    - '主要命令': use/main.md
+    - '执行流程': use/execution-flow.md
+    - '未启用源': use/not-enabled.md
+    - '高级用法':
+      - '命令选项': use/command-options.md
+  - '常见问题': help.md
+  - '其它脚本': other.md

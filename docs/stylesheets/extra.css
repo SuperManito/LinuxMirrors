@@ -1,0 +1,7 @@
+:root {
+    --md-code-font: 'SF Mono';
+}
+@font-face {
+    font-family: 'SF Mono';
+    src: url('./fonts/SF-Mono-Regular.otf');
+}
