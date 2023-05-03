@@ -12,8 +12,7 @@
   </strong>
 </p>
 
-
-- ### 适配系统及版本号 <img src="./docs/assets/images/icon/linux.svg" width="16" height="16" style="vertical-align: -0.15em" alt="Linux Logo"/>
+- ### 适配系统及版本号
 
   <table>
   <tr>
@@ -70,7 +69,7 @@
 
 ### LICENSE
 
-Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
+Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).  
 如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)，如果您需要提交您的代码，请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
 
 __如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__
