@@ -23,7 +23,7 @@ mirror_list_default=(
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
 )
-# 海外格式："洲 · 软件源名称（国家/地区）@软件源地址"，请根据地理位置、国家/地区进行排序以便于用户选择
+# 海外格式："洲 · 软件源名称 [国家/地区]@软件源地址"，请根据地理位置、国家/地区进行排序以便于用户选择
 mirror_list_abroad=(
     "亚洲 · 科盈电信 [香港]@mirror.hkt.cc"
     "亚洲 · xTom [香港]@mirrors.xtom.hk"

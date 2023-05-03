@@ -1,4 +1,3 @@
-
 | 名称 | 含义 | 选项值 |
 | :-: | :-: | :-: |
 | `--source` | 指定软件源地址 | 地址 |
@@ -12,6 +11,7 @@
 | `--ignore-backup-tips` | 忽略覆盖备份提示 | 无 |
 | `--updata-software` | 更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 清理下载缓存 | `true` 或 `false` |
+| `--help` | 查看帮助菜单 | 无 |
 
 ## 示例
 
