@@ -40,7 +40,6 @@ theme:
   features:
     - header.autohide
     - navigation.tabs
-    - navigation.expand
     - navigation.path
     - navigation.instant
     - navigation.indexes
@@ -60,6 +59,10 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/SuperManito/LinuxMirrors
+  alternate:
+    - name: 简体中文
+      link: /
+      lang: zh
 extra_css:
   - stylesheets/extra.css
 markdown_extensions:
@@ -107,15 +110,14 @@ plugins:
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - tags
   - glightbox
-  - offline
 nav:
   - '介绍': index.md
-  - '软件源': mirrors.md
-  - '使用方法': 
-    - '主要命令': use/main.md
+  - '软件源': Mirrors.md
+  - '使用方法':
+    - '主要命令': use/index.md
     - '执行流程': use/execution-flow.md
     - '未启用源': use/not-enabled.md
     - '高级用法':
       - '命令选项': use/command-options.md
-  - '常见问题': help.md
-  - '其它脚本': other.md
+  - '常见问题': help/index.md
+  - '其它脚本': other/index.md

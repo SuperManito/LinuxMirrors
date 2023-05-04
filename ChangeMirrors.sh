@@ -3,6 +3,7 @@
 ## Modified: 2023-05-04
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
+## Website: https://supermanito.github.io/LinuxMirrors
 
 ## 软件源列表
 # 国内格式："软件源名称@软件源地址"
@@ -23,16 +24,23 @@ mirror_list_default=(
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
 )
-# 海外格式："洲 · 软件源名称 [国家/地区]@软件源地址"，请根据地理位置、国家/地区进行排序以便于用户选择，教育单位应使用中文译名
+# 海外格式："洲 · 软件源名称 [国家/地区]@软件源地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
     "亚洲 · 科盈电信 [香港]@mirror.hkt.cc"
     "亚洲 · xTom [香港]@mirrors.xtom.hk"
     "亚洲 · 01Link [香港]@mirror.01link.hk"
     "亚洲 · 新加坡国立大学(NUS) [新加坡]@download.nus.edu.sg/mirror"
+    "亚洲 · SG.GS [新加坡]@mirror.sg.gs"
+    "亚洲 · Neo Soon Keat [新加坡]@mirror.soonkeat.sg"
     "亚洲 · 自由软件实验室(NCHC) [台湾]@free.nchc.org.tw"
+    "亚洲 · OSS Planet [台湾]@mirror.ossplanet.net"
+    "亚洲 · 国立阳明交通大学 [台湾]@linux.cs.nctu.edu.tw"
+    "亚洲 · 淡江大学 [台湾]@ftp.tku.edu.tw"
     "亚洲 · AniGil Linux Archive [韩国]@mirror.anigil.com"
     "亚洲 · 工业网络安全卓越中心(ICSCoE) [日本]@ftp.udx.icscoe.jp/Linux"
+    "亚洲 · Internet Initiative Japan(IIJ) [日本]@ftp.iij.ad.jp/pub/linux"
     "亚洲 · 北陆先端科学技术大学院(JAIST) [日本]@ftp.jaist.ac.jp/pub/Linux"
+    "亚洲 · 山形大学 [日本]@linux2.yz.yamagata-u.ac.jp/pub/Linux"
     "亚洲 · xTom [日本]@mirrors.xtom.jp"
     "亚洲 · GB Network Solutions [马来西亚]@mirrors.gbnetwork.com"
     "亚洲 · 孔敬大学 [泰国]@mirror.kku.ac.th"
@@ -41,11 +49,16 @@ mirror_list_abroad=(
     "北美 · 麻省理工学院(MIT) [美国]@mirrors.mit.edu"
     "北美 · 普林斯顿大学数学系 [美国]@mirror.math.princeton.edu/pub"
     "北美 · 俄勒冈州立大学开源实验室 [美国]@ftp-chi.osuosl.org/pub"
-    "北美 · Fremont Cabal 互联网交换中心 [美国]@mirror.fcix.net"
+    "北美 · Fremont Cabal 互联网交换中心(FCIX) [美国]@mirror.fcix.net"
     "北美 · xTom [美国]@mirrors.xtom.com"
     "北美 · Steadfast [美国]@mirror.steadfast.net"
     "北美 · 不列颠哥伦比亚大学 [加拿大]@mirror.it.ubc.ca"
+    "北美 · GoCodeIT [加拿大]@mirror.xenyth.net"
+    "北美 · Switch [加拿大]@mirrors.switch.ca"
+    "南美 · PoP-SC [巴西]@mirror.pop-sc.rnp.br/mirror"
     "南美 · 蓬塔格罗萨州立大学 [巴西]@mirror.uepg.br"
+    "南美 · UFSCar [巴西]@mirror.ufscar.br"
+    "南美 · Sysarmy Community [阿根廷]@mirrors.eze.sysarmy.com"
     "欧洲 · Vorboss Ltd [英国]@mirror.vorboss.net"
     "欧洲 · QuickHost [英国]@mirror.quickhost.uk"
     "欧洲 · dogado [德国]@mirror.dogado.de"
@@ -53,6 +66,9 @@ mirror_list_abroad=(
     "欧洲 · 亚琛工业大学(RWTH Aachen) [德国]@ftp.halifax.rwth-aachen.de"
     "欧洲 · 德累斯顿大学(AG DSN) [德国]@ftp.agdsn.de"
     "欧洲 · CCIN2P3 [法国]@mirror.in2p3.fr/pub/linux"
+    "欧洲 · Ircam [法国]@mirrors.ircam.fr/pub"
+    "欧洲 · Crans [法国]@eclats.crans.org"
+    "欧洲 · CRIHAN [法国]@ftp.crihan.fr"
     "欧洲 · xTom [荷兰]@mirrors.xtom.nl"
     "欧洲 · DataPacket [荷兰]@mirror.datapacket.com"
     "欧洲 · Linux Kernel [荷兰]@eu.edge.kernel.org"
@@ -66,11 +82,20 @@ mirror_list_abroad=(
     "欧洲 · Truenetwork [俄罗斯]@mirror.truenetwork.ru"
     "欧洲 · Belgian Research Network [比利时]@ftp.belnet.be/mirror"
     "欧洲 · 克里特大学计算机中心 [希腊]@ftp.cc.uoc.gr/mirrors/linux"
-    "澳洲 · Fremont Cabal 互联网交换中心 [澳大利亚]@gsl-syd.mm.fcix.net"
-    "澳洲 · xTom [澳大利亚]@mirrors.xtom.au"
-    "澳洲 · Free Software Mirror Group [新西兰]@mirror.fsmg.org.nz"
+    "欧洲 · 马萨里克大学信息学院 [捷克]@ftp.fi.muni.cz/pub/linux"
+    "欧洲 · 捷克理工大学学生会俱乐部(Silicon Hill) [捷克]@ftp.sh.cvut.cz"
+    "欧洲 · Vodafone [捷克]@mirror.karneval.cz/pub/linux"
+    "欧洲 · CZ.NIC [捷克]@mirrors.nic.cz"
+    "欧洲 · 苏黎世联邦理工学院 [瑞士]@mirror.ethz.ch"
+    "大洋 · Fremont Cabal 互联网交换中心(FCIX) [澳大利亚]@gsl-syd.mm.fcix.net"
+    "大洋 · AARNet [澳大利亚]@mirror.aarnet.edu.au/pub"
+    "大洋 · DataMossa [澳大利亚]@mirror.datamossa.io"
+    "大洋 · Amaze [澳大利亚]@mirror.amaze.com.au"
+    "大洋 · xTom [澳大利亚]@mirrors.xtom.au"
+    "大洋 · Over the Wire [澳大利亚]@mirror.overthewire.com.au"
+    "大洋 · Free Software Mirror Group [新西兰]@mirror.fsmg.org.nz"
     "非洲 · Liquid Telecom [肯尼亚]@mirror.liquidtelecom.com"
-    "非洲 · Dimension Data [南非]@	mirror.dimensiondata.com"
+    "非洲 · Dimension Data [南非]@mirror.dimensiondata.com"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
@@ -133,6 +158,9 @@ WARN='[\033[33mWARN\033[0m]'
 ERROR='[\033[31mERROR\033[0m]'
 WORKING='[\033[34m*\033[0m]'
 
+## 其它
+WEBSITE="https://supermanito.github.io/LinuxMirrors"
+
 function StartTitle() {
     echo -e ' +-----------------------------------+'
     echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
@@ -141,7 +169,7 @@ function StartTitle() {
 }
 
 function AuthorSignature() {
-    echo -e "[\033[1;34m官网\033[0m] https://supermanito.github.io/LinuxMirrors\n"
+    echo -e "[\033[1;34m官网\033[0m] ${WEBSITE}\n"
 }
 
 ## 权限判定

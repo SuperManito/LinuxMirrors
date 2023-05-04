@@ -55,7 +55,14 @@ GNU/Linux 一键更换系统软件源脚本
 当前支持上述基于 Debian、RedHat、openEuler、openSUSE 的发行版和及其部分衍生版本（点击列表中的图标可快速前往其官网）  
 理论支持所有架构的环境，不在此支持范围内的操作系统或版本请勿运行本项目脚本
 
-[开始使用](/use/main.html){ .md-button .md-button--primary } [软件源](/mirrors.html){ .md-button }
+[开始使用](/use){ .md-button .md-button--primary } [软件源](/Mirrors){ .md-button }
 
 项目已设立开源许可协议，传播时请在显著位置标注来源和作者，请尊重作者的知识成果，建议通过命令直接调用脚本  
-如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)，如果您需要提交您的代码，请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
+如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)，如果您需要提交您的代码请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
+
+:material-calendar-month-outline: 适配计划
+
+- [ ] OpenCloudOS
+- [ ] OpenAnolis
+- [ ] Arch Linux
+- [ ] AlmaLinux

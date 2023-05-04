@@ -3,11 +3,18 @@
     <img src="./docs/assets/images/logo.png" width="320" alt="Material for MkDocs">
   </a>
 </p>
-
 <p align="center">
   <strong>
-    <a href="https://supermanito.github.io/LinuxMirrors">官方网站</a></br></br>
-    GNU/Linux 一键更换系统软件源脚本</br>
+    <a href="https://supermanito.github.io/LinuxMirrors">官方网站</a>
+  </strong>
+</p>
+<p align="center">
+  <strong>
+    GNU/Linux 一键更换系统软件源脚本
+  </strong>
+</p>
+<p align="center">
+  <strong>
     本项目旨在为从事计算机相关行业的朋友们提供便利
   </strong>
 </p>
@@ -60,16 +67,16 @@
   </tr>
   </table>
 
-- ### [软件源](https://supermanito.github.io/LinuxMirrors/mirrors.html)
-- ### [使用方法](https://supermanito.github.io/LinuxMirrors/use/main.html)
-- ### [常见问题](https://supermanito.github.io/LinuxMirrors/help.html)
-- ### [其它脚本](https://supermanito.github.io/LinuxMirrors/other.html)
+- ### [软件源](https://supermanito.github.io/LinuxMirrors/Mirrors)
+- ### [使用方法](https://supermanito.github.io/LinuxMirrors/use)
+- ### [常见问题](https://supermanito.github.io/LinuxMirrors/help)
+- ### [其它脚本](https://supermanito.github.io/LinuxMirrors/other)
 
 ***
 
 ### LICENSE
 
 Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).  
-如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)，如果您需要提交您的代码，请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
+如有意见与建议您可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)，如果您需要提交您的代码请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
 
 __如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__

@@ -19,7 +19,7 @@
 
 若不想通过交互选择默认提供的软件源，你可以使用该命令选项指定软件源地址
 
-``` bash
+``` { .bash .no-copy }
 bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 ```
 
@@ -74,7 +74,7 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 
 请看下面的例子
 
-``` sh title="使用阿里云的 Rocky Linux 软件源" linenums="1"
+``` { .bash .no-copy title="使用阿里云的 Rocky Linux 软件源" }
 bash ChangeMirrors.sh \
   --source mirrors.aliyun.com \
   --branch rockylinux
@@ -86,7 +86,7 @@ bash ChangeMirrors.sh \
 
 不通过交互完成换源操作，需要使用大量命令选项来实现，建议熟悉后再使用
 
-``` sh title="参考命令" linenums="1"
+``` { .bash .no-copy title="参考命令" }
 bash ChangeMirrors.sh \
   --source mirror.example.com \
   --web-protocol http \

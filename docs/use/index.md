@@ -9,7 +9,7 @@
 === "海外使用"
 
     ``` bash
-    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+    bash <(curl -sSL https://github.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
     ```
 
 ## 注意事项
