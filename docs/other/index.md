@@ -7,7 +7,7 @@ hide:
 ## :fontawesome-brands-docker: Docker 一键安装脚本
 
 ``` bash
-bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
 
 !!! node "定义"
@@ -15,3 +15,9 @@ bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInsta
     `Docker Hub` 容器镜像仓库，默认为官方提供的公共库，用于控制下载镜像的来源存储仓库，又称镜像加速器。
 
 脚本集成安装 `Docker Engine`，可手动选择安装版本、下载源、镜像加速器，支持海内外服务器环境和 `arm` 架构处理器环境使用
+
+??? quote "原始方法"
+
+    ``` bash
+    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+    ```
