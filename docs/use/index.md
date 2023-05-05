@@ -4,13 +4,13 @@
 ### 国内使用（默认）
 
 ``` bash
-bash <(curl -sSL https://linuxmirrors.cn/script)
+bash <(curl -sSL https://linuxmirrors.cn/script.sh)
 ```
 
 ### 海外使用
 
 ``` bash
-bash <(curl -sSL https://linuxmirrors.cn/script-gh) --abroad
+bash <(curl -sSL https://linuxmirrors.cn/script.sh) --abroad
 ```
 > 通过 `--abroad` 命令选项来使用海外软件源
 
