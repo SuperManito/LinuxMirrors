@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-04
+## Modified: 2023-05-05
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://supermanito.github.io/LinuxMirrors
@@ -24,78 +24,78 @@ mirror_list_default=(
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
 )
-# 海外格式："洲 · 软件源名称 [国家/地区]@软件源地址"，修改前请先前往官网阅读添加规范
+# 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
-    "亚洲 · 科盈电信 [香港]@mirror.hkt.cc"
-    "亚洲 · xTom [香港]@mirrors.xtom.hk"
-    "亚洲 · 01Link [香港]@mirror.01link.hk"
-    "亚洲 · 新加坡国立大学(NUS) [新加坡]@download.nus.edu.sg/mirror"
-    "亚洲 · SG.GS [新加坡]@mirror.sg.gs"
-    "亚洲 · Neo Soon Keat [新加坡]@mirror.soonkeat.sg"
-    "亚洲 · 自由软件实验室(NCHC) [台湾]@free.nchc.org.tw"
-    "亚洲 · OSS Planet [台湾]@mirror.ossplanet.net"
-    "亚洲 · 国立阳明交通大学 [台湾]@linux.cs.nctu.edu.tw"
-    "亚洲 · 淡江大学 [台湾]@ftp.tku.edu.tw"
-    "亚洲 · AniGil Linux Archive [韩国]@mirror.anigil.com"
-    "亚洲 · 工业网络安全卓越中心(ICSCoE) [日本]@ftp.udx.icscoe.jp/Linux"
-    "亚洲 · Internet Initiative Japan(IIJ) [日本]@ftp.iij.ad.jp/pub/linux"
-    "亚洲 · 北陆先端科学技术大学院(JAIST) [日本]@ftp.jaist.ac.jp/pub/Linux"
-    "亚洲 · 山形大学 [日本]@linux2.yz.yamagata-u.ac.jp/pub/Linux"
-    "亚洲 · xTom [日本]@mirrors.xtom.jp"
-    "亚洲 · GB Network Solutions [马来西亚]@mirrors.gbnetwork.com"
-    "亚洲 · 孔敬大学 [泰国]@mirror.kku.ac.th"
-    "亚洲 · RISE [菲律宾]@mirror.rise.ph"
-    "北美 · Linux Kernel [美国]@mirrors.kernel.org"
-    "北美 · 麻省理工学院(MIT) [美国]@mirrors.mit.edu"
-    "北美 · 普林斯顿大学数学系 [美国]@mirror.math.princeton.edu/pub"
-    "北美 · 俄勒冈州立大学开源实验室 [美国]@ftp-chi.osuosl.org/pub"
-    "北美 · Fremont Cabal 互联网交换中心(FCIX) [美国]@mirror.fcix.net"
-    "北美 · xTom [美国]@mirrors.xtom.com"
-    "北美 · Steadfast [美国]@mirror.steadfast.net"
-    "北美 · 不列颠哥伦比亚大学 [加拿大]@mirror.it.ubc.ca"
-    "北美 · GoCodeIT [加拿大]@mirror.xenyth.net"
-    "北美 · Switch [加拿大]@mirrors.switch.ca"
-    "南美 · PoP-SC [巴西]@mirror.pop-sc.rnp.br/mirror"
-    "南美 · 蓬塔格罗萨州立大学 [巴西]@mirror.uepg.br"
-    "南美 · UFSCar [巴西]@mirror.ufscar.br"
-    "南美 · Sysarmy Community [阿根廷]@mirrors.eze.sysarmy.com"
-    "欧洲 · Vorboss Ltd [英国]@mirror.vorboss.net"
-    "欧洲 · QuickHost [英国]@mirror.quickhost.uk"
-    "欧洲 · dogado [德国]@mirror.dogado.de"
-    "欧洲 · xTom [德国]@mirrors.xtom.de"
-    "欧洲 · 亚琛工业大学(RWTH Aachen) [德国]@ftp.halifax.rwth-aachen.de"
-    "欧洲 · 德累斯顿大学(AG DSN) [德国]@ftp.agdsn.de"
-    "欧洲 · CCIN2P3 [法国]@mirror.in2p3.fr/pub/linux"
-    "欧洲 · Ircam [法国]@mirrors.ircam.fr/pub"
-    "欧洲 · Crans [法国]@eclats.crans.org"
-    "欧洲 · CRIHAN [法国]@ftp.crihan.fr"
-    "欧洲 · xTom [荷兰]@mirrors.xtom.nl"
-    "欧洲 · DataPacket [荷兰]@mirror.datapacket.com"
-    "欧洲 · Linux Kernel [荷兰]@eu.edge.kernel.org"
-    "欧洲 · xTom [爱沙尼亚]@mirrors.xtom.ee"
-    "欧洲 · netsite [丹麦]@mirror.netsite.dk"
-    "欧洲 · Dotsrc [丹麦]@mirrors.dotsrc.org"
-    "欧洲 · Academic Computer Club [瑞典]@mirror.accum.se"
-    "欧洲 · Lysator [瑞典]@ftp.lysator.liu.se"
-    "欧洲 · Yandex [俄罗斯]@mirror.yandex.ru"
-    "欧洲 · ia64 [俄罗斯]@mirror.linux-ia64.org"
-    "欧洲 · Truenetwork [俄罗斯]@mirror.truenetwork.ru"
-    "欧洲 · Belgian Research Network [比利时]@ftp.belnet.be/mirror"
-    "欧洲 · 克里特大学计算机中心 [希腊]@ftp.cc.uoc.gr/mirrors/linux"
-    "欧洲 · 马萨里克大学信息学院 [捷克]@ftp.fi.muni.cz/pub/linux"
-    "欧洲 · 捷克理工大学学生会俱乐部(Silicon Hill) [捷克]@ftp.sh.cvut.cz"
-    "欧洲 · Vodafone [捷克]@mirror.karneval.cz/pub/linux"
-    "欧洲 · CZ.NIC [捷克]@mirrors.nic.cz"
-    "欧洲 · 苏黎世联邦理工学院 [瑞士]@mirror.ethz.ch"
-    "大洋 · Fremont Cabal 互联网交换中心(FCIX) [澳大利亚]@gsl-syd.mm.fcix.net"
-    "大洋 · AARNet [澳大利亚]@mirror.aarnet.edu.au/pub"
-    "大洋 · DataMossa [澳大利亚]@mirror.datamossa.io"
-    "大洋 · Amaze [澳大利亚]@mirror.amaze.com.au"
-    "大洋 · xTom [澳大利亚]@mirrors.xtom.au"
-    "大洋 · Over the Wire [澳大利亚]@mirror.overthewire.com.au"
-    "大洋 · Free Software Mirror Group [新西兰]@mirror.fsmg.org.nz"
-    "非洲 · Liquid Telecom [肯尼亚]@mirror.liquidtelecom.com"
-    "非洲 · Dimension Data [南非]@mirror.dimensiondata.com"
+    "亚洲 · 科盈电信 · 香港@mirror.hkt.cc"
+    "亚洲 · xTom · 香港@mirrors.xtom.hk"
+    "亚洲 · 01Link · 香港@mirror.01link.hk"
+    "亚洲 · 新加坡国立大学(NUS) · 新加坡@download.nus.edu.sg/mirror"
+    "亚洲 · SG.GS · 新加坡@mirror.sg.gs"
+    "亚洲 · Neo Soon Keat · 新加坡@mirror.soonkeat.sg"
+    "亚洲 · 自由软件实验室(NCHC) · 台湾@free.nchc.org.tw"
+    "亚洲 · OSS Planet · 台湾@mirror.ossplanet.net"
+    "亚洲 · 国立阳明交通大学 · 台湾@linux.cs.nctu.edu.tw"
+    "亚洲 · 淡江大学 · 台湾@ftp.tku.edu.tw"
+    "亚洲 · AniGil Linux Archive · 韩国@mirror.anigil.com"
+    "亚洲 · 工业网络安全中心(ICSCoE) · 日本@ftp.udx.icscoe.jp/Linux"
+    "亚洲 · Internet Initiative Japan(IIJ) · 日本@ftp.iij.ad.jp/pub/linux"
+    "亚洲 · 北陆先端科学技术大学院大学(JAIST) · 日本@ftp.jaist.ac.jp/pub/Linux"
+    "亚洲 · 山形大学 · 日本@linux2.yz.yamagata-u.ac.jp/pub/Linux"
+    "亚洲 · xTom · 日本@mirrors.xtom.jp"
+    "亚洲 · GB Network Solutions · 马来西亚@mirrors.gbnetwork.com"
+    "亚洲 · 孔敬大学 · 泰国@mirror.kku.ac.th"
+    "亚洲 · RISE · 菲律宾@mirror.rise.ph"
+    "欧洲 · Vorboss Ltd · 英国@mirror.vorboss.net"
+    "欧洲 · QuickHost · 英国@mirror.quickhost.uk"
+    "欧洲 · dogado · 德国@mirror.dogado.de"
+    "欧洲 · xTom · 德国@mirrors.xtom.de"
+    "欧洲 · 亚琛工业大学(RWTH Aachen) · 德国@ftp.halifax.rwth-aachen.de"
+    "欧洲 · 德累斯顿大学(AG DSN) · 德国@ftp.agdsn.de"
+    "欧洲 · CCIN2P3 · 法国@mirror.in2p3.fr/pub/linux"
+    "欧洲 · Ircam · 法国@mirrors.ircam.fr/pub"
+    "欧洲 · Crans · 法国@eclats.crans.org"
+    "欧洲 · CRIHAN · 法国@ftp.crihan.fr"
+    "欧洲 · xTom · 荷兰@mirrors.xtom.nl"
+    "欧洲 · DataPacket · 荷兰@mirror.datapacket.com"
+    "欧洲 · Linux Kernel · 荷兰@eu.edge.kernel.org"
+    "欧洲 · xTom · 爱沙尼亚@mirrors.xtom.ee"
+    "欧洲 · netsite · 丹麦@mirror.netsite.dk"
+    "欧洲 · Dotsrc · 丹麦@mirrors.dotsrc.org"
+    "欧洲 · Academic Computer Club · 瑞典@mirror.accum.se"
+    "欧洲 · Lysator · 瑞典@ftp.lysator.liu.se"
+    "欧洲 · Yandex · 俄罗斯@mirror.yandex.ru"
+    "欧洲 · ia64 · 俄罗斯@mirror.linux-ia64.org"
+    "欧洲 · Truenetwork · 俄罗斯@mirror.truenetwork.ru"
+    "欧洲 · Belgian Research Network · 比利时@ftp.belnet.be/mirror"
+    "欧洲 · 克里特大学计算机中心 · 希腊@ftp.cc.uoc.gr/mirrors/linux"
+    "欧洲 · 马萨里克大学信息学院 · 捷克@ftp.fi.muni.cz/pub/linux"
+    "欧洲 · 捷克理工大学学生会俱乐部(Silicon Hill) · 捷克@ftp.sh.cvut.cz"
+    "欧洲 · Vodafone · 捷克@mirror.karneval.cz/pub/linux"
+    "欧洲 · CZ.NIC · 捷克@mirrors.nic.cz"
+    "欧洲 · 苏黎世联邦理工学院 · 瑞士@mirror.ethz.ch"
+    "北美 · Linux Kernel · 美国@mirrors.kernel.org"
+    "北美 · 麻省理工学院(MIT) · 美国@mirrors.mit.edu"
+    "北美 · 普林斯顿大学数学系 · 美国@mirror.math.princeton.edu/pub"
+    "北美 · 俄勒冈州立大学开源实验室 · 美国@ftp-chi.osuosl.org/pub"
+    "北美 · Fremont Cabal Internet Exchange(FCIX) · 美国@mirror.fcix.net"
+    "北美 · xTom · 美国@mirrors.xtom.com"
+    "北美 · Steadfast · 美国@mirror.steadfast.net"
+    "北美 · 不列颠哥伦比亚大学 · 加拿大@mirror.it.ubc.ca"
+    "北美 · GoCodeIT · 加拿大@mirror.xenyth.net"
+    "北美 · Switch · 加拿大@mirrors.switch.ca"
+    "南美 · PoP-SC · 巴西@mirror.pop-sc.rnp.br/mirror"
+    "南美 · 蓬塔格罗萨州立大学 · 巴西@mirror.uepg.br"
+    "南美 · UFSCar · 巴西@mirror.ufscar.br"
+    "南美 · Sysarmy Community · 阿根廷@mirrors.eze.sysarmy.com"
+    "大洋 · Fremont Cabal Internet Exchange(FCIX) · 澳大利亚@gsl-syd.mm.fcix.net"
+    "大洋 · AARNet · 澳大利亚@mirror.aarnet.edu.au/pub"
+    "大洋 · DataMossa · 澳大利亚@mirror.datamossa.io"
+    "大洋 · Amaze · 澳大利亚@mirror.amaze.com.au"
+    "大洋 · xTom · 澳大利亚@mirrors.xtom.au"
+    "大洋 · Over the Wire · 澳大利亚@mirror.overthewire.com.au"
+    "大洋 · Free Software Mirror Group · 新西兰@mirror.fsmg.org.nz"
+    "非洲 · Liquid Telecom · 肯尼亚@mirror.liquidtelecom.com"
+    "非洲 · Dimension Data · 南非@mirror.dimensiondata.com"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
@@ -128,16 +128,20 @@ SYSTEM_ROCKY="Rocky"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_OPENSUSE="openSUSE"
+SYSTEM_ARCH="Arch"
 
 ## 定义目录和文件
 File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_openEulerRelease=/etc/openEuler-release
+File_ArchRelease=/etc/arch-release
 File_DebianVersion=/etc/debian_version
 File_DebianSourceList=/etc/apt/sources.list
 File_DebianSourceListBackup=/etc/apt/sources.list.bak
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
+File_ArchMirrorList=/etc/pacman.d/mirrorlist
+File_ArchMirrorListBackup=/etc/pacman.d/mirrorlist.bak
 Dir_RedHatRepos=/etc/yum.repos.d
 Dir_RedHatReposBackup=/etc/yum.repos.d.bak
 Dir_openEulerRepos=/etc/yum.repos.d
@@ -162,10 +166,12 @@ WORKING='[\033[34m*\033[0m]'
 WEBSITE="https://supermanito.github.io/LinuxMirrors"
 
 function StartTitle() {
+    [ -z "${SOURCE}" ] && clear
     echo -e ' +-----------------------------------+'
     echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
     echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
     echo -e ' +-----------------------------------+'
+    echo -e ' 欢迎使用 GNU/Linux 一键更换软件源脚本'
 }
 
 function AuthorSignature() {
@@ -197,12 +203,16 @@ function EnvJudgment() {
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [ -f $File_ArchRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_ARCH}"
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
         echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统\n"
         exit 1
     fi
+    ## 开始使用
+    StartTitle
     ## 判定系统名称、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
@@ -228,46 +238,60 @@ function EnvJudgment() {
     "${SYSTEM_OPENSUSE}")
         SYSTEM_JUDGMENT="${SYSTEM_OPENSUSE}"
         ;;
+    "${SYSTEM_ARCH}")
+        SYSTEM_JUDGMENT="${SYSTEM_ARCH}"
+        ;;
     esac
     ## 判定系统处理器架构
-    case $(uname -m) in
+    case "$(uname -m)" in
     x86_64)
-        SYSTEM_ARCH="x86_64"
+        DEVICE_ARCH="x86_64"
         ;;
     aarch64)
-        SYSTEM_ARCH="ARM64"
+        DEVICE_ARCH="ARM64"
         ;;
     armv7l)
-        SYSTEM_ARCH="ARMv7"
+        DEVICE_ARCH="ARMv7"
         ;;
     armv6l)
-        SYSTEM_ARCH="ARMv6"
+        DEVICE_ARCH="ARMv6"
         ;;
     i686)
-        SYSTEM_ARCH="x86_32"
+        DEVICE_ARCH="x86_32"
         ;;
     *)
-        SYSTEM_ARCH=$(uname -m)
+        DEVICE_ARCH="$(uname -m)"
         ;;
     esac
     ## 定义软件源分支名称
     if [[ -z "${SOURCE_BRANCH}" ]]; then
-        if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_UBUNTU} ]; then
-            if [ ${SYSTEM_ARCH} = "x86_64" ] || [ $(uname -m) = "*i?86*" ]; then
-                SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_UBUNTU}")
+            if [[ ${DEVICE_ARCH} == "x86_64" ]] || [[ ${DEVICE_ARCH} == *i?86* ]]; then
+                SOURCE_BRANCH="ubuntu"
             else
-                SOURCE_BRANCH=ubuntu-ports
+                SOURCE_BRANCH="ubuntu-ports"
             fi
-        else
+            ;;
+        "${SYSTEM_ARCH}")
+            if [[ ${DEVICE_ARCH} == "x86_64" ]] || [[ ${DEVICE_ARCH} == *i?86* ]]; then
+                SOURCE_BRANCH="archlinux"
+            else
+                SOURCE_BRANCH="archlinuxarm"
+            fi
+            ;;
+        *)
             SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
-        fi
+            ;;
+        esac
+
     fi
     ## 定义软件源同步/更新文字
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         SYNC_TXT="更新"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}")
+    *)
         SYNC_TXT="同步"
         ;;
     esac
@@ -283,11 +307,11 @@ function ChooseMirrors() {
             local text=$1
             echo "${#text}"
         }
-
         echo -e ''
 
         local list_arr=()
-        for ((a = 0; a < "$(eval echo \${#$1[@]})"; a++)); do
+        local list_arr_sum=$(eval echo \${#$1[@]})
+        for ((a = 0; a < $list_arr_sum; a++)); do
             list_arr[$a]="$(eval echo \${$1[a]})"
         done
         if [ -x /usr/bin/printf ]; then
@@ -302,7 +326,7 @@ function ChooseMirrors() {
                 [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
                 [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
                 # 非一般字符长度
-                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!]||g;"))
+                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;"))
                 ## 填充空格
                 tmp_spaces_nums=$(($(($default_mirror_name_length - ${tmp_mirror_name_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
                 for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
@@ -345,7 +369,7 @@ function ChooseMirrors() {
             local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
             read -p "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
-            case $INPUT in
+            case "${INPUT}" in
             [Yy] | [Yy][Ee][Ss]) ;;
             [Nn] | [Nn][Oo])
                 SOURCE="${intranet_source}"
@@ -360,23 +384,20 @@ function ChooseMirrors() {
 
     function Title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
-        local arch="${SYSTEM_ARCH}"
+        local arch="${DEVICE_ARCH}"
         local date="$(date "+%Y-%m-%d %H:%M:%S")"
         local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
-        StartTitle
-        echo -e ' 欢迎使用 GNU/Linux 一键更换软件源脚本'
         echo -e ''
         echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
         echo -e " 系统时间 ${BLUE}${date} ${timezone}${PLAIN}"
     }
 
-    clear
     Title
     if [[ -z "${SOURCE}" ]]; then
         if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
             local mirror_list_name="mirror_list_abroad"
-            PrintMirrorsList "${mirror_list_name}" 50
+            PrintMirrorsList "${mirror_list_name}" 60
         else
             local mirror_list_name="mirror_list_default"
             PrintMirrorsList "${mirror_list_name}" 31
@@ -385,7 +406,7 @@ function ChooseMirrors() {
         local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
             read -p "${CHOICE}" INPUT
-            case $INPUT in
+            case "${INPUT}" in
             [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
                 local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
                 if [[ -z "${tmp_source}" ]]; then
@@ -419,7 +440,7 @@ function ChooseWebProtocol() {
             local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
             read -p "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
-            case $INPUT in
+            case "${INPUT}" in
             [Yy] | [Yy][Ee][Ss])
                 WEB_PROTOCOL="http"
                 ;;
@@ -458,7 +479,7 @@ function ChooseInstallEPEL() {
             fi
             read -p "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
-            case $INPUT in
+            case "${INPUT}" in
             [Yy] | [Yy][Ee][Ss])
                 INSTALL_EPEL="True"
                 ;;
@@ -491,7 +512,7 @@ function CloseFirewall() {
                 local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
                 read -p "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
-                case $INPUT in
+                case "${INPUT}" in
                 [Yy] | [Yy][Ee][Ss])
                     Main
                     ;;
@@ -522,26 +543,26 @@ function BackupOriginMirrors() {
             ;;
         "${SYSTEM_REDHAT}")
             ## 判断 /etc/yum.repos.d 目录下是否存在文件
-            [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep repo -q
+            [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep '\.repo$' -q
             VERIFICATION_FILES=$?
             ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
-            [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep repo -q
+            [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep '\.repo$' -q
             VERIFICATION_BACKUPFILES=$?
             ;;
         "${SYSTEM_OPENEULER}")
             ## 判断 /etc/yum.repos.d 目录下是否存在文件
-            [ -d $Dir_openEulerRepos ] && ls $Dir_openEulerRepos | grep repo -q
+            [ -d $Dir_openEulerRepos ] && ls $Dir_openEulerRepos | grep '\.repo$' -q
             VERIFICATION_FILES=$?
             ## 判断 /etc/yum.repos.d.bak 目录下是否存在文件
-            [ -d $Dir_openEulerReposBackup ] && ls $Dir_openEulerReposBackup | grep repo -q
+            [ -d $Dir_openEulerReposBackup ] && ls $Dir_openEulerReposBackup | grep '\.repo$' -q
             VERIFICATION_BACKUPFILES=$?
             ;;
         "${SYSTEM_OPENSUSE}")
             ## 判断 /etc/zypp/repos.d 目录下是否存在文件
-            [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos | grep repo -q
+            [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos | grep '\.repo$' -q
             VERIFICATION_FILES=$?
             ## 判断 /etc/zypp/repos.d.bak 目录下是否存在文件
-            [ -d $Dir_openSUSEReposBackup ] && ls $Dir_openSUSEReposBackup | grep repo -q
+            [ -d $Dir_openSUSEReposBackup ] && ls $Dir_openSUSEReposBackup | grep '\.repo$' -q
             VERIFICATION_BACKUPFILES=$?
             ;;
         esac
@@ -555,7 +576,7 @@ function BackupOriginMirrors() {
                         local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP1}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
-                        case $INPUT in
+                        case "${INPUT}" in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
                             echo ''
@@ -569,7 +590,7 @@ function BackupOriginMirrors() {
                 else
                     echo ''
                     cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
-                    echo -e "\n$COMPLETE 已备份原有 list 源文件至 $File_DebianSourceListBackup"
+                    echo -e "\n$COMPLETE 已备份原有 list 源文件"
                     sleep 1s
                 fi
             else
@@ -581,10 +602,10 @@ function BackupOriginMirrors() {
             if [ -d $Dir_DebianExtendSource ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_DebianExtendSourceBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
                     if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
-                        local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 第三方源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 扩展源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP2}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
-                        case $INPUT in
+                        case "${INPUT}" in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
                             echo ''
@@ -599,7 +620,7 @@ function BackupOriginMirrors() {
                     [ ! -d $Dir_DebianExtendSourceBackup ] && mkdir -p $Dir_DebianExtendSourceBackup
                     echo ''
                     cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
-                    echo -e "$COMPLETE 已备份原有 list 第三方源文件至 $Dir_DebianExtendSourceBackup 目录"
+                    echo -e "$COMPLETE 已备份原有 list 扩展源文件"
                     sleep 1s
                 fi
             fi
@@ -612,7 +633,7 @@ function BackupOriginMirrors() {
                         local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP3}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
-                        case $INPUT in
+                        case "${INPUT}" in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
                             echo ''
@@ -627,7 +648,7 @@ function BackupOriginMirrors() {
                     [ ! -d $Dir_RedHatReposBackup ] && mkdir -p $Dir_RedHatReposBackup
                     echo ''
                     cp -vrf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
-                    echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_RedHatReposBackup 目录"
+                    echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
             else
@@ -642,7 +663,7 @@ function BackupOriginMirrors() {
                         local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP4}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
-                        case $INPUT in
+                        case "${INPUT}" in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
                             echo ''
@@ -657,7 +678,7 @@ function BackupOriginMirrors() {
                     [ ! -d $Dir_openEulerReposBackup ] && mkdir -p $Dir_openEulerReposBackup
                     echo ''
                     cp -vrf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
-                    echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openEulerReposBackup 目录"
+                    echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
             else
@@ -672,7 +693,7 @@ function BackupOriginMirrors() {
                         local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP4}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
-                        case $INPUT in
+                        case "${INPUT}" in
                         [Yy] | [Yy][Ee][Ss]) ;;
                         [Nn] | [Nn][Oo])
                             echo ''
@@ -687,11 +708,41 @@ function BackupOriginMirrors() {
                     [ ! -d $Dir_openSUSEReposBackup ] && mkdir -p $Dir_openSUSEReposBackup
                     echo ''
                     cp -vrf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
-                    echo -e "\n$COMPLETE 已备份原有 repo 源文件至 $Dir_openSUSEReposBackup 目录"
+                    echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
             else
                 [ -d $Dir_openSUSERepos ] || mkdir -p $Dir_openSUSERepos
+            fi
+            ;;
+        "${SYSTEM_ARCH}")
+            ## /etc/pacman.d/mirrorlist
+            if [ -s $File_ArchMirrorList ]; then
+                if [ -s $File_ArchMirrorListBackup ]; then
+                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
+                        local CHOICE_BACKUP5=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的软件源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        read -p "${CHOICE_BACKUP5}" INPUT
+                        [[ -z "${INPUT}" ]] && INPUT=Y
+                        case "${INPUT}" in
+                        [Yy] | [Yy][Ee][Ss]) ;;
+                        [Nn] | [Nn][Oo])
+                            echo ''
+                            cp -rvf $File_ArchMirrorList $File_ArchMirrorListBackup 2>&1
+                            ;;
+                        *)
+                            echo -e "\n$WARN 输入错误，默认不覆盖！"
+                            ;;
+                        esac
+                    fi
+                else
+                    echo ''
+                    cp -rvf $File_ArchMirrorList $File_ArchMirrorListBackup 2>&1
+                    echo -e "\n$COMPLETE 已备份原有软件源文件"
+                    sleep 1s
+                fi
+            else
+                [ ! -f $File_ArchMirrorList ] && touch $File_ArchMirrorList
+                echo -e ''
             fi
             ;;
         esac
@@ -724,6 +775,9 @@ function RemoveOriginMirrors() {
     "${SYSTEM_OPENSUSE}")
         [ -d $Dir_openSUSERepos ] && rm -rf $Dir_openSUSERepos/repo-*
         ;;
+    "${SYSTEM_ARCH}")
+        [ -f $File_ArchMirrorList ] && sed -i '1,$d' $File_ArchMirrorList
+        ;;
     esac
 }
 
@@ -742,6 +796,9 @@ function ChangeMirrors() {
     "${SYSTEM_OPENSUSE}")
         openSUSEMirrors
         ;;
+    "${SYSTEM_ARCH}")
+        ArchMirrors
+        ;;
     esac
     echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case "${SYSTEM_FACTIONS}" in
@@ -753,6 +810,9 @@ function ChangeMirrors() {
         ;;
     "${SYSTEM_OPENSUSE}")
         zypper ref
+        ;;
+    "${SYSTEM_ARCH}")
+        pacman -Sy
         ;;
     esac
     if [ $? -eq 0 ]; then
@@ -803,7 +863,7 @@ function UpdateSoftware() {
         local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
         read -p "${CHOICE}" INPUT
         [[ -z "${INPUT}" ]] && INPUT=Y
-        case $INPUT in
+        case "${INPUT}" in
         [Yy] | [Yy][Ee][Ss]) ;;
         [Nn] | [Nn][Oo])
             Main
@@ -822,7 +882,7 @@ function UpdateSoftware() {
         local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
         read -p "${CHOICE}" INPUT
         [[ -z "${INPUT}" ]] && INPUT=Y
-        case $INPUT in
+        case "${INPUT}" in
         [Yy] | [Yy][Ee][Ss])
             CleanCache
             ;;
@@ -833,16 +893,20 @@ function UpdateSoftware() {
         esac
     }
 
-    if [[ ${UPDATA_SOFTWARE} == "true" ]]; then
-        Main
-        if [[ ${CLEAN_CACHE} == "true" ]]; then
-            CleanCache
-        elif [[ -z "${CLEAN_CACHE}" ]]; then
-            CleanCacheInteraction
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}")
+        if [[ ${UPDATA_SOFTWARE} == "true" ]]; then
+            Main
+            if [[ ${CLEAN_CACHE} == "true" ]]; then
+                CleanCache
+            elif [[ -z "${CLEAN_CACHE}" ]]; then
+                CleanCacheInteraction
+            fi
+        elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
+            MainInteraction
         fi
-    elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
-        MainInteraction
-    fi
+        ;;
+    esac
 }
 
 ## 运行结束
@@ -1101,7 +1165,7 @@ function RedHatMirrors() {
     esac
 }
 
-## 更换基于 openEuler 系 Linux 发行版的软件源
+## 更换基于 openEuler 发行版的软件源
 function openEulerMirrors() {
     GenRepoFiles_openEuler
     cd $Dir_openEulerRepos
@@ -1112,7 +1176,7 @@ function openEulerMirrors() {
     sed -i "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" openEuler.repo
 }
 
-## 更换基于 openSUSE 系 Linux 发行版的软件源
+## 更换基于 openSUSE 发行版的软件源
 function openSUSEMirrors() {
     case "${SYSTEM_ID}" in
     "opensuse-leap")
@@ -1169,6 +1233,21 @@ function openSUSEMirrors() {
             repo-oss.repo \
             repo-source.repo \
             repo-update.repo
+        ;;
+    esac
+}
+
+## 更换基于 Arch Linux 发行版的软件源
+function ArchMirrors() {
+    case "${SOURCE_BRANCH}" in
+    "archlinuxarm")
+        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch/\$repo" >>$File_ArchMirrorList
+        ;;
+    "archlinuxcn")
+        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch" >>$File_ArchMirrorList
+        ;;
+    *)
+        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$repo/os/\$arch" >>$File_ArchMirrorList
         ;;
     esac
 }
