@@ -29,6 +29,12 @@ hide:
         zypper install curl
         ```
 
+    === "Arch Linux"
+
+        ``` sh
+        pacman -S curl
+        ```
+
 ## 还原已备份的软件源
 
 === "Debian 系 Linux"
@@ -54,6 +60,13 @@ hide:
     ``` sh
     cp -rvf /etc/zypp/repos.d.bak /etc/zypp/repos.d
     zypper ref
+    ```
+
+=== "Arch Linux"
+
+    ``` sh
+    cp -rvf /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
+    pacman -Sy
     ```
 
 ## 其它

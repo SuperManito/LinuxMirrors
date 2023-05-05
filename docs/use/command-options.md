@@ -31,44 +31,48 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 
 <table>
 <tr>
-    <td><a href="https://www.debian.org" target="_blank"><img src="../assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Debian</td>
+    <td><a href="https://www.debian.org" target="_blank"><img src="/../assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"/></a>&nbsp;Debian</td>
     <td align="center">debian</td>
 </tr>
 <tr>
-    <td><a href="https://cn.ubuntu.com" target="_blank"><img src="../assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Ubuntu</td>
-    <td align="center">ubuntu</td>
+    <td><a href="https://cn.ubuntu.com" target="_blank"><img src="/../assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Ubuntu</td>
+    <td align="center">ubuntu/ubuntu-ports</td>
 </tr>
 <tr>
-    <td><a href="https://www.kali.org" target="_blank"><img src="../assets/images/icon/kali.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Kali Linux</td>
+    <td><a href="https://www.kali.org" target="_blank"><img src="/../assets/images/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
     <td align="center">kali</td>
 </tr>
 <tr>
-    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="../assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Red Hat Enterprise Linux</td>
+    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/../assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Red Hat Enterprise Linux</td>
     <td align="center">centos</td>
 </tr>
 <tr>
-    <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
+    <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
     <td align="center">centos</td>
 </tr>
 <tr>
-    <td><a href="https://www.centos.org/centos-stream" target="_blank"><img src="../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS Stream</td>
+    <td><a href="https://www.centos.org/centos-stream" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS Stream</td>
     <td align="center">centos-stream</td>
 </tr>
 <tr>
-    <td><a href="https://rockylinux.org" target="_blank"><img src="../assets/images/icon/rocky.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Rocky Linux</td>
+    <td><a href="https://rockylinux.org" target="_blank"><img src="/../assets/images/icon/rocky.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
     <td align="center">rocky</td>
 </tr>
 <tr>
-    <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="../assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
+    <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/../assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
     <td align="center">fedora</td>
 </tr>
 <tr>
-    <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="../assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;openEuler</td>
+    <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="/../assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;openEuler</td>
     <td align="center">openeuler</td>
 </tr>
 <tr>
-    <td><a href="https://www.opensuse.org" target="_blank"><img src="../assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;openSUSE</td>
+    <td><a href="https://www.opensuse.org" target="_blank"><img src="/../assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;openSUSE</td>
     <td align="center">opensuse</td>
+</tr>
+<tr>
+    <td><a href="https://archlinux.org" target="_blank"><img src="/../assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Arch Linux</td>
+    <td align="center">archlinux/archlinuxarm</td>
 </tr>
 </table>
 

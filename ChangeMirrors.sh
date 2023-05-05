@@ -3,7 +3,7 @@
 ## Modified: 2023-05-05
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
-## Website: https://supermanito.github.io/LinuxMirrors
+## Website: https://linuxmirrors.cn
 
 ## 软件源列表
 # 国内格式："软件源名称@软件源地址"
@@ -163,7 +163,7 @@ ERROR='[\033[31mERROR\033[0m]'
 WORKING='[\033[34m*\033[0m]'
 
 ## 其它
-WEBSITE="https://supermanito.github.io/LinuxMirrors"
+WEBSITE="https://linuxmirrors.cn"
 
 function StartTitle() {
     [ -z "${SOURCE}" ] && clear

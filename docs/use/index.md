@@ -1,16 +1,32 @@
-## 主要命令
+## 执行命令
 
-=== "国内使用（默认）"
 
-    ``` bash
-    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
-    ```
+### 国内使用（默认）
 
-=== "海外使用"
+``` bash
+bash <(curl -sSL https://linuxmirrors.cn/script)
+```
 
-    ``` bash
-    bash <(curl -sSL https://github.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
-    ```
+### 海外使用
+
+``` bash
+bash <(curl -sSL https://linuxmirrors.cn/script-gh) --abroad
+```
+> 通过 `--abroad` 命令选项来使用海外软件源
+
+??? quote "原始方法"
+
+    === "国内使用（默认）"
+
+        ``` bash
+        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+        ```
+
+    === "海外使用"
+
+        ``` bash
+        bash <(curl -sSL https://github.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+        ```
 
 ## 注意事项
 

@@ -1,11 +1,11 @@
 <p align="center">
-  <a href="https://supermanito.github.io/LinuxMirrors">
+  <a href="https://linuxmirrors.cn">
     <img src="./docs/assets/images/logo.png" width="320" alt="Material for MkDocs">
   </a>
 </p>
 <p align="center">
   <strong>
-    <a href="https://supermanito.github.io/LinuxMirrors">官方网站</a>
+    <a href="https://linuxmirrors.cn">官方网站</a>
   </strong>
 </p>
 <p align="center">
@@ -23,10 +23,10 @@
 
   <table>
   <tr>
-      <td rowspan="11"> 支持<br/>版本<br/>
+      <td rowspan="12"> 支持<br/>版本<br/>
   </tr>
   <tr>
-      <td><a href="https://www.debian.org" target="_blank"><img src="./docs/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Debian</td>
+      <td><a href="https://www.debian.org" target="_blank"><img src="./docs/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"/></a>&nbsp;Debian</td>
       <td align="center">8.0 ~ 12</td>
   </tr>
   <tr>
@@ -65,12 +65,16 @@
       <td><a href="https://www.opensuse.org" target="_blank"><img src="./docs/assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;openSUSE</td>
       <td align="center">Leep 15 / Tumbleweed</td>
   </tr>
+  <tr>
+      <td><a href="https://archlinux.org" target="_blank"><img src="./docs/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Arch Linux</td>
+      <td align="center">all</td>
+  </tr>
   </table>
 
-- ### [软件源](https://supermanito.github.io/LinuxMirrors/Mirrors)
-- ### [使用方法](https://supermanito.github.io/LinuxMirrors/use)
-- ### [常见问题](https://supermanito.github.io/LinuxMirrors/help)
-- ### [其它脚本](https://supermanito.github.io/LinuxMirrors/other)
+- ### [软件源](https://linuxmirrors.cn/Mirrors)
+- ### [使用方法](https://linuxmirrors.cn/use)
+- ### [常见问题](https://linuxmirrors.cn/help)
+- ### [其它脚本](https://linuxmirrors.cn/other)
 
 ***
 
