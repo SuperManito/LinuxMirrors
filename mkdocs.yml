@@ -27,14 +27,12 @@ theme:
       quote: octicons/quote-16
   palette:
     # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
+    - scheme: default
       toggle:
-        icon: material/brightness-7
+        icon: material/brightness-7 
         name: Switch to dark mode
     # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
+    - scheme: slate
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
@@ -60,10 +58,6 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/SuperManito/LinuxMirrors
-  alternate:
-    - name: 简体中文
-      link: /
-      lang: zh
 extra_css:
   - stylesheets/extra.css
 markdown_extensions:
