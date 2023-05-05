@@ -71,7 +71,7 @@
   </tr>
   </table>
 
-- ### [软件源](https://linuxmirrors.cn/Mirrors)
+- ### [软件源](https://linuxmirrors.cn/mirrors)
 - ### [使用方法](https://linuxmirrors.cn/use)
 - ### [常见问题](https://linuxmirrors.cn/help)
 - ### [其它脚本](https://linuxmirrors.cn/other)

@@ -116,7 +116,7 @@ plugins:
   - glightbox
 nav:
   - '介绍': index.md
-  - '软件源': Mirrors.md
+  - '软件源': mirrors.md
   - '使用方法':
     - '使用方法': use/index.md
     - '执行流程': use/execution-flow.md
