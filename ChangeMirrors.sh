@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-05
+## Modified: 2023-05-06
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -121,7 +121,7 @@ SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
 SYSTEM_REDHAT="RedHat"
-SYSTEM_RHEL="RedHat"
+SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
 SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
@@ -229,6 +229,10 @@ function EnvJudgment() {
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
+        ## Red Hat Enterprise Linux
+        cat $File_RedHatRelease | grep -q "${SYSTEM_RHEL}"
+        [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
+        ## CentOS Stream
         cat $File_RedHatRelease | grep -q "${SYSTEM_CENTOS_STREAM}"
         [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
         ;;
@@ -265,7 +269,20 @@ function EnvJudgment() {
     esac
     ## 定义软件源分支名称
     if [[ -z "${SOURCE_BRANCH}" ]]; then
-        case "${SYSTEM_FACTIONS}" in
+        ## 默认
+        SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
+        ## 定制
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_RHEL}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                SOURCE_BRANCH="rocky"
+                ;;
+            *)
+                SOURCE_BRANCH="centos"
+                ;;
+            esac
+            ;;
         "${SYSTEM_UBUNTU}")
             if [[ ${DEVICE_ARCH} == "x86_64" ]] || [[ ${DEVICE_ARCH} == *i?86* ]]; then
                 SOURCE_BRANCH="ubuntu"
@@ -279,9 +296,6 @@ function EnvJudgment() {
             else
                 SOURCE_BRANCH="archlinuxarm"
             fi
-            ;;
-        *)
-            SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
             ;;
         esac
 
@@ -758,7 +772,7 @@ function RemoveOriginMirrors() {
     "${SYSTEM_REDHAT}")
         if [ -d $Dir_RedHatRepos ]; then
             # Fedora Linux 特殊，只删除以 fedora 开头的文件
-            if [ "${SYSTEM_JUDGMENT}" = $SYSTEM_FEDORA ]; then
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
                 rm -rf $Dir_RedHatRepos/fedora*
             else
                 if [ -f $Dir_RedHatRepos/epel.repo ]; then
@@ -836,7 +850,7 @@ function UpdateSoftware() {
             apt-get upgrade -y
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
-            yum update -y
+            yum update -y --skip-broken
             ;;
         "${SYSTEM_OPENSUSE}")
             zypper update -y
@@ -895,15 +909,17 @@ function UpdateSoftware() {
 
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}")
-        if [[ ${UPDATA_SOFTWARE} == "true" ]]; then
-            Main
-            if [[ ${CLEAN_CACHE} == "true" ]]; then
-                CleanCache
-            elif [[ -z "${CLEAN_CACHE}" ]]; then
-                CleanCacheInteraction
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
+            if [[ ${UPDATA_SOFTWARE} == "true" ]]; then
+                Main
+                if [[ ${CLEAN_CACHE} == "true" ]]; then
+                    CleanCache
+                elif [[ -z "${CLEAN_CACHE}" ]]; then
+                    CleanCacheInteraction
+                fi
+            elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
+                MainInteraction
             fi
-        elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
-            MainInteraction
         fi
         ;;
     esac
@@ -1022,7 +1038,17 @@ function RedHatMirrors() {
 
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}")
+    "${SYSTEM_RHEL}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            GenRepoFiles_RockyLinux ${SYSTEM_VERSION_NUMBER:0:1}
+            ;;
+        *)
+            GenRepoFiles_CentOS ${SYSTEM_VERSION_NUMBER:0:1}
+            ;;
+        esac
+        ;;
+    "${SYSTEM_CENTOS}")
         GenRepoFiles_CentOS ${SYSTEM_VERSION_NUMBER:0:1}
         ;;
     "${SYSTEM_CENTOS_STREAM}")
@@ -1039,7 +1065,70 @@ function RedHatMirrors() {
     ## 修改源
     cd $Dir_RedHatRepos
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}")
+    "${SYSTEM_RHEL}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            sed -i 's|^mirrorlist=|#mirrorlist=|g' \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+
+            # 更换 WEB 协议（HTTP/HTTPS）
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+            ## 禁用签名
+            sed -i "s|^gpgcheck=1|gpgcheck=0|g" \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+            sed -i "s|^gpgkey=|#gpgkey=|g" \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+            # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-rockyofficial" -P /etc/pki/rpm-gpg
+            # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-Rocky-9" -P /etc/pki/rpm-gpg
+
+            # 更换软件源
+            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+            ;;
+        *)
+            sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
+
+            # Red Hat Enterprise Linux 修改版本号
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            8)
+                ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
+                # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
+                sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
+                sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
+                sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+                ;;
+            7)
+                sed -i "s/\$releasever/7/g" CentOS-*
+                ;;
+            esac
+
+            # 更换 WEB 协议（HTTP/HTTPS）
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
+            # 更换软件源
+            sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
+            ;;
+        esac
+
+        # EPEL 附加软件包（安装/换源）
+        [ ${INSTALL_EPEL} = "True" ] && EPELMirrors
+        ;;
+    "${SYSTEM_CENTOS}")
         sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
 
         ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
@@ -1054,18 +1143,6 @@ function RedHatMirrors() {
         sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
         # 更换软件源
         sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
-
-        # Red Hat Enterprise Linux 修改版本号
-        if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_RHEL} ]; then
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            8)
-                sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-                ;;
-            7)
-                sed -i "s/\$releasever/7/g" CentOS-*
-                ;;
-            esac
-        fi
 
         # EPEL 附加软件包（安装/换源）
         [ ${INSTALL_EPEL} = "True" ] && EPELMirrors

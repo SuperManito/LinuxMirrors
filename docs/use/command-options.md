@@ -44,7 +44,7 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 </tr>
 <tr>
     <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/../assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Red Hat Enterprise Linux</td>
-    <td align="center">centos</td>
+    <td align="center">centos/rocky</td>
 </tr>
 <tr>
     <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
