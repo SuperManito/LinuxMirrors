@@ -284,6 +284,27 @@ function EnvJudgment() {
                 ;;
             esac
             ;;
+        "${SYSTEM_CENTOS}")
+            if [[ ${DEVICE_ARCH} == "x86_64" ]]; then
+                SOURCE_BRANCH="centos"
+            else
+                SOURCE_BRANCH="centos-altarch"
+            fi
+            ;;
+        "${SYSTEM_CENTOS_STREAM}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            8)
+                if [[ ${DEVICE_ARCH} == "x86_64" ]]; then
+                    SOURCE_BRANCH="centos"
+                else
+                    SOURCE_BRANCH="centos-altarch"
+                fi
+                ;;
+            *)
+                SOURCE_BRANCH="centos-stream"
+                ;;
+            esac
+            ;;
         "${SYSTEM_UBUNTU}")
             if [[ ${DEVICE_ARCH} == "x86_64" ]] || [[ ${DEVICE_ARCH} == *i?86* ]]; then
                 SOURCE_BRANCH="ubuntu"
@@ -1032,8 +1053,6 @@ function RedHatMirrors() {
             sed -i "s|download.fedoraproject.org/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
             ;;
         esac
-
-        rm -rf $Dir_RedHatRepos/epel*rpmnew
     }
 
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
@@ -1131,17 +1150,19 @@ function RedHatMirrors() {
     "${SYSTEM_CENTOS}")
         sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
 
-        ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
-        # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
-        if [ ${SYSTEM_VERSION_NUMBER:0:1} -eq "8" ]; then
-            sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
-            sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
-            sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-        fi
-
         # 更换 WEB 协议（HTTP/HTTPS）
         sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
         # 更换软件源
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        8)
+            sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
+            sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
+            sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+            ;;
+        7)
+            sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
+            ;;
+        esac
         sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
         ;;
     "${SYSTEM_CENTOS_STREAM}")
@@ -1168,7 +1189,7 @@ function RedHatMirrors() {
             # 更换 WEB 协议（HTTP/HTTPS）
             sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-Stream-*
             # 更换软件源
-            sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-Stream-*
+            sed -i "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" CentOS-Stream-*
             ;;
         esac
         ;;

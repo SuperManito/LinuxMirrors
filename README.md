@@ -34,7 +34,7 @@
       <td align="center">14.04 ~ 23</td>
   </tr>
   <tr>
-      <td><a href="https://www.kali.org" target="_blank"><img src="./docs/assets/images/icon/kali.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Kali Linux</td>
+      <td><a href="https://www.kali.org" target="_blank"><img src="./docs/assets/images/icon/kali-linux.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Kali Linux</td>
       <td align="center">2.0 ~ 2023</td>
   </tr>
   <tr>
@@ -43,14 +43,10 @@
   </tr>
   <tr>
       <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
-      <td align="center">7.0 ~ 8.5</td>
+      <td align="center">7.0 ~ 8.5 / Stream 8 ~ 9</td>
   </tr>
   <tr>
-      <td><a href="https://www.centos.org/centos-stream" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS Stream</td>
-      <td align="center">8 ~ 9</td>
-  </tr>
-  <tr>
-      <td><a href="https://rockylinux.org/zh_CN" target="_blank"><img src="./docs/assets/images/icon/rocky.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
+      <td><a href="https://rockylinux.org/zh_CN" target="_blank"><img src="./docs/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
       <td align="center">8.0 ~ 9</td>
   </tr>
   <tr>

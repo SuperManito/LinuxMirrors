@@ -34,11 +34,7 @@ GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
 </tr>
 <tr>
     <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
-    <td align="center">7.0 ~ 8.5</td>
-</tr>
-<tr>
-    <td><a href="https://www.centos.org/centos-stream" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;CentOS Stream</td>
-    <td align="center">8 ~ 9</td>
+    <td align="center">7.0 ~ 8.5 / Stream 8 ~ 9</td>
 </tr>
 <tr>
     <td><a href="https://rockylinux.org/zh_CN" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>

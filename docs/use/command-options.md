@@ -27,7 +27,7 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 
 使用场景：目标软件源有对应系统镜像但是不符合本脚本关于软件源分支设置的默认规则  
 
-本脚本为了适配大环境不会针对某一镜像站独特的镜像分支名称而单独定制，最开始是为了更换国内软件源而设计适配的，默认使用的分支名称如下
+本脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独定制，最开始是为了更换国内软件源而设计适配的，默认使用的分支名称如下
 
 <table>
 <tr>
@@ -48,15 +48,15 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 </tr>
 <tr>
     <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
-    <td align="center">centos</td>
-</tr>
-<tr>
-    <td><a href="https://www.centos.org/centos-stream" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS Stream</td>
-    <td align="center">centos-stream</td>
+    <td align="center">centos/centos-stream/centos-altarch</td>
 </tr>
 <tr>
     <td><a href="https://rockylinux.org" target="_blank"><img src="/../assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
     <td align="center">rocky</td>
+</tr>
+<tr>
+    <td><a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;AlmaLinux</td>
+    <td align="center">almalinux</td>
 </tr>
 <tr>
     <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/../assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
@@ -79,7 +79,7 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 请看下面的例子
 
 ``` { .bash .no-copy title="使用阿里云的 Rocky Linux 软件源" }
-bash ChangeMirrors.sh \
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source mirrors.aliyun.com \
   --branch rockylinux
 ```
@@ -91,7 +91,7 @@ bash ChangeMirrors.sh \
 不通过交互完成换源操作，需要使用大量命令选项来实现，建议熟悉后再使用
 
 ``` { .bash .no-copy title="参考命令" }
-bash ChangeMirrors.sh \
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source mirror.example.com \
   --web-protocol http \
   --intranet false \
