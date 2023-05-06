@@ -1,4 +1,4 @@
-name: ci 
+name: build-docs 
 on:
   push:
     branches:
@@ -21,5 +21,6 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material mkdocs-glightbox
-      - run: ls
+      - run: cp -rvf ./ChangeMirrors.sh ./docs/main.sh
+      - run: cp -rvf ./DockerInstallation.sh ./docs/docker.sh
       - run: mkdocs gh-deploy --force
