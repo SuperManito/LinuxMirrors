@@ -1,11 +1,16 @@
 | 名称 | 含义 | 选项值 |
 | :-: | :-: | :-: |
 | `--source` | 指定软件源地址 | 地址 |
-| `--branch` | 指定软件源分支 | 分支名 |
+| `--source-security` | 指定 debian-security 软件源地址 | 地址 |
+| `--source-vault` | 指定 centos-vault 软件源地址 | 地址 |
+| `--branch` | 指定软件源分支(路径) | 分支名 |
+| `--branch-security` | 指定 debian-security 软件源分支(路径) | 分支名 |
+| `--branch-vault` | 指定 centos-vault 软件源分支(路径) | 分支名 |
 | `--abroad` | 使用海外软件源 | 无 |
 | `--web-protocol` | 指定 WEB 协议 | `http` 或 `https` |
-| `--intranet` | 使用内网地址 | `true` 或 `false` |
+| `--intranet` | 优先使用内网地址 | `true` 或 `false` |
 | `--install-epel` | 安装 EPEL 附加软件包 | `true` 或 `false` |
+| `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
 | `--close-firewall` | 关闭防火墙 | `true` 或 `false` |
 | `--backup` | 备份原有软件源 | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示 | 无 |
@@ -20,7 +25,8 @@
 若不想通过交互选择默认提供的软件源，你可以使用该命令选项指定软件源地址
 
 ``` { .bash .no-copy }
-bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+    --source mirror.example.com
 ```
 
 ### 指定软件源分支
@@ -48,7 +54,7 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
 </tr>
 <tr>
     <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
-    <td align="center">centos/centos-stream/centos-altarch</td>
+    <td align="center">centos/centos-stream/centos-altarch/centos-vault</td>
 </tr>
 <tr>
     <td><a href="https://rockylinux.org" target="_blank"><img src="/../assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
@@ -85,6 +91,24 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 ```
 
 阿里云镜像站的 Rocky Linux 镜像分支名称为 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现
+
+### 单独更换 EPEL 源
+
+有些时候你会发现想使用的镜像站没有 epel 镜像仓库，那么你可以在第一次运行脚本时不安装或不更换 epel 源，然后再单独执行下面的命令
+
+``` bash
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
+```
+
+### 自定义 Debian Security 源
+
+如果你想提高服务器的安全性请尽可能使用官方源，因为镜像同步存在延迟
+
+``` bash title="官方源"
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+  --source-security security.debian.org \
+  --branch-security debian-security
+```
 
 ## 无人值守
 

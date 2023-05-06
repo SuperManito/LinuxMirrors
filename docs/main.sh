@@ -175,16 +175,63 @@ function StartTitle() {
     echo -e ' 欢迎使用 GNU/Linux 一键更换软件源脚本'
 }
 
-function AuthorSignature() {
-    echo -e "[\033[1;34m官网\033[0m] ${WEBSITE}\n"
+## 报错退出
+function Output_Error() {
+    [ "$1" ] && echo -e "\n$ERROR $1\n"
+    exit 1
 }
 
 ## 权限判定
 function PermissionJudgment() {
     if [ $UID -ne 0 ]; then
-        echo -e "\n$ERROR 权限不足，请使用 Root 用户运行本脚本\n"
-        exit 1
+        Output_Error "权限不足，请使用 Root 用户运行本脚本"
     fi
+}
+
+## 命令选项兼容性判断
+function CheckCommandOptions() {
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
+            if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+                Output_Error "当前系统不支持使用 debian-security 仓库故无法使用相关参数，请确认后重试！"
+            fi
+        fi
+        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+        fi
+        ;;
+    "${SYSTEM_REDHAT}")
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
+            if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+                Output_Error "当前系统不支持使用 centos-vault 仓库故无法使用相关参数，请确认后重试！"
+            fi
+        fi
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_FEDORA}")
+            if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+                Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+            fi
+            ;;
+        esac
+        ;;
+    "${SYSTEM_OPENEULER}")
+        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+        fi
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+        fi
+        ;;
+    "${SYSTEM_ARCH}")
+        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+        fi
+        ;;
+    esac
+
 }
 
 ## 系统判定变量
@@ -209,20 +256,15 @@ function EnvJudgment() {
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
-        echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统\n"
-        exit 1
+        Output_Error "无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统"
     fi
-    ## 开始使用
-    StartTitle
     ## 判定系统名称、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                echo -e "\n$ERROR lsb-release 软件包安装失败"
-                echo -e "\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！\n"
-                exit 1
+                Output_Error "lsb-release 软件包安装失败\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -272,7 +314,7 @@ function EnvJudgment() {
     if [[ -z "${SOURCE_BRANCH}" ]]; then
         ## 默认
         SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
-        ## 定制
+        ## 处理特殊
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_RHEL}")
             case ${SYSTEM_VERSION_NUMBER:0:1} in
@@ -285,7 +327,7 @@ function EnvJudgment() {
             esac
             ;;
         "${SYSTEM_CENTOS}")
-            if [[ ${DEVICE_ARCH} == "x86_64" ]]; then
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
                 SOURCE_BRANCH="centos"
             else
                 SOURCE_BRANCH="centos-altarch"
@@ -294,7 +336,7 @@ function EnvJudgment() {
         "${SYSTEM_CENTOS_STREAM}")
             case ${SYSTEM_VERSION_NUMBER:0:1} in
             8)
-                if [[ ${DEVICE_ARCH} == "x86_64" ]]; then
+                if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
                     SOURCE_BRANCH="centos"
                 else
                     SOURCE_BRANCH="centos-altarch"
@@ -306,14 +348,14 @@ function EnvJudgment() {
             esac
             ;;
         "${SYSTEM_UBUNTU}")
-            if [[ ${DEVICE_ARCH} == "x86_64" ]] || [[ ${DEVICE_ARCH} == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
                 SOURCE_BRANCH="ubuntu"
             else
                 SOURCE_BRANCH="ubuntu-ports"
             fi
             ;;
         "${SYSTEM_ARCH}")
-            if [[ ${DEVICE_ARCH} == "x86_64" ]] || [[ ${DEVICE_ARCH} == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
                 SOURCE_BRANCH="archlinux"
             else
                 SOURCE_BRANCH="archlinuxarm"
@@ -330,6 +372,10 @@ function EnvJudgment() {
         SYNC_TXT="同步"
         ;;
     esac
+    ## 命令选项兼容性判断
+    CheckCommandOptions
+    ## 开始使用
+    StartTitle
 }
 
 ## 选择软件源
@@ -398,9 +444,7 @@ function ChooseMirrors() {
                 continue
             fi
         done
-        if [[ ${USE_INTRANET_SOURCE} == "true" ]]; then
-            SOURCE="${intranet_source}"
-        elif [[ -z "${USE_INTRANET_SOURCE}" ]]; then
+        if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
             local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
             read -p "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
@@ -414,12 +458,14 @@ function ChooseMirrors() {
                 echo -e "\n$WARN 输入错误，默认不使用内网地址！"
                 ;;
             esac
+        elif [[ "${USE_INTRANET_SOURCE}" == "true" ]]; then
+            SOURCE="${intranet_source}"
         fi
     }
 
     function Title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
-        local arch="${DEVICE_ARCH}"
+        local arch=""${DEVICE_ARCH}""
         local date="$(date "+%Y-%m-%d %H:%M:%S")"
         local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
@@ -469,7 +515,7 @@ function ChooseMirrors() {
 ## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
 function ChooseWebProtocol() {
     if [[ -z "${WEB_PROTOCOL}" ]]; then
-        if [[ ${ONLY_HTTP} == "True" ]]; then
+        if [[ "${ONLY_HTTP}" == "True" ]]; then
             WEB_PROTOCOL="http"
         else
             local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
@@ -494,40 +540,47 @@ function ChooseWebProtocol() {
 
 # 适用于 RHEL/CentOS(Stream)/RockyLinux 的 EPEL 附加软件包（安装/换源）
 function ChooseInstallEPEL() {
-    if [[ -z "${INSTALL_EPEL}" ]]; then
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMA}")
-            ## 判断是否已安装 EPEL 软件包
-            rpm -qa | grep epel-release -q
-            VERIFICATION_EPEL=$?
-            ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
-            [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
-            VERIFICATION_EPELFILES=$?
-            ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
-            [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
-            VERIFICATION_EPELBACKUPFILES=$?
+    function Check() {
+        ## 判断是否已安装 EPEL 软件包
+        rpm -qa | grep epel-release -q
+        VERIFICATION_EPEL=$?
+        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
+        [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
+        VERIFICATION_EPELFILES=$?
+        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
+        [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
+        VERIFICATION_EPELBACKUPFILES=$?
+    }
 
-            if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-                local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
-            else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
-            fi
-            read -p "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                INSTALL_EPEL="True"
-                ;;
-            [Nn] | [Nn][Oo])
-                INSTALL_EPEL="False"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不更换！"
-                INSTALL_EPEL="False"
+    if [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_REDHAT}" ]]; then
+        if [[ -z "${INSTALL_EPEL}" ]]; then
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMA}")
+                Check
+                if [ ${VERIFICATION_EPEL} -eq 0 ]; then
+                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
+                else
+                    local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+                fi
+                read -p "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss])
+                    INSTALL_EPEL="True"
+                    ;;
+                [Nn] | [Nn][Oo])
+                    INSTALL_EPEL="False"
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不更换！"
+                    INSTALL_EPEL="False"
+                    ;;
+                esac
                 ;;
             esac
-            ;;
-        esac
+        elif [[ "${INSTALL_EPEL}" == "true" ]]; then
+            Check
+        fi
     fi
 }
 
@@ -540,8 +593,8 @@ function CloseFirewall() {
     }
 
     if [ -x /usr/bin/systemctl ]; then
-        if [[ $(systemctl is-active firewalld) == "active" ]]; then
-            if [[ ${CLOSE_FIREWALL} == "true" ]]; then
+        if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
+            if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
                 Main
             elif [[ -z "${CLOSE_FIREWALL}" ]]; then
                 local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
@@ -563,7 +616,7 @@ function CloseFirewall() {
 
 ## 备份原有软件源
 function BackupOriginMirrors() {
-    if [[ $BACKUP == "true" || -z "${BACKUP}" ]]; then
+    if [[ "${BACKUP}" == "true" ]]; then
         local VERIFICATION_FILES=1
         local VERIFICATION_BACKUPFILES=1
 
@@ -607,7 +660,7 @@ function BackupOriginMirrors() {
             ## /etc/apt/sources.list
             if [ -s $File_DebianSourceList ]; then
                 if [ -s $File_DebianSourceListBackup ]; then
-                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
+                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                         local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP1}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -636,7 +689,7 @@ function BackupOriginMirrors() {
             ## /etc/apt/sources.list.d
             if [ -d $Dir_DebianExtendSource ] && [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_DebianExtendSourceBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
+                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                         local CHOICE_BACKUP2=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 list 扩展源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP2}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -664,7 +717,7 @@ function BackupOriginMirrors() {
             ## /etc/yum.repos.d
             if [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_RedHatReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
+                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                         local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP3}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -694,7 +747,7 @@ function BackupOriginMirrors() {
             ## /etc/yum.repos.d
             if [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_openEulerReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
+                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                         local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP4}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -724,7 +777,7 @@ function BackupOriginMirrors() {
             ## /etc/zypp/repos.d
             if [ ${VERIFICATION_FILES} -eq 0 ]; then
                 if [ -d $Dir_openSUSEReposBackup ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
+                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                         local CHOICE_BACKUP4=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP4}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -754,7 +807,7 @@ function BackupOriginMirrors() {
             ## /etc/pacman.d/mirrorlist
             if [ -s $File_ArchMirrorList ]; then
                 if [ -s $File_ArchMirrorListBackup ]; then
-                    if [[ -z "${IGNORE_BACKUP_TIPS}" ]]; then
+                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                         local CHOICE_BACKUP5=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的软件源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP5}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -793,15 +846,20 @@ function RemoveOriginMirrors() {
     "${SYSTEM_REDHAT}")
         if [ -d $Dir_RedHatRepos ]; then
             # Fedora Linux 特殊，只删除以 fedora 开头的文件
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_FEDORA}")
                 rm -rf $Dir_RedHatRepos/fedora*
-            else
-                if [ -f $Dir_RedHatRepos/epel.repo ]; then
-                    ls $Dir_RedHatRepos/ | egrep -v epel | xargs rm -rf
-                else
-                    rm -rf $Dir_RedHatRepos/*
+                ;;
+            *)
+                if [[ "${ONLY_EPEL}" == "false" ]]; then
+                    if [ -f $Dir_RedHatRepos/epel.repo ]; then
+                        ls $Dir_RedHatRepos/ | egrep -v epel | xargs rm -rf
+                    else
+                        rm -rf $Dir_RedHatRepos/*
+                    fi
                 fi
-            fi
+                ;;
+            esac
         fi
         ;;
     "${SYSTEM_OPENEULER}")
@@ -902,7 +960,7 @@ function UpdateSoftware() {
         [Yy] | [Yy][Ee][Ss]) ;;
         [Nn] | [Nn][Oo])
             Main
-            if [[ ${CLEAN_CACHE} == "true" ]]; then
+            if [[ "${CLEAN_CACHE}" == "true" ]]; then
                 CleanCache
             elif [[ -z "${CLEAN_CACHE}" ]]; then
                 CleanCacheInteraction
@@ -931,9 +989,9 @@ function UpdateSoftware() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}")
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
-            if [[ ${UPDATA_SOFTWARE} == "true" ]]; then
+            if [[ "${UPDATA_SOFTWARE}" == "true" ]]; then
                 Main
-                if [[ ${CLEAN_CACHE} == "true" ]]; then
+                if [[ "${CLEAN_CACHE}" == "true" ]]; then
                     CleanCache
                 elif [[ -z "${CLEAN_CACHE}" ]]; then
                     CleanCacheInteraction
@@ -948,8 +1006,7 @@ function UpdateSoftware() {
 
 ## 运行结束
 function RunEnd() {
-    echo -e "\n$COMPLETE 脚本执行结束\n"
-    AuthorSignature
+    echo -e "\n$COMPLETE 脚本执行结束 [\033[1;34m官网\033[0m] ${WEBSITE}\n"
 }
 
 ##############################################################################
@@ -976,19 +1033,19 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}" >>$File_DebianSourceList
-        if [[ ${USE_ABROAD_SOURCE} == "true" ]]; then
-            echo "# deb ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-# # deb-src ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-
-deb https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-# deb-src https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
+        ## 处理 debian-security 仓库
+        local security_url="${SOURCE_SECURITY:-"${SOURCE}"}"
+        if [[ -z "${SOURCE_SECURITY}" ]]; then
+            if [[ "${USE_ABROAD_SOURCE}" == "true" ]]; then
+                local security_url="https://security.debian.org/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
+            else
+                local security_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
+            fi
         else
-            echo "deb ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-# deb-src ${basic_url}-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-
-# deb https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-# # deb-src https://security.debian.org/debian-security ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
+            local security_url="${WEB_PROTOCOL}://${SOURCE_SECURITY}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
         fi
+        echo "deb ${security_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+# deb-src ${security_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
         ;;
     "${SYSTEM_UBUNTU}")
         source_suffix="main restricted universe multiverse"
@@ -1001,9 +1058,6 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-
-# deb http://security.ubuntu.com/ubuntu ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-# # deb-src http://security.ubuntu.com/ubuntu ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
 
 ## 预发布软件源（不建议启用）
 # deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-proposed ${source_suffix}
@@ -1033,8 +1087,6 @@ function RedHatMirrors() {
         ## 生成 repo 源文件
         GenRepoFiles_EPEL
 
-        sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
-
         # 更换 WEB 协议（HTTP/HTTPS）
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9 | 8)
@@ -1045,6 +1097,7 @@ function RedHatMirrors() {
             ;;
         esac
         # 修改源
+        sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
             sed -i "s|download.example/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
@@ -1054,7 +1107,11 @@ function RedHatMirrors() {
             ;;
         esac
     }
-
+    ## 仅 EPEL 模式
+    if [[ "${ONLY_EPEL}" == "true" ]]; then
+        EPELMirrors
+        return
+    fi
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
@@ -1090,77 +1147,55 @@ function RedHatMirrors() {
     "${SYSTEM_RHEL}")
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
-            ## 禁用签名
-            sed -i "s|^gpgcheck=1|gpgcheck=0|g" \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
-            sed -i "s|^gpgkey=|#gpgkey=|g" \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
             # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-rockyofficial" -P /etc/pki/rpm-gpg
             # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-Rocky-9" -P /etc/pki/rpm-gpg
-
-            # 更换软件源
-            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|^gpgcheck=1|gpgcheck=0|g" \
+                -e "s|^gpgkey=|#gpgkey=|g" \
+                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
                 rocky.repo \
                 rocky-addons.repo \
                 rocky-devel.repo \
                 rocky-extras.repo
             ;;
         *)
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
             sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-
-            # Red Hat Enterprise Linux 修改版本号
             case ${SYSTEM_VERSION_NUMBER:0:1} in
             8)
-                ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
-                # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
                 sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
-                sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+                # 单独处理 CentOS-Linux-Sources.repo
+                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"mirror.centos.org"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
                 ;;
             7)
+                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
                 sed -i "s/\$releasever/7/g" CentOS-*
+                # 单独处理 CentOS-Sources.repo
+                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"mirror.centos.org"}/${SOURCE_BRANCH_VAULT:-"centos"}|g" CentOS-Sources.repo
                 ;;
             esac
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-            # 更换软件源
             sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
             ;;
         esac
         ;;
     "${SYSTEM_CENTOS}")
-        sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-
-        # 更换 WEB 协议（HTTP/HTTPS）
         sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-        # 更换软件源
+        sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         8)
+            ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
+            # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
             sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
-            sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
             sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+            # 单独处理 CentOS-Linux-Sources.repo
+            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"mirror.centos.org"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
             ;;
         7)
             sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
+            sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"mirror.centos.org"}/${SOURCE_BRANCH_VAULT:-"centos"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
             ;;
         esac
         sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
@@ -1169,99 +1204,58 @@ function RedHatMirrors() {
         # CentOS Stream 9 使用的是 centos-stream 镜像，而 CentOS Stream 8 使用的是 centos 镜像
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
-            sed -i 's|^metalink=|#metalink=|g' \
-                centos.repo \
-                centos-addons.repo
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
-                centos.repo \
-                centos-addons.repo
-            # 更换软件源
-            sed -i "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^metalink=|#metalink=|g" \
+                -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
                 centos.repo \
                 centos-addons.repo
             ;;
         8)
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-Stream-*
-            sed -i 's|vault.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-Stream-*
-            # 更换软件源
-            sed -i "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" CentOS-Stream-*
+            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"mirror.centos.org"}/${SOURCE_BRANCH_VAULT:-"centos"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                CentOS-Stream-*
             ;;
         esac
         ;;
     "${SYSTEM_ROCKY}")
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
-            # 更换软件源
-            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
                 rocky.repo \
                 rocky-addons.repo \
                 rocky-devel.repo \
                 rocky-extras.repo
             ;;
         8)
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' Rocky-*
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" Rocky-*
-            # 更换软件源
-            sed -i "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" Rocky-*
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                Rocky-*
             ;;
         esac
         ;;
     "${SYSTEM_ALMA}")
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' almalinux-*
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" almalinux-*
-            # 更换软件源
-            sed -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
+            sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -e "s|repo.almalinux.org/vault|${SOURCE}/${SOURCE_BRANCH}-vault|g" \
-                -i almalinux-*
+                -i \
+                almalinux-*
             ;;
         8)
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' \
-                almalinux-ha.repo \
-                almalinux-nfv.repo \
-                almalinux-plus.repo \
-                almalinux-powertools.repo \
-                almalinux-resilientstorage.repo \
-                almalinux-rt.repo \
-                almalinux-sap.repo \
-                almalinux-saphana.repo \
-                almalinux.repo
-
-            # 更换 WEB 协议（HTTP/HTTPS）
-            sed -i "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                almalinux-ha.repo \
-                almalinux-nfv.repo \
-                almalinux-plus.repo \
-                almalinux-powertools.repo \
-                almalinux-resilientstorage.repo \
-                almalinux-rt.repo \
-                almalinux-sap.repo \
-                almalinux-saphana.repo \
-                almalinux.repo
-            # 更换软件源
-            sed -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
+            sed -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -e "s|repo.almalinux.org/vault|${SOURCE}/${SOURCE_BRANCH}-vault|g" \
                 -i \
                 almalinux-ha.repo \
@@ -1277,24 +1271,10 @@ function RedHatMirrors() {
         esac
         ;;
     "${SYSTEM_FEDORA}")
-        sed -i 's|^metalink=|#metalink=|g' \
-            fedora.repo \
-            fedora-updates.repo \
-            fedora-modular.repo \
-            fedora-updates-modular.repo \
-            fedora-updates-testing.repo \
-            fedora-updates-testing-modular.repo
-
-        # 更换 WEB 协议（HTTP/HTTPS）
-        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-            fedora.repo \
-            fedora-updates.repo \
-            fedora-modular.repo \
-            fedora-updates-modular.repo \
-            fedora-updates-testing.repo \
-            fedora-updates-testing-modular.repo
-        # 更换软件源
-        sed -i "s|download.example/pub/fedora/linux|${SOURCE}/${SOURCE_BRANCH}|g" \
+        sed -e "s|^metalink=|#metalink=|g" \
+            -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+            -e "s|download.example/pub/fedora/linux|${SOURCE}/${SOURCE_BRANCH}|g" \
+            -i \
             fedora.repo \
             fedora-updates.repo \
             fedora-modular.repo \
@@ -1307,7 +1287,7 @@ function RedHatMirrors() {
     ## EPEL 附加软件包（安装/换源）
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMA}")
-        [[ ${INSTALL_EPEL} == "True" ]] && EPELMirrors
+        [[ "${INSTALL_EPEL}" == "True" ]] && EPELMirrors
         ;;
     esac
 }
@@ -1317,10 +1297,10 @@ function openEulerMirrors() {
     GenRepoFiles_openEuler
     cd $Dir_openEulerRepos
 
-    # 更换 WEB 协议（HTTP/HTTPS）
-    sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" openEuler.repo
-    # 更换软件源
-    sed -i "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" openEuler.repo
+    sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+        -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+        -i \
+        openEuler.repo
 }
 
 ## 更换基于 openSUSE 发行版的软件源
@@ -3955,7 +3935,7 @@ EOF
 ## 生成 openSUSE 官方 repo 源文件
 function GenRepoFiles_openSUSE() {
     case $1 in
-    leap)
+    "leap")
         case $2 in
         15.[0-2])
             cat >$Dir_openSUSERepos/repo-debug-non-oss.repo <<\EOF
@@ -4168,7 +4148,7 @@ EOF
             ;;
         esac
         ;;
-    tumbleweed)
+    "tumbleweed")
         cat >$Dir_openSUSERepos/repo-debug.repo <<\EOF
 [repo-debug]
 name=openSUSE-Tumbleweed-Debug
@@ -4495,25 +4475,25 @@ function CommandOptions() {
         echo -e "
 选项命令(参数名/含义/参数值)：
 
-  --source                 指定软件源地址           地址
-  --branch                 指定软件源分支           分支名
-  --abroad                 使用海外软件源           无
-  --web-protocol           指定 WEB 协议            http 或 https
-  --intranet               使用内网地址             true 或 false
-  --install-epel           安装 EPEL 附加软件包     true 或 false
-  --close-firewall         关闭防火墙               true 或 false
-  --backup                 备份原有软件源           true 或 false
-  --ignore-backup-tips     忽略覆盖备份提示         无
-  --updata-software        更新软件包               true 或 false
-  --clean-cache            清理下载缓存             true 或 false
-  
+  --source                 指定软件源地址                          地址
+  --source-security        指定 debian-security 软件源地址         地址
+  --source-vault           指定 centos-vault 软件源地址            地址
+  --branch                 指定软件源分支(路径)                    分支名
+  --branch-security        指定 debian-security 软件源分支(路径)   分支名
+  --branch-vault           指定 centos-vault 软件源分支(路径)      分支名
+  --abroad                 使用海外软件源                          无
+  --web-protocol           指定 WEB 协议                           http 或 https
+  --intranet               优先使用内网地址                        true 或 false
+  --install-epel           安装 EPEL 附加软件包                    true 或 false
+  --only-epel              仅更换 EPEL 软件源模式                  无
+  --close-firewall         关闭防火墙                              true 或 false
+  --backup                 备份原有软件源                          true 或 false
+  --ignore-backup-tips     忽略覆盖备份提示                        无
+  --updata-software        更新软件包                              true 或 false
+  --clean-cache            清理下载缓存                            true 或 false
+
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
   "
-    }
-    ## 报错退出
-    function Output_Command_Error() {
-        echo -e "\n$ERROR $1\n"
-        exit 1
     }
 
     ## 判断参数
@@ -4528,13 +4508,39 @@ function CommandOptions() {
             if [ $2 ]; then
                 echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    Output_Command_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
                     SOURCE="$2"
                     shift
                 fi
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --source-security)
+            if [ $2 ]; then
+                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE_SECURITY="$2"
+                    shift
+                fi
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --source-vault)
+            if [ $2 ]; then
+                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE_VAULT="$2"
+                    shift
+                fi
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         ## 指定软件源分支
@@ -4543,7 +4549,23 @@ function CommandOptions() {
                 SOURCE_BRANCH="$2"
                 shift
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --branch-security)
+            if [ $2 ]; then
+                SOURCE_BRANCH_SECURITY="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --branch-vault)
+            if [ $2 ]; then
+                SOURCE_BRANCH_VAULT="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         ## 优先使用内网地址
@@ -4555,11 +4577,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## WEB 协议（HTTP/HTTPS）
@@ -4571,11 +4593,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
                     ;;
                 esac
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
             fi
             ;;
         ## 安装 EPEL 附加软件包
@@ -4587,12 +4609,16 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
+            ;;
+        --only-epel)
+            ONLY_EPEL="true"
+            INSTALL_EPEL="true"
             ;;
         ## 关闭防火墙
         --close-firewall)
@@ -4603,11 +4629,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 备份原有软件源
@@ -4619,11 +4645,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -4639,11 +4665,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 清理下载缓存
@@ -4655,11 +4681,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Command_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         --help)
@@ -4667,11 +4693,15 @@ function CommandOptions() {
             exit
             ;;
         *)
-            Output_Command_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
+            Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
             ;;
         esac
         shift
     done
+    ## 赋予部分命令参数默认值
+    ONLY_EPEL="${ONLY_EPEL:-"false"}"
+    BACKUP="${BACKUP:-"true"}"
+    IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
 }
 
 ## 组合函数

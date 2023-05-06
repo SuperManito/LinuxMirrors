@@ -8,7 +8,7 @@ hide:
 
 GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
 
-## 适配系统及版本号
+## 适配系统及其版本
 
 !!! example inline end "适配计划"
 
