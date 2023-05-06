@@ -39,7 +39,7 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
     <td align="center">ubuntu/ubuntu-ports</td>
 </tr>
 <tr>
-    <td><a href="https://www.kali.org" target="_blank"><img src="/../assets/images/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
+    <td><a href="https://www.kali.org" target="_blank"><img src="/../assets/images/icon/kali-linux.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
     <td align="center">kali</td>
 </tr>
 <tr>
@@ -55,7 +55,7 @@ bash ChangeMirrors.sh --source mirrors.ustc.edu.cn
     <td align="center">centos-stream</td>
 </tr>
 <tr>
-    <td><a href="https://rockylinux.org" target="_blank"><img src="/../assets/images/icon/rocky.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
+    <td><a href="https://rockylinux.org" target="_blank"><img src="/../assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
     <td align="center">rocky</td>
 </tr>
 <tr>

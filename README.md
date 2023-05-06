@@ -50,7 +50,11 @@
       <td align="center">8 ~ 9</td>
   </tr>
   <tr>
-      <td><a href="https://rockylinux.org" target="_blank"><img src="./docs/assets/images/icon/rocky.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Rocky Linux</td>
+      <td><a href="https://rockylinux.org/zh_CN" target="_blank"><img src="./docs/assets/images/icon/rocky.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
+      <td align="center">8.0 ~ 9</td>
+  </tr>
+  <tr>
+      <td><a href="https://almalinux.org/zh-hans" target="_blank"><img src="./docs/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;AlmaLinux</td>
       <td align="center">8.0 ~ 9</td>
   </tr>
   <tr>

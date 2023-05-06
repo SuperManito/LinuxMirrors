@@ -12,7 +12,6 @@ GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
 
 !!! example inline end "适配计划"
 
-    - [ ] AlmaLinux
     - [ ] OpenCloudOS
     - [ ] AnolisOS
 
@@ -26,7 +25,7 @@ GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
     <td align="center">14.04 ~ 23</td>
 </tr>
 <tr>
-    <td><a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
+    <td><a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
     <td align="center">2.0 ~ 2023</td>
 </tr>
 <tr>
@@ -42,7 +41,11 @@ GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
     <td align="center">8 ~ 9</td>
 </tr>
 <tr>
-    <td><a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Rocky Linux</td>
+    <td><a href="https://rockylinux.org/zh_CN" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
+    <td align="center">8.0 ~ 9</td>
+</tr>
+<tr>
+    <td><a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;AlmaLinux</td>
     <td align="center">8.0 ~ 9</td>
 </tr>
 <tr>
