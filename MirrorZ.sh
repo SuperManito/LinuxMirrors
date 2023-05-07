@@ -1,117 +1,52 @@
 #!/bin/bash
 ## Author: SuperManito
 ## Modified: 2023-05-07
-## License: MIT
-## Github: https://github.com/SuperManito/LinuxMirrors
-## Website: https://linuxmirrors.cn
+## 中国教育网专用
+
+## 指定软件源地址和分支（字符串）
+SOURCE=""
+SOURCE_BRANCH=""
+## 指定 debian-security 软件源地址和分支（字符串）
+SOURCE_SECURITY=""
+SOURCE_BRANCH_SECURITY=""
+## 指定 centos-vault 软件源地址和分支（字符串）
+SOURCE_VAULT=""
+SOURCE_BRANCH_VAULT=""
+## WEB 协议（http/https）
+WEB_PROTOCOL=""
+## 安装 EPEL 附加软件包（true/false）
+ONLY_EPEL=""
+INSTALL_EPEL=""
+## 备份原有软件源（true/false）
+BACKUP=""
+## 忽略覆盖备份提示（true/false）
+IGNORE_BACKUP_TIPS=""
 
 ## 软件源列表
-# 国内格式："软件源名称@软件源地址"
 mirror_list_default=(
-    "阿里云@mirrors.aliyun.com"
-    "腾讯云@mirrors.tencent.com"
-    "华为云@repo.huaweicloud.com"
-    "网易@mirrors.163.com"
-    "搜狐@mirrors.sohu.com"
     "清华大学@mirrors.tuna.tsinghua.edu.cn"
-    "北京大学@mirrors.pku.edu.cn"
-    "浙江大学@mirrors.zju.edu.cn"
-    "南京大学@mirrors.nju.edu.cn"
-    "重庆大学@mirrors.cqu.edu.cn"
-    "兰州大学@mirror.lzu.edu.cn"
-    "上海交通大学@mirror.sjtu.edu.cn"
-    "哈尔滨工业大学@mirrors.hit.edu.cn"
+    "北京交通大学@mirror.bjtu.edu.cn"
+    "北京外国语大学@mirrors.bfsu.edu.cn"
+    "齐鲁工业大学@mirrors.qlu.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
-    "中国科学院软件研究所@mirror.iscas.ac.cn"
-)
-# 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
-mirror_list_abroad=(
-    "亚洲 · 科盈电信 · 香港@mirror.hkt.cc"
-    "亚洲 · xTom · 香港@mirrors.xtom.hk"
-    "亚洲 · 01Link · 香港@mirror.01link.hk"
-    "亚洲 · 新加坡国立大学(NUS) · 新加坡@download.nus.edu.sg/mirror"
-    "亚洲 · SG.GS · 新加坡@mirror.sg.gs"
-    "亚洲 · Neo Soon Keat · 新加坡@mirror.soonkeat.sg"
-    "亚洲 · 自由软件实验室(NCHC) · 台湾@free.nchc.org.tw"
-    "亚洲 · OSS Planet · 台湾@mirror.ossplanet.net"
-    "亚洲 · 国立阳明交通大学 · 台湾@linux.cs.nctu.edu.tw"
-    "亚洲 · 淡江大学 · 台湾@ftp.tku.edu.tw"
-    "亚洲 · AniGil Linux Archive · 韩国@mirror.anigil.com"
-    "亚洲 · 工业网络安全中心(ICSCoE) · 日本@ftp.udx.icscoe.jp/Linux"
-    "亚洲 · Internet Initiative Japan(IIJ) · 日本@ftp.iij.ad.jp/pub/linux"
-    "亚洲 · 北陆先端科学技术大学院大学(JAIST) · 日本@ftp.jaist.ac.jp/pub/Linux"
-    "亚洲 · 山形大学 · 日本@linux2.yz.yamagata-u.ac.jp/pub/Linux"
-    "亚洲 · xTom · 日本@mirrors.xtom.jp"
-    "亚洲 · GB Network Solutions · 马来西亚@mirrors.gbnetwork.com"
-    "亚洲 · 孔敬大学 · 泰国@mirror.kku.ac.th"
-    "亚洲 · RISE · 菲律宾@mirror.rise.ph"
-    "欧洲 · Vorboss Ltd · 英国@mirror.vorboss.net"
-    "欧洲 · QuickHost · 英国@mirror.quickhost.uk"
-    "欧洲 · dogado · 德国@mirror.dogado.de"
-    "欧洲 · xTom · 德国@mirrors.xtom.de"
-    "欧洲 · 亚琛工业大学(RWTH Aachen) · 德国@ftp.halifax.rwth-aachen.de"
-    "欧洲 · 德累斯顿大学(AG DSN) · 德国@ftp.agdsn.de"
-    "欧洲 · CCIN2P3 · 法国@mirror.in2p3.fr/pub/linux"
-    "欧洲 · Ircam · 法国@mirrors.ircam.fr/pub"
-    "欧洲 · Crans · 法国@eclats.crans.org"
-    "欧洲 · CRIHAN · 法国@ftp.crihan.fr"
-    "欧洲 · xTom · 荷兰@mirrors.xtom.nl"
-    "欧洲 · DataPacket · 荷兰@mirror.datapacket.com"
-    "欧洲 · Linux Kernel · 荷兰@eu.edge.kernel.org"
-    "欧洲 · xTom · 爱沙尼亚@mirrors.xtom.ee"
-    "欧洲 · netsite · 丹麦@mirror.netsite.dk"
-    "欧洲 · Dotsrc · 丹麦@mirrors.dotsrc.org"
-    "欧洲 · Academic Computer Club · 瑞典@mirror.accum.se"
-    "欧洲 · Lysator · 瑞典@ftp.lysator.liu.se"
-    "欧洲 · Yandex · 俄罗斯@mirror.yandex.ru"
-    "欧洲 · ia64 · 俄罗斯@mirror.linux-ia64.org"
-    "欧洲 · Truenetwork · 俄罗斯@mirror.truenetwork.ru"
-    "欧洲 · Belgian Research Network · 比利时@ftp.belnet.be/mirror"
-    "欧洲 · 克里特大学计算机中心 · 希腊@ftp.cc.uoc.gr/mirrors/linux"
-    "欧洲 · 马萨里克大学信息学院 · 捷克@ftp.fi.muni.cz/pub/linux"
-    "欧洲 · 捷克理工大学学生会俱乐部(Silicon Hill) · 捷克@ftp.sh.cvut.cz"
-    "欧洲 · Vodafone · 捷克@mirror.karneval.cz/pub/linux"
-    "欧洲 · CZ.NIC · 捷克@mirrors.nic.cz"
-    "欧洲 · 苏黎世联邦理工学院 · 瑞士@mirror.ethz.ch"
-    "北美 · Linux Kernel · 美国@mirrors.kernel.org"
-    "北美 · 麻省理工学院(MIT) · 美国@mirrors.mit.edu"
-    "北美 · 普林斯顿大学数学系 · 美国@mirror.math.princeton.edu/pub"
-    "北美 · 俄勒冈州立大学开源实验室 · 美国@ftp-chi.osuosl.org/pub"
-    "北美 · Fremont Cabal Internet Exchange(FCIX) · 美国@mirror.fcix.net"
-    "北美 · xTom · 美国@mirrors.xtom.com"
-    "北美 · Steadfast · 美国@mirror.steadfast.net"
-    "北美 · 不列颠哥伦比亚大学 · 加拿大@mirror.it.ubc.ca"
-    "北美 · GoCodeIT · 加拿大@mirror.xenyth.net"
-    "北美 · Switch · 加拿大@mirrors.switch.ca"
-    "南美 · PoP-SC · 巴西@mirror.pop-sc.rnp.br/mirror"
-    "南美 · 蓬塔格罗萨州立大学 · 巴西@mirror.uepg.br"
-    "南美 · UFSCar · 巴西@mirror.ufscar.br"
-    "南美 · Sysarmy Community · 阿根廷@mirrors.eze.sysarmy.com"
-    "大洋 · Fremont Cabal Internet Exchange(FCIX) · 澳大利亚@gsl-syd.mm.fcix.net"
-    "大洋 · AARNet · 澳大利亚@mirror.aarnet.edu.au/pub"
-    "大洋 · DataMossa · 澳大利亚@mirror.datamossa.io"
-    "大洋 · Amaze · 澳大利亚@mirror.amaze.com.au"
-    "大洋 · xTom · 澳大利亚@mirrors.xtom.au"
-    "大洋 · Over the Wire · 澳大利亚@mirror.overthewire.com.au"
-    "大洋 · Free Software Mirror Group · 新西兰@mirror.fsmg.org.nz"
-    "非洲 · Liquid Telecom · 肯尼亚@mirror.liquidtelecom.com"
-    "非洲 · Dimension Data · 南非@mirror.dimensiondata.com"
-)
-
-## 配置需要区分公网地址和内网地址的软件源（不分地域）
-# 配置方法：需要同时在两个数组变量中分别定义软件源地址，并且保证排列顺序一致
-# 工作原理：当检测到用户所选择的软件源地址在 “软件源公网地址列表” 中时就会询问是否切换为内网地址，然后从 “软件源内网地址列表” 相同的位置提取内网地址
-# 软件源公网地址列表
-mirror_list_extranet=(
-    "mirrors.aliyun.com"
-    "mirrors.tencent.com"
-    "repo.huaweicloud.com"
-)
-# 软件源内网地址列表
-mirror_list_intranet=(
-    "mirrors.cloud.aliyuncs.com"
-    "mirrors.tencentyun.com"
-    "mirrors.myhuaweicloud.com"
+    "南京大学@mirrors.nju.edu.cn"
+    "上海交通大学@mirror.sjtu.edu.cn"
+    "吉林大学@mirrors.jlu.edu.cn"
+    "重庆大学@mirrors.cqu.edu.cn"
+    "哈尔滨工业大学@mirrors.hit.edu.cn"
+    "ISCAS@mirror.iscas.ac.cn"
+    "山东大学@mirrors.sdu.edu.cn"
+    "南方科技大学@mirrors.sustech.edu.cn"
+    "大连东软信息学院@mirrors.neusoft.edu.cn"
+    "兰州大学@mirror.lzu.edu.cn"
+    "南京邮电大学@mirrors.njupt.edu.cn"
+    "西北农林科技大学@mirrors.nwafu.edu.cn"
+    "南阳理工学院@mirror.nyist.edu.cn"
+    "北京大学@mirrors.pku.edu.cn"
+    "上海科技大学@mirrors.shanghaitech.edu.cn"
+    "电子科技大学@mirrors.uestc.cn"
+    "武昌首义学院@mirrors.wsyu.edu.cn"
+    "浙江大学@mirrors.zju.edu.cn"
 )
 
 ##############################################################################
@@ -163,16 +98,9 @@ WARN='[\033[33mWARN\033[0m]'
 ERROR='[\033[31mERROR\033[0m]'
 WORKING='[\033[34m*\033[0m]'
 
-## 其它
-WEBSITE="https://linuxmirrors.cn"
-
 function StartTitle() {
     [ -z "${SOURCE}" ] && clear
-    echo -e ' +-----------------------------------+'
-    echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
-    echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
-    echo -e ' +-----------------------------------+'
-    echo -e ' 欢迎使用 GNU/Linux 一键更换软件源脚本'
+    echo -e ' 校园网联合镜像站一键换源脚本 - Powered by linuxmirrors.cn'
 }
 
 ## 报错退出
@@ -423,42 +351,6 @@ function ChooseMirrors() {
         fi
     }
 
-    ## 选择软件源内网地址
-    # 例如部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
-    # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
-    function ChooseMirrorIntranetAddress() {
-        local intranet_source
-        for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
-            if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
-                # echo "${SOURCE}"
-                intranet_source="${mirror_list_intranet[i]}"
-                # echo "${intranet_source}"
-                # exit
-                ONLY_HTTP="True"
-                break
-            else
-                continue
-            fi
-        done
-        if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
-            local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
-            read -p "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss]) ;;
-            [Nn] | [Nn][Oo])
-                SOURCE="${intranet_source}"
-                echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不使用内网地址！"
-                ;;
-            esac
-        elif [[ "${USE_INTRANET_SOURCE}" == "true" ]]; then
-            SOURCE="${intranet_source}"
-        fi
-    }
-
     function Title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
         local arch=""${DEVICE_ARCH}""
@@ -472,13 +364,8 @@ function ChooseMirrors() {
 
     Title
     if [[ -z "${SOURCE}" ]]; then
-        if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
-            local mirror_list_name="mirror_list_abroad"
-            PrintMirrorsList "${mirror_list_name}" 60
-        else
-            local mirror_list_name="mirror_list_default"
-            PrintMirrorsList "${mirror_list_name}" 31
-        fi
+        local mirror_list_name="mirror_list_default"
+        PrintMirrorsList "${mirror_list_name}" 31
 
         local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
@@ -500,11 +387,6 @@ function ChooseMirrors() {
                 ;;
             esac
         done
-    fi
-
-    ## 选择软件源内网地址
-    if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
-        ChooseMirrorIntranetAddress
     fi
 }
 
@@ -576,36 +458,6 @@ function ChooseInstallEPEL() {
             esac
         elif [[ "${INSTALL_EPEL}" == "true" ]]; then
             Check
-        fi
-    fi
-}
-
-## 关闭防火墙和SELinux
-function CloseFirewall() {
-    function Main() {
-        local SelinuxConfig=/etc/selinux/config
-        systemctl disable --now firewalld >/dev/null 2>&1
-        [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-    }
-
-    if [ -x /usr/bin/systemctl ]; then
-        if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
-            if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
-                Main
-            elif [[ -z "${CLOSE_FIREWALL}" ]]; then
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-                read -p "${CHOICE}" INPUT
-                [[ -z "${INPUT}" ]] && INPUT=Y
-                case "${INPUT}" in
-                [Yy] | [Yy][Ee][Ss])
-                    Main
-                    ;;
-                [Nn] | [Nn][Oo]) ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不关闭！"
-                    ;;
-                esac
-            fi
         fi
     fi
 }
@@ -889,120 +741,20 @@ function ChangeMirrors() {
         ArchMirrors
         ;;
     esac
-    echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        apt-get update
+        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 apt-get update 命令${SYNC_TXT}软件源\n"
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
-        yum makecache
+        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 yum makecache 命令${SYNC_TXT}软件源\n"
         ;;
     "${SYSTEM_OPENSUSE}")
-        zypper ref
+        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 zypper ref 命令${SYNC_TXT}软件源\n"
         ;;
     "${SYSTEM_ARCH}")
-        pacman -Sy
+        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 pacman -Sy 命令${SYNC_TXT}软件源\n"
         ;;
     esac
-    if [ $? -eq 0 ]; then
-        echo -e "\n$COMPLETE 软件源更换完毕"
-    else
-        echo -e "\n$ERROR 软件源${SYNC_TXT}失败\n"
-        echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_TXT}失败那么可能由以下原因导致"
-        echo -e "1. 网络问题：例如连接异常、网络间歇式中断、由地区影响的网络因素等"
-        echo -e "2. 软件源问题：例如正在维护，或者出现罕见的文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态，请前往镜像站对应路径验证"
-        echo -e "\n软件源地址："${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"\n"
-        exit 1
-    fi
-}
-
-## 更新软件包
-function UpdateSoftware() {
-    function Main() {
-        echo -e ''
-        case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
-            apt-get upgrade -y
-            ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
-            yum update -y --skip-broken
-            ;;
-        "${SYSTEM_OPENSUSE}")
-            zypper update -y
-            ;;
-        esac
-    }
-    function CleanCache() {
-        case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
-            apt-get autoremove -y >/dev/null 2>&1
-            apt-get clean >/dev/null 2>&1
-            ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
-            yum autoremove -y >/dev/null 2>&1
-            yum clean packages -y >/dev/null 2>&1
-            ;;
-        "${SYSTEM_OPENSUSE}")
-            zypper clean >/dev/null 2>&1
-            ;;
-        esac
-        echo -e "\n$COMPLETE 清理完毕"
-    }
-    function MainInteraction() {
-        local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
-        read -p "${CHOICE}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case "${INPUT}" in
-        [Yy] | [Yy][Ee][Ss]) ;;
-        [Nn] | [Nn][Oo])
-            Main
-            if [[ "${CLEAN_CACHE}" == "true" ]]; then
-                CleanCache
-            elif [[ -z "${CLEAN_CACHE}" ]]; then
-                CleanCacheInteraction
-            fi
-            ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不更新！"
-            ;;
-        esac
-    }
-    function CleanCacheInteraction() {
-        local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-        read -p "${CHOICE}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case "${INPUT}" in
-        [Yy] | [Yy][Ee][Ss])
-            CleanCache
-            ;;
-        [Nn] | [Nn][Oo]) ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不清理！"
-            ;;
-        esac
-    }
-
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}" | "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
-            if [[ "${UPDATA_SOFTWARE}" == "true" ]]; then
-                Main
-                if [[ "${CLEAN_CACHE}" == "true" ]]; then
-                    CleanCache
-                elif [[ -z "${CLEAN_CACHE}" ]]; then
-                    CleanCacheInteraction
-                fi
-            elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
-                MainInteraction
-            fi
-        fi
-        ;;
-    esac
-}
-
-## 运行结束
-function RunEnd() {
-    echo -e "\n$COMPLETE 脚本执行结束 [\033[1;34m官网\033[0m] ${WEBSITE}\n"
 }
 
 ##############################################################################
@@ -1032,11 +784,7 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
         ## 处理 debian-security 仓库
         local security_url="${SOURCE_SECURITY:-"${SOURCE}"}"
         if [[ -z "${SOURCE_SECURITY}" ]]; then
-            if [[ "${USE_ABROAD_SOURCE}" == "true" ]]; then
-                local security_url="https://security.debian.org/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
-            else
-                local security_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
-            fi
+            local security_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
         else
             local security_url="${WEB_PROTOCOL}://${SOURCE_SECURITY}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
         fi
@@ -1074,7 +822,7 @@ function RedHatMirrors() {
     function EPELMirrors() {
         ## 安装 EPEL 软件包
         if [ ${VERIFICATION_EPEL} -ne 0 ]; then
-            echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
+            echo -e "${WORKING} 开始安装 epel-release 软件包..."
             yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
         fi
         ## 删除原有 repo 源文件
@@ -4477,28 +4225,18 @@ function CommandOptions() {
   --branch                 指定软件源分支(路径)                    分支名
   --branch-security        指定 debian-security 软件源分支(路径)   分支名
   --branch-vault           指定 centos-vault 软件源分支(路径)      分支名
-  --abroad                 使用海外软件源                          无
   --web-protocol           指定 WEB 协议                           http 或 https
-  --intranet               优先使用内网地址                        true 或 false
   --install-epel           安装 EPEL 附加软件包                    true 或 false
   --only-epel              仅更换 EPEL 软件源模式                  无
-  --close-firewall         关闭防火墙                              true 或 false
   --backup                 备份原有软件源                          true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                        无
-  --updata-software        更新软件包                              true 或 false
-  --clean-cache            清理下载缓存                            true 或 false
 
-问题报告 https://github.com/SuperManito/LinuxMirrors/issues
   "
     }
 
     ## 判断参数
     while [ $# -gt 0 ]; do
         case $1 in
-        ## 海外模式
-        --abroad)
-            USE_ABROAD_SOURCE="true"
-            ;;
         ## 指定软件源地址
         --source)
             if [ $2 ]; then
@@ -4564,22 +4302,6 @@ function CommandOptions() {
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
-        ## 优先使用内网地址
-        --intranet)
-            if [ $2 ]; then
-                case $2 in
-                [Tt]rue | [Ff]alse)
-                    USE_INTRANET_SOURCE="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
         ## WEB 协议（HTTP/HTTPS）
         --web-protocol)
             if [ $2 ]; then
@@ -4616,22 +4338,6 @@ function CommandOptions() {
             ONLY_EPEL="true"
             INSTALL_EPEL="true"
             ;;
-        ## 关闭防火墙
-        --close-firewall)
-            if [ $2 ]; then
-                case $2 in
-                [Tt]rue | [Ff]alse)
-                    CLOSE_FIREWALL="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
         ## 备份原有软件源
         --backup)
             if [ $2 ]; then
@@ -4651,38 +4357,6 @@ function CommandOptions() {
         ## 忽略覆盖备份提示
         --ignore-backup-tips)
             IGNORE_BACKUP_TIPS="true"
-            ;;
-        ## 更新软件包
-        --updata-software)
-            if [ $2 ]; then
-                case $2 in
-                [Tt]rue | [Ff]alse)
-                    UPDATA_SOFTWARE="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        ## 清理下载缓存
-        --clean-cache)
-            if [ $2 ]; then
-                case $2 in
-                [Tt]rue | [Ff]alse)
-                    CLEAN_CACHE="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
             ;;
         --help)
             Output_Help_Info
@@ -4709,12 +4383,9 @@ function Combin_Function() {
     ChooseMirrors
     ChooseWebProtocol
     ChooseInstallEPEL
-    CloseFirewall
     BackupOriginMirrors
     RemoveOriginMirrors
     ChangeMirrors
-    UpdateSoftware
-    RunEnd
 }
 
 CommandOptions "$@"
