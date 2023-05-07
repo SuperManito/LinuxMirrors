@@ -216,22 +216,39 @@ function CheckCommandOptions() {
         esac
         ;;
     "${SYSTEM_OPENEULER}")
+        if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 debian-security 仓库故无法使用相关参数，请确认后重试！"
+        fi
+        if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 centos-vault 仓库故无法使用相关参数，请确认后重试！"
+        fi
         if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
             Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
         fi
         ;;
     "${SYSTEM_OPENSUSE}")
+        if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 debian-security 仓库故无法使用相关参数，请确认后重试！"
+        fi
+        if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 centos-vault 仓库故无法使用相关参数，请确认后重试！"
+        fi
         if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
             Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
         fi
         ;;
     "${SYSTEM_ARCH}")
+        if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 debian-security 仓库故无法使用相关参数，请确认后重试！"
+        fi
+        if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 centos-vault 仓库故无法使用相关参数，请确认后重试！"
+        fi
         if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
             Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
         fi
         ;;
     esac
-
 }
 
 ## 系统判定变量
@@ -256,7 +273,7 @@ function EnvJudgment() {
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
-        Output_Error "无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统"
+        Output_Error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
     fi
     ## 判定系统名称、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -264,7 +281,7 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
+                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -287,6 +304,59 @@ function EnvJudgment() {
         ;;
     "${SYSTEM_ARCH}")
         SYSTEM_JUDGMENT="${SYSTEM_ARCH}"
+        ;;
+    esac
+    ## 判断系统是否在脚本支持范围内
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_DEBIAN}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-2] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_UBUNTU}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-3] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_RHEL}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-9] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_CENTOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-8] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMA}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_FEDORA}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 3[0-8] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_OPENEULER}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-3] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        if [[ "${SYSTEM_ID}" != "opensuse-leap" && "${SYSTEM_ID}" != "opensuse-tumbleweed" ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        else
+            if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
+                Output_Error "当前系统版本不在本脚本的支持范围内"
+            fi
+        fi
+        ;;
+    "${SYSTEM_KALI}" | "${SYSTEM_ARCH}")
+        # 理论全部支持
+        ;;
+    *)
+        Output_Error "当前系统不在本脚本的支持范围内"
         ;;
     esac
     ## 判定系统处理器架构
@@ -612,6 +682,7 @@ function CloseFirewall() {
 
 ## 备份原有软件源
 function BackupOriginMirrors() {
+    BACKUPED="false"
     if [[ "${BACKUP}" == "true" ]]; then
         local VERIFICATION_FILES=1
         local VERIFICATION_BACKUPFILES=1
@@ -665,6 +736,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -674,6 +746,7 @@ function BackupOriginMirrors() {
                 else
                     echo ''
                     cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 list 源文件"
                     sleep 1s
                 fi
@@ -694,6 +767,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -704,6 +778,7 @@ function BackupOriginMirrors() {
                     [ ! -d $Dir_DebianExtendSourceBackup ] && mkdir -p $Dir_DebianExtendSourceBackup
                     echo ''
                     cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
+                    BACKUPED="true"
                     echo -e "$COMPLETE 已备份原有 list 扩展源文件"
                     sleep 1s
                 fi
@@ -722,6 +797,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -731,7 +807,8 @@ function BackupOriginMirrors() {
                 else
                     [ ! -d $Dir_RedHatReposBackup ] && mkdir -p $Dir_RedHatReposBackup
                     echo ''
-                    cp -vrf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                    cp -rvf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
@@ -752,6 +829,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -761,7 +839,8 @@ function BackupOriginMirrors() {
                 else
                     [ ! -d $Dir_openEulerReposBackup ] && mkdir -p $Dir_openEulerReposBackup
                     echo ''
-                    cp -vrf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                    cp -rvf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
@@ -782,6 +861,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -791,7 +871,8 @@ function BackupOriginMirrors() {
                 else
                     [ ! -d $Dir_openSUSEReposBackup ] && mkdir -p $Dir_openSUSEReposBackup
                     echo ''
-                    cp -vrf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                    cp -rvf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
@@ -812,6 +893,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $File_ArchMirrorList $File_ArchMirrorListBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -821,6 +903,7 @@ function BackupOriginMirrors() {
                 else
                     echo ''
                     cp -rvf $File_ArchMirrorList $File_ArchMirrorListBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有软件源文件"
                     sleep 1s
                 fi
@@ -872,6 +955,57 @@ function RemoveOriginMirrors() {
 
 ## 换源
 function ChangeMirrors() {
+    ## 打印修改前后差异
+    function PrintDiff() {
+        ## Debian/Arch 比较模式
+        function DiffMode1() {
+            local backup_file=$1
+            local origin_file=$2
+            if [[ -s $backup_file && -s $origin_file ]]; then
+                if [[ "$(cat $backup_file)" != "$(cat $origin_file)" ]]; then
+                    echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
+                    diff $backup_file $origin_file -d --color=always -I -B -E
+                fi
+            fi
+        }
+        ## RedHat/openEuler/openSUSE 比较模式
+        function DiffMode2() {
+            local backup_dir=$1
+            local origin_dir=$2
+            local backup_file origin_file
+            for item in $(ls $backup_dir | xargs); do
+                backup_file="$backup_dir/$item"
+                origin_file="$origin_dir/$item"
+                if [[ "$(cat $backup_file)" != "$(cat $origin_file)" ]]; then
+                    echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
+                    diff $backup_file $origin_file -d --color=always -I -B -E
+                fi
+            done
+        }
+
+        if [[ "${PRINT_DIFF}" == "true" ]]; then
+            if [[ -x /usr/bin/diff && "${BACKUPED}" == "true" ]]; then
+                case "${SYSTEM_FACTIONS}" in
+                "${SYSTEM_DEBIAN}")
+                    DiffMode1 $File_DebianSourceListBackup $File_DebianSourceList
+                    ;;
+                "${SYSTEM_REDHAT}")
+                    DiffMode2 $Dir_RedHatReposBackup $Dir_RedHatRepos
+                    ;;
+                "${SYSTEM_OPENEULER}")
+                    DiffMode2 $Dir_openEulerReposBackup $Dir_openEulerRepos
+                    ;;
+                "${SYSTEM_OPENSUSE}")
+                    DiffMode2 $Dir_openSUSEReposBackup $Dir_openSUSERepos
+                    ;;
+                "${SYSTEM_ARCH}")
+                    DiffMode1 $File_ArchMirrorListBackup $File_ArchMirrorList
+                    ;;
+                esac
+            fi
+        fi
+    }
+
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         DebianMirrors
@@ -889,6 +1023,7 @@ function ChangeMirrors() {
         ArchMirrors
         ;;
     esac
+    PrintDiff
     echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
@@ -4487,6 +4622,7 @@ function CommandOptions() {
   --ignore-backup-tips     忽略覆盖备份提示                        无
   --updata-software        更新软件包                              true 或 false
   --clean-cache            清理下载缓存                            true 或 false
+  --print-diff             打印源文件修改前后差异                  无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
   "
@@ -4684,6 +4820,10 @@ function CommandOptions() {
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
+        ## 打印源文件修改前后差异
+        --print-diff)
+            PRINT_DIFF="true"
+            ;;
         --help)
             Output_Help_Info
             exit
@@ -4698,6 +4838,7 @@ function CommandOptions() {
     ONLY_EPEL="${ONLY_EPEL:-"false"}"
     BACKUP="${BACKUP:-"true"}"
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
+    PRINT_DIFF="${PRINT_DIFF:-"false"}"
 }
 
 ## 组合函数

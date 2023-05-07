@@ -16,6 +16,7 @@
 | `--ignore-backup-tips` | 忽略覆盖备份提示 | 无 |
 | `--updata-software` | 更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 清理下载缓存 | `true` 或 `false` |
+| `--print-diff` | 打印源文件修改前后差异 | `true` 或 `false` |
 | `--help` | 查看帮助菜单 | 无 |
 
 ## 示例

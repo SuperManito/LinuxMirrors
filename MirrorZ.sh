@@ -1,7 +1,10 @@
 #!/bin/bash
 ## Author: SuperManito
 ## Modified: 2023-05-07
-## 中国教育网专用
+## License: MIT
+## Github: https://github.com/SuperManito/LinuxMirrors
+## Website: https://linuxmirrors.cn
+## 中国大陆教育网专用、校园网联合镜像站定制版
 
 ## 指定软件源地址和分支（字符串）
 SOURCE=""
@@ -14,13 +17,12 @@ SOURCE_VAULT=""
 SOURCE_BRANCH_VAULT=""
 ## WEB 协议（http/https）
 WEB_PROTOCOL=""
-## 安装 EPEL 附加软件包（true/false）
-ONLY_EPEL=""
-INSTALL_EPEL=""
 ## 备份原有软件源（true/false）
-BACKUP=""
+BACKUP="true"
 ## 忽略覆盖备份提示（true/false）
-IGNORE_BACKUP_TIPS=""
+IGNORE_BACKUP_TIPS="false"
+## 打印源文件修改前后差异（true/false）
+PRINT_DIFF="true"
 
 ## 软件源列表
 mirror_list_default=(
@@ -92,10 +94,10 @@ YELLOW='\033[33m'
 BLUE='\033[34m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS='[\033[32mOK\033[0m]'
-COMPLETE='[\033[32mDONE\033[0m]'
-WARN='[\033[33mWARN\033[0m]'
-ERROR='[\033[31mERROR\033[0m]'
+SUCCESS='[\033[32m成功\033[0m]'
+COMPLETE='[\033[32m完成\033[0m]'
+WARN='[\033[33m警告\033[0m]'
+ERROR='[\033[31m错误\033[0m]'
 WORKING='[\033[34m*\033[0m]'
 
 function StartTitle() {
@@ -116,6 +118,70 @@ function PermissionJudgment() {
     fi
 }
 
+## 换源前用户确认
+function UserConfirm() {
+    local TargetFiles i
+    ## Debian/Arch 获取模式
+    function GetFileMode1() {
+        local file_tmp="$1"
+        [ -s "${file_tmp}" ] && TargetFiles="${file_tmp}"
+    }
+    ## RedHat/openEuler/openSUSE 获取模式
+    function GetFileMode2() {
+        local dir_tmp="$1"
+        ls $dir_tmp | grep -Ev "epel|docker" | grep '\.repo$' -q
+        if [ $? -eq 0 ]; then
+            local tmp_arr=(
+                $(ls $dir_tmp | grep -Ev "epel|docker" | grep '\.repo$')
+            )
+            for ((i = 0; i < ${#tmp_arr[@]}; i++)); do
+                if [[ "${TargetFiles}" ]]; then
+                    TargetFiles="$TargetFiles\n$dir_tmp/${tmp_arr[$i]}"
+                else
+                    TargetFiles="$dir_tmp/${tmp_arr[$i]}"
+                fi
+            done
+        fi
+    }
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        GetFileMode1 $File_DebianSourceList
+        ;;
+    "${SYSTEM_REDHAT}")
+        GetFileMode2 $Dir_RedHatRepos
+        ;;
+    "${SYSTEM_OPENEULER}")
+        GetFileMode2 $Dir_openEulerRepos
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        GetFileMode2 $Dir_openSUSERepos
+        ;;
+    "${SYSTEM_ARCH}")
+        GetFileMode1 $File_ArchMirrorList
+        ;;
+    esac
+    if [[ ! -z "${TargetFiles}" ]]; then
+        echo -e "\n$WARN 在此之前，本脚本没有对你的系统进行任何更改，接下来可能会修改下列提到的文件\n"
+        echo -e "${BLUE}${TargetFiles}${PLAIN}"
+        echo -e "\n如果你想中断本脚本的运行请输入 \"${BLUE}n${PLAIN}\" 或直接键入 ${BLUE}Ctrl + C${PLAIN}，否则请在接下来的提示中输入 \"${GREEN}Y${PLAIN}\" 以开始进行换源操作"
+        local CHOICE=$(echo -e "\n${BOLD}└─ 请阅读上方提示并选择是否允许本脚本修改系统文件 [Y/n]：${PLAIN}")
+        while true; do
+            read -p "${CHOICE}" INPUT
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                break
+                ;;
+            [Nn] | [Nn][Oo])
+                exit
+                ;;
+            *)
+                echo -e "\n$WARN 请输入 \"${BLUE}Y${PLAIN}\" 或 \"${BLUE}n${PLAIN}\" ！"
+                ;;
+            esac
+        done
+    fi
+}
+
 ## 命令选项兼容性判断
 function CheckCommandOptions() {
     case "${SYSTEM_FACTIONS}" in
@@ -125,9 +191,6 @@ function CheckCommandOptions() {
                 Output_Error "当前系统不支持使用 debian-security 仓库故无法使用相关参数，请确认后重试！"
             fi
         fi
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
-        fi
         ;;
     "${SYSTEM_REDHAT}")
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
@@ -135,31 +198,16 @@ function CheckCommandOptions() {
                 Output_Error "当前系统不支持使用 centos-vault 仓库故无法使用相关参数，请确认后重试！"
             fi
         fi
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_FEDORA}")
-            if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-                Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
-            fi
-            ;;
-        esac
         ;;
-    "${SYSTEM_OPENEULER}")
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+    "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}")
+        if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 debian-security 仓库故无法使用相关参数，请确认后重试！"
         fi
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
-        fi
-        ;;
-    "${SYSTEM_ARCH}")
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+        if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 centos-vault 仓库故无法使用相关参数，请确认后重试！"
         fi
         ;;
     esac
-
 }
 
 ## 系统判定变量
@@ -184,7 +232,7 @@ function EnvJudgment() {
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
-        Output_Error "无法判断当前运行环境，请先确认本脚本是否已经适配当前操作系统"
+        Output_Error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
     fi
     ## 判定系统名称、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -192,7 +240,7 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
+                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -215,6 +263,59 @@ function EnvJudgment() {
         ;;
     "${SYSTEM_ARCH}")
         SYSTEM_JUDGMENT="${SYSTEM_ARCH}"
+        ;;
+    esac
+    ## 判断系统是否在脚本支持范围内
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_DEBIAN}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-2] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_UBUNTU}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-3] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_RHEL}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-9] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_CENTOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-8] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMA}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_FEDORA}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 3[0-8] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_OPENEULER}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-3] ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        if [[ "${SYSTEM_ID}" != "opensuse-leap" && "${SYSTEM_ID}" != "opensuse-tumbleweed" ]]; then
+            Output_Error "当前系统版本不在本脚本的支持范围内"
+        else
+            if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
+                Output_Error "当前系统版本不在本脚本的支持范围内"
+            fi
+        fi
+        ;;
+    "${SYSTEM_KALI}" | "${SYSTEM_ARCH}")
+        # 理论全部支持
+        ;;
+    *)
+        Output_Error "当前系统不在本脚本的支持范围内"
         ;;
     esac
     ## 判定系统处理器架构
@@ -360,6 +461,21 @@ function ChooseMirrors() {
         echo -e ''
         echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
         echo -e " 系统时间 ${BLUE}${date} ${timezone}${PLAIN}"
+        local CHOICE=$(echo -e "\n${BOLD}└─ 请确认脚本检测到的系统及版本与实际无误 [Y/n]：${PLAIN}")
+        while true; do
+            read -p "${CHOICE}" INPUT
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                break
+                ;;
+            [Nn] | [Nn][Oo])
+                exit
+                ;;
+            *)
+                echo -e "\n$WARN 请输入 \"${BLUE}Y${PLAIN}\" 或 \"${BLUE}n${PLAIN}\" ！"
+                ;;
+            esac
+        done
     }
 
     Title
@@ -416,54 +532,9 @@ function ChooseWebProtocol() {
     WEB_PROTOCOL="${WEB_PROTOCOL,,}"
 }
 
-# 适用于 RHEL/CentOS(Stream)/RockyLinux 的 EPEL 附加软件包（安装/换源）
-function ChooseInstallEPEL() {
-    function Check() {
-        ## 判断是否已安装 EPEL 软件包
-        rpm -qa | grep epel-release -q
-        VERIFICATION_EPEL=$?
-        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_RedHatRepos ] && ls $Dir_RedHatRepos | grep epel -q
-        VERIFICATION_EPELFILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_RedHatReposBackup ] && ls $Dir_RedHatReposBackup | grep epel -q
-        VERIFICATION_EPELBACKUPFILES=$?
-    }
-
-    if [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_REDHAT}" ]]; then
-        if [[ -z "${INSTALL_EPEL}" ]]; then
-            case "${SYSTEM_JUDGMENT}" in
-            "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMA}")
-                Check
-                if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
-                else
-                    local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
-                fi
-                read -p "${CHOICE}" INPUT
-                [[ -z "${INPUT}" ]] && INPUT=Y
-                case "${INPUT}" in
-                [Yy] | [Yy][Ee][Ss])
-                    INSTALL_EPEL="True"
-                    ;;
-                [Nn] | [Nn][Oo])
-                    INSTALL_EPEL="False"
-                    ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不更换！"
-                    INSTALL_EPEL="False"
-                    ;;
-                esac
-                ;;
-            esac
-        elif [[ "${INSTALL_EPEL}" == "true" ]]; then
-            Check
-        fi
-    fi
-}
-
 ## 备份原有软件源
 function BackupOriginMirrors() {
+    BACKUPED="false"
     if [[ "${BACKUP}" == "true" ]]; then
         local VERIFICATION_FILES=1
         local VERIFICATION_BACKUPFILES=1
@@ -517,6 +588,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -526,6 +598,7 @@ function BackupOriginMirrors() {
                 else
                     echo ''
                     cp -rvf $File_DebianSourceList $File_DebianSourceListBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 list 源文件"
                     sleep 1s
                 fi
@@ -546,6 +619,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -556,6 +630,7 @@ function BackupOriginMirrors() {
                     [ ! -d $Dir_DebianExtendSourceBackup ] && mkdir -p $Dir_DebianExtendSourceBackup
                     echo ''
                     cp -rvf $Dir_DebianExtendSource/* $Dir_DebianExtendSourceBackup 2>&1
+                    BACKUPED="true"
                     echo -e "$COMPLETE 已备份原有 list 扩展源文件"
                     sleep 1s
                 fi
@@ -574,6 +649,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -583,7 +659,8 @@ function BackupOriginMirrors() {
                 else
                     [ ! -d $Dir_RedHatReposBackup ] && mkdir -p $Dir_RedHatReposBackup
                     echo ''
-                    cp -vrf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                    cp -rvf $Dir_RedHatRepos/* $Dir_RedHatReposBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
@@ -604,6 +681,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -613,7 +691,8 @@ function BackupOriginMirrors() {
                 else
                     [ ! -d $Dir_openEulerReposBackup ] && mkdir -p $Dir_openEulerReposBackup
                     echo ''
-                    cp -vrf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                    cp -rvf $Dir_openEulerRepos/* $Dir_openEulerReposBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
@@ -634,6 +713,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -643,7 +723,8 @@ function BackupOriginMirrors() {
                 else
                     [ ! -d $Dir_openSUSEReposBackup ] && mkdir -p $Dir_openSUSEReposBackup
                     echo ''
-                    cp -vrf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                    cp -rvf $Dir_openSUSERepos/* $Dir_openSUSEReposBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                     sleep 1s
                 fi
@@ -664,6 +745,7 @@ function BackupOriginMirrors() {
                         [Nn] | [Nn][Oo])
                             echo ''
                             cp -rvf $File_ArchMirrorList $File_ArchMirrorListBackup 2>&1
+                            BACKUPED="true"
                             ;;
                         *)
                             echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -673,6 +755,7 @@ function BackupOriginMirrors() {
                 else
                     echo ''
                     cp -rvf $File_ArchMirrorList $File_ArchMirrorListBackup 2>&1
+                    BACKUPED="true"
                     echo -e "\n$COMPLETE 已备份原有软件源文件"
                     sleep 1s
                 fi
@@ -699,12 +782,10 @@ function RemoveOriginMirrors() {
                 rm -rf $Dir_RedHatRepos/fedora*
                 ;;
             *)
-                if [[ "${ONLY_EPEL}" == "false" ]]; then
-                    if [ -f $Dir_RedHatRepos/epel.repo ]; then
-                        ls $Dir_RedHatRepos/ | egrep -v epel | xargs rm -rf
-                    else
-                        rm -rf $Dir_RedHatRepos/*
-                    fi
+                if [ -f $Dir_RedHatRepos/epel.repo ]; then
+                    ls $Dir_RedHatRepos/ | egrep -v epel | xargs rm -rf
+                else
+                    rm -rf $Dir_RedHatRepos/*
                 fi
                 ;;
             esac
@@ -724,6 +805,57 @@ function RemoveOriginMirrors() {
 
 ## 换源
 function ChangeMirrors() {
+    ## 打印修改前后差异
+    function PrintDiff() {
+        ## Debian/Arch 比较模式
+        function DiffMode1() {
+            local backup_file=$1
+            local origin_file=$2
+            if [[ -s $backup_file && -s $origin_file ]]; then
+                if [[ "$(cat $backup_file)" != "$(cat $origin_file)" ]]; then
+                    echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
+                    diff $backup_file $origin_file -d --color=always -I -B -E
+                fi
+            fi
+        }
+        ## RedHat/openEuler/openSUSE 比较模式
+        function DiffMode2() {
+            local backup_dir=$1
+            local origin_dir=$2
+            local backup_file origin_file
+            for item in $(ls $backup_dir | xargs); do
+                backup_file="$backup_dir/$item"
+                origin_file="$origin_dir/$item"
+                if [[ "$(cat $backup_file)" != "$(cat $origin_file)" ]]; then
+                    echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
+                    diff $backup_file $origin_file -d --color=always -I -B -E
+                fi
+            done
+        }
+
+        if [[ "${PRINT_DIFF}" == "true" ]]; then
+            if [[ -x /usr/bin/diff && "${BACKUPED}" == "true" ]]; then
+                case "${SYSTEM_FACTIONS}" in
+                "${SYSTEM_DEBIAN}")
+                    DiffMode1 $File_DebianSourceListBackup $File_DebianSourceList
+                    ;;
+                "${SYSTEM_REDHAT}")
+                    DiffMode2 $Dir_RedHatReposBackup $Dir_RedHatRepos
+                    ;;
+                "${SYSTEM_OPENEULER}")
+                    DiffMode2 $Dir_openEulerReposBackup $Dir_openEulerRepos
+                    ;;
+                "${SYSTEM_OPENSUSE}")
+                    DiffMode2 $Dir_openSUSEReposBackup $Dir_openSUSERepos
+                    ;;
+                "${SYSTEM_ARCH}")
+                    DiffMode1 $File_ArchMirrorListBackup $File_ArchMirrorList
+                    ;;
+                esac
+            fi
+        fi
+    }
+
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         DebianMirrors
@@ -741,18 +873,19 @@ function ChangeMirrors() {
         ArchMirrors
         ;;
     esac
+    PrintDiff
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 apt-get update 命令${SYNC_TXT}软件源\n"
+        echo -e "\n$COMPLETE 软件源更换完毕，你可以在之后使用 ${BLUE}apt-get update${PLAIN} 命令${SYNC_TXT}软件源\n"
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
-        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 yum makecache 命令${SYNC_TXT}软件源\n"
+        echo -e "\n$COMPLETE 软件源更换完毕，你可以在之后使用 ${BLUE}yum makecache${PLAIN} 命令${SYNC_TXT}软件源\n"
         ;;
     "${SYSTEM_OPENSUSE}")
-        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 zypper ref 命令${SYNC_TXT}软件源\n"
+        echo -e "\n$COMPLETE 软件源更换完毕，你可以在之后使用 ${BLUE}zypper ref${PLAIN} 命令${SYNC_TXT}软件源\n"
         ;;
     "${SYSTEM_ARCH}")
-        echo -e "\n$COMPLETE 软件源更换完毕，请在之后使用 pacman -Sy 命令${SYNC_TXT}软件源\n"
+        echo -e "\n$COMPLETE 软件源更换完毕，你可以在之后使用 ${BLUE}pacman -Sy${PLAIN} 命令${SYNC_TXT}软件源\n"
         ;;
     esac
 }
@@ -818,44 +951,6 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 
 ## 更换基于 RedHat 系 Linux 发行版软件源
 function RedHatMirrors() {
-    ## 安装/更换 EPEL (Extra Packages for Enterprise Linux) 附加软件包软件源
-    function EPELMirrors() {
-        ## 安装 EPEL 软件包
-        if [ ${VERIFICATION_EPEL} -ne 0 ]; then
-            echo -e "${WORKING} 开始安装 epel-release 软件包..."
-            yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
-        fi
-        ## 删除原有 repo 源文件
-        [ ${VERIFICATION_EPELFILES} -eq 0 ] && rm -rf $Dir_RedHatRepos/epel*
-        [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_RedHatReposBackup/epel*
-        ## 生成 repo 源文件
-        GenRepoFiles_EPEL
-
-        # 更换 WEB 协议（HTTP/HTTPS）
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9 | 8)
-            sed -i "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" $Dir_RedHatRepos/epel*
-            ;;
-        7)
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $Dir_RedHatRepos/epel*
-            ;;
-        esac
-        # 修改源
-        sed -i 's|^metalink=|#metalink=|g' $Dir_RedHatRepos/epel*
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9)
-            sed -i "s|download.example/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
-            ;;
-        8 | 7)
-            sed -i "s|download.fedoraproject.org/pub|${SOURCE}|g" $Dir_RedHatRepos/epel*
-            ;;
-        esac
-    }
-    ## 仅 EPEL 模式
-    if [[ "${ONLY_EPEL}" == "true" ]]; then
-        EPELMirrors
-        return
-    fi
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
@@ -1025,13 +1120,6 @@ function RedHatMirrors() {
             fedora-updates-modular.repo \
             fedora-updates-testing.repo \
             fedora-updates-testing-modular.repo
-        ;;
-    esac
-
-    ## EPEL 附加软件包（安装/换源）
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMA}")
-        [[ "${INSTALL_EPEL}" == "True" ]] && EPELMirrors
         ;;
     esac
 }
@@ -3955,263 +4043,6 @@ EOF
     esac
 }
 
-## 生成 EPEL 附加软件包官方 repo 源文件
-function GenRepoFiles_EPEL() {
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
-    9)
-        cat >$Dir_RedHatRepos/epel.repo <<\EOF
-[epel]
-name=Extra Packages for Enterprise Linux $releasever - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-
-[epel-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-
-[epel-source]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-EOF
-        cat >$Dir_RedHatRepos/epel-testing.repo <<\EOF
-[epel-testing]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/testing/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-
-[epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/testing/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-
-[epel-testing-source]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/testing/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-EOF
-        ;;
-    8)
-        cat >$Dir_RedHatRepos/epel.repo <<\EOF
-[epel]
-name=Extra Packages for Enterprise Linux $releasever - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-
-[epel-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-
-[epel-source]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-EOF
-        cat >$Dir_RedHatRepos/epel-modular.repo <<\EOF
-[epel-modular]
-name=Extra Packages for Enterprise Linux Modular $releasever - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-
-[epel-modular-debuginfo]
-name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-
-[epel-modular-source]
-name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-EOF
-        cat >$Dir_RedHatRepos/epel-playground.repo <<\EOF
-[epel-playground]
-name=Extra Packages for Enterprise Linux $releasever - Playground - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/playground/$releasever/Everything/$basearch/os
-metalink=https://mirrors.fedoraproject.org/metalink?repo=playground-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-
-[epel-playground-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Playground - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/playground/$releasever/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=playground-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-
-[epel-playground-source]
-name=Extra Packages for Enterprise Linux $releasever - Playground - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/playground/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=playground-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-EOF
-        cat >$Dir_RedHatRepos/epel-testing.repo <<\EOF
-[epel-testing]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Everything/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-
-[epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-
-[epel-testing-source]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Everything/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-EOF
-        cat >$Dir_RedHatRepos/epel-testing-modular.repo <<\EOF
-[epel-testing-modular]
-name=Extra Packages for Enterprise Linux Modular $releasever - Testing - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Modular/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-
-[epel-testing-modular-debuginfo]
-name=Extra Packages for Enterprise Linux Modular $releasever - Testing - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Modular/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-
-[epel-testing-modular-source]
-name=Extra Packages for Enterprise Linux Modular $releasever - Testing - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Modular/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-EOF
-        ;;
-    7)
-        cat >$Dir_RedHatRepos/epel.repo <<\EOF
-[epel]
-name=Extra Packages for Enterprise Linux 7 - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
-failovermethod=priority
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-
-[epel-debuginfo]
-name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
-#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
-
-[epel-source]
-name=Extra Packages for Enterprise Linux 7 - $basearch - Source
-#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
-EOF
-        cat >$Dir_RedHatRepos/epel-testing.repo <<\EOF
-[epel-testing]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-
-[epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
-
-[epel-testing-source]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
-EOF
-        ;;
-    esac
-}
-
 ## 处理命令选项
 function CommandOptions() {
     ## 命令帮助
@@ -4226,10 +4057,9 @@ function CommandOptions() {
   --branch-security        指定 debian-security 软件源分支(路径)   分支名
   --branch-vault           指定 centos-vault 软件源分支(路径)      分支名
   --web-protocol           指定 WEB 协议                           http 或 https
-  --install-epel           安装 EPEL 附加软件包                    true 或 false
-  --only-epel              仅更换 EPEL 软件源模式                  无
   --backup                 备份原有软件源                          true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                        无
+  --print-diff             打印源文件修改前后差异                  无
 
   "
     }
@@ -4318,26 +4148,6 @@ function CommandOptions() {
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
             fi
             ;;
-        ## 安装 EPEL 附加软件包
-        --install-epel)
-            if [ $2 ]; then
-                case $2 in
-                [Tt]rue | [Ff]alse)
-                    INSTALL_EPEL="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        --only-epel)
-            ONLY_EPEL="true"
-            INSTALL_EPEL="true"
-            ;;
         ## 备份原有软件源
         --backup)
             if [ $2 ]; then
@@ -4358,6 +4168,10 @@ function CommandOptions() {
         --ignore-backup-tips)
             IGNORE_BACKUP_TIPS="true"
             ;;
+        ## 打印源文件修改前后差异
+        --print-diff)
+            PRINT_DIFF="true"
+            ;;
         --help)
             Output_Help_Info
             exit
@@ -4369,9 +4183,9 @@ function CommandOptions() {
         shift
     done
     ## 赋予部分命令参数默认值
-    ONLY_EPEL="${ONLY_EPEL:-"false"}"
     BACKUP="${BACKUP:-"true"}"
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
+    PRINT_DIFF="${PRINT_DIFF:-"false"}"
 }
 
 ## 组合函数
@@ -4382,7 +4196,7 @@ function Combin_Function() {
     StartTitle
     ChooseMirrors
     ChooseWebProtocol
-    ChooseInstallEPEL
+    UserConfirm
     BackupOriginMirrors
     RemoveOriginMirrors
     ChangeMirrors

@@ -16,8 +16,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
 ### 中国教育网专用（实验性）
 
 ``` bash
-bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/MirrorZ.sh)
+bash <(curl -sSL https://linuxmirrors.cn/edu.sh)
 ```
+> 针对校园网联合镜像站定制，移除了部分功能，额外增加了一些操作确认提示
 
 ## 注意事项
 
