@@ -13,12 +13,12 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
 ```
 > 通过 `--abroad` 命令选项来使用海外软件源
 
-### 中国教育网专用（实验性）
+### 中国大陆教育网（实验性）
 
 ``` bash
 bash <(curl -sSL https://linuxmirrors.cn/edu.sh)
 ```
-> 针对校园网联合镜像站定制，移除了部分功能，额外增加了一些操作确认提示
+> 针对中国教育单位的校园网定制，移除了部分功能，额外增加了一些操作确认提示
 
 ## 注意事项
 
