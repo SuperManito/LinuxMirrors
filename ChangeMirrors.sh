@@ -386,6 +386,16 @@ function EnvJudgment() {
         SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
         ## 处理特殊
         case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_DEBIAN}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            8 | 9)
+                SOURCE_BRANCH="debian-archive"
+                ;;
+            *)
+                SOURCE_BRANCH="debian"
+                ;;
+            esac
+            ;;
         "${SYSTEM_RHEL}")
             case ${SYSTEM_VERSION_NUMBER:0:1} in
             9)
