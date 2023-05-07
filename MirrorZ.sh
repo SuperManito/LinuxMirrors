@@ -416,7 +416,7 @@ function ChooseMirrors() {
         echo -e ''
 
         local list_arr=()
-        local list_arr_sum=$(eval echo \${#$1[@]})
+        local list_arr_sum="$(eval echo \${#$1[@]})"
         for ((a = 0; a < $list_arr_sum; a++)); do
             list_arr[$a]="$(eval echo \${$1[a]})"
         done
