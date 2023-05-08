@@ -22,6 +22,5 @@ jobs:
             mkdocs-material-
       - run: pip install mkdocs-material mkdocs-glightbox
       - run: cp -rvf ./ChangeMirrors.sh ./docs/main.sh
-      - run: cp -rvf ./ChangeMirrors_Edu.sh ./docs/edu.sh
       - run: cp -rvf ./DockerInstallation.sh ./docs/docker.sh
       - run: mkdocs gh-deploy --force
