@@ -1,12 +1,13 @@
 | 名称 | 含义 | 选项值 |
 | :-: | :-: | :-: |
 | `--source` | 指定软件源地址 | 地址 |
-| `--source-security` | 指定 debian-security 软件源地址 | 地址 |
-| `--source-vault` | 指定 centos-vault 软件源地址 | 地址 |
+| `--source-security` | 指定 debian 的 security 软件源地址 | 地址 |
+| `--source-vault` | 指定 centos/almalinux 的 vault 软件源地址 | 地址 |
 | `--branch` | 指定软件源分支(路径) | 分支名 |
-| `--branch-security` | 指定 debian-security 软件源分支(路径) | 分支名 |
-| `--branch-vault` | 指定 centos-vault 软件源分支(路径) | 分支名 |
+| `--branch-security` | 指定 debian 的 security 软件源分支(路径) | 分支名 |
+| `--branch-vault` | 指定 centos/almalinux 的 vault 软件源分支(路径) | 分支名 |
 | `--abroad` | 使用海外软件源 | 无 |
+| `--abroad` | 使用中国大陆教育网软件源 | 无 |
 | `--web-protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--intranet` | 优先使用内网地址 | `true` 或 `false` |
 | `--install-epel` | 安装 EPEL 附加软件包 | `true` 或 `false` |
@@ -54,6 +55,10 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
     <td align="center">centos/rocky</td>
 </tr>
 <tr>
+    <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/../assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
+    <td align="center">fedora</td>
+</tr>
+<tr>
     <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
     <td align="center">centos/centos-stream/centos-altarch/centos-vault</td>
 </tr>
@@ -63,11 +68,11 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 </tr>
 <tr>
     <td><a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;AlmaLinux</td>
-    <td align="center">almalinux</td>
+    <td align="center">almalinux/almalinux-vault</td>
 </tr>
 <tr>
-    <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/../assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
-    <td align="center">fedora</td>
+    <td><a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;OpenCloudOS</td>
+    <td align="center">opencloudos</td>
 </tr>
 <tr>
     <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="/../assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;openEuler</td>

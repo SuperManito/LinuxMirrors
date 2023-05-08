@@ -2,17 +2,19 @@
 hide:
   - navigation
   - toc
+title: LinuxMirrors · 让换源更简单
 ---
 
 ![](/assets/images/logo.png)
 
-GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
+GNU/Linux 一键更换系统软件源脚本
+
+这是一个完全开源的非盈利项目，旨在为从事计算机相关行业的朋友们提供便利
 
 ## 适配系统及其版本
 
 !!! example inline end "适配计划"
 
-    - [ ] OpenCloudOS
     - [ ] AnolisOS
 
 <table>
@@ -33,6 +35,10 @@ GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
     <td align="center">7.0 ~ 9</td>
 </tr>
 <tr>
+    <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Fedora</td>
+    <td align="center">30 ~ 38</td>
+</tr>
+<tr>
     <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
     <td align="center">7.0 ~ 8.5 / Stream 8 ~ 9</td>
 </tr>
@@ -45,8 +51,8 @@ GNU/Linux 一键更换系统软件源脚本 · 让换源更简单
     <td align="center">8.0 ~ 9</td>
 </tr>
 <tr>
-    <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Fedora</td>
-    <td align="center">30 ~ 38</td>
+    <td><a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;OpenCloudOS</td>
+    <td align="center">8.0 ~ 9</td>
 </tr>
 <tr>
     <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;openEuler</td>

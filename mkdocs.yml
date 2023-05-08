@@ -2,7 +2,7 @@ site_name: LinuxMirrors
 repo_name: SuperManito/LinuxMirrors
 repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
-copyright: "Copyright &copy; 2023 <a href=\"https://github.com/SuperManito\" target=\"_blank\"> SuperManito</a>. Website built with <a href=\"https://www.netlify.com\" target=\"_blank\"><img height=\"64\" width=\"64\" src=\"/assets/images/icon/netlify.svg\" style=\"vertical-align: -0.75em\"></a>"
+copyright: "Copyright &copy; 2023 <a href=\"https://github.com/SuperManito\" target=\"_blank\"> SuperManito</a>. Website built with <a href=\"https://www.netlify.com\" target=\"_blank\"><img height=\"64\" width=\"64\" src=\"/assets/images/icon/netlify.svg\" style=\"vertical-align: -0.6em\"></a>"
 theme:
   name: material
   custom_dir: docs/theme
@@ -10,6 +10,7 @@ theme:
   favicon: assets/favicon.ico
   icon:
     logo: material/linux
+    repo: fontawesome/brands/github
     edit: material/file-document-edit-outline
     view: material/file-eye-outline
     admonition:
@@ -28,16 +29,19 @@ theme:
   palette:
     # Palette toggle for light mode
     - scheme: default
+      primary: white
       toggle:
-        icon: material/brightness-7 
+        icon: material/brightness-7
         name: Switch to dark mode
     # Palette toggle for dark mode
     - scheme: slate
+      primary: indigo
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   features:
     - header.autohide
+    - navigation.top
     - navigation.tabs
     - navigation.path
     - navigation.instant

@@ -13,12 +13,12 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
 ```
 > 通过 `--abroad` 命令选项来使用海外软件源
 
-### 中国大陆教育网（实验性）
+### 国内教育网使用
 
 ``` bash
-bash <(curl -sSL https://linuxmirrors.cn/edu.sh)
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu
 ```
-> 针对中国教育单位的校园网定制，移除了部分功能，额外增加了一些操作确认提示
+> 通过 `--edu` 命令选项来使用中国教育单位软件源
 
 ## 注意事项
 
@@ -30,14 +30,6 @@ bash <(curl -sSL https://linuxmirrors.cn/edu.sh)
 
 ??? quote "原始执行脚本方法"
 
-    === "国内使用（默认）"
-
-        ``` bash
-        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
-        ```
-
-    === "海外使用"
-
-        ``` bash
-        bash <(curl -sSL https://github.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
-        ```
+    ``` bash
+    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+    ```

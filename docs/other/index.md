@@ -10,7 +10,7 @@ hide:
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
 
-!!! node "定义"
+!!! node ""
     `Docker CE` 软件镜像仓库，全称 Docker Community Edition ，用于下载并安装 Docker 相关软件包。  
     `Docker Hub` 容器镜像仓库，默认为官方提供的公共库，用于控制下载镜像的来源存储仓库，又称镜像加速器。
 
