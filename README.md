@@ -16,9 +16,6 @@
 
 <table align="center">
 <tr>
-    <td rowspan="13"> 适<br/>配<br/>系<br/>统<br/>及<br/>其<br/>版<br/>本<br/>
-</tr>
-<tr>
     <td><a href="https://www.debian.org" target="_blank"><img src="./docs/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"/></a>&nbsp;Debian</td>
     <td align="center">8.0 ~ 12</td>
 </tr>

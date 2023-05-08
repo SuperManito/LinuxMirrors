@@ -15,7 +15,7 @@ hide:
 
         `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
 
-    === "RedHat 系 Linux/openEuler"
+    === "RedHat 系 Linux / OpenCloudOS / openEuler"
 
         ``` sh
         yum install -y curl || dnf install -y curl
@@ -46,7 +46,7 @@ hide:
 
     `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
 
-=== "RedHat 系 Linux/openEuler"
+=== "RedHat 系 Linux / OpenCloudOS / openEuler"
 
     ``` sh
     cp -rvf /etc/yum.repos.d.bak /etc/yum.repos.d

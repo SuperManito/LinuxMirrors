@@ -6,7 +6,7 @@
 
     `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
 
-=== "RedHat 系 Linux/openEuler"
+=== "RedHat 系 Linux / OpenCloudOS / openEuler"
 
     部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
