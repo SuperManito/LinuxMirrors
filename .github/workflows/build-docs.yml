@@ -20,7 +20,7 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material mkdocs-glightbox
+      - run: pip install mkdocs-material mkdocs-glightbox mkdocs-exclude-search
       - run: cp -rvf ./ChangeMirrors.sh ./docs/main.sh
       - run: cp -rvf ./DockerInstallation.sh ./docs/docker.sh
       - run: mkdocs gh-deploy --force

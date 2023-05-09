@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-08
+## Modified: 2023-05-09
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -152,8 +152,8 @@ SYSTEM_CENTOS="CentOS"
 SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
 SYSTEM_ALMALINUX="AlmaLinux"
-SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_FEDORA="Fedora"
+SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
@@ -161,8 +161,8 @@ SYSTEM_ARCH="Arch"
 ## 定义目录和文件
 File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
-File_openEulerRelease=/etc/openEuler-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
+File_openEulerRelease=/etc/openEuler-release
 File_ArchRelease=/etc/arch-release
 File_DebianVersion=/etc/debian_version
 File_DebianSourceList=/etc/apt/sources.list
@@ -269,7 +269,7 @@ function EnvJudgment() {
     if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        # OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是，为了方便保证脚本逻辑性，所以将其判断放在前面并作为独立的派系
+        # OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}"
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
@@ -316,7 +316,7 @@ function EnvJudgment() {
         SYSTEM_JUDGMENT="${SYSTEM_ARCH}"
         ;;
     esac
-    ## 判断系统是否在脚本支持范围内
+    ## 判断系统和其版本是否受本脚本支持
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-2] ]]; then
@@ -357,8 +357,10 @@ function EnvJudgment() {
         if [[ "${SYSTEM_ID}" != "opensuse-leap" && "${SYSTEM_ID}" != "opensuse-tumbleweed" ]]; then
             Output_Error "当前系统版本不在本脚本的支持范围内"
         else
-            if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
-                Output_Error "当前系统版本不在本脚本的支持范围内"
+            if [[ "${SYSTEM_ID}" == "opensuse-leap" ]]; then
+                if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
+                    Output_Error "当前系统版本不在本脚本的支持范围内"
+                fi
             fi
         fi
         ;;
@@ -1047,22 +1049,20 @@ function UpdateSoftware() {
     }
 
     ## Arch Linux 和 Red Hat Enterprise Linux 系统不更新软件包
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}" | "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
-            if [[ "${UPDATA_SOFTWARE}" == "true" ]]; then
-                Main
-                if [[ "${CLEAN_CACHE}" == "true" ]]; then
-                    CleanCache
-                elif [[ -z "${CLEAN_CACHE}" ]]; then
-                    CleanCacheInteraction
-                fi
-            elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
-                MainInteraction
+    if [[ "${UPDATA_SOFTWARE}" == "true" ]]; then
+        Main
+        if [[ "${CLEAN_CACHE}" == "true" ]]; then
+            CleanCache
+        elif [[ -z "${CLEAN_CACHE}" ]]; then
+            if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_ARCH}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
+                CleanCacheInteraction
             fi
         fi
-        ;;
-    esac
+    elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_ARCH}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
+            MainInteraction
+        fi
+    fi
 }
 
 ## 运行结束
@@ -4255,15 +4255,6 @@ EOF
 ## 生成 openEuler 官方 repo 源文件
 function GenRepoFiles_openEuler() {
     cat >$Dir_YumRepos/openEuler.repo <<\EOF
-#generic-repos is licensed under the Mulan PSL v2.
-#You can use this software according to the terms and conditions of the Mulan PSL v2.
-#You may obtain a copy of Mulan PSL v2 at:
-#    http://license.coscl.org.cn/MulanPSL2
-#THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
-#IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
-#PURPOSE.
-#See the Mulan PSL v2 for more details.
-
 [OS]
 name=OS
 baseurl=http://repo.openeuler.org/openEuler-$releasever/OS/$basearch/

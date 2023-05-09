@@ -14,7 +14,7 @@
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
 | `--close-firewall` | 关闭防火墙 | `true` 或 `false` |
 | `--backup` | 备份原有软件源 | `true` 或 `false` |
-| `--ignore-backup-tips` | 忽略覆盖备份提示 | 无 |
+| `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 | `--updata-software` | 更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 清理下载缓存 | `true` 或 `false` |
 | `--print-diff` | 打印源文件修改前后差异 | `true` 或 `false` |
@@ -108,9 +108,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
 
 ### 自定义 Debian Security 源
 
-如果你想提高服务器的安全性请尽可能使用官方源，因为镜像同步存在延迟
+如果你想尽可能提高服务器的安全性则建议使用官方源，因为镜像同步存在延迟
 
-``` bash title="官方源"
+``` bash
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source-security security.debian.org \
   --branch-security debian-security

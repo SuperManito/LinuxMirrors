@@ -1,7 +1,35 @@
 :root {
     --md-code-font: 'SF Mono';
 }
+[data-md-color-scheme='default'] {
+    --md-primary-fg-color: hsl(0, 0%, 100%, 0.33);
+}
+[data-md-color-scheme='slate'] .md-header {
+    background-color: hsla(232, 15%, 21%, 0.33);
+}
+[data-md-color-scheme='slate'] .md-tabs {
+    background-color: hsla(232, 15%, 21%, 0.33);
+    border-bottom: 0.05rem solid #68686842;
+}
 @font-face {
     font-family: 'SF Mono';
     src: url('./fonts/SF-Mono-Regular.otf');
+}
+@keyframes heart {
+    0%,
+    40%,
+    80%,
+    100% {
+        transform: scale(1);
+    }
+    20%,
+    60% {
+        transform: scale(1.15);
+    }
+}
+.heart {
+    animation: heart 1000ms infinite;
+}
+.md-header {
+    backdrop-filter: blur(8px);
 }

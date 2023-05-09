@@ -31,13 +31,13 @@ theme:
     - scheme: default
       primary: white
       toggle:
-        icon: material/brightness-7
+        icon: octicons/sun-16
         name: Switch to dark mode
     # Palette toggle for dark mode
     - scheme: slate
       primary: indigo
       toggle:
-        icon: material/brightness-4
+        icon: octicons/moon-16
         name: Switch to light mode
   features:
     - header.autohide
@@ -69,7 +69,7 @@ extra_css:
 markdown_extensions:
   - toc:
       permalink: '#'
-      permalink_title: 复制链接
+      permalink_title: 永久链接
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
           case: lower
@@ -112,6 +112,9 @@ plugins:
   - search:
       lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - exclude-search:
+      exclude:
+        - mirrors.md
   - tags
   - glightbox
 nav:

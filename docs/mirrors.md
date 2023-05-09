@@ -6,29 +6,29 @@ hide:
 
 ## 中国大陆 :flag-CN:
 
-| | 镜像站名称 | 镜像站地址 | IPv6 | Kali | Rocky | AlmaLinux | EPEL | Fedora | openEuler | OpenCloudOS |
-| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
-| 1 | 阿里云 | [mirrors.aliyun.com](https://developer.aliyun.com/mirror) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 2 | 腾讯云 | [mirrors.tencent.com](https://mirrors.tencent.com) | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} |
-| 3 | 华为云 | [mirrors.huaweicloud.com](https://mirrors.huaweicloud.com) | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 4 | 网易 | [mirrors.163.com](https://mirrors.163.com) | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 5 | 搜狐 | [mirrors.sohu.com](https://mirrors.sohu.com) | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} |
-| 6 | 清华大学 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 7 | 北京大学 | [mirrors.pku.edu.cn](https://mirrors.pku.edu.cn/Mirrors) | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} |
-| 8 | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 9 | 南京大学 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 10 | 重庆大学 | [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} |
-| 11 | 兰州大学 | [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 12 | 上海交通大学 | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} |
-| 13 | 哈尔滨工业大学 | [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 14 | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
-| 15 | 中国科学院软件研究所 | [mirror.iscas.ac.cn](https://mirror.iscas.ac.cn) | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| | 镜像站名称 | IPv6 | Kali | Rocky | AlmaLinux | EPEL | Fedora | openEuler | OpenCloudOS |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| 1 | [阿里云](https://mirrors.aliyun.com) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 2 | [腾讯云](https://mirrors.tencent.com) | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} |
+| 3 | [华为云](https://mirrors.huaweicloud.com) | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 4 | [网易](https://mirrors.163.com) | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 5 | [搜狐](https://mirrors.sohu.com) | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} |
+| 6 | [清华大学](https://mirrors.tuna.tsinghua.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 7 | [北京大学](https://mirrors.pku.edu.cn/Mirrors) | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} |
+| 8 | [浙江大学](https://mirrors.zju.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 9 | [南京大学](https://mirrors.nju.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 10 | [重庆大学](https://mirrors.cqu.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-circle-off-outline:{style="color: #F6B604"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-close:{style="color: #EF5350"} |
+| 11 | [兰州大学](https://mirror.lzu.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 12 | [上海交通大学](https://mirror.sjtu.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} |
+| 13 | [哈尔滨工业大学](https://mirrors.hit.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 14 | [中国科学技术大学](https://mirrors.ustc.edu.cn) | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
+| 15 | [中国科学院软件研究所](https://mirror.iscas.ac.cn) | :material-close:{style="color: #EF5350"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-check:{style="color: #4DB6AC"} | :material-close:{style="color: #EF5350"} |
 
-上述列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` `Arch Linux` 软件源，列表根据单位性质、地理位置、名称长度进行排序与实际速度无关，目前没有扩充计划
+???+ question "使用帮助"
 
-!!! question "使用帮助"
+    :material-check:{style="color: #4DB6AC"} 支持 &nbsp;&nbsp; :material-close:{style="color: #EF5350"} 不支持 &nbsp;&nbsp; :material-circle-off-outline:{style="color: #F6B604"} 表示软件源分支命名不符合脚本默认规则，但可以通过命令参数来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/command-options/#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)
 
-    :material-check:{style="color: #4DB6AC"} 支持 &nbsp;&nbsp; :material-close:{style="color: #EF5350"} 不支持 &nbsp;&nbsp; :material-circle-off-outline:{style="color: #F6B604"} 表示软件源分支命名不符合脚本默认规则，但可以通过命令参数来使用，具体详见[用法示例](../use/command-options/#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)，关于各操作系统针对软件源(镜像站)所使用的默认分支名称[详见此处](../use/command-options/#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)
+    上述列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` `Arch Linux` 软件源，列表根据单位性质、地理位置、名称长度进行排序与实际速度无关，目前没有扩充计划
 
     如果使用脚本过程中不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可。如果这里没有你想使用的教育单位镜像站，那么你可以使用[国内教育网模式](/use/#%E5%9B%BD%E5%86%85%E6%95%99%E8%82%B2%E7%BD%91%E4%BD%BF%E7%94%A8)看看
 
@@ -141,7 +141,7 @@ hide:
     | 非洲 · Liquid Telecom · 肯尼亚 :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com) |
     | 非洲 · Dimension Data · 南非 :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com) |
 
-=== ":octicons-globe-16: 全部地区"
+=== ":octicons-globe-16: 全部"
 
     | 镜像站名称 | 镜像站地址 |
     | :- | :-: |
@@ -216,30 +216,32 @@ hide:
     | 非洲 · Liquid Telecom · 肯尼亚 :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com) |
     | 非洲 · Dimension Data · 南非 :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com) |
 
-该列表中的软件源参考自 [`Ubuntu 镜像列表`](https://launchpad.net/ubuntu/+cdmirrors)、[`Debian 镜像列表`](https://www.debian.org/CD/http-ftp/#mirrors)、[`Fedora Mirror Manager`](https://admin.fedoraproject.org/mirrormanager/mirrors) 并且全部经过了有效性验证，但未作实际测试
-
 ???+ note "帮助本项目完善更多海外软件源"
 
-    如果你想补充更多海外软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L28) 并按照下面的编辑规范进行修改  
-    你可以在确认软件源地址无误后前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)，也可以 Fork 仓库后自行定制使用
+    该列表中的软件源参考自 [`Ubuntu 镜像列表`](https://launchpad.net/ubuntu/+cdmirrors)、[`Debian 镜像列表`](https://www.debian.org/CD/http-ftp/#mirrors)、[`Fedora Mirror Manager`](https://admin.fedoraproject.org/mirrormanager/mirrors) 并且全部经过了有效性验证，但未作实际测试
+
+    如果你想补充更多海外软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L28) 并按照下面的编辑规范进行修改
+
+    你可以在确认软件源地址无误后前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)，也可以 :material-source-fork: Fork 仓库后自行定制使用
 
     - 海外软件源编辑规范：
 
-        通用格式："洲 · 软件源名称 · 国家/地区@软件源地址"
+        完整格式：`洲 · 软件源名称 · 国家/地区@软件源地址(域名)`
 
-        请根据地理位置、国家/地区进行排序以便于用户选择，有标志性缩写字符的单位应在最后用括号补充，单位的名称应以域名作为优先原则，下面是命名规则
+        请根据地理位置、国家或地区进行排序以便于用户选择，有标志性缩写字符的单位应在最后用括号补充，单位的名称应以域名作为优先原则，下面是命名规则：
 
-        - 教育单位：需使用中文译名，全称中若含有国家/地区的名称则也要带上，注意区分下属单位例如学院、学生会、社团等，命名以域名为优先原则，常见的二级域名格式 `ftp/mirrors.xxx.xxx` 应直接采用顶级单位的名称，如果有三级域名则应考虑是否在名称中加上下属单位
+        - 教育单位：需使用中文译名，全称中若含有国家或地区的名称则也要带上，注意区分下属单位，例如学院、学生会、社团等。常见的二级域名格式 `ftp/mirrors.xxx.xxx` 应直接采用顶级单位的名称，如果有三级域名则应考虑是否在名称中加上下属单位，以域名为优先原则
 
-            注：`Technology` 一词应称为 `理工` 而不能使用 `技术` 这一机翻结果
+            注：`Technology` 一词应称为 `理工` 而不能使用翻译结果的 `技术` 一词
 
         - 非教育单位：应优先采用其上属官网所自称的英文品牌名称，注意是正式的英文名称不是logo中的字符，如果没有并且是除中文、英文以外的语言应使用域名作为名称
 
 ## 工具网站
 
-!!! quote ""
+<button class="md-button md-button--primary" onclick="window.open('https://tool.chinaz.com')">域名查询</button>
+<button class="md-button md-button--primary" onclick="window.open('https://tools.ipip.net/newping.php')">Ping 延迟测试</button>
+<button class="md-button md-button--primary" onclick="window.open('https://tools.ipip.net/traceroute.php')">Tracert 路由追踪测试</button>
+<button class="md-button md-button--primary" onclick="window.open('https://ipw.cn/ipv6webcheck')">IPv6 接入测试</button>
 
-    [域名查询](https://tool.chinaz.com){ .md-button .md-button--primary }
-    [Ping 延迟测试](https://tools.ipip.net/newping.php){ .md-button .md-button--primary }
-    [Tracert 路由追踪测试](https://tools.ipip.net/traceroute.php){ .md-button .md-button--primary }
-    [IPv6 接入测试](https://ipw.cn/ipv6webcheck){ .md-button .md-button--primary }
+!!! tip ""
+    该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](/use/command-options)。

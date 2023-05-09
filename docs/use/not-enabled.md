@@ -4,13 +4,13 @@
 
     默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
 
-    `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
+    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
 
 === "RedHat 系 Linux / OpenCloudOS / openEuler"
 
     部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
-    `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `Fedora` &nbsp; `openEuler`
+    > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
 
 === "openSUSE"
 

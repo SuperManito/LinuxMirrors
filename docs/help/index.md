@@ -13,7 +13,7 @@ hide:
         apt-get install -y curl
         ```
 
-        `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
 
     === "RedHat 系 Linux / OpenCloudOS / openEuler"
 
@@ -21,7 +21,7 @@ hide:
         yum install -y curl || dnf install -y curl
         ```
 
-        `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `Fedora` &nbsp; `openEuler`
+        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
 
     === "openSUSE"
 
@@ -44,7 +44,7 @@ hide:
     apt-get update
     ```
 
-    `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
+    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
 
 === "RedHat 系 Linux / OpenCloudOS / openEuler"
 
@@ -53,7 +53,7 @@ hide:
     yum makecache
     ```
 
-    `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `Fedora` &nbsp; `openEuler`
+    > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
 
 === "openSUSE"
 
