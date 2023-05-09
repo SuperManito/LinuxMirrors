@@ -2,6 +2,8 @@
 hide:
   - navigation
   - toc
+  - feedback
+  - footer
 ---
 
 ## 中国大陆 :flag-CN:

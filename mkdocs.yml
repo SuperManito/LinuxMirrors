@@ -64,6 +64,22 @@ extra:
       link: https://gitee.com/SuperManito/LinuxMirrors
     - icon: fontawesome/brands/github
       link: https://github.com/SuperManito/LinuxMirrors
+  analytics:
+    provider: google
+    property: G-WG7T40F7YP
+    feedback:
+      title: 此页面上的内容对你有帮助吗？
+      ratings:
+        - icon: material/thumb-up-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            感谢反馈！
+        - icon: material/thumb-down-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            感谢反馈！使用<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank" rel="noopener">反馈表单</a></br>帮助我们改进此页面。
 extra_css:
   - stylesheets/extra.css
 markdown_extensions:
@@ -119,12 +135,13 @@ plugins:
   - glightbox
 nav:
   - '介绍': index.md
-  - '软件源': mirrors.md
+  - '软件源': mirrors/index.md
   - '使用方法':
     - '使用方法': use/index.md
+    - '常见问题': use/help.md
     - '执行流程': use/execution-flow.md
     - '未启用源': use/not-enabled.md
     - '高级用法':
       - '命令选项': use/command-options.md
-  - '常见问题': help/index.md
-  - '其它脚本': other/index.md
+  - '其它工具': other/index.md
+  - '社区': community/index.md

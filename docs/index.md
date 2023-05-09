@@ -1,8 +1,11 @@
 ---
+title: LinuxMirrors · 让换源更简单
+comments: true
 hide:
   - navigation
   - toc
-title: LinuxMirrors · 让换源更简单
+  - feedback
+  - footer
 ---
 
 ![](/assets/images/logo.png)

@@ -1,8 +1,3 @@
----
-hide:
-  - navigation
----
-
 ## 关于报错 Command not found
 
   - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包

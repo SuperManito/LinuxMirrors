@@ -2,6 +2,8 @@
 hide:
   - navigation
   - toc
+  - feedback
+  - footer
 ---
 
 ## :fontawesome-brands-docker: Docker 一键安装脚本
