@@ -245,5 +245,4 @@ hide:
 <button class="md-button md-button--primary" onclick="window.open('https://tools.ipip.net/traceroute.php')">Tracert 路由追踪测试</button>
 <button class="md-button md-button--primary" onclick="window.open('https://ipw.cn/ipv6webcheck')">IPv6 接入测试</button>
 
-!!! tip ""
-    该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](/use/command-options)。
+!!! tip "该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](/use/command-options)。"
