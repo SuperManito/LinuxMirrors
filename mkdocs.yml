@@ -52,7 +52,6 @@ theme:
     - content.tooltips
     - content.code.copy
     - content.code.annotate
-    - content.tabs.link
     - search.suggest
     - search.highlight
     - announce.dismiss

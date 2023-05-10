@@ -1,22 +1,61 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-02
+## Modified: 2023-05-10
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
+## Website: https://linuxmirrors.cn
 
-function AuthorSignature() {
-    echo -e "\n$COMPLETE 脚本执行结束\n"
-    echo -e '\033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m─┐\033[0m'
-    echo -e '\033[0;1;31;91m│\033[0m   \033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_\033[0m                       \033[0;1;34;94m__\033[0m  \033[0;1;31;91m__\033[0;1;33;93m_\033[0m            \033[0;1;33;93m_\033[0m \033[0;1;32;92m_\033[0;1;36;96m_\033[0m      \033[0;1;31;91m│\033[0m'
-    echo -e '\033[0;1;33;93m│\033[0m  \033[0;1;32;92m/\033[0m \033[0;1;36;96m_\033[0;1;34;94m__\033[0;1;35;95m/_\033[0;1;31;91m_\033[0m  \033[0;1;33;93m_\033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_\033[0m  \033[0;1;35;95m_\033[0;1;31;91m__\033[0m  \033[0;1;32;92m__\033[0;1;36;96m__\033[0;1;34;94m_/\033[0m  \033[0;1;31;91m|/\033[0m  \033[0;1;32;92m/_\033[0;1;36;96m__\033[0m \033[0;1;34;94m_\033[0;1;35;95m__\033[0;1;31;91m__\033[0m  \033[0;1;32;92m(_\033[0;1;36;96m)\033[0m \033[0;1;34;94m/_\033[0;1;35;95m__\033[0;1;31;91m__\033[0m \033[0;1;33;93m│\033[0m'
-    echo -e '\033[0;1;32;92m│\033[0m  \033[0;1;36;96m\\\033[0;1;34;94m__\033[0m \033[0;1;35;95m\\\033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m__\033[0m \033[0;1;35;95m\\\033[0;1;31;91m/\033[0m \033[0;1;33;93m_\033[0m \033[0;1;32;92m\/\033[0m \033[0;1;36;96m_\033[0;1;34;94m__\033[0;1;35;95m/\033[0m \033[0;1;31;91m/|\033[0;1;33;93m_/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m_\033[0;1;34;94m_\033[0m \033[0;1;35;95m`/\033[0m \033[0;1;31;91m_\033[0;1;33;93m_\033[0m \033[0;1;32;92m\/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m_\033[0;1;35;95m_/\033[0m \033[0;1;31;91m_\033[0;1;33;93m_\033[0m \033[0;1;32;92m\│\033[0m'
-    echo -e '\033[0;1;36;96m│\033[0m \033[0;1;34;94m__\033[0;1;35;95m_/\033[0m \033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0;1;32;92m_/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m \033[0;1;31;91m/\033[0m  \033[0;1;32;92m__\033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0m  \033[0;1;35;95m/\033[0m \033[0;1;31;91m/\033[0m  \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/_\033[0;1;35;95m/\033[0m \033[0;1;31;91m/\033[0m \033[0;1;33;93m/\033[0m \033[0;1;32;92m/\033[0m \033[0;1;36;96m/\033[0m \033[0;1;34;94m/\033[0m \033[0;1;35;95m/_\033[0;1;31;91m/\033[0m \033[0;1;33;93m/_\033[0;1;32;92m/\033[0m \033[0;1;36;96m/│\033[0m'
-    echo -e '\033[0;1;34;94m│/\033[0;1;35;95m__\033[0;1;31;91m__\033[0;1;33;93m/\\\033[0;1;32;92m__\033[0;1;36;96m,_\033[0;1;34;94m/\033[0m \033[0;1;35;95m._\033[0;1;31;91m__\033[0;1;33;93m/\\\033[0;1;32;92m__\033[0;1;36;96m_/\033[0;1;34;94m_/\033[0m  \033[0;1;31;91m/_\033[0;1;33;93m/\033[0m  \033[0;1;32;92m/\033[0;1;36;96m_/\033[0;1;34;94m\_\033[0;1;35;95m_,\033[0;1;31;91m_/\033[0;1;33;93m_/\033[0m \033[0;1;32;92m/\033[0;1;36;96m_/\033[0;1;34;94m_/\033[0;1;35;95m\_\033[0;1;31;91m_/\033[0;1;33;93m\_\033[0;1;32;92m__\033[0;1;36;96m_/\033[0m \033[0;1;34;94m│\033[0m'
-    echo -e '\033[0;1;35;95m│\033[0m          \033[0;1;34;94m/\033[0;1;35;95m_/\033[0m                                               \033[0;1;35;95m│\033[0m'
-    echo -e '\033[0;1;31;91m└─\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m─┘\033[0m\n'
+## Docker DE 软件源列表
+# 国内格式："软件源名称@软件源地址"
+mirror_list_docker_ce=(
+    "阿里云@mirrors.aliyun.com/docker-ce"
+    "腾讯云@mirrors.tencent.com/docker-ce"
+    "华为云@repo.huaweicloud.com/docker-ce"
+    "微软云@mirror.azure.cn/docker-ce"
+    "网易@mirrors.163.com/docker-ce"
+    "清华大学@mirrors.tuna.tsinghua.edu.cn/docker-ce"
+    "北京大学@mirrors.pku.edu.cn/docker-ce"
+    "南京大学@mirrors.nju.edu.cn/docker-ce"
+    "上海交通大学@mirror.sjtu.edu.cn/docker-ce"
+    "中国科学技术大学@mirrors.ustc.edu.cn/docker-ce"
+    "中国科学院软件研究所@mirror.iscas.ac.cn/docker-ce"
+    "官方@download.docker.com"
+)
 
-    echo -e " \033[1;34m官方网站\033[0m https://linuxmirrors.cn\n"
-}
+## Docker Hub 镜像仓库列表
+# 国内格式："软件源名称@软件源地址"
+mirror_list_registry=(
+    "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
+    "阿里云（上海）@registry.cn-shanghai.aliyuncs.com"
+    "阿里云（青岛）@registry.cn-qingdao.aliyuncs.com"
+    "阿里云（北京）@registry.cn-beijing.aliyuncs.com"
+    "阿里云（张家口）@registry.cn-zhangjiakou.aliyuncs.com"
+    "阿里云（呼和浩特）@registry.cn-huhehaote.aliyuncs.com"
+    "阿里云（乌兰察布）@registry.cn-wulanchabu.aliyuncs.com"
+    "阿里云（深圳）@registry.cn-shenzhen.aliyuncs.com"
+    "阿里云（河源）@registry.cn-heyuan.aliyuncs.com"
+    "阿里云（广州）@registry.cn-guangzhou.aliyuncs.com"
+    "阿里云（成都）@registry.cn-chengdu.aliyuncs.com"
+    "腾讯云@mirror.ccs.tencentyun.com"
+    "微软云@dockerhub.azk8s.com"
+    "网易@hub-mirror.c.163.com"
+    "上海交通大学@mirror.sjtu.edu.cn/docs/docker-registry"
+    "道客 DaoCloud@f1361db2.m.daocloud.io"
+    "阿里云（香港）@registry.cn-hongkong.aliyuncs.com"
+    "阿里云（日本-东京）@registry.ap-northeast-1.aliyuncs.com"
+    "阿里云（新加坡）@registry.ap-southeast-1.aliyuncs.com"
+    "阿里云（澳大利亚-悉尼）@registry.ap-southeast-2.aliyuncs.com"
+    "阿里云（马来西亚-吉隆坡）@registry.ap-southeast-3.aliyuncs.com"
+    "阿里云（印度尼西亚-雅加达）@registry.ap-southeast-5.aliyuncs.com"
+    "阿里云（印度-孟买）@registry.ap-south-1.aliyuncs.com"
+    "阿里云（德国-法兰克福）@registry.eu-central-1.aliyuncs.com"
+    "阿里云（英国-伦敦）@registry.eu-west-1.aliyuncs.com"
+    "阿里云（美国西部-硅谷）@registry.us-west-1.aliyuncs.com"
+    "阿里云（美国东部-弗吉尼亚）@registry.us-east-1.aliyuncs.com"
+    "阿里云（阿联酋-迪拜）@registry.me-east-1.aliyuncs.com"
+    "谷歌云@gcr.io"
+    "官方@registry.hub.docker.com"
+)
 
 ## 定义系统判定变量
 SYSTEM_DEBIAN="Debian"
@@ -27,19 +66,20 @@ SYSTEM_RHEL="RedHat"
 SYSTEM_CENTOS="CentOS"
 SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
+SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
+SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
 
 ## 定义目录和文件
 File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
+File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
 File_DebianVersion=/etc/debian_version
 File_DebianSourceList=/etc/apt/sources.list
 Dir_DebianExtendSource=/etc/apt/sources.list.d
-Dir_RedHatRepos=/etc/yum.repos.d
-Dir_openEulerRepos=/etc/yum.repos.d
-Dir_openSUSERepos=/etc/zypp/repos.d
+Dir_YumRepos=/etc/yum.repos.d
 
 ## 定义 Docker 相关变量
 DockerDir=/etc/docker
@@ -62,6 +102,29 @@ WARN='[\033[33mWARN\033[0m]'
 ERROR='[\033[31mERROR\033[0m]'
 WORKING='[\033[34m*\033[0m]'
 
+function StartTitle() {
+    [[ -z "${SOURCE}" || -z "${SOURCE_REGISTRY}" ]] && clear
+    echo -e ' +-----------------------------------+'
+    echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
+    echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
+    echo -e ' +-----------------------------------+'
+    echo -e '  欢迎使用 Docker Engine 一键安装脚本'
+}
+
+## 报错退出
+function Output_Error() {
+    [ "$1" ] && echo -e "\n$ERROR $1\n"
+    exit 1
+}
+
+## 基础环境判断
+function PermissionJudgment() {
+    if [ $UID -ne 0 ]; then
+        echo -e "\n$ERROR 权限不足，请使用 Root 用户运行本脚本\n"
+        exit 1
+    fi
+}
+
 ## 系统判定变量
 function EnvJudgment() {
     ## 定义系统名称
@@ -72,27 +135,42 @@ function EnvJudgment() {
     SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    ## 判定当前系统派系（Debian/RedHat/openEuler）
-    if [ -s $File_RedHatRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
-    elif [ -s $File_DebianVersion ]; then
+    ## 判定当前系统派系（Debian/RedHat/openEuler/OpenCloudOS/openSUSE）
+    if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
+    elif [ -s $File_OpenCloudOSRelease ]; then
+        # OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}"
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [ -s $File_RedHatRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     else
-        echo -e "\n$ERROR 无法判断当前运行环境，请先确认本脚本针对当前操作系统是否适配！\n"
-        exit
+        Output_Error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
     fi
     ## 判定系统名称、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        SYSTEM_JUDGMENT=$(lsb_release -is)
-        SYSTEM_VERSION=$(lsb_release -cs)
+        if [ ! -x /usr/bin/lsb_release ]; then
+            apt-get install -y lsb-release
+            if [ $? -ne 0 ]; then
+                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
+            fi
+        fi
+        SYSTEM_JUDGMENT="$(lsb_release -is)"
+        SYSTEM_VERSION_CODENAME="$(lsb_release -cs)"
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
+        ## Red Hat Enterprise Linux
+        cat $File_RedHatRelease | grep -q "${SYSTEM_RHEL}"
+        [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
+        ## CentOS Stream
         cat $File_RedHatRelease | grep -q "${SYSTEM_CENTOS_STREAM}"
         [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        SYSTEM_JUDGMENT="${SYSTEM_OPENCLOUDOS}"
         ;;
     "${SYSTEM_OPENEULER}")
         SYSTEM_JUDGMENT="${SYSTEM_OPENEULER}"
@@ -117,9 +195,7 @@ function EnvJudgment() {
         SOURCE_ARCH="armhf"
         ;;
     i386 | i686)
-        SYSTEM_ARCH="x86_32"
-        echo -e "\n${RED}---------- Docker Engine 不支持安装在 x86_32 架构的环境上！ ----------${PLAIN}\n"
-        exit
+        Output_Error "Docker Engine 不支持安装在 x86_32 架构的环境上！"
         ;;
     *)
         SYSTEM_ARCH=$(uname -m)
@@ -128,11 +204,22 @@ function EnvJudgment() {
     esac
     ## 定义软件源分支名称
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_CENTOS}" | "${SYSTEM_DEBIAN}" | "${SYSTEM_UBUNTU}" | "${SYSTEM_FEDORA}")
+        SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
+        ;;
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_ROCKY}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
         SOURCE_BRANCH="centos"
         ;;
+    "${SYSTEM_RHEL}")
+        SOURCE_BRANCH="rhel"
+        ;;
+    "${SYSTEM_KALI}")
+        # Kali 使用 Debian 12 的 docker ce 源
+        SOURCE_BRANCH="debian"
+        SYSTEM_VERSION_CODENAME="bullseye"
+        ;;
     *)
-        SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
+        Output_Error "当前系统不在本脚本的支持范围内"
         ;;
     esac
     ## 定义软件源同步/更新文字
@@ -140,84 +227,215 @@ function EnvJudgment() {
     "${SYSTEM_DEBIAN}")
         SYNC_TXT="更新"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+    *)
         SYNC_TXT="同步"
         ;;
     esac
 }
 
-## 基础环境判断
-function PermissionJudgment() {
-    if [ $UID -ne 0 ]; then
-        echo -e "\n$ERROR 权限不足，请使用 Root 用户运行本脚本\n"
-        exit 1
+function ChooseMirrors() {
+    ## 打印软件源列表
+    function PrintMirrorsList() {
+        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
+        ## 计算字符串长度
+        function StringLength() {
+            local text=$1
+            echo "${#text}"
+        }
+        echo -e ''
+
+        local list_arr=()
+        local list_arr_sum="$(eval echo \${#$1[@]})"
+        for ((a = 0; a < $list_arr_sum; a++)); do
+            list_arr[$a]="$(eval echo \${$1[a]})"
+        done
+        if [ -x /usr/bin/printf ]; then
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
+                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
+                arr_num=$((i + 1))
+                default_mirror_name_length=${2:-"30"} # 默认软件源名称打印长度
+                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
+                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
+                # 非一般字符长度
+                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;"))
+                ## 填充空格
+                tmp_spaces_nums=$(($(($default_mirror_name_length - ${tmp_mirror_name_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
+                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
+                    tmp_mirror_name="${tmp_mirror_name} "
+                done
+                printf " ❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+            done
+        else
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
+                tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')  # 软件源地址
+                arr_num=$((i + 1))
+                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
+            done
+        fi
+    }
+
+    function Title() {
+        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
+        local arch=""${DEVICE_ARCH}""
+        local date="$(date "+%Y-%m-%d %H:%M:%S")"
+        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+
+        echo -e ''
+        echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
+        echo -e " 系统时间 ${BLUE}${date} ${timezone}${PLAIN}"
+    }
+
+    Title
+    if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
+        ## 是否手动选择安装版本
+        local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
+        read -p "${CHOICE_A}" INPUT
+        [[ -z "${INPUT}" ]] && INPUT=Y
+        case $INPUT in
+        [Yy] | [Yy][Ee][Ss])
+            INSTALL_LATESTED_DOCKER="true"
+            ;;
+        [Nn] | [Nn][Oo])
+            ## 安装旧版本只有官方仓库有
+            INSTALL_LATESTED_DOCKER="false"
+            SOURCE="download.docker.com"
+            ;;
+        *)
+            INSTALL_LATESTED_DOCKER="true"
+            echo -e "\n$WARN 输入错误，默认安装最新版本！"
+            ;;
+        esac
+    fi
+
+    local mirror_list_name
+    if [[ -z "${SOURCE}" ]]; then
+        local mirror_list_name="mirror_list_docker_ce"
+        PrintMirrorsList "${mirror_list_name}" 38
+        local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        while true; do
+            read -p "${CHOICE_B}" INPUT
+            case "${INPUT}" in
+            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                if [[ -z "${tmp_source}" ]]; then
+                    echo -e "\n$WARN 请输入有效的数字序号！"
+                else
+                    SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                    # echo "${SOURCE}"
+                    # exit
+                    break
+                fi
+                ;;
+            *)
+                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                ;;
+            esac
+        done
+    fi
+
+    if [[ -z "${SOURCE_REGISTRY}" ]]; then
+        mirror_list_name="mirror_list_registry"
+        PrintMirrorsList "${mirror_list_name}" 39
+        local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Hub 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        while true; do
+            read -p "${CHOICE_C}" INPUT
+            case "${INPUT}" in
+            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                if [[ -z "${tmp_source}" ]]; then
+                    echo -e "\n$WARN 请输入有效的数字序号！"
+                else
+                    SOURCE_REGISTRY="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                    # echo "${SOURCE_REGISTRY}"
+                    # exit
+                    break
+                fi
+                ;;
+            *)
+                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                ;;
+            esac
+        done
     fi
 }
 
 ## 关闭防火墙和SELinux
 function CloseFirewall() {
-    local SelinuxConf=/etc/selinux/config
+    function Main() {
+        local SelinuxConfig=/etc/selinux/config
+        systemctl disable --now firewalld >/dev/null 2>&1
+        [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
+    }
+
     if [ -x /usr/bin/systemctl ]; then
-        if [[ $(systemctl is-active firewalld) == "active" ]]; then
-            local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-            read -p "${CHOICE}" INPUT
-            [ -z ${INPUT} ] && INPUT=Y
-            case $INPUT in
-            [Yy] | [Yy][Ee][Ss])
-                systemctl disable --now firewalld >/dev/null 2>&1
-                [ -s $SelinuxConf ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不关闭！"
-                ;;
-            esac
+        if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
+            if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
+                Main
+            elif [[ -z "${CLOSE_FIREWALL}" ]]; then
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+                read -p "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss])
+                    Main
+                    ;;
+                [Nn] | [Nn][Oo]) ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不关闭！"
+                    ;;
+                esac
+            fi
         fi
     fi
 }
 
 ## 安装环境包
-function InstallationEnvironment() {
+function EnvironmentInstall() {
     ## 删除原有源
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         sed -i '/docker-ce/d' $File_DebianSourceList
         rm -rf $Dir_DebianExtendSource/docker.list
         ;;
-    "${SYSTEM_REDHAT}")
-        rm -rf $Dir_RedHatRepos/*docker*.repo
-        ;;
-    "${SYSTEM_OPENEULER}")
-        rm -rf $Dir_openEulerRepos/*docker*.repo
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        rm -rf $Dir_YumRepos/*docker*.repo
         ;;
     esac
-    echo -e "$WORKING 开始${SYNC_TXT}软件源...\n"
+    echo -e "\n$WORKING 开始${SYNC_TXT}软件源...\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
         yum makecache
         ;;
     esac
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -ne 0 ]; then
-        echo -e "\n$ERROR 软件源${SYNC_TXT}出错，请先确保软件包管理工具可用！\n"
-        exit
+        Output_Error "软件源${SYNC_TXT}出错，请先确保软件包管理工具可用！"
     fi
     echo -e "\n$COMPLETE 软件源${SYNC_TXT}结束\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
         ;;
-    "${SYSTEM_REDHAT}")
-        yum install -y yum-utils device-mapper-persistent-data lvm2
-        ;;
-    "${SYSTEM_OPENEULER}")
-        dnf install -y dnf-utils device-mapper-persistent-data lvm2
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}")
+        # 注：红帽 8 版本才发布了 dnf 包管理工具，为了兼容性而优先选择安装 dnf-utils
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        7)
+            yum install -y yum-utils device-mapper-persistent-data lvm2
+            ;;
+        *)
+            yum install -y dnf-utils device-mapper-persistent-data lvm2
+            ;;
+        esac
         ;;
     esac
-
 }
 
 ## 卸载旧版本的 Docker Engine
@@ -229,7 +447,7 @@ function RemoveOldVersion() {
         apt-get remove -y docker-ce docker-ce-cli containerd.io runc >/dev/null 2>&1
         apt-get autoremove -y >/dev/null 2>&1
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
         yum remove -y docker-ce docker-ce-cli containerd.io podman* runc >/dev/null 2>&1
         yum autoremove -y >/dev/null 2>&1
         ;;
@@ -240,30 +458,31 @@ function RemoveOldVersion() {
 function ConfigureDockerCEMirror() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_KALI} ]; then
-            curl -fsSL https://${SOURCE}/linux/debian/gpg | apt-key add - >/dev/null 2>&1
-        else
-            curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg | apt-key add - >/dev/null 2>&1
-        fi
-        echo "deb [arch=${SOURCE_ARCH}] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
-        if [ "${SYSTEM_JUDGMENT}" = ${SYSTEM_KALI} ]; then
-            sed -i "s/${SYSTEM_VERSION}/buster/g" $Dir_DebianExtendSource/docker.list
-            sed -i "s/${SOURCE_BRANCH}/debian/g" $Dir_DebianExtendSource/docker.list
-        fi
+        curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg | apt-key add - >/dev/null 2>&1
+        echo "deb [arch=${SOURCE_ARCH}] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
         yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
-        yum makecache
-        sed -i "s|download.docker.com|${SOURCE}|g" $Dir_RedHatRepos/docker-ce.repo
+        sed -i "s|download.docker.com|${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
+        ## 兼容处理版本号
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            7 | 8 | 9)
+                sed -i "s|\$releasever|${SYSTEM_VERSION_NUMBER:0:1}|g" $Dir_YumRepos/docker-ce.repo
+                ;;
+            *)
+                sed -i "s|\$releasever|8|g" $Dir_YumRepos/docker-ce.repo
+                ;;
+            esac
+            yum makecache
+        fi
         ;;
     esac
-    [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_OPENEULER}" ]] && sed -i "s|\$releasever|9|g" $Dir_RedHatRepos/docker-ce.repo
 }
 
 ## 安装 Docker Engine
 function DockerEngine() {
-
     ## 导出可安装的版本列表
     function Export_VersionList() {
         case "${SYSTEM_FACTIONS}" in
@@ -272,7 +491,7 @@ function DockerEngine() {
             apt-cache madison docker-ce-cli | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
             yum list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
             yum list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
@@ -283,12 +502,12 @@ function DockerEngine() {
 
     ## 安装
     function Install() {
-        if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
+        if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
                 apt-get install -y docker-ce docker-ce-cli containerd.io
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
                 yum install -y docker-ce docker-ce-cli containerd.io
                 ;;
             esac
@@ -301,9 +520,9 @@ function DockerEngine() {
                 local CHOICE=$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")
                 read -p "${CHOICE}" DOCKER_VERSION
                 echo ''
-                cat $DockerVersionFile | grep -Ew "${DOCKER_VERSION}" >/dev/null 2>&1
+                cat $DockerVersionFile | grep -Eqw "${DOCKER_VERSION}"
                 if [ $? -eq 0 ]; then
-                    echo ${DOCKER_VERSION} | grep -Ew '[1,2][0-9].[0,1]{1,2}.[0-9]{1,2}' >/dev/null 2>&1
+                    echo "${DOCKER_VERSION}" | grep -Eqw '[1,2][0-9].[0,1]{1,2}.[0-9]{1,2}'
                     if [ $? -eq 0 ]; then
                         rm -rf $DockerVersionFile
                         break
@@ -316,8 +535,8 @@ function DockerEngine() {
             done
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                CheckVersion=$(echo ${DOCKER_VERSION} | cut -c1-2)
-                CheckSubversion=$(echo ${DOCKER_VERSION} | cut -c4-5)
+                CheckVersion="$(echo ${DOCKER_VERSION} | cut -c1-2)"
+                CheckSubversion="$(echo ${DOCKER_VERSION} | cut -c4-5)"
                 case ${CheckVersion} in
                 18)
                     if [ ${CheckSubversion} == "09" ]; then
@@ -332,7 +551,7 @@ function DockerEngine() {
                 esac
                 apt-get install -y docker-ce=${INSTALL_JUDGMENT}${DOCKER_VERSION}* docker-ce-cli=5:${DOCKER_VERSION}* containerd.io
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
                 yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io
                 ;;
             esac
@@ -340,23 +559,25 @@ function DockerEngine() {
     }
 
     ## 修改 Docker Hub 源
-    function ConfigureMirror() {
-        if [[ ${REGISTRY_SOURCE_OFFICIAL} == "False" ]]; then
+    function RegistryMirror() {
+        if [[ "${REGISTRY_SOURCEL}" != "registry.hub.docker.com" ]]; then
             if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
                 if [ -e $DockerConfigBackup ]; then
-                    local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                    read -p "${CHOICE_BACKUP}" INPUT
-                    [ -z ${INPUT} ] && INPUT=Y
-                    case $INPUT in
-                    [Yy] | [Yy][Ee][Ss]) ;;
-                    [Nn] | [Nn][Oo])
-                        echo ''
-                        cp -rvf $DockerConfig $DockerConfigBackup 2>&1
-                        ;;
-                    *)
-                        echo -e "\n$WARN 输入错误，默认不覆盖！"
-                        ;;
-                    esac
+                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
+                        local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                        read -p "${CHOICE_BACKUP}" INPUT
+                        [[ -z "${INPUT}" ]] && INPUT=Y
+                        case $INPUT in
+                        [Yy] | [Yy][Ee][Ss]) ;;
+                        [Nn] | [Nn][Oo])
+                            echo ''
+                            cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+                            ;;
+                        *)
+                            echo -e "\n$WARN 输入错误，默认不覆盖！"
+                            ;;
+                        esac
+                    fi
                 else
                     cp -rvf $DockerConfig $DockerConfigBackup 2>&1
                     echo -e "\n$COMPLETE 已备份原有 Docker 配置文件至 $DockerConfigBackup\n"
@@ -367,7 +588,7 @@ function DockerEngine() {
                 touch $DockerConfig
             fi
             echo -e '{\n  "registry-mirrors": ["https://SOURCE"]\n}' >$DockerConfig
-            sed -i "s/SOURCE/$REGISTRY_SOURCE/g" $DockerConfig
+            sed -i "s/SOURCE/$SOURCE_REGISTRY/g" $DockerConfig
             systemctl daemon-reload
         fi
     }
@@ -377,7 +598,7 @@ function DockerEngine() {
     "${SYSTEM_DEBIAN}")
         dpkg -l | grep docker-ce-cli -q
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
         rpm -qa | grep docker-ce-cli -q
         ;;
     esac
@@ -385,30 +606,30 @@ function DockerEngine() {
         Export_VersionList
         DOCKER_INSTALLED_VERSION=$(docker -v | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}")
         DOCKER_VERSION_LATEST=$(cat $DockerVersionFile | head -n 1)
-        if [[ ${DOCKER_INSTALLED_VERSION} == ${DOCKER_VERSION_LATEST} ]]; then
-            if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
+        if [[ "${DOCKER_INSTALLED_VERSION}" == "${DOCKER_VERSION_LATEST}" ]]; then
+            if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
                 echo -e "\n$COMPLETE 检测到已安装最新版本的 Docker Engine，跳过安装"
-                ConfigureMirror
+                RegistryMirror
                 if [[ $(systemctl is-active docker) == "active" ]]; then
                     systemctl restart docker
                 fi
                 echo ''
                 systemctl enable --now docker >/dev/null 2>&1
-                ShowVersion
-                AuthorSignature
+                CheckVersion
+                RunEnd
                 exit
             else
                 local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
             fi
         else
-            if [[ ${DOCKER_VERSION_INSTALL_LATEST} == "True" ]]; then
+            if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
                 local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装旧版本的 Docker Engine，是否覆盖安装为最新版本? [Y/n] ${PLAIN}")
             else
                 local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装旧版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
             fi
         fi
         read -p "${CHOICE}" INPUT
-        [ -z ${INPUT} ] && INPUT=Y
+        [[ -z "${INPUT}" ]] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
             echo -en "\n$WORKING 正在卸载之前的版本..."
@@ -426,218 +647,158 @@ function DockerEngine() {
         RemoveOldVersion
         Install
     fi
-    ConfigureMirror
+    RegistryMirror
     systemctl stop docker >/dev/null 2>&1
     systemctl enable --now docker >/dev/null 2>&1
 }
 
 ## 查看版本并验证安装结果
-function ShowVersion() {
-    echo -e "\n$WORKING 验证安装版本...\n"
-    docker -v
-    VERIFICATION_DOCKER=$?
-    if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
-        echo -e "\n$COMPLETE 安装完成"
-    else
-        echo -e "\n$ERROR 安装失败"
-        case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
-            echo -e "\n检查源文件：cat $Dir_DebianExtendSource/docker.list"
-            echo -e '请尝试手动执行安装命令： apt-get install -y docker-ce docker-ce-cli containerd.io\n'
-            echo ''
-            ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}")
-            echo -e "\n检查源文件：cat $Dir_RedHatRepos/docker.repo"
-            echo -e '请尝试手动执行安装命令： yum install -y docker-ce docker-ce-cli containerd.io\n'
-            ;;
-        esac
-        exit
-    fi
-    if [[ $(systemctl is-active docker) != "active" ]]; then
-        sleep 2
-        systemctl disable --now docker >/dev/null 2>&1
-        sleep 2
-        systemctl enable --now docker >/dev/null 2>&1
-        sleep 2
-        if [[ $(systemctl is-active docker) != "active" ]]; then
-            echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致"
-            echo -e "\n请执行 systemctl start docker 或 service docker start 命令尝试启动"
-            echo -e "\n官方安装文档：https://docs.docker.com/engine/install"
+function CheckVersion() {
+    if [ -x /usr/bin/docker ]; then
+        echo -e "\n$WORKING 验证安装版本...\n"
+        docker -v
+        VERIFICATION_DOCKER=$?
+        if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
+            echo -e "\n$COMPLETE 安装完成"
+        else
+            echo -e "\n$ERROR 安装失败"
+            case "${SYSTEM_FACTIONS}" in
+            "${SYSTEM_DEBIAN}")
+                echo -e "\n检查源文件：cat $Dir_DebianExtendSource/docker.list"
+                echo -e '请尝试手动执行安装命令： apt-get install -y docker-ce docker-ce-cli containerd.io\n'
+                echo ''
+                ;;
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+                echo -e "\n检查源文件：cat $Dir_YumRepos/docker.repo"
+                echo -e '请尝试手动执行安装命令： yum install -y docker-ce docker-ce-cli containerd.io\n'
+                ;;
+            esac
+            exit 1
         fi
+        if [[ $(systemctl is-active docker) != "active" ]]; then
+            sleep 2
+            systemctl disable --now docker >/dev/null 2>&1
+            sleep 2
+            systemctl enable --now docker >/dev/null 2>&1
+            sleep 2
+            if [[ $(systemctl is-active docker) != "active" ]]; then
+                echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致"
+                echo -e "\n请执行 systemctl start docker 或 service docker start 命令尝试启动"
+                echo -e "\n官方安装文档：https://docs.docker.com/engine/install"
+            fi
+        fi
+    else
+        echo -e "\n$ERROR 安装失败\n"
     fi
 }
 
-function ChooseMirrors() {
+## 运行结束
+function RunEnd() {
+    echo -e "\n$COMPLETE 脚本执行结束\n"
+    echo -e ' \033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m┐\033[0m'
+    echo -e ' \033[0;1;31;91m│▞\033[0;1;33;93m▀▖\033[0m            \033[0;1;32;92m▙▗\033[0;1;36;96m▌\033[0m      \033[0;1;31;91m▗\033[0;1;33;93m▐\033[0m     \033[0;1;34;94m│\033[0m'
+    echo -e ' \033[0;1;33;93m│▚\033[0;1;32;92m▄\033[0m \033[0;1;36;96m▌\033[0m \033[0;1;34;94m▌▛\033[0;1;35;95m▀▖\033[0;1;31;91m▞▀\033[0;1;33;93m▖▙\033[0;1;32;92m▀▖\033[0;1;36;96m▌▘\033[0;1;34;94m▌▝\033[0;1;35;95m▀▖\033[0;1;31;91m▛▀\033[0;1;33;93m▖▄\033[0;1;32;92m▜▀\033[0m \033[0;1;36;96m▞\033[0;1;34;94m▀▖\033[0;1;35;95m│\033[0m'
+    echo -e ' \033[0;1;32;92m│▖\033[0m \033[0;1;36;96m▌\033[0;1;34;94m▌\033[0m \033[0;1;35;95m▌▙\033[0;1;31;91m▄▘\033[0;1;33;93m▛▀\033[0m \033[0;1;32;92m▌\033[0m  \033[0;1;34;94m▌\033[0m \033[0;1;35;95m▌▞\033[0;1;31;91m▀▌\033[0;1;33;93m▌\033[0m \033[0;1;32;92m▌▐\033[0;1;36;96m▐\033[0m \033[0;1;34;94m▖▌\033[0m \033[0;1;35;95m▌\033[0;1;31;91m│\033[0m'
+    echo -e ' \033[0;1;36;96m│▝\033[0;1;34;94m▀\033[0m \033[0;1;35;95m▝▀\033[0;1;31;91m▘▌\033[0m  \033[0;1;32;92m▝▀\033[0;1;36;96m▘▘\033[0m  \033[0;1;35;95m▘\033[0m \033[0;1;31;91m▘▝\033[0;1;33;93m▀▘\033[0;1;32;92m▘\033[0m \033[0;1;36;96m▘▀\033[0;1;34;94m▘▀\033[0m \033[0;1;35;95m▝\033[0;1;31;91m▀\033[0m \033[0;1;33;93m│\033[0m'
+    echo -e ' \033[0;1;34;94m└─\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m┘\033[0m'
+    echo -e "    \033[1;34mPowered by linuxmirrors.cn\033[0m\n"
+}
 
-    function WelcomeTitle() {
-        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
-        local arch="${SYSTEM_ARCH}"
-        local date="$(date "+%Y-%m-%d %H:%M:%S")"
-        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+## 处理命令选项
+function CommandOptions() {
+    ## 命令帮助
+    function Output_Help_Info() {
+        echo -e "
+选项命令(参数名/含义/参数值)：
 
-        echo -e '+------------------------------------+'
-        echo -e '|                                    |'
-        echo -e '|    欢迎使用 Docker 一键安装脚本    |'
-        echo -e '|                                    |'
-        echo -e '+------------------------------------+'
-        echo -e ''
-        echo -e " 运行环境  ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e " 系统时间  ${BLUE}${date} ${timezone}${PLAIN}"
-        echo -e ''
+  --source                 指定 Docker CE 源地址                     地址
+  --source-registry        指定 Docker Hub 源地址                    地址
+  --install-latested       控制是否安装最新版本的 Docker Engine      true 或 false
+  --ignore-backup-tips     忽略覆盖备份提示                          无
+
+问题报告 https://github.com/SuperManito/LinuxMirrors/issues
+  "
     }
-    clear
-    WelcomeTitle
 
-    ## 是否手动选择安装版本
-    local CHOICE_A=$(echo -e "${BOLD}└─ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
-    read -p "${CHOICE_A}" INPUT
-    [ -z ${INPUT} ] && INPUT=Y
-    case $INPUT in
-    [Yy] | [Yy][Ee][Ss])
-        DOCKER_VERSION_INSTALL_LATEST="True"
-        ;;
-    [Nn] | [Nn][Oo])
-        DOCKER_VERSION_INSTALL_LATEST="False"
-        SOURCE="download.docker.com"
-        ;;
-    *)
-        DOCKER_VERSION_INSTALL_LATEST="True"
-        echo -e "\n$WARN 输入错误，默认安装最新版本！"
-        ;;
-    esac
-    if [ -z $SOURCE ]; then
-        echo -e ''
-        echo -e ' ❖   阿里云           1)'
-        echo -e ' ❖   腾讯云           2)'
-        echo -e ' ❖   华为云           3)'
-        echo -e ' ❖   Azure            4)'
-        echo -e ' ❖   网易             5)'
-        echo -e ' ❖   清华大学         6)'
-        echo -e ' ❖   南京大学         7)'
-        echo -e ' ❖   中科大           8)'
-        echo -e ' ❖   中科院           9)'
-        echo -e ' ❖   官方            10)'
-        local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1~10 ]：${PLAIN}")
-        read -p "${CHOICE_B}" INPUT
-        case $INPUT in
-        1)
-            SOURCE="mirrors.aliyun.com/docker-ce"
+    ## 判断参数
+    while [ $# -gt 0 ]; do
+        case $1 in
+        ## 指定 Docker CE 软件源地址
+        --source)
+            if [ $2 ]; then
+                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE="$2"
+                    shift
+                fi
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
             ;;
-        2)
-            SOURCE="mirrors.tencent.com/docker-ce"
+        ## 指定 Docker Hub 仓库地址
+        --source-registry)
+            if [ $2 ]; then
+                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE_REGISTRY="$2"
+                    shift
+                fi
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
             ;;
-        3)
-            SOURCE="repo.huaweicloud.com/docker-ce"
+        ## 安装最新版本
+        --install-latested)
+            if [ $2 ]; then
+                case $2 in
+                [Tt]rue | [Ff]alse)
+                    INSTALL_LATESTED_DOCKER="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
             ;;
-        4)
-            SOURCE="mirror.azure.cn/docker-ce"
+        ## 忽略覆盖备份提示
+        --ignore-backup-tips)
+            IGNORE_BACKUP_TIPS="true"
             ;;
-        5)
-            SOURCE="mirrors.163.com/docker-ce"
-            ;;
-        6)
-            SOURCE="mirrors.tuna.tsinghua.edu.cn/docker-ce"
-            ;;
-        6)
-            SOURCE="mirrors.nju.edu.cn/docker-ce"
-            ;;
-        8)
-            SOURCE="mirrors.ustc.edu.cn/docker-ce"
-            ;;
-        9)
-            SOURCE="mirror.iscas.ac.cn/docker-ce"
-            ;;
-        10)
-            SOURCE="download.docker.com"
+        ## 命令帮助
+        --help)
+            Output_Help_Info
+            exit
             ;;
         *)
-            SOURCE="mirrors.aliyun.com/docker-ce"
-            echo -e "\n$WARN 输入错误，默认使用阿里云！"
-            sleep 1s
+            Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
             ;;
         esac
-    fi
-    echo -e ''
-    echo -e ' ❖   阿里云（北京）   1)'
-    echo -e ' ❖   阿里云（杭州）   2)'
-    echo -e ' ❖   阿里云（成都）   3)'
-    echo -e ' ❖   阿里云（广州）   4)'
-    echo -e ' ❖   阿里云（香港）   5)'
-    echo -e ' ❖   腾讯云           6)'
-    echo -e ' ❖   Azure            7)'
-    echo -e ' ❖   DaoCloud         8)'
-    echo -e ' ❖   中科大           9)'
-    echo -e ' ❖   谷歌云          10)'
-    echo -e ' ❖   官方            11)'
-    local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Hub 源 [ 1~11 ]：${PLAIN}")
-    read -p "${CHOICE_C}" INPUT
-    case $INPUT in
-    1)
-        REGISTRY_SOURCE="registry.cn-beijing.aliyuncs.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    2)
-        REGISTRY_SOURCE="registry.cn-hangzhou.aliyuncs.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    3)
-        REGISTRY_SOURCE="registry.cn-chengdu.aliyuncs.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    4)
-        REGISTRY_SOURCE="registry.cn-guangzhou.aliyuncs.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    5)
-        REGISTRY_SOURCE="registry.cn-hongkong.aliyuncs.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    6)
-        REGISTRY_SOURCE="mirror.ccs.tencentyun.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    7)
-        REGISTRY_SOURCE="dockerhub.azk8s.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    8)
-        REGISTRY_SOURCE="f1361db2.m.daocloud.io"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    9)
-        REGISTRY_SOURCE="docker.mirrors.ustc.edu.cn"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    10)
-        REGISTRY_SOURCE="gcr.io"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        ;;
-    11)
-        REGISTRY_SOURCE="registry.docker-cn.com"
-        REGISTRY_SOURCE_OFFICIAL="True"
-        ;;
-    *)
-        REGISTRY_SOURCE="registry.cn-hangzhou.aliyuncs.com"
-        REGISTRY_SOURCE_OFFICIAL="False"
-        echo -e "\n$WARN 输入错误，默认使用 ${BLUE}阿里云（杭州）${PLAIN}！"
-        sleep 1s
-        ;;
-    esac
-    echo -e ''
-
-    CloseFirewall
+        shift
+    done
+    ## 给部分命令选项赋予默认值
+    IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
 }
 
 ## 组合函数
 function Combin_Function() {
     PermissionJudgment
     EnvJudgment
+    StartTitle
     ChooseMirrors
-    InstallationEnvironment
+    CloseFirewall
+    EnvironmentInstall
     ConfigureDockerCEMirror
     DockerEngine
-    ShowVersion
-    AuthorSignature
+    CheckVersion
+    RunEnd
 }
 
+CommandOptions "$@"
 Combin_Function

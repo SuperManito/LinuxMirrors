@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-09
+## Modified: 2023-05-10
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -307,7 +307,7 @@ function EnvJudgment() {
         SYSTEM_JUDGMENT="${SYSTEM_OPENCLOUDOS}"
         ;;
     "${SYSTEM_OPENEULER}")
-        SYSTEM_JUDGMENT="$(cat $File_openEulerRelease | awk -F ' ' '{printf$1}')"
+        SYSTEM_JUDGMENT="${SYSTEM_OPENEULER}"
         ;;
     "${SYSTEM_OPENSUSE}")
         SYSTEM_JUDGMENT="${SYSTEM_OPENSUSE}"
@@ -5083,7 +5083,7 @@ function CommandOptions() {
         esac
         shift
     done
-    ## 赋予部分命令参数默认值
+    ## 给部分命令选项赋予默认值
     ONLY_EPEL="${ONLY_EPEL:-"false"}"
     BACKUP="${BACKUP:-"true"}"
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
