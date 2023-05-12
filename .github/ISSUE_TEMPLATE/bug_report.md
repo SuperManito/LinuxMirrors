@@ -30,10 +30,11 @@ assignees: ''
 - [ ] `Ubuntu`
 - [ ] `Kali Linux`
 - [ ] `Red Hat Enterprise Linux`
-- [ ] `CentOS`
-- [ ] `CentOS Stream`
+- [ ] `CentOS / CentOS Stream`
 - [ ] `Fedora`
+- [ ] `AlmaLinux`
 - [ ] `Rocky Linux`
+- [ ] `OpenCloudOS`
 - [ ] `openEuler`
 - [ ] `openSUSE`
 
