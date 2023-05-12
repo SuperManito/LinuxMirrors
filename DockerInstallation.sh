@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-10
+## Modified: 2023-05-12
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -444,11 +444,11 @@ function RemoveOldVersion() {
     sleep 2s
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        apt-get remove -y docker-ce docker-ce-cli containerd.io runc >/dev/null 2>&1
+        apt-get remove -y docker-ce docker-ce-cli containerd.io runc
         apt-get autoremove -y >/dev/null 2>&1
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        yum remove -y docker-ce docker-ce-cli containerd.io podman* runc >/dev/null 2>&1
+        yum remove -y docker-ce docker-ce-cli containerd.io podman* runc
         yum autoremove -y >/dev/null 2>&1
         ;;
     esac
@@ -632,9 +632,9 @@ function DockerEngine() {
         [[ -z "${INPUT}" ]] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
-            echo -en "\n$WORKING 正在卸载之前的版本..."
+            echo -en "\n$WORKING 正在卸载之前的版本...\n"
             RemoveOldVersion
-            echo -e "\n\n$COMPLETE 卸载完毕\n"
+            echo -e "\n$COMPLETE 卸载完毕\n"
             Install
             ;;
         [Nn] | [Nn][Oo]) ;;
@@ -655,7 +655,7 @@ function DockerEngine() {
 ## 查看版本并验证安装结果
 function CheckVersion() {
     if [ -x /usr/bin/docker ]; then
-        echo -e "\n$WORKING 验证安装版本...\n"
+        echo -n "\n验证安装版本："
         docker -v
         VERIFICATION_DOCKER=$?
         if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
@@ -682,9 +682,8 @@ function CheckVersion() {
             systemctl enable --now docker >/dev/null 2>&1
             sleep 2
             if [[ $(systemctl is-active docker) != "active" ]]; then
-                echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能由于重复安装相同版本导致"
-                echo -e "\n请执行 systemctl start docker 或 service docker start 命令尝试启动"
-                echo -e "\n官方安装文档：https://docs.docker.com/engine/install"
+                echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能由于重复安装导致"
+                echo -e "\n${YELLOW} 请执行 "systemctl start docker" 或 "service docker start" 命令尝试启动，如若报错请尝试重新执行本脚本${PLAIN}"
             fi
         fi
     else

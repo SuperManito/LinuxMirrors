@@ -59,7 +59,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
     <td align="center">fedora</td>
 </tr>
 <tr>
-    <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
+    <td><a href="https://www.centos.org" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
     <td align="center">centos/centos-stream/centos-altarch/centos-vault</td>
 </tr>
 <tr>

@@ -43,7 +43,7 @@ GNU/Linux 一键更换系统软件源脚本
     <td align="center">30 ~ 38</td>
 </tr>
 <tr>
-    <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;CentOS</td>
+    <td><a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;CentOS</td>
     <td align="center">7.0 ~ 8.5 / Stream 8 ~ 9</td>
 </tr>
 <tr>

@@ -36,7 +36,7 @@
     <td align="center">30 ~ 38</td>
 </tr>
 <tr>
-    <td><a href="https://www.centos.org/centos-linux" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;CentOS</td>
+    <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;CentOS</td>
     <td align="center">7.0 ~ 8.5 / Stream 8 ~ 9</td>
 </tr>
 <tr>
