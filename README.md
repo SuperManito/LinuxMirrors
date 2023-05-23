@@ -72,11 +72,10 @@
 
 ***
 
-这是一个完全开源的非盈利项目，旨在为从事计算机相关行业的朋友们提供便利，让还源更简单
+这是一个完全开源的非盈利项目，旨在为从事计算机相关行业的朋友们提供便利，让换源更简单
 
 ### LICENSE
 
-Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).  
-如有意见与建议你可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)，如果你需要提交代码请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
+Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
 __如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__
