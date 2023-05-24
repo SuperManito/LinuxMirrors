@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-12
+## Modified: 2023-05-25
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -721,10 +721,10 @@ function CommandOptions() {
 
     ## 判断参数
     while [ $# -gt 0 ]; do
-        case $1 in
+        case "$1" in
         ## 指定 Docker CE 软件源地址
         --source)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
@@ -738,7 +738,7 @@ function CommandOptions() {
             ;;
         ## 指定 Docker Hub 仓库地址
         --source-registry)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
@@ -752,8 +752,8 @@ function CommandOptions() {
             ;;
         ## 安装最新版本
         --install-latested)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 [Tt]rue | [Ff]alse)
                     INSTALL_LATESTED_DOCKER="${2,,}"
                     shift

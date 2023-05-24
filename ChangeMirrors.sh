@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-10
+## Modified: 2023-05-25
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1466,7 +1466,7 @@ function ArchMirrors() {
 
 ## 生成 CentOS 官方 repo 源文件
 function GenRepoFiles_CentOS() {
-    case $1 in
+    case "$1" in
     8)
         cat >$Dir_YumRepos/CentOS-Linux-AppStream.repo <<\EOF
 # CentOS-Linux-AppStream.repo
@@ -1897,7 +1897,7 @@ EOF
 
 ## 生成 CentOS Stream 官方 repo 源文件
 function GenRepoFiles_CentOSStream() {
-    case $1 in
+    case "$1" in
     9)
         cat >$Dir_YumRepos/centos.repo <<\EOF
 [baseos]
@@ -2399,7 +2399,7 @@ EOF
 
 ## 生成 Rocky Linux 官方 repo 源文件
 function GenRepoFiles_RockyLinux() {
-    case $1 in
+    case "$1" in
     9)
         cat >$Dir_YumRepos/rocky.repo <<\EOF
 # rocky.repo
@@ -3084,7 +3084,7 @@ EOF
 
 ## 生成 AlmaLinux 官方 repo 源文件
 function GenRepoFiles_AlmaLinux() {
-    case $1 in
+    case "$1" in
     9)
         cat >$Dir_YumRepos/almalinux-appstream.repo <<\EOF
 [appstream]
@@ -4019,7 +4019,7 @@ EOF
 
 ## 生成 OpenCloudOS 官方 repo 源文件
 function GenRepoFiles_OpenCloudOS() {
-    case $1 in
+    case "$1" in
     9)
         cat >$Dir_YumRepos/OpenCloudOS.repo <<\EOF
 [BaseOS]
@@ -4308,9 +4308,9 @@ EOF
 
 ## 生成 openSUSE 官方 repo 源文件
 function GenRepoFiles_openSUSE() {
-    case $1 in
+    case "$1" in
     "leap")
-        case $2 in
+        case "$2" in
         15.[0-2])
             cat >$Dir_openSUSERepos/repo-debug-non-oss.repo <<\EOF
 [repo-debug-non-oss]
@@ -4874,7 +4874,7 @@ function CommandOptions() {
 
     ## 判断参数
     while [ $# -gt 0 ]; do
-        case $1 in
+        case "$1" in
         ## 海外模式
         --abroad)
             USE_ABROAD_SOURCE="true"
@@ -4885,7 +4885,7 @@ function CommandOptions() {
             ;;
         ## 指定软件源地址
         --source)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
@@ -4898,7 +4898,7 @@ function CommandOptions() {
             fi
             ;;
         --source-security)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
@@ -4911,7 +4911,7 @@ function CommandOptions() {
             fi
             ;;
         --source-vault)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
@@ -4925,7 +4925,7 @@ function CommandOptions() {
             ;;
         ## 指定软件源分支
         --branch)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 SOURCE_BRANCH="$2"
                 shift
             else
@@ -4933,7 +4933,7 @@ function CommandOptions() {
             fi
             ;;
         --branch-security)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 SOURCE_BRANCH_SECURITY="$2"
                 shift
             else
@@ -4941,7 +4941,7 @@ function CommandOptions() {
             fi
             ;;
         --branch-vault)
-            if [ $2 ]; then
+            if [ "$2" ]; then
                 SOURCE_BRANCH_VAULT="$2"
                 shift
             else
@@ -4950,8 +4950,8 @@ function CommandOptions() {
             ;;
         ## 优先使用内网地址
         --intranet)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 [Tt]rue | [Ff]alse)
                     USE_INTRANET_SOURCE="${2,,}"
                     shift
@@ -4966,8 +4966,8 @@ function CommandOptions() {
             ;;
         ## WEB 协议（HTTP/HTTPS）
         --web-protocol)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 http | https | HTTP | HTTPS)
                     WEB_PROTOCOL="$2"
                     shift
@@ -4982,8 +4982,8 @@ function CommandOptions() {
             ;;
         ## 安装 EPEL 附加软件包
         --install-epel)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 [Tt]rue | [Ff]alse)
                     INSTALL_EPEL="${2,,}"
                     shift
@@ -5002,8 +5002,8 @@ function CommandOptions() {
             ;;
         ## 关闭防火墙
         --close-firewall)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 [Tt]rue | [Ff]alse)
                     CLOSE_FIREWALL="${2,,}"
                     shift
@@ -5018,8 +5018,8 @@ function CommandOptions() {
             ;;
         ## 备份原有软件源
         --backup)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 [Tt]rue | [Ff]alse)
                     BACKUP="${2,,}"
                     shift
@@ -5038,8 +5038,8 @@ function CommandOptions() {
             ;;
         ## 更新软件包
         --updata-software)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 [Tt]rue | [Ff]alse)
                     UPDATA_SOFTWARE="${2,,}"
                     shift
@@ -5054,8 +5054,8 @@ function CommandOptions() {
             ;;
         ## 清理下载缓存
         --clean-cache)
-            if [ $2 ]; then
-                case $2 in
+            if [ "$2" ]; then
+                case "$2" in
                 [Tt]rue | [Ff]alse)
                     CLEAN_CACHE="${2,,}"
                     shift
