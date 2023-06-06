@@ -1,15 +1,18 @@
 :root {
     --md-code-font: 'SF Mono';
+    --md-footer-bg-color--dark: #1c1e21;
+    --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
 }
-[data-md-color-scheme='default'] {
-    --md-primary-fg-color: hsl(0, 0%, 100%, 0.33);
+[data-md-color-scheme='slate'] {
+    --md-default-bg-color: #1b1b1d;
+    --md-code-bg-color: #161618;
 }
 [data-md-color-scheme='slate'] .md-header {
-    background-color: hsla(232, 15%, 21%, 0.33);
+    background-color: hsla(240, 4%,11%, 0.33);
 }
 [data-md-color-scheme='slate'] .md-tabs {
-    background-color: hsla(232, 15%, 21%, 0.33);
-    border-bottom: 0.05rem solid #68686842;
+    background-color: hsla(240, 4%,11%, 0.33);
+    border-bottom: 0.05rem solid #5c5c5c42;
 }
 @font-face {
     font-family: 'SF Mono';
@@ -32,4 +35,8 @@
 }
 .md-header {
     backdrop-filter: blur(8px);
+}
+.md-tabs__link {
+    font-size: .8rem !important;
+    font-weight: 600 !important;
 }
