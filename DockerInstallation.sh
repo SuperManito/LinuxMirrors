@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-25
+## Modified: 2023-06-09
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -655,7 +655,7 @@ function DockerEngine() {
 ## 查看版本并验证安装结果
 function CheckVersion() {
     if [ -x /usr/bin/docker ]; then
-        echo -n "\n验证安装版本："
+        echo -en "\n验证安装版本："
         docker -v
         VERIFICATION_DOCKER=$?
         if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
