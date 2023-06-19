@@ -34,20 +34,27 @@ hide:
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
 
+??? quote "原始执行脚本方法"
+
+    ``` bash
+    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+    ```
+
 !!! node ""
 
-    脚本集成安装 [`Docker Engine`](https://docs.docker.com/engine)，可手动选择安装版本、下载软件源、镜像加速器，支持海内外服务器环境和 `arm` 架构处理器环境使用
+    脚本集成安装 [`Docker Engine`](https://docs.docker.com/engine)，可选择安装版本、下载软件源、镜像加速器，支持海内外服务器环境和 `arm` 架构处理器环境使用
 
     `Docker CE` 软件镜像仓库，全称 Docker Community Edition ，用于下载并安装 Docker 相关软件包  
-    `Docker Hub` 容器镜像仓库，默认为官方提供的公共库，用于控制下载镜像的来源存储仓库，又称镜像加速器
+    `Docker Hub` 镜像仓库，默认为官方提供的公共库，用于控制下载镜像的来源存储仓库，又称镜像加速器
 
 ### 命令选项
 
 | 名称 | 含义 | 选项值 |
 | :-: | :-: | :-: |
 | `--source` | 指定 `Docker CE` 源地址 | 地址 |
-| `--source-registry` | 指定 Docker Hub 源地址 | 地址 |
-| `--install-latested` | 控制是否安装最新版本的 Docker Engine | 地址 |
+| `--source-registry` | 指定镜像仓库地址 | 地址 |
+| `--codename` | 指定 Debian 系操作系统的版本名称 | 版本名 |
+| `--install-latested` | 控制是否安装最新版本的 Docker Engine | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 
 ### 关于服务报错无法启动
@@ -75,9 +82,3 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
         > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
 
     卸载完成后重新执行脚本安装即可
-
-??? quote "原始执行脚本方法"
-
-    ``` bash
-    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
-    ```

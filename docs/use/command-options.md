@@ -1,13 +1,14 @@
 | 名称 | 含义 | 选项值 |
 | :-: | :-: | :-: |
-| `--source` | 指定软件源地址 | 地址 |
-| `--source-security` | 指定 debian 的 security 软件源地址 | 地址 |
-| `--source-vault` | 指定 centos/almalinux 的 vault 软件源地址 | 地址 |
-| `--branch` | 指定软件源分支(路径) | 分支名 |
-| `--branch-security` | 指定 debian 的 security 软件源分支(路径) | 分支名 |
-| `--branch-vault` | 指定 centos/almalinux 的 vault 软件源分支(路径) | 分支名 |
 | `--abroad` | 使用海外软件源 | 无 |
-| `--abroad` | 使用中国大陆教育网软件源 | 无 |
+| `--edu` | 使用中国大陆教育网软件源 | 无 |
+| `--source` | 指定软件源地址 | 地址 |
+| `--source-security` | 指定 Debian 的 security 软件源地址 | 地址 |
+| `--source-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源地址 | 地址 |
+| `--branch` | 指定软件源分支(路径) | 分支名 |
+| `--branch-security` | 指定 Debian 的 security 软件源分支(路径) | 分支名 |
+| `--branch-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源分支(路径) | 分支名 |
+| `--codename` | 指定 Debian 系操作系统的版本名称 | 版本名 |
 | `--web-protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--intranet` | 优先使用内网地址 | `true` 或 `false` |
 | `--install-epel` | 安装 EPEL 附加软件包 | `true` 或 `false` |
@@ -100,7 +101,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 ### 单独更换 EPEL 源
 
-有些时候你会发现想使用的镜像站没有 epel 镜像仓库，那么你可以在第一次运行脚本时不安装或不更换 epel 源，然后再单独执行下面的命令
+有些时候你会发现想使用的镜像站没有 epel 镜像仓库，那么你可以在第一次运行脚本时不安装或不更换 epel 源然后再单独执行下面的命令
 
 ``` bash
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
@@ -115,6 +116,16 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source-security security.debian.org \
   --branch-security debian-security
 ```
+
+### 指定 Debian 系操作系统的版本名称
+
+你可以自定义该版本名称，大多数情况下用于升级系统版本，请看下面的例子
+
+``` { .bash .no-copy title="升级 Debian 至最新 12 版本 Bookworm" }
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+  --codename bookworm
+```
+更换软件源后还需要执行系统更新命令才能实现更新操作，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本名称可能会在后期使用时产生一些兼容性问题
 
 ## 无人值守
 

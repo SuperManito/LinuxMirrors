@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-05-25
+## Modified: 2023-06-20
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -217,36 +217,42 @@ function CheckCommandOptions() {
     "${SYSTEM_DEBIAN}")
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
             if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-                Output_Error "当前系统不支持使用 security 仓库相关参数，请确认后重试！"
+                Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
             fi
         fi
         if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
         fi
         ;;
     "${SYSTEM_REDHAT}")
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]]; then
             if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-                Output_Error "当前系统不支持使用 vault 仓库相关参数，请确认后重试！"
+                Output_Error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
             fi
         fi
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_FEDORA}")
             if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-                Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+                Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
             fi
             ;;
         esac
+        if [[ "${DEBIAN_CODENAME}" ]]; then
+            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
+        fi
         ;;
     "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}")
         if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-            Output_Error "当前系统不支持使用 security 仓库相关参数，请确认后重试！"
+            Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
         fi
         if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
         fi
         if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关参数，请确认后重试！"
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+        fi
+        if [[ "${DEBIAN_CODENAME}" ]]; then
+            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
         fi
         ;;
     esac
@@ -292,7 +298,7 @@ function EnvJudgment() {
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
-        SYSTEM_VERSION_CODENAME="$(lsb_release -cs)"
+        SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
@@ -4847,16 +4853,17 @@ function CommandOptions() {
     ## 命令帮助
     function Output_Help_Info() {
         echo -e "
-选项命令(参数名/含义/参数值)：
+命令选项(参数名/含义/参数值)：
 
-  --source                 指定软件源地址                                    地址
-  --source-security        指定 debian 的 security 软件源地址                地址
-  --source-vault           指定 centos/almalinux 的 vault 软件源地址         地址
-  --branch                 指定软件源分支(路径)                              分支名
-  --branch-security        指定 debian 的 security 软件源分支(路径)          分支名
-  --branch-vault           指定 centos/almalinux 的 vault 软件源分支(路径)   分支名
   --abroad                 使用海外软件源                                    无
   --edu                    使用中国大陆教育网软件源                          无
+  --source                 指定软件源地址                                    地址
+  --source-security        指定 Debian 的 security 软件源地址                地址
+  --source-vault           指定 CentOS/AlmaLinux 的 vault 软件源地址         地址
+  --branch                 指定软件源分支(路径)                              分支名
+  --branch-security        指定 Debian 的 security 软件源分支(路径)          分支名
+  --branch-vault           指定 CentOS/AlmaLinux 的 vault 软件源分支(路径)   分支名
+  --codename               指定 Debian 系操作系统的版本名称                  版本名
   --web-protocol           指定 WEB 协议                                     http 或 https
   --intranet               优先使用内网地址                                  true 或 false
   --install-epel           安装 EPEL 附加软件包                              true 或 false
@@ -4946,6 +4953,15 @@ function CommandOptions() {
                 shift
             else
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        ## 指定 Debian 系操作系统的版本名称
+        --codename)
+            if [ "$2" ]; then
+                DEBIAN_CODENAME="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本名称！"
             fi
             ;;
         ## 优先使用内网地址

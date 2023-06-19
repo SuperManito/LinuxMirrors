@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-06-19
+## Modified: 2023-06-20
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -158,7 +158,7 @@ function EnvJudgment() {
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
-        SYSTEM_VERSION_CODENAME="$(lsb_release -cs)"
+        SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
@@ -714,10 +714,11 @@ function CommandOptions() {
     ## 命令帮助
     function Output_Help_Info() {
         echo -e "
-选项命令(参数名/含义/参数值)：
+命令选项(参数名/含义/参数值)：
 
   --source                 指定 Docker CE 源地址                     地址
   --source-registry        指定 Docker Hub 源地址                    地址
+  --codename               指定 Debian 系操作系统的版本名称          版本名
   --install-latested       控制是否安装最新版本的 Docker Engine      true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                          无
 
@@ -754,6 +755,15 @@ function CommandOptions() {
                 fi
             else
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        ## 指定 Debian 版本名称
+        --codename)
+            if [ "$2" ]; then
+                DEBIAN_CODENAME="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本名称！"
             fi
             ;;
         ## 安装最新版本
