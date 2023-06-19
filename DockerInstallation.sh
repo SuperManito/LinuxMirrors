@@ -448,7 +448,7 @@ function RemoveOldVersion() {
         apt-get autoremove -y >/dev/null 2>&1
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        yum remove -y docke* containerd.io podman* runc
+        yum remove -y docker* containerd.io podman* runc
         yum autoremove -y >/dev/null 2>&1
         ;;
     esac
@@ -519,16 +519,16 @@ function DockerEngine() {
             esac
         else
             Export_VersionList
-            echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：19.03.15 ---------- ${PLAIN}\n"
+            echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：20.10.24 ---------- ${PLAIN}\n"
             cat $DockerVersionFile
-            echo -e '\n注：以上可供选择的安装版本由官方源提供，若系统过新可能无法安装较旧的版本'
+            echo -e '\n注：以上可供选择的安装版本由官方源提供，此列表以外的版本则无法安装在当前操作系统上'
             while true; do
                 local CHOICE=$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")
                 read -p "${CHOICE}" DOCKER_VERSION
                 echo ''
                 cat $DockerVersionFile | grep -Eqw "${DOCKER_VERSION}"
                 if [ $? -eq 0 ]; then
-                    echo "${DOCKER_VERSION}" | grep -Eqw '[1,2][0-9].[0,1]{1,2}.[0-9]{1,2}'
+                    echo "${DOCKER_VERSION}" | grep -Eqw '[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}'
                     if [ $? -eq 0 ]; then
                         rm -rf $DockerVersionFile
                         break

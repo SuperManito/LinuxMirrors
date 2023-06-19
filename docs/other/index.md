@@ -50,6 +50,32 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 | `--install-latested` | 控制是否安装最新版本的 Docker Engine | 地址 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 
+### 关于服务报错无法启动
+
+!!! quote ""
+
+    非新装环境可能会在运行脚本后遇到 `Docker` 服务无法启动的情况，建议重新安装来解决，卸载不会删除镜像和容器数据
+
+    卸载命令如下：
+
+    === "Debian 系 Linux"
+
+        ``` bash
+        apt-get remove -y docker* containerd.io podman* runc && apt-get autoremove
+        ```
+
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
+
+    === "RedHat 系 Linux / OpenCloudOS / openEuler"
+
+        ``` bash
+        yum remove -y docker* containerd.io podman* runc
+        ```
+
+        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
+
+    卸载完成后重新执行脚本安装即可
+
 ??? quote "原始执行脚本方法"
 
     ``` bash
