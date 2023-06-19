@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-06-09
+## Modified: 2023-06-19
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -39,7 +39,7 @@ mirror_list_registry=(
     "腾讯云@mirror.ccs.tencentyun.com"
     "微软云@dockerhub.azk8s.com"
     "网易@hub-mirror.c.163.com"
-    "上海交通大学@mirror.sjtu.edu.cn/docs/docker-registry"
+    "上海交通大学@docker.mirrors.sjtug.sjtu.edu.cn"
     "道客 DaoCloud@f1361db2.m.daocloud.io"
     "阿里云（香港）@registry.cn-hongkong.aliyuncs.com"
     "阿里云（日本-东京）@registry.ap-northeast-1.aliyuncs.com"
@@ -444,11 +444,11 @@ function RemoveOldVersion() {
     sleep 2s
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        apt-get remove -y docker-ce docker-ce-cli containerd.io runc
+        apt-get remove -y docker* containerd.io podman* runc
         apt-get autoremove -y >/dev/null 2>&1
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        yum remove -y docker-ce docker-ce-cli containerd.io podman* runc
+        yum remove -y docke* containerd.io podman* runc
         yum autoremove -y >/dev/null 2>&1
         ;;
     esac
@@ -458,8 +458,14 @@ function RemoveOldVersion() {
 function ConfigureDockerCEMirror() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg | apt-key add - >/dev/null 2>&1
-        echo "deb [arch=${SOURCE_ARCH}] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
+        ## 安装密钥
+        apt-key del 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88 >/dev/null 2>&1 # 删除旧的密钥
+        [ -f /etc/apt/keyrings/docker.gpg ] && rm -rf /etc/apt/keyrings/docker.gpg
+        install -m 0755 -d /etc/apt/keyrings
+        curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg >/dev/null 2>&1
+        chmod a+r /etc/apt/keyrings/docker.gpg
+        ## 添加源
+        echo "deb [arch=${SOURCE_ARCH} signed-by=/etc/apt/keyrings/docker.gpg] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
         apt-get update
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
@@ -505,10 +511,10 @@ function DockerEngine() {
         if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                apt-get install -y docker-ce docker-ce-cli containerd.io
+                apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-                yum install -y docker-ce docker-ce-cli containerd.io
+                yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             esac
         else
@@ -549,10 +555,10 @@ function DockerEngine() {
                     INSTALL_JUDGMENT="5:"
                     ;;
                 esac
-                apt-get install -y docker-ce=${INSTALL_JUDGMENT}${DOCKER_VERSION}* docker-ce-cli=5:${DOCKER_VERSION}* containerd.io
+                apt-get install -y docker-ce=${INSTALL_JUDGMENT}${DOCKER_VERSION}* docker-ce-cli=5:${DOCKER_VERSION}* containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-                yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io
+                yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             esac
         fi
@@ -588,7 +594,7 @@ function DockerEngine() {
                 touch $DockerConfig
             fi
             echo -e '{\n  "registry-mirrors": ["https://SOURCE"]\n}' >$DockerConfig
-            sed -i "s/SOURCE/$SOURCE_REGISTRY/g" $DockerConfig
+            sed -i "s|SOURCE|${SOURCE_REGISTRY}|g" $DockerConfig
             systemctl daemon-reload
         fi
     }
@@ -665,12 +671,12 @@ function CheckVersion() {
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
                 echo -e "\n检查源文件：cat $Dir_DebianExtendSource/docker.list"
-                echo -e '请尝试手动执行安装命令： apt-get install -y docker-ce docker-ce-cli containerd.io\n'
+                echo -e '请尝试手动执行安装命令： apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
                 echo ''
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
                 echo -e "\n检查源文件：cat $Dir_YumRepos/docker.repo"
-                echo -e '请尝试手动执行安装命令： yum install -y docker-ce docker-ce-cli containerd.io\n'
+                echo -e '请尝试手动执行安装命令： yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
                 ;;
             esac
             exit 1
