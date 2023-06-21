@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-06-20
+## Modified: 2023-06-21
 ## License: MIT
 ## Github: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -22,7 +22,7 @@ mirror_list_docker_ce=(
     "官方@download.docker.com"
 )
 
-## Docker Hub 镜像仓库列表
+## Docker Registry 镜像仓库列表
 # 国内格式："软件源名称@软件源地址"
 mirror_list_registry=(
     "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
@@ -341,7 +341,7 @@ function ChooseMirrors() {
     if [[ -z "${SOURCE_REGISTRY}" ]]; then
         mirror_list_name="mirror_list_registry"
         PrintMirrorsList "${mirror_list_name}" 39
-        local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Hub 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
             read -p "${CHOICE_C}" INPUT
             case "${INPUT}" in
@@ -564,7 +564,7 @@ function DockerEngine() {
         fi
     }
 
-    ## 修改 Docker Hub 源
+    ## 修改 Docker Registry 源
     function RegistryMirror() {
         if [[ "${REGISTRY_SOURCEL}" != "registry.hub.docker.com" ]]; then
             if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
@@ -717,7 +717,7 @@ function CommandOptions() {
 命令选项(参数名/含义/参数值)：
 
   --source                 指定 Docker CE 源地址                     地址
-  --source-registry        指定 Docker Hub 源地址                    地址
+  --source-registry        指定 Docker Registry 源地址               地址
   --codename               指定 Debian 系操作系统的版本名称          版本名
   --install-latested       控制是否安装最新版本的 Docker Engine      true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                          无
@@ -743,7 +743,7 @@ function CommandOptions() {
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
-        ## 指定 Docker Hub 仓库地址
+        ## 指定 Docker Registry 仓库地址
         --source-registry)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
