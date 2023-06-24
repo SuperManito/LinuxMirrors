@@ -36,9 +36,17 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
 ??? quote "原始执行脚本方法"
 
-    ``` bash
-    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
-    ```
+    === ":simple-github: GitHub"
+
+        ``` bash
+        bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
+        ```
+
+    === ":simple-gitee: Gitee"
+
+        ``` bash
+        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+        ```
 
 !!! node ""
 
@@ -51,11 +59,13 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
 | 名称 | 含义 | 选项值 |
 | :-: | :-: | :-: |
-| `--source` | 指定 `Docker CE` 源地址 | 地址 |
-| `--source-registry` | 指定镜像仓库地址 | 地址 |
+| `--source` | 指定 `Docker CE` 源地址(域名或IP) | 地址 |
+| `--source-registry` | 指定镜像仓库地址(域名或IP) | 地址 |
 | `--codename` | 指定 Debian 系操作系统的版本名称 | 版本名 |
 | `--install-latested` | 控制是否安装最新版本的 Docker Engine | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
+
+> 软件源格式 `<指定WEB协议>://<软件源地址>/<软件源分支>`
 
 ### 关于服务报错无法启动
 

@@ -5,33 +5,71 @@ hide:
 
 ## 执行命令
 
-### 国内使用（默认）
+> 建议在使用前确认目标镜像站是否支持您正在使用的操作系统
 
-``` bash
-bash <(curl -sSL https://linuxmirrors.cn/main.sh)
-```
-
-### 海外使用
-
-``` bash
-bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
-```
-
-1.  通过 `--abroad` 命令选项来使用海外软件源
-
-### 国内教育网使用
-
-``` bash
-bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
-```
-
-1.  通过 `--edu` 命令选项来使用中国教育单位软件源
-
-??? quote "原始执行脚本方法"
+=== ":material-home: 国内使用（默认）"
 
     ``` bash
-    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh)
     ```
+
+    ??? quote "原始执行脚本方法"
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
+            ```
+
+        === ":simple-gitee: Gitee"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            ```
+
+=== ":material-school: 国内教育网使用"
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
+    ```
+
+    1.  通过 `--edu` 命令选项来使用中国教育单位软件源
+
+    ??? quote "原始执行脚本方法"
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu
+            ```
+
+        === ":simple-gitee: Gitee"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            ```
+
+=== ":octicons-globe-16: 海外使用"
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
+    ```
+
+    1.  通过 `--abroad` 命令选项来使用海外软件源
+
+    ??? quote "原始执行脚本方法"
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad
+            ```
+
+        === ":simple-gitee: Gitee"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            ```
 
 ## 注意事项
 

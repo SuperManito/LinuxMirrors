@@ -2,9 +2,9 @@
 | :-: | :-: | :-: |
 | `--abroad` | 使用海外软件源 | 无 |
 | `--edu` | 使用中国大陆教育网软件源 | 无 |
-| `--source` | 指定软件源地址 | 地址 |
-| `--source-security` | 指定 Debian 的 security 软件源地址 | 地址 |
-| `--source-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源地址 | 地址 |
+| `--source` | 指定软件源地址(域名或IP) | 地址 |
+| `--source-security` | 指定 Debian 的 security 软件源地址(域名或IP) | 地址 |
+| `--source-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源地址(域名或IP) | 地址 |
 | `--branch` | 指定软件源分支(路径) | 分支名 |
 | `--branch-security` | 指定 Debian 的 security 软件源分支(路径) | 分支名 |
 | `--branch-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源分支(路径) | 分支名 |
@@ -20,6 +20,8 @@
 | `--clean-cache` | 清理下载缓存 | `true` 或 `false` |
 | `--print-diff` | 打印源文件修改前后差异 | `true` 或 `false` |
 | `--help` | 查看帮助菜单 | 无 |
+
+> 软件源格式 `<指定WEB协议>://<软件源地址>/<软件源分支>`
 
 ## 示例
 
@@ -97,7 +99,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --branch rockylinux
 ```
 
-阿里云镜像站的 Rocky Linux 镜像分支名称为 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现
+阿里云镜像站的 Rocky Linux 镜像分支名称为 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现。
+
+什么是默认规则？参考这几个例子： `Debian GNU/Linux => debian`、`Kali Linux => kali`、`Rocky Linux => rocky`、`AlmaLinux => almalinux`
 
 ### 单独更换 EPEL 源
 

@@ -1,17 +1,17 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-06-21
+## Modified: 2023-06-24
 ## License: MIT
-## Github: https://github.com/SuperManito/LinuxMirrors
+## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
 
-## Docker DE 软件源列表
-# 国内格式："软件源名称@软件源地址"
+## Docker CE 软件源列表
+# 格式："软件源名称@软件源地址"
 mirror_list_docker_ce=(
     "阿里云@mirrors.aliyun.com/docker-ce"
     "腾讯云@mirrors.tencent.com/docker-ce"
     "华为云@repo.huaweicloud.com/docker-ce"
-    "微软云@mirror.azure.cn/docker-ce"
+    "微软 Azure 中国@mirror.azure.cn/docker-ce"
     "网易@mirrors.163.com/docker-ce"
     "清华大学@mirrors.tuna.tsinghua.edu.cn/docker-ce"
     "北京大学@mirrors.pku.edu.cn/docker-ce"
@@ -23,8 +23,13 @@ mirror_list_docker_ce=(
 )
 
 ## Docker Registry 镜像仓库列表
-# 国内格式："软件源名称@软件源地址"
+# 格式："软件源名称@软件源地址"
 mirror_list_registry=(
+    "上海交通大学@docker.mirrors.sjtug.sjtu.edu.cn"
+    "网易@hub-mirror.c.163.com"
+    "道客 DaoCloud@f1361db2.m.daocloud.io"
+    "腾讯云@mirror.ccs.tencentyun.com"
+    "微软 Azure 中国@dockerhub.azk8s.com"
     "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
     "阿里云（上海）@registry.cn-shanghai.aliyuncs.com"
     "阿里云（青岛）@registry.cn-qingdao.aliyuncs.com"
@@ -36,11 +41,6 @@ mirror_list_registry=(
     "阿里云（河源）@registry.cn-heyuan.aliyuncs.com"
     "阿里云（广州）@registry.cn-guangzhou.aliyuncs.com"
     "阿里云（成都）@registry.cn-chengdu.aliyuncs.com"
-    "腾讯云@mirror.ccs.tencentyun.com"
-    "微软云@dockerhub.azk8s.com"
-    "网易@hub-mirror.c.163.com"
-    "上海交通大学@docker.mirrors.sjtug.sjtu.edu.cn"
-    "道客 DaoCloud@f1361db2.m.daocloud.io"
     "阿里云（香港）@registry.cn-hongkong.aliyuncs.com"
     "阿里云（日本-东京）@registry.ap-northeast-1.aliyuncs.com"
     "阿里云（新加坡）@registry.ap-southeast-1.aliyuncs.com"
@@ -53,7 +53,7 @@ mirror_list_registry=(
     "阿里云（美国西部-硅谷）@registry.us-west-1.aliyuncs.com"
     "阿里云（美国东部-弗吉尼亚）@registry.us-east-1.aliyuncs.com"
     "阿里云（阿联酋-迪拜）@registry.me-east-1.aliyuncs.com"
-    "谷歌云@gcr.io"
+    "谷歌云@mirror.gcr.io"
     "官方@registry.hub.docker.com"
 )
 

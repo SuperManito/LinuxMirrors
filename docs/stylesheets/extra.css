@@ -40,3 +40,6 @@
     font-size: .8rem !important;
     font-weight: 600 !important;
 }
+.md-typeset {
+    font-size: 16px;
+}

@@ -40,6 +40,32 @@ hide:
 
     目前不建议使用`阿里云`镜像站，由于使用人数过多其公网下行带宽已被限制在了10M左右。如果你的内网环境过于复杂例如经过了多次NAT转换那么请不要使用`清华大学(TUNA)`镜像站，容易被阻断
 
+??? note "国内教育网"
+
+    | 镜像站名称 | 镜像站地址 |
+    | :- | :-: |
+    | 清华大学 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn) |
+    | 北京大学 | [mirrors.pku.edu.cn](https://mirrors.pku.edu.cn) |
+    | 南京大学 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn) |
+    | 重庆大学 | [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn) |
+    | 兰州大学 | [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn) |
+    | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn) |
+    | 山东大学 | [mirrors.sdu.edu.cn](https://mirrors.sdu.edu.cn) |
+    | 吉林大学 | [mirrors.jlu.edu.cn](https://mirrors.jlu.edu.cn) |
+    | 上海交通大学 | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn) |
+    | 上海科技大学 | [mirrors.shanghaitech.edu.cn](https://mirrors.shanghaitech.edu.cn) |
+    | 南方科技大学 | [mirrors.sustech.edu.cn](https://mirrors.sustech.edu.cn) |
+    | 南京邮电大学 | [mirrors.njupt.edu.cn](https://mirrors.njupt.edu.cn) |
+    | 电子科技大学 | [mirrors.uestc.cn](https://mirrors.uestc.cn) |
+    | 北京交通大学 | [mirror.bjtu.edu.cn](https://mirror.bjtu.edu.cn) |
+    | 齐鲁工业大学 | [mirrors.qlu.edu.cn](https://mirrors.qlu.edu.cn) |
+    | 南阳理工学院 | [mirror.nyist.edu.cn](https://mirror.nyist.edu.cn) |
+    | 武昌首义学院 | [mirrors.wsyu.edu.cn](https://mirrors.wsyu.edu.cn) |
+    | 哈尔滨工业大学 | [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn) |
+    | 北京外国语大学 | [mirrors.bfsu.edu.cn](https://mirrors.bfsu.edu.cn) |
+    | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn) |
+    | 西北农林科技大学 | [mirrors.nwafu.edu.cn](https://mirrors.nwafu.edu.cn) |
+    | 大连东软信息学院 | [mirrors.neusoft.edu.cn](https://mirrors.neusoft.edu.cn) |
 
 ## 海外地区 :flag-world-map:
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-06-20
+## Modified: 2023-06-24
 ## License: MIT
-## Github: https://github.com/SuperManito/LinuxMirrors
+## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
 
 ## 软件源列表
@@ -99,7 +99,6 @@ mirror_list_abroad=(
 )
 # 中国大陆教育网格式："软件源名称@软件源地址"
 mirror_list_edu=(
-    "ISCAS@mirror.iscas.ac.cn"
     "清华大学@mirrors.tuna.tsinghua.edu.cn"
     "北京大学@mirrors.pku.edu.cn"
     "南京大学@mirrors.nju.edu.cn"
@@ -119,14 +118,14 @@ mirror_list_edu=(
     "武昌首义学院@mirrors.wsyu.edu.cn"
     "哈尔滨工业大学@mirrors.hit.edu.cn"
     "北京外国语大学@mirrors.bfsu.edu.cn"
-    "大连东软信息学院@mirrors.neusoft.edu.cn"
-    "西北农林科技大学@mirrors.nwafu.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
+    "西北农林科技大学@mirrors.nwafu.edu.cn"
+    "大连东软信息学院@mirrors.neusoft.edu.cn"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
 # 配置方法：需要同时在两个数组变量中分别定义软件源地址，并且保证排列顺序一致
-# 工作原理：当检测到用户所选择的软件源地址在 “软件源公网地址列表” 中时就会询问是否切换为内网地址，然后从 “软件源内网地址列表” 相同的位置提取内网地址
+# 工作原理：当检测到用户所选择的软件源地址在 “软件源公网地址列表” 中时就会询问是否切换为内网地址，然后在 “软件源内网地址列表” 从相同的位置提取内网地址
 # 软件源公网地址列表
 mirror_list_extranet=(
     "mirrors.aliyun.com"
