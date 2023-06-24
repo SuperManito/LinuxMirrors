@@ -27,9 +27,9 @@ mirror_list_docker_ce=(
 mirror_list_registry=(
     "上海交通大学@docker.mirrors.sjtug.sjtu.edu.cn"
     "网易@hub-mirror.c.163.com"
-    "道客 DaoCloud@f1361db2.m.daocloud.io"
     "腾讯云@mirror.ccs.tencentyun.com"
-    "微软 Azure 中国@dockerhub.azk8s.com"
+    "道客 DaoCloud@f1361db2.m.daocloud.io"
+    "微软 Azure 中国@dockerhub.azk8s.cn"
     "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
     "阿里云（上海）@registry.cn-shanghai.aliyuncs.com"
     "阿里云（青岛）@registry.cn-qingdao.aliyuncs.com"
@@ -340,7 +340,7 @@ function ChooseMirrors() {
 
     if [[ -z "${SOURCE_REGISTRY}" ]]; then
         mirror_list_name="mirror_list_registry"
-        PrintMirrorsList "${mirror_list_name}" 39
+        PrintMirrorsList "${mirror_list_name}" 44
         local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
             read -p "${CHOICE_C}" INPUT
