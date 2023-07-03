@@ -101,7 +101,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 阿里云镜像站的 Rocky Linux 镜像分支名称为 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现。
 
-什么是默认规则？参考这几个例子： `Debian GNU/Linux => debian`、`Kali Linux => kali`、`Rocky Linux => rocky`、`AlmaLinux => almalinux`
+什么是默认规则？参考这几个例子： `Debian GNU/Linux => debian`、`Rocky Linux => rocky`、`AlmaLinux => almalinux`
 
 ### 单独更换 EPEL 源
 
