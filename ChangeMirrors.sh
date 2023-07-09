@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-06-24
+## Modified: 2023-07-10
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -4892,7 +4892,7 @@ function CommandOptions() {
         ## 指定软件源地址
         --source)
             if [ "$2" ]; then
-                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
@@ -4905,7 +4905,7 @@ function CommandOptions() {
             ;;
         --source-security)
             if [ "$2" ]; then
-                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
@@ -4918,7 +4918,7 @@ function CommandOptions() {
             ;;
         --source-vault)
             if [ "$2" ]; then
-                echo "$2" | grep -Eq "\-|\(|\)|\[|\]|\{|\}"
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
