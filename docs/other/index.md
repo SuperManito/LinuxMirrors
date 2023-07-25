@@ -78,7 +78,7 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
     === "Debian 系 Linux"
 
         ``` bash
-        apt-get remove -y docker* containerd.io podman* runc && apt-get autoremove
+        apt-get remove -y docker* containerd.io runc && apt-get autoremove
         ```
 
         > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
