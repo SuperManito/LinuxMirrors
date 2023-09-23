@@ -81,7 +81,7 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
         apt-get remove -y docker* containerd.io runc && apt-get autoremove
         ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
 
     === "RedHat 系 Linux / OpenCloudOS / openEuler"
 

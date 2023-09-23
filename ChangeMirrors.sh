@@ -146,6 +146,7 @@ mirror_list_intranet=(
 SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
+SYSTEM_DEEPIN="Deepin"
 SYSTEM_REDHAT="RedHat"
 SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
@@ -370,7 +371,7 @@ function EnvJudgment() {
             fi
         fi
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_ARCH}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}")
         # 理论全部支持
         ;;
     *)
@@ -400,7 +401,7 @@ function EnvJudgment() {
     esac
     ## 定义软件源分支名称
     if [[ -z "${SOURCE_BRANCH}" ]]; then
-        ## 默认
+        ## 默认为系统名称小写
         SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
         ## 处理特殊
         case "${SYSTEM_JUDGMENT}" in
@@ -1082,7 +1083,7 @@ function RunEnd() {
 ## 更换基于 Debian 系 Linux 发行版的软件源
 function DebianMirrors() {
     local source_suffix
-    local TIPS="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
+    local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
     local basic_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
@@ -1094,7 +1095,7 @@ function DebianMirrors() {
             source_suffix="main contrib non-free"
             ;;
         esac
-        echo "${TIPS}
+        echo "${tips}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
@@ -1117,7 +1118,7 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
         ;;
     "${SYSTEM_UBUNTU}")
         source_suffix="main restricted universe multiverse"
-        echo "${TIPS}
+        echo "${tips}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
@@ -1133,9 +1134,15 @@ deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
         ;;
     "${SYSTEM_KALI}")
         source_suffix="main non-free contrib"
-        echo "${TIPS}
+        echo "${tips}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}" >>$File_DebianSourceList
+        ;;
+    "${SYSTEM_DEEPIN}")
+        source_suffix="apricot main contrib non-free"
+        echo "${tips}
+deb ${basic_url} ${source_suffix}
+# deb-src ${basic_url} ${source_suffix}" >>$File_DebianSourceList
         ;;
     esac
 }

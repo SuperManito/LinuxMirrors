@@ -19,7 +19,7 @@ GNU/Linux 一键更换系统软件源脚本
 !!! example inline end "适配计划"
 
     暂无计划适配更多系统或版本  
-    如果你有需求那么请提交 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
+    如果你有需求那么请提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)
 
 <table>
 <tr>
@@ -33,6 +33,10 @@ GNU/Linux 一键更换系统软件源脚本
 <tr>
     <td><a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a>&nbsp;Kali Linux</td>
     <td align="center">2.0 ~ 2023</td>
+</tr>
+<tr>
+    <td><a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Deepin</td>
+    <td align="center">all</td>
 </tr>
 <tr>
     <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Red Hat Enterprise Linux</td>

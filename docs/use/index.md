@@ -33,7 +33,7 @@ hide:
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
     ```
 
-    1.  通过 `--edu` 命令选项来使用中国教育单位软件源
+    1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
     ??? quote "原始执行脚本方法"
 
@@ -75,7 +75,7 @@ hide:
 
 :material-numeric-1:{style="color: #3CA7E5"} 需使用 `Root` 用户执行脚本
 
-:   切换命令为 `sudo -i` 或 `su root`，不同系统环境使用的命令不一样，因为有些系统没有在初始安装时为 Root 用户设置固定密码所以需要使用 `sudo` 指令来提权
+:   切换命令为 `sudo -i` 或 `su root`，不同系统环境使用的命令不一样，因为有些系统没有在初始安装时为 Root 用户设置固定密码（例如Ubuntu）所以需要使用 `sudo` 指令来提权
 
 :material-numeric-2:{style="color: #3CA7E5"} 建议使用 `SSH` 远程工具
 

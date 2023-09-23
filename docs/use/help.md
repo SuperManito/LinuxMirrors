@@ -41,7 +41,7 @@
             apt-get install -y curl
             ```
 
-            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
 
         === "RedHat 系 Linux / OpenCloudOS / openEuler"
 
@@ -74,7 +74,7 @@
         apt-get update
         ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
 
     === "RedHat 系 Linux / OpenCloudOS / openEuler"
 
@@ -103,4 +103,4 @@
 
 !!! quote ""
 
-    - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行，切换命令为 `su root`
+    - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行，切换命令为 `sudo -i` 或 `su root`

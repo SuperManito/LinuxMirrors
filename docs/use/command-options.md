@@ -54,6 +54,10 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
     <td align="center">kali</td>
 </tr>
 <tr>
+    <td><a href="https://www.deepin.org" target="_blank"><img src="/../assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Deepin</td>
+    <td align="center">deepin</td>
+</tr>
+<tr>
     <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/../assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Red Hat Enterprise Linux</td>
     <td align="center">centos/rocky</td>
 </tr>
