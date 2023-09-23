@@ -59,6 +59,7 @@ hide:
     | 电子科技大学 | [mirrors.uestc.cn](https://mirrors.uestc.cn) |
     | 北京交通大学 | [mirror.bjtu.edu.cn](https://mirror.bjtu.edu.cn) |
     | 齐鲁工业大学 | [mirrors.qlu.edu.cn](https://mirrors.qlu.edu.cn) |
+    | 华南农业大学 | [mirrors.scau.edu.cn](https://mirrors.scau.edu.cn) |
     | 南阳理工学院 | [mirror.nyist.edu.cn](https://mirror.nyist.edu.cn) |
     | 武昌首义学院 | [mirrors.wsyu.edu.cn](https://mirrors.wsyu.edu.cn) |
     | 哈尔滨工业大学 | [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn) |

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-07-10
+## Modified: 2023-09-23
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -114,6 +114,7 @@ mirror_list_edu=(
     "电子科技大学@mirrors.uestc.cn"
     "北京交通大学@mirror.bjtu.edu.cn"
     "齐鲁工业大学@mirrors.qlu.edu.cn"
+    "华南农业大学@mirrors.scau.edu.cn"
     "南阳理工学院@mirror.nyist.edu.cn"
     "武昌首义学院@mirrors.wsyu.edu.cn"
     "哈尔滨工业大学@mirrors.hit.edu.cn"
