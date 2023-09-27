@@ -53,7 +53,7 @@
 </tr>
 <tr>
     <td><a href="https://www.opencloudos.org" target="_blank"><img src="./docs/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;OpenCloudOS</td>
-    <td align="center">8.6 / 9.0</td>
+    <td align="center">8.6 / 8.8 / 9.0</td>
 </tr>
 <tr>
     <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;openEuler</td>

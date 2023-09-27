@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-09-23
+## Modified: 2023-09-28
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -4152,6 +4152,7 @@ name=OpenCloudOS $releasever - Plus-debuginfo
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Plus/$basearch/debug/tree/
 gpgcheck=1
 enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
         cat >$Dir_YumRepos/OpenCloudOS.repo <<\EOF
 # OpenCloudOS.repo
