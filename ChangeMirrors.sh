@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-09-28
+## Modified: 2023-10-14
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -115,6 +115,7 @@ mirror_list_edu=(
     "北京交通大学@mirror.bjtu.edu.cn"
     "齐鲁工业大学@mirrors.qlu.edu.cn"
     "华南农业大学@mirrors.scau.edu.cn"
+    "西安交通大学@mirrors.xjtu.edu.cn"
     "南阳理工学院@mirror.nyist.edu.cn"
     "武昌首义学院@mirrors.wsyu.edu.cn"
     "哈尔滨工业大学@mirrors.hit.edu.cn"
@@ -182,13 +183,17 @@ RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
 BLUE='\033[34m'
+PURPLE='\033[35m'
+AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS='[\033[32mOK\033[0m]'
-COMPLETE='[\033[32mDONE\033[0m]'
-WARN='[\033[33mWARN\033[0m]'
-ERROR='[\033[31mERROR\033[0m]'
-WORKING='[\033[34m*\033[0m]'
+SUCCESS="[\033[1;32m成功${PLAIN}]"
+COMPLETE="[\033[1;32m完成${PLAIN}]"
+WARN="[\033[1;5;33m注意${PLAIN}]"
+ERROR="[\033[1;31m错误${PLAIN}]"
+FAIL="[\033[1;31m失败${PLAIN}]"
+TIP="[\033[1;32m提示${PLAIN}]"
+WORKING="[\033[1;36m >_ ${PLAIN}]"
 
 function StartTitle() {
     [ -z "${SOURCE}" ] && clear
@@ -569,6 +574,11 @@ function ChooseMirrors() {
 
     Title
     if [[ -z "${SOURCE}" ]]; then
+        ## 使用官方源
+        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+            return
+        fi
+
         if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
             local mirror_list_name="mirror_list_abroad"
             PrintMirrorsList "${mirror_list_name}" 60
@@ -921,26 +931,25 @@ function ChangeMirrors() {
             done
         }
 
-        if [[ "${PRINT_DIFF}" == "true" ]]; then
-            if [[ -x /usr/bin/diff && "${BACKUPED}" == "true" ]]; then
-                case "${SYSTEM_FACTIONS}" in
-                "${SYSTEM_DEBIAN}")
-                    DiffMode1 $File_DebianSourceListBackup $File_DebianSourceList
-                    ;;
-                "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-                    DiffMode2 $Dir_YumReposBackup $Dir_YumRepos
-                    ;;
-                "${SYSTEM_OPENSUSE}")
-                    DiffMode2 $Dir_openSUSEReposBackup $Dir_openSUSERepos
-                    ;;
-                "${SYSTEM_ARCH}")
-                    DiffMode1 $File_ArchMirrorListBackup $File_ArchMirrorList
-                    ;;
-                esac
-            fi
+        if [[ -x /usr/bin/diff && "${BACKUPED}" == "true" ]]; then
+            case "${SYSTEM_FACTIONS}" in
+            "${SYSTEM_DEBIAN}")
+                DiffMode1 $File_DebianSourceListBackup $File_DebianSourceList
+                ;;
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+                DiffMode2 $Dir_YumReposBackup $Dir_YumRepos
+                ;;
+            "${SYSTEM_OPENSUSE}")
+                DiffMode2 $Dir_openSUSEReposBackup $Dir_openSUSERepos
+                ;;
+            "${SYSTEM_ARCH}")
+                DiffMode1 $File_ArchMirrorListBackup $File_ArchMirrorList
+                ;;
+            esac
         fi
     }
 
+    ## 调用换源函数
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         DebianMirrors
@@ -961,7 +970,11 @@ function ChangeMirrors() {
         ArchMirrors
         ;;
     esac
-    PrintDiff
+    ## 比较差异
+    if [[ "${PRINT_DIFF}" == "true" ]]; then
+        PrintDiff
+    fi
+    ## 软件源同步/更新
     echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
@@ -980,7 +993,7 @@ function ChangeMirrors() {
     if [ $? -eq 0 ]; then
         echo -e "\n$COMPLETE 软件源更换完毕"
     else
-        echo -e "\n$ERROR 软件源${SYNC_TXT}失败\n"
+        echo -e "\n$FAIL 软件源${SYNC_TXT}失败\n"
         echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_TXT}失败那么可能由以下原因导致"
         echo -e "1. 网络问题：例如连接异常、网络间歇式中断、由地区影响的网络因素等"
         echo -e "2. 软件源问题：例如正在维护，或者出现罕见的文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态，请前往镜像站对应路径验证"
@@ -1082,6 +1095,23 @@ function RunEnd() {
 
 ## 更换基于 Debian 系 Linux 发行版的软件源
 function DebianMirrors() {
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_DEBIAN}")
+            SOURCE="deb.debian.org"
+            ;;
+        "${SYSTEM_UBUNTU}")
+            SOURCE="archive.ubuntu.com"
+            ;;
+        "${SYSTEM_KALI}")
+            SOURCE="http.kali.org"
+            ;;
+        "${SYSTEM_DEEPIN}")
+            SOURCE="community-packages.deepin.com"
+            ;;
+        esac
+    fi
     local source_suffix
     local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
     local basic_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
@@ -1161,6 +1191,9 @@ function RedHatMirrors() {
         [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
         ## 生成 repo 源文件
         GenRepoFiles_EPEL
+        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+            return
+        fi
 
         # 更换 WEB 协议（HTTP/HTTPS）
         case ${SYSTEM_VERSION_NUMBER:0:1} in
@@ -1215,6 +1248,9 @@ function RedHatMirrors() {
         GenRepoFiles_Fedora
         ;;
     esac
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        return
+    fi
 
     ## 修改源
     cd $Dir_YumRepos
@@ -1370,8 +1406,12 @@ function RedHatMirrors() {
 ## 更换基于 OpenCloudOS 发行版的软件源
 function OpenCloudOSMirrors() {
     GenRepoFiles_OpenCloudOS ${SYSTEM_VERSION_NUMBER:0:1}
-    cd $Dir_YumRepos
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        return
+    fi
 
+    ## 修改源
+    cd $Dir_YumRepos
     case ${SYSTEM_VERSION_NUMBER:0:1} in
     9)
         sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
@@ -1393,8 +1433,12 @@ function OpenCloudOSMirrors() {
 ## 更换基于 openEuler 发行版的软件源
 function openEulerMirrors() {
     GenRepoFiles_openEuler
-    cd $Dir_YumRepos
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        return
+    fi
 
+    ## 修改源
+    cd $Dir_YumRepos
     sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
         -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
         -i \
@@ -1411,8 +1455,12 @@ function openSUSEMirrors() {
         GenRepoFiles_openSUSE "tumbleweed"
         ;;
     esac
-    cd $Dir_openSUSERepos
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        return
+    fi
 
+    ## 修改源
+    cd $Dir_openSUSERepos
     # 更换 WEB 协议（HTTP/HTTPS）
     sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" repo-*
     # 更换软件源
@@ -1464,6 +1512,11 @@ function openSUSEMirrors() {
 
 ## 更换基于 Arch Linux 发行版的软件源
 function ArchMirrors() {
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        SOURCE="mirrors.aliyun.com"
+        echo -e "\n${TIP} 由于 Arch Linux 无官方源已切换至阿里源\n"
+    fi
+    ## 修改源
     case "${SOURCE_BRANCH}" in
     "archlinuxarm")
         echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch/\$repo" >>$File_ArchMirrorList
@@ -4868,6 +4921,7 @@ function CommandOptions() {
   --source                 指定软件源地址                                    地址
   --source-security        指定 Debian 的 security 软件源地址                地址
   --source-vault           指定 CentOS/AlmaLinux 的 vault 软件源地址         地址
+  --use-official-source    使用操作系统官方软件源                            无
   --branch                 指定软件源分支(路径)                              分支名
   --branch-security        指定 Debian 的 security 软件源分支(路径)          分支名
   --branch-vault           指定 CentOS/AlmaLinux 的 vault 软件源分支(路径)   分支名
@@ -4937,6 +4991,10 @@ function CommandOptions() {
             else
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
+            ;;
+        ## 使用官方源
+        --use-official-source)
+            USE_OFFICIAL_SOURCE="true"
             ;;
         ## 指定软件源分支
         --branch)
@@ -5110,6 +5168,7 @@ function CommandOptions() {
     ## 给部分命令选项赋予默认值
     ONLY_EPEL="${ONLY_EPEL:-"false"}"
     BACKUP="${BACKUP:-"true"}"
+    USE_OFFICIAL_SOURCE="${USE_OFFICIAL_SOURCE:-"false"}"
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
     PRINT_DIFF="${PRINT_DIFF:-"false"}"
 }

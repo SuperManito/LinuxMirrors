@@ -5,6 +5,7 @@
 | `--source` | 指定软件源地址(域名或IP) | 地址 |
 | `--source-security` | 指定 Debian 的 security 软件源地址(域名或IP) | 地址 |
 | `--source-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源地址(域名或IP) | 地址 |
+| `--use-official-source` | 使用操作系统官方软件源 | 无 |
 | `--branch` | 指定软件源分支(路径) | 分支名 |
 | `--branch-security` | 指定 Debian 的 security 软件源分支(路径) | 分支名 |
 | `--branch-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源分支(路径) | 分支名 |
@@ -113,6 +114,14 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 ``` bash
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
+```
+
+### 恢复官方源
+
+当你不小心删除了官方源的备份时可以使用此命令来恢复，使用此命令选项后将跳过选择软件源步骤
+
+``` bash
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) ----use-official-source
 ```
 
 ### 自定义 Debian Security 源
