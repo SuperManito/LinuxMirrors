@@ -121,7 +121,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
 当你不小心删除了官方源的备份时可以使用此命令来恢复，使用此命令选项后将跳过选择软件源步骤
 
 ``` bash
-bash <(curl -sSL https://linuxmirrors.cn/main.sh) ----use-official-source
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source
 ```
 
 ### 自定义 Debian Security 源
