@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-10-14
+## Modified: 2023-10-20
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -307,13 +307,11 @@ function EnvJudgment() {
         SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
         ;;
     "${SYSTEM_REDHAT}")
-        SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
+        SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
         ## Red Hat Enterprise Linux
-        cat $File_RedHatRelease | grep -q "${SYSTEM_RHEL}"
-        [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
+        grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
         ## CentOS Stream
-        cat $File_RedHatRelease | grep -q "${SYSTEM_CENTOS_STREAM}"
-        [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
+        grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
         ;;
     "${SYSTEM_OPENCLOUDOS}")
         SYSTEM_JUDGMENT="${SYSTEM_OPENCLOUDOS}"
@@ -406,8 +404,9 @@ function EnvJudgment() {
     esac
     ## 定义软件源分支名称
     if [[ -z "${SOURCE_BRANCH}" ]]; then
-        ## 默认为系统名称小写
-        SOURCE_BRANCH="$(echo "${SYSTEM_JUDGMENT,,}" | sed "s/ /-/g")"
+        ## 默认为系统名称小写，替换空格
+        SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
+        SOURCE_BRANCH="${SOURCE_BRANCH// /-}"
         ## 处理特殊
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
@@ -491,7 +490,8 @@ function ChooseMirrors() {
         echo -e ''
 
         local list_arr=()
-        local list_arr_sum="$(eval echo \${#$1[@]})"
+        local list_arr_sum
+        list_arr_sum="$(eval echo \${#$1[@]})"
         for ((a = 0; a < $list_arr_sum; a++)); do
             list_arr[$a]="$(eval echo \${$1[a]})"
         done
@@ -507,13 +507,13 @@ function ChooseMirrors() {
                 [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
                 [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
                 # 非一般字符长度
-                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;"))
+                tmp_mirror_name_length=$(StringLength "$(echo "${tmp_mirror_name// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;")")
                 ## 填充空格
-                tmp_spaces_nums=$(($(($default_mirror_name_length - ${tmp_mirror_name_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
+                tmp_spaces_nums=$(($((default_mirror_name_length - tmp_mirror_name_length - $(StringLength "${tmp_mirror_name}"))) / 2))
                 for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
                     tmp_mirror_name="${tmp_mirror_name} "
                 done
-                printf " ❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+                printf " ❖  %-$((default_mirror_name_length + tmp_mirror_name_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
@@ -543,8 +543,9 @@ function ChooseMirrors() {
             fi
         done
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
-            local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
-            read -p "${CHOICE}" INPUT
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
             [Yy] | [Yy][Ee][Ss]) ;;
@@ -563,13 +564,14 @@ function ChooseMirrors() {
 
     function Title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
-        local arch=""${DEVICE_ARCH}""
-        local date="$(date "+%Y-%m-%d %H:%M:%S")"
-        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+        local arch="${DEVICE_ARCH}"
+        local date_time time_zone
+        date_time="$(date "+%Y-%m-%d %H:%M:%S")"
+        time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
         echo -e ''
         echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e " 系统时间 ${BLUE}${date} ${timezone}${PLAIN}"
+        echo -e " 系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
     }
 
     Title
@@ -590,16 +592,18 @@ function ChooseMirrors() {
             PrintMirrorsList "${mirror_list_name}" 31
         fi
 
-        local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        local CHOICE
+        CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
-            read -p "${CHOICE}" INPUT
+            read -rp "${CHOICE}" INPUT
             case "${INPUT}" in
             [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                local tmp_source
+                tmp_source="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
                 if [[ -z "${tmp_source}" ]]; then
                     echo -e "\n$WARN 请输入有效的数字序号！"
                 else
-                    SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                    SOURCE="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]} | awk -F '@' '{print$2}')"
                     # echo "${SOURCE}"
                     # exit
                     break
@@ -624,8 +628,9 @@ function ChooseWebProtocol() {
         if [[ "${ONLY_HTTP}" == "True" ]]; then
             WEB_PROTOCOL="http"
         else
-            local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
-            read -p "${CHOICE}" INPUT
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
             [Yy] | [Yy][Ee][Ss])
@@ -664,11 +669,13 @@ function ChooseInstallEPEL() {
             "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
                 Check
                 if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
+                    local CHOICE
+                    CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
                 else
-                    local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+                    local CHOICE
+                    CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
                 fi
-                read -p "${CHOICE}" INPUT
+                read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
                 [Yy] | [Yy][Ee][Ss])
@@ -703,8 +710,9 @@ function CloseFirewall() {
             if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
                 Main
             elif [[ -z "${CLOSE_FIREWALL}" ]]; then
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-                read -p "${CHOICE}" INPUT
+                local CHOICE
+                CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
                 [Yy] | [Yy][Ee][Ss])
@@ -727,17 +735,18 @@ function BackupOriginMirrors() {
         local backup_file=$2
         local type="$3"
 
-        if [ -s $target_file ]; then
-            if [ -s $backup_file ]; then
+        if [ -s "$target_file" ]; then
+            if [ -s "$backup_file" ]; then
                 if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
-                    local CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的${type}源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                    read -p "${CHOICE_BACKUP1}" INPUT
+                    local CHOICE_BACKUP1
+                    CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的${type}源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                    read -rp "${CHOICE_BACKUP1}" INPUT
                     [[ -z "${INPUT}" ]] && INPUT=Y
                     case "${INPUT}" in
                     [Yy] | [Yy][Ee][Ss]) ;;
                     [Nn] | [Nn][Oo])
                         echo ''
-                        cp -rvf $target_file $backup_file 2>&1
+                        cp -rvf "$target_file" "$backup_file" 2>&1
                         BACKUPED="true"
                         ;;
                     *)
@@ -747,13 +756,13 @@ function BackupOriginMirrors() {
                 fi
             else
                 echo ''
-                cp -rvf $target_file $backup_file 2>&1
+                cp -rvf "$target_file" "$backup_file" 2>&1
                 BACKUPED="true"
                 echo -e "\n$COMPLETE 已备份原有${type}源文件"
                 sleep 1s
             fi
         else
-            [ ! -f $target_file ] && touch $target_file
+            [ -f "$target_file" ] || touch "$target_file"
             echo -e ''
         fi
     }
@@ -763,21 +772,22 @@ function BackupOriginMirrors() {
         local VERIFICATION_FILES=1
         local VERIFICATION_BACKUPFILES=1
 
-        [ -d $target_dir ] && ls $target_dir | grep '\.repo$' -q
+        [ -d "$target_dir" ] && ls "$target_dir" | grep '\.repo$' -q
         VERIFICATION_FILES=$?
-        [ -d $backup_dir ] && ls $backup_dir | grep '\.repo$' -q
+        [ -d "$backup_dir" ] && ls "$backup_dir" | grep '\.repo$' -q
         VERIFICATION_BACKUPFILES=$?
         if [ ${VERIFICATION_FILES} -eq 0 ]; then
-            if [ -d $backup_dir ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
+            if [ -d "$backup_dir" ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
                 if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
-                    local CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                    read -p "${CHOICE_BACKUP3}" INPUT
+                    local CHOICE_BACKUP3
+                    CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                    read -rp "${CHOICE_BACKUP3}" INPUT
                     [[ -z "${INPUT}" ]] && INPUT=Y
                     case "${INPUT}" in
                     [Yy] | [Yy][Ee][Ss]) ;;
                     [Nn] | [Nn][Oo])
                         echo ''
-                        cp -rvf $target_dir/* $backup_dir 2>&1
+                        cp -rvf "${target_dir}/*" "$backup_dir" 2>&1
                         BACKUPED="true"
                         ;;
                     *)
@@ -786,15 +796,15 @@ function BackupOriginMirrors() {
                     esac
                 fi
             else
-                [ ! -d $backup_dir ] && mkdir -p $backup_dir
+                [ ! -d "$backup_dir" ] && mkdir -p "$backup_dir"
                 echo ''
-                cp -rvf $target_dir/* $backup_dir 2>&1
+                cp -rvf "${target_dir}/*" "$backup_dir" 2>&1
                 BACKUPED="true"
                 echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                 sleep 1s
             fi
         else
-            [ -d $target_dir ] || mkdir -p $target_dir
+            [ -d "$target_dir" ] || mkdir -p "$target_dir"
         fi
     }
 
@@ -843,7 +853,7 @@ function RemoveOriginMirrors() {
                             ;;
                         *)
                             if [ -f $Dir_YumRepos/epel.repo ]; then
-                                ls $Dir_YumRepos/ | egrep -v epel | xargs rm -rf
+                                ls $Dir_YumRepos/ | grep -Ev epel | xargs -0 rm -rf
                             else
                                 rm -rf $Dir_YumRepos/*
                             fi
@@ -852,7 +862,7 @@ function RemoveOriginMirrors() {
                         ;;
                     "${SYSTEM_CENTOS}")
                         if [ -f $Dir_YumRepos/epel.repo ]; then
-                            ls $Dir_YumRepos/ | egrep -v epel | xargs rm -rf
+                            ls $Dir_YumRepos/ | grep -Ev epel | xargs -0 rm -rf
                         else
                             rm -rf $Dir_YumRepos/*
                         fi
@@ -910,9 +920,9 @@ function ChangeMirrors() {
             local backup_file=$1
             local origin_file=$2
             if [[ -s $backup_file && -s $origin_file ]]; then
-                if [[ "$(cat $backup_file)" != "$(cat $origin_file)" ]]; then
+                if [[ "$(cat "$backup_file")" != "$(cat "$origin_file")" ]]; then
                     echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
-                    diff $backup_file $origin_file -d --color=always -I -B -E
+                    diff "$backup_file" "$origin_file" -d --color=always -I -B -E
                 fi
             fi
         }
@@ -926,7 +936,7 @@ function ChangeMirrors() {
                 origin_file="$origin_dir/$item"
                 if [[ "$(cat $backup_file)" != "$(cat $origin_file)" ]]; then
                     echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
-                    diff $backup_file $origin_file -d --color=always -I -B -E
+                    diff "$backup_file" "$origin_file" -d --color=always -I -B -E
                 fi
             done
         }
@@ -971,7 +981,7 @@ function ChangeMirrors() {
         ;;
     esac
     ## 比较差异
-    if [[ "${PRINT_DIFF}" == "true" ]]; then
+    if [[ "${PRINT_DIFF}" == true ]]; then
         PrintDiff
     fi
     ## 软件源同步/更新
@@ -997,7 +1007,7 @@ function ChangeMirrors() {
         echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_TXT}失败那么可能由以下原因导致"
         echo -e "1. 网络问题：例如连接异常、网络间歇式中断、由地区影响的网络因素等"
         echo -e "2. 软件源问题：例如正在维护，或者出现罕见的文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态，请前往镜像站对应路径验证"
-        echo -e "\n软件源地址："${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"\n"
+        echo -e "\n软件源地址：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
         exit 1
     fi
 }
@@ -1035,8 +1045,9 @@ function UpdateSoftware() {
         echo -e "\n$COMPLETE 清理完毕"
     }
     function MainInteraction() {
-        local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
-        read -p "${CHOICE}" INPUT
+        local CHOICE
+        CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
+        read -rp "${CHOICE}" INPUT
         [[ -z "${INPUT}" ]] && INPUT=Y
         case "${INPUT}" in
         [Yy] | [Yy][Ee][Ss]) ;;
@@ -1054,8 +1065,9 @@ function UpdateSoftware() {
         esac
     }
     function CleanCacheInteraction() {
-        local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-        read -p "${CHOICE}" INPUT
+        local CHOICE
+        CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+        read -rp "${CHOICE}" INPUT
         [[ -z "${INPUT}" ]] && INPUT=Y
         case "${INPUT}" in
         [Yy] | [Yy][Ee][Ss])
@@ -1182,13 +1194,13 @@ function RedHatMirrors() {
     ## 安装/更换 EPEL (Extra Packages for Enterprise Linux) 附加软件包软件源
     function EPELMirrors() {
         ## 安装 EPEL 软件包
-        if [ ${VERIFICATION_EPEL} -ne 0 ]; then
+        if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
             echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
             yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
         fi
         ## 删除原有 repo 源文件
-        [ ${VERIFICATION_EPELFILES} -eq 0 ] && rm -rf $Dir_YumRepos/epel*
-        [ ${VERIFICATION_EPELBACKUPFILES} -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
+        [ "${VERIFICATION_EPELFILES}" -eq 0 ] && rm -rf $Dir_YumRepos/epel*
+        [ "${VERIFICATION_EPELBACKUPFILES}" -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
         ## 生成 repo 源文件
         GenRepoFiles_EPEL
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -1225,24 +1237,24 @@ function RedHatMirrors() {
     "${SYSTEM_RHEL}")
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
-            GenRepoFiles_RockyLinux ${SYSTEM_VERSION_NUMBER:0:1}
+            GenRepoFiles_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
             ;;
         *)
-            GenRepoFiles_CentOS ${SYSTEM_VERSION_NUMBER:0:1}
+            GenRepoFiles_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
             ;;
         esac
         ;;
     "${SYSTEM_CENTOS}")
-        GenRepoFiles_CentOS ${SYSTEM_VERSION_NUMBER:0:1}
+        GenRepoFiles_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_CENTOS_STREAM}")
-        GenRepoFiles_CentOSStream ${SYSTEM_VERSION_NUMBER:0:1}
+        GenRepoFiles_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_ROCKY}")
-        GenRepoFiles_RockyLinux ${SYSTEM_VERSION_NUMBER:0:1}
+        GenRepoFiles_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_ALMALINUX}")
-        GenRepoFiles_AlmaLinux ${SYSTEM_VERSION_NUMBER:0:1}
+        GenRepoFiles_AlmaLinux "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_FEDORA}")
         GenRepoFiles_Fedora
@@ -1276,7 +1288,7 @@ function RedHatMirrors() {
             sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
             case ${SYSTEM_VERSION_NUMBER:0:1} in
             8)
-                sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
+                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
                 # 单独处理 CentOS-Linux-Sources.repo
                 sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
@@ -1299,7 +1311,7 @@ function RedHatMirrors() {
         8)
             ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
             # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
-            sed -i 's|mirror.centos.org/$contentdir|mirror.centos.org/centos-vault|g' CentOS-*
+            sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
             sed -i "s/\$releasever/8.5.2111/g" CentOS-*
             # 单独处理 CentOS-Linux-Sources.repo
             sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
@@ -1405,7 +1417,7 @@ function RedHatMirrors() {
 
 ## 更换基于 OpenCloudOS 发行版的软件源
 function OpenCloudOSMirrors() {
-    GenRepoFiles_OpenCloudOS ${SYSTEM_VERSION_NUMBER:0:1}
+    GenRepoFiles_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
