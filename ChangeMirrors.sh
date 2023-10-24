@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-10-20
+## Modified: 2023-10-24
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -787,7 +787,7 @@ function BackupOriginMirrors() {
                     [Yy] | [Yy][Ee][Ss]) ;;
                     [Nn] | [Nn][Oo])
                         echo ''
-                        cp -rvf "${target_dir}/*" "$backup_dir" 2>&1
+                        cp -rvf $target_dir/* "$backup_dir" 2>&1
                         BACKUPED="true"
                         ;;
                     *)
@@ -798,7 +798,7 @@ function BackupOriginMirrors() {
             else
                 [ ! -d "$backup_dir" ] && mkdir -p "$backup_dir"
                 echo ''
-                cp -rvf "${target_dir}/*" "$backup_dir" 2>&1
+                cp -rvf $target_dir}/* "$backup_dir" 2>&1
                 BACKUPED="true"
                 echo -e "\n$COMPLETE 已备份原有 repo 源文件"
                 sleep 1s
