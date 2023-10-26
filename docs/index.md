@@ -8,7 +8,8 @@ hide:
   - footer
 ---
 
-![](/assets/images/logo.png)
+![](/assets/images/brand/light/2.png#only-light){ width="300" }
+![](/assets/images/brand/dark/2.png#only-dark){ width="300" }
 
 GNU/Linux 一键更换系统软件源脚本
 
