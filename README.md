@@ -40,7 +40,7 @@
     </tr>
     <tr>
         <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="./docs/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Fedora</td>
-        <td align="center">30 ~ 38</td>
+        <td align="center">30 ~ 39</td>
     </tr>
     <tr>
         <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;CentOS</td>

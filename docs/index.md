@@ -45,7 +45,7 @@ GNU/Linux 一键更换系统软件源脚本
 </tr>
 <tr>
     <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Fedora</td>
-    <td align="center">30 ~ 38</td>
+    <td align="center">30 ~ 39</td>
 </tr>
 <tr>
     <td><a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;CentOS</td>

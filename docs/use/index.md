@@ -7,7 +7,7 @@ hide:
 
 > 建议在使用前确认目标镜像站是否支持您正在使用的操作系统
 
-=== ":material-home: 国内使用（默认）"
+=== ":material-home: 中国大陆（默认）"
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh)
@@ -27,7 +27,7 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
 
-=== ":material-school: 国内教育网使用"
+=== ":material-school: 中国大陆教育网"
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
@@ -49,7 +49,7 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
 
-=== ":octicons-globe-16: 海外使用"
+=== ":octicons-globe-16: 海外地区"
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
