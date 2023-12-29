@@ -1,18 +1,20 @@
 :root {
     --md-code-font: 'SF Mono';
-    --md-footer-bg-color--dark: #1c1e21;
     --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
+    --md-default-bg-color--light: #ffffff;
+    --md-default-bg-color--dark: hsla(var(--md-hue),15%,14%,1);
 }
-[data-md-color-scheme='slate'] {
-    --md-default-bg-color: #1b1b1d;
-    --md-code-bg-color: #161618;
+.md-header {
+    background-color: hsla(240, 9%, 75%, 0.33);
 }
 [data-md-color-scheme='slate'] .md-header {
     background-color: hsla(240, 4%,11%, 0.33);
 }
+.md-tabs {
+    background-color: hsla(240, 9%, 75%, 0.33);
+}
 [data-md-color-scheme='slate'] .md-tabs {
     background-color: hsla(240, 4%,11%, 0.33);
-    border-bottom: 0.05rem solid #5c5c5c42;
 }
 @font-face {
     font-family: 'SF Mono';

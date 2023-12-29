@@ -3,9 +3,7 @@ hide:
   - feedback
 ---
 
-## 执行命令
-
-> 建议在使用前确认目标镜像站是否支持您正在使用的操作系统
+## 一键执行命令
 
 === ":material-home: 中国大陆（默认）"
 
@@ -13,7 +11,9 @@ hide:
     bash <(curl -sSL https://linuxmirrors.cn/main.sh)
     ```
 
-    ??? quote "原始执行脚本方法"
+    !!! abstract "建议在使用前确认目标镜像站是否支持您正在使用的操作系统"
+
+    ??? quote "原始执行命令"
 
         === ":simple-github: GitHub"
 
@@ -35,7 +35,9 @@ hide:
 
     1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-    ??? quote "原始执行脚本方法"
+    !!! abstract "建议在使用前确认目标镜像站是否支持您正在使用的操作系统"
+
+    ??? quote "原始执行命令"
 
         === ":simple-github: GitHub"
 
@@ -57,7 +59,9 @@ hide:
 
     1.  通过 `--abroad` 命令选项来使用海外软件源
 
-    ??? quote "原始执行脚本方法"
+    !!! abstract "建议在使用前确认目标镜像站是否支持您正在使用的操作系统"
+
+    ??? quote "原始执行命令"
 
         === ":simple-github: GitHub"
 
@@ -71,18 +75,49 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
 
-## 注意事项
+## 相关注意事项
 
-:material-numeric-1:{style="color: #3CA7E5"} 需使用 `Root` 用户执行脚本
+<div class="grid cards" markdown>
 
-:   切换命令为 `sudo -i` 或 `su root`，不同系统环境使用的命令不一样，因为有些系统没有在初始安装时为 Root 用户设置固定密码（例如Ubuntu）所以需要使用 `sudo` 指令来提权
+-   :material-numeric-1:{style="color: #3CA7E5" .lg} __需使用 `ROOT` 用户执行脚本__
 
-:material-numeric-2:{style="color: #3CA7E5"} 建议使用 `SSH` 远程工具
+    ---
 
-:   如果你使用的系统终端界面不支持 `UTF-8` 编码那么将无法正常显示中文内容，导致无法正确选择交互内容。大部分系统都会自动开启该服务，否则请参考[启用方法](/use/help/#%E5%85%B3%E4%BA%8E%E5%BC%80%E5%90%AF-ssh-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E7%9A%84%E6%96%B9%E6%B3%95)
+    切换命令为 `sudo -i` 或 `su root`，不同系统环境使用的命令不一样，因为有些系统没有在初始安装时为 ROOT 用户设置固定密码（例如Ubuntu）所以需要使用 `sudo` 指令来提权
 
-:material-numeric-3:{style="color: #3CA7E5"} 如果是首次在新系统上执行脚本
+-   :material-numeric-2:{style="color: #3CA7E5" .lg} __建议使用 `SSH` 远程工具__
 
-:   当前执行方式依赖 `curl` 指令来获取脚本内容并执行，所以需要先通过包管理工具来安装该软件包，否则会报错 `Command not found`，安装方法详见[常见问题](/use/help/#%E5%85%B3%E4%BA%8E%E6%8A%A5%E9%94%99-command-not-found)，若无法安装就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)到本地新建`.sh`脚本，然后通过 `bash` 手动执行  
+    ---
+
+    如果你使用的系统终端界面不支持 `UTF-8` 编码那么将无法正常显示中文内容，导致无法正确选择交互内容。大部分系统都会自动开启该服务，否则请参考[启用方法](help.md#%E5%85%B3%E4%BA%8E%E5%BC%80%E5%90%AF-ssh-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E7%9A%84%E6%96%B9%E6%B3%95)
+
+-   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新系统上首次执行脚本__
+
+    ---
+
+    当前执行方式依赖 `curl` 指令来获取脚本内容并执行，所以需要先通过包管理工具来安装该软件包，否则会报错 `Command not found`，安装方法详见[常见问题](help.md#%E5%85%B3%E4%BA%8E%E6%8A%A5%E9%94%99-command-not-found)，若无法安装就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)到本地新建`.sh`脚本，然后通过 `bash` 手动执行
+
+</div>
+
+## 未启用的源
+
+遵循系统默认设置即没有启用的软件源不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，如果你有使用需求请阅读下面的启用方法
+
+=== "Debian 系 Linux"
+
+    默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
+
+    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
+
+=== "RedHat 系 Linux / OpenCloudOS / openEuler"
+
+    部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
+
+    > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
+
+=== "openSUSE"
+
+    部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
+
 
 !!! note ":octicons-heart-fill-24:{ .heart style="color: red" } 如果您觉得这个项目不错对您有所帮助的话，方便在仓库右上角给颗 ⭐ 并分享给更多的朋友吗？"

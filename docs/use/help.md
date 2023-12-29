@@ -1,4 +1,42 @@
 
+## 关于报错 Command not found
+
+!!! quote ""
+
+    - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
+
+        === "Debian 系 Linux"
+
+            ``` sh
+            apt-get install -y curl
+            ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
+
+            新装系统需要先执行一遍更新 `apt-get update`
+
+        === "RedHat 系 Linux / OpenCloudOS / openEuler"
+
+            ``` sh
+            yum install -y curl || dnf install -y curl
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
+
+            新装系统需要先执行一遍更新 `yum makecache`
+
+        === "openSUSE"
+
+            ``` sh
+            zypper install curl
+            ```
+
+        === "Arch Linux"
+
+            ``` sh
+            pacman -S curl
+            ```
+
 ## 关于开启 SSH 远程登录的方法
 
 !!! quote ""
@@ -27,41 +65,6 @@
         ``` bash
         ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
         ```
-
-
-## 关于报错 Command not found
-
-!!! quote ""
-
-    - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
-
-        === "Debian 系 Linux"
-
-            ``` sh
-            apt-get install -y curl
-            ```
-
-            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
-
-        === "RedHat 系 Linux / OpenCloudOS / openEuler"
-
-            ``` sh
-            yum install -y curl || dnf install -y curl
-            ```
-
-            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
-
-        === "openSUSE"
-
-            ``` sh
-            zypper install curl
-            ```
-
-        === "Arch Linux"
-
-            ``` sh
-            pacman -S curl
-            ```
 
 ## 还原已备份的软件源
 

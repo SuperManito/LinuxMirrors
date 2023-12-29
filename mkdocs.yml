@@ -2,7 +2,7 @@ site_name: LinuxMirrors
 repo_name: SuperManito/LinuxMirrors
 repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
-copyright: 'Copyright &copy; 2023 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
+copyright: 'Copyright &copy; 2024 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
 theme:
   logo: assets/images/logo.png
   name: material
@@ -27,18 +27,27 @@ theme:
       example: octicons/beaker-16
       quote: octicons/quote-16
   palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: 跟随系统
     # Palette toggle for light mode
-    - scheme: default
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: white
+      accent: white
       toggle:
         icon: octicons/sun-16
-        name: Switch to dark mode
+        name: 亮色主题
     # Palette toggle for dark mode
-    - scheme: slate
-      primary: indigo
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
       toggle:
         icon: octicons/moon-16
-        name: Switch to light mode
+        name: 深色主题
   features:
     - header.autohide
     - navigation.top
@@ -108,8 +117,8 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
       options:
         custom_icons:
           - docs/theme
@@ -139,7 +148,6 @@ nav:
       - "使用方法": use/index.md
       - "常见问题": use/help.md
       - "执行流程": use/execution-flow.md
-      - "未启用源": use/not-enabled.md
       - "高级用法":
           - "命令选项": use/command-options.md
   - "其它工具": other/index.md
