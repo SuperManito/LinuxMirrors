@@ -29,14 +29,16 @@ assignees: ''
 - [ ] `Debian`
 - [ ] `Ubuntu`
 - [ ] `Kali Linux`
+- [ ] `Deepin`
 - [ ] `Red Hat Enterprise Linux`
-- [ ] `CentOS / CentOS Stream`
 - [ ] `Fedora`
-- [ ] `AlmaLinux`
+- [ ] `CentOS / CentOS Stream`
 - [ ] `Rocky Linux`
+- [ ] `AlmaLinux`
 - [ ] `OpenCloudOS`
 - [ ] `openEuler`
 - [ ] `openSUSE`
+- [ ] `Arch Linux`
 
 ## 2. 处理器架构
 <!-- 将中括号内的 "空格" 替换为 "x" ，即为选中，例：" - [x] 否 " -->
@@ -62,7 +64,7 @@ assignees: ''
 A：
 
 
-### (2) 详细的系统日志
+### (2) 详细的执行日志
 <!-- 请在此处粘贴详细完整的日志，从执行脚本开始到结束。 -->
 ```
 
