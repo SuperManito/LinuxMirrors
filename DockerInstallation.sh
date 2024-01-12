@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2023-07-15
+## Modified: 2024-01-12
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -13,6 +13,7 @@ mirror_list_docker_ce=(
     "华为云@repo.huaweicloud.com/docker-ce"
     "微软 Azure 中国@mirror.azure.cn/docker-ce"
     "网易@mirrors.163.com/docker-ce"
+    "火山引擎@mirrors.volces.com/docker"
     "清华大学@mirrors.tuna.tsinghua.edu.cn/docker-ce"
     "北京大学@mirrors.pku.edu.cn/docker-ce"
     "南京大学@mirrors.nju.edu.cn/docker-ce"
@@ -736,7 +737,7 @@ function CommandOptions() {
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
-                    SOURCE="$2"
+                    SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
@@ -750,7 +751,7 @@ function CommandOptions() {
                 if [ $? -eq 0 ]; then
                     Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
-                    SOURCE_REGISTRY="$2"
+                    SOURCE_REGISTRY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else

@@ -11,7 +11,7 @@ hide:
     bash <(curl -sSL https://linuxmirrors.cn/main.sh)
     ```
 
-    !!! abstract "建议在使用前确认目标镜像站是否支持您正在使用的操作系统"
+    !!! question "请在使用前检查目标镜像站是否支持您正在使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -27,6 +27,8 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
 
+        > 可以使用仓库原始地址来调用脚本，项目利用 GitHub Action 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名云服务商几乎没有被劫持的风险可放心使用
+
 === ":material-school: 中国大陆教育网"
 
     ``` bash
@@ -35,7 +37,7 @@ hide:
 
     1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-    !!! abstract "建议在使用前确认目标镜像站是否支持您正在使用的操作系统"
+    !!! question "请在使用前检查目标镜像站是否支持您正在使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -51,6 +53,8 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
 
+        > 可以使用仓库原始地址来调用脚本，项目利用 GitHub Action 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名云服务商几乎没有被劫持的风险可放心使用
+
 === ":octicons-globe-16: 海外地区"
 
     ``` bash
@@ -59,7 +63,7 @@ hide:
 
     1.  通过 `--abroad` 命令选项来使用海外软件源
 
-    !!! abstract "建议在使用前确认目标镜像站是否支持您正在使用的操作系统"
+    !!! question "请在使用前检查目标镜像站是否支持您正在使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -74,6 +78,8 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
+
+        > 可以使用仓库原始地址来调用脚本，项目利用 GitHub Action 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名云服务商几乎没有被劫持的风险可放心使用
 
 ## 相关注意事项
 
