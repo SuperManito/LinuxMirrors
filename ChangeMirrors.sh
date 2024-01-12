@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-12
+## Modified: 2024-01-13
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -13,7 +13,7 @@ mirror_list_default=(
     "华为云@repo.huaweicloud.com"
     "网易@mirrors.163.com"
     "搜狐@mirrors.sohu.com"
-    "火山引擎@mirrorvolc.volces.com"
+    "火山引擎@mirrors.volces.com"
     "清华大学@mirrors.tuna.tsinghua.edu.cn"
     "北京大学@mirrors.pku.edu.cn"
     "浙江大学@mirrors.zju.edu.cn"
@@ -134,7 +134,7 @@ mirror_list_extranet=(
     "mirrors.aliyun.com"
     "mirrors.tencent.com"
     "repo.huaweicloud.com"
-    "mirrorvolc.volces.com"
+    "mirrors.volces.com"
 )
 # 软件源内网地址列表
 mirror_list_intranet=(
