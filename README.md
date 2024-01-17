@@ -70,6 +70,10 @@
         <td><a href="https://archlinux.org" target="_blank"><img src="./docs/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Arch Linux</td>
         <td align="center">all</td>
     </tr>
+    <tr>
+        <td><a href="https://www.alpinelinux.org" target="_blank"><img src="./docs/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Alpine Linux</td>
+        <td align="center">v3 / edge</td>
+    </tr>
 </table>
 
 <p align="center">

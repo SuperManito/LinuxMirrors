@@ -3,39 +3,43 @@
 
 !!! quote ""
 
-    - 如果提示 `Command 'curl' not found` 则说明当前未安装 `curl` 软件包
+    === "Debian 系"
 
-        === "Debian 系 Linux"
+        ``` sh
+        apt-get install -y curl
+        ```
 
-            ``` sh
-            apt-get install -y curl
-            ```
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
 
-            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
+        新装系统需要先执行一遍更新 `apt-get update`
 
-            新装系统需要先执行一遍更新 `apt-get update`
+    === "RedHat 系 / OpenCloudOS / openEuler"
 
-        === "RedHat 系 Linux / OpenCloudOS / openEuler"
+        ``` sh
+        yum install -y curl || dnf install -y curl
+        ```
 
-            ``` sh
-            yum install -y curl || dnf install -y curl
-            ```
+        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
 
-            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
+        新装系统需要先执行一遍更新 `yum makecache`
 
-            新装系统需要先执行一遍更新 `yum makecache`
+    === "openSUSE"
 
-        === "openSUSE"
+        ``` sh
+        zypper install curl
+        ```
 
-            ``` sh
-            zypper install curl
-            ```
+    === "Arch Linux"
 
-        === "Arch Linux"
+        ``` sh
+        pacman -S curl
+        ```
 
-            ``` sh
-            pacman -S curl
-            ```
+    === "Alpine Linux"
+
+        ``` sh
+        apk --no-cache add -f curl bash
+        ```
 
 ## 关于开启 SSH 远程登录的方法
 
@@ -70,7 +74,7 @@
 
 !!! quote ""
 
-    === "Debian 系 Linux"
+    === "Debian 系"
 
         ``` sh
         cp -rvf /etc/apt/sources.list.bak /etc/apt/sources.list
@@ -79,7 +83,7 @@
 
         > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
 
-    === "RedHat 系 Linux / OpenCloudOS / openEuler"
+    === "RedHat 系 / OpenCloudOS / openEuler"
 
         ``` sh
         cp -rvf /etc/yum.repos.d.bak /etc/yum.repos.d
@@ -100,6 +104,13 @@
         ``` sh
         cp -rvf /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
         pacman -Sy
+        ```
+
+    === "Alpine Linux"
+
+        ``` sh
+        cp -rvf /etc/apk/repositories.bak /etc/apk/repositories
+        apk update -f
         ```
 
 ## 其它

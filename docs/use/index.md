@@ -11,7 +11,7 @@ hide:
     bash <(curl -sSL https://linuxmirrors.cn/main.sh)
     ```
 
-    !!! question "请在使用前检查目标镜像站是否支持您正在使用的操作系统"
+    !!! question "请在使用前检查目标镜像站是否支持您所使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -37,7 +37,7 @@ hide:
 
     1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-    !!! question "请在使用前检查目标镜像站是否支持您正在使用的操作系统"
+    !!! question "请在使用前检查目标镜像站是否支持您所使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -63,7 +63,7 @@ hide:
 
     1.  通过 `--abroad` 命令选项来使用海外软件源
 
-    !!! question "请在使用前检查目标镜像站是否支持您正在使用的操作系统"
+    !!! question "请在使用前检查目标镜像站是否支持您所使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -109,13 +109,13 @@ hide:
 
 遵循系统默认设置即没有启用的软件源不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，如果你有使用需求请阅读下面的启用方法
 
-=== "Debian 系 Linux"
+=== "Debian 系"
 
     默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
 
     > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
 
-=== "RedHat 系 Linux / OpenCloudOS / openEuler"
+=== "RedHat 系 / OpenCloudOS / openEuler"
 
     部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 

@@ -75,7 +75,7 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
     卸载命令如下：
 
-    === "Debian 系 Linux"
+    === "Debian 系"
 
         ``` bash
         apt-get remove -y docker* containerd.io runc && apt-get autoremove
@@ -83,7 +83,7 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
         > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
 
-    === "RedHat 系 Linux / OpenCloudOS / openEuler"
+    === "RedHat 系 / OpenCloudOS / openEuler"
 
         ``` bash
         yum remove -y docker* containerd.io podman* runc

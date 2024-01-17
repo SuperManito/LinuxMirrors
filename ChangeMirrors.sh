@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-13
+## Modified: 2024-01-17
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -117,6 +117,7 @@ mirror_list_edu=(
     "齐鲁工业大学@mirrors.qlu.edu.cn"
     "华南农业大学@mirrors.scau.edu.cn"
     "西安交通大学@mirrors.xjtu.edu.cn"
+    "江西理工大学@mirrors.jxust.edu.cn"
     "南阳理工学院@mirror.nyist.edu.cn"
     "武昌首义学院@mirrors.wsyu.edu.cn"
     "哈尔滨工业大学@mirrors.hit.edu.cn"
@@ -162,20 +163,26 @@ SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
+SYSTEM_ALPINE="Alpine"
 
-## 定义目录和文件
+## 定义系统版本文件
 File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
+File_DebianVersion=/etc/debian_version
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
 File_ArchRelease=/etc/arch-release
-File_DebianVersion=/etc/debian_version
+File_AlpineRelease=/etc/alpine-release
+
+## 定义软件源相关文件或目录
 File_DebianSourceList=/etc/apt/sources.list
 File_DebianSourceListBackup=/etc/apt/sources.list.bak
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 File_ArchMirrorList=/etc/pacman.d/mirrorlist
 File_ArchMirrorListBackup=/etc/pacman.d/mirrorlist.bak
+File_AlpineRepositories=/etc/apk/repositories
+File_AlpineRepositoriesBackup=/etc/apk/repositories.bak
 Dir_YumRepos=/etc/yum.repos.d
 Dir_YumReposBackup=/etc/yum.repos.d.bak
 Dir_openSUSERepos=/etc/zypp/repos.d
@@ -220,56 +227,6 @@ function PermissionJudgment() {
     fi
 }
 
-## 命令选项兼容性判断
-function CheckCommandOptions() {
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
-            if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-                Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
-            fi
-        fi
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-        fi
-        ;;
-    "${SYSTEM_REDHAT}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]]; then
-            if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-                Output_Error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
-            fi
-        fi
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_FEDORA}")
-            if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-                Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-            fi
-            ;;
-        esac
-        if [[ "${DEBIAN_CODENAME}" ]]; then
-            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
-        fi
-        ;;
-    "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}")
-        if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-            Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
-        fi
-        if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-        fi
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-        fi
-        if [[ "${DEBIAN_CODENAME}" ]]; then
-            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
-        fi
-        ;;
-    esac
-    if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
-        Output_Error "两种模式不可同时使用！"
-    fi
-}
-
 ## 系统判定变量
 function EnvJudgment() {
     ## 定义系统名称
@@ -280,18 +237,19 @@ function EnvJudgment() {
     SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    ## 判定当前系统派系（Debian/RedHat/openEuler/OpenCloudOS/openSUSE）
+    ## 判定当前系统派系
     if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        # OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}"
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     elif [ -f $File_ArchRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ARCH}"
+    elif [ -f $File_AlpineRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     else
@@ -303,7 +261,7 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
+                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -316,17 +274,8 @@ function EnvJudgment() {
         ## CentOS Stream
         grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
         ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        SYSTEM_JUDGMENT="${SYSTEM_OPENCLOUDOS}"
-        ;;
-    "${SYSTEM_OPENEULER}")
-        SYSTEM_JUDGMENT="${SYSTEM_OPENEULER}"
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        SYSTEM_JUDGMENT="${SYSTEM_OPENSUSE}"
-        ;;
-    "${SYSTEM_ARCH}")
-        SYSTEM_JUDGMENT="${SYSTEM_ARCH}"
+    *)
+        SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
         ;;
     esac
     ## 判断系统和其版本是否受本脚本支持
@@ -377,7 +326,7 @@ function EnvJudgment() {
             fi
         fi
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
         # 理论全部支持
         ;;
     *)
@@ -410,7 +359,7 @@ function EnvJudgment() {
         ## 默认为系统名称小写，替换空格
         SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
         SOURCE_BRANCH="${SOURCE_BRANCH// /-}"
-        ## 处理特殊
+        ## 处理特殊的分支名称
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
             case ${SYSTEM_VERSION_NUMBER:0:1} in
@@ -478,6 +427,56 @@ function EnvJudgment() {
         SYNC_TXT="同步"
         ;;
     esac
+}
+
+## 命令选项兼容性判断
+function CheckCommandOptions() {
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
+            if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+                Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
+            fi
+        fi
+        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+        fi
+        ;;
+    "${SYSTEM_REDHAT}")
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]]; then
+            if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+                Output_Error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
+            fi
+        fi
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_FEDORA}")
+            if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+                Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+            fi
+            ;;
+        esac
+        if [[ "${DEBIAN_CODENAME}" ]]; then
+            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
+        fi
+        ;;
+    "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
+        if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+            Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
+        fi
+        if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+        fi
+        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+        fi
+        if [[ "${DEBIAN_CODENAME}" ]]; then
+            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
+        fi
+        ;;
+    esac
+    if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
+        Output_Error "两种模式不可同时使用！"
+    fi
 }
 
 ## 选择软件源
@@ -815,20 +814,24 @@ function BackupOriginMirrors() {
     if [[ "${BACKUP}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
-            ## /etc/apt/sources.list
+            # /etc/apt/sources.list
             BackupFile $File_DebianSourceList $File_DebianSourceListBackup " list "
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            ## /etc/yum.repos.d
+            # /etc/yum.repos.d
             BackupRepo $Dir_YumRepos $Dir_YumReposBackup
             ;;
         "${SYSTEM_OPENSUSE}")
-            ## /etc/zypp/repos.d
+            # /etc/zypp/repos.d
             BackupRepo $Dir_openSUSERepos $Dir_openSUSEReposBackup
             ;;
         "${SYSTEM_ARCH}")
-            ## /etc/pacman.d/mirrorlist
+            # /etc/pacman.d/mirrorlist
             BackupFile $File_ArchMirrorList $File_ArchMirrorListBackup " mirrorlist "
+            ;;
+        "${SYSTEM_ALPINE}")
+            # /etc/apk/repositories
+            BackupFile $File_AlpineRepositories $File_AlpineRepositoriesBackup " repositories "
             ;;
         esac
     fi
@@ -911,6 +914,9 @@ function RemoveOriginMirrors() {
     "${SYSTEM_ARCH}")
         [ -f $File_ArchMirrorList ] && sed -i '1,$d' $File_ArchMirrorList
         ;;
+    "${SYSTEM_ALPINE}")
+        [ -f $File_AlpineRepositories ] && sed -i '1,$d' $File_AlpineRepositories
+        ;;
     esac
 }
 
@@ -958,6 +964,9 @@ function ChangeMirrors() {
             "${SYSTEM_ARCH}")
                 DiffMode1 $File_ArchMirrorListBackup $File_ArchMirrorList
                 ;;
+            "${SYSTEM_ALPINE}")
+                DiffMode1 $File_AlpineRepositoriesBackup $File_AlpineRepositories
+                ;;
             esac
         fi
     }
@@ -982,6 +991,9 @@ function ChangeMirrors() {
     "${SYSTEM_ARCH}")
         ArchMirrors
         ;;
+    "${SYSTEM_ALPINE}")
+        AlpineMirrors
+        ;;
     esac
     ## 比较差异
     if [[ "${PRINT_DIFF}" == true ]]; then
@@ -1002,6 +1014,9 @@ function ChangeMirrors() {
     "${SYSTEM_ARCH}")
         pacman -Sy
         ;;
+    "${SYSTEM_ALPINE}")
+        apk update -f
+        ;;
     esac
     if [ $? -eq 0 ]; then
         echo -e "\n$COMPLETE 软件源更换完毕"
@@ -1017,21 +1032,34 @@ function ChangeMirrors() {
 
 ## 更新软件包
 function UpdateSoftware() {
-    function Main() {
-        echo -e ''
-        case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
-            apt-get upgrade -y
-            ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            yum update -y --skip-broken
-            ;;
-        "${SYSTEM_OPENSUSE}")
-            zypper update -y
+    function CleanCache() {
+        ## 跳过特殊系统
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_ARCH}" | "${SYSTEM_RHEL}" | "${SYSTEM_ALPINE}")
+            return
             ;;
         esac
-    }
-    function CleanCache() {
+        ## 交互确认
+        if [[ -z "${CLEAN_CACHE}" ]]; then
+            CLEAN_CACHE="false"
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                CLEAN_CACHE="true"
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不清理！"
+                ;;
+            esac
+        fi
+        if [[ "${CLEAN_CACHE}" == "false" ]]; then
+            return
+        fi
+        ## 调用系统命令
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
             apt-get autoremove -y >/dev/null 2>&1
@@ -1047,7 +1075,16 @@ function UpdateSoftware() {
         esac
         echo -e "\n$COMPLETE 清理完毕"
     }
-    function MainInteraction() {
+
+    ## 跳过特殊系统
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_ARCH}" | "${SYSTEM_RHEL}")
+        return
+        ;;
+    esac
+    ## 交互确认
+    if [[ -z "${UPDATA_SOFTWARE}" ]]; then
+        UPDATA_SOFTWARE="false"
         local CHOICE
         CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
         read -rp "${CHOICE}" INPUT
@@ -1055,49 +1092,33 @@ function UpdateSoftware() {
         case "${INPUT}" in
         [Yy] | [Yy][Ee][Ss]) ;;
         [Nn] | [Nn][Oo])
-            Main
-            if [[ "${CLEAN_CACHE}" == "true" ]]; then
-                CleanCache
-            elif [[ -z "${CLEAN_CACHE}" ]]; then
-                CleanCacheInteraction
-            fi
+            UPDATA_SOFTWARE="true"
             ;;
         *)
             echo -e "\n$WARN 输入错误，默认不更新！"
             ;;
         esac
-    }
-    function CleanCacheInteraction() {
-        local CHOICE
-        CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-        read -rp "${CHOICE}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case "${INPUT}" in
-        [Yy] | [Yy][Ee][Ss])
-            CleanCache
-            ;;
-        [Nn] | [Nn][Oo]) ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不清理！"
-            ;;
-        esac
-    }
-
-    ## Arch Linux 和 Red Hat Enterprise Linux 系统不更新软件包
-    if [[ "${UPDATA_SOFTWARE}" == "true" ]]; then
-        Main
-        if [[ "${CLEAN_CACHE}" == "true" ]]; then
-            CleanCache
-        elif [[ -z "${CLEAN_CACHE}" ]]; then
-            if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_ARCH}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
-                CleanCacheInteraction
-            fi
-        fi
-    elif [[ -z "${UPDATA_SOFTWARE}" ]]; then
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_ARCH}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" ]]; then
-            MainInteraction
-        fi
     fi
+    if [[ "${UPDATA_SOFTWARE}" == "false" ]]; then
+        return
+    fi
+    echo -e ''
+    ## 调用系统命令
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        apt-get upgrade -y
+        ;;
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        yum update -y --skip-broken
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        zypper update -y
+        ;;
+    "${SYSTEM_ALPINE}")
+        apk upgrade --no-cache
+        ;;
+    esac
+    CleanCache
 }
 
 ## 运行结束
@@ -1263,6 +1284,7 @@ function RedHatMirrors() {
         GenRepoFiles_Fedora
         ;;
     esac
+    ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
@@ -1421,6 +1443,7 @@ function RedHatMirrors() {
 ## 更换基于 OpenCloudOS 发行版的软件源
 function OpenCloudOSMirrors() {
     GenRepoFiles_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+    ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
@@ -1448,6 +1471,7 @@ function OpenCloudOSMirrors() {
 ## 更换基于 openEuler 发行版的软件源
 function openEulerMirrors() {
     GenRepoFiles_openEuler
+    ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
@@ -1470,6 +1494,7 @@ function openSUSEMirrors() {
         GenRepoFiles_openSUSE "tumbleweed"
         ;;
     esac
+    ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
@@ -1527,9 +1552,10 @@ function openSUSEMirrors() {
 
 ## 更换基于 Arch Linux 发行版的软件源
 function ArchMirrors() {
+    ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         SOURCE="mirrors.aliyun.com"
-        echo -e "\n${TIP} 由于 Arch Linux 无官方源已切换至阿里源\n"
+        echo -e "\n${TIP} 由于 Arch Linux 无官方源因此已切换至阿里源\n"
     fi
     ## 修改源
     case "${SOURCE_BRANCH}" in
@@ -1544,6 +1570,26 @@ function ArchMirrors() {
         ;;
     esac
 }
+
+## 更换基于 Alpine Linux 发行版的软件源
+function AlpineMirrors() {
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        SOURCE="dl-cdn.alpinelinux.org"
+    fi
+    local version_name
+    echo "${SYSTEM_PRETTY_NAME}" | grep " edge" -q
+    if [ $? -eq 0 ]; then
+        version_name="edge"
+    else
+        version_name="v${SYSTEM_VERSION_NUMBER%.*}"
+    fi
+    ## 修改源
+    echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
+${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/community" >>$File_AlpineRepositories
+}
+
+##############################################################################
 
 ## 生成 CentOS 官方 repo 源文件
 function GenRepoFiles_CentOS() {

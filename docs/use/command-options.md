@@ -37,9 +37,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 ### 指定软件源分支
 
-使用场景：目标软件源有对应系统镜像但是不符合本脚本关于软件源分支设置的默认规则  
+使用场景：目标镜像站有对应的系统镜像但是不符合本项目脚本关于软件源分支设置的默认规则  
 
-本脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独定制，最开始是为了更换国内软件源而设计适配的，默认使用的分支名称如下
+项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配，默认使用的分支名称如下
 
 <table>
 <tr>
@@ -48,7 +48,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 </tr>
 <tr>
     <td><a href="https://cn.ubuntu.com" target="_blank"><img src="/../assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Ubuntu</td>
-    <td align="center">ubuntu/ubuntu-ports</td>
+    <td align="center">ubuntu / ubuntu-ports</td>
 </tr>
 <tr>
     <td><a href="https://www.kali.org" target="_blank"><img src="/../assets/images/icon/kali-linux.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
@@ -60,7 +60,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 </tr>
 <tr>
     <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/../assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Red Hat Enterprise Linux</td>
-    <td align="center">centos/rocky</td>
+    <td align="center">centos / centos-altarch / rocky</td>
 </tr>
 <tr>
     <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/../assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
@@ -68,7 +68,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 </tr>
 <tr>
     <td><a href="https://www.centos.org" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
-    <td align="center">centos/centos-stream/centos-altarch/centos-vault</td>
+    <td align="center">centos / centos-stream / centos-altarch / centos-vault</td>
 </tr>
 <tr>
     <td><a href="https://rockylinux.org" target="_blank"><img src="/../assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
@@ -76,7 +76,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 </tr>
 <tr>
     <td><a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;AlmaLinux</td>
-    <td align="center">almalinux/almalinux-vault</td>
+    <td align="center">almalinux / almalinux-vault</td>
 </tr>
 <tr>
     <td><a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;OpenCloudOS</td>
@@ -92,7 +92,11 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 </tr>
 <tr>
     <td><a href="https://archlinux.org" target="_blank"><img src="/../assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Arch Linux</td>
-    <td align="center">archlinux/archlinuxarm</td>
+    <td align="center">archlinux / archlinuxarm</td>
+</tr>
+<tr>
+    <td><a href="https://www.alpinelinux.org" target="_blank"><img src="/../assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Alpine Linux</td>
+    <td align="center">alpine</td>
 </tr>
 </table>
 
@@ -116,7 +120,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
 ```
 
-### 恢复官方源
+### 恢复使用官方源
 
 当你不小心删除了官方源的备份时可以使用此命令来恢复，使用此命令选项后将跳过选择软件源步骤
 
@@ -134,9 +138,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --branch-security debian-security
 ```
 
-### 指定 Debian 系操作系统的版本名称
+### 指定 Debian 系 Linux 版本代号
 
-你可以自定义该版本名称，大多数情况下用于升级系统版本，请看下面的例子
+大多数情况下自定义版本代号用于升级系统版本，请看下面的例子
 
 ``` { .bash .no-copy title="升级 Debian 至最新 12 版本 Bookworm" }
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
