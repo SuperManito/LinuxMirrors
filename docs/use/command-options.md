@@ -17,7 +17,7 @@
 | `--close-firewall` | 关闭防火墙 | `true` 或 `false` |
 | `--backup` | 备份原有软件源 | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
-| `--updata-software` | 更新软件包 | `true` 或 `false` |
+| `--upgrade-software` | 更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 清理下载缓存 | `true` 或 `false` |
 | `--print-diff` | 打印源文件修改前后差异 | `true` 或 `false` |
 | `--help` | 查看帮助菜单 | 无 |
@@ -160,7 +160,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --install-epel true \
   --close-firewall true \
   --backup true \
-  --updata-software false \
+  --upgrade-software false \
   --clean-cache false \
   --ignore-backup-tips
 ```

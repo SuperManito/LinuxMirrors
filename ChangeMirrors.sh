@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-18
+## Modified: 2024-01-19
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1002,8 +1002,8 @@ function ChangeMirrors() {
     fi
 }
 
-## 更新软件包
-function UpdateSoftware() {
+## 升级软件包
+function UpgradeSoftware() {
     function CleanCache() {
         ## 跳过特殊系统
         case "${SYSTEM_JUDGMENT}" in
@@ -1052,8 +1052,8 @@ function UpdateSoftware() {
         ;;
     esac
     ## 交互确认
-    if [[ -z "${UPDATA_SOFTWARE}" ]]; then
-        UPDATA_SOFTWARE="false"
+    if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
+        UPGRADE_SOFTWARE="false"
         local CHOICE
         CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
         read -rp "${CHOICE}" INPUT
@@ -1061,14 +1061,14 @@ function UpdateSoftware() {
         case "${INPUT}" in
         [Yy] | [Yy][Ee][Ss]) ;;
         [Nn] | [Nn][Oo])
-            UPDATA_SOFTWARE="true"
+            UPGRADE_SOFTWARE="true"
             ;;
         *)
             echo -e "\n$WARN 输入错误，默认不更新！"
             ;;
         esac
     fi
-    if [[ "${UPDATA_SOFTWARE}" == "false" ]]; then
+    if [[ "${UPGRADE_SOFTWARE}" == "false" ]]; then
         return
     fi
     echo -e ''
@@ -4963,7 +4963,7 @@ function CommandOptions() {
   --close-firewall         关闭防火墙                                        true 或 false
   --backup                 备份原有软件源                                    true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                                  无
-  --updata-software        更新软件包                                        true 或 false
+  --upgrade-software       更新软件包                                        true 或 false
   --clean-cache            清理下载缓存                                      true 或 false
   --print-diff             打印源文件修改前后差异                            无
 
@@ -5149,11 +5149,11 @@ function CommandOptions() {
             IGNORE_BACKUP_TIPS="true"
             ;;
         ## 更新软件包
-        --updata-software)
+        --upgrade-software | --updata-software)
             if [ "$2" ]; then
                 case "$2" in
                 [Tt]rue | [Ff]alse)
-                    UPDATA_SOFTWARE="${2,,}"
+                    UPGRADE_SOFTWARE="${2,,}"
                     shift
                     ;;
                 *)
@@ -5216,7 +5216,7 @@ function Combin_Function() {
     BackupOriginalMirrors
     RemoveOriginMirrors
     ChangeMirrors
-    UpdateSoftware
+    UpgradeSoftware
     RunEnd
 }
 
