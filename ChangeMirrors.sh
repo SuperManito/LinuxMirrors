@@ -708,108 +708,108 @@ function CloseFirewall() {
     fi
 }
 
-## 备份原有软件源
-function BackupOriginMirrors() {
+## 备份原有软件源（文件/目录）
+function BackupOriginalMirrors() {
     function BackupFile() {
         local target_file=$1
         local backup_file=$2
         local type="$3"
-
-        if [ -s "$target_file" ]; then
-            if [ -s "$backup_file" ]; then
-                if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
-                    local CHOICE_BACKUP1
-                    CHOICE_BACKUP1=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的${type}源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                    read -rp "${CHOICE_BACKUP1}" INPUT
-                    [[ -z "${INPUT}" ]] && INPUT=Y
-                    case "${INPUT}" in
-                    [Yy] | [Yy][Ee][Ss]) ;;
-                    [Nn] | [Nn][Oo])
-                        echo ''
-                        cp -rvf "$target_file" "$backup_file" 2>&1
-                        BACKUPED="true"
-                        ;;
-                    *)
-                        echo -e "\n$WARN 输入错误，默认不覆盖！"
-                        ;;
-                    esac
-                fi
-            else
-                echo ''
-                cp -rvf "$target_file" "$backup_file" 2>&1
-                BACKUPED="true"
-                echo -e "\n$COMPLETE 已备份原有${type}源文件"
-                sleep 1s
-            fi
-        else
-            [ -f "$target_file" ] || touch "$target_file"
+        ## 判断是否存在源文件
+        [ -f "${target_file}" ] || touch "${target_file}"
+        if [ ! -s "${target_file}" ]; then
             echo -e ''
+            return
+        fi
+        ## 判断是否存在已备份的源文件
+        if [ -s "${backup_file}" ]; then
+            if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
+                return
+            fi
+            local CHOICE_BACKUP
+            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE_BACKUP}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss]) ;;
+            [Nn] | [Nn][Oo])
+                echo ''
+                cp -rvf "${target_file}" "${backup_file}" 2>&1
+                BACKED_UP="true"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不覆盖！"
+                ;;
+            esac
+        else
+            echo ''
+            cp -rvf "${target_file}" "${backup_file}" 2>&1
+            BACKED_UP="true"
+            echo -e "\n$COMPLETE 已备份原有 ${type} 源文件"
+            sleep 1s
         fi
     }
-    function BackupRepo() {
+    function BackupDir() {
         local target_dir=$1
         local backup_dir=$2
-        local VERIFICATION_FILES=1
-        local VERIFICATION_BACKUPFILES=1
-
-        [ -d "$target_dir" ] && ls "$target_dir" | grep '\.repo$' -q
-        VERIFICATION_FILES=$?
-        [ -d "$backup_dir" ] && ls "$backup_dir" | grep '\.repo$' -q
-        VERIFICATION_BACKUPFILES=$?
-        if [ ${VERIFICATION_FILES} -eq 0 ]; then
-            if [ -d "$backup_dir" ] && [ ${VERIFICATION_BACKUPFILES} -eq 0 ]; then
-                if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
-                    local CHOICE_BACKUP3
-                    CHOICE_BACKUP3=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                    read -rp "${CHOICE_BACKUP3}" INPUT
-                    [[ -z "${INPUT}" ]] && INPUT=Y
-                    case "${INPUT}" in
-                    [Yy] | [Yy][Ee][Ss]) ;;
-                    [Nn] | [Nn][Oo])
-                        echo ''
-                        cp -rvf $target_dir/* "$backup_dir" 2>&1
-                        BACKUPED="true"
-                        ;;
-                    *)
-                        echo -e "\n$WARN 输入错误，默认不覆盖！"
-                        ;;
-                    esac
-                fi
-            else
-                [ ! -d "$backup_dir" ] && mkdir -p "$backup_dir"
-                echo ''
-                cp -rvf $target_dir}/* "$backup_dir" 2>&1
-                BACKUPED="true"
-                echo -e "\n$COMPLETE 已备份原有 repo 源文件"
-                sleep 1s
+        [ -d "${target_dir}" ] || mkdir -p "${target_dir}"
+        [ -d "${backup_dir}" ] || mkdir -p "${backup_dir}"
+        ## 判断是否存在 repo 源文件
+        ls "${target_dir}" | grep '\.repo$' -q
+        if [ $? -ne 0 ]; then
+            return
+        fi
+        ## 判断是否存在已备份的 repo 源文件
+        ls "${backup_dir}" | grep '\.repo$' -q
+        if [ $? -eq 0 ]; then
+            if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
+                return
             fi
+            local CHOICE_BACKUP
+            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE_BACKUP}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss]) ;;
+            [Nn] | [Nn][Oo])
+                echo ''
+                cp -rvf $target_dir/* "${backup_dir}" 2>&1
+                BACKED_UP="true"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不覆盖！"
+                ;;
+            esac
         else
-            [ -d "$target_dir" ] || mkdir -p "$target_dir"
+            echo ''
+            cp -rvf $target_dir/* "${backup_dir}" 2>&1
+            BACKED_UP="true"
+            echo -e "\n$COMPLETE 已备份原有 repo 源文件"
+            sleep 1s
         fi
     }
 
-    BACKUPED="false"
+    BACKED_UP="false" # 是否已备份
     if [[ "${BACKUP}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
             # /etc/apt/sources.list
-            BackupFile $File_DebianSourceList $File_DebianSourceListBackup " list "
+            BackupFile $File_DebianSourceList $File_DebianSourceListBackup "list"
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
             # /etc/yum.repos.d
-            BackupRepo $Dir_YumRepos $Dir_YumReposBackup
+            BackupDir $Dir_YumRepos $Dir_YumReposBackup
             ;;
         "${SYSTEM_OPENSUSE}")
             # /etc/zypp/repos.d
-            BackupRepo $Dir_openSUSERepos $Dir_openSUSEReposBackup
+            BackupDir $Dir_openSUSERepos $Dir_openSUSEReposBackup
             ;;
         "${SYSTEM_ARCH}")
             # /etc/pacman.d/mirrorlist
-            BackupFile $File_ArchMirrorList $File_ArchMirrorListBackup " mirrorlist "
+            BackupFile $File_ArchMirrorList $File_ArchMirrorListBackup "mirrorlist"
             ;;
         "${SYSTEM_ALPINE}")
             # /etc/apk/repositories
-            BackupFile $File_AlpineRepositories $File_AlpineRepositoriesBackup " repositories "
+            BackupFile $File_AlpineRepositories $File_AlpineRepositoriesBackup "repositories"
             ;;
         esac
     fi
@@ -837,7 +837,7 @@ function RemoveOriginMirrors() {
                             ;;
                         *)
                             if [ -f $Dir_YumRepos/epel.repo ]; then
-                                ls $Dir_YumRepos/ | grep -Ev epel | xargs -0 rm -rf
+                                ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
                             else
                                 rm -rf $Dir_YumRepos/*
                             fi
@@ -846,7 +846,7 @@ function RemoveOriginMirrors() {
                         ;;
                     "${SYSTEM_CENTOS}")
                         if [ -f $Dir_YumRepos/epel.repo ]; then
-                            ls $Dir_YumRepos/ | grep -Ev epel | xargs -0 rm -rf
+                            ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
                         else
                             rm -rf $Dir_YumRepos/*
                         fi
@@ -887,7 +887,7 @@ function RemoveOriginMirrors() {
         [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/openEuler.repo
         ;;
     "${SYSTEM_OPENSUSE}")
-        [ -d $Dir_openSUSERepos ] && rm -rf $Dir_openSUSERepos/repo-*
+        [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos/ | grep -E "^repo-" | grep -Ev "openh264" | xargs rm -rf
         ;;
     "${SYSTEM_ARCH}")
         [ -f $File_ArchMirrorList ] && sed -i '1,$d' $File_ArchMirrorList
@@ -902,48 +902,42 @@ function RemoveOriginMirrors() {
 function ChangeMirrors() {
     ## 打印修改前后差异
     function PrintDiff() {
-        ## Debian/Arch 比较模式
-        function DiffMode1() {
-            local backup_file=$1
+        ## 单一文件比较模式
+        function DiffFile() {
+            local diff_file=$1
             local origin_file=$2
-            if [[ -s $backup_file && -s $origin_file ]]; then
-                if [[ "$(cat "$backup_file")" != "$(cat "$origin_file")" ]]; then
-                    echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
-                    diff "$backup_file" "$origin_file" -d --color=always -I -B -E
+            if [[ -s $diff_file ]] && [[ -s $origin_file ]]; then
+                if [[ "$(cat "${diff_file}")" != "$(cat "${origin_file}")" ]]; then
+                    echo -e "\n${BLUE}${diff_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
+                    diff "${diff_file}" "${origin_file}" -d --color=always -I -B -E
                 fi
             fi
         }
-        ## RedHat/openEuler/openSUSE 比较模式
-        function DiffMode2() {
-            local backup_dir=$1
+        ## 目录文件比较模式
+        function DiffDir() {
+            local diff_dir=$1
             local origin_dir=$2
-            local backup_file origin_file
-            for item in $(ls $backup_dir | xargs); do
-                backup_file="$backup_dir/$item"
-                origin_file="$origin_dir/$item"
-                if [[ "$(cat $backup_file)" != "$(cat $origin_file)" ]]; then
-                    echo -e "\n${BLUE}${backup_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
-                    diff "$backup_file" "$origin_file" -d --color=always -I -B -E
-                fi
+            for item in $(ls $diff_dir | xargs); do
+                DiffFile "${diff_dir}/${item}" "${origin_dir}/${item}"
             done
         }
 
-        if [[ -x /usr/bin/diff && "${BACKUPED}" == "true" ]]; then
+        if [[ -x /usr/bin/diff && "${BACKED_UP}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                DiffMode1 $File_DebianSourceListBackup $File_DebianSourceList
+                DiffFile $File_DebianSourceListBackup $File_DebianSourceList
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-                DiffMode2 $Dir_YumReposBackup $Dir_YumRepos
+                DiffDir $Dir_YumReposBackup $Dir_YumRepos
                 ;;
             "${SYSTEM_OPENSUSE}")
-                DiffMode2 $Dir_openSUSEReposBackup $Dir_openSUSERepos
+                DiffDir $Dir_openSUSEReposBackup $Dir_openSUSERepos
                 ;;
             "${SYSTEM_ARCH}")
-                DiffMode1 $File_ArchMirrorListBackup $File_ArchMirrorList
+                DiffFile $File_ArchMirrorListBackup $File_ArchMirrorList
                 ;;
             "${SYSTEM_ALPINE}")
-                DiffMode1 $File_AlpineRepositoriesBackup $File_AlpineRepositories
+                DiffFile $File_AlpineRepositoriesBackup $File_AlpineRepositories
                 ;;
             esac
         fi
@@ -1013,7 +1007,7 @@ function UpdateSoftware() {
     function CleanCache() {
         ## 跳过特殊系统
         case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_ARCH}" | "${SYSTEM_RHEL}" | "${SYSTEM_ALPINE}")
+        "${SYSTEM_RHEL}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
             return
             ;;
         esac
@@ -1046,9 +1040,6 @@ function UpdateSoftware() {
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
             yum autoremove -y >/dev/null 2>&1
             yum clean packages -y >/dev/null 2>&1
-            ;;
-        "${SYSTEM_OPENSUSE}")
-            zypper clean >/dev/null 2>&1
             ;;
         esac
         echo -e "\n$COMPLETE 清理完毕"
@@ -5222,7 +5213,7 @@ function Combin_Function() {
     ChooseWebProtocol
     ChooseInstallEPEL
     CloseFirewall
-    BackupOriginMirrors
+    BackupOriginalMirrors
     RemoveOriginMirrors
     ChangeMirrors
     UpdateSoftware
