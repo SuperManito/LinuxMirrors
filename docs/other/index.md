@@ -61,7 +61,7 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 | :-: | :-: | :-: |
 | `--source` | 指定 `Docker CE` 源地址(域名或IP) | 地址 |
 | `--source-registry` | 指定镜像仓库地址(域名或IP) | 地址 |
-| `--codename` | 指定 Debian 系操作系统的版本名称 | 版本名 |
+| `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
 | `--install-latested` | 控制是否安装最新版本的 Docker Engine | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 

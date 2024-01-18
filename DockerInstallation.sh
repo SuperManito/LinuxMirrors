@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-12
+## Modified: 2024-01-18
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -136,12 +136,11 @@ function EnvJudgment() {
     SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    ## 判定当前系统派系（Debian/RedHat/openEuler/OpenCloudOS/openSUSE）
+    ## 判定当前系统派系
     if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        # OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}"
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_RedHatRelease ]; then
@@ -155,7 +154,7 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统类型，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
+                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -223,13 +222,13 @@ function EnvJudgment() {
         Output_Error "当前系统不在本脚本的支持范围内"
         ;;
     esac
-    ## 定义软件源同步/更新文字
+    ## 定义软件源更新文字
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        SYNC_TXT="更新"
+        SYNC_MIRROR_TEXT="更新软件源"
         ;;
-    *)
-        SYNC_TXT="同步"
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        SYNC_MIRROR_TEXT="生成软件源缓存"
         ;;
     esac
 }
@@ -367,30 +366,29 @@ function ChooseMirrors() {
 
 ## 关闭防火墙和SELinux
 function CloseFirewall() {
-    function Main() {
-        local SelinuxConfig=/etc/selinux/config
-        systemctl disable --now firewalld >/dev/null 2>&1
-        [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-    }
-
-    if [ -x /usr/bin/systemctl ]; then
-        if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
-            if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
-                Main
-            elif [[ -z "${CLOSE_FIREWALL}" ]]; then
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-                read -p "${CHOICE}" INPUT
-                [[ -z "${INPUT}" ]] && INPUT=Y
-                case "${INPUT}" in
-                [Yy] | [Yy][Ee][Ss])
-                    Main
-                    ;;
-                [Nn] | [Nn][Oo]) ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不关闭！"
-                    ;;
-                esac
-            fi
+    if [ ! -x /usr/bin/systemctl ]; then
+        return
+    fi
+    if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
+        if [[ -z "${CLOSE_FIREWALL}" ]]; then
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                CLOSE_FIREWALL="true"
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不关闭！"
+                ;;
+            esac
+        fi
+        if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
+            local SelinuxConfig=/etc/selinux/config
+            systemctl disable --now firewalld >/dev/null 2>&1
+            [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
         fi
     fi
 }
@@ -407,7 +405,7 @@ function EnvironmentInstall() {
         rm -rf $Dir_YumRepos/*docker*.repo
         ;;
     esac
-    echo -e "\n$WORKING 开始${SYNC_TXT}软件源...\n"
+    echo -e "\n$WORKING 开始${SYNC_MIRROR_TEXT}...\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         apt-get update
@@ -418,9 +416,9 @@ function EnvironmentInstall() {
     esac
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -ne 0 ]; then
-        Output_Error "软件源${SYNC_TXT}出错，请先确保软件包管理工具可用！"
+        Output_Error "${SYNC_MIRROR_TEXT}出错，请先确保软件包管理工具可用！"
     fi
-    echo -e "\n$COMPLETE 软件源${SYNC_TXT}结束\n"
+    echo -e "\n$COMPLETE ${SYNC_MIRROR_TEXT}结束\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -460,7 +458,7 @@ function ConfigureDockerCEMirror() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         ## 安装密钥
-        apt-key del 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88 >/dev/null 2>&1 # 删除旧的密钥
+        apt-key del 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88 >/dev/null 2>&1 # 删除旧的密钥
         [ -f /etc/apt/keyrings/docker.gpg ] && rm -rf /etc/apt/keyrings/docker.gpg
         install -m 0755 -d /etc/apt/keyrings
         curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg >/dev/null 2>&1
@@ -700,7 +698,7 @@ function CheckVersion() {
 
 ## 运行结束
 function RunEnd() {
-    echo -e "\n$COMPLETE 脚本执行结束\n"
+    echo -e "\n------ 脚本执行结束 ------"
     echo -e ' \033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m┐\033[0m'
     echo -e ' \033[0;1;31;91m│▞\033[0;1;33;93m▀▖\033[0m            \033[0;1;32;92m▙▗\033[0;1;36;96m▌\033[0m      \033[0;1;31;91m▗\033[0;1;33;93m▐\033[0m     \033[0;1;34;94m│\033[0m'
     echo -e ' \033[0;1;33;93m│▚\033[0;1;32;92m▄\033[0m \033[0;1;36;96m▌\033[0m \033[0;1;34;94m▌▛\033[0;1;35;95m▀▖\033[0;1;31;91m▞▀\033[0;1;33;93m▖▙\033[0;1;32;92m▀▖\033[0;1;36;96m▌▘\033[0;1;34;94m▌▝\033[0;1;35;95m▀▖\033[0;1;31;91m▛▀\033[0;1;33;93m▖▄\033[0;1;32;92m▜▀\033[0m \033[0;1;36;96m▞\033[0;1;34;94m▀▖\033[0;1;35;95m│\033[0m'
@@ -719,7 +717,7 @@ function CommandOptions() {
 
   --source                 指定 Docker CE 源地址                     地址
   --source-registry        指定 Docker Registry 源地址               地址
-  --codename               指定 Debian 系操作系统的版本名称          版本名
+  --codename               指定 Debian 系操作系统的版本代号          代号名称
   --install-latested       控制是否安装最新版本的 Docker Engine      true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                          无
 
@@ -758,13 +756,13 @@ function CommandOptions() {
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
-        ## 指定 Debian 版本名称
+        ## 指定 Debian 版本代号
         --codename)
             if [ "$2" ]; then
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本名称！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
             fi
             ;;
         ## 安装最新版本

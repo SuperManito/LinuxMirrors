@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-17
+## Modified: 2024-01-18
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -244,14 +244,14 @@ function EnvJudgment() {
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
-    elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     elif [ -f $File_ArchRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ARCH}"
     elif [ -f $File_AlpineRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
+    elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
         Output_Error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
     fi
@@ -261,7 +261,7 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前可能为精简安装的系统，因为正常情况下系统会自带该软件包，请自行安装后重新执行脚本！"
+                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -316,18 +316,20 @@ function EnvJudgment() {
         fi
         ;;
     "${SYSTEM_OPENSUSE}")
-        if [[ "${SYSTEM_ID}" != "opensuse-leap" && "${SYSTEM_ID}" != "opensuse-tumbleweed" ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
-        else
-            if [[ "${SYSTEM_ID}" == "opensuse-leap" ]]; then
-                if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
-                    Output_Error "当前系统版本不在本脚本的支持范围内"
-                fi
+        case "${SYSTEM_ID}" in
+        "opensuse-leap")
+            if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
+                Output_Error "当前系统版本不在本脚本的支持范围内"
             fi
-        fi
+            ;;
+        "opensuse-tumbleweed") ;;
+        *)
+            Output_Error "当前系统不在本脚本的支持范围内"
+            ;;
+        esac
         ;;
     "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
-        # 理论全部支持
+        # 理论全部支持或不作判断
         ;;
     *)
         Output_Error "当前系统不在本脚本的支持范围内"
@@ -418,64 +420,42 @@ function EnvJudgment() {
             ;;
         esac
     fi
-    ## 定义软件源同步/更新文字
+    ## 定义软件源更新文字
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        SYNC_TXT="更新"
+        SYNC_MIRROR_TEXT="更新软件源"
         ;;
-    *)
-        SYNC_TXT="同步"
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        SYNC_MIRROR_TEXT="生成软件源缓存"
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        SYNC_MIRROR_TEXT="刷新软件源"
+        ;;
+    "${SYSTEM_ARCH}")
+        SYNC_MIRROR_TEXT="同步软件源"
+        ;;
+    "${SYSTEM_ALPINE}")
+        SYNC_MIRROR_TEXT="更新软件源"
         ;;
     esac
 }
 
 ## 命令选项兼容性判断
 function CheckCommandOptions() {
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
-            if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-                Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
-            fi
-        fi
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-        fi
-        ;;
-    "${SYSTEM_REDHAT}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]]; then
-            if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-                Output_Error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
-            fi
-        fi
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_FEDORA}")
-            if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-                Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-            fi
-            ;;
-        esac
-        if [[ "${DEBIAN_CODENAME}" ]]; then
-            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
-        fi
-        ;;
-    "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
-        if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-            Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
-        fi
-        if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-        fi
-        if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-            Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-        fi
-        if [[ "${DEBIAN_CODENAME}" ]]; then
-            Output_Error "当前系统不支持使用指定版本名称命令选项，请确认后重试！"
-        fi
-        ;;
-    esac
     if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
         Output_Error "两种模式不可同时使用！"
+    fi
+    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]] && [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+        Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
+    fi
+    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" ]] && [[ "${DEBIAN_CODENAME}" ]]; then
+        Output_Error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
+    fi
+    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_REDHAT}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] && [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+        Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+    fi
+    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]] && [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+        Output_Error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
     fi
 }
 
@@ -701,31 +681,29 @@ function ChooseInstallEPEL() {
 
 ## 关闭防火墙和SELinux
 function CloseFirewall() {
-    function Main() {
-        local SelinuxConfig=/etc/selinux/config
-        systemctl disable --now firewalld >/dev/null 2>&1
-        [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-    }
-
-    if [ -x /usr/bin/systemctl ]; then
-        if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
-            if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
-                Main
-            elif [[ -z "${CLOSE_FIREWALL}" ]]; then
-                local CHOICE
-                CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-                read -rp "${CHOICE}" INPUT
-                [[ -z "${INPUT}" ]] && INPUT=Y
-                case "${INPUT}" in
-                [Yy] | [Yy][Ee][Ss])
-                    Main
-                    ;;
-                [Nn] | [Nn][Oo]) ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不关闭！"
-                    ;;
-                esac
-            fi
+    if [ ! -x /usr/bin/systemctl ]; then
+        return
+    fi
+    if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
+        if [[ -z "${CLOSE_FIREWALL}" ]]; then
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                CLOSE_FIREWALL="true"
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不关闭！"
+                ;;
+            esac
+        fi
+        if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
+            local SelinuxConfig=/etc/selinux/config
+            systemctl disable --now firewalld >/dev/null 2>&1
+            [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
         fi
     fi
 }
@@ -996,11 +974,11 @@ function ChangeMirrors() {
         ;;
     esac
     ## 比较差异
-    if [[ "${PRINT_DIFF}" == true ]]; then
+    if [[ "${PRINT_DIFF}" == "true" ]]; then
         PrintDiff
     fi
-    ## 软件源同步/更新
-    echo -e "\n${WORKING} 开始${SYNC_TXT}软件源...\n"
+    ## 更新软件源
+    echo -e "\n$WORKING 开始${SYNC_MIRROR_TEXT}...\n"
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         apt-get update
@@ -1019,12 +997,12 @@ function ChangeMirrors() {
         ;;
     esac
     if [ $? -eq 0 ]; then
-        echo -e "\n$COMPLETE 软件源更换完毕"
+        echo -e "\n$SUCCESS 软件源更换完毕"
     else
-        echo -e "\n$FAIL 软件源${SYNC_TXT}失败\n"
-        echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_TXT}失败那么可能由以下原因导致"
-        echo -e "1. 网络问题：例如连接异常、网络间歇式中断、由地区影响的网络因素等"
-        echo -e "2. 软件源问题：例如正在维护，或者出现罕见的文件同步出错导致软件源${SYNC_TXT}命令执行后返回错误状态，请前往镜像站对应路径验证"
+        echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败\n"
+        echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致"
+        echo -e "1. 网络问题：例如连接异常、由地区影响的网络间歇式中断等"
+        echo -e "2. 软件源问题：建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题"
         echo -e "\n软件源地址：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
         exit 1
     fi
@@ -1123,7 +1101,7 @@ function UpdateSoftware() {
 
 ## 运行结束
 function RunEnd() {
-    echo -e "\n$COMPLETE 脚本执行结束"
+    echo -e "\n------ 脚本执行结束 ------"
     echo -e "\n\033[1;34mPowered by linuxmirrors.cn\033[0m\n"
 }
 
@@ -4986,7 +4964,7 @@ function CommandOptions() {
   --branch                 指定软件源分支(路径)                              分支名
   --branch-security        指定 Debian 的 security 软件源分支(路径)          分支名
   --branch-vault           指定 CentOS/AlmaLinux 的 vault 软件源分支(路径)   分支名
-  --codename               指定 Debian 系操作系统的版本名称                  版本名
+  --codename               指定 Debian 系操作系统的版本代号                  代号名称
   --web-protocol           指定 WEB 协议                                     http 或 https
   --intranet               优先使用内网地址                                  true 或 false
   --install-epel           安装 EPEL 附加软件包                              true 或 false
@@ -5082,13 +5060,13 @@ function CommandOptions() {
                 Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
-        ## 指定 Debian 系操作系统的版本名称
+        ## 指定 Debian 系操作系统的版本代号
         --codename)
             if [ "$2" ]; then
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本名称！"
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
             fi
             ;;
         ## 优先使用内网地址

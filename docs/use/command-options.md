@@ -9,7 +9,7 @@
 | `--branch` | 指定软件源分支(路径) | 分支名 |
 | `--branch-security` | 指定 Debian 的 security 软件源分支(路径) | 分支名 |
 | `--branch-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源分支(路径) | 分支名 |
-| `--codename` | 指定 Debian 系操作系统的版本名称 | 版本名 |
+| `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
 | `--web-protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--intranet` | 优先使用内网地址 | `true` 或 `false` |
 | `--install-epel` | 安装 EPEL 附加软件包 | `true` 或 `false` |
@@ -146,7 +146,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --codename bookworm
 ```
-更换软件源后还需要执行系统更新命令才能实现更新操作，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本名称可能会在后期使用时产生一些兼容性问题
+更换软件源后还需要执行系统更新命令才能实现更新操作，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题
 
 ## 无人值守
 
