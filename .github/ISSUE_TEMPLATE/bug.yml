@@ -40,7 +40,7 @@ body:
     id: release
     attributes:
       label: 系统详细信息
-      description: '请将命令 "cat /etc/os-release" 的输出结果粘贴在下方'
+      description: '请将命令 `cat /etc/os-release` 的输出结果粘贴在下方'
     validations:
       required: false
 
@@ -48,7 +48,7 @@ body:
     id: uname
     attributes:
       label: 环境信息
-      description: '请将命令 "uname -a" 的输出结果粘贴在下方'
+      description: '请将命令 `uname -a` 的输出结果粘贴在下方'
     validations:
       required: false
 
