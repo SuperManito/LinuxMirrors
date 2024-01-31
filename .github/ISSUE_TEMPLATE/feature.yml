@@ -1,0 +1,10 @@
+name: 💡 功能请求与建议
+description: Feature request
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: content
+    attributes:
+      label: '请在下方描述您的功能请求或建议'
+    validations:
+      required: false

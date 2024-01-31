@@ -1,0 +1,68 @@
+name: 🐞 上报错误
+description: Report bug
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: os
+    attributes:
+      label: 操作系统
+      options:
+        - Debian
+        - Ubuntu
+        - Kali Linux
+        - Deepin
+        - Red Hat Enterprise Linux
+        - Fedora
+        - CentOS / CentOS Stream
+        - Rocky Linux
+        - AlmaLinux
+        - OpenCloudOS
+        - openEuler
+        - openSUSE
+        - Arch Linux
+        - Alpine Linux
+    validations:
+      required: true
+
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: 处理器架构
+      options:
+        - x86_64 / x86_32
+        - arm64 / arm/v8 / arm/v7 / arm/v6
+        - ppc64le / s390x
+        - 其它
+    validations:
+      required: true
+
+  - type: textarea
+    id: release
+    attributes:
+      label: 系统详细信息
+      description: '请将命令 "cat /etc/os-release" 的输出结果粘贴在下方'
+    validations:
+      required: false
+
+  - type: input
+    id: uname
+    attributes:
+      label: 环境信息
+      description: '请将命令 "uname -a" 的输出结果粘贴在下方'
+    validations:
+      required: false
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 描述您的问题
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 详细的执行日志
+      placeholder: 日志内容或截图
+    validations:
+      required: true

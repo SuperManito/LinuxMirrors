@@ -30,6 +30,7 @@
 - [ ] `openEuler`
 - [ ] `openSUSE`
 - [ ] `Arch Linux`
+- [ ] `Alpine Linux`
 
 ## 2. 处理器架构
 <!-- 将中括号内的 "空格" 替换为 "x" ，即为选中，例：" - [x] 否 " -->
