@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-19
+## Modified: 2024-01-31
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -240,8 +240,6 @@ function EnvJudgment() {
     ## 判定当前系统派系
     if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
-    elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：OpenCloudOS 判断优先级需要高于 RedHat，因为8版本基于红帽而9版本不是
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -f $File_ArchRelease ]; then
@@ -249,7 +247,9 @@ function EnvJudgment() {
     elif [ -f $File_AlpineRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
     elif [ -s $File_RedHatRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
+        SYSTEM_FACTIONS="${SYSTEM_REDHAT}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为8版本基于红帽而9版本不是
+    elif [ -s $File_OpenCloudOSRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}"
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
@@ -631,9 +631,9 @@ function ChooseWebProtocol() {
     WEB_PROTOCOL="${WEB_PROTOCOL,,}"
 }
 
-# 适用于 RHEL/CentOS(Stream)/RockyLinux 的 EPEL 附加软件包（安装/换源）
+# 适用于部分红帽系统的 EPEL 附加软件包（安装/换源）
 function ChooseInstallEPEL() {
-    function Check() {
+    function CheckInstallStatus() {
         ## 判断是否已安装 EPEL 软件包
         rpm -qa | grep epel-release -q
         VERIFICATION_EPEL=$?
@@ -649,7 +649,7 @@ function ChooseInstallEPEL() {
         if [[ -z "${INSTALL_EPEL}" ]]; then
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
-                Check
+                CheckInstallStatus
                 if [ ${VERIFICATION_EPEL} -eq 0 ]; then
                     local CHOICE
                     CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
@@ -661,20 +661,20 @@ function ChooseInstallEPEL() {
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
                 [Yy] | [Yy][Ee][Ss])
-                    INSTALL_EPEL="True"
+                    INSTALL_EPEL="true"
                     ;;
                 [Nn] | [Nn][Oo])
-                    INSTALL_EPEL="False"
+                    INSTALL_EPEL="false"
                     ;;
                 *)
                     echo -e "\n$WARN 输入错误，默认不更换！"
-                    INSTALL_EPEL="False"
+                    INSTALL_EPEL="false"
                     ;;
                 esac
                 ;;
             esac
         elif [[ "${INSTALL_EPEL}" == "true" ]]; then
-            Check
+            CheckInstallStatus
         fi
     fi
 }
@@ -822,60 +822,62 @@ function RemoveOriginMirrors() {
         [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
         ;;
     "${SYSTEM_REDHAT}")
-        if [ -d $Dir_YumRepos ]; then
+        if [ ! -d $Dir_YumRepos ]; then
+            return
+        fi
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
+            rm -rf $Dir_YumRepos/fedora*
+        else
+            if [[ "${ONLY_EPEL}" != "false" ]]; then
+                return
+            fi
             case "${SYSTEM_JUDGMENT}" in
-            "${SYSTEM_FEDORA}")
-                rm -rf $Dir_YumRepos/fedora*
+            "${SYSTEM_RHEL}")
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                9)
+                    rm -rf $Dir_YumRepos/rocky*
+                    ;;
+                *)
+                    if [ -f $Dir_YumRepos/epel.repo ]; then
+                        ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
+                    else
+                        rm -rf $Dir_YumRepos/*
+                    fi
+                    ;;
+                esac
                 ;;
-            *)
-                if [[ "${ONLY_EPEL}" == "false" ]]; then
-                    case "${SYSTEM_JUDGMENT}" in
-                    "${SYSTEM_RHEL}")
-                        case ${SYSTEM_VERSION_NUMBER:0:1} in
-                        9)
-                            rm -rf $Dir_YumRepos/rocky*
-                            ;;
-                        *)
-                            if [ -f $Dir_YumRepos/epel.repo ]; then
-                                ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
-                            else
-                                rm -rf $Dir_YumRepos/*
-                            fi
-                            ;;
-                        esac
-                        ;;
-                    "${SYSTEM_CENTOS}")
-                        if [ -f $Dir_YumRepos/epel.repo ]; then
-                            ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
-                        else
-                            rm -rf $Dir_YumRepos/*
-                        fi
-                        ;;
-                    "${SYSTEM_CENTOS_STREAM}")
-                        case ${SYSTEM_VERSION_NUMBER:0:1} in
-                        9)
-                            rm -rf $Dir_YumRepos/centos*
-                            ;;
-                        8)
-                            rm -rf $Dir_YumRepos/CentOS-Stream-*
-                            ;;
-                        esac
-                        ;;
-                    "${SYSTEM_ROCKY}")
-                        case ${SYSTEM_VERSION_NUMBER:0:1} in
-                        9)
-                            rm -rf $Dir_YumRepos/rocky*
-                            ;;
-                        8)
-                            rm -rf $Dir_YumRepos/Rocky-*
-                            ;;
-                        esac
-                        ;;
-                    "${SYSTEM_ALMALINUX}")
-                        rm -rf $Dir_YumRepos/almalinux*
-                        ;;
-                    esac
+            "${SYSTEM_CENTOS}")
+                if [ -f $Dir_YumRepos/epel.repo ]; then
+                    ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
+                else
+                    rm -rf $Dir_YumRepos/*
                 fi
+                ;;
+            "${SYSTEM_CENTOS_STREAM}")
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                9)
+                    rm -rf $Dir_YumRepos/centos*
+                    ;;
+                8)
+                    rm -rf $Dir_YumRepos/CentOS-Stream-*
+                    ;;
+                esac
+                ;;
+            "${SYSTEM_ROCKY}")
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                9)
+                    rm -rf $Dir_YumRepos/rocky*
+                    ;;
+                8)
+                    rm -rf $Dir_YumRepos/Rocky-*
+                    ;;
+                esac
+                ;;
+            "${SYSTEM_ALMALINUX}")
+                rm -rf $Dir_YumRepos/almalinux*
+                ;;
+            "${SYSTEM_OPENCLOUDOS}")
+                rm -rf $Dir_YumRepos/OpenCloudOS*
                 ;;
             esac
         fi
@@ -1190,6 +1192,7 @@ function RedHatMirrors() {
         if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
             echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
             yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
+            rm -rf $Dir_YumRepos/epel*
         fi
         ## 删除原有 repo 源文件
         [ "${VERIFICATION_EPELFILES}" -eq 0 ] && rm -rf $Dir_YumRepos/epel*
@@ -1212,13 +1215,14 @@ function RedHatMirrors() {
         # 修改源
         sed -i 's|^metalink=|#metalink=|g' $Dir_YumRepos/epel*
         case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9)
+        9 | 8)
             sed -i "s|download.example/pub|${SOURCE}|g" $Dir_YumRepos/epel*
             ;;
-        8 | 7)
+        7)
             sed -i "s|download.fedoraproject.org/pub|${SOURCE}|g" $Dir_YumRepos/epel*
             ;;
         esac
+        [ -f $Dir_YumRepos/epel-cisco-openh264.repo ] && rm -rf epel-cisco-openh264.repo # 删除不兼容的仓库
     }
     ## 仅 EPEL 模式
     if [[ "${ONLY_EPEL}" == "true" ]]; then
@@ -1252,36 +1256,59 @@ function RedHatMirrors() {
     "${SYSTEM_FEDORA}")
         GenRepoFiles_Fedora
         ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        GenRepoFiles_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+        ;;
     esac
     ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
-    fi
-
-    ## 修改源
-    cd $Dir_YumRepos
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9)
-            # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-rockyofficial" -P /etc/pki/rpm-gpg
-            # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-Rocky-9" -P /etc/pki/rpm-gpg
-            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|^gpgcheck=1|gpgcheck=0|g" \
-                -e "s|^gpgkey=|#gpgkey=|g" \
-                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
+    if [[ "${USE_OFFICIAL_SOURCE}" != "true" ]]; then
+        ## 修改源
+        cd $Dir_YumRepos
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_RHEL}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-rockyofficial" -P /etc/pki/rpm-gpg
+                # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-Rocky-9" -P /etc/pki/rpm-gpg
+                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|^mirrorlist=|#mirrorlist=|g" \
+                    -e "s|^gpgcheck=1|gpgcheck=0|g" \
+                    -e "s|^gpgkey=|#gpgkey=|g" \
+                    -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    rocky.repo \
+                    rocky-addons.repo \
+                    rocky-devel.repo \
+                    rocky-extras.repo
+                ;;
+            *)
+                sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
+                sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                8)
+                    sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
+                    sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+                    # 单独处理 CentOS-Linux-Sources.repo
+                    sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
+                    ;;
+                7)
+                    sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
+                    sed -i "s/\$releasever/7/g" CentOS-*
+                    # 单独处理 CentOS-Sources.repo
+                    sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo
+                    ;;
+                esac
+                sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
+                ;;
+            esac
             ;;
-        *)
+        "${SYSTEM_CENTOS}")
             sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
             sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
             case ${SYSTEM_VERSION_NUMBER:0:1} in
             8)
+                ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
+                # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
                 sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
                 # 单独处理 CentOS-Linux-Sources.repo
@@ -1289,122 +1316,112 @@ function RedHatMirrors() {
                 ;;
             7)
                 sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
-                sed -i "s/\$releasever/7/g" CentOS-*
-                # 单独处理 CentOS-Sources.repo
-                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo
+                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
                 ;;
             esac
             sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
             ;;
+        "${SYSTEM_CENTOS_STREAM}")
+            # CentOS Stream 9 使用的是 centos-stream 镜像，而 CentOS Stream 8 使用的是 centos 镜像
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|^metalink=|#metalink=|g" \
+                    -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    centos.repo \
+                    centos-addons.repo
+                ;;
+            8)
+                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
+                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|^mirrorlist=|#mirrorlist=|g" \
+                    -e "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    CentOS-Stream-*
+                ;;
+            esac
+            ;;
+        "${SYSTEM_ROCKY}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|^mirrorlist=|#mirrorlist=|g" \
+                    -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    rocky.repo \
+                    rocky-addons.repo \
+                    rocky-devel.repo \
+                    rocky-extras.repo
+                ;;
+            8)
+                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|^mirrorlist=|#mirrorlist=|g" \
+                    -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    Rocky-*
+                ;;
+            esac
+            ;;
+        "${SYSTEM_ALMALINUX}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|^mirrorlist=|#mirrorlist=|g" \
+                    -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
+                    -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    almalinux-*
+                ;;
+            8)
+                sed -e "s|^mirrorlist=|#mirrorlist=|g" \
+                    -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
+                    -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    almalinux-ha.repo \
+                    almalinux-nfv.repo \
+                    almalinux-plus.repo \
+                    almalinux-powertools.repo \
+                    almalinux-resilientstorage.repo \
+                    almalinux-rt.repo \
+                    almalinux-sap.repo \
+                    almalinux-saphana.repo \
+                    almalinux.repo
+                ;;
+            esac
+            ;;
+        "${SYSTEM_FEDORA}")
+            sed -e "s|^metalink=|#metalink=|g" \
+                -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|download.example/pub/fedora/linux|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                fedora.repo \
+                fedora-updates.repo \
+                fedora-modular.repo \
+                fedora-updates-modular.repo \
+                fedora-updates-testing.repo \
+                fedora-updates-testing-modular.repo
+            ;;
+        "${SYSTEM_OPENCLOUDOS}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            8)
+                sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                    -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
+                    -i \
+                    OpenCloudOS-Debuginfo.repo \
+                    OpenCloudOS.repo \
+                    OpenCloudOS-Sources.repo
+                ;;
+            esac
+            ;;
         esac
-        ;;
-    "${SYSTEM_CENTOS}")
-        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-        sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        8)
-            ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
-            # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
-            sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
-            sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-            # 单独处理 CentOS-Linux-Sources.repo
-            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
-            ;;
-        7)
-            sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
-            sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
-            ;;
-        esac
-        sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
-        ;;
-    "${SYSTEM_CENTOS_STREAM}")
-        # CentOS Stream 9 使用的是 centos-stream 镜像，而 CentOS Stream 8 使用的是 centos 镜像
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9)
-            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|^metalink=|#metalink=|g" \
-                -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                centos.repo \
-                centos-addons.repo
-            ;;
-        8)
-            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
-            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                CentOS-Stream-*
-            ;;
-        esac
-        ;;
-    "${SYSTEM_ROCKY}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9)
-            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                rocky.repo \
-                rocky-addons.repo \
-                rocky-devel.repo \
-                rocky-extras.repo
-            ;;
-        8)
-            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                Rocky-*
-            ;;
-        esac
-        ;;
-    "${SYSTEM_ALMALINUX}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9)
-            sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
-                -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                almalinux-*
-            ;;
-        8)
-            sed -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
-                -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                almalinux-ha.repo \
-                almalinux-nfv.repo \
-                almalinux-plus.repo \
-                almalinux-powertools.repo \
-                almalinux-resilientstorage.repo \
-                almalinux-rt.repo \
-                almalinux-sap.repo \
-                almalinux-saphana.repo \
-                almalinux.repo
-            ;;
-        esac
-        ;;
-    "${SYSTEM_FEDORA}")
-        sed -e "s|^metalink=|#metalink=|g" \
-            -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-            -e "s|download.example/pub/fedora/linux|${SOURCE}/${SOURCE_BRANCH}|g" \
-            -i \
-            fedora.repo \
-            fedora-updates.repo \
-            fedora-modular.repo \
-            fedora-updates-modular.repo \
-            fedora-updates-testing.repo \
-            fedora-updates-testing-modular.repo
-        ;;
-    esac
+    fi
 
     ## EPEL 附加软件包（安装/换源）
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}")
-        [[ "${INSTALL_EPEL}" == "True" ]] && EPELMirrors
+    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
+        [[ "${INSTALL_EPEL}" == "true" ]] && EPELMirrors
         ;;
     esac
 }
@@ -1425,14 +1442,6 @@ function OpenCloudOSMirrors() {
             -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
             -i \
             OpenCloudOS.repo
-        ;;
-    8)
-        sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
-            -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
-            -i \
-            OpenCloudOS-Debuginfo.repo \
-            OpenCloudOS.repo \
-            OpenCloudOS-Sources.repo
         ;;
     esac
 }
@@ -4139,22 +4148,22 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
-[BaseOS-debug]
-name=BaseOS-debug $releasever - $basearch
+[BaseOS-debuginfo]
+name=BaseOS-debuginfo $releasever - $basearch
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/debug/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
-[AppStream-debug]
-name=AppStream-debug $releasever - $basearch
+[AppStream-debuginfo]
+name=AppStream-debuginfo $releasever - $basearch
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/debug/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
-[extras-debug]
-name=extras-debug $releasever - $basearch
+[extras-debuginfo]
+name=extras-debuginfo $releasever - $basearch
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/$basearch/debug/
 gpgcheck=1
 enabled=0
@@ -4750,129 +4759,236 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
 gpgcheck=1
 EOF
+        cat >$Dir_YumRepos/epel-next.repo <<\EOF
+[epel-next]
+name=Extra Packages for Enterprise Linux $releasever - Next - $basearch
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/next/$releasever/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+
+[epel-next-debuginfo]
+name=Extra Packages for Enterprise Linux $releasever - Next - $basearch - Debug
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/next/$releasever/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+gpgcheck=1
+
+[epel-next-source]
+name=Extra Packages for Enterprise Linux $releasever - Next - $basearch - Source
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/next/$releasever/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+gpgcheck=1
+EOF
+        cat >$Dir_YumRepos/epel-next-testing.repo <<\EOF
+[epel-next-testing]
+name=Extra Packages for Enterprise Linux $releasever - Next - Testing - $basearch
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/testing/next/$releasever/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+
+[epel-next-testing-debuginfo]
+name=Extra Packages for Enterprise Linux $releasever - Next - Testing - $basearch - Debug
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/testing/next/$releasever/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+gpgcheck=1
+
+[epel-next-testing-source]
+name=Extra Packages for Enterprise Linux $releasever - Next - Testing - $basearch - Source
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/testing/next/$releasever/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+gpgcheck=1
+EOF
+        cat >$Dir_YumRepos/epel-cisco-openh264.repo <<\EOF
+[epel-cisco-openh264]
+name=Extra Packages for Enterprise Linux $releasever openh264 (From Cisco) - $basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-cisco-openh264-$releasever&arch=$basearch
+type=rpm
+enabled=1
+metadata_expire=14d
+repo_gpgcheck=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+skip_if_unavailable=True
+
+[epel-cisco-openh264-debuginfo]
+name=Extra Packages for Enterprise Linux $releasever openh264 (From Cisco) - $basearch - Debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-cisco-openh264-debug-$releasever&arch=$basearch
+type=rpm
+enabled=0
+metadata_expire=14d
+repo_gpgcheck=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+skip_if_unavailable=True
+
+[epel-cisco-openh264-source]
+name=Extra Packages for Enterprise Linux $releasever openh264 (From Cisco) - $basearch - Source
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-cisco-openh264-source-$releasever&arch=$basearch
+type=rpm
+enabled=0
+metadata_expire=14d
+repo_gpgcheck=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+skip_if_unavailable=True
+EOF
         ;;
     8)
         cat >$Dir_YumRepos/epel.repo <<\EOF
 [epel]
-name=Extra Packages for Enterprise Linux $releasever - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+name=Extra Packages for Enterprise Linux 8 - $basearch
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/8/Everything/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=1
 gpgcheck=1
+countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+name=Extra Packages for Enterprise Linux 8 - $basearch - Debug
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/8/Everything/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 
 [epel-source]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Everything/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-EOF
-        cat >$Dir_YumRepos/epel-modular.repo <<\EOF
-[epel-modular]
-name=Extra Packages for Enterprise Linux Modular $releasever - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-
-[epel-modular-debuginfo]
-name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-
-[epel-modular-source]
-name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/8/Modular/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-EOF
-        cat >$Dir_YumRepos/epel-playground.repo <<\EOF
-[epel-playground]
-name=Extra Packages for Enterprise Linux $releasever - Playground - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/playground/$releasever/Everything/$basearch/os
-metalink=https://mirrors.fedoraproject.org/metalink?repo=playground-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-
-[epel-playground-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Playground - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/playground/$releasever/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=playground-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
-
-[epel-playground-source]
-name=Extra Packages for Enterprise Linux $releasever - Playground - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/playground/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=playground-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
+name=Extra Packages for Enterprise Linux 8 - $basearch - Source
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place it's address here.
+#baseurl=https://download.example/pub/epel/8/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
         cat >$Dir_YumRepos/epel-testing.repo <<\EOF
 [epel-testing]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Everything/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
+name=Extra Packages for Enterprise Linux 8 - Testing - $basearch
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/testing/8/Everything/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgcheck=1
+countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
+name=Extra Packages for Enterprise Linux 8 - Testing - $basearch - Debug
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/testing/8/Everything/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 
 [epel-testing-source]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Everything/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
+name=Extra Packages for Enterprise Linux 8 - Testing - $basearch - Source
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place it's address here.
+#baseurl=https://download.example/pub/epel/testing/8/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel8&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+gpgcheck=1
+EOF
+        cat >$Dir_YumRepos/epel-modular.repo <<\EOF
+[epel-modular]
+# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
+name=Extra Packages for Enterprise Linux Modular 8 - $basearch - RETIRED
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/8/Modular/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-8&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+
+[epel-modular-debuginfo]
+# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
+name=Extra Packages for Enterprise Linux Modular 8 - $basearch - Debug - RETIRED
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/8/Modular/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-debug-8&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+gpgcheck=1
+
+[epel-modular-source]
+# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
+name=Extra Packages for Enterprise Linux Modular 8 - $basearch - Source - RETIRED
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place it's address here.
+#baseurl=https://download.example/pub/epel/8/Modular/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-source-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
         cat >$Dir_YumRepos/epel-testing-modular.repo <<\EOF
 [epel-testing-modular]
-name=Extra Packages for Enterprise Linux Modular $releasever - Testing - $basearch
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Modular/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
+# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
+name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - RETIRED
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/testing/8/Modular/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgcheck=1
+countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-testing-modular-debuginfo]
-name=Extra Packages for Enterprise Linux Modular $releasever - Testing - $basearch - Debug
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Modular/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
+# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
+name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - Debug - RETIRED
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+#baseurl=https://download.example/pub/epel/testing/8/Modular/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-debug-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 
 [epel-testing-modular-source]
-name=Extra Packages for Enterprise Linux Modular $releasever - Testing - $basearch - Source
-#baseurl=https://download.fedoraproject.org/pub/epel/testing/$releasever/Modular/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
+# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
+name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - Source - RETIRED
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place it's address here.
+#baseurl=https://download.example/pub/epel/testing/8/Modular/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-source-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
@@ -4956,7 +5072,7 @@ function CommandOptions() {
   --branch-security        指定 Debian 的 security 软件源分支(路径)          分支名
   --branch-vault           指定 CentOS/AlmaLinux 的 vault 软件源分支(路径)   分支名
   --codename               指定 Debian 系操作系统的版本代号                  代号名称
-  --web-protocol           指定 WEB 协议                                     http 或 https
+  --protocol               指定 WEB 协议                                     http 或 https
   --intranet               优先使用内网地址                                  true 或 false
   --install-epel           安装 EPEL 附加软件包                              true 或 false
   --only-epel              仅更换 EPEL 软件源模式                            无
@@ -5077,7 +5193,7 @@ function CommandOptions() {
             fi
             ;;
         ## WEB 协议（HTTP/HTTPS）
-        --web-protocol)
+        --protocol | --web-protocol)
             if [ "$2" ]; then
                 case "$2" in
                 http | https | HTTP | HTTPS)

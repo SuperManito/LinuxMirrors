@@ -10,7 +10,7 @@
 | `--branch-security` | 指定 Debian 的 security 软件源分支(路径) | 分支名 |
 | `--branch-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源分支(路径) | 分支名 |
 | `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
-| `--web-protocol` | 指定 WEB 协议 | `http` 或 `https` |
+| `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--intranet` | 优先使用内网地址 | `true` 或 `false` |
 | `--install-epel` | 安装 EPEL 附加软件包 | `true` 或 `false` |
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
@@ -155,7 +155,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 ``` { .bash .no-copy title="参考命令" }
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source mirror.example.com \
-  --web-protocol http \
+  --protocol http \
   --intranet false \
   --install-epel true \
   --close-firewall true \
