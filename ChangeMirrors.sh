@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-31
+## Modified: 2024-02-03
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -18,10 +18,9 @@ mirror_list_default=(
     "北京大学@mirrors.pku.edu.cn"
     "浙江大学@mirrors.zju.edu.cn"
     "南京大学@mirrors.nju.edu.cn"
-    "重庆大学@mirrors.cqu.edu.cn"
     "兰州大学@mirror.lzu.edu.cn"
     "上海交通大学@mirror.sjtu.edu.cn"
-    "哈尔滨工业大学@mirrors.hit.edu.cn"
+    "重庆邮电大学@mirrors.cqupt.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
 )
@@ -112,15 +111,17 @@ mirror_list_edu=(
     "上海科技大学@mirrors.shanghaitech.edu.cn"
     "南方科技大学@mirrors.sustech.edu.cn"
     "南京邮电大学@mirrors.njupt.edu.cn"
+    "南京工业大学@mirrors.njtech.edu.cn"
     "电子科技大学@mirrors.uestc.cn"
     "北京交通大学@mirror.bjtu.edu.cn"
+    "北京邮电大学@mirrors.bupt.edu.cn"
     "齐鲁工业大学@mirrors.qlu.edu.cn"
     "华南农业大学@mirrors.scau.edu.cn"
     "西安交通大学@mirrors.xjtu.edu.cn"
     "江西理工大学@mirrors.jxust.edu.cn"
+    "重庆邮电大学@mirrors.cqupt.edu.cn"
     "南阳理工学院@mirror.nyist.edu.cn"
     "武昌首义学院@mirrors.wsyu.edu.cn"
-    "哈尔滨工业大学@mirrors.hit.edu.cn"
     "北京外国语大学@mirrors.bfsu.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "西北农林科技大学@mirrors.nwafu.edu.cn"
@@ -169,6 +170,7 @@ SYSTEM_ALPINE="Alpine"
 File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_DebianVersion=/etc/debian_version
+File_ArmbianRelease=/etc/armbian-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
 File_ArchRelease=/etc/arch-release
@@ -177,6 +179,8 @@ File_AlpineRelease=/etc/alpine-release
 ## 定义软件源相关文件或目录
 File_DebianSourceList=/etc/apt/sources.list
 File_DebianSourceListBackup=/etc/apt/sources.list.bak
+File_ArmbianSourceList=/etc/apt/sources.list.d/armbian.list
+File_ArmbianSourceListBackup=/etc/apt/sources.list.d/armbian.list.bak
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 File_ArchMirrorList=/etc/pacman.d/mirrorlist
@@ -793,7 +797,11 @@ function BackupOriginalMirrors() {
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
             # /etc/apt/sources.list
-            BackupFile $File_DebianSourceList $File_DebianSourceListBackup "list"
+            BackupFile $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
+            ## Armbian
+            if [ -f $File_ArmbianRelease ]; then
+                BackupFile $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
+            fi
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
             # /etc/yum.repos.d
@@ -820,6 +828,11 @@ function RemoveOriginMirrors() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
+        [ -d $Dir_DebianExtendSource ] || mkdir -p $Dir_DebianExtendSource
+        ## Armbian
+        if [ -f $File_ArmbianRelease ]; then
+            [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
+        fi
         ;;
     "${SYSTEM_REDHAT}")
         if [ ! -d $Dir_YumRepos ]; then
@@ -928,6 +941,10 @@ function ChangeMirrors() {
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
                 DiffFile $File_DebianSourceListBackup $File_DebianSourceList
+                ## Armbian
+                if [ -f $File_ArmbianRelease ]; then
+                    DiffFile $File_ArmbianSourceListBackup $File_ArmbianSourceList
+                fi
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
                 DiffDir $Dir_YumReposBackup $Dir_YumRepos
@@ -1094,8 +1111,8 @@ function UpgradeSoftware() {
 
 ## 运行结束
 function RunEnd() {
-    echo -e "\n------ 脚本执行结束 ------"
-    echo -e "\n\033[1;34mPowered by linuxmirrors.cn\033[0m\n"
+    echo -e "\n---------- 脚本执行结束 ----------"
+    echo -e "\n\033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
 }
 
 ##############################################################################
@@ -1182,6 +1199,10 @@ deb ${basic_url} ${source_suffix}
 # deb-src ${basic_url} ${source_suffix}" >>$File_DebianSourceList
         ;;
     esac
+    ## Armbian
+    if [ -f $File_ArmbianRelease ]; then
+        echo "deb ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_DebianSourceList
+    fi
 }
 
 ## 更换基于 RedHat 系 Linux 发行版软件源

@@ -1,5 +1,5 @@
 | 名称 | 含义 | 选项值 |
-| :-: | :-: | :-: |
+| - | - | :-: |
 | `--abroad` | 使用海外软件源 | 无 |
 | `--edu` | 使用中国大陆教育网软件源 | 无 |
 | `--source` | 指定软件源地址(域名或IP) | 地址 |
@@ -41,64 +41,25 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配，默认使用的分支名称如下
 
-<table>
-<tr>
-    <td><a href="https://www.debian.org" target="_blank"><img src="/../assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"/></a>&nbsp;Debian</td>
-    <td align="center">debian</td>
-</tr>
-<tr>
-    <td><a href="https://cn.ubuntu.com" target="_blank"><img src="/../assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Ubuntu</td>
-    <td align="center">ubuntu / ubuntu-ports</td>
-</tr>
-<tr>
-    <td><a href="https://www.kali.org" target="_blank"><img src="/../assets/images/icon/kali-linux.svg" width="16" height="16"/></a>&nbsp;Kali Linux</td>
-    <td align="center">kali</td>
-</tr>
-<tr>
-    <td><a href="https://www.deepin.org" target="_blank"><img src="/../assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Deepin</td>
-    <td align="center">deepin</td>
-</tr>
-<tr>
-    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/../assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Red Hat Enterprise Linux</td>
-    <td align="center">centos / centos-altarch / rocky</td>
-</tr>
-<tr>
-    <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/../assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Fedora</td>
-    <td align="center">fedora</td>
-</tr>
-<tr>
-    <td><a href="https://www.centos.org" target="_blank"><img src="/../assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;CentOS</td>
-    <td align="center">centos / centos-stream / centos-altarch / centos-vault</td>
-</tr>
-<tr>
-    <td><a href="https://rockylinux.org" target="_blank"><img src="/../assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Rocky Linux</td>
-    <td align="center">rocky</td>
-</tr>
-<tr>
-    <td><a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;AlmaLinux</td>
-    <td align="center">almalinux / almalinux-vault</td>
-</tr>
-<tr>
-    <td><a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;OpenCloudOS</td>
-    <td align="center">opencloudos</td>
-</tr>
-<tr>
-    <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="/../assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;openEuler</td>
-    <td align="center">openeuler</td>
-</tr>
-<tr>
-    <td><a href="https://www.opensuse.org" target="_blank"><img src="/../assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;openSUSE</td>
-    <td align="center">opensuse</td>
-</tr>
-<tr>
-    <td><a href="https://archlinux.org" target="_blank"><img src="/../assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Arch Linux</td>
-    <td align="center">archlinux / archlinuxarm</td>
-</tr>
-<tr>
-    <td><a href="https://www.alpinelinux.org" target="_blank"><img src="/../assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Alpine Linux</td>
-    <td align="center">alpine</td>
-</tr>
-</table>
+<div class="annotate" markdown>
+| 系统名称 | 版本代号 |
+| --- | :---: |
+| <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"></a> Debian | debian |
+| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> Ubuntu | ubuntu / ubuntu-ports |
+| <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | kali |
+| <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin | deepin |
+| <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
+| <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>Rocky Linux</code>， 7、8版本使用<code>CentOS</code>" } | centos / centos-altarch / rocky |
+| <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Fedora | fedora |
+| <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
+| <a href="https://rockylinux.org/zh_CN" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | rocky |
+| <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> AlmaLinux | almalinux / almalinux-vault |
+| <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS | opencloudos |
+| <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler | openeuler |
+| <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | opensuse |
+| <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | archlinux / archlinuxarm |
+| <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | alpine |
+</div>
 
 请看下面的例子
 

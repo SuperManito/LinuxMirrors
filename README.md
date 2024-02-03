@@ -35,15 +35,19 @@
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="./docs/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Red Hat Enterprise Linux</td>
+        <td><a href="https://www.armbian.org" target="_blank"><img src="./docs/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Armbian</td>
+        <td align="center">all</td>
+    </tr>
+    <tr>
+        <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="./docs/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;Red Hat Enterprise Linux</td>
         <td align="center">7.0 ~ 9</td>
     </tr>
     <tr>
-        <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="./docs/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Fedora</td>
+        <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="./docs/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Fedora</td>
         <td align="center">30 ~ 39</td>
     </tr>
     <tr>
-        <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;CentOS</td>
+        <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;CentOS</td>
         <td align="center">7.0 ~ 8.5 / Stream 8 ~ 9</td>
     </tr>
     <tr>
@@ -59,7 +63,7 @@
         <td align="center">8.6 / 8.8 / 9.0</td>
     </tr>
     <tr>
-        <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;openEuler</td>
+        <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;openEuler</td>
         <td align="center">21.03 ~ 23</td>
     </tr>
     <tr>
@@ -88,6 +92,6 @@
 
 ### LICENSE
 
-Copyright © 2023, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
+Copyright © 2024, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
 __如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__

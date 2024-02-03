@@ -10,28 +10,27 @@ hide:
 
 > 下方列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` 软件源，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
 
-| 镜像站 | IPv6 | Arch | Kali | Deepin | Rocky | AlmaLinux | EPEL | Fedora | openEuler | OpenCloudOS | Alpine |
-| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
-| [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-compatible: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :common-not-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: |
-| [华为云](https://mirrors.huaweicloud.com "mirrors.huaweicloud.com") | :common-not-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-compatible: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [网易](https://mirrors.163.com "mirrors.163.com") | :common-not-supported: | :common-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-not-supported: |
-| [搜狐](https://mirrors.sohu.com "mirrors.sohu.com") | :common-not-supported: | :common-supported: | :common-not-supported: | :common-supported: | :common-not-compatible: | :common-not-supported: | :common-not-supported: | :common-supported: | :common-not-supported: | :common-not-supported: | :common-not-supported: |
-| [火山引擎](https://mirrors.volces.com "mirrors.volces.com") | :common-not-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-not-compatible: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [清华大学](https://mirrors.tuna.tsinghua.edu.cn "mirrors.tuna.tsinghua.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [北京大学](https://mirrors.pku.edu.cn/Mirrors "mirrors.pku.edu.cn/Mirrors") | :common-supported: | :common-supported: | :common-not-supported: | :common-not-supported: | :common-supported: | :common-not-supported: | :common-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-not-supported: |
-| [浙江大学](https://mirrors.zju.edu.cn "mirrors.zju.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [南京大学](https://mirrors.nju.edu.cn "mirrors.nju.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [重庆大学](https://mirrors.cqu.edu.cn "mirrors.cqu.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-compatible: | :common-not-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-not-supported: | :common-supported: |
-| [兰州大学](https://mirror.lzu.edu.cn "mirror.lzu.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [上海交通大学](https://mirror.sjtu.edu.cn "mirror.sjtu.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-compatible: | :common-supported: | :common-supported: | :common-supported: | :common-supported: |
-| [哈尔滨工业大学](https://mirrors.hit.edu.cn "mirrors.hit.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [中国科学技术大学](https://mirrors.ustc.edu.cn "mirrors.ustc.edu.cn") | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: | :common-supported: | :common-supported: | :common-not-supported: | :common-supported: |
-| [中国科学院软件研究所](https://mirror.iscas.ac.cn "mirror.iscas.ac.cn") | :common-not-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: | :common-supported: |
+| 镜像站 | IPv6 | Arch | Kali | Deepin | Rocky | AlmaLinux | EPEL | Fedora | openEuler | OpenCloudOS | Alpine | Armbian |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: |
+| [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: |
+| [华为云](https://mirrors.huaweicloud.com "mirrors.huaweicloud.com") | :unsupport: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: |
+| [网易](https://mirrors.163.com "mirrors.163.com") | :unsupport: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :unsupport: |
+| [搜狐](https://mirrors.sohu.com "mirrors.sohu.com") | :unsupport: | :supported: | :unsupport: | :supported: | :incompatible: | :unsupport: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
+| [火山引擎](https://mirrors.volces.com "mirrors.volces.com") | :unsupport: | :unsupport: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: |
+| [清华大学](https://mirrors.tuna.tsinghua.edu.cn "mirrors.tuna.tsinghua.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: |
+| [北京大学](https://mirrors.pku.edu.cn/Mirrors "mirrors.pku.edu.cn/Mirrors") | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: |
+| [浙江大学](https://mirrors.zju.edu.cn "mirrors.zju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: |
+| [南京大学](https://mirrors.nju.edu.cn "mirrors.nju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: |
+| [兰州大学](https://mirror.lzu.edu.cn "mirror.lzu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: |
+| [上海交通大学](https://mirror.sjtu.edu.cn "mirror.sjtu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: |
+| [重庆邮电大学](https://mirrors.cqupt.edu.cn "mirrors.cqu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: |
+| [中国科学技术大学](https://mirrors.ustc.edu.cn "mirrors.ustc.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: |
+| [中国科学院软件研究所](https://mirror.iscas.ac.cn "mirror.iscas.ac.cn") | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: |
 
 ???+ question "使用帮助"
 
-    :common-supported: 支持 &nbsp;&nbsp; :common-not-supported: 不支持 &nbsp;&nbsp; :common-not-compatible: 不兼容，表示软件源分支命名不符合脚本默认规则但可以通过命令参数来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/command-options.md#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)
+    :supported: 支持 &nbsp;&nbsp; :unsupport: 不支持 &nbsp;&nbsp; :incompatible: 不兼容，表示软件源分支命名不符合脚本默认规则但可以通过命令参数来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/command-options.md#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)
 
     如果使用脚本过程中不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可。如果这里没有你想使用的教育单位镜像站，那么你可以使用[国内教育网模式](../use/index.md#%E5%9B%BD%E5%86%85%E6%95%99%E8%82%B2%E7%BD%91%E4%BD%BF%E7%94%A8)看看
 
@@ -53,15 +52,17 @@ hide:
     | 上海科技大学 | [mirrors.shanghaitech.edu.cn](https://mirrors.shanghaitech.edu.cn "https://mirrors.shanghaitech.edu.cn") |
     | 南方科技大学 | [mirrors.sustech.edu.cn](https://mirrors.sustech.edu.cn "https://mirrors.sustech.edu.cn") |
     | 南京邮电大学 | [mirrors.njupt.edu.cn](https://mirrors.njupt.edu.cn "https://mirrors.njupt.edu.cn") |
+    | 南京工业大学 | [mirrors.njtech.edu.cn](https://mirrors.njtech.edu.cn "https://mirrors.njtech.edu.cn") |
     | 电子科技大学 | [mirrors.uestc.cn](https://mirrors.uestc.cn "https://mirrors.uestc.cn") |
     | 北京交通大学 | [mirror.bjtu.edu.cn](https://mirror.bjtu.edu.cn "https://mirror.bjtu.edu.cn") |
+    | 北京邮电大学 | [mirror.bupt.edu.cn](https://mirror.bupt.edu.cn "https://mirror.bupt.edu.cn") |
     | 齐鲁工业大学 | [mirrors.qlu.edu.cn](https://mirrors.qlu.edu.cn "https://mirrors.qlu.edu.cn") |
     | 华南农业大学 | [mirrors.scau.edu.cn](https://mirrors.scau.edu.cn "https://mirrors.scau.edu.cn") |
     | 西安交通大学 | [mirrors.xjtu.edu.cn](https://mirrors.xjtu.edu.cn "https://mirrors.xjtu.edu.cn") |
     | 江西理工大学 | [mirrors.jxust.edu.cn](https://mirrors.jxust.edu.cn "https://mirrors.jxust.edu.cn") |
+    | 重庆邮电大学 | [mirrors.cqupt.edu.cn](https://mirrors.cqupt.edu.cn "https://mirrors.cqupt.edu.cn") |
     | 南阳理工学院 | [mirror.nyist.edu.cn](https://mirror.nyist.edu.cn "https://mirror.nyist.edu.cn") |
     | 武昌首义学院 | [mirrors.wsyu.edu.cn](https://mirrors.wsyu.edu.cn "https://mirrors.wsyu.edu.cn") |
-    | 哈尔滨工业大学 | [mirrors.hit.edu.cn](https://mirrors.hit.edu.cn "https://mirrors.hit.edu.cn") |
     | 北京外国语大学 | [mirrors.bfsu.edu.cn](https://mirrors.bfsu.edu.cn "https://mirrors.bfsu.edu.cn") |
     | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn "https://mirrors.ustc.edu.cn") |
     | 西北农林科技大学 | [mirrors.nwafu.edu.cn](https://mirrors.nwafu.edu.cn "https://mirrors.nwafu.edu.cn") |
