@@ -12,48 +12,47 @@ hide:
 <figure style="margin: 0" markdown>
   ![](assets/images/brand/light/2.png#only-light){ width="300" }
   ![](assets/images/brand/dark/2.png#only-dark){ width="300" }
-  <figcaption>GNU/Linux 一键更换系统软件源脚本</figcaption>
+  <figcaption>GNU/Linux 更换系统软件源脚本</figcaption>
 </figure>
 
 <div class="grid" markdown>
 
 <div class="grid cards" style="height: fit-content" markdown>
 
--   :material-source-branch:{ .lg .middle } __软件源适配__
+-   :material-source-branch:{ .lg .middle } __多软件源适配__
 
     ---
 
-    实际考察了国内众多主流镜像站，针对适配情况进行了考察，并测试了速度与IPv6  
-    另外还提供众多中国大陆教育网镜像站、海外镜像站可控选择
+    考察了国内镜像站的系统适配情况，测试了下载速度与IPv6协议的兼容性  
+    另外提供全网收集的中国大陆教育网镜像站、海外镜像站可供选择
 
-    [:octicons-arrow-right-24: Mirrors](/mirrors)
-
--   :octicons-command-palette-16:{ .lg .middle } __低技术成本__
+-   :material-rocket-launch-outline:{ .lg .middle } __低技术成本__
 
     ---
 
-    一键脚本让换源更简单，用户无需掌握相关技术可通过交互完成更换  
-    并且提供了命令选项可为自动化项目实现无交互换源
+    无需掌握相关技术，文档提供了全面的相关知识储备与操作指引  
+    提供了一些常见问题的解决方法
 
-    [:octicons-arrow-right-24: Mirrors](/mirrors)
+-   :octicons-command-palette-24:{ .lg .middle } __脚本一键运行__
 
--   :material-scale-balance:{ .lg .middle } __开源, MIT__
+    ---
+
+    脚本让换源更简单，默认通过交互进行更换，根据用户选择自动配置  
+    并且提供了强大的命令选项，可应用于自动化项目实现无交互操作
+
+-   :material-scale-balance:{ .lg .middle } __开源，MIT__
 
     ---
 
     项目已设立开源许可协议，传播时请在显著位置标注来源和作者  
     请尊重作者的知识成果，建议通过命令直接调用脚本
 
-    [:octicons-arrow-right-24: License](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE)
-
 -   :octicons-report-24:{ .lg .middle } __意见与建议__
 
     ---
 
-    如有意见与建议你可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)  
+    如有适配请求或意见与建议你可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)  
     如果你需要提交代码请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
-
-    [:octicons-arrow-right-24: Issues](https://github.com/SuperManito/LinuxMirrors/issues)
 
 </div>
 

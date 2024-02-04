@@ -113,7 +113,7 @@ hide:
 
     默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
 
-    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
+    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin` &nbsp; `Armbian`
 
 === "RedHat 系 / OpenCloudOS / openEuler"
 

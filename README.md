@@ -9,7 +9,7 @@
     </strong>
 </p>
 <p align="center">
-    GNU/Linux 一键更换系统软件源脚本
+    GNU/Linux 更换系统软件源脚本
 </p>
 <p align="center">
     <strong>

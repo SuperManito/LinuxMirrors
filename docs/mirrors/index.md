@@ -32,9 +32,11 @@ hide:
 
     :supported: 支持 &nbsp;&nbsp; :unsupport: 不支持 &nbsp;&nbsp; :incompatible: 不兼容，表示软件源分支命名不符合脚本默认规则但可以通过命令参数来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/command-options.md#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)
 
-    如果使用脚本过程中不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可。如果这里没有你想使用的教育单位镜像站，那么你可以使用[国内教育网模式](../use/index.md#%E5%9B%BD%E5%86%85%E6%95%99%E8%82%B2%E7%BD%91%E4%BD%BF%E7%94%A8)看看
+    如果使用脚本过程中不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可。如果这里没有你想使用的镜像站，那么你可以看看其它模式与命令选项
 
-    软件源的速度区分刷新速度和下行速度，后者才是关键，具体请结合实际地理位置选择尝试，建议优先使用`中科大`、`火山引擎`、`腾讯云`镜像站，你可以使用下面提到的[辅助工具网站](#工具网站)来帮助你进行选择
+    软件源的速度区分刷新速度和下行速度，后者才是关键，具体请结合实际地理位置选择尝试，你可以使用下面提到的[辅助工具网站](#工具网站)来帮助你进行选择
+
+    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，网络地域兼容性上推荐 `腾讯云`、`阿里云`，不建议使用一些容易阻断的镜像站例如 `清华(TUNA)`，这有违开源软件的初衷
 
 ??? note "国内教育网软件源列表"
 
@@ -267,9 +269,9 @@ hide:
  
 ## 工具网站
 
-<button class="md-button md-button--primary" onclick="window.open('https://tool.chinaz.com')">域名查询</button>
-<button class="md-button md-button--primary" onclick="window.open('https://tools.ipip.net/newping.php')">Ping 延迟测试</button>
-<button class="md-button md-button--primary" onclick="window.open('https://tools.ipip.net/traceroute.php')">Tracert 路由追踪测试</button>
-<button class="md-button md-button--primary" onclick="window.open('https://ipw.cn/ipv6webcheck')">IPv6 接入测试</button>
+<button class="md-button" title="https://tool.chinaz.com" onclick="window.open('https://tool.chinaz.com')">域名查询</button>
+<button class="md-button" title="https://tools.ipip.net/newping.php" onclick="window.open('https://tools.ipip.net/newping.php')">Ping 延迟测试</button>
+<button class="md-button" title="https://tools.ipip.net/traceroute.php" onclick="window.open('https://tools.ipip.net/traceroute.php')">Tracert 路由追踪测试</button>
+<button class="md-button" title="https://ipw.cn/ipv6webcheck" onclick="window.open('https://ipw.cn/ipv6webcheck')">IPv6 接入测试</button>
 
 !!! tip "该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](../use/command-options.md)</br>本页面用到的旗帜符号仅用于快速区分地理位置不代表作者的任何政治立场"

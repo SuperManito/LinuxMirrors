@@ -9,7 +9,7 @@
         apt-get install -y curl
         ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin` &nbsp; `Armbian`
 
         新装系统需要先执行一遍更新 `apt-get update`
 
@@ -81,7 +81,7 @@
         apt-get update
         ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin` &nbsp; `Armbian`
 
     === "RedHat 系 / OpenCloudOS / openEuler"
 
