@@ -32,11 +32,9 @@ hide:
 
     :supported: 支持 &nbsp;&nbsp; :unsupport: 不支持 &nbsp;&nbsp; :incompatible: 不兼容，表示软件源分支命名不符合脚本默认规则但可以通过命令参数来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/command-options.md#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)
 
-    如果使用脚本过程中不能正常输出中文内容则可对照此列表使用，顺序与脚本一致，之后一路回车即可。如果这里没有你想使用的镜像站，那么你可以看看其它模式与命令选项
+    如果这里没有想使用的镜像站那可以看看其它运行模式和命令选项。软件源的速度区分刷新速度和下行速率，后者才是关键，具体请结合实际地理位置选择尝试，还可以通过[辅助工具网站](#工具网站)进行一些测试
 
-    软件源的速度区分刷新速度和下行速度，后者才是关键，具体请结合实际地理位置选择尝试，你可以使用下面提到的[辅助工具网站](#工具网站)来帮助你进行选择
-
-    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，网络地域兼容性上推荐 `腾讯云`、`阿里云`，不建议使用一些容易阻断的镜像站例如 `清华(TUNA)`，这有违开源软件的初衷
+    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `腾讯云`、`阿里云`，复杂网络环境下不建议使用容易阻断的镜像站例如 `清华(TUNA)` `浙江大学`，这有违自由软件的初衷
 
 ??? note "国内教育网软件源列表"
 
@@ -274,4 +272,4 @@ hide:
 <button class="md-button" title="https://tools.ipip.net/traceroute.php" onclick="window.open('https://tools.ipip.net/traceroute.php')">Tracert 路由追踪测试</button>
 <button class="md-button" title="https://ipw.cn/ipv6webcheck" onclick="window.open('https://ipw.cn/ipv6webcheck')">IPv6 接入测试</button>
 
-!!! tip "该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](../use/command-options.md)</br>本页面用到的旗帜符号仅用于快速区分地理位置不代表作者的任何政治立场"
+!!! tip "该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](../use/command-options.md)</br>特此声明：本页面用到的旗帜符号仅用于快速区分地理位置不代表作者的任何政治立场"
