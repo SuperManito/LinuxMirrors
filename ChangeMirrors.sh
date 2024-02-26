@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-02-04
+## Modified: 2024-02-27
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -26,7 +26,6 @@ mirror_list_default=(
 )
 # 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
-    "亚洲 · 科盈电信 · 香港@mirror.hkt.cc"
     "亚洲 · xTom · 香港@mirrors.xtom.hk"
     "亚洲 · 01Link · 香港@mirror.01link.hk"
     "亚洲 · 新加坡国立大学(NUS) · 新加坡@download.nus.edu.sg/mirror"
@@ -175,12 +174,15 @@ File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
 File_ArchRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
+File_ProxmoxVersion=/etc/pve/.version
 
 ## 定义软件源相关文件或目录
 File_DebianSourceList=/etc/apt/sources.list
 File_DebianSourceListBackup=/etc/apt/sources.list.bak
 File_ArmbianSourceList=/etc/apt/sources.list.d/armbian.list
 File_ArmbianSourceListBackup=/etc/apt/sources.list.d/armbian.list.bak
+File_ProxmoxSourceList=/etc/apt/sources.list.d/pve-no-subscription.list
+File_ProxmoxSourceListBackup=/etc/apt/sources.list.d/pve-no-subscription.list.bak
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 File_ArchMirrorList=/etc/pacman.d/mirrorlist
@@ -285,12 +287,12 @@ function EnvJudgment() {
     ## 判断系统和其版本是否受本脚本支持
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-2] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-3] ]]; then
             Output_Error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_UBUNTU}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-3] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-4] ]]; then
             Output_Error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
@@ -310,7 +312,7 @@ function EnvJudgment() {
         fi
         ;;
     "${SYSTEM_FEDORA}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 3[0-8] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != [3-4][0-9] ]]; then
             Output_Error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
@@ -802,6 +804,10 @@ function BackupOriginalMirrors() {
             if [ -f $File_ArmbianRelease ]; then
                 BackupFile $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
             fi
+            ## Proxmox
+            if [ -f $File_ProxmoxVersion ]; then
+                BackupFile $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
+            fi
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
             # /etc/yum.repos.d
@@ -832,6 +838,10 @@ function RemoveOriginMirrors() {
         ## Armbian
         if [ -f $File_ArmbianRelease ]; then
             [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
+        fi
+        ## Proxmox
+        if [ -f $File_ProxmoxVersion ]; then
+            [ -f $File_ProxmoxSourceList ] && sed -i '1,$d' $File_ProxmoxSourceList
         fi
         ;;
     "${SYSTEM_REDHAT}")
@@ -944,6 +954,10 @@ function ChangeMirrors() {
                 ## Armbian
                 if [ -f $File_ArmbianRelease ]; then
                     DiffFile $File_ArmbianSourceListBackup $File_ArmbianSourceList
+                fi
+                ## Proxmox
+                if [ -f $File_ProxmoxVersion ]; then
+                    DiffFile $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
                 fi
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
@@ -1142,33 +1156,29 @@ function DebianMirrors() {
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
         case "${SYSTEM_VERSION_NUMBER}" in
-        12)
-            source_suffix="main contrib non-free non-free-firmware"
-            ;;
-        *)
+        8 | 9 | 10 | 11)
             source_suffix="main contrib non-free"
             ;;
+        *)
+            source_suffix="main contrib non-free non-free-firmware"
+            ;;
         esac
-        echo "${tips}
+        if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
+            echo "${tips}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
 deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
 # deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}" >>$File_DebianSourceList
-        ## 处理 debian-security 仓库
-        local security_url="${SOURCE_SECURITY:-"${SOURCE}"}"
-        if [[ -z "${SOURCE_SECURITY}" ]]; then
-            if [[ "${USE_ABROAD_SOURCE}" == "true" ]]; then
-                local security_url="https://security.debian.org/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
-            else
-                local security_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
-            fi
-        else
-            local security_url="${WEB_PROTOCOL}://${SOURCE_SECURITY}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
-        fi
-        echo "deb ${security_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
+            ## 处理 debian-security 仓库源
+            local security_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
+            echo "deb ${security_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
 # deb-src ${security_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
+        else
+            echo "deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
+# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}" >>$File_DebianSourceList
+        fi
         ;;
     "${SYSTEM_UBUNTU}")
         source_suffix="main restricted universe multiverse"
@@ -1199,9 +1209,17 @@ deb ${basic_url} ${source_suffix}
 # deb-src ${basic_url} ${source_suffix}" >>$File_DebianSourceList
         ;;
     esac
-    ## Armbian
+    ## 处理其它衍生系统的专用源
+    # Armbian
     if [ -f $File_ArmbianRelease ]; then
         echo "deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_ArmbianSourceList
+    fi
+    # Proxmox
+    if [ -f $File_ProxmoxVersion ]; then
+        echo "deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pve ${SYSTEM_VERSION_CODENAME} pve-no-subscription
+# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs ${SYSTEM_VERSION_CODENAME} pbs-no-subscription
+# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs-client ${SYSTEM_VERSION_CODENAME} pbs-client-no-subscription
+# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pmg ${SYSTEM_VERSION_CODENAME} pmg-no-subscription" >>$File_ProxmoxSourceList
     fi
 }
 

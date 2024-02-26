@@ -20,7 +20,7 @@
 <table align="center">
     <tr>
         <td><a href="https://www.debian.org" target="_blank"><img src="./docs/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"></a>&nbsp;Debian</td>
-        <td align="center">8.0 ~ 12</td>
+        <td align="center">8.0 ~ 13</td>
     </tr>
     <tr>
         <td><a href="https://cn.ubuntu.com" target="_blank"><img src="./docs/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Ubuntu</td>
@@ -36,6 +36,10 @@
     </tr>
     <tr>
         <td><a href="https://www.armbian.org" target="_blank"><img src="./docs/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Armbian</td>
+        <td align="center">all</td>
+    </tr>
+    <tr>
+        <td><a href="https://www.proxmox.com" target="_blank"><img src="./docs/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Proxmox</td>
         <td align="center">all</td>
     </tr>
     <tr>

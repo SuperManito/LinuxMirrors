@@ -49,6 +49,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | kali |
 | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin | deepin |
 | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
+| <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | proxmox |
 | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>Rocky Linux</code>， 7、8版本使用<code>CentOS</code>" } | centos / centos-altarch / rocky |
 | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Fedora | fedora |
 | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
@@ -101,13 +102,22 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 ### 指定 Debian 系 Linux 版本代号
 
-大多数情况下自定义版本代号用于升级系统版本，请看下面的例子
+大多数情况下自定义版本代号用于更换系统版本，请看下面的例子
 
-``` { .bash .no-copy title="升级 Debian 至最新 12 版本 Bookworm" }
+``` { .bash title="升级 Debian 至最新 12 版本 Bookworm" }
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --codename bookworm
 ```
-更换软件源后还需要执行系统更新命令才能实现更新操作，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题
+``` { .bash title="将 Debian 版本切换到测试分支" }
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+  --codename testing
+```
+
+更换软件源后还需要执行系统更新命令 `apt-get dist-upgrade`，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题
+
+``` { .bash title="若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换" }
+sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
+```
 
 ## 无人值守
 
