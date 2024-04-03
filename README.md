@@ -28,7 +28,7 @@
     </tr>
     <tr>
         <td><a href="https://www.kali.org" target="_blank"><img src="./docs/assets/images/icon/kali-linux.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Kali Linux</td>
-        <td align="center">2.0 ~ 2023</td>
+        <td align="center">2.0 ~ 2024</td>
     </tr>
     <tr>
         <td><a href="https://www.deepin.org" target="_blank"><img src="./docs/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Deepin</td>
