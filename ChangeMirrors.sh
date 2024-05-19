@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-04-11
+## Modified: 2024-05-19
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -267,7 +267,7 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
+                Output_Error "lsb-release 软件包安装失败\n\n本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -1607,6 +1607,270 @@ function AlpineMirrors() {
     ## 修改源
     echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
 ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/community" >>$File_AlpineRepositories
+}
+
+## 处理命令选项
+function CommandOptions() {
+    ## 命令帮助
+    function Output_Help_Info() {
+        echo -e "
+命令选项(参数名/含义/参数值)：
+
+  --abroad                 使用海外软件源                                    无
+  --edu                    使用中国大陆教育网软件源                          无
+  --source                 指定软件源地址                                    地址
+  --source-security        指定 Debian 的 security 软件源地址                地址
+  --source-vault           指定 CentOS/AlmaLinux 的 vault 软件源地址         地址
+  --use-official-source    使用操作系统官方软件源                            无
+  --branch                 指定软件源分支(路径)                              分支名
+  --branch-security        指定 Debian 的 security 软件源分支(路径)          分支名
+  --branch-vault           指定 CentOS/AlmaLinux 的 vault 软件源分支(路径)   分支名
+  --codename               指定 Debian 系操作系统的版本代号                  代号名称
+  --protocol               指定 WEB 协议                                     http 或 https
+  --intranet               优先使用内网地址                                  true 或 false
+  --install-epel           安装 EPEL 附加软件包                              true 或 false
+  --only-epel              仅更换 EPEL 软件源模式                            无
+  --close-firewall         关闭防火墙                                        true 或 false
+  --backup                 备份原有软件源                                    true 或 false
+  --ignore-backup-tips     忽略覆盖备份提示                                  无
+  --upgrade-software       更新软件包                                        true 或 false
+  --clean-cache            清理下载缓存                                      true 或 false
+  --print-diff             打印源文件修改前后差异                            无
+
+问题报告 https://github.com/SuperManito/LinuxMirrors/issues
+  "
+    }
+
+    ## 判断参数
+    while [ $# -gt 0 ]; do
+        case "$1" in
+        ## 海外模式
+        --abroad)
+            USE_ABROAD_SOURCE="true"
+            ;;
+        ## 中国大陆教育网模式
+        --edu)
+            USE_EDU_SOURCE="true"
+            ;;
+        ## 指定软件源地址
+        --source)
+            if [ "$2" ]; then
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
+                    shift
+                fi
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --source-security)
+            if [ "$2" ]; then
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE_SECURITY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
+                    shift
+                fi
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --source-vault)
+            if [ "$2" ]; then
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE_VAULT="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
+                    shift
+                fi
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        ## 使用官方源
+        --use-official-source)
+            USE_OFFICIAL_SOURCE="true"
+            ;;
+        ## 指定软件源分支
+        --branch)
+            if [ "$2" ]; then
+                SOURCE_BRANCH="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --branch-security)
+            if [ "$2" ]; then
+                SOURCE_BRANCH_SECURITY="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --branch-vault)
+            if [ "$2" ]; then
+                SOURCE_BRANCH_VAULT="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        ## 指定 Debian 系操作系统的版本代号
+        --codename)
+            if [ "$2" ]; then
+                DEBIAN_CODENAME="$2"
+                shift
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
+            fi
+            ;;
+        ## 优先使用内网地址
+        --intranet)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    USE_INTRANET_SOURCE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## WEB 协议（HTTP/HTTPS）
+        --protocol | --web-protocol)
+            if [ "$2" ]; then
+                case "$2" in
+                http | https | HTTP | HTTPS)
+                    WEB_PROTOCOL="$2"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
+            fi
+            ;;
+        ## 安装 EPEL 附加软件包
+        --install-epel)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    INSTALL_EPEL="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        --only-epel)
+            ONLY_EPEL="true"
+            INSTALL_EPEL="true"
+            ;;
+        ## 关闭防火墙
+        --close-firewall)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    CLOSE_FIREWALL="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 备份原有软件源
+        --backup)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    BACKUP="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 忽略覆盖备份提示
+        --ignore-backup-tips)
+            IGNORE_BACKUP_TIPS="true"
+            ;;
+        ## 更新软件包
+        --upgrade-software | --updata-software)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    UPGRADE_SOFTWARE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 清理下载缓存
+        --clean-cache)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    CLEAN_CACHE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    ;;
+                esac
+            else
+                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+            fi
+            ;;
+        ## 打印源文件修改前后差异
+        --print-diff)
+            PRINT_DIFF="true"
+            ;;
+        ## 命令帮助
+        --help)
+            Output_Help_Info
+            exit
+            ;;
+        *)
+            Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
+            ;;
+        esac
+        shift
+    done
+    ## 给部分命令选项赋予默认值
+    ONLY_EPEL="${ONLY_EPEL:-"false"}"
+    BACKUP="${BACKUP:-"true"}"
+    USE_OFFICIAL_SOURCE="${USE_OFFICIAL_SOURCE:-"false"}"
+    IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
+    PRINT_DIFF="${PRINT_DIFF:-"false"}"
 }
 
 ##############################################################################
@@ -4192,42 +4456,42 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
 [BaseOS-debuginfo]
 name=BaseOS-debuginfo $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/debug/
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/debug/tree/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
 [AppStream-debuginfo]
 name=AppStream-debuginfo $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/debug/
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/debug/tree/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
 [extras-debuginfo]
 name=extras-debuginfo $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/$basearch/debug/
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/$basearch/debug/tree/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
 [BaseOS-source]
 name=BaseOS-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/source/
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/source/tree/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
 [AppStream-source]
 name=AppStream-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/source/
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/source/tree/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 
 [extras-source]
 name=extras-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/source/
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/source/tree/
 gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
@@ -5120,272 +5384,10 @@ EOF
     esac
 }
 
-## 处理命令选项
-function CommandOptions() {
-    ## 命令帮助
-    function Output_Help_Info() {
-        echo -e "
-命令选项(参数名/含义/参数值)：
-
-  --abroad                 使用海外软件源                                    无
-  --edu                    使用中国大陆教育网软件源                          无
-  --source                 指定软件源地址                                    地址
-  --source-security        指定 Debian 的 security 软件源地址                地址
-  --source-vault           指定 CentOS/AlmaLinux 的 vault 软件源地址         地址
-  --use-official-source    使用操作系统官方软件源                            无
-  --branch                 指定软件源分支(路径)                              分支名
-  --branch-security        指定 Debian 的 security 软件源分支(路径)          分支名
-  --branch-vault           指定 CentOS/AlmaLinux 的 vault 软件源分支(路径)   分支名
-  --codename               指定 Debian 系操作系统的版本代号                  代号名称
-  --protocol               指定 WEB 协议                                     http 或 https
-  --intranet               优先使用内网地址                                  true 或 false
-  --install-epel           安装 EPEL 附加软件包                              true 或 false
-  --only-epel              仅更换 EPEL 软件源模式                            无
-  --close-firewall         关闭防火墙                                        true 或 false
-  --backup                 备份原有软件源                                    true 或 false
-  --ignore-backup-tips     忽略覆盖备份提示                                  无
-  --upgrade-software       更新软件包                                        true 或 false
-  --clean-cache            清理下载缓存                                      true 或 false
-  --print-diff             打印源文件修改前后差异                            无
-
-问题报告 https://github.com/SuperManito/LinuxMirrors/issues
-  "
-    }
-
-    ## 判断参数
-    while [ $# -gt 0 ]; do
-        case "$1" in
-        ## 海外模式
-        --abroad)
-            USE_ABROAD_SOURCE="true"
-            ;;
-        ## 中国大陆教育网模式
-        --edu)
-            USE_EDU_SOURCE="true"
-            ;;
-        ## 指定软件源地址
-        --source)
-            if [ "$2" ]; then
-                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
-                if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
-                else
-                    SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
-                    shift
-                fi
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
-            fi
-            ;;
-        --source-security)
-            if [ "$2" ]; then
-                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
-                if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
-                else
-                    SOURCE_SECURITY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
-                    shift
-                fi
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
-            fi
-            ;;
-        --source-vault)
-            if [ "$2" ]; then
-                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
-                if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
-                else
-                    SOURCE_VAULT="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
-                    shift
-                fi
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
-            fi
-            ;;
-        ## 使用官方源
-        --use-official-source)
-            USE_OFFICIAL_SOURCE="true"
-            ;;
-        ## 指定软件源分支
-        --branch)
-            if [ "$2" ]; then
-                SOURCE_BRANCH="$2"
-                shift
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
-            fi
-            ;;
-        --branch-security)
-            if [ "$2" ]; then
-                SOURCE_BRANCH_SECURITY="$2"
-                shift
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
-            fi
-            ;;
-        --branch-vault)
-            if [ "$2" ]; then
-                SOURCE_BRANCH_VAULT="$2"
-                shift
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
-            fi
-            ;;
-        ## 指定 Debian 系操作系统的版本代号
-        --codename)
-            if [ "$2" ]; then
-                DEBIAN_CODENAME="$2"
-                shift
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
-            fi
-            ;;
-        ## 优先使用内网地址
-        --intranet)
-            if [ "$2" ]; then
-                case "$2" in
-                [Tt]rue | [Ff]alse)
-                    USE_INTRANET_SOURCE="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        ## WEB 协议（HTTP/HTTPS）
-        --protocol | --web-protocol)
-            if [ "$2" ]; then
-                case "$2" in
-                http | https | HTTP | HTTPS)
-                    WEB_PROTOCOL="$2"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
-            fi
-            ;;
-        ## 安装 EPEL 附加软件包
-        --install-epel)
-            if [ "$2" ]; then
-                case "$2" in
-                [Tt]rue | [Ff]alse)
-                    INSTALL_EPEL="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        --only-epel)
-            ONLY_EPEL="true"
-            INSTALL_EPEL="true"
-            ;;
-        ## 关闭防火墙
-        --close-firewall)
-            if [ "$2" ]; then
-                case "$2" in
-                [Tt]rue | [Ff]alse)
-                    CLOSE_FIREWALL="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        ## 备份原有软件源
-        --backup)
-            if [ "$2" ]; then
-                case "$2" in
-                [Tt]rue | [Ff]alse)
-                    BACKUP="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        ## 忽略覆盖备份提示
-        --ignore-backup-tips)
-            IGNORE_BACKUP_TIPS="true"
-            ;;
-        ## 更新软件包
-        --upgrade-software | --updata-software)
-            if [ "$2" ]; then
-                case "$2" in
-                [Tt]rue | [Ff]alse)
-                    UPGRADE_SOFTWARE="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        ## 清理下载缓存
-        --clean-cache)
-            if [ "$2" ]; then
-                case "$2" in
-                [Tt]rue | [Ff]alse)
-                    CLEAN_CACHE="${2,,}"
-                    shift
-                    ;;
-                *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
-                    ;;
-                esac
-            else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
-            fi
-            ;;
-        ## 打印源文件修改前后差异
-        --print-diff)
-            PRINT_DIFF="true"
-            ;;
-        ## 命令帮助
-        --help)
-            Output_Help_Info
-            exit
-            ;;
-        *)
-            Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
-            ;;
-        esac
-        shift
-    done
-    ## 给部分命令选项赋予默认值
-    ONLY_EPEL="${ONLY_EPEL:-"false"}"
-    BACKUP="${BACKUP:-"true"}"
-    USE_OFFICIAL_SOURCE="${USE_OFFICIAL_SOURCE:-"false"}"
-    IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
-    PRINT_DIFF="${PRINT_DIFF:-"false"}"
-}
+##############################################################################
 
 ## 组合函数
-function Combin_Function() {
+function Combin_Functions() {
     PermissionJudgment
     EnvJudgment
     CheckCommandOptions
@@ -5402,4 +5404,4 @@ function Combin_Function() {
 }
 
 CommandOptions "$@"
-Combin_Function
+Combin_Functions

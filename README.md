@@ -48,7 +48,7 @@
     </tr>
     <tr>
         <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="./docs/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Fedora</td>
-        <td align="center">30 ~ 39</td>
+        <td align="center">30 ~ 40</td>
     </tr>
     <tr>
         <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;CentOS</td>
@@ -64,7 +64,7 @@
     </tr>
     <tr>
         <td><a href="https://www.opencloudos.org" target="_blank"><img src="./docs/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;OpenCloudOS</td>
-        <td align="center">8.6 / 8.8 / 9.0</td>
+        <td align="center">8 ~ 9</td>
     </tr>
     <tr>
         <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;openEuler</td>
