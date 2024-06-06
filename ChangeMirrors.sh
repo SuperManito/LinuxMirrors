@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-05-19
+## Modified: 2024-06-07
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -179,6 +179,10 @@ File_ProxmoxVersion=/etc/pve/.version
 ## 定义软件源相关文件或目录
 File_DebianSourceList=/etc/apt/sources.list
 File_DebianSourceListBackup=/etc/apt/sources.list.bak
+File_DebianSources=/etc/apt/sources.list.d/debian.sources
+File_DebianSourcesBackup=/etc/apt/sources.list.d/debian.sources.bak
+File_UbuntuSources=/etc/apt/sources.list.d/ubuntu.sources
+File_UbuntuSourcesBackup=/etc/apt/sources.list.d/ubuntu.sources.bak
 File_ArmbianSourceList=/etc/apt/sources.list.d/armbian.list
 File_ArmbianSourceListBackup=/etc/apt/sources.list.d/armbian.list.bak
 File_ProxmoxSourceList=/etc/apt/sources.list.d/pve-no-subscription.list
@@ -800,6 +804,15 @@ function BackupOriginalMirrors() {
         "${SYSTEM_DEBIAN}")
             # /etc/apt/sources.list
             BackupFile $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
+            ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
+            ## Debian DEB822 格式源文件
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
+                BackupFile $File_DebianSources $File_DebianSourcesBackup "debian.sources"
+            fi
+            ## Ubuntu DEB822 格式源文件
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
+                BackupFile $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
+            fi
             ## Armbian
             if [ -f $File_ArmbianRelease ]; then
                 BackupFile $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
@@ -835,6 +848,15 @@ function RemoveOriginMirrors() {
     "${SYSTEM_DEBIAN}")
         [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
         [ -d $Dir_DebianExtendSource ] || mkdir -p $Dir_DebianExtendSource
+        ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
+        ## Debian DEB822 格式源文件
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
+            [ -f $File_DebianSources ] && rm -rf $File_DebianSources
+        fi
+        ## Ubuntu DEB822 格式源文件
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
+            [ -f $File_UbuntuSources ] && rm -rf $File_UbuntuSources
+        fi
         ## Armbian
         if [ -f $File_ArmbianRelease ]; then
             [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
