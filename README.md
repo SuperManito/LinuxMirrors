@@ -24,7 +24,7 @@
     </tr>
     <tr>
         <td><a href="https://cn.ubuntu.com" target="_blank"><img src="./docs/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Ubuntu</td>
-        <td align="center">14.04 ~ 23</td>
+        <td align="center">14.04 ~ 24</td>
     </tr>
     <tr>
         <td><a href="https://www.kali.org" target="_blank"><img src="./docs/assets/images/icon/kali-linux.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Kali Linux</td>

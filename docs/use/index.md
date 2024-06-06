@@ -95,13 +95,13 @@ hide:
 
     ---
 
-    如果你使用的系统终端界面不支持 `UTF-8` 编码那么将无法正常显示中文内容，导致无法正确选择交互内容。大部分系统都会自动开启该服务，否则请参考[启用方法](help.md#%E5%85%B3%E4%BA%8E%E5%BC%80%E5%90%AF-ssh-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E7%9A%84%E6%96%B9%E6%B3%95)
+    如果你使用的系统终端界面不支持 `UTF-8` 编码那么将无法正常显示中文内容，导致无法正确选择交互内容。大部分系统都会自动开启该服务，否则请参考[启用方法](help.md#关于开启-ssh-远程登录的方法)
 
 -   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新系统上首次执行脚本__
 
     ---
 
-    当前执行方式依赖 `curl` 指令来获取脚本内容并执行，所以需要先通过包管理工具来安装该软件包，否则会报错 `Command not found`，安装方法详见[常见问题](help.md#%E5%85%B3%E4%BA%8E%E6%8A%A5%E9%94%99-command-not-found)，若无法安装就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)到本地新建`.sh`脚本，然后通过 `bash` 手动执行
+    当前执行方式依赖 `curl` 指令来获取脚本内容并执行，所以需要先通过包管理工具来安装该软件包，否则会报错 `Command not found`，安装方法详见[常见问题](help.md#关于报错-command-not-found)，若无法安装就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)到本地新建`.sh`脚本，然后通过 `bash` 手动执行
 
 </div>
 

@@ -30,11 +30,11 @@ hide:
 
 ???+ question "使用帮助"
 
-    :supported: 支持 &nbsp;&nbsp; :unsupport: 不支持 &nbsp;&nbsp; :incompatible: 不兼容，表示软件源分支命名不符合脚本默认规则但可以通过命令参数来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/command-options.md#%E6%8C%87%E5%AE%9A%E8%BD%AF%E4%BB%B6%E6%BA%90%E5%88%86%E6%94%AF)
+    :supported: 支持 &nbsp;&nbsp; :unsupport: 不支持 &nbsp;&nbsp; :incompatible: 不兼容，表示软件源分支命名不符合脚本默认规则但可以通过命令参数来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/command-options.md#指定软件源分支)
 
     如果这里没有想使用的镜像站那可以看看其它运行模式和命令选项。软件源的速度区分刷新速度和下行速率，后者才是关键，具体请结合实际地理位置选择尝试，还可以通过[辅助工具网站](#工具网站)进行一些测试
 
-    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `腾讯云`、`阿里云`，复杂网络环境下不建议使用容易阻断的镜像站例如 `清华(TUNA)` `浙江大学`，这有违自由软件的初衷
+    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `腾讯云`、`阿里云`，海外网络环境或复杂网络环境下不建议使用 `清华(TUNA)` `浙江大学` 等容易阻断的镜像站，这有违自由软件的初衷
 
 ??? note "国内教育网软件源列表"
 
@@ -245,9 +245,9 @@ hide:
 
 ???+ note "帮助本项目完善更多海外软件源"
 
-    该列表中的软件源参考自 [`Ubuntu 镜像列表`](https://launchpad.net/ubuntu/+cdmirrors "https://launchpad.net/ubuntu/+cdmirrors")、[`Debian 镜像列表`](https://www.debian.org/CD/http-ftp/#mirrors "https://www.debian.org/CD/http-ftp/#mirrors")、[`Fedora Mirror Manager`](https://admin.fedoraproject.org/mirrormanager/mirrors "https://admin.fedoraproject.org/mirrormanager/mirrors") 并且全部经过了有效性验证，但未作实际测试
+    该列表中的软件源参考自 [`Ubuntu 镜像列表`](https://launchpad.net/ubuntu/+cdmirrors "https://launchpad.net/ubuntu/+cdmirrors")、[`Debian 镜像列表`](https://www.debian.org/CD/http-ftp/#mirrors "https://www.debian.org/CD/http-ftp/#mirrors")、[`Fedora Mirror Manager`](https://admin.fedoraproject.org/mirrormanager/mirrors "https://admin.fedoraproject.org/mirrormanager/mirrors") 并且在此之前全部经过了有效性验证，但未作实际测试
 
-    如果你想补充更多海外软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L28 "https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L28") 并按照下面的编辑规范进行修改
+    作者没有精力持续维护列表中的这些海外镜像站，如果你想补充更多海外软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L28 "https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L28") 并按照下面的编辑规范进行修改
 
     你可以在确认软件源地址无误后前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls "https://github.com/SuperManito/LinuxMirrors/pulls")，也可以 :material-source-fork: Fork 仓库后自行定制使用
 

@@ -42,7 +42,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配，默认使用的分支名称如下
 
 <div class="annotate" markdown>
-| 系统名称 | 版本代号 |
+| 系统名称 | 涉及的分支名称 |
 | --- | :---: |
 | <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"></a> Debian | debian |
 | <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> Ubuntu | ubuntu / ubuntu-ports |
@@ -64,7 +64,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 请看下面的例子
 
-``` { .bash .no-copy title="使用阿里云的 Rocky Linux 软件源" }
+``` { .bash title="使用阿里云的 Rocky Linux 软件源" }
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source mirrors.aliyun.com \
   --branch rockylinux
@@ -76,7 +76,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 ### 单独更换 EPEL 源
 
-有些时候你会发现想使用的镜像站没有 epel 镜像仓库，那么你可以在第一次运行脚本时不安装或不更换 epel 源然后再单独执行下面的命令
+!!! info "EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版，配置 EPEL 仓库已成为广大用户的普遍需求，建议默认安装它"
+
+有些时候你会发现想使用的镜像站没有 epel 镜像仓库，那么你可以在第一次运行脚本时不安装或更换 epel 源然后再单独执行下面的命令
 
 ``` bash
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
@@ -89,6 +91,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
 ``` bash
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source
 ```
+> 部分系统不存在官方源例如 `Arch Linux`，届时会自动更换成兼容性较高的阿里云镜像站
 
 ### 自定义 Debian Security 源
 
@@ -100,23 +103,40 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --branch-security debian-security
 ```
 
-### 指定 Debian 系 Linux 版本代号
+### 指定 Debian 系 Linux 操作系统的版本代号
 
 大多数情况下自定义版本代号用于更换系统版本，请看下面的例子
 
-``` { .bash title="升级 Debian 至最新 12 版本 Bookworm" }
-bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-  --codename bookworm
-```
-``` { .bash title="将 Debian 版本切换到测试分支" }
-bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-  --codename testing
-```
+=== "升级 Debian 至最新 12 版本 Bookworm"
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+      --codename bookworm
+    ```
+
+=== "将 Debian 版本切换到测试分支"
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+      --codename testing
+    ```
 
 更换软件源后还需要执行系统更新命令 `apt-get dist-upgrade`，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题
 
 ``` { .bash title="若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换" }
 sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
+```
+
+### 更换 Ubuntu EOF版本软件源
+
+!!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 分支"
+
+具体版本支持情况详见官方 [Wiki](https://wiki.ubuntu.com/Releases)，关于 `Ubuntu Old Releases` 分支的支持情况详见各镜像站
+
+``` bash
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+  --source mirrors.ustc.edu.cn \
+  --branch ubuntu-old-releases
 ```
 
 ## 无人值守
