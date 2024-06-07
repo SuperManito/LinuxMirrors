@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-01-31
+## Modified: 2024-06-07
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -23,14 +23,10 @@ mirror_list_docker_ce=(
     "官方@download.docker.com"
 )
 
-## Docker Registry 镜像仓库列表
+## Docker Registry 仓库列表
 # 格式："软件源名称@软件源地址"
 mirror_list_registry=(
-    "上海交通大学@docker.mirrors.sjtug.sjtu.edu.cn"
-    "网易@hub-mirror.c.163.com"
-    "腾讯云@mirror.ccs.tencentyun.com"
-    "道客 DaoCloud@f1361db2.m.daocloud.io"
-    "微软 Azure 中国@dockerhub.azk8s.cn"
+    "道客 DaoCloud@docker.m.daocloud.io"
     "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
     "阿里云（上海）@registry.cn-shanghai.aliyuncs.com"
     "阿里云（青岛）@registry.cn-qingdao.aliyuncs.com"
@@ -54,6 +50,7 @@ mirror_list_registry=(
     "阿里云（美国西部-硅谷）@registry.us-west-1.aliyuncs.com"
     "阿里云（美国东部-弗吉尼亚）@registry.us-east-1.aliyuncs.com"
     "阿里云（阿联酋-迪拜）@registry.me-east-1.aliyuncs.com"
+    "腾讯云@mirror.ccs.tencentyun.com"
     "谷歌云@mirror.gcr.io"
     "官方@registry.hub.docker.com"
 )
