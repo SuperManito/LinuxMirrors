@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-06-07
+## Modified: 2024-06-13
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -321,7 +321,7 @@ function EnvJudgment() {
         fi
         ;;
     "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-3] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-4] ]]; then
             Output_Error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
@@ -1518,8 +1518,7 @@ function openEulerMirrors() {
     ## 修改源
     cd $Dir_YumRepos
     local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g; s/[()]/ /g; s/  / /g; s/^ //g; s/ $//g; s/ /-/g; s/_/-/g")"
-    sed -e "s|^metalink=|#metalink=|g" \
-        -e "s|^baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+    sed -e "s|^baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
         -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
         -e "s|openEuler-version|openEuler-${version_name}|g" \
         -i \
@@ -4701,8 +4700,6 @@ function GenRepoFiles_openEuler() {
 [OS]
 name=OS
 baseurl=http://repo.openeuler.org/openEuler-version/OS/$basearch/
-metalink=https://mirrors.openeuler.org/metalink?repo=$releasever/OS&arch=$basearch
-metadata_expire=1h
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
@@ -4710,8 +4707,6 @@ gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-open
 [everything]
 name=everything
 baseurl=http://repo.openeuler.org/openEuler-version/everything/$basearch/
-metalink=https://mirrors.openeuler.org/metalink?repo=$releasever/everything&arch=$basearch
-metadata_expire=1h
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/everything/$basearch/RPM-GPG-KEY-openEuler
@@ -4719,8 +4714,6 @@ gpgkey=http://repo.openeuler.org/openEuler-version/everything/$basearch/RPM-GPG-
 [EPOL]
 name=EPOL
 baseurl=http://repo.openeuler.org/openEuler-version/EPOL/main/$basearch/
-metalink=https://mirrors.openeuler.org/metalink?repo=$releasever/EPOL/main&arch=$basearch
-metadata_expire=1h
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
@@ -4728,8 +4721,6 @@ gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-open
 [debuginfo]
 name=debuginfo
 baseurl=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/
-metalink=https://mirrors.openeuler.org/metalink?repo=$releasever/debuginfo&arch=$basearch
-metadata_expire=1h
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/RPM-GPG-KEY-openEuler
@@ -4737,8 +4728,6 @@ gpgkey=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/RPM-GPG-K
 [source]
 name=source
 baseurl=http://repo.openeuler.org/openEuler-version/source/
-metalink=https://mirrors.openeuler.org/metalink?repo=$releasever&arch=source
-metadata_expire=1h
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
@@ -4746,8 +4735,6 @@ gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
 [update]
 name=update
 baseurl=http://repo.openeuler.org/openEuler-version/update/$basearch/
-metalink=https://mirrors.openeuler.org/metalink?repo=$releasever/update&arch=$basearch
-metadata_expire=1h
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
@@ -4755,8 +4742,6 @@ gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-open
 [update-source]
 name=update-source
 baseurl=http://repo.openeuler.org/openEuler-version/update/source/
-metalink=https://mirrors.openeuler.org/metalink?repo=$releasever/update&arch=source
-metadata_expire=1h
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler

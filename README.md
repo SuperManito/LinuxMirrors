@@ -68,7 +68,7 @@
     </tr>
     <tr>
         <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;openEuler</td>
-        <td align="center">21.03 ~ 23</td>
+        <td align="center">21.03 ~ 24</td>
     </tr>
     <tr>
         <td><a href="https://www.opensuse.org" target="_blank"><img src="./docs/assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;openSUSE</td>
@@ -97,5 +97,13 @@
 ### LICENSE
 
 Copyright © 2024, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
+
+<a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
+ </picture>
+</a>
 
 __如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__
