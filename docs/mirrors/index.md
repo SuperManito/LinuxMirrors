@@ -8,25 +8,24 @@ hide:
 
 ## 中国大陆 :flag-CN:
 
-> 下方列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` 软件源，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
+> 下方列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` `openEuler` 软件源，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
 
-| 镜像站 | IPv6 | Arch | Kali | Deepin | Rocky | AlmaLinux | EPEL | Fedora | openEuler | OpenCloudOS | Alpine | Armbian | Proxmox |
-| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
-| [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: |
-| [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: |
-| [华为云](https://mirrors.huaweicloud.com "mirrors.huaweicloud.com") | :unsupport: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
-| [网易](https://mirrors.163.com "mirrors.163.com") | :unsupport: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
-| [搜狐](https://mirrors.sohu.com "mirrors.sohu.com") | :unsupport: | :supported: | :unsupport: | :supported: | :incompatible: | :unsupport: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
-| [火山引擎](https://mirrors.volces.com "mirrors.volces.com") | :unsupport: | :unsupport: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
-| [清华大学](https://mirrors.tuna.tsinghua.edu.cn "mirrors.tuna.tsinghua.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
-| [北京大学](https://mirrors.pku.edu.cn/Mirrors "mirrors.pku.edu.cn/Mirrors") | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :unsupport: |
-| [浙江大学](https://mirrors.zju.edu.cn "mirrors.zju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
-| [南京大学](https://mirrors.nju.edu.cn "mirrors.nju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
-| [兰州大学](https://mirror.lzu.edu.cn "mirror.lzu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
-| [上海交通大学](https://mirror.sjtu.edu.cn "mirror.sjtu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: |
-| [重庆邮电大学](https://mirrors.cqupt.edu.cn "mirrors.cqu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
-| [中国科学技术大学](https://mirrors.ustc.edu.cn "mirrors.ustc.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
-| [中国科学院软件研究所](https://mirror.iscas.ac.cn "mirror.iscas.ac.cn") | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: |
+| 镜像站 | IPv6 | Arch | Kali | Deepin | Rocky | AlmaLinux | EPEL | Fedora | OpenCloudOS | Alpine | Armbian | Proxmox |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: |
+| [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: |
+| [华为云](https://mirrors.huaweicloud.com "mirrors.huaweicloud.com") | :unsupport: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
+| [网易](https://mirrors.163.com "mirrors.163.com") | :unsupport: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
+| [火山引擎](https://mirrors.volces.com "mirrors.volces.com") | :unsupport: | :unsupport: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
+| [清华大学](https://mirrors.tuna.tsinghua.edu.cn "mirrors.tuna.tsinghua.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
+| [北京大学](https://mirrors.pku.edu.cn "mirrors.pku.edu.cn") | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: |
+| [浙江大学](https://mirrors.zju.edu.cn "mirrors.zju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
+| [南京大学](https://mirrors.nju.edu.cn "mirrors.nju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
+| [兰州大学](https://mirror.lzu.edu.cn "mirror.lzu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: |
+| [上海交通大学](https://mirror.sjtu.edu.cn "mirror.sjtu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :incompatible: | :supported: | :unsupport: |
+| [重庆邮电大学](https://mirrors.cqupt.edu.cn "mirrors.cqu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
+| [中国科学技术大学](https://mirrors.ustc.edu.cn "mirrors.ustc.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
+| [中国科学院软件研究所](https://mirror.iscas.ac.cn "mirror.iscas.ac.cn") | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: |
 
 ???+ question "使用帮助"
 
@@ -34,7 +33,7 @@ hide:
 
     如果这里没有想使用的镜像站那可以看看其它运行模式和命令选项。软件源的速度区分刷新速度和下行速率，后者才是关键，具体请结合实际地理位置选择尝试，还可以通过[辅助工具网站](#工具网站)进行一些测试
 
-    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `腾讯云`、`阿里云`，海外网络环境或复杂网络环境下不建议使用 `清华(TUNA)` `浙江大学` 等容易阻断的镜像站，这有违自由软件的初衷
+    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `腾讯云`、`阿里云`，海外或复杂网络环境下不建议使用 `清华(TUNA)` `浙江大学` 等容易阻断的镜像站，这有违自由软件的初衷
 
 ??? note "中国大陆教育网软件源列表"
 
@@ -79,20 +78,17 @@ hide:
     | 亚洲 · 01Link · 香港 :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
     | 亚洲 · 新加坡国立大学(NUS) · 新加坡 :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
     | 亚洲 · SG.GS · 新加坡 :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
-    | 亚洲 · Neo Soon Keat · 新加坡 :flag-SG: | [mirror.soonkeat.sg](https://mirror.soonkeat.sg "https://mirror.soonkeat.sg") |
     | 亚洲 · 自由软件实验室(NCHC) · 台湾 :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | 亚洲 · OSS Planet · 台湾 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
     | 亚洲 · 淡江大学 · 台湾 :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
     | 亚洲 · AniGil Linux Archive · 韩国 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
     | 亚洲 · 工业网络安全中心(ICSCoE) · 日本 :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
-    | 亚洲 · Internet Initiative Japan(IIJ) · 日本 :flag-JP: | [ftp.iij.ad.jp/pub/linux](https://ftp.iij.ad.jp/pub/linux "https://ftp.iij.ad.jp/pub/linux") |
     | 亚洲 · 北陆先端科学技术大学院大学(JAIST) · 日本 :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
     | 亚洲 · 山形大学 · 日本 :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
     | 亚洲 · xTom · 日本 :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
     | 亚洲 · GB Network Solutions · 马来西亚 :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
     | 亚洲 · 孔敬大学 · 泰国 :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
-    | 亚洲 · RISE · 菲律宾 :flag-PH: | [mirror.rise.ph](https://mirror.rise.ph "https://mirror.rise.ph") |
 
 === ":fontawesome-solid-earth-europe: 欧洲"
 
@@ -178,20 +174,17 @@ hide:
     | 亚洲 · 01Link · 香港 :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
     | 亚洲 · 新加坡国立大学(NUS) · 新加坡 :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
     | 亚洲 · SG.GS · 新加坡 :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
-    | 亚洲 · Neo Soon Keat · 新加坡 :flag-SG: | [mirror.soonkeat.sg](https://mirror.soonkeat.sg "https://mirror.soonkeat.sg") |
     | 亚洲 · 自由软件实验室(NCHC) · 台湾 :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | 亚洲 · OSS Planet · 台湾 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
     | 亚洲 · 淡江大学 · 台湾 :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
     | 亚洲 · AniGil Linux Archive · 韩国 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
     | 亚洲 · 工业网络安全中心(ICSCoE) · 日本 :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
-    | 亚洲 · Internet Initiative Japan(IIJ) · 日本 :flag-JP: | [ftp.iij.ad.jp/pub/linux](https://ftp.iij.ad.jp/pub/linux "https://ftp.iij.ad.jp/pub/linux") |
     | 亚洲 · 北陆先端科学技术大学院大学(JAIST) · 日本 :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
     | 亚洲 · 山形大学 · 日本 :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
     | 亚洲 · xTom · 日本 :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
     | 亚洲 · GB Network Solutions · 马来西亚 :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
     | 亚洲 · 孔敬大学 · 泰国 :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
-    | 亚洲 · RISE · 菲律宾 :flag-PH: | [mirror.rise.ph](https://mirror.rise.ph "https://mirror.rise.ph") |
     | 欧洲 · Vorboss Ltd · 英国 :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
     | 欧洲 · QuickHost · 英国 :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
     | 欧洲 · dogado · 德国 :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |

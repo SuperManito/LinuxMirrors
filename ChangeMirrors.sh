@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-06-13
+## Modified: 2024-06-20
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -12,7 +12,6 @@ mirror_list_default=(
     "腾讯云@mirrors.tencent.com"
     "华为云@repo.huaweicloud.com"
     "网易@mirrors.163.com"
-    "搜狐@mirrors.sohu.com"
     "火山引擎@mirrors.volces.com"
     "清华大学@mirrors.tuna.tsinghua.edu.cn"
     "北京大学@mirrors.pku.edu.cn"
@@ -30,20 +29,17 @@ mirror_list_abroad=(
     "亚洲 · 01Link · 香港@mirror.01link.hk"
     "亚洲 · 新加坡国立大学(NUS) · 新加坡@download.nus.edu.sg/mirror"
     "亚洲 · SG.GS · 新加坡@mirror.sg.gs"
-    "亚洲 · Neo Soon Keat · 新加坡@mirror.soonkeat.sg"
     "亚洲 · 自由软件实验室(NCHC) · 台湾@free.nchc.org.tw"
     "亚洲 · OSS Planet · 台湾@mirror.ossplanet.net"
     "亚洲 · 国立阳明交通大学 · 台湾@linux.cs.nctu.edu.tw"
     "亚洲 · 淡江大学 · 台湾@ftp.tku.edu.tw"
     "亚洲 · AniGil Linux Archive · 韩国@mirror.anigil.com"
     "亚洲 · 工业网络安全中心(ICSCoE) · 日本@ftp.udx.icscoe.jp/Linux"
-    "亚洲 · Internet Initiative Japan(IIJ) · 日本@ftp.iij.ad.jp/pub/linux"
     "亚洲 · 北陆先端科学技术大学院大学(JAIST) · 日本@ftp.jaist.ac.jp/pub/Linux"
     "亚洲 · 山形大学 · 日本@linux2.yz.yamagata-u.ac.jp/pub/Linux"
     "亚洲 · xTom · 日本@mirrors.xtom.jp"
     "亚洲 · GB Network Solutions · 马来西亚@mirrors.gbnetwork.com"
     "亚洲 · 孔敬大学 · 泰国@mirror.kku.ac.th"
-    "亚洲 · RISE · 菲律宾@mirror.rise.ph"
     "欧洲 · Vorboss Ltd · 英国@mirror.vorboss.net"
     "欧洲 · QuickHost · 英国@mirror.quickhost.uk"
     "欧洲 · dogado · 德国@mirror.dogado.de"
