@@ -121,6 +121,7 @@ mirror_list_edu=(
     "重庆邮电大学@mirrors.cqupt.edu.cn"
     "南阳理工学院@mirror.nyist.edu.cn"
     "武昌首义学院@mirrors.wsyu.edu.cn"
+    "荆楚理工学院@mirrors.jcut.edu.cn"
     "北京外国语大学@mirrors.bfsu.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "西北农林科技大学@mirrors.nwafu.edu.cn"

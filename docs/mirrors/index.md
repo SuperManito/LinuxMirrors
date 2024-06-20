@@ -36,7 +36,7 @@ hide:
 
     :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `腾讯云`、`阿里云`，海外网络环境或复杂网络环境下不建议使用 `清华(TUNA)` `浙江大学` 等容易阻断的镜像站，这有违自由软件的初衷
 
-??? note "国内教育网软件源列表"
+??? note "中国大陆教育网软件源列表"
 
     | 镜像站名称 | 镜像站地址 |
     | :- | :-: |
@@ -63,6 +63,7 @@ hide:
     | 重庆邮电大学 | [mirrors.cqupt.edu.cn](https://mirrors.cqupt.edu.cn "https://mirrors.cqupt.edu.cn") |
     | 南阳理工学院 | [mirror.nyist.edu.cn](https://mirror.nyist.edu.cn "https://mirror.nyist.edu.cn") |
     | 武昌首义学院 | [mirrors.wsyu.edu.cn](https://mirrors.wsyu.edu.cn "https://mirrors.wsyu.edu.cn") |
+    | 荆楚理工学院 | [mirrors.jcut.edu.cn](https://mirrors.jcut.edu.cn "https://mirrors.jcut.edu.cn") |
     | 北京外国语大学 | [mirrors.bfsu.edu.cn](https://mirrors.bfsu.edu.cn "https://mirrors.bfsu.edu.cn") |
     | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn "https://mirrors.ustc.edu.cn") |
     | 西北农林科技大学 | [mirrors.nwafu.edu.cn](https://mirrors.nwafu.edu.cn "https://mirrors.nwafu.edu.cn") |
