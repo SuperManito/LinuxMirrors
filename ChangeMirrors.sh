@@ -125,6 +125,7 @@ mirror_list_edu=(
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "西北农林科技大学@mirrors.nwafu.edu.cn"
     "大连东软信息学院@mirrors.neusoft.edu.cn"
+    "荆楚理工学院@mirrors.jcut.edu.cn"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
