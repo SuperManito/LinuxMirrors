@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-06-20
+## Modified: 2024-07-15
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -372,13 +372,20 @@ function EnvJudgment() {
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
             case ${SYSTEM_VERSION_NUMBER:0:1} in
-            8 | 9)
-                SOURCE_BRANCH="debian-archive"
+            8 | 9 | 10)
+                SOURCE_BRANCH="debian-archive" # EOF
                 ;;
             *)
                 SOURCE_BRANCH="debian"
                 ;;
             esac
+            ;;
+        "${SYSTEM_UBUNTU}")
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+                SOURCE_BRANCH="ubuntu"
+            else
+                SOURCE_BRANCH="ubuntu-ports"
+            fi
             ;;
         "${SYSTEM_RHEL}")
             case ${SYSTEM_VERSION_NUMBER:0:1} in
@@ -392,7 +399,7 @@ function EnvJudgment() {
             ;;
         "${SYSTEM_CENTOS}")
             if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
-                SOURCE_BRANCH="centos"
+                SOURCE_BRANCH="centos-vault" # EOF
             else
                 SOURCE_BRANCH="centos-altarch"
             fi
@@ -410,13 +417,6 @@ function EnvJudgment() {
                 SOURCE_BRANCH="centos-stream"
                 ;;
             esac
-            ;;
-        "${SYSTEM_UBUNTU}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
-                SOURCE_BRANCH="ubuntu"
-            else
-                SOURCE_BRANCH="ubuntu-ports"
-            fi
             ;;
         "${SYSTEM_ARCH}")
             if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
@@ -1363,18 +1363,20 @@ function RedHatMirrors() {
         "${SYSTEM_CENTOS}")
             sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
             sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
+            ## CentOS 7/8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本
             case ${SYSTEM_VERSION_NUMBER:0:1} in
             8)
-                ## CentOS 8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本，最终版本为 8.5.2011
-                # 原 centos 镜像中的 CentOS 8 相关内容已被官方移动，从 2022-02 开始切换至 centos-vault 源
-                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
+                # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 分支
+                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
                 # 单独处理 CentOS-Linux-Sources.repo
                 sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
                 ;;
             7)
-                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
-                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
+                # 最终版本为 7.9.2009，从 2024-07 开始切换至 centos-vault 分支
+                sed -i "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
+                sed -i "s/\$releasever/7.9.2009/g" CentOS-*
+                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
                 ;;
             esac
             sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*

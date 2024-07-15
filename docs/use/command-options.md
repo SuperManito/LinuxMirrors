@@ -44,7 +44,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 <div class="annotate" markdown>
 | 系统名称 | 涉及的分支名称 |
 | --- | :---: |
-| <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"></a> Debian | debian |
+| <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"></a> Debian | debian / debian-archive |
 | <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> Ubuntu | ubuntu / ubuntu-ports |
 | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | kali |
 | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin | deepin |
