@@ -59,7 +59,7 @@
         <td align="center">7.0 ~ 8.5 / Stream 8 ~ 9</td>
     </tr>
     <tr>
-        <td><a href="https://rockylinux.org/zh_CN" target="_blank"><img src="./docs/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;Rocky Linux</td>
+        <td><a href="https://rockylinux.org" target="_blank"><img src="./docs/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;Rocky Linux</td>
         <td align="center">8 ~ 9</td>
     </tr>
     <tr>
