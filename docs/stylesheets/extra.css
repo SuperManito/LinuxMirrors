@@ -1,5 +1,6 @@
 :root {
-    --md-code-font: 'SF Mono';
+    --md-text-font: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --md-code-font: "SF Mono";
     --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
     --md-default-bg-color--light: #ffffff;
     --md-default-bg-color--dark: hsla(var(--md-hue),15%,14%,1);
@@ -17,7 +18,7 @@
     background-color: hsla(240, 4%,11%, 0.33);
 }
 @font-face {
-    font-family: 'SF Mono';
+    font-family: "SF Mono";
     src: url('./fonts/SF-Mono-Regular.otf');
 }
 @keyframes heart {

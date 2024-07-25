@@ -95,7 +95,7 @@ hide:
 
     ---
 
-    如果你使用的系统终端界面不支持 `UTF-8` 编码那么将无法正常显示中文内容，导致无法正确选择交互内容。大部分系统都会自动开启该服务，否则请参考[启用方法](help.md#关于开启-ssh-远程登录的方法)
+    如果你使用的系统终端界面不支持 `UTF-8` 编码那么将无法正常显示中文内容，导致无法查看交互内容。大部分系统都会自动开启该服务，否则请参考[启用方法](help.md#关于开启-ssh-远程登录的方法)
 
 -   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新系统上首次执行脚本__
 
@@ -113,7 +113,7 @@ hide:
 
     默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
 
-    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin` &nbsp; `Armbian`
+    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Armbian` &nbsp; `Proxmox`
 
 === "RedHat 系 / OpenCloudOS / openEuler"
 

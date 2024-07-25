@@ -9,7 +9,7 @@
         apt-get install -y curl
         ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin` &nbsp; `Armbian`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Armbian` &nbsp; `Proxmox`
 
         新装系统需要先执行一遍更新 `apt-get update`
 
@@ -81,7 +81,7 @@
         apt-get update
         ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Deepin` &nbsp; `Armbian`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Armbian` &nbsp; `Proxmox`
 
     === "RedHat 系 / OpenCloudOS / openEuler"
 

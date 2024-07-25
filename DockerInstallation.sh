@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-06-07
+## Modified: 2024-07-25
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -59,8 +59,10 @@ mirror_list_registry=(
 SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
+SYSTEM_DEEPIN="Deepin"
+SYSTEM_LINUX_MINT="Linuxmint"
 SYSTEM_REDHAT="RedHat"
-SYSTEM_RHEL="RedHat"
+SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
 SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
@@ -68,13 +70,22 @@ SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
+SYSTEM_OPENSUSE="openSUSE"
+SYSTEM_ARCH="Arch"
+SYSTEM_ALPINE="Alpine"
 
-## 定义目录和文件
+## 定义系统版本文件
 File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
+File_DebianVersion=/etc/debian_version
+File_ArmbianRelease=/etc/armbian-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
-File_DebianVersion=/etc/debian_version
+File_ArchRelease=/etc/arch-release
+File_AlpineRelease=/etc/alpine-release
+File_ProxmoxVersion=/etc/pve/.version
+
+## 定义软件源相关文件或目录
 File_DebianSourceList=/etc/apt/sources.list
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_YumRepos=/etc/yum.repos.d
@@ -92,15 +103,32 @@ RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
 BLUE='\033[34m'
+PURPLE='\033[35m'
+AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS='[\033[32mOK\033[0m]'
-COMPLETE='[\033[32mDONE\033[0m]'
-WARN='[\033[33mWARN\033[0m]'
-ERROR='[\033[31mERROR\033[0m]'
-WORKING='[\033[34m*\033[0m]'
+SUCCESS="[\033[1;32m成功${PLAIN}]"
+COMPLETE="[\033[1;32m完成${PLAIN}]"
+WARN="[\033[1;5;33m注意${PLAIN}]"
+ERROR="[\033[1;31m错误${PLAIN}]"
+FAIL="[\033[1;31m失败${PLAIN}]"
+TIP="[\033[1;32m提示${PLAIN}]"
+WORKING="[\033[1;36m >_ ${PLAIN}]"
 
-function StartTitle() {
+function main() {
+    permission_judgment
+    collect_system_info
+    print_start_title
+    choose_mirrors
+    close_firewall_service
+    install_dependency_packages
+    configure_docker_ce_mirror
+    install_docker_engine
+    check_version
+    run_end
+}
+
+function print_start_title() {
     [[ -z "${SOURCE}" || -z "${SOURCE_REGISTRY}" ]] && clear
     echo -e ' +-----------------------------------+'
     echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
@@ -110,21 +138,20 @@ function StartTitle() {
 }
 
 ## 报错退出
-function Output_Error() {
+function output_error() {
     [ "$1" ] && echo -e "\n$ERROR $1\n"
     exit 1
 }
 
-## 基础环境判断
-function PermissionJudgment() {
+## 权限判定
+function permission_judgment() {
     if [ $UID -ne 0 ]; then
-        echo -e "\n$ERROR 权限不足，请使用 Root 用户运行本脚本\n"
-        exit 1
+        output_error "权限不足，请使用 Root 用户运行本脚本"
     fi
 }
 
-## 系统判定变量
-function EnvJudgment() {
+## 收集系统信息
+function collect_system_info() {
     ## 定义系统名称
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     cat $File_LinuxRelease | grep "PRETTY_NAME=" -q
@@ -139,11 +166,11 @@ function EnvJudgment() {
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_RedHatRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
+        SYSTEM_FACTIONS="${SYSTEM_REDHAT}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为8版本基于红帽而9版本不是
     elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为8版本基于红帽而9版本不是
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}"
     else
-        Output_Error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
+        output_error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
     fi
     ## 判定系统名称、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -151,51 +178,46 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n        本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
+                output_error "lsb-release 软件包安装失败\n\n本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
         SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
         ;;
     "${SYSTEM_REDHAT}")
-        SYSTEM_JUDGMENT="$(cat $File_RedHatRelease | awk -F ' ' '{printf$1}')"
+        SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
         ## Red Hat Enterprise Linux
-        cat $File_RedHatRelease | grep -q "${SYSTEM_RHEL}"
-        [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
+        grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
         ## CentOS Stream
-        cat $File_RedHatRelease | grep -q "${SYSTEM_CENTOS_STREAM}"
-        [ $? -eq 0 ] && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
+        grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
         ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        SYSTEM_JUDGMENT="${SYSTEM_OPENCLOUDOS}"
-        ;;
-    "${SYSTEM_OPENEULER}")
-        SYSTEM_JUDGMENT="${SYSTEM_OPENEULER}"
+    *)
+        SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
         ;;
     esac
     ## 判定系统处理器架构
-    case $(uname -m) in
+    case "$(uname -m)" in
     x86_64)
-        SYSTEM_ARCH="x86_64"
+        DEVICE_ARCH="x86_64"
         SOURCE_ARCH="amd64"
         ;;
     aarch64)
-        SYSTEM_ARCH="ARM64"
+        DEVICE_ARCH="ARM64"
         SOURCE_ARCH="arm64"
         ;;
     armv7l)
-        SYSTEM_ARCH="ARMv7"
+        DEVICE_ARCH="ARMv7"
         SOURCE_ARCH="armhf"
         ;;
     armv6l)
-        SYSTEM_ARCH="ARMv6"
+        DEVICE_ARCH="ARMv6"
         SOURCE_ARCH="armhf"
         ;;
     i386 | i686)
-        Output_Error "Docker Engine 不支持安装在 x86_32 架构的环境上！"
+        output_error "Docker Engine 不支持安装在 x86_32 架构的环境上！"
         ;;
     *)
-        SYSTEM_ARCH=$(uname -m)
+        DEVICE_ARCH=$(uname -m)
         SOURCE_ARCH=armhf
         ;;
     esac
@@ -210,13 +232,13 @@ function EnvJudgment() {
     "${SYSTEM_RHEL}")
         SOURCE_BRANCH="rhel"
         ;;
-    "${SYSTEM_KALI}")
-        # Kali 使用 Debian 12 的 docker ce 源
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_LINUX_MINT}")
+        # 部分 Debian 系统衍生操作系统使用 Debian 12 的 docker ce 源
         SOURCE_BRANCH="debian"
         SYSTEM_VERSION_CODENAME="bullseye"
         ;;
     *)
-        Output_Error "当前系统不在本脚本的支持范围内"
+        output_error "当前系统不在本脚本的支持范围内"
         ;;
     esac
     ## 定义软件源更新文字
@@ -230,9 +252,9 @@ function EnvJudgment() {
     esac
 }
 
-function ChooseMirrors() {
+function choose_mirrors() {
     ## 打印软件源列表
-    function PrintMirrorsList() {
+    function print_mirrors_list() {
         local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
         ## 计算字符串长度
         function StringLength() {
@@ -276,7 +298,7 @@ function ChooseMirrors() {
         fi
     }
 
-    function Title() {
+    function print_title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
         local arch=""${DEVICE_ARCH}""
         local date="$(date "+%Y-%m-%d %H:%M:%S")"
@@ -287,7 +309,7 @@ function ChooseMirrors() {
         echo -e " 系统时间 ${BLUE}${date} ${timezone}${PLAIN}"
     }
 
-    Title
+    print_title
     if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
         ## 是否手动选择安装版本
         local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
@@ -312,7 +334,7 @@ function ChooseMirrors() {
     local mirror_list_name
     if [[ -z "${SOURCE}" ]]; then
         local mirror_list_name="mirror_list_docker_ce"
-        PrintMirrorsList "${mirror_list_name}" 38
+        print_mirrors_list "${mirror_list_name}" 38
         local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
             read -p "${CHOICE_B}" INPUT
@@ -337,7 +359,7 @@ function ChooseMirrors() {
 
     if [[ -z "${SOURCE_REGISTRY}" ]]; then
         mirror_list_name="mirror_list_registry"
-        PrintMirrorsList "${mirror_list_name}" 44
+        print_mirrors_list "${mirror_list_name}" 44
         local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
             read -p "${CHOICE_C}" INPUT
@@ -362,7 +384,7 @@ function ChooseMirrors() {
 }
 
 ## 关闭防火墙和SELinux
-function CloseFirewall() {
+function close_firewall_service() {
     if [ ! -x /usr/bin/systemctl ]; then
         return
     fi
@@ -391,7 +413,7 @@ function CloseFirewall() {
 }
 
 ## 安装环境包
-function EnvironmentInstall() {
+function install_dependency_packages() {
     ## 删除原有源
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
@@ -413,7 +435,7 @@ function EnvironmentInstall() {
     esac
     VERIFICATION_SOURCESYNC=$?
     if [ ${VERIFICATION_SOURCESYNC} -ne 0 ]; then
-        Output_Error "${SYNC_MIRROR_TEXT}出错，请先确保软件包管理工具可用！"
+        output_error "${SYNC_MIRROR_TEXT}出错，请先确保软件包管理工具可用！"
     fi
     echo -e "\n$COMPLETE ${SYNC_MIRROR_TEXT}结束\n"
     case "${SYSTEM_FACTIONS}" in
@@ -434,8 +456,8 @@ function EnvironmentInstall() {
     esac
 }
 
-## 卸载旧版本的 Docker Engine
-function RemoveOldVersion() {
+## 卸载 Docker Engine 原有版本软件包
+function uninstall_original_version() {
     systemctl disable --now docker >/dev/null 2>&1
     sleep 2s
     case "${SYSTEM_FACTIONS}" in
@@ -451,7 +473,7 @@ function RemoveOldVersion() {
 }
 
 ## 配置 Docker CE 源
-function ConfigureDockerCEMirror() {
+function configure_docker_ce_mirror() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         ## 安装密钥
@@ -484,9 +506,9 @@ function ConfigureDockerCEMirror() {
 }
 
 ## 安装 Docker Engine
-function DockerEngine() {
+function install_docker_engine() {
     ## 导出可安装的版本列表
-    function Export_VersionList() {
+    function export_version_list() {
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
             apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
@@ -503,7 +525,7 @@ function DockerEngine() {
     }
 
     ## 安装
-    function Install() {
+    function install_main() {
         if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
@@ -514,7 +536,7 @@ function DockerEngine() {
                 ;;
             esac
         else
-            Export_VersionList
+            export_version_list
             echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：20.10.24 ---------- ${PLAIN}\n"
             cat $DockerVersionFile
             echo -e '\n注：以上可供选择的安装版本由官方源提供，此列表以外的版本则无法安装在当前操作系统上'
@@ -537,9 +559,9 @@ function DockerEngine() {
             done
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                CheckVersion="$(echo ${DOCKER_VERSION} | cut -c1-2)"
+                check_version="$(echo ${DOCKER_VERSION} | cut -c1-2)"
                 CheckSubversion="$(echo ${DOCKER_VERSION} | cut -c4-5)"
-                case ${CheckVersion} in
+                case ${check_version} in
                 18)
                     if [ ${CheckSubversion} == "09" ]; then
                         INSTALL_JUDGMENT="5:"
@@ -560,8 +582,8 @@ function DockerEngine() {
         fi
     }
 
-    ## 修改 Docker Registry 源
-    function RegistryMirror() {
+    ## 修改 Docker Registry 镜像仓库源
+    function change_docker_registry_mirror() {
         if [[ "${REGISTRY_SOURCEL}" != "registry.hub.docker.com" ]]; then
             if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
                 if [ -e $DockerConfigBackup ]; then
@@ -605,20 +627,20 @@ function DockerEngine() {
         ;;
     esac
     if [ $? -eq 0 ]; then
-        Export_VersionList
+        export_version_list
         DOCKER_INSTALLED_VERSION=$(docker -v | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}")
         DOCKER_VERSION_LATEST=$(cat $DockerVersionFile | head -n 1)
         if [[ "${DOCKER_INSTALLED_VERSION}" == "${DOCKER_VERSION_LATEST}" ]]; then
             if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
                 echo -e "\n$COMPLETE 检测到已安装最新版本的 Docker Engine，跳过安装"
-                RegistryMirror
+                change_docker_registry_mirror
                 if [[ $(systemctl is-active docker) == "active" ]]; then
                     systemctl restart docker
                 fi
                 echo ''
                 systemctl enable --now docker >/dev/null 2>&1
-                CheckVersion
-                RunEnd
+                check_version
+                run_end
                 exit
             else
                 local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装最新版本的 Docker Engine，是否继续安装其它版本? [Y/n] ${PLAIN}")
@@ -635,9 +657,9 @@ function DockerEngine() {
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
             echo -en "\n$WORKING 正在卸载之前的版本...\n"
-            RemoveOldVersion
+            uninstall_original_version
             echo -e "\n$COMPLETE 卸载完毕\n"
-            Install
+            install_main
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
@@ -646,16 +668,16 @@ function DockerEngine() {
         esac
         rm -rf $DockerVersionFile
     else
-        RemoveOldVersion
-        Install
+        uninstall_original_version
+        install_main
     fi
-    RegistryMirror
+    change_docker_registry_mirror
     systemctl stop docker >/dev/null 2>&1
     systemctl enable --now docker >/dev/null 2>&1
 }
 
 ## 查看版本并验证安装结果
-function CheckVersion() {
+function check_version() {
     if [ -x /usr/bin/docker ]; then
         echo -en "\n验证安装版本："
         docker -v
@@ -694,7 +716,7 @@ function CheckVersion() {
 }
 
 ## 运行结束
-function RunEnd() {
+function run_end() {
     echo -e "\n     ------ 脚本执行结束 ------"
     echo -e ' \033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m┐\033[0m'
     echo -e ' \033[0;1;31;91m│▞\033[0;1;33;93m▀▖\033[0m            \033[0;1;32;92m▙▗\033[0;1;36;96m▌\033[0m      \033[0;1;31;91m▗\033[0;1;33;93m▐\033[0m     \033[0;1;34;94m│\033[0m'
@@ -706,9 +728,9 @@ function RunEnd() {
 }
 
 ## 处理命令选项
-function CommandOptions() {
+function handle_command_options() {
     ## 命令帮助
-    function Output_Help_Info() {
+    function output_command_help() {
         echo -e "
 命令选项(参数名/含义/参数值)：
 
@@ -730,13 +752,13 @@ function CommandOptions() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         ## 指定 Docker Registry 仓库地址
@@ -744,13 +766,13 @@ function CommandOptions() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
                     SOURCE_REGISTRY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         ## 指定 Debian 版本代号
@@ -759,7 +781,7 @@ function CommandOptions() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
             fi
             ;;
         ## 安装最新版本
@@ -771,11 +793,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -784,11 +806,11 @@ function CommandOptions() {
             ;;
         ## 命令帮助
         --help)
-            Output_Help_Info
+            output_command_help
             exit
             ;;
         *)
-            Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
+            output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
             ;;
         esac
         shift
@@ -797,19 +819,5 @@ function CommandOptions() {
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
 }
 
-## 组合函数
-function Combin_Function() {
-    PermissionJudgment
-    EnvJudgment
-    StartTitle
-    ChooseMirrors
-    CloseFirewall
-    EnvironmentInstall
-    ConfigureDockerCEMirror
-    DockerEngine
-    CheckVersion
-    RunEnd
-}
-
-CommandOptions "$@"
-Combin_Function
+handle_command_options "$@"
+main

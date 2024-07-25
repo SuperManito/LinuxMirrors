@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-07-15
+## Modified: 2024-07-25
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -22,6 +22,37 @@ mirror_list_default=(
     "重庆邮电大学@mirrors.cqupt.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
+)
+# 中国大陆教育网格式："软件源名称@软件源地址"
+mirror_list_edu=(
+    "清华大学@mirrors.tuna.tsinghua.edu.cn"
+    "北京大学@mirrors.pku.edu.cn"
+    "南京大学@mirrors.nju.edu.cn"
+    "重庆大学@mirrors.cqu.edu.cn"
+    "兰州大学@mirror.lzu.edu.cn"
+    "浙江大学@mirrors.zju.edu.cn"
+    "山东大学@mirrors.sdu.edu.cn"
+    "吉林大学@mirrors.jlu.edu.cn"
+    "上海交通大学@mirror.sjtu.edu.cn"
+    "上海科技大学@mirrors.shanghaitech.edu.cn"
+    "南方科技大学@mirrors.sustech.edu.cn"
+    "南京邮电大学@mirrors.njupt.edu.cn"
+    "南京工业大学@mirrors.njtech.edu.cn"
+    "电子科技大学@mirrors.uestc.cn"
+    "北京交通大学@mirror.bjtu.edu.cn"
+    "北京邮电大学@mirrors.bupt.edu.cn"
+    "齐鲁工业大学@mirrors.qlu.edu.cn"
+    "华南农业大学@mirrors.scau.edu.cn"
+    "西安交通大学@mirrors.xjtu.edu.cn"
+    "江西理工大学@mirrors.jxust.edu.cn"
+    "重庆邮电大学@mirrors.cqupt.edu.cn"
+    "南阳理工学院@mirror.nyist.edu.cn"
+    "武昌首义学院@mirrors.wsyu.edu.cn"
+    "荆楚理工学院@mirrors.jcut.edu.cn"
+    "北京外国语大学@mirrors.bfsu.edu.cn"
+    "中国科学技术大学@mirrors.ustc.edu.cn"
+    "西北农林科技大学@mirrors.nwafu.edu.cn"
+    "大连东软信息学院@mirrors.neusoft.edu.cn"
 )
 # 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
@@ -92,37 +123,6 @@ mirror_list_abroad=(
     "非洲 · Liquid Telecom · 肯尼亚@mirror.liquidtelecom.com"
     "非洲 · Dimension Data · 南非@mirror.dimensiondata.com"
 )
-# 中国大陆教育网格式："软件源名称@软件源地址"
-mirror_list_edu=(
-    "清华大学@mirrors.tuna.tsinghua.edu.cn"
-    "北京大学@mirrors.pku.edu.cn"
-    "南京大学@mirrors.nju.edu.cn"
-    "重庆大学@mirrors.cqu.edu.cn"
-    "兰州大学@mirror.lzu.edu.cn"
-    "浙江大学@mirrors.zju.edu.cn"
-    "山东大学@mirrors.sdu.edu.cn"
-    "吉林大学@mirrors.jlu.edu.cn"
-    "上海交通大学@mirror.sjtu.edu.cn"
-    "上海科技大学@mirrors.shanghaitech.edu.cn"
-    "南方科技大学@mirrors.sustech.edu.cn"
-    "南京邮电大学@mirrors.njupt.edu.cn"
-    "南京工业大学@mirrors.njtech.edu.cn"
-    "电子科技大学@mirrors.uestc.cn"
-    "北京交通大学@mirror.bjtu.edu.cn"
-    "北京邮电大学@mirrors.bupt.edu.cn"
-    "齐鲁工业大学@mirrors.qlu.edu.cn"
-    "华南农业大学@mirrors.scau.edu.cn"
-    "西安交通大学@mirrors.xjtu.edu.cn"
-    "江西理工大学@mirrors.jxust.edu.cn"
-    "重庆邮电大学@mirrors.cqupt.edu.cn"
-    "南阳理工学院@mirror.nyist.edu.cn"
-    "武昌首义学院@mirrors.wsyu.edu.cn"
-    "荆楚理工学院@mirrors.jcut.edu.cn"
-    "北京外国语大学@mirrors.bfsu.edu.cn"
-    "中国科学技术大学@mirrors.ustc.edu.cn"
-    "西北农林科技大学@mirrors.nwafu.edu.cn"
-    "大连东软信息学院@mirrors.neusoft.edu.cn"
-)
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
 # 配置方法：需要同时在两个数组变量中分别定义软件源地址，并且保证排列顺序一致
@@ -149,6 +149,7 @@ SYSTEM_DEBIAN="Debian"
 SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
 SYSTEM_DEEPIN="Deepin"
+SYSTEM_LINUX_MINT="Linuxmint"
 SYSTEM_REDHAT="RedHat"
 SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
@@ -184,6 +185,8 @@ File_ArmbianSourceList=/etc/apt/sources.list.d/armbian.list
 File_ArmbianSourceListBackup=/etc/apt/sources.list.d/armbian.list.bak
 File_ProxmoxSourceList=/etc/apt/sources.list.d/pve-no-subscription.list
 File_ProxmoxSourceListBackup=/etc/apt/sources.list.d/pve-no-subscription.list.bak
+File_LinuxMintSourceList=/etc/apt/sources.list.d/official-package-repositories.list
+File_LinuxMintSourceListBackup=/etc/apt/sources.list.d/official-package-repositories.list.bak
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 File_ArchMirrorList=/etc/pacman.d/mirrorlist
@@ -212,7 +215,23 @@ FAIL="[\033[1;31m失败${PLAIN}]"
 TIP="[\033[1;32m提示${PLAIN}]"
 WORKING="[\033[1;36m >_ ${PLAIN}]"
 
-function StartTitle() {
+function main() {
+    permission_judgment
+    collect_system_info
+    check_command_options
+    print_start_title
+    choose_mirrors
+    choose_protocol
+    choose_install_epel_packages
+    close_firewall_service
+    backup_original_mirrors
+    remove_original_mirrors
+    change_mirrors_main
+    upgrade_software
+    run_end
+}
+
+function print_start_title() {
     [ -z "${SOURCE}" ] && clear
     echo -e ' +-----------------------------------+'
     echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
@@ -222,20 +241,20 @@ function StartTitle() {
 }
 
 ## 报错退出
-function Output_Error() {
+function output_error() {
     [ "$1" ] && echo -e "\n$ERROR $1\n"
     exit 1
 }
 
 ## 权限判定
-function PermissionJudgment() {
+function permission_judgment() {
     if [ $UID -ne 0 ]; then
-        Output_Error "权限不足，请使用 Root 用户运行本脚本"
+        output_error "权限不足，请使用 Root 用户运行本脚本"
     fi
 }
 
-## 系统判定变量
-function EnvJudgment() {
+## 收集系统信息
+function collect_system_info() {
     ## 定义系统名称
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     cat $File_LinuxRelease | grep "PRETTY_NAME=" -q
@@ -260,7 +279,7 @@ function EnvJudgment() {
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
-        Output_Error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
+        output_error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
     fi
     ## 判定系统名称、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -268,7 +287,7 @@ function EnvJudgment() {
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
-                Output_Error "lsb-release 软件包安装失败\n\n本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
+                output_error "lsb-release 软件包安装失败\n\n本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
             fi
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
@@ -289,49 +308,54 @@ function EnvJudgment() {
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-3] ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
+            output_error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_UBUNTU}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-4] ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
+            output_error "当前系统版本不在本脚本的支持范围内"
+        fi
+        ;;
+    "${SYSTEM_LINUX_MINT}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 19 && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-1] && "${SYSTEM_VERSION_NUMBER:0:2}" != 6 ]]; then
+            output_error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_RHEL}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-9] ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
+            output_error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_CENTOS}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-8] ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
+            output_error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
+            output_error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_FEDORA}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != [3-4][0-9] ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
+            output_error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_OPENEULER}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-4] ]]; then
-            Output_Error "当前系统版本不在本脚本的支持范围内"
+            output_error "当前系统版本不在本脚本的支持范围内"
         fi
         ;;
     "${SYSTEM_OPENSUSE}")
         case "${SYSTEM_ID}" in
         "opensuse-leap")
             if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
-                Output_Error "当前系统版本不在本脚本的支持范围内"
+                output_error "当前系统版本不在本脚本的支持范围内"
             fi
             ;;
         "opensuse-tumbleweed") ;;
         *)
-            Output_Error "当前系统不在本脚本的支持范围内"
+            output_error "当前系统不在本脚本的支持范围内"
             ;;
         esac
         ;;
@@ -339,7 +363,7 @@ function EnvJudgment() {
         # 理论全部支持或不作判断
         ;;
     *)
-        Output_Error "当前系统不在本脚本的支持范围内"
+        output_error "当前系统不在本脚本的支持范围内"
         ;;
     esac
     ## 判定系统处理器架构
@@ -448,28 +472,28 @@ function EnvJudgment() {
 }
 
 ## 命令选项兼容性判断
-function CheckCommandOptions() {
+function check_command_options() {
     if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
-        Output_Error "两种模式不可同时使用！"
+        output_error "两种模式不可同时使用！"
     fi
     if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]] && [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-        Output_Error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
+        output_error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
     fi
     if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" ]] && [[ "${DEBIAN_CODENAME}" ]]; then
-        Output_Error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
+        output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
     fi
     if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_REDHAT}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] && [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-        Output_Error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+        output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
     fi
     if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]] && [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-        Output_Error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
+        output_error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
     fi
 }
 
 ## 选择软件源
-function ChooseMirrors() {
+function choose_mirrors() {
     ## 打印软件源列表
-    function PrintMirrorsList() {
+    function print_mirrors_list() {
         local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
         ## 计算字符串长度
         function StringLength() {
@@ -517,7 +541,7 @@ function ChooseMirrors() {
     ## 选择软件源内网地址
     # 例如部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
     # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
-    function ChooseMirrorIntranetAddress() {
+    function choose_intranet_address() {
         local intranet_source
         for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
             if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
@@ -551,7 +575,7 @@ function ChooseMirrors() {
         fi
     }
 
-    function Title() {
+    function print_title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
         local arch="${DEVICE_ARCH}"
         local date_time time_zone
@@ -563,7 +587,7 @@ function ChooseMirrors() {
         echo -e " 系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
     }
 
-    Title
+    print_title
     if [[ -z "${SOURCE}" ]]; then
         ## 使用官方源
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -572,13 +596,13 @@ function ChooseMirrors() {
 
         if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
             local mirror_list_name="mirror_list_abroad"
-            PrintMirrorsList "${mirror_list_name}" 60
+            print_mirrors_list "${mirror_list_name}" 60
         elif [[ ${USE_EDU_SOURCE} = "true" ]]; then
             local mirror_list_name="mirror_list_edu"
-            PrintMirrorsList "${mirror_list_name}" 31
+            print_mirrors_list "${mirror_list_name}" 31
         else
             local mirror_list_name="mirror_list_default"
-            PrintMirrorsList "${mirror_list_name}" 31
+            print_mirrors_list "${mirror_list_name}" 31
         fi
 
         local CHOICE
@@ -607,12 +631,12 @@ function ChooseMirrors() {
 
     ## 选择软件源内网地址
     if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
-        ChooseMirrorIntranetAddress
+        choose_intranet_address
     fi
 }
 
-## 选择同步软件源所使用的 WEB 协议（ HTTP：80 端口，HTTPS：443 端口）
-function ChooseWebProtocol() {
+## 选择同步或更新软件源所使用的 WEB 协议（ HTTP/HTTPS）
+function choose_protocol() {
     if [[ -z "${WEB_PROTOCOL}" ]]; then
         if [[ "${ONLY_HTTP}" == "True" ]]; then
             WEB_PROTOCOL="http"
@@ -639,8 +663,8 @@ function ChooseWebProtocol() {
 }
 
 # 适用于部分红帽系统的 EPEL 附加软件包（安装/换源）
-function ChooseInstallEPEL() {
-    function CheckInstallStatus() {
+function choose_install_epel_packages() {
+    function check_install_status() {
         ## 判断是否已安装 EPEL 软件包
         rpm -qa | grep epel-release -q
         VERIFICATION_EPEL=$?
@@ -656,7 +680,7 @@ function ChooseInstallEPEL() {
         if [[ -z "${INSTALL_EPEL}" ]]; then
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
-                CheckInstallStatus
+                check_install_status
                 if [ ${VERIFICATION_EPEL} -eq 0 ]; then
                     local CHOICE
                     CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
@@ -681,13 +705,13 @@ function ChooseInstallEPEL() {
                 ;;
             esac
         elif [[ "${INSTALL_EPEL}" == "true" ]]; then
-            CheckInstallStatus
+            check_install_status
         fi
     fi
 }
 
 ## 关闭防火墙和SELinux
-function CloseFirewall() {
+function close_firewall_service() {
     if [ ! -x /usr/bin/systemctl ]; then
         return
     fi
@@ -716,8 +740,8 @@ function CloseFirewall() {
 }
 
 ## 备份原有软件源（文件/目录）
-function BackupOriginalMirrors() {
-    function BackupFile() {
+function backup_original_mirrors() {
+    function backup_file() {
         local target_file=$1
         local backup_file=$2
         local type="$3"
@@ -755,7 +779,7 @@ function BackupOriginalMirrors() {
             sleep 1s
         fi
     }
-    function BackupDir() {
+    function backup_dir() {
         local target_dir=$1
         local backup_dir=$2
         [ -d "${target_dir}" ] || mkdir -p "${target_dir}"
@@ -799,68 +823,80 @@ function BackupOriginalMirrors() {
     if [[ "${BACKUP}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
-            # /etc/apt/sources.list
-            BackupFile $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
+            if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+                # /etc/apt/sources.list
+                backup_file $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
+            fi
             ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
-            ## Debian DEB822 格式源文件
+            # Debian DEB822 格式源文件
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
-                BackupFile $File_DebianSources $File_DebianSourcesBackup "debian.sources"
+                [ -f $File_DebianSources ] && backup_file $File_DebianSources $File_DebianSourcesBackup "debian.sources"
             fi
-            ## Ubuntu DEB822 格式源文件
+            # Ubuntu DEB822 格式源文件
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
-                BackupFile $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
+                [ -f $File_UbuntuSources ] && backup_file $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
             fi
-            ## Armbian
+            # Armbian
             if [ -f $File_ArmbianRelease ]; then
-                BackupFile $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
+                backup_file $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
             fi
-            ## Proxmox
+            # Proxmox
             if [ -f $File_ProxmoxVersion ]; then
-                BackupFile $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
+                backup_file $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
+            fi
+            # Linux Mint
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
+                backup_file $File_LinuxMintSourceList $File_LinuxMintSourceListBackup "official-package-repositories.list"
             fi
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
             # /etc/yum.repos.d
-            BackupDir $Dir_YumRepos $Dir_YumReposBackup
+            backup_dir $Dir_YumRepos $Dir_YumReposBackup
             ;;
         "${SYSTEM_OPENSUSE}")
             # /etc/zypp/repos.d
-            BackupDir $Dir_openSUSERepos $Dir_openSUSEReposBackup
+            backup_dir $Dir_openSUSERepos $Dir_openSUSEReposBackup
             ;;
         "${SYSTEM_ARCH}")
             # /etc/pacman.d/mirrorlist
-            BackupFile $File_ArchMirrorList $File_ArchMirrorListBackup "mirrorlist"
+            backup_file $File_ArchMirrorList $File_ArchMirrorListBackup "mirrorlist"
             ;;
         "${SYSTEM_ALPINE}")
             # /etc/apk/repositories
-            BackupFile $File_AlpineRepositories $File_AlpineRepositoriesBackup "repositories"
+            backup_file $File_AlpineRepositories $File_AlpineRepositoriesBackup "repositories"
             ;;
         esac
     fi
 }
 
 ## 移除原有软件源
-function RemoveOriginMirrors() {
+function remove_original_mirrors() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+            [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
+        fi
         [ -d $Dir_DebianExtendSource ] || mkdir -p $Dir_DebianExtendSource
         ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
-        ## Debian DEB822 格式源文件
+        # Debian DEB822 格式源文件
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
             [ -f $File_DebianSources ] && rm -rf $File_DebianSources
         fi
-        ## Ubuntu DEB822 格式源文件
+        # Ubuntu DEB822 格式源文件
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
             [ -f $File_UbuntuSources ] && rm -rf $File_UbuntuSources
         fi
-        ## Armbian
+        # Armbian
         if [ -f $File_ArmbianRelease ]; then
             [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
         fi
-        ## Proxmox
+        # Proxmox
         if [ -f $File_ProxmoxVersion ]; then
             [ -f $File_ProxmoxSourceList ] && sed -i '1,$d' $File_ProxmoxSourceList
+        fi
+        # Linux Mint
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
+            [ -f $File_LinuxMintSourceList ] && sed -i '1,$d' $File_LinuxMintSourceList
         fi
         ;;
     "${SYSTEM_REDHAT}")
@@ -943,11 +979,11 @@ function RemoveOriginMirrors() {
 }
 
 ## 换源
-function ChangeMirrors() {
+function change_mirrors_main() {
     ## 打印修改前后差异
-    function PrintDiff() {
+    function print_diff() {
         ## 单一文件比较模式
-        function DiffFile() {
+        function diff_file() {
             local diff_file=$1
             local origin_file=$2
             if [[ -s $diff_file ]] && [[ -s $origin_file ]]; then
@@ -958,38 +994,44 @@ function ChangeMirrors() {
             fi
         }
         ## 目录文件比较模式
-        function DiffDir() {
+        function diff_dir() {
             local diff_dir=$1
             local origin_dir=$2
             for item in $(ls $diff_dir | xargs); do
-                DiffFile "${diff_dir}/${item}" "${origin_dir}/${item}"
+                diff_file "${diff_dir}/${item}" "${origin_dir}/${item}"
             done
         }
 
         if [[ -x /usr/bin/diff && "${BACKED_UP}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                DiffFile $File_DebianSourceListBackup $File_DebianSourceList
-                ## Armbian
-                if [ -f $File_ArmbianRelease ]; then
-                    DiffFile $File_ArmbianSourceListBackup $File_ArmbianSourceList
+                if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+                    diff_file $File_DebianSourceListBackup $File_DebianSourceList
                 fi
-                ## Proxmox
+                # Armbian
+                if [ -f $File_ArmbianRelease ]; then
+                    diff_file $File_ArmbianSourceListBackup $File_ArmbianSourceList
+                fi
+                # Proxmox
                 if [ -f $File_ProxmoxVersion ]; then
-                    DiffFile $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
+                    diff_file $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
+                fi
+                # Linux Mint
+                if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
+                    diff_file $File_LinuxMintSourceListBackup $File_LinuxMintSourceList
                 fi
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-                DiffDir $Dir_YumReposBackup $Dir_YumRepos
+                diff_dir $Dir_YumReposBackup $Dir_YumRepos
                 ;;
             "${SYSTEM_OPENSUSE}")
-                DiffDir $Dir_openSUSEReposBackup $Dir_openSUSERepos
+                diff_dir $Dir_openSUSEReposBackup $Dir_openSUSERepos
                 ;;
             "${SYSTEM_ARCH}")
-                DiffFile $File_ArchMirrorListBackup $File_ArchMirrorList
+                diff_file $File_ArchMirrorListBackup $File_ArchMirrorList
                 ;;
             "${SYSTEM_ALPINE}")
-                DiffFile $File_AlpineRepositoriesBackup $File_AlpineRepositories
+                diff_file $File_AlpineRepositoriesBackup $File_AlpineRepositories
                 ;;
             esac
         fi
@@ -998,30 +1040,30 @@ function ChangeMirrors() {
     ## 调用换源函数
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        DebianMirrors
+        change_mirrors_Debian
         ;;
     "${SYSTEM_REDHAT}")
-        RedHatMirrors
+        change_mirrors_RedHat
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        OpenCloudOSMirrors
+        change_mirrors_OpenCloudOS
         ;;
     "${SYSTEM_OPENEULER}")
-        openEulerMirrors
+        change_mirrors_openEuler
         ;;
     "${SYSTEM_OPENSUSE}")
-        openSUSEMirrors
+        change_mirrors_openSUSE
         ;;
     "${SYSTEM_ARCH}")
-        ArchMirrors
+        change_mirrors_ArchLinux
         ;;
     "${SYSTEM_ALPINE}")
-        AlpineMirrors
+        change_mirrors_Alpine
         ;;
     esac
     ## 比较差异
     if [[ "${PRINT_DIFF}" == "true" ]]; then
-        PrintDiff
+        print_diff
     fi
     ## 更新软件源
     echo -e "\n$WORKING 开始${SYNC_MIRROR_TEXT}...\n"
@@ -1055,8 +1097,8 @@ function ChangeMirrors() {
 }
 
 ## 升级软件包
-function UpgradeSoftware() {
-    function CleanCache() {
+function upgrade_software() {
+    function clean_cache() {
         ## 跳过特殊系统
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_RHEL}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
@@ -1139,11 +1181,12 @@ function UpgradeSoftware() {
         apk upgrade --no-cache
         ;;
     esac
-    CleanCache
+    ## 清理缓存
+    clean_cache
 }
 
 ## 运行结束
-function RunEnd() {
+function run_end() {
     echo -e "\n---------- 脚本执行结束 ----------"
     echo -e "\n\033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
 }
@@ -1151,7 +1194,34 @@ function RunEnd() {
 ##############################################################################
 
 ## 更换基于 Debian 系 Linux 发行版的软件源
-function DebianMirrors() {
+function change_mirrors_Debian() {
+    function gen_debian_source() {
+        echo "deb ${1} ${2} ${3}
+# deb-src ${1} ${2} ${3}
+deb ${1} ${2}-updates ${3}
+# deb-src ${1} ${2}-updates ${3}
+deb ${1} ${2}-backports ${3}
+# deb-src ${1} ${2}-backports ${3}"
+    }
+    function gen_debian_security_source() {
+        echo "deb ${1} ${2}-security ${3}
+# deb-src ${1} ${2}-security ${3}"
+    }
+    function gen_ubuntu_source() {
+        echo "deb ${1} ${2} ${3}
+# deb-src ${1} ${2} ${3}
+deb ${1} ${2}-updates ${3}
+# deb-src ${1} ${2}-updates ${3}
+deb ${1} ${2}-backports ${3}
+# deb-src ${1} ${2}-backports ${3}
+deb ${1} ${2}-security ${3}
+# deb-src ${1} ${2}-security ${3}
+
+## 预发布软件源（不建议启用）
+# deb ${1} ${2}-proposed ${3}
+# deb-src ${1} ${2}-proposed ${3}"
+    }
+
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         case "${SYSTEM_JUDGMENT}" in
@@ -1167,68 +1237,95 @@ function DebianMirrors() {
         "${SYSTEM_DEEPIN}")
             SOURCE="community-packages.deepin.com"
             ;;
+        "${SYSTEM_LINUX_MINT}")
+            SOURCE="packages.linuxmint.com"
+            ;;
         esac
     fi
-    local source_suffix
+    local repository_sections # 仓库区域
     local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
-    local basic_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
         case "${SYSTEM_VERSION_NUMBER}" in
         8 | 9 | 10 | 11)
-            source_suffix="main contrib non-free"
+            repository_sections="main contrib non-free"
             ;;
         *)
-            source_suffix="main contrib non-free non-free-firmware"
+            repository_sections="main contrib non-free non-free-firmware"
             ;;
         esac
         if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
             echo "${tips}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}" >>$File_DebianSourceList
-            ## 处理 debian-security 仓库源
-            local security_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
-            echo "deb ${security_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-# deb-src ${security_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}" >>$File_DebianSourceList
+$(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+            # 处理 debian-security 仓库源
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
+            echo "$(gen_debian_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         else
-            echo "deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}" >>$File_DebianSourceList
+            echo "deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
         fi
         ;;
     "${SYSTEM_UBUNTU}")
-        source_suffix="main restricted universe multiverse"
+        repository_sections="main restricted universe multiverse"
         echo "${tips}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-updates ${source_suffix}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-backports ${source_suffix}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-security ${source_suffix}
-
-## 预发布软件源（不建议启用）
-# deb ${basic_url} ${SYSTEM_VERSION_CODENAME}-proposed ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME}-proposed ${source_suffix}" >>$File_DebianSourceList
+$(gen_ubuntu_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         ;;
     "${SYSTEM_KALI}")
-        source_suffix="main non-free contrib"
+        repository_sections="main non-free contrib"
         echo "${tips}
-deb ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}
-# deb-src ${basic_url} ${SYSTEM_VERSION_CODENAME} ${source_suffix}" >>$File_DebianSourceList
+deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
         ;;
     "${SYSTEM_DEEPIN}")
-        source_suffix="apricot main contrib non-free"
+        repository_sections="apricot main contrib non-free"
         echo "${tips}
-deb ${basic_url} ${source_suffix}
-# deb-src ${basic_url} ${source_suffix}" >>$File_DebianSourceList
+deb ${base_url} ${repository_sections}
+# deb-src ${base_url} ${repository_sections}" >>$File_DebianSourceList
+        ;;
+    "${SYSTEM_LINUX_MINT}")
+        ## 专用源
+        repository_sections="main upstream import backport"
+        echo "${tips}
+deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+" >>$File_LinuxMintSourceList
+        ## 底层系统软件源
+        local base_system_source_branch base_system_codename
+        if [[ "${SYSTEM_VERSION_NUMBER}" == 6 ]]; then
+            # Debian 版（LMDE）
+            base_system_source_branch="debian"
+            base_system_codename="bookworm"
+            repository_sections="main contrib non-free non-free-firmware"
+            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
+            echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            # 处理 debian-security 仓库源
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${base_system_source_branch}-security"}"
+            echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+        else
+            # Ubuntu 版
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+                base_system_source_branch="ubuntu"
+            else
+                base_system_source_branch="ubuntu-ports"
+            fi
+            case "${SYSTEM_VERSION_NUMBER:0:2}" in
+            21)
+                base_system_codename="jammy"
+                ;;
+            20)
+                base_system_codename="focal"
+                ;;
+            19)
+                base_system_codename="bionic"
+                ;;
+            esac
+            repository_sections="main restricted universe multiverse"
+            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
+            echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+        fi
         ;;
     esac
-    ## 处理其它衍生系统的专用源
+    ## 处理其它衍生操作系统的专用源
     # Armbian
     if [ -f $File_ArmbianRelease ]; then
         echo "deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_ArmbianSourceList
@@ -1243,9 +1340,9 @@ deb ${basic_url} ${source_suffix}
 }
 
 ## 更换基于 RedHat 系 Linux 发行版软件源
-function RedHatMirrors() {
+function change_mirrors_RedHat() {
     ## 安装/更换 EPEL (Extra Packages for Enterprise Linux) 附加软件包软件源
-    function EPELMirrors() {
+    function change_mirrors_EPEL() {
         ## 安装 EPEL 软件包
         if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
             echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
@@ -1256,7 +1353,7 @@ function RedHatMirrors() {
         [ "${VERIFICATION_EPELFILES}" -eq 0 ] && rm -rf $Dir_YumRepos/epel*
         [ "${VERIFICATION_EPELBACKUPFILES}" -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
         ## 生成 repo 源文件
-        GenRepoFiles_EPEL
+        gen_repo_files_EPEL
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
             return
         fi
@@ -1284,7 +1381,7 @@ function RedHatMirrors() {
     }
     ## 仅 EPEL 模式
     if [[ "${ONLY_EPEL}" == "true" ]]; then
-        EPELMirrors
+        change_mirrors_EPEL
         return
     fi
     ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
@@ -1292,30 +1389,30 @@ function RedHatMirrors() {
     "${SYSTEM_RHEL}")
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         9)
-            GenRepoFiles_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
+            gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
             ;;
         *)
-            GenRepoFiles_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
+            gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
             ;;
         esac
         ;;
     "${SYSTEM_CENTOS}")
-        GenRepoFiles_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_CENTOS_STREAM}")
-        GenRepoFiles_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_ROCKY}")
-        GenRepoFiles_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_ALMALINUX}")
-        GenRepoFiles_AlmaLinux "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     "${SYSTEM_FEDORA}")
-        GenRepoFiles_Fedora
+        gen_repo_files_Fedora
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        GenRepoFiles_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
         ;;
     esac
     ## 使用官方源
@@ -1481,14 +1578,14 @@ function RedHatMirrors() {
     ## EPEL 附加软件包（安装/换源）
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
-        [[ "${INSTALL_EPEL}" == "true" ]] && EPELMirrors
+        [[ "${INSTALL_EPEL}" == "true" ]] && change_mirrors_EPEL
         ;;
     esac
 }
 
 ## 更换基于 OpenCloudOS 发行版的软件源
-function OpenCloudOSMirrors() {
-    GenRepoFiles_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+function change_mirrors_OpenCloudOS() {
+    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
@@ -1507,8 +1604,8 @@ function OpenCloudOSMirrors() {
 }
 
 ## 更换基于 openEuler 发行版的软件源
-function openEulerMirrors() {
-    GenRepoFiles_openEuler
+function change_mirrors_openEuler() {
+    gen_repo_files_openEuler
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
@@ -1525,13 +1622,13 @@ function openEulerMirrors() {
 }
 
 ## 更换基于 openSUSE 发行版的软件源
-function openSUSEMirrors() {
+function change_mirrors_openSUSE() {
     case "${SYSTEM_ID}" in
     "opensuse-leap")
-        GenRepoFiles_openSUSE "leap" "${SYSTEM_VERSION_NUMBER}"
+        gen_repo_files_openSUSE "leap" "${SYSTEM_VERSION_NUMBER}"
         ;;
     "opensuse-tumbleweed")
-        GenRepoFiles_openSUSE "tumbleweed"
+        gen_repo_files_openSUSE "tumbleweed"
         ;;
     esac
     ## 使用官方源
@@ -1591,7 +1688,7 @@ function openSUSEMirrors() {
 }
 
 ## 更换基于 Arch Linux 发行版的软件源
-function ArchMirrors() {
+function change_mirrors_ArchLinux() {
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         SOURCE="mirrors.aliyun.com"
@@ -1612,7 +1709,7 @@ function ArchMirrors() {
 }
 
 ## 更换基于 Alpine Linux 发行版的软件源
-function AlpineMirrors() {
+function change_mirrors_Alpine() {
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         SOURCE="dl-cdn.alpinelinux.org"
@@ -1630,9 +1727,9 @@ ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/community" >>$File_
 }
 
 ## 处理命令选项
-function CommandOptions() {
+function handle_command_options() {
     ## 命令帮助
-    function Output_Help_Info() {
+    function output_command_help() {
         echo -e "
 命令选项(参数名/含义/参数值)：
 
@@ -1677,39 +1774,39 @@ function CommandOptions() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         --source-security)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
                     SOURCE_SECURITY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         --source-vault)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    Output_Error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
                     SOURCE_VAULT="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         ## 使用官方源
@@ -1722,7 +1819,7 @@ function CommandOptions() {
                 SOURCE_BRANCH="$2"
                 shift
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         --branch-security)
@@ -1730,7 +1827,7 @@ function CommandOptions() {
                 SOURCE_BRANCH_SECURITY="$2"
                 shift
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         --branch-vault)
@@ -1738,7 +1835,7 @@ function CommandOptions() {
                 SOURCE_BRANCH_VAULT="$2"
                 shift
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
         ## 指定 Debian 系操作系统的版本代号
@@ -1747,7 +1844,7 @@ function CommandOptions() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
             fi
             ;;
         ## 优先使用内网地址
@@ -1759,11 +1856,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## WEB 协议（HTTP/HTTPS）
@@ -1775,11 +1872,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
             fi
             ;;
         ## 安装 EPEL 附加软件包
@@ -1791,11 +1888,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         --only-epel)
@@ -1811,11 +1908,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 备份原有软件源
@@ -1827,11 +1924,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -1847,11 +1944,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 清理下载缓存
@@ -1863,11 +1960,11 @@ function CommandOptions() {
                     shift
                     ;;
                 *)
-                    Output_Error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
                     ;;
                 esac
             else
-                Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
             fi
             ;;
         ## 打印源文件修改前后差异
@@ -1876,11 +1973,11 @@ function CommandOptions() {
             ;;
         ## 命令帮助
         --help)
-            Output_Help_Info
+            output_command_help
             exit
             ;;
         *)
-            Output_Error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
+            output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
             ;;
         esac
         shift
@@ -1896,7 +1993,7 @@ function CommandOptions() {
 ##############################################################################
 
 ## 生成 CentOS 官方 repo 源文件
-function GenRepoFiles_CentOS() {
+function gen_repo_files_CentOS() {
     case "$1" in
     8)
         cat >$Dir_YumRepos/CentOS-Linux-AppStream.repo <<\EOF
@@ -2327,7 +2424,7 @@ EOF
 }
 
 ## 生成 CentOS Stream 官方 repo 源文件
-function GenRepoFiles_CentOSStream() {
+function gen_repo_files_CentOSStream() {
     case "$1" in
     9)
         cat >$Dir_YumRepos/centos.repo <<\EOF
@@ -2829,7 +2926,7 @@ EOF
 }
 
 ## 生成 Rocky Linux 官方 repo 源文件
-function GenRepoFiles_RockyLinux() {
+function gen_repo_files_RockyLinux() {
     case "$1" in
     9)
         cat >$Dir_YumRepos/rocky.repo <<\EOF
@@ -3514,7 +3611,7 @@ EOF
 }
 
 ## 生成 AlmaLinux 官方 repo 源文件
-function GenRepoFiles_AlmaLinux() {
+function gen_repo_files_AlmaLinux() {
     case "$1" in
     9)
         cat >$Dir_YumRepos/almalinux-appstream.repo <<\EOF
@@ -4194,7 +4291,7 @@ EOF
 }
 
 ## 生成 Fedora 官方 repo 源文件
-function GenRepoFiles_Fedora() {
+function gen_repo_files_Fedora() {
     cat >$Dir_YumRepos/fedora-cisco-openh264.repo <<\EOF
 [fedora-cisco-openh264]
 name=Fedora $releasever openh264 (From Cisco) - $basearch
@@ -4449,7 +4546,7 @@ EOF
 }
 
 ## 生成 OpenCloudOS 官方 repo 源文件
-function GenRepoFiles_OpenCloudOS() {
+function gen_repo_files_OpenCloudOS() {
     case "$1" in
     9)
         cat >$Dir_YumRepos/OpenCloudOS.repo <<\EOF
@@ -4685,7 +4782,7 @@ EOF
 }
 
 ## 生成 openEuler 官方 repo 源文件
-function GenRepoFiles_openEuler() {
+function gen_repo_files_openEuler() {
     cat >$Dir_YumRepos/openEuler.repo <<\EOF
 #generic-repos is licensed under the Mulan PSL v2.
 #You can use this software according to the terms and conditions of the Mulan PSL v2.
@@ -4748,7 +4845,7 @@ EOF
 }
 
 ## 生成 openSUSE 官方 repo 源文件
-function GenRepoFiles_openSUSE() {
+function gen_repo_files_openSUSE() {
     case "$1" in
     "leap")
         case "$2" in
@@ -5027,7 +5124,7 @@ EOF
 }
 
 ## 生成 EPEL 附加软件包官方 repo 源文件
-function GenRepoFiles_EPEL() {
+function gen_repo_files_EPEL() {
     case ${SYSTEM_VERSION_NUMBER:0:1} in
     9)
         cat >$Dir_YumRepos/epel.repo <<\EOF
@@ -5392,22 +5489,5 @@ EOF
 
 ##############################################################################
 
-## 组合函数
-function Combin_Functions() {
-    PermissionJudgment
-    EnvJudgment
-    CheckCommandOptions
-    StartTitle
-    ChooseMirrors
-    ChooseWebProtocol
-    ChooseInstallEPEL
-    CloseFirewall
-    BackupOriginalMirrors
-    RemoveOriginMirrors
-    ChangeMirrors
-    UpgradeSoftware
-    RunEnd
-}
-
-CommandOptions "$@"
-Combin_Functions
+handle_command_options "$@"
+main

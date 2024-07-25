@@ -12,55 +12,63 @@ hide:
 <figure style="margin: 0" markdown>
   ![](assets/images/brand/light/2.png#only-light){ width="300" }
   ![](assets/images/brand/dark/2.png#only-dark){ width="300" }
-  <figcaption>GNU/Linux 更换系统软件源脚本</figcaption>
+  <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</figcaption>
 </figure>
 
 <div class="grid" markdown>
 
 <div class="grid cards" style="height: fit-content" markdown>
 
--   :material-source-branch:{ .lg .middle } __多软件源适配__
+-   :material-source-branch:{ .lg .middle } __多元软件源适配__
 
     ---
 
-    考察了国内镜像站的系统适配情况，测试了下载速度与IPv6协议的兼容性  
-    另外，提供了全网收集的中国大陆教育网镜像站和海外镜像站供选择
+    深入考察了国内镜像站的系统适配情况，测试了下载速度与IPv6兼容性  
+    另外提供全网搜集的中国大陆教育网镜像站和海外镜像站供用户选择
 
--   :material-rocket-launch-outline:{ .lg .middle } __低技术成本__
-
-    ---
-
-    无需掌握相关技术，文档提供了全面的相关知识储备和操作指引  
-    还提供了一些常见问题的解决方法
-
--   :octicons-command-palette-24:{ .lg .middle } __脚本一键运行__
+-   :material-rocket-launch-outline:{ .lg .middle } __零技术门槛__
 
     ---
 
-    脚本使换源变得更简单，通过交互默认进行更换，并根据用户选择自动配置  
-    同时，提供了强大的命令选项，可用于自动化项目以实现无交互操作
+    无需了解相关技术，文档提供了全面的知识储备和操作指引，轻松上手  
+    文档还提供了一些常见问题的解决方法以及一些高级用法的用例
+
+-   :material-vector-polyline:{ .lg .middle } __广泛的系统支持__
+
+    ---
+
+    适配众多操作系统，涵盖主流版本，精准识别系统类型及其版本  
+    脚本兼容性较高，不支持的系统会有相应提示并无操作跳出
+
+-   :material-arm-flex-outline:{ .lg .middle } __脚本功能强大__
+
+    ---
+
+    脚本使换源变得更简单，默认交互运行，逐步引导用户更换软件源  
+    同时提供了强大的命令选项，可实现各种定制需求和无交互操作
 
 -   :material-scale-balance:{ .lg .middle } __开源，MIT__
 
     ---
 
-    项目已设立开源许可协议，传播时请在显著位置标注来源和作者  
-    请尊重作者的知识成果，建议通过命令直接调用脚本
+    项目已设立开源许可协议，脚本代码完全开源且免费使用  
+    请尊重作者的知识成果，传播时请在显著位置标注来源和作者
 
 -   :octicons-report-24:{ .lg .middle } __意见与建议__
 
     ---
 
-    如有适配请求或意见与建议你可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)  
-    如果你需要提交代码请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
+    如有适配请求或意见与建议请可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)  
+    若愿意贡献代码，请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
 
 </div>
 
 | 系统名称 | 适配版本 |
 | --- | :---: |
-| <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.45em"></a> Debian | 8.0 ~ 13 |
-| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> Ubuntu :material-information-outline:{ title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>此外由于迭代速度较快并不直接支持所有非长期支持(LTS)的版本，具体详见使用文档中的高级用法" } | 14.04 ~ 24 |
+| <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian | 8.0 ~ 13 |
+| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu :material-information-outline:{ title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>此外由于迭代速度较快并不直接支持所有非长期支持(LTS)的版本，具体详见使用文档中的高级用法" } | 14.04 ~ 24 |
 | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | 2.0 ~ 2024 |
+| <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | 19.0 ~ 21 / LMDE 6 |
 | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin | all |
 | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | all |
 | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | all |
