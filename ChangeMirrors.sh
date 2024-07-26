@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-07-25
+## Modified: 2024-07-26
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -33,7 +33,6 @@ mirror_list_edu=(
     "浙江大学@mirrors.zju.edu.cn"
     "山东大学@mirrors.sdu.edu.cn"
     "吉林大学@mirrors.jlu.edu.cn"
-    "上海交通大学@mirror.sjtu.edu.cn"
     "上海科技大学@mirrors.shanghaitech.edu.cn"
     "南方科技大学@mirrors.sustech.edu.cn"
     "南京邮电大学@mirrors.njupt.edu.cn"
@@ -46,6 +45,7 @@ mirror_list_edu=(
     "西安交通大学@mirrors.xjtu.edu.cn"
     "江西理工大学@mirrors.jxust.edu.cn"
     "重庆邮电大学@mirrors.cqupt.edu.cn"
+    "华中科技大学@mirrors.hust.edu.cn"
     "南阳理工学院@mirror.nyist.edu.cn"
     "武昌首义学院@mirrors.wsyu.edu.cn"
     "荆楚理工学院@mirrors.jcut.edu.cn"
@@ -53,6 +53,8 @@ mirror_list_edu=(
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "西北农林科技大学@mirrors.nwafu.edu.cn"
     "大连东软信息学院@mirrors.neusoft.edu.cn"
+    "上海交通大学（思源）@mirror.sjtu.edu.cn"
+    "上海交通大学（致远）@mirrors.sjtug.sjtu.edu.cn"
 )
 # 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
@@ -60,6 +62,7 @@ mirror_list_abroad=(
     "亚洲 · 01Link · 香港@mirror.01link.hk"
     "亚洲 · 新加坡国立大学(NUS) · 新加坡@download.nus.edu.sg/mirror"
     "亚洲 · SG.GS · 新加坡@mirror.sg.gs"
+    "亚洲 · xTom · 新加坡@mirrors.xtom.sg"
     "亚洲 · 自由软件实验室(NCHC) · 台湾@free.nchc.org.tw"
     "亚洲 · OSS Planet · 台湾@mirror.ossplanet.net"
     "亚洲 · 国立阳明交通大学 · 台湾@linux.cs.nctu.edu.tw"
@@ -170,7 +173,7 @@ File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
-File_ArchRelease=/etc/arch-release
+File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
 File_ProxmoxVersion=/etc/pve/.version
 
@@ -189,8 +192,8 @@ File_LinuxMintSourceList=/etc/apt/sources.list.d/official-package-repositories.l
 File_LinuxMintSourceListBackup=/etc/apt/sources.list.d/official-package-repositories.list.bak
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
-File_ArchMirrorList=/etc/pacman.d/mirrorlist
-File_ArchMirrorListBackup=/etc/pacman.d/mirrorlist.bak
+File_ArchLinuxMirrorList=/etc/pacman.d/mirrorlist
+File_ArchLinuxMirrorListBackup=/etc/pacman.d/mirrorlist.bak
 File_AlpineRepositories=/etc/apk/repositories
 File_AlpineRepositoriesBackup=/etc/apk/repositories.bak
 Dir_YumRepos=/etc/yum.repos.d
@@ -219,7 +222,7 @@ function main() {
     permission_judgment
     collect_system_info
     check_command_options
-    print_start_title
+    run_start
     choose_mirrors
     choose_protocol
     choose_install_epel_packages
@@ -229,1501 +232,6 @@ function main() {
     change_mirrors_main
     upgrade_software
     run_end
-}
-
-function print_start_title() {
-    [ -z "${SOURCE}" ] && clear
-    echo -e ' +-----------------------------------+'
-    echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
-    echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
-    echo -e ' +-----------------------------------+'
-    echo -e ' 欢迎使用 GNU/Linux 更换系统软件源脚本'
-}
-
-## 报错退出
-function output_error() {
-    [ "$1" ] && echo -e "\n$ERROR $1\n"
-    exit 1
-}
-
-## 权限判定
-function permission_judgment() {
-    if [ $UID -ne 0 ]; then
-        output_error "权限不足，请使用 Root 用户运行本脚本"
-    fi
-}
-
-## 收集系统信息
-function collect_system_info() {
-    ## 定义系统名称
-    SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    cat $File_LinuxRelease | grep "PRETTY_NAME=" -q
-    [ $? -eq 0 ] && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    ## 定义系统版本号
-    SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    ## 定义系统ID
-    SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    ## 判定当前系统派系
-    if [ -s $File_DebianVersion ]; then
-        SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
-    elif [ -s $File_openEulerRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
-    elif [ -f $File_ArchRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_ARCH}"
-    elif [ -f $File_AlpineRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
-    elif [ -s $File_RedHatRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_REDHAT}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为8版本基于红帽而9版本不是
-    elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}"
-    elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
-    else
-        output_error "无法判断当前运行环境，当前系统不在本脚本的支持范围内"
-    fi
-    ## 判定系统名称、版本、版本号
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        if [ ! -x /usr/bin/lsb_release ]; then
-            apt-get install -y lsb-release
-            if [ $? -ne 0 ]; then
-                output_error "lsb-release 软件包安装失败\n\n本脚本需要通过 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
-            fi
-        fi
-        SYSTEM_JUDGMENT="$(lsb_release -is)"
-        SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
-        ;;
-    "${SYSTEM_REDHAT}")
-        SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
-        ## Red Hat Enterprise Linux
-        grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
-        ## CentOS Stream
-        grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
-        ;;
-    *)
-        SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
-        ;;
-    esac
-    ## 判断系统和其版本是否受本脚本支持
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-3] ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_UBUNTU}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-4] ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_LINUX_MINT}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 19 && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-1] && "${SYSTEM_VERSION_NUMBER:0:2}" != 6 ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_RHEL}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-9] ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_CENTOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-8] ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_FEDORA}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != [3-4][0-9] ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-4] ]]; then
-            output_error "当前系统版本不在本脚本的支持范围内"
-        fi
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        case "${SYSTEM_ID}" in
-        "opensuse-leap")
-            if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
-                output_error "当前系统版本不在本脚本的支持范围内"
-            fi
-            ;;
-        "opensuse-tumbleweed") ;;
-        *)
-            output_error "当前系统不在本脚本的支持范围内"
-            ;;
-        esac
-        ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
-        # 理论全部支持或不作判断
-        ;;
-    *)
-        output_error "当前系统不在本脚本的支持范围内"
-        ;;
-    esac
-    ## 判定系统处理器架构
-    case "$(uname -m)" in
-    x86_64)
-        DEVICE_ARCH="x86_64"
-        ;;
-    aarch64)
-        DEVICE_ARCH="ARM64"
-        ;;
-    armv7l)
-        DEVICE_ARCH="ARMv7"
-        ;;
-    armv6l)
-        DEVICE_ARCH="ARMv6"
-        ;;
-    i686)
-        DEVICE_ARCH="x86_32"
-        ;;
-    *)
-        DEVICE_ARCH="$(uname -m)"
-        ;;
-    esac
-    ## 定义软件源分支名称
-    if [[ -z "${SOURCE_BRANCH}" ]]; then
-        ## 默认为系统名称小写，替换空格
-        SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
-        SOURCE_BRANCH="${SOURCE_BRANCH// /-}"
-        ## 处理特殊的分支名称
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_DEBIAN}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            8 | 9 | 10)
-                SOURCE_BRANCH="debian-archive" # EOF
-                ;;
-            *)
-                SOURCE_BRANCH="debian"
-                ;;
-            esac
-            ;;
-        "${SYSTEM_UBUNTU}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
-                SOURCE_BRANCH="ubuntu"
-            else
-                SOURCE_BRANCH="ubuntu-ports"
-            fi
-            ;;
-        "${SYSTEM_RHEL}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                SOURCE_BRANCH="rocky"
-                ;;
-            *)
-                SOURCE_BRANCH="centos"
-                ;;
-            esac
-            ;;
-        "${SYSTEM_CENTOS}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
-                SOURCE_BRANCH="centos-vault" # EOF
-            else
-                SOURCE_BRANCH="centos-altarch"
-            fi
-            ;;
-        "${SYSTEM_CENTOS_STREAM}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            8)
-                if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
-                    SOURCE_BRANCH="centos"
-                else
-                    SOURCE_BRANCH="centos-altarch"
-                fi
-                ;;
-            *)
-                SOURCE_BRANCH="centos-stream"
-                ;;
-            esac
-            ;;
-        "${SYSTEM_ARCH}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
-                SOURCE_BRANCH="archlinux"
-            else
-                SOURCE_BRANCH="archlinuxarm"
-            fi
-            ;;
-        esac
-    fi
-    ## 定义软件源更新文字
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        SYNC_MIRROR_TEXT="更新软件源"
-        ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        SYNC_MIRROR_TEXT="生成软件源缓存"
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        SYNC_MIRROR_TEXT="刷新软件源"
-        ;;
-    "${SYSTEM_ARCH}")
-        SYNC_MIRROR_TEXT="同步软件源"
-        ;;
-    "${SYSTEM_ALPINE}")
-        SYNC_MIRROR_TEXT="更新软件源"
-        ;;
-    esac
-}
-
-## 命令选项兼容性判断
-function check_command_options() {
-    if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
-        output_error "两种模式不可同时使用！"
-    fi
-    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]] && [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-        output_error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
-    fi
-    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" ]] && [[ "${DEBIAN_CODENAME}" ]]; then
-        output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
-    fi
-    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_REDHAT}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] && [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-        output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-    fi
-    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]] && [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-        output_error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
-    fi
-}
-
-## 选择软件源
-function choose_mirrors() {
-    ## 打印软件源列表
-    function print_mirrors_list() {
-        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
-        ## 计算字符串长度
-        function StringLength() {
-            local text=$1
-            echo "${#text}"
-        }
-        echo -e ''
-
-        local list_arr=()
-        local list_arr_sum
-        list_arr_sum="$(eval echo \${#$1[@]})"
-        for ((a = 0; a < $list_arr_sum; a++)); do
-            list_arr[$a]="$(eval echo \${$1[a]})"
-        done
-        if [ -x /usr/bin/printf ]; then
-            for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
-                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
-                arr_num=$((i + 1))
-                default_mirror_name_length=${2:-"30"} # 默认软件源名称打印长度
-                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
-                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
-                # 非一般字符长度
-                tmp_mirror_name_length=$(StringLength "$(echo "${tmp_mirror_name// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;")")
-                ## 填充空格
-                tmp_spaces_nums=$(($((default_mirror_name_length - tmp_mirror_name_length - $(StringLength "${tmp_mirror_name}"))) / 2))
-                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
-                    tmp_mirror_name="${tmp_mirror_name} "
-                done
-                printf " ❖  %-$((default_mirror_name_length + tmp_mirror_name_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
-            done
-        else
-            for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
-                tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')  # 软件源地址
-                arr_num=$((i + 1))
-                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
-            done
-        fi
-    }
-
-    ## 选择软件源内网地址
-    # 例如部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
-    # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
-    function choose_intranet_address() {
-        local intranet_source
-        for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
-            if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
-                # echo "${SOURCE}"
-                intranet_source="${mirror_list_intranet[i]}"
-                # echo "${intranet_source}"
-                # exit
-                ONLY_HTTP="True"
-                break
-            else
-                continue
-            fi
-        done
-        if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss]) ;;
-            [Nn] | [Nn][Oo])
-                SOURCE="${intranet_source}"
-                echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不使用内网地址！"
-                ;;
-            esac
-        elif [[ "${USE_INTRANET_SOURCE}" == "true" ]]; then
-            SOURCE="${intranet_source}"
-        fi
-    }
-
-    function print_title() {
-        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
-        local arch="${DEVICE_ARCH}"
-        local date_time time_zone
-        date_time="$(date "+%Y-%m-%d %H:%M:%S")"
-        time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
-
-        echo -e ''
-        echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e " 系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
-    }
-
-    print_title
-    if [[ -z "${SOURCE}" ]]; then
-        ## 使用官方源
-        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-            return
-        fi
-
-        if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
-            local mirror_list_name="mirror_list_abroad"
-            print_mirrors_list "${mirror_list_name}" 60
-        elif [[ ${USE_EDU_SOURCE} = "true" ]]; then
-            local mirror_list_name="mirror_list_edu"
-            print_mirrors_list "${mirror_list_name}" 31
-        else
-            local mirror_list_name="mirror_list_default"
-            print_mirrors_list "${mirror_list_name}" 31
-        fi
-
-        local CHOICE
-        CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
-        while true; do
-            read -rp "${CHOICE}" INPUT
-            case "${INPUT}" in
-            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                local tmp_source
-                tmp_source="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
-                if [[ -z "${tmp_source}" ]]; then
-                    echo -e "\n$WARN 请输入有效的数字序号！"
-                else
-                    SOURCE="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]} | awk -F '@' '{print$2}')"
-                    # echo "${SOURCE}"
-                    # exit
-                    break
-                fi
-                ;;
-            *)
-                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
-                ;;
-            esac
-        done
-    fi
-
-    ## 选择软件源内网地址
-    if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
-        choose_intranet_address
-    fi
-}
-
-## 选择同步或更新软件源所使用的 WEB 协议（ HTTP/HTTPS）
-function choose_protocol() {
-    if [[ -z "${WEB_PROTOCOL}" ]]; then
-        if [[ "${ONLY_HTTP}" == "True" ]]; then
-            WEB_PROTOCOL="http"
-        else
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                WEB_PROTOCOL="http"
-                ;;
-            [Nn] | [Nn][Oo])
-                WEB_PROTOCOL="https"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
-                WEB_PROTOCOL="https"
-                ;;
-            esac
-        fi
-    fi
-    WEB_PROTOCOL="${WEB_PROTOCOL,,}"
-}
-
-# 适用于部分红帽系统的 EPEL 附加软件包（安装/换源）
-function choose_install_epel_packages() {
-    function check_install_status() {
-        ## 判断是否已安装 EPEL 软件包
-        rpm -qa | grep epel-release -q
-        VERIFICATION_EPEL=$?
-        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_YumRepos ] && ls $Dir_YumRepos | grep epel -q
-        VERIFICATION_EPELFILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_YumReposBackup ] && ls $Dir_YumReposBackup | grep epel -q
-        VERIFICATION_EPELBACKUPFILES=$?
-    }
-
-    if [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_REDHAT}" ]]; then
-        if [[ -z "${INSTALL_EPEL}" ]]; then
-            case "${SYSTEM_JUDGMENT}" in
-            "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
-                check_install_status
-                if [ ${VERIFICATION_EPEL} -eq 0 ]; then
-                    local CHOICE
-                    CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
-                else
-                    local CHOICE
-                    CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
-                fi
-                read -rp "${CHOICE}" INPUT
-                [[ -z "${INPUT}" ]] && INPUT=Y
-                case "${INPUT}" in
-                [Yy] | [Yy][Ee][Ss])
-                    INSTALL_EPEL="true"
-                    ;;
-                [Nn] | [Nn][Oo])
-                    INSTALL_EPEL="false"
-                    ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不更换！"
-                    INSTALL_EPEL="false"
-                    ;;
-                esac
-                ;;
-            esac
-        elif [[ "${INSTALL_EPEL}" == "true" ]]; then
-            check_install_status
-        fi
-    fi
-}
-
-## 关闭防火墙和SELinux
-function close_firewall_service() {
-    if [ ! -x /usr/bin/systemctl ]; then
-        return
-    fi
-    if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
-        if [[ -z "${CLOSE_FIREWALL}" ]]; then
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                CLOSE_FIREWALL="true"
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不关闭！"
-                ;;
-            esac
-        fi
-        if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
-            local SelinuxConfig=/etc/selinux/config
-            systemctl disable --now firewalld >/dev/null 2>&1
-            [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-        fi
-    fi
-}
-
-## 备份原有软件源（文件/目录）
-function backup_original_mirrors() {
-    function backup_file() {
-        local target_file=$1
-        local backup_file=$2
-        local type="$3"
-        ## 判断是否存在源文件
-        [ -f "${target_file}" ] || touch "${target_file}"
-        if [ ! -s "${target_file}" ]; then
-            echo -e ''
-            return
-        fi
-        ## 判断是否存在已备份的源文件
-        if [ -s "${backup_file}" ]; then
-            if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
-                return
-            fi
-            local CHOICE_BACKUP
-            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE_BACKUP}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss]) ;;
-            [Nn] | [Nn][Oo])
-                echo ''
-                cp -rvf "${target_file}" "${backup_file}" 2>&1
-                BACKED_UP="true"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不覆盖！"
-                ;;
-            esac
-        else
-            echo ''
-            cp -rvf "${target_file}" "${backup_file}" 2>&1
-            BACKED_UP="true"
-            echo -e "\n$COMPLETE 已备份原有 ${type} 源文件"
-            sleep 1s
-        fi
-    }
-    function backup_dir() {
-        local target_dir=$1
-        local backup_dir=$2
-        [ -d "${target_dir}" ] || mkdir -p "${target_dir}"
-        [ -d "${backup_dir}" ] || mkdir -p "${backup_dir}"
-        ## 判断是否存在 repo 源文件
-        ls "${target_dir}" | grep '\.repo$' -q
-        if [ $? -ne 0 ]; then
-            return
-        fi
-        ## 判断是否存在已备份的 repo 源文件
-        ls "${backup_dir}" | grep '\.repo$' -q
-        if [ $? -eq 0 ]; then
-            if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
-                return
-            fi
-            local CHOICE_BACKUP
-            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE_BACKUP}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss]) ;;
-            [Nn] | [Nn][Oo])
-                echo ''
-                cp -rvf $target_dir/* "${backup_dir}" 2>&1
-                BACKED_UP="true"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不覆盖！"
-                ;;
-            esac
-        else
-            echo ''
-            cp -rvf $target_dir/* "${backup_dir}" 2>&1
-            BACKED_UP="true"
-            echo -e "\n$COMPLETE 已备份原有 repo 源文件"
-            sleep 1s
-        fi
-    }
-
-    BACKED_UP="false" # 是否已备份
-    if [[ "${BACKUP}" == "true" ]]; then
-        case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
-            if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
-                # /etc/apt/sources.list
-                backup_file $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
-            fi
-            ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
-            # Debian DEB822 格式源文件
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
-                [ -f $File_DebianSources ] && backup_file $File_DebianSources $File_DebianSourcesBackup "debian.sources"
-            fi
-            # Ubuntu DEB822 格式源文件
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
-                [ -f $File_UbuntuSources ] && backup_file $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
-            fi
-            # Armbian
-            if [ -f $File_ArmbianRelease ]; then
-                backup_file $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
-            fi
-            # Proxmox
-            if [ -f $File_ProxmoxVersion ]; then
-                backup_file $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
-            fi
-            # Linux Mint
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
-                backup_file $File_LinuxMintSourceList $File_LinuxMintSourceListBackup "official-package-repositories.list"
-            fi
-            ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            # /etc/yum.repos.d
-            backup_dir $Dir_YumRepos $Dir_YumReposBackup
-            ;;
-        "${SYSTEM_OPENSUSE}")
-            # /etc/zypp/repos.d
-            backup_dir $Dir_openSUSERepos $Dir_openSUSEReposBackup
-            ;;
-        "${SYSTEM_ARCH}")
-            # /etc/pacman.d/mirrorlist
-            backup_file $File_ArchMirrorList $File_ArchMirrorListBackup "mirrorlist"
-            ;;
-        "${SYSTEM_ALPINE}")
-            # /etc/apk/repositories
-            backup_file $File_AlpineRepositories $File_AlpineRepositoriesBackup "repositories"
-            ;;
-        esac
-    fi
-}
-
-## 移除原有软件源
-function remove_original_mirrors() {
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
-            [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
-        fi
-        [ -d $Dir_DebianExtendSource ] || mkdir -p $Dir_DebianExtendSource
-        ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
-        # Debian DEB822 格式源文件
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
-            [ -f $File_DebianSources ] && rm -rf $File_DebianSources
-        fi
-        # Ubuntu DEB822 格式源文件
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
-            [ -f $File_UbuntuSources ] && rm -rf $File_UbuntuSources
-        fi
-        # Armbian
-        if [ -f $File_ArmbianRelease ]; then
-            [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
-        fi
-        # Proxmox
-        if [ -f $File_ProxmoxVersion ]; then
-            [ -f $File_ProxmoxSourceList ] && sed -i '1,$d' $File_ProxmoxSourceList
-        fi
-        # Linux Mint
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
-            [ -f $File_LinuxMintSourceList ] && sed -i '1,$d' $File_LinuxMintSourceList
-        fi
-        ;;
-    "${SYSTEM_REDHAT}")
-        if [ ! -d $Dir_YumRepos ]; then
-            return
-        fi
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
-            rm -rf $Dir_YumRepos/fedora*
-        else
-            if [[ "${ONLY_EPEL}" != "false" ]]; then
-                return
-            fi
-            case "${SYSTEM_JUDGMENT}" in
-            "${SYSTEM_RHEL}")
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
-                9)
-                    rm -rf $Dir_YumRepos/rocky*
-                    ;;
-                *)
-                    if [ -f $Dir_YumRepos/epel.repo ]; then
-                        ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
-                    else
-                        rm -rf $Dir_YumRepos/*
-                    fi
-                    ;;
-                esac
-                ;;
-            "${SYSTEM_CENTOS}")
-                if [ -f $Dir_YumRepos/epel.repo ]; then
-                    ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
-                else
-                    rm -rf $Dir_YumRepos/*
-                fi
-                ;;
-            "${SYSTEM_CENTOS_STREAM}")
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
-                9)
-                    rm -rf $Dir_YumRepos/centos*
-                    ;;
-                8)
-                    rm -rf $Dir_YumRepos/CentOS-Stream-*
-                    ;;
-                esac
-                ;;
-            "${SYSTEM_ROCKY}")
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
-                9)
-                    rm -rf $Dir_YumRepos/rocky*
-                    ;;
-                8)
-                    rm -rf $Dir_YumRepos/Rocky-*
-                    ;;
-                esac
-                ;;
-            "${SYSTEM_ALMALINUX}")
-                rm -rf $Dir_YumRepos/almalinux*
-                ;;
-            "${SYSTEM_OPENCLOUDOS}")
-                rm -rf $Dir_YumRepos/OpenCloudOS*
-                ;;
-            esac
-        fi
-        ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/OpenCloudOS*
-        ;;
-    "${SYSTEM_OPENEULER}")
-        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/openEuler.repo
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos/ | grep -E "^repo-" | grep -Ev "openh264" | xargs rm -rf
-        ;;
-    "${SYSTEM_ARCH}")
-        [ -f $File_ArchMirrorList ] && sed -i '1,$d' $File_ArchMirrorList
-        ;;
-    "${SYSTEM_ALPINE}")
-        [ -f $File_AlpineRepositories ] && sed -i '1,$d' $File_AlpineRepositories
-        ;;
-    esac
-}
-
-## 换源
-function change_mirrors_main() {
-    ## 打印修改前后差异
-    function print_diff() {
-        ## 单一文件比较模式
-        function diff_file() {
-            local diff_file=$1
-            local origin_file=$2
-            if [[ -s $diff_file ]] && [[ -s $origin_file ]]; then
-                if [[ "$(cat "${diff_file}")" != "$(cat "${origin_file}")" ]]; then
-                    echo -e "\n${BLUE}${diff_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
-                    diff "${diff_file}" "${origin_file}" -d --color=always -I -B -E
-                fi
-            fi
-        }
-        ## 目录文件比较模式
-        function diff_dir() {
-            local diff_dir=$1
-            local origin_dir=$2
-            for item in $(ls $diff_dir | xargs); do
-                diff_file "${diff_dir}/${item}" "${origin_dir}/${item}"
-            done
-        }
-
-        if [[ -x /usr/bin/diff && "${BACKED_UP}" == "true" ]]; then
-            case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}")
-                if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
-                    diff_file $File_DebianSourceListBackup $File_DebianSourceList
-                fi
-                # Armbian
-                if [ -f $File_ArmbianRelease ]; then
-                    diff_file $File_ArmbianSourceListBackup $File_ArmbianSourceList
-                fi
-                # Proxmox
-                if [ -f $File_ProxmoxVersion ]; then
-                    diff_file $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
-                fi
-                # Linux Mint
-                if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
-                    diff_file $File_LinuxMintSourceListBackup $File_LinuxMintSourceList
-                fi
-                ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-                diff_dir $Dir_YumReposBackup $Dir_YumRepos
-                ;;
-            "${SYSTEM_OPENSUSE}")
-                diff_dir $Dir_openSUSEReposBackup $Dir_openSUSERepos
-                ;;
-            "${SYSTEM_ARCH}")
-                diff_file $File_ArchMirrorListBackup $File_ArchMirrorList
-                ;;
-            "${SYSTEM_ALPINE}")
-                diff_file $File_AlpineRepositoriesBackup $File_AlpineRepositories
-                ;;
-            esac
-        fi
-    }
-
-    ## 调用换源函数
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        change_mirrors_Debian
-        ;;
-    "${SYSTEM_REDHAT}")
-        change_mirrors_RedHat
-        ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        change_mirrors_OpenCloudOS
-        ;;
-    "${SYSTEM_OPENEULER}")
-        change_mirrors_openEuler
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        change_mirrors_openSUSE
-        ;;
-    "${SYSTEM_ARCH}")
-        change_mirrors_ArchLinux
-        ;;
-    "${SYSTEM_ALPINE}")
-        change_mirrors_Alpine
-        ;;
-    esac
-    ## 比较差异
-    if [[ "${PRINT_DIFF}" == "true" ]]; then
-        print_diff
-    fi
-    ## 更新软件源
-    echo -e "\n$WORKING 开始${SYNC_MIRROR_TEXT}...\n"
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        apt-get update
-        ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        yum makecache
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        zypper ref
-        ;;
-    "${SYSTEM_ARCH}")
-        pacman -Sy
-        ;;
-    "${SYSTEM_ALPINE}")
-        apk update -f
-        ;;
-    esac
-    if [ $? -eq 0 ]; then
-        echo -e "\n$SUCCESS 软件源更换完毕"
-    else
-        echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败\n"
-        echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致"
-        echo -e "1. 网络问题：例如连接异常、由地区影响的网络间歇式中断等"
-        echo -e "2. 软件源问题：建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题"
-        echo -e "\n软件源地址：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
-        exit 1
-    fi
-}
-
-## 升级软件包
-function upgrade_software() {
-    function clean_cache() {
-        ## 跳过特殊系统
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_RHEL}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
-            return
-            ;;
-        esac
-        ## 交互确认
-        if [[ -z "${CLEAN_CACHE}" ]]; then
-            CLEAN_CACHE="false"
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                CLEAN_CACHE="true"
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不清理！"
-                ;;
-            esac
-        fi
-        if [[ "${CLEAN_CACHE}" == "false" ]]; then
-            return
-        fi
-        ## 调用系统命令
-        case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
-            apt-get autoremove -y >/dev/null 2>&1
-            apt-get clean >/dev/null 2>&1
-            ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            yum autoremove -y >/dev/null 2>&1
-            yum clean packages -y >/dev/null 2>&1
-            ;;
-        esac
-        echo -e "\n$COMPLETE 清理完毕"
-    }
-
-    ## 跳过特殊系统
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_ARCH}" | "${SYSTEM_RHEL}")
-        return
-        ;;
-    esac
-    ## 交互确认
-    if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
-        UPGRADE_SOFTWARE="false"
-        local CHOICE
-        CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
-        read -rp "${CHOICE}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case "${INPUT}" in
-        [Yy] | [Yy][Ee][Ss]) ;;
-        [Nn] | [Nn][Oo])
-            UPGRADE_SOFTWARE="true"
-            ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不更新！"
-            ;;
-        esac
-    fi
-    if [[ "${UPGRADE_SOFTWARE}" == "false" ]]; then
-        return
-    fi
-    echo -e ''
-    ## 调用系统命令
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        apt-get upgrade -y
-        ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        yum update -y --skip-broken
-        ;;
-    "${SYSTEM_OPENSUSE}")
-        zypper update -y
-        ;;
-    "${SYSTEM_ALPINE}")
-        apk upgrade --no-cache
-        ;;
-    esac
-    ## 清理缓存
-    clean_cache
-}
-
-## 运行结束
-function run_end() {
-    echo -e "\n---------- 脚本执行结束 ----------"
-    echo -e "\n\033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
-}
-
-##############################################################################
-
-## 更换基于 Debian 系 Linux 发行版的软件源
-function change_mirrors_Debian() {
-    function gen_debian_source() {
-        echo "deb ${1} ${2} ${3}
-# deb-src ${1} ${2} ${3}
-deb ${1} ${2}-updates ${3}
-# deb-src ${1} ${2}-updates ${3}
-deb ${1} ${2}-backports ${3}
-# deb-src ${1} ${2}-backports ${3}"
-    }
-    function gen_debian_security_source() {
-        echo "deb ${1} ${2}-security ${3}
-# deb-src ${1} ${2}-security ${3}"
-    }
-    function gen_ubuntu_source() {
-        echo "deb ${1} ${2} ${3}
-# deb-src ${1} ${2} ${3}
-deb ${1} ${2}-updates ${3}
-# deb-src ${1} ${2}-updates ${3}
-deb ${1} ${2}-backports ${3}
-# deb-src ${1} ${2}-backports ${3}
-deb ${1} ${2}-security ${3}
-# deb-src ${1} ${2}-security ${3}
-
-## 预发布软件源（不建议启用）
-# deb ${1} ${2}-proposed ${3}
-# deb-src ${1} ${2}-proposed ${3}"
-    }
-
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_DEBIAN}")
-            SOURCE="deb.debian.org"
-            ;;
-        "${SYSTEM_UBUNTU}")
-            SOURCE="archive.ubuntu.com"
-            ;;
-        "${SYSTEM_KALI}")
-            SOURCE="http.kali.org"
-            ;;
-        "${SYSTEM_DEEPIN}")
-            SOURCE="community-packages.deepin.com"
-            ;;
-        "${SYSTEM_LINUX_MINT}")
-            SOURCE="packages.linuxmint.com"
-            ;;
-        esac
-    fi
-    local repository_sections # 仓库区域
-    local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
-    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_DEBIAN}")
-        case "${SYSTEM_VERSION_NUMBER}" in
-        8 | 9 | 10 | 11)
-            repository_sections="main contrib non-free"
-            ;;
-        *)
-            repository_sections="main contrib non-free non-free-firmware"
-            ;;
-        esac
-        if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
-            echo "${tips}
-$(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
-            # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
-            echo "$(gen_debian_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
-        else
-            echo "deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
-        fi
-        ;;
-    "${SYSTEM_UBUNTU}")
-        repository_sections="main restricted universe multiverse"
-        echo "${tips}
-$(gen_ubuntu_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
-        ;;
-    "${SYSTEM_KALI}")
-        repository_sections="main non-free contrib"
-        echo "${tips}
-deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
-        ;;
-    "${SYSTEM_DEEPIN}")
-        repository_sections="apricot main contrib non-free"
-        echo "${tips}
-deb ${base_url} ${repository_sections}
-# deb-src ${base_url} ${repository_sections}" >>$File_DebianSourceList
-        ;;
-    "${SYSTEM_LINUX_MINT}")
-        ## 专用源
-        repository_sections="main upstream import backport"
-        echo "${tips}
-deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-" >>$File_LinuxMintSourceList
-        ## 底层系统软件源
-        local base_system_source_branch base_system_codename
-        if [[ "${SYSTEM_VERSION_NUMBER}" == 6 ]]; then
-            # Debian 版（LMDE）
-            base_system_source_branch="debian"
-            base_system_codename="bookworm"
-            repository_sections="main contrib non-free non-free-firmware"
-            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
-            echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
-            # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${base_system_source_branch}-security"}"
-            echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
-        else
-            # Ubuntu 版
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
-                base_system_source_branch="ubuntu"
-            else
-                base_system_source_branch="ubuntu-ports"
-            fi
-            case "${SYSTEM_VERSION_NUMBER:0:2}" in
-            21)
-                base_system_codename="jammy"
-                ;;
-            20)
-                base_system_codename="focal"
-                ;;
-            19)
-                base_system_codename="bionic"
-                ;;
-            esac
-            repository_sections="main restricted universe multiverse"
-            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
-            echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
-        fi
-        ;;
-    esac
-    ## 处理其它衍生操作系统的专用源
-    # Armbian
-    if [ -f $File_ArmbianRelease ]; then
-        echo "deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_ArmbianSourceList
-    fi
-    # Proxmox
-    if [ -f $File_ProxmoxVersion ]; then
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pve ${SYSTEM_VERSION_CODENAME} pve-no-subscription
-# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs ${SYSTEM_VERSION_CODENAME} pbs-no-subscription
-# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs-client ${SYSTEM_VERSION_CODENAME} pbs-client-no-subscription
-# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pmg ${SYSTEM_VERSION_CODENAME} pmg-no-subscription" >>$File_ProxmoxSourceList
-    fi
-}
-
-## 更换基于 RedHat 系 Linux 发行版软件源
-function change_mirrors_RedHat() {
-    ## 安装/更换 EPEL (Extra Packages for Enterprise Linux) 附加软件包软件源
-    function change_mirrors_EPEL() {
-        ## 安装 EPEL 软件包
-        if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
-            echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
-            yum install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
-            rm -rf $Dir_YumRepos/epel*
-        fi
-        ## 删除原有 repo 源文件
-        [ "${VERIFICATION_EPELFILES}" -eq 0 ] && rm -rf $Dir_YumRepos/epel*
-        [ "${VERIFICATION_EPELBACKUPFILES}" -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
-        ## 生成 repo 源文件
-        gen_repo_files_EPEL
-        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-            return
-        fi
-
-        # 更换 WEB 协议（HTTP/HTTPS）
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9 | 8)
-            sed -i "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" $Dir_YumRepos/epel*
-            ;;
-        7)
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" $Dir_YumRepos/epel*
-            ;;
-        esac
-        # 修改源
-        sed -i 's|^metalink=|#metalink=|g' $Dir_YumRepos/epel*
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9 | 8)
-            sed -i "s|download.example/pub|${SOURCE}|g" $Dir_YumRepos/epel*
-            ;;
-        7)
-            sed -i "s|download.fedoraproject.org/pub|${SOURCE}|g" $Dir_YumRepos/epel*
-            ;;
-        esac
-        [ -f $Dir_YumRepos/epel-cisco-openh264.repo ] && rm -rf epel-cisco-openh264.repo # 删除不兼容的仓库
-    }
-    ## 仅 EPEL 模式
-    if [[ "${ONLY_EPEL}" == "true" ]]; then
-        change_mirrors_EPEL
-        return
-    fi
-    ## 生成基于 RedHat 发行版和及其衍生发行版的官方 repo 源文件
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
-        9)
-            gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
-            ;;
-        *)
-            gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
-            ;;
-        esac
-        ;;
-    "${SYSTEM_CENTOS}")
-        gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
-        ;;
-    "${SYSTEM_CENTOS_STREAM}")
-        gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
-        ;;
-    "${SYSTEM_ROCKY}")
-        gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
-        ;;
-    "${SYSTEM_ALMALINUX}")
-        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_NUMBER:0:1}"
-        ;;
-    "${SYSTEM_FEDORA}")
-        gen_repo_files_Fedora
-        ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
-        ;;
-    esac
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" != "true" ]]; then
-        ## 修改源
-        cd $Dir_YumRepos
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_RHEL}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-rockyofficial" -P /etc/pki/rpm-gpg
-                # wget "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/RPM-GPG-KEY-Rocky-9" -P /etc/pki/rpm-gpg
-                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|^mirrorlist=|#mirrorlist=|g" \
-                    -e "s|^gpgcheck=1|gpgcheck=0|g" \
-                    -e "s|^gpgkey=|#gpgkey=|g" \
-                    -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    rocky.repo \
-                    rocky-addons.repo \
-                    rocky-devel.repo \
-                    rocky-extras.repo
-                ;;
-            *)
-                sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-                sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
-                8)
-                    sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
-                    sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-                    # 单独处理 CentOS-Linux-Sources.repo
-                    sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
-                    ;;
-                7)
-                    sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
-                    sed -i "s/\$releasever/7/g" CentOS-*
-                    # 单独处理 CentOS-Sources.repo
-                    sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo
-                    ;;
-                esac
-                sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
-                ;;
-            esac
-            ;;
-        "${SYSTEM_CENTOS}")
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-            ## CentOS 7/8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            8)
-                # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 分支
-                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
-                sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-                # 单独处理 CentOS-Linux-Sources.repo
-                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
-                ;;
-            7)
-                # 最终版本为 7.9.2009，从 2024-07 开始切换至 centos-vault 分支
-                sed -i "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
-                sed -i "s/\$releasever/7.9.2009/g" CentOS-*
-                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
-                ;;
-            esac
-            sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
-            ;;
-        "${SYSTEM_CENTOS_STREAM}")
-            # CentOS Stream 9 使用的是 centos-stream 镜像，而 CentOS Stream 8 使用的是 centos 镜像
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|^metalink=|#metalink=|g" \
-                    -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    centos.repo \
-                    centos-addons.repo
-                ;;
-            8)
-                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
-                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|^mirrorlist=|#mirrorlist=|g" \
-                    -e "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    CentOS-Stream-*
-                ;;
-            esac
-            ;;
-        "${SYSTEM_ROCKY}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|^mirrorlist=|#mirrorlist=|g" \
-                    -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    rocky.repo \
-                    rocky-addons.repo \
-                    rocky-devel.repo \
-                    rocky-extras.repo
-                ;;
-            8)
-                sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|^mirrorlist=|#mirrorlist=|g" \
-                    -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    Rocky-*
-                ;;
-            esac
-            ;;
-        "${SYSTEM_ALMALINUX}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|^mirrorlist=|#mirrorlist=|g" \
-                    -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
-                    -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    almalinux-*
-                ;;
-            8)
-                sed -e "s|^mirrorlist=|#mirrorlist=|g" \
-                    -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
-                    -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    almalinux-ha.repo \
-                    almalinux-nfv.repo \
-                    almalinux-plus.repo \
-                    almalinux-powertools.repo \
-                    almalinux-resilientstorage.repo \
-                    almalinux-rt.repo \
-                    almalinux-sap.repo \
-                    almalinux-saphana.repo \
-                    almalinux.repo
-                ;;
-            esac
-            ;;
-        "${SYSTEM_FEDORA}")
-            sed -e "s|^metalink=|#metalink=|g" \
-                -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|download.example/pub/fedora/linux|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                fedora.repo \
-                fedora-updates.repo \
-                fedora-modular.repo \
-                fedora-updates-modular.repo \
-                fedora-updates-testing.repo \
-                fedora-updates-testing-modular.repo
-            ;;
-        "${SYSTEM_OPENCLOUDOS}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            8)
-                sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
-                    -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
-                    -i \
-                    OpenCloudOS-Debuginfo.repo \
-                    OpenCloudOS.repo \
-                    OpenCloudOS-Sources.repo
-                ;;
-            esac
-            ;;
-        esac
-    fi
-
-    ## EPEL 附加软件包（安装/换源）
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
-        [[ "${INSTALL_EPEL}" == "true" ]] && change_mirrors_EPEL
-        ;;
-    esac
-}
-
-## 更换基于 OpenCloudOS 发行版的软件源
-function change_mirrors_OpenCloudOS() {
-    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
-    fi
-
-    ## 修改源
-    cd $Dir_YumRepos
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
-    9)
-        sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
-            -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
-            -i \
-            OpenCloudOS.repo
-        ;;
-    esac
-}
-
-## 更换基于 openEuler 发行版的软件源
-function change_mirrors_openEuler() {
-    gen_repo_files_openEuler
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
-    fi
-
-    ## 修改源
-    cd $Dir_YumRepos
-    local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g; s/[()]/ /g; s/  / /g; s/^ //g; s/ $//g; s/ /-/g; s/_/-/g")"
-    sed -e "s|^baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-        -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-        -e "s|openEuler-version|openEuler-${version_name}|g" \
-        -i \
-        openEuler.repo
-}
-
-## 更换基于 openSUSE 发行版的软件源
-function change_mirrors_openSUSE() {
-    case "${SYSTEM_ID}" in
-    "opensuse-leap")
-        gen_repo_files_openSUSE "leap" "${SYSTEM_VERSION_NUMBER}"
-        ;;
-    "opensuse-tumbleweed")
-        gen_repo_files_openSUSE "tumbleweed"
-        ;;
-    esac
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
-    fi
-
-    ## 修改源
-    cd $Dir_openSUSERepos
-    # 更换 WEB 协议（HTTP/HTTPS）
-    sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" repo-*
-    # 更换软件源
-    case "${SYSTEM_ID}" in
-    opensuse-leap)
-        case "${SYSTEM_VERSION_NUMBER}" in
-        15.[0-2])
-            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-                repo-debug-non-oss.repo \
-                repo-debug.repo \
-                repo-debug-update-non-oss.repo \
-                repo-debug-update.repo \
-                repo-non-oss.repo \
-                repo-oss.repo \
-                repo-source-non-oss.repo \
-                repo-source.repo \
-                repo-update-non-oss.repo \
-                repo-update.repo
-            ;;
-        *)
-            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-                repo-backports-debug-update.repo \
-                repo-backports-update.repo \
-                repo-debug-non-oss.repo \
-                repo-debug.repo \
-                repo-debug-update-non-oss.repo \
-                repo-debug-update.repo \
-                repo-non-oss.repo \
-                repo-oss.repo \
-                repo-sle-debug-update.repo \
-                repo-sle-update.repo \
-                repo-source.repo \
-                repo-update-non-oss.repo \
-                repo-update.repo
-            ;;
-        esac
-        ;;
-    opensuse-tumbleweed)
-        sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-            repo-debug.repo \
-            repo-non-oss.repo \
-            repo-openh264.repo \
-            repo-oss.repo \
-            repo-source.repo \
-            repo-update.repo
-        ;;
-    esac
-}
-
-## 更换基于 Arch Linux 发行版的软件源
-function change_mirrors_ArchLinux() {
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        SOURCE="mirrors.aliyun.com"
-        echo -e "\n${TIP} 由于 Arch Linux 无官方源因此已切换至阿里源\n"
-    fi
-    ## 修改源
-    case "${SOURCE_BRANCH}" in
-    "archlinuxarm")
-        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch/\$repo" >>$File_ArchMirrorList
-        ;;
-    "archlinuxcn")
-        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch" >>$File_ArchMirrorList
-        ;;
-    *)
-        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$repo/os/\$arch" >>$File_ArchMirrorList
-        ;;
-    esac
-}
-
-## 更换基于 Alpine Linux 发行版的软件源
-function change_mirrors_Alpine() {
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        SOURCE="dl-cdn.alpinelinux.org"
-    fi
-    local version_name
-    echo "${SYSTEM_PRETTY_NAME}" | grep " edge" -q
-    if [ $? -eq 0 ]; then
-        version_name="edge"
-    else
-        version_name="v${SYSTEM_VERSION_NUMBER%.*}"
-    fi
-    ## 修改源
-    echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
-${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/community" >>$File_AlpineRepositories
 }
 
 ## 处理命令选项
@@ -1990,13 +498,1586 @@ function handle_command_options() {
     PRINT_DIFF="${PRINT_DIFF:-"false"}"
 }
 
+function run_start() {
+    [ -z "${SOURCE}" ] && clear
+    echo -e ' +-----------------------------------+'
+    echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
+    echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
+    echo -e ' +-----------------------------------+'
+    echo -e ' 欢迎使用 GNU/Linux 更换系统软件源脚本'
+}
+
+function run_end() {
+    echo -e "\n---------- 脚本执行结束 ----------"
+    echo -e "\n\033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
+}
+
+## 报错退出
+function output_error() {
+    [ "$1" ] && echo -e "\n$ERROR $1\n"
+    exit 1
+}
+
+## 权限判定
+function permission_judgment() {
+    if [ $UID -ne 0 ]; then
+        output_error "权限不足，请使用 Root 用户运行本脚本"
+    fi
+}
+
+## 收集系统信息
+function collect_system_info() {
+    ## 定义系统名称
+    SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    grep -q "PRETTY_NAME=" $File_LinuxRelease && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    ## 定义系统版本号
+    SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    ## 定义系统ID
+    SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    ## 判定当前系统派系
+    if [ -s $File_DebianVersion ]; then
+        SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
+    elif [ -s $File_openEulerRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [ -f $File_ArchLinuxRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_ARCH}"
+    elif [ -f $File_AlpineRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
+    elif [ -s $File_RedHatRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
+    elif [ -s $File_OpenCloudOSRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为官方宣称8版本基于红帽而9版本不是
+    elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
+    else
+        output_error "无法判断当前运行环境！"
+    fi
+    ## 判定系统类型、版本、版本号
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        if [ ! -x /usr/bin/lsb_release ]; then
+            apt-get install -y lsb-release
+            if [ $? -ne 0 ]; then
+                output_error "lsb-release 软件包安装失败\n\n本脚本依赖 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
+            fi
+        fi
+        SYSTEM_JUDGMENT="$(lsb_release -is)"
+        SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
+        ;;
+    "${SYSTEM_REDHAT}")
+        SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
+        ## 特殊系统判断
+        # Red Hat Enterprise Linux
+        grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
+        # CentOS Stream
+        grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
+        ;;
+    *)
+        SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
+        ;;
+    esac
+    ## 判断系统及版本是否受适配
+    local is_supported="true"
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_DEBIAN}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-3] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_UBUNTU}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-4] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_LINUX_MINT}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 19 && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-1] && "${SYSTEM_VERSION_NUMBER:0:2}" != 6 ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_RHEL}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-9] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_CENTOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-8] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_FEDORA}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != [3-4][0-9] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_OPENEULER}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-4] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        case "${SYSTEM_ID}" in
+        "opensuse-leap")
+            if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
+                is_supported="false"
+            fi
+            ;;
+        "opensuse-tumbleweed") ;;
+        *)
+            is_supported="false"
+            ;;
+        esac
+        ;;
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
+        # 理论全部支持或不作判断
+        ;;
+    *)
+        is_supported="false"
+        ;;
+    esac
+    if [[ "${is_supported}" == "false" ]]; then
+        output_error "当前系统版本不在本脚本的支持范围内，请前往官网查看支持列表！"
+    fi
+    ## 判定系统处理器架构
+    case "$(uname -m)" in
+    x86_64)
+        DEVICE_ARCH="x86_64"
+        ;;
+    aarch64)
+        DEVICE_ARCH="ARM64"
+        ;;
+    armv7l)
+        DEVICE_ARCH="ARMv7"
+        ;;
+    armv6l)
+        DEVICE_ARCH="ARMv6"
+        ;;
+    i686)
+        DEVICE_ARCH="x86_32"
+        ;;
+    *)
+        DEVICE_ARCH="$(uname -m)"
+        ;;
+    esac
+    ## 定义软件源分支名称
+    if [[ -z "${SOURCE_BRANCH}" ]]; then
+        ## 默认为系统名称小写，替换空格
+        SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
+        SOURCE_BRANCH="${SOURCE_BRANCH// /-}"
+        ## 处理特殊的分支名称
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_DEBIAN}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            8 | 9 | 10)
+                SOURCE_BRANCH="debian-archive" # EOF
+                ;;
+            *)
+                SOURCE_BRANCH="debian"
+                ;;
+            esac
+            ;;
+        "${SYSTEM_UBUNTU}")
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+                SOURCE_BRANCH="ubuntu"
+            else
+                SOURCE_BRANCH="ubuntu-ports"
+            fi
+            ;;
+        "${SYSTEM_RHEL}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                SOURCE_BRANCH="centos-stream" # 使用 CentOS Stream 仓库
+                ;;
+            *)
+                SOURCE_BRANCH="centos-vault" # EOF
+                ;;
+            esac
+            ;;
+        "${SYSTEM_CENTOS}")
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
+                SOURCE_BRANCH="centos-vault" # EOF
+            else
+                SOURCE_BRANCH="centos-altarch"
+            fi
+            ;;
+        "${SYSTEM_CENTOS_STREAM}")
+            # 自 CentOS Stream 9 开始使用 centos-stream 仓库，旧版本使用 centos 仓库
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            8)
+                if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
+                    SOURCE_BRANCH="centos-vault" # EOF
+                else
+                    SOURCE_BRANCH="centos-altarch"
+                fi
+                ;;
+            *)
+                SOURCE_BRANCH="centos-stream"
+                ;;
+            esac
+            ;;
+        "${SYSTEM_ARCH}")
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+                SOURCE_BRANCH="archlinux"
+            else
+                SOURCE_BRANCH="archlinuxarm"
+            fi
+            ;;
+        esac
+    fi
+    ## 定义软件源更新文字
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_ALPINE}")
+        SYNC_MIRROR_TEXT="更新软件源"
+        ;;
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        SYNC_MIRROR_TEXT="生成软件源缓存"
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        SYNC_MIRROR_TEXT="刷新软件源"
+        ;;
+    "${SYSTEM_ARCH}")
+        SYNC_MIRROR_TEXT="同步软件源"
+        ;;
+    esac
+}
+
+## 命令选项兼容性判断
+function check_command_options() {
+    if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
+        output_error "两种模式不可同时使用！"
+    fi
+    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]] && [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
+        output_error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
+    fi
+    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" ]] && [[ "${DEBIAN_CODENAME}" ]]; then
+        output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
+    fi
+    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_REDHAT}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] && [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+        output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+    fi
+    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]] && [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
+        output_error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
+    fi
+}
+
+## 选择软件源
+function choose_mirrors() {
+    ## 打印软件源列表
+    function print_mirrors_list() {
+        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
+        ## 计算字符串长度
+        function StringLength() {
+            local text=$1
+            echo "${#text}"
+        }
+        echo -e ''
+
+        local list_arr=()
+        local list_arr_sum
+        list_arr_sum="$(eval echo \${#$1[@]})"
+        for ((a = 0; a < $list_arr_sum; a++)); do
+            list_arr[$a]="$(eval echo \${$1[a]})"
+        done
+        if [ -x /usr/bin/printf ]; then
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
+                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
+                arr_num=$((i + 1))
+                default_mirror_name_length=${2:-"30"} # 默认软件源名称打印长度
+                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
+                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
+                # 非一般字符长度
+                tmp_mirror_name_length=$(StringLength "$(echo "${tmp_mirror_name// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;")")
+                ## 填充空格
+                tmp_spaces_nums=$(($((default_mirror_name_length - tmp_mirror_name_length - $(StringLength "${tmp_mirror_name}"))) / 2))
+                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
+                    tmp_mirror_name="${tmp_mirror_name} "
+                done
+                printf " ❖  %-$((default_mirror_name_length + tmp_mirror_name_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+            done
+        else
+            for ((i = 0; i < ${#list_arr[@]}; i++)); do
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
+                tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')  # 软件源地址
+                arr_num=$((i + 1))
+                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
+            done
+        fi
+    }
+
+    ## 选择软件源内网地址
+    # 例如部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
+    # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
+    function choose_intranet_address() {
+        local intranet_source
+        for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
+            if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
+                # echo "${SOURCE}"
+                intranet_source="${mirror_list_intranet[i]}"
+                # echo "${intranet_source}"
+                # exit
+                ONLY_HTTP="True"
+                break
+            else
+                continue
+            fi
+        done
+        if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss]) ;;
+            [Nn] | [Nn][Oo])
+                SOURCE="${intranet_source}"
+                echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不使用内网地址！"
+                ;;
+            esac
+        elif [[ "${USE_INTRANET_SOURCE}" == "true" ]]; then
+            SOURCE="${intranet_source}"
+        fi
+    }
+
+    function print_title() {
+        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
+        local arch="${DEVICE_ARCH}"
+        local date_time time_zone
+        date_time="$(date "+%Y-%m-%d %H:%M:%S")"
+        time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+
+        echo -e ''
+        echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
+        echo -e " 系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
+    }
+
+    print_title
+    if [[ -z "${SOURCE}" ]]; then
+        ## 使用官方源
+        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+            return
+        fi
+
+        if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
+            local mirror_list_name="mirror_list_abroad"
+            print_mirrors_list "${mirror_list_name}" 60
+        elif [[ ${USE_EDU_SOURCE} = "true" ]]; then
+            local mirror_list_name="mirror_list_edu"
+            print_mirrors_list "${mirror_list_name}" 31
+        else
+            local mirror_list_name="mirror_list_default"
+            print_mirrors_list "${mirror_list_name}" 31
+        fi
+
+        local CHOICE
+        CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        while true; do
+            read -rp "${CHOICE}" INPUT
+            case "${INPUT}" in
+            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                local tmp_source
+                tmp_source="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
+                if [[ -z "${tmp_source}" ]]; then
+                    echo -e "\n$WARN 请输入有效的数字序号！"
+                else
+                    SOURCE="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]} | awk -F '@' '{print$2}')"
+                    # echo "${SOURCE}"
+                    # exit
+                    break
+                fi
+                ;;
+            *)
+                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                ;;
+            esac
+        done
+    fi
+
+    ## 选择软件源内网地址
+    if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
+        choose_intranet_address
+    fi
+}
+
+## 选择同步或更新软件源所使用的 WEB 协议（ HTTP/HTTPS）
+function choose_protocol() {
+    if [[ -z "${WEB_PROTOCOL}" ]]; then
+        if [[ "${ONLY_HTTP}" == "True" ]]; then
+            WEB_PROTOCOL="http"
+        else
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                WEB_PROTOCOL="http"
+                ;;
+            [Nn] | [Nn][Oo])
+                WEB_PROTOCOL="https"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
+                WEB_PROTOCOL="https"
+                ;;
+            esac
+        fi
+    fi
+    WEB_PROTOCOL="${WEB_PROTOCOL,,}"
+}
+
+# 适用于部分红帽系统的 EPEL 附加软件包（安装/换源）
+function choose_install_epel_packages() {
+    function check_install_status() {
+        ## 判断是否已安装 EPEL 软件包
+        rpm -qa | grep epel-release -q
+        VERIFICATION_EPEL=$?
+        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
+        [ -d $Dir_YumRepos ] && ls $Dir_YumRepos | grep epel -q
+        VERIFICATION_EPELFILES=$?
+        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
+        [ -d $Dir_YumReposBackup ] && ls $Dir_YumReposBackup | grep epel -q
+        VERIFICATION_EPELBACKUPFILES=$?
+    }
+
+    ## 判断是否支持且需要处理 EPEL 附加软件包
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] || [[ "${INSTALL_EPEL}" == "false" ]]; then
+            INSTALL_EPEL="false"
+            return
+        else
+            check_install_status
+        fi
+        ;;
+    *)
+        INSTALL_EPEL="false"
+        return
+        ;;
+    esac
+    ## 选择是否安装 EPEL 附加软件包
+    if [[ -z "${INSTALL_EPEL}" ]]; then
+        if [ $VERIFICATION_EPEL -eq 0 ]; then
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
+        else
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+        fi
+        read -rp "${CHOICE}" INPUT
+        [[ -z "${INPUT}" ]] && INPUT=Y
+        case "${INPUT}" in
+        [Yy] | [Yy][Ee][Ss])
+            INSTALL_EPEL="true"
+            ;;
+        [Nn] | [Nn][Oo])
+            INSTALL_EPEL="false"
+            ;;
+        *)
+            echo -e "\n$WARN 输入错误，默认不更换！"
+            INSTALL_EPEL="false"
+            ;;
+        esac
+    fi
+}
+
+## 关闭防火墙和SELinux
+function close_firewall_service() {
+    if [ ! -x /usr/bin/systemctl ]; then
+        return
+    fi
+    if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
+        if [[ -z "${CLOSE_FIREWALL}" ]]; then
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                CLOSE_FIREWALL="true"
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不关闭！"
+                ;;
+            esac
+        fi
+        if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
+            local SelinuxConfig=/etc/selinux/config
+            systemctl disable --now firewalld >/dev/null 2>&1
+            [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
+        fi
+    fi
+}
+
+## 备份原有软件源（文件/目录）
+function backup_original_mirrors() {
+    function backup_file() {
+        local target_file=$1
+        local backup_file=$2
+        local type="$3"
+        ## 判断是否存在源文件
+        [ -f "${target_file}" ] || touch "${target_file}"
+        if [ ! -s "${target_file}" ]; then
+            echo -e ''
+            return
+        fi
+        ## 判断是否存在已备份的源文件
+        if [ -s "${backup_file}" ]; then
+            if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
+                return
+            fi
+            local CHOICE_BACKUP
+            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE_BACKUP}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss]) ;;
+            [Nn] | [Nn][Oo])
+                echo ''
+                cp -rvf "${target_file}" "${backup_file}" 2>&1
+                BACKED_UP="true"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不覆盖！"
+                ;;
+            esac
+        else
+            echo ''
+            cp -rvf "${target_file}" "${backup_file}" 2>&1
+            BACKED_UP="true"
+            echo -e "\n$COMPLETE 已备份原有 ${type} 源文件"
+            sleep 1s
+        fi
+    }
+    function backup_dir() {
+        local target_dir=$1
+        local backup_dir=$2
+        [ -d "${target_dir}" ] || mkdir -p "${target_dir}"
+        [ -d "${backup_dir}" ] || mkdir -p "${backup_dir}"
+        ## 判断是否存在 repo 源文件
+        ls "${target_dir}" | grep '\.repo$' -q
+        if [ $? -ne 0 ]; then
+            return
+        fi
+        ## 判断是否存在已备份的 repo 源文件
+        ls "${backup_dir}" | grep '\.repo$' -q
+        if [ $? -eq 0 ]; then
+            if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
+                return
+            fi
+            local CHOICE_BACKUP
+            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE_BACKUP}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss]) ;;
+            [Nn] | [Nn][Oo])
+                echo ''
+                cp -rvf $target_dir/* "${backup_dir}" 2>&1
+                BACKED_UP="true"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不覆盖！"
+                ;;
+            esac
+        else
+            echo ''
+            cp -rvf $target_dir/* "${backup_dir}" 2>&1
+            BACKED_UP="true"
+            echo -e "\n$COMPLETE 已备份原有 repo 源文件"
+            sleep 1s
+        fi
+    }
+
+    BACKED_UP="false" # 是否已备份
+    if [[ "${BACKUP}" == "true" ]]; then
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+                # /etc/apt/sources.list
+                backup_file $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
+            fi
+            ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
+            # Debian DEB822 格式源文件
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
+                [ -f $File_DebianSources ] && backup_file $File_DebianSources $File_DebianSourcesBackup "debian.sources"
+            fi
+            # Ubuntu DEB822 格式源文件
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
+                [ -f $File_UbuntuSources ] && backup_file $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
+            fi
+            # Armbian
+            if [ -f $File_ArmbianRelease ]; then
+                backup_file $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
+            fi
+            # Proxmox
+            if [ -f $File_ProxmoxVersion ]; then
+                backup_file $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
+            fi
+            # Linux Mint
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
+                backup_file $File_LinuxMintSourceList $File_LinuxMintSourceListBackup "official-package-repositories.list"
+            fi
+            ;;
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            # /etc/yum.repos.d
+            backup_dir $Dir_YumRepos $Dir_YumReposBackup
+            ;;
+        "${SYSTEM_OPENSUSE}")
+            # /etc/zypp/repos.d
+            backup_dir $Dir_openSUSERepos $Dir_openSUSEReposBackup
+            ;;
+        "${SYSTEM_ARCH}")
+            # /etc/pacman.d/mirrorlist
+            backup_file $File_ArchLinuxMirrorList $File_ArchLinuxMirrorListBackup "mirrorlist"
+            ;;
+        "${SYSTEM_ALPINE}")
+            # /etc/apk/repositories
+            backup_file $File_AlpineRepositories $File_AlpineRepositoriesBackup "repositories"
+            ;;
+        esac
+    fi
+}
+
+## 移除原有软件源
+function remove_original_mirrors() {
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+            [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
+        fi
+        [ -d $Dir_DebianExtendSource ] || mkdir -p $Dir_DebianExtendSource
+        ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
+        # Debian DEB822 格式源文件
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
+            [ -f $File_DebianSources ] && rm -rf $File_DebianSources
+        fi
+        # Ubuntu DEB822 格式源文件
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
+            [ -f $File_UbuntuSources ] && rm -rf $File_UbuntuSources
+        fi
+        # Armbian
+        if [ -f $File_ArmbianRelease ]; then
+            [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
+        fi
+        # Proxmox
+        if [ -f $File_ProxmoxVersion ]; then
+            [ -f $File_ProxmoxSourceList ] && sed -i '1,$d' $File_ProxmoxSourceList
+        fi
+        # Linux Mint
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
+            [ -f $File_LinuxMintSourceList ] && sed -i '1,$d' $File_LinuxMintSourceList
+        fi
+        ;;
+    "${SYSTEM_REDHAT}")
+        if [ ! -d $Dir_YumRepos ]; then
+            mkdir -p $Dir_YumRepos
+            return
+        fi
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
+            # Fedora 有额外源文件，且随版本变化
+            for repo_file in fedora.repo fedora-updates.repo fedora-updates-testing.repo fedora-modular.repo fedora-updates-modular.repo fedora-updates-testing-modular.repo; do
+                rm -rf $Dir_YumRepos/$repo_file
+            done
+        else
+            if [[ "${ONLY_EPEL}" != "false" ]]; then
+                return
+            fi
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_RHEL}")
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                9)
+                    rm -rf $Dir_YumRepos/rocky* # 注：本脚本旧版遗留问题
+                    rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
+                    ;;
+                *)
+                    if [ -f $Dir_YumRepos/epel.repo ]; then
+                        ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
+                    else
+                        rm -rf $Dir_YumRepos/*
+                    fi
+                    ;;
+                esac
+                ;;
+            "${SYSTEM_CENTOS}")
+                if [ -f $Dir_YumRepos/epel.repo ]; then
+                    ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
+                else
+                    rm -rf $Dir_YumRepos/*
+                fi
+                ;;
+            "${SYSTEM_CENTOS_STREAM}")
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                9)
+                    rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
+                    ;;
+                8)
+                    rm -rf $Dir_YumRepos/CentOS-Stream-*
+                    ;;
+                esac
+                ;;
+            "${SYSTEM_ROCKY}")
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                9)
+                    rm -rf $Dir_YumRepos/rocky*
+                    ;;
+                8)
+                    rm -rf $Dir_YumRepos/Rocky-*
+                    ;;
+                esac
+                ;;
+            "${SYSTEM_ALMALINUX}")
+                rm -rf $Dir_YumRepos/almalinux*
+                ;;
+            "${SYSTEM_OPENCLOUDOS}")
+                rm -rf $Dir_YumRepos/OpenCloudOS*
+                ;;
+            esac
+        fi
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/OpenCloudOS*
+        ;;
+    "${SYSTEM_OPENEULER}")
+        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/openEuler.repo
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos/ | grep -E "^repo-" | grep -Ev "openh264" | xargs rm -rf
+        ;;
+    "${SYSTEM_ARCH}")
+        [ -f $File_ArchLinuxMirrorList ] && sed -i '1,$d' $File_ArchLinuxMirrorList
+        ;;
+    "${SYSTEM_ALPINE}")
+        [ -f $File_AlpineRepositories ] && sed -i '1,$d' $File_AlpineRepositories
+        ;;
+    esac
+}
+
+## 换源
+function change_mirrors_main() {
+    ## 打印修改前后差异
+    function print_diff() {
+        ## 单一文件比较模式
+        function diff_file() {
+            local diff_file=$1
+            local origin_file=$2
+            if [[ -s $diff_file ]] && [[ -s $origin_file ]]; then
+                if [[ "$(cat "${diff_file}")" != "$(cat "${origin_file}")" ]]; then
+                    echo -e "\n${BLUE}${diff_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
+                    diff "${diff_file}" "${origin_file}" -d --color=always -I -B -E
+                fi
+            fi
+        }
+        ## 目录文件比较模式
+        function diff_dir() {
+            local diff_dir=$1
+            local origin_dir=$2
+            for item in $(ls $diff_dir | xargs); do
+                diff_file "${diff_dir}/${item}" "${origin_dir}/${item}"
+            done
+        }
+
+        if [[ -x /usr/bin/diff && "${BACKED_UP}" == "true" ]]; then
+            case "${SYSTEM_FACTIONS}" in
+            "${SYSTEM_DEBIAN}")
+                if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+                    diff_file $File_DebianSourceListBackup $File_DebianSourceList
+                fi
+                # Armbian
+                if [ -f $File_ArmbianRelease ]; then
+                    diff_file $File_ArmbianSourceListBackup $File_ArmbianSourceList
+                fi
+                # Proxmox
+                if [ -f $File_ProxmoxVersion ]; then
+                    diff_file $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
+                fi
+                # Linux Mint
+                if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
+                    diff_file $File_LinuxMintSourceListBackup $File_LinuxMintSourceList
+                fi
+                ;;
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+                diff_dir $Dir_YumReposBackup $Dir_YumRepos
+                ;;
+            "${SYSTEM_OPENSUSE}")
+                diff_dir $Dir_openSUSEReposBackup $Dir_openSUSERepos
+                ;;
+            "${SYSTEM_ARCH}")
+                diff_file $File_ArchLinuxMirrorListBackup $File_ArchLinuxMirrorList
+                ;;
+            "${SYSTEM_ALPINE}")
+                diff_file $File_AlpineRepositoriesBackup $File_AlpineRepositories
+                ;;
+            esac
+        fi
+    }
+
+    ## 调用换源函数
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        change_mirrors_Debian
+        ;;
+    "${SYSTEM_REDHAT}")
+        change_mirrors_RedHat
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        change_mirrors_OpenCloudOS
+        ;;
+    "${SYSTEM_OPENEULER}")
+        change_mirrors_openEuler
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        change_mirrors_openSUSE
+        ;;
+    "${SYSTEM_ARCH}")
+        change_mirrors_ArchLinux
+        ;;
+    "${SYSTEM_ALPINE}")
+        change_mirrors_Alpine
+        ;;
+    esac
+    ## 比较差异
+    if [[ "${PRINT_DIFF}" == "true" ]]; then
+        print_diff
+    fi
+    ## 更新软件源
+    echo -e "\n$WORKING 开始${SYNC_MIRROR_TEXT}...\n"
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        apt-get update
+        ;;
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        local package_manager="yum"
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                package_manager="dnf"
+                ;;
+            esac
+            ;;
+        "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            package_manager="dnf"
+            ;;
+        esac
+        $package_manager makecache
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        zypper ref
+        ;;
+    "${SYSTEM_ARCH}")
+        pacman -Sy
+        ;;
+    "${SYSTEM_ALPINE}")
+        apk update -f
+        ;;
+    esac
+    if [ $? -eq 0 ]; then
+        echo -e "\n$SUCCESS 软件源更换完毕"
+    else
+        echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败\n"
+        echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致"
+        echo -e "1. 网络问题：例如连接异常、由地区影响的网络间歇式中断等"
+        echo -e "2. 软件源问题：建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题"
+        echo -e "\n软件源地址：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
+        exit 1
+    fi
+}
+
+## 升级软件包
+function upgrade_software() {
+    function clean_cache() {
+        ## 跳过特殊系统
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_RHEL}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
+            return
+            ;;
+        esac
+        ## 交互确认
+        if [[ -z "${CLEAN_CACHE}" ]]; then
+            CLEAN_CACHE="false"
+            local CHOICE
+            CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                CLEAN_CACHE="true"
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不清理！"
+                ;;
+            esac
+        fi
+        if [[ "${CLEAN_CACHE}" == "false" ]]; then
+            return
+        fi
+        ## 调用系统命令
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            apt-get autoremove -y >/dev/null 2>&1
+            apt-get clean >/dev/null 2>&1
+            ;;
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            local package_manager="yum"
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                9)
+                    package_manager="dnf"
+                    ;;
+                esac
+                ;;
+            "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+                package_manager="dnf"
+                ;;
+            esac
+            $package_manager autoremove -y >/dev/null 2>&1
+            $package_manager clean packages -y >/dev/null 2>&1
+            ;;
+        esac
+        echo -e "\n$COMPLETE 清理完毕"
+    }
+
+    ## 跳过特殊系统
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_ARCH}" | "${SYSTEM_RHEL}")
+        return
+        ;;
+    esac
+    ## 交互确认
+    if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
+        UPGRADE_SOFTWARE="false"
+        local CHOICE
+        CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
+        read -rp "${CHOICE}" INPUT
+        [[ -z "${INPUT}" ]] && INPUT=Y
+        case "${INPUT}" in
+        [Yy] | [Yy][Ee][Ss]) ;;
+        [Nn] | [Nn][Oo])
+            UPGRADE_SOFTWARE="true"
+            ;;
+        *)
+            echo -e "\n$WARN 输入错误，默认不更新！"
+            ;;
+        esac
+    fi
+    if [[ "${UPGRADE_SOFTWARE}" == "false" ]]; then
+        return
+    fi
+    echo -e ''
+    ## 调用系统命令
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        apt-get upgrade -y
+        ;;
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        local package_manager="yum"
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                package_manager="dnf"
+                ;;
+            esac
+            ;;
+        "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            package_manager="dnf"
+            ;;
+        esac
+        $package_manager update -y --skip-broken
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        zypper update -y
+        ;;
+    "${SYSTEM_ALPINE}")
+        apk upgrade --no-cache
+        ;;
+    esac
+    ## 清理缓存
+    clean_cache
+}
+
+##############################################################################
+
+## 更换基于 Debian 系 Linux 发行版的软件源
+function change_mirrors_Debian() {
+    function gen_debian_source() {
+        echo "deb ${1} ${2} ${3}
+# deb-src ${1} ${2} ${3}
+deb ${1} ${2}-updates ${3}
+# deb-src ${1} ${2}-updates ${3}
+deb ${1} ${2}-backports ${3}
+# deb-src ${1} ${2}-backports ${3}"
+    }
+    function gen_debian_security_source() {
+        echo "deb ${1} ${2}-security ${3}
+# deb-src ${1} ${2}-security ${3}"
+    }
+    function gen_ubuntu_source() {
+        echo "deb ${1} ${2} ${3}
+# deb-src ${1} ${2} ${3}
+deb ${1} ${2}-updates ${3}
+# deb-src ${1} ${2}-updates ${3}
+deb ${1} ${2}-backports ${3}
+# deb-src ${1} ${2}-backports ${3}
+deb ${1} ${2}-security ${3}
+# deb-src ${1} ${2}-security ${3}
+
+## 预发布软件源（不建议启用）
+# deb ${1} ${2}-proposed ${3}
+# deb-src ${1} ${2}-proposed ${3}"
+    }
+
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_DEBIAN}")
+            SOURCE="deb.debian.org"
+            ;;
+        "${SYSTEM_UBUNTU}")
+            SOURCE="archive.ubuntu.com"
+            ;;
+        "${SYSTEM_KALI}")
+            SOURCE="http.kali.org"
+            ;;
+        "${SYSTEM_DEEPIN}")
+            SOURCE="community-packages.deepin.com"
+            ;;
+        "${SYSTEM_LINUX_MINT}")
+            SOURCE="packages.linuxmint.com"
+            ;;
+        esac
+    fi
+    local repository_sections # 仓库区域
+    local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
+    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_DEBIAN}")
+        case "${SYSTEM_VERSION_NUMBER}" in
+        8 | 9 | 10 | 11)
+            repository_sections="main contrib non-free"
+            ;;
+        *)
+            repository_sections="main contrib non-free non-free-firmware"
+            ;;
+        esac
+        if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
+            echo "${tips}
+$(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+            # 处理 debian-security 仓库源
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
+            echo "$(gen_debian_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+        else
+            echo "deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
+        fi
+        ;;
+    "${SYSTEM_UBUNTU}")
+        repository_sections="main restricted universe multiverse"
+        echo "${tips}
+$(gen_ubuntu_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+        ;;
+    "${SYSTEM_KALI}")
+        repository_sections="main non-free contrib"
+        echo "${tips}
+deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
+        ;;
+    "${SYSTEM_DEEPIN}")
+        repository_sections="apricot main contrib non-free"
+        echo "${tips}
+deb ${base_url} ${repository_sections}
+# deb-src ${base_url} ${repository_sections}" >>$File_DebianSourceList
+        ;;
+    "${SYSTEM_LINUX_MINT}")
+        ## 专用源
+        repository_sections="main upstream import backport"
+        echo "${tips}
+deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+" >>$File_LinuxMintSourceList
+        ## 底层系统软件源
+        local base_system_source_branch base_system_codename
+        if [[ "${SYSTEM_VERSION_NUMBER}" == 6 ]]; then
+            # Debian 版（LMDE）
+            base_system_source_branch="debian"
+            base_system_codename="bookworm"
+            repository_sections="main contrib non-free non-free-firmware"
+            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
+            echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            # 处理 debian-security 仓库源
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${base_system_source_branch}-security"}"
+            echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+        else
+            # Ubuntu 版
+            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+                base_system_source_branch="ubuntu"
+            else
+                base_system_source_branch="ubuntu-ports"
+            fi
+            case "${SYSTEM_VERSION_NUMBER:0:2}" in
+            21)
+                base_system_codename="jammy"
+                ;;
+            20)
+                base_system_codename="focal"
+                ;;
+            19)
+                base_system_codename="bionic"
+                ;;
+            esac
+            repository_sections="main restricted universe multiverse"
+            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
+            echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+        fi
+        ;;
+    esac
+    ## 处理其它衍生操作系统的专用源
+    # Armbian
+    if [ -f $File_ArmbianRelease ]; then
+        echo "deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_ArmbianSourceList
+    fi
+    # Proxmox
+    if [ -f $File_ProxmoxVersion ]; then
+        echo "deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pve ${SYSTEM_VERSION_CODENAME} pve-no-subscription
+# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs ${SYSTEM_VERSION_CODENAME} pbs-no-subscription
+# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs-client ${SYSTEM_VERSION_CODENAME} pbs-client-no-subscription
+# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pmg ${SYSTEM_VERSION_CODENAME} pmg-no-subscription" >>$File_ProxmoxSourceList
+    fi
+}
+
+## 更换基于 RedHat 系 Linux 发行版软件源
+function change_mirrors_RedHat() {
+    ## 仅 EPEL 模式
+    if [[ "${ONLY_EPEL}" == "true" ]]; then
+        change_mirrors_or_install_EPEL # EPEL 附加软件包
+        return
+    fi
+    ## 生成官方 repo 源文件
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_RHEL}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
+            ;;
+        *)
+            gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
+            ;;
+        esac
+        ;;
+    "${SYSTEM_CENTOS}")
+        gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
+        ;;
+    "${SYSTEM_CENTOS_STREAM}")
+        gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
+        ;;
+    "${SYSTEM_ROCKY}")
+        gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
+        ;;
+    "${SYSTEM_ALMALINUX}")
+        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_NUMBER:0:1}"
+        ;;
+    "${SYSTEM_FEDORA}")
+        gen_repo_files_Fedora "${SYSTEM_VERSION_NUMBER}"
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+        ;;
+    esac
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        change_mirrors_or_install_EPEL # EPEL 附加软件包
+        return
+    fi
+
+    ## 修改源
+    cd $Dir_YumRepos
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_RHEL}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^metalink=|#metalink=|g" \
+                -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                centos.repo \
+                centos-addons.repo
+            # 禁用 GPG 签名检查
+            sed -e "s|gpgcheck=1|gpgcheck=0|g" \
+                -i \
+                centos.repo \
+                centos-addons.repo
+            ;;
+        *)
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
+            sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            8)
+                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
+                sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+                # 单独处理 CentOS-Linux-Sources.repo
+                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
+                ;;
+            7)
+                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
+                sed -i "s/\$releasever/7/g" CentOS-*
+                # 单独处理 CentOS-Sources.repo
+                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo
+                ;;
+            esac
+            sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
+            ;;
+        esac
+        ;;
+    "${SYSTEM_CENTOS}")
+        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
+        sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
+        ## CentOS 7/8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        8)
+            # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 分支
+            sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
+            sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo # 单独处理 CentOS-Linux-Sources.repo
+            ;;
+        7)
+            # 最终版本为 7.9.2009，从 2024-07 开始切换至 centos-vault 分支
+            sed -i "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
+            sed -i "s/\$releasever/7.9.2009/g" CentOS-*
+            sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
+            ;;
+        esac
+        sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
+        ;;
+    "${SYSTEM_CENTOS_STREAM}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^metalink=|#metalink=|g" \
+                -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                centos.repo \
+                centos-addons.repo
+            ;;
+        8)
+            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                CentOS-Stream-*
+            ;;
+        esac
+        ;;
+    "${SYSTEM_ROCKY}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                rocky.repo \
+                rocky-addons.repo \
+                rocky-devel.repo \
+                rocky-extras.repo
+            ;;
+        8)
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|dl.rockylinux.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                Rocky-*
+            ;;
+        esac
+        ;;
+    "${SYSTEM_ALMALINUX}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
+                -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                almalinux-*
+            ;;
+        8)
+            sed -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
+                -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                almalinux-ha.repo \
+                almalinux-nfv.repo \
+                almalinux-plus.repo \
+                almalinux-powertools.repo \
+                almalinux-resilientstorage.repo \
+                almalinux-rt.repo \
+                almalinux-sap.repo \
+                almalinux-saphana.repo \
+                almalinux.repo
+            ;;
+        esac
+        ;;
+    "${SYSTEM_FEDORA}")
+        # 自 Fedora 39 起不再使用 modular 仓库
+        local fedora_repo_files
+        if [[ "${SYSTEM_VERSION_NUMBER}" -lt 39 ]]; then
+            fedora_repo_files="fedora.repo fedora-updates.repo fedora-updates-testing.repo fedora-modular.repo fedora-updates-modular.repo fedora-updates-testing-modular.repo"
+        else
+            fedora_repo_files="fedora.repo fedora-updates.repo fedora-updates-testing.repo"
+        fi
+        sed -e "s|^metalink=|#metalink=|g" \
+            -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+            -e "s|download.example/pub/fedora/linux|${SOURCE}/${SOURCE_BRANCH}|g" \
+            -i \
+            $fedora_repo_files
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        8)
+            sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                OpenCloudOS-Debuginfo.repo \
+                OpenCloudOS.repo \
+                OpenCloudOS-Sources.repo
+            ;;
+        esac
+        ;;
+    esac
+
+    change_mirrors_or_install_EPEL # EPEL 附加软件包
+}
+
+## 更换基于 OpenCloudOS 发行版的软件源
+function change_mirrors_OpenCloudOS() {
+    ## 生成官方 repo 源文件
+    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        change_mirrors_or_install_EPEL # EPEL 附加软件包
+        return
+    fi
+
+    ## 修改源
+    cd $Dir_YumRepos
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    9)
+        sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+            -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
+            -i \
+            OpenCloudOS.repo
+        ;;
+    esac
+
+    change_mirrors_or_install_EPEL # EPEL 附加软件包
+}
+
+## 更换基于 openEuler 发行版的软件源
+function change_mirrors_openEuler() {
+    ## 生成官方 repo 源文件
+    gen_repo_files_openEuler
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        change_mirrors_or_install_EPEL # EPEL 附加软件包
+        return
+    fi
+
+    ## 修改源
+    cd $Dir_YumRepos
+    local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g; s/[()]/ /g; s/  / /g; s/^ //g; s/ $//g; s/ /-/g; s/_/-/g")"
+    sed -e "s|^baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+        -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+        -e "s|openEuler-version|openEuler-${version_name}|g" \
+        -i \
+        openEuler.repo
+
+    change_mirrors_or_install_EPEL # EPEL 附加软件包
+}
+
+## 更换基于 openSUSE 发行版的软件源
+function change_mirrors_openSUSE() {
+    ## 生成官方 repo 源文件
+    case "${SYSTEM_ID}" in
+    "opensuse-leap")
+        gen_repo_files_openSUSE "leap" "${SYSTEM_VERSION_NUMBER}"
+        ;;
+    "opensuse-tumbleweed")
+        gen_repo_files_openSUSE "tumbleweed"
+        ;;
+    esac
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        return
+    fi
+
+    ## 修改源
+    cd $Dir_openSUSERepos
+    # 更换软件源
+    sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" repo-*
+    case "${SYSTEM_ID}" in
+    opensuse-leap)
+        case "${SYSTEM_VERSION_NUMBER}" in
+        15.[0-2])
+            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                repo-debug-non-oss.repo \
+                repo-debug.repo \
+                repo-debug-update-non-oss.repo \
+                repo-debug-update.repo \
+                repo-non-oss.repo \
+                repo-oss.repo \
+                repo-source-non-oss.repo \
+                repo-source.repo \
+                repo-update-non-oss.repo \
+                repo-update.repo
+            ;;
+        *)
+            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                repo-backports-debug-update.repo \
+                repo-backports-update.repo \
+                repo-debug-non-oss.repo \
+                repo-debug.repo \
+                repo-debug-update-non-oss.repo \
+                repo-debug-update.repo \
+                repo-non-oss.repo \
+                repo-oss.repo \
+                repo-sle-debug-update.repo \
+                repo-sle-update.repo \
+                repo-source.repo \
+                repo-update-non-oss.repo \
+                repo-update.repo
+            ;;
+        esac
+        ;;
+    opensuse-tumbleweed)
+        sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+            repo-debug.repo \
+            repo-non-oss.repo \
+            repo-openh264.repo \
+            repo-oss.repo \
+            repo-source.repo \
+            repo-update.repo
+        ;;
+    esac
+}
+
+## 更换基于 Arch Linux 发行版的软件源
+function change_mirrors_ArchLinux() {
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        SOURCE="mirrors.aliyun.com"
+        echo -e "\n${TIP} 由于 Arch Linux 无官方源因此已切换至阿里源\n"
+    fi
+    ## 修改源
+    case "${SOURCE_BRANCH}" in
+    "archlinuxarm")
+        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch/\$repo" >>$File_ArchLinuxMirrorList
+        ;;
+    "archlinuxcn")
+        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch" >>$File_ArchLinuxMirrorList
+        ;;
+    *)
+        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$repo/os/\$arch" >>$File_ArchLinuxMirrorList
+        ;;
+    esac
+}
+
+## 更换基于 Alpine Linux 发行版的软件源
+function change_mirrors_Alpine() {
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        SOURCE="dl-cdn.alpinelinux.org"
+    fi
+    local version_name
+    echo "${SYSTEM_PRETTY_NAME}" | grep " edge" -q
+    if [ $? -eq 0 ]; then
+        version_name="edge"
+    else
+        version_name="v${SYSTEM_VERSION_NUMBER%.*}"
+    fi
+    ## 修改源
+    echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
+${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/community" >>$File_AlpineRepositories
+}
+
+## EPEL (Extra Packages for Enterprise Linux) 附加软件包 - 安装或更换软件源
+function change_mirrors_or_install_EPEL() {
+    if [[ "${INSTALL_EPEL}" != "true" ]]; then
+        return
+    fi
+    ## 确定安装版本（不支持安装的系统直接跳出）
+    local target_version
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}")
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
+            return
+        else
+            target_version="${SYSTEM_VERSION_NUMBER:0:1}"
+        fi
+        ;;
+    "${SYSTEM_OPENEULER}")
+        target_version="9"
+        ;;
+    *)
+        return
+        ;;
+    esac
+    ## 安装 EPEL 软件包
+    if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
+        echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
+        local package_manager="yum"
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            9)
+                package_manager="dnf"
+                ;;
+            esac
+            ;;
+        "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            package_manager="dnf"
+            ;;
+        esac
+        $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
+        rm -rf $Dir_YumRepos/epel*
+    fi
+    ## 删除原有 repo 源文件
+    [ "${VERIFICATION_EPELFILES}" -eq 0 ] && rm -rf $Dir_YumRepos/epel*
+    [ "${VERIFICATION_EPELBACKUPFILES}" -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
+    ## 生成 repo 源文件
+    gen_repo_files_EPEL
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        return
+    fi
+    ## 修改源（仓库分支名称暂时固定为 epel）
+    local epel_branch="epel"
+    sed -e "s|^#baseurl=http\(s\)\?|baseurl=${WEB_PROTOCOL}|g" \
+        -e "s|^metalink=|#metalink=|g" \
+        -e "s|download.example/pub/epel|${SOURCE}/${epel_branch}|g" \
+        -e "s|download.fedoraproject.org/pub/epel|${SOURCE}/${epel_branch}|g" \
+        -i \
+        $Dir_YumRepos/epel*
+}
+
 ##############################################################################
 
 ## 生成 CentOS 官方 repo 源文件
 function gen_repo_files_CentOS() {
     case "$1" in
     8)
-        cat >$Dir_YumRepos/CentOS-Linux-AppStream.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-AppStream.repo
 # CentOS-Linux-AppStream.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2015,7 +2096,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-BaseOS.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-BaseOS.repo
 # CentOS-Linux-BaseOS.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2034,7 +2115,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-ContinuousRelease.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-ContinuousRelease.repo
 # CentOS-Linux-ContinuousRelease.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2060,7 +2141,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-Debuginfo.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Debuginfo.repo
 # CentOS-Linux-Debuginfo.repo
 #
 # All debug packages are merged into a single repo, split by basearch, and are
@@ -2073,7 +2154,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-Devel.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Devel.repo
 # CentOS-Linux-Devel.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2092,7 +2173,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-Extras.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Extras.repo
 # CentOS-Linux-Extras.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2111,7 +2192,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-FastTrack.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-FastTrack.repo
 # CentOS-Linux-FastTrack.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2130,7 +2211,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-HighAvailability.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-HighAvailability.repo
 # CentOS-Linux-HighAvailability.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2149,7 +2230,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-Media.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Media.repo
 # CentOS-Linux-Media.repo
 #
 # You can use this repo to install items directly off the installation media.
@@ -2173,7 +2254,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-Plus.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Plus.repo
 # CentOS-Linux-Plus.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2192,7 +2273,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-PowerTools.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-PowerTools.repo
 # CentOS-Linux-PowerTools.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2211,7 +2292,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Linux-Sources.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Sources.repo
 # CentOS-Linux-Sources.repo
 
 
@@ -2245,7 +2326,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         ;;
     7)
-        cat >$Dir_YumRepos/CentOS-Base.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Base.repo
 # CentOS-Base.repo
 #
 # The mirror system uses the connecting IP address of the client and the
@@ -2290,7 +2371,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 EOF
-        cat >$Dir_YumRepos/CentOS-CR.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-CR.repo
 # CentOS-CR.repo
 #
 # The Continuous Release ( CR )  repository contains rpms that are due in the next
@@ -2320,7 +2401,7 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 enabled=0
 EOF
-        cat >$Dir_YumRepos/CentOS-Debuginfo.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Debuginfo.repo
 # CentOS-Debug.repo
 #
 # The mirror system uses the connecting IP address of the client and the
@@ -2343,7 +2424,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7
 enabled=0
 #
 EOF
-        cat >$Dir_YumRepos/CentOS-fasttrack.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-fasttrack.repo
 [fasttrack]
 name=CentOS-7 - fasttrack
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=fasttrack&infra=$infra
@@ -2352,7 +2433,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 EOF
-        cat >$Dir_YumRepos/CentOS-Media.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Media.repo
 # CentOS-Media.repo
 #
 #  This repo can be used with mounted DVD media, verify the mount point for
@@ -2375,7 +2456,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 EOF
-        cat >$Dir_YumRepos/CentOS-Sources.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Sources.repo
 # CentOS-Sources.repo
 #
 # The mirror system uses the connecting IP address of the client and the
@@ -2427,7 +2508,7 @@ EOF
 function gen_repo_files_CentOSStream() {
     case "$1" in
     9)
-        cat >$Dir_YumRepos/centos.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/centos.repo
 [baseos]
 name=CentOS Stream $releasever - BaseOS
 #baseurl=https://mirror.stream.centos.org/$releasever-stream/BaseOS/$basearch/os/
@@ -2515,7 +2596,7 @@ repo_gpgcheck=0
 metadata_expire=6h
 enabled=0
 EOF
-        cat >$Dir_YumRepos/centos-addons.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/centos-addons.repo
 [highavailability]
 name=CentOS Stream $releasever - HighAvailability
 #baseurl=https://mirror.stream.centos.org/$releasever-stream/HighAvailability/$basearch/os/
@@ -2654,7 +2735,7 @@ enabled=0
 EOF
         ;;
     8)
-        cat >$Dir_YumRepos/CentOS-Stream-AppStream.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-AppStream.repo
 # CentOS-Stream-AppStream.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2673,7 +2754,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-BaseOS.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-BaseOS.repo
 # CentOS-Stream-BaseOS.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2692,7 +2773,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-Debuginfo.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Debuginfo.repo
 # CentOS-Stream-Debuginfo.repo
 #
 # All debug packages are merged into a single repo, split by basearch, and are
@@ -2705,7 +2786,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-Extras-common.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Extras-common.repo
 # CentOS-Stream-Extras-common.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2724,7 +2805,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-Extras.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Extras.repo
 # CentOS-Stream-Extras.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2743,7 +2824,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-HighAvailability.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-HighAvailability.repo
 # CentOS-Stream-HighAvailability.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2762,7 +2843,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-Media.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Media.repo
 # CentOS-Stream-Media.repo
 #
 # You can use this repo to install items directly off the installation media.
@@ -2786,7 +2867,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-NFV.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-NFV.repo
 # CentOS-Stream-NFV.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2805,7 +2886,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-PowerTools.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-PowerTools.repo
 # CentOS-Stream-PowerTools.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2824,7 +2905,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-RealTime.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-RealTime.repo
 # CentOS-Stream-RealTime.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2843,7 +2924,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-ResilientStorage.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-ResilientStorage.repo
 # CentOS-Stream-ResilientStorage.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -2862,7 +2943,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-        cat >$Dir_YumRepos/CentOS-Stream-Sources.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Sources.repo
 # CentOS-Stream-Sources.repo
 
 [baseos-source]
@@ -2929,7 +3010,7 @@ EOF
 function gen_repo_files_RockyLinux() {
     case "$1" in
     9)
-        cat >$Dir_YumRepos/rocky.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/rocky.repo
 # rocky.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3024,7 +3105,7 @@ enabled=0
 metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 EOF
-        cat >$Dir_YumRepos/rocky-addons.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/rocky-addons.repo
 # rocky-addons.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3203,7 +3284,7 @@ enabled=0
 metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 EOF
-        cat >$Dir_YumRepos/rocky-devel.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/rocky-devel.repo
 # rocky-devel.repo
 #
 # devel and no-package-left-behind
@@ -3217,7 +3298,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 EOF
-        cat >$Dir_YumRepos/rocky-extras.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/rocky-extras.repo
 # rocky-extras.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3286,7 +3367,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 EOF
         ;;
     8)
-        cat >$Dir_YumRepos/Rocky-AppStream.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-AppStream.repo
 # Rocky-AppStream.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3306,7 +3387,7 @@ enabled=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-BaseOS.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-BaseOS.repo
 # Rocky-BaseOS.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3326,7 +3407,7 @@ enabled=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-Debuginfo.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-Debuginfo.repo
 # Rocky-Debuginfo.repo
 #
 
@@ -3370,7 +3451,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-Devel.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-Devel.repo
 # Rocky-Devel.repo
 #
 
@@ -3383,7 +3464,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-Extras.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-Extras.repo
 # Rocky-Extras.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3403,7 +3484,7 @@ enabled=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-HighAvailability.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-HighAvailability.repo
 # Rocky-HighAvailability.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3423,7 +3504,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-Media.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-Media.repo
 # Rocky-Media.repo
 #
 # You can use this repo to install items directly off the installation media.
@@ -3447,7 +3528,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-NFV.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-NFV.repo
 # Rocky-NFV.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3467,7 +3548,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-Plus.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-Plus.repo
 # Rocky-Plus.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3487,7 +3568,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-PowerTools.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-PowerTools.repo
 # Rocky-PowerTools.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3507,7 +3588,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-ResilientStorage.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-ResilientStorage.repo
 # Rocky-ResilientStorage.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3527,7 +3608,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-RT.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-RT.repo
 # Rocky-RT.repo
 #
 # The mirrorlist system uses the connecting IP address of the client and the
@@ -3547,7 +3628,7 @@ enabled=0
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
-        cat >$Dir_YumRepos/Rocky-Sources.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/Rocky-Sources.repo
 # Rocky-Sources.repo
 
 [baseos-source]
@@ -3614,7 +3695,7 @@ EOF
 function gen_repo_files_AlmaLinux() {
     case "$1" in
     9)
-        cat >$Dir_YumRepos/almalinux-appstream.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-appstream.repo
 [appstream]
 name=AlmaLinux $releasever - AppStream
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream
@@ -3646,7 +3727,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-baseos.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-baseos.repo
 [baseos]
 name=AlmaLinux $releasever - BaseOS
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos
@@ -3678,7 +3759,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-crb.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-crb.repo
 [crb]
 name=AlmaLinux $releasever - CRB
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb
@@ -3710,7 +3791,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-extras.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-extras.repo
 [extras]
 name=AlmaLinux $releasever - Extras
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras
@@ -3742,7 +3823,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-highavailability.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-highavailability.repo
 [highavailability]
 name=AlmaLinux $releasever - HighAvailability
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability
@@ -3774,7 +3855,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-nfv.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-nfv.repo
 [nfv]
 name=AlmaLinux $releasever - NFV
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv
@@ -3806,7 +3887,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-plus.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-plus.repo
 [plus]
 name=AlmaLinux $releasever - Plus
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus
@@ -3838,7 +3919,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-resilientstorage.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-resilientstorage.repo
 [resilientstorage]
 name=AlmaLinux $releasever - ResilientStorage
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage
@@ -3870,7 +3951,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-rt.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-rt.repo
 [rt]
 name=AlmaLinux $releasever - RT
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt
@@ -3902,7 +3983,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-sap.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-sap.repo
 [sap]
 name=AlmaLinux $releasever - SAP
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap
@@ -3934,7 +4015,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
 metadata_expire=86400
 enabled_metadata=0
 EOF
-        cat >$Dir_YumRepos/almalinux-saphana.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-saphana.repo
 [saphana]
 name=AlmaLinux $releasever - SAPHANA
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana
@@ -3968,7 +4049,7 @@ enabled_metadata=0
 EOF
         ;;
     8)
-        cat >$Dir_YumRepos/almalinux-ha.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-ha.repo
 # almalinux-ha.repo
 
 [ha]
@@ -3998,7 +4079,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux-nfv.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-nfv.repo
 # almalinux-nfv.repo
 
 [nfv]
@@ -4027,7 +4108,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux-plus.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-plus.repo
 # almalinux-plus.repo
 
 [plus]
@@ -4057,7 +4138,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux-powertools.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-powertools.repo
 # almalinux-powertools.repo
 
 [powertools]
@@ -4087,7 +4168,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux-resilientstorage.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-resilientstorage.repo
 # almalinux-resilientstorage.repo
 
 [resilientstorage]
@@ -4117,7 +4198,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux-rt.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-rt.repo
 # almalinux-rt.repo
 
 [rt]
@@ -4146,7 +4227,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux-sap.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-sap.repo
 # almalinux-sap.repo
 
 [sap]
@@ -4176,7 +4257,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux-saphana.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-saphana.repo
 # almalinux-saphana.repo
 
 [saphana]
@@ -4206,7 +4287,7 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
-        cat >$Dir_YumRepos/almalinux.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux.repo
 # almalinux.repo
 
 [baseos]
@@ -4292,30 +4373,7 @@ EOF
 
 ## 生成 Fedora 官方 repo 源文件
 function gen_repo_files_Fedora() {
-    cat >$Dir_YumRepos/fedora-cisco-openh264.repo <<\EOF
-[fedora-cisco-openh264]
-name=Fedora $releasever openh264 (From Cisco) - $basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-cisco-openh264-$releasever&arch=$basearch
-type=rpm
-enabled=1
-metadata_expire=14d
-repo_gpgcheck=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=True
-
-[fedora-cisco-openh264-debuginfo]
-name=Fedora $releasever openh264 (From Cisco) - $basearch - Debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-cisco-openh264-debug-$releasever&arch=$basearch
-type=rpm
-enabled=0
-metadata_expire=14d
-repo_gpgcheck=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=True
-EOF
-    cat >$Dir_YumRepos/fedora.repo <<\EOF
+    cat <<'EOF' >$Dir_YumRepos/fedora.repo
 [fedora]
 name=Fedora $releasever - $basearch
 #baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Everything/$basearch/os/
@@ -4353,7 +4411,7 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
 skip_if_unavailable=False
 EOF
-    cat >$Dir_YumRepos/fedora-updates.repo <<\EOF
+    cat <<'EOF' >$Dir_YumRepos/fedora-updates.repo
 [updates]
 name=Fedora $releasever - $basearch - Updates
 #baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Everything/$basearch/
@@ -4391,83 +4449,7 @@ metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
 skip_if_unavailable=False
 EOF
-    cat >$Dir_YumRepos/fedora-modular.repo <<\EOF
-[fedora-modular]
-name=Fedora Modular $releasever - $basearch
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/$basearch/os/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-$releasever&arch=$basearch
-enabled=1
-countme=1
-#metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
-
-[fedora-modular-debuginfo]
-name=Fedora Modular $releasever - $basearch - Debug
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/$basearch/debug/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-debug-$releasever&arch=$basearch
-enabled=0
-metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
-
-[fedora-modular-source]
-name=Fedora Modular $releasever - Source
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-source-$releasever&arch=$basearch
-enabled=0
-metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
-EOF
-    cat >$Dir_YumRepos/fedora-updates-modular.repo <<\EOF
-[updates-modular]
-name=Fedora Modular $releasever - $basearch - Updates
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-f$releasever&arch=$basearch
-enabled=1
-countme=1
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
-
-[updates-modular-debuginfo]
-name=Fedora Modular $releasever - $basearch - Updates - Debug
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-debug-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
-
-[updates-modular-source]
-name=Fedora Modular $releasever - Updates Source
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/SRPMS/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-source-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
-EOF
-    cat >$Dir_YumRepos/fedora-updates-testing.repo <<\EOF
+    cat <<'EOF' >$Dir_YumRepos/fedora-updates-testing.repo
 [updates-testing]
 name=Fedora $releasever - $basearch - Test Updates
 #baseurl=http://download.example/pub/fedora/linux/updates/testing/$releasever/Everything/$basearch/
@@ -4505,7 +4487,85 @@ metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
 skip_if_unavailable=False
 EOF
-    cat >$Dir_YumRepos/fedora-updates-testing-modular.repo <<\EOF
+    ## 自 Fedora 39 起不再使用 modular 仓库
+    if [[ $1 -lt 39 ]]; then
+        cat <<'EOF' >$Dir_YumRepos/fedora-modular.repo
+[fedora-modular]
+name=Fedora Modular $releasever - $basearch
+#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/$basearch/os/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-$releasever&arch=$basearch
+enabled=1
+countme=1
+#metadata_expire=7d
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
+
+[fedora-modular-debuginfo]
+name=Fedora Modular $releasever - $basearch - Debug
+#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/$basearch/debug/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-debug-$releasever&arch=$basearch
+enabled=0
+metadata_expire=7d
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
+
+[fedora-modular-source]
+name=Fedora Modular $releasever - Source
+#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-source-$releasever&arch=$basearch
+enabled=0
+metadata_expire=7d
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
+EOF
+        cat <<'EOF' >$Dir_YumRepos/fedora-updates-modular.repo
+[updates-modular]
+name=Fedora Modular $releasever - $basearch - Updates
+#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-f$releasever&arch=$basearch
+enabled=1
+countme=1
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
+
+[updates-modular-debuginfo]
+name=Fedora Modular $releasever - $basearch - Updates - Debug
+#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-debug-f$releasever&arch=$basearch
+enabled=0
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
+
+[updates-modular-source]
+name=Fedora Modular $releasever - Updates Source
+#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/SRPMS/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-source-f$releasever&arch=$basearch
+enabled=0
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
+EOF
+        cat <<'EOF' >$Dir_YumRepos/fedora-updates-testing-modular.repo
 [updates-testing-modular]
 name=Fedora Modular $releasever - $basearch - Test Updates
 #baseurl=http://download.example/pub/fedora/linux/updates/testing/$releasever/Modular/$basearch/
@@ -4543,13 +4603,14 @@ metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
 skip_if_unavailable=False
 EOF
+    fi
 }
 
 ## 生成 OpenCloudOS 官方 repo 源文件
 function gen_repo_files_OpenCloudOS() {
     case "$1" in
     9)
-        cat >$Dir_YumRepos/OpenCloudOS.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
 [BaseOS]
 name=BaseOS $releasever - $basearch
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
@@ -4615,7 +4676,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 EOF
         ;;
     8)
-        cat >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo
 # OpenCloudOS-Debuginfo.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -4669,7 +4730,7 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-        cat >$Dir_YumRepos/OpenCloudOS.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
 # OpenCloudOS.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -4723,7 +4784,7 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-        cat >$Dir_YumRepos/OpenCloudOS-Sources.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Sources.repo
 # OpenCloudOS-Sources.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -4783,7 +4844,7 @@ EOF
 
 ## 生成 openEuler 官方 repo 源文件
 function gen_repo_files_openEuler() {
-    cat >$Dir_YumRepos/openEuler.repo <<\EOF
+    cat <<'EOF' >$Dir_YumRepos/openEuler.repo
 #generic-repos is licensed under the Mulan PSL v2.
 #You can use this software according to the terms and conditions of the Mulan PSL v2.
 #You may obtain a copy of Mulan PSL v2 at:
@@ -4850,7 +4911,7 @@ function gen_repo_files_openSUSE() {
     "leap")
         case "$2" in
         15.[0-2])
-            cat >$Dir_openSUSERepos/repo-debug-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-non-oss.repo
 [repo-debug-non-oss]
 name=Debug Repository (Non-OSS)
 enabled=0
@@ -4859,7 +4920,7 @@ baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/no
 type=NONE
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-debug.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug.repo
 [repo-debug]
 name=Debug Repository
 enabled=0
@@ -4868,7 +4929,7 @@ baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/os
 type=NONE
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-debug-update-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update-non-oss.repo
 [repo-debug-update-non-oss]
 name=Update Repository (Debug, Non-OSS)
 enabled=0
@@ -4877,7 +4938,7 @@ baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
 type=NONE
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-debug-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update.repo
 [repo-debug-update]
 name=Update Repository (Debug)
 enabled=0
@@ -4886,7 +4947,7 @@ baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
 type=NONE
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-non-oss.repo
 [repo-non-oss]
 name=Non-OSS Repository
 enabled=1
@@ -4895,7 +4956,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-oss.repo
 [repo-oss]
 name=Main Repository
 enabled=1
@@ -4904,7 +4965,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-source-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-source-non-oss.repo
 [repo-source-non-oss]
 name=Source Repository (Non-OSS)
 enabled=0
@@ -4913,7 +4974,7 @@ baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/n
 type=NONE
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-source.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-source.repo
 [repo-source]
 name=Source Repository
 enabled=0
@@ -4922,7 +4983,7 @@ baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/o
 type=NONE
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-update-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-update-non-oss.repo
 [repo-update-non-oss]
 name=Update Repository (Non-Oss)
 enabled=1
@@ -4931,7 +4992,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-update.repo
 [repo-update]
 name=Main Update Repository
 enabled=1
@@ -4942,7 +5003,7 @@ keeppackages=0
 EOF
             ;;
         *)
-            cat >$Dir_openSUSERepos/repo-backports-debug-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-backports-debug-update.repo
 [repo-backports-debug-update]
 name=Update repository with updates for openSUSE Leap debuginfo packages from openSUSE Backports
 enabled=0
@@ -4951,7 +5012,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/backports_debug/
 type=NONE
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-backports-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-backports-update.repo
 [repo-backports-update]
 name=Update repository of openSUSE Backports
 enabled=1
@@ -4961,7 +5022,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-debug-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-non-oss.repo
 [repo-debug-non-oss]
 name=Debug Repository (Non-OSS)
 enabled=0
@@ -4969,7 +5030,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/non-oss/
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-debug.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug.repo
 [repo-debug]
 name=Debug Repository
 enabled=0
@@ -4977,7 +5038,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/oss/
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-debug-update-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update-non-oss.repo
 [repo-debug-update-non-oss]
 name=Update Repository (Debug, Non-OSS)
 enabled=0
@@ -4985,7 +5046,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-debug-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update.repo
 [repo-debug-update]
 name=Update Repository (Debug)
 enabled=0
@@ -4993,7 +5054,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-non-oss.repo
 [repo-non-oss]
 name=Non-OSS Repository
 enabled=1
@@ -5002,7 +5063,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-oss.repo
 [repo-oss]
 name=Main Repository
 enabled=1
@@ -5011,7 +5072,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-sle-debug-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-sle-debug-update.repo
 [repo-sle-debug-update]
 name=Update repository with debuginfo for updates from SUSE Linux Enterprise 15
 enabled=0
@@ -5021,7 +5082,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-sle-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-sle-update.repo
 [repo-sle-update]
 name=Update repository with updates from SUSE Linux Enterprise 15
 enabled=1
@@ -5031,7 +5092,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-source.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-source.repo
 [repo-source]
 name=Source Repository
 enabled=0
@@ -5039,7 +5100,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/oss/
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-update-non-oss.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-update-non-oss.repo
 [repo-update-non-oss]
 name=Update Repository (Non-Oss)
 enabled=1
@@ -5048,7 +5109,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat >$Dir_openSUSERepos/repo-update.repo <<\EOF
+            cat <<'EOF' >$Dir_openSUSERepos/repo-update.repo
 [repo-update]
 name=Main Update Repository
 enabled=1
@@ -5061,7 +5122,7 @@ EOF
         esac
         ;;
     "tumbleweed")
-        cat >$Dir_openSUSERepos/repo-debug.repo <<\EOF
+        cat <<'EOF' >$Dir_openSUSERepos/repo-debug.repo
 [repo-debug]
 name=openSUSE-Tumbleweed-Debug
 enabled=0
@@ -5070,7 +5131,7 @@ baseurl=http://download.opensuse.org/debug/tumbleweed/repo/oss/
 path=/
 keeppackages=0
 EOF
-        cat >$Dir_openSUSERepos/repo-non-oss.repo <<\EOF
+        cat <<'EOF' >$Dir_openSUSERepos/repo-non-oss.repo
 [repo-non-oss]
 name=openSUSE-Tumbleweed-Non-Oss
 enabled=1
@@ -5080,7 +5141,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-        cat >$Dir_openSUSERepos/repo-openh264.repo <<\EOF
+        cat <<'EOF' >$Dir_openSUSERepos/repo-openh264.repo
 [repo-openh264]
 name=Open H.264 Codec (openSUSE Tumbleweed)
 enabled=1
@@ -5090,7 +5151,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-        cat >$Dir_openSUSERepos/repo-oss.repo <<\EOF
+        cat <<'EOF' >$Dir_openSUSERepos/repo-oss.repo
 [repo-oss]
 name=openSUSE-Tumbleweed-Oss
 enabled=1
@@ -5100,7 +5161,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-        cat >$Dir_openSUSERepos/repo-source.repo <<\EOF
+        cat <<'EOF' >$Dir_openSUSERepos/repo-source.repo
 [repo-source]
 name=openSUSE-Tumbleweed-Source
 enabled=0
@@ -5109,7 +5170,7 @@ baseurl=http://download.opensuse.org/source/tumbleweed/repo/oss/
 path=/
 keeppackages=0
 EOF
-        cat >$Dir_openSUSERepos/repo-update.repo <<\EOF
+        cat <<'EOF' >$Dir_openSUSERepos/repo-update.repo
 [repo-update]
 name=openSUSE-Tumbleweed-Update
 enabled=1
@@ -5127,7 +5188,7 @@ EOF
 function gen_repo_files_EPEL() {
     case ${SYSTEM_VERSION_NUMBER:0:1} in
     9)
-        cat >$Dir_YumRepos/epel.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
 name=Extra Packages for Enterprise Linux $releasever - $basearch
 # It is much more secure to use the metalink, but if you wish to use a local mirror
@@ -5159,7 +5220,7 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
 gpgcheck=1
 EOF
-        cat >$Dir_YumRepos/epel-testing.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
 [epel-testing]
 name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
 # It is much more secure to use the metalink, but if you wish to use a local mirror
@@ -5191,76 +5252,13 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
 gpgcheck=1
 EOF
-        cat >$Dir_YumRepos/epel-next.repo <<\EOF
-[epel-next]
-name=Extra Packages for Enterprise Linux $releasever - Next - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/next/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-
-[epel-next-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Next - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/next/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-
-[epel-next-source]
-name=Extra Packages for Enterprise Linux $releasever - Next - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/next/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-EOF
-        cat >$Dir_YumRepos/epel-next-testing.repo <<\EOF
-[epel-next-testing]
-name=Extra Packages for Enterprise Linux $releasever - Next - Testing - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/testing/next/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-
-[epel-next-testing-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Next - Testing - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/testing/next/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-
-[epel-next-testing-source]
-name=Extra Packages for Enterprise Linux $releasever - Next - Testing - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
-#baseurl=https://download.example/pub/epel/testing/next/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
-EOF
-        cat >$Dir_YumRepos/epel-cisco-openh264.repo <<\EOF
+        ## 此仓库特殊，默认不启用
+        cat <<'EOF' >$Dir_YumRepos/epel-cisco-openh264.repo
 [epel-cisco-openh264]
 name=Extra Packages for Enterprise Linux $releasever openh264 (From Cisco) - $basearch
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-cisco-openh264-$releasever&arch=$basearch
 type=rpm
-enabled=1
+enabled=0
 metadata_expire=14d
 repo_gpgcheck=0
 gpgcheck=1
@@ -5291,7 +5289,7 @@ skip_if_unavailable=True
 EOF
         ;;
     8)
-        cat >$Dir_YumRepos/epel.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
 name=Extra Packages for Enterprise Linux 8 - $basearch
 # It is much more secure to use the metalink, but if you wish to use a local mirror
@@ -5323,7 +5321,7 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
-        cat >$Dir_YumRepos/epel-testing.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
 [epel-testing]
 name=Extra Packages for Enterprise Linux 8 - Testing - $basearch
 # It is much more secure to use the metalink, but if you wish to use a local mirror
@@ -5355,7 +5353,7 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
-        cat >$Dir_YumRepos/epel-modular.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-modular.repo
 [epel-modular]
 # This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - $basearch - RETIRED
@@ -5390,7 +5388,7 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
-        cat >$Dir_YumRepos/epel-testing-modular.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-testing-modular.repo
 [epel-testing-modular]
 # This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - RETIRED
@@ -5427,7 +5425,7 @@ gpgcheck=1
 EOF
         ;;
     7)
-        cat >$Dir_YumRepos/epel.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
 name=Extra Packages for Enterprise Linux 7 - $basearch
 #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
@@ -5455,7 +5453,7 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 gpgcheck=1
 EOF
-        cat >$Dir_YumRepos/epel-testing.repo <<\EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
 [epel-testing]
 name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
 #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch

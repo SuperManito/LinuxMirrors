@@ -10,7 +10,7 @@ hide:
 
 > 下方列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` `openEuler` 软件源，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
 
-| 镜像站 | IPv6 | Arch Linux | Kali | Deepin | Rocky | AlmaLinux | EPEL | Fedora | OpenCloudOS | Alpine | Armbian | Proxmox | Linux Mint |
+| 镜像站 | IPv6 | Arch Linux | Kali Linux | Deepin | Rocky Linux | AlmaLinux | EPEL | Fedora | OpenCloudOS | Alpine Linux | Armbian | Proxmox | Linux Mint |
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: |
 | [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: |
