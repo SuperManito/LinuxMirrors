@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-07-26
+## Modified: 2024-07-27
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2050,7 +2050,7 @@ function change_mirrors_or_install_EPEL() {
             package_manager="dnf"
             ;;
         esac
-        $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${SYSTEM_VERSION_NUMBER:0:1}.noarch.rpm
+        $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${target_version}.noarch.rpm
         rm -rf $Dir_YumRepos/epel*
     fi
     ## 删除原有 repo 源文件
