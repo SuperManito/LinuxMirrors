@@ -9,7 +9,7 @@
     </strong>
 </p>
 <p align="center">
-    GNU/Linux 更换系统软件源脚本
+    GNU/Linux 更换系统软件源脚本及 Docker 安装脚本
 </p>
 <p align="center">
     <strong>
@@ -86,11 +86,15 @@
         <td><a href="https://www.alpinelinux.org" target="_blank"><img src="./docs/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;Alpine Linux</td>
         <td align="center">v3 / edge</td>
     </tr>
+    <tr>
+        <td><a href="https://www.gentoo.org" target="_blank"><img src="./docs/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Gentoo</td>
+        <td align="center">all</td>
+    </tr>
 </table>
 
 <p align="center">
     <strong>
-        <a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/help" style="text-decoration: none;">常见问题</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 一键安装(额外脚本)</a>
+        <a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/help" style="text-decoration: none;">常见问题</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>
     </strong>
 </p>
 

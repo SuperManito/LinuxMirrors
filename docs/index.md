@@ -44,7 +44,7 @@ hide:
 
     ---
 
-    脚本使换源变得更简单，默认交互运行，逐步引导用户更换软件源  
+    脚本使换源变得更简单，默认交互运行，逐步引导用户选择软件源配置  
     同时提供了强大的命令选项，可实现各种定制需求和无交互操作
 
 -   :material-scale-balance:{ .lg .middle } __开源，MIT__
@@ -82,6 +82,7 @@ hide:
 | <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | Leep 15 / Tumbleweed |
 | <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | all |
 | <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | v3 / edge |
+| <a href="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Gentoo | all |
 
 </div>
 

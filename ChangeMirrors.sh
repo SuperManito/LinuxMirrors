@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-07-27
+## Modified: 2024-07-31
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -165,6 +165,7 @@ SYSTEM_OPENEULER="openEuler"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
 SYSTEM_ALPINE="Alpine"
+SYSTEM_GENTOO="Gentoo"
 
 ## 定义系统版本文件
 File_LinuxRelease=/etc/os-release
@@ -175,6 +176,7 @@ File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
 File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
+File_GentooRelease=/etc/gentoo-release
 File_ProxmoxVersion=/etc/pve/.version
 
 ## 定义软件源相关文件或目录
@@ -190,12 +192,17 @@ File_ProxmoxSourceList=/etc/apt/sources.list.d/pve-no-subscription.list
 File_ProxmoxSourceListBackup=/etc/apt/sources.list.d/pve-no-subscription.list.bak
 File_LinuxMintSourceList=/etc/apt/sources.list.d/official-package-repositories.list
 File_LinuxMintSourceListBackup=/etc/apt/sources.list.d/official-package-repositories.list.bak
-Dir_DebianExtendSource=/etc/apt/sources.list.d
-Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 File_ArchLinuxMirrorList=/etc/pacman.d/mirrorlist
 File_ArchLinuxMirrorListBackup=/etc/pacman.d/mirrorlist.bak
 File_AlpineRepositories=/etc/apk/repositories
 File_AlpineRepositoriesBackup=/etc/apk/repositories.bak
+File_GentooMakeConf=/etc/portage/make.conf
+File_GentooMakeConfBackup=/etc/portage/make.conf.bak
+File_GentooReposConf=/etc/portage/repos.conf/gentoo.conf
+File_GentooReposConfBackup=/etc/portage/repos.conf/gentoo.conf.bak
+Dir_GentooReposConf=/etc/portage/repos.conf
+Dir_DebianExtendSource=/etc/apt/sources.list.d
+Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 Dir_YumRepos=/etc/yum.repos.d
 Dir_YumReposBackup=/etc/yum.repos.d.bak
 Dir_openSUSERepos=/etc/zypp/repos.d
@@ -238,32 +245,34 @@ function main() {
 function handle_command_options() {
     ## 命令帮助
     function output_command_help() {
-        echo -e "
-命令选项(参数名/含义/参数值)：
+        echo -e "\n命令选项(参数名/含义/参数值)：
 
-  --abroad                 使用海外软件源                                    无
-  --edu                    使用中国大陆教育网软件源                          无
-  --source                 指定软件源地址                                    地址
-  --source-security        指定 Debian 的 security 软件源地址                地址
-  --source-vault           指定 CentOS/AlmaLinux 的 vault 软件源地址         地址
-  --use-official-source    使用操作系统官方软件源                            无
-  --branch                 指定软件源分支(路径)                              分支名
-  --branch-security        指定 Debian 的 security 软件源分支(路径)          分支名
-  --branch-vault           指定 CentOS/AlmaLinux 的 vault 软件源分支(路径)   分支名
-  --codename               指定 Debian 系操作系统的版本代号                  代号名称
-  --protocol               指定 WEB 协议                                     http 或 https
-  --intranet               优先使用内网地址                                  true 或 false
-  --install-epel           安装 EPEL 附加软件包                              true 或 false
-  --only-epel              仅更换 EPEL 软件源模式                            无
-  --close-firewall         关闭防火墙                                        true 或 false
-  --backup                 备份原有软件源                                    true 或 false
-  --ignore-backup-tips     忽略覆盖备份提示                                  无
-  --upgrade-software       更新软件包                                        true 或 false
-  --clean-cache            清理下载缓存                                      true 或 false
-  --print-diff             打印源文件修改前后差异                            无
+  --abroad                 使用海外软件源                                                 无
+  --edu                    使用中国大陆教育网软件源                                       无
+  --source                 指定软件源地址(域名或IP)                                       地址
+  --source-epel            指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                 地址
+  --source-security        指定 Debian 系统 security 仓库的软件源地址(域名或IP)           地址
+  --source-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)    地址
+  --source-portage         指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)            地址
+  --branch                 指定软件源分支(路径)                                           分支名
+  --branch-epel            指定 EPEL 附加软件包仓库的软件源分支(路径)                     分支名
+  --branch-security        指定 Debian 系统 security 仓库的软件源分支(路径)               分支名
+  --branch-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支(路径)        分支名
+  --branch-portage         指定 Gentoo 系统 portage 仓库的软件源分支(路径)                分支名
+  --codename               指定 Debian 系操作系统的版本代号                               代号名称
+  --protocol               指定 WEB 协议                                                  http 或 https
+  --install-epel           是否安装 EPEL 附加软件包                                       true 或 false
+  --close-firewall         是否关闭防火墙                                                 true 或 false
+  --backup                 是否备份原有软件源                                             true 或 false
+  --upgrade-software       是否更新软件包                                                 true 或 false
+  --clean-cache            是否清理下载缓存                                               true 或 false
+  --use-intranet-source    优先使用内网软件源地址                                         无
+  --use-official-source    使用目标操作系统的官方软件源                                   无
+  --only-epel              仅更换 EPEL 软件源模式                                         无
+  --ignore-backup-tips     忽略覆盖备份提示                                               无
+  --print-diff             打印源文件修改前后差异                                         无
 
-问题报告 https://github.com/SuperManito/LinuxMirrors/issues
-  "
+问题报告 https://github.com/SuperManito/LinuxMirrors/issues\n"
     }
 
     ## 判断参数
@@ -285,6 +294,19 @@ function handle_command_options() {
                     output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
+                    shift
+                fi
+            else
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --source-epel)
+            if [ "$2" ]; then
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE_EPEL="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
@@ -317,6 +339,19 @@ function handle_command_options() {
                 output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
+        --source-portage)
+            if [ "$2" ]; then
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                else
+                    SOURCE_PORTAGE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
+                    shift
+                fi
+            else
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
         ## 使用官方源
         --use-official-source)
             USE_OFFICIAL_SOURCE="true"
@@ -330,9 +365,17 @@ function handle_command_options() {
                 output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
             fi
             ;;
+        --branch-epel)
+            if [ "$2" ]; then
+                SOURCE_EPEL_BRANCH="$2"
+                shift
+            else
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
         --branch-security)
             if [ "$2" ]; then
-                SOURCE_BRANCH_SECURITY="$2"
+                SOURCE_SECURITY_BRANCH="$2"
                 shift
             else
                 output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
@@ -340,7 +383,15 @@ function handle_command_options() {
             ;;
         --branch-vault)
             if [ "$2" ]; then
-                SOURCE_BRANCH_VAULT="$2"
+                SOURCE_VAULT_BRANCH="$2"
+                shift
+            else
+                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+            fi
+            ;;
+        --branch-portage)
+            if [ "$2" ]; then
+                SOURCE_PORTAGE_BRANCH="$2"
                 shift
             else
                 output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
@@ -356,7 +407,11 @@ function handle_command_options() {
             fi
             ;;
         ## 优先使用内网地址
+        --use-intranet-source)
+            USE_INTRANET_SOURCE="true"
+            ;;
         --intranet)
+            ## 废弃的命令选项
             if [ "$2" ]; then
                 case "$2" in
                 [Tt]rue | [Ff]alse)
@@ -543,6 +598,8 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_ARCH}"
     elif [ -f $File_AlpineRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
+    elif [ -f $File_GentooRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_GENTOO}"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_OpenCloudOSRelease ]; then
@@ -632,7 +689,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}")
         # 理论全部支持或不作判断
         ;;
     *)
@@ -739,7 +796,7 @@ function collect_system_info() {
     "${SYSTEM_OPENSUSE}")
         SYNC_MIRROR_TEXT="刷新软件源"
         ;;
-    "${SYSTEM_ARCH}")
+    "${SYSTEM_ARCH}" | "${SYSTEM_GENTOO}")
         SYNC_MIRROR_TEXT="同步软件源"
         ;;
     esac
@@ -750,17 +807,30 @@ function check_command_options() {
     if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
         output_error "两种模式不可同时使用！"
     fi
-    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]] && [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_BRANCH_SECURITY}" == "true" ]]; then
-        output_error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
+    if [[ "${DEBIAN_CODENAME}" ]]; then
+        if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" ]]; then
+            output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
+        fi
     fi
-    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" ]] && [[ "${DEBIAN_CODENAME}" ]]; then
-        output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
+    if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] || [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_REDHAT}" && "${SYSTEM_FACTIONS}" && "${SYSTEM_OPENCLOUDOS}" || "${SYSTEM_FACTIONS}" && "${SYSTEM_OPENEULER}" ]]; then
+            output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+        fi
     fi
-    if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_REDHAT}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] && [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-        output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+    if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_SECURITY_BRANCH}" == "true" ]]; then
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
+            output_error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
+        fi
     fi
-    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]] && [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_BRANCH_VAULT}" == "true" ]]; then
-        output_error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
+    if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_VAULT_BRANCH}" == "true" ]]; then
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]]; then
+            output_error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
+        fi
+    fi
+    if [[ "${SOURCE_PORTAGE}" == "true" || "${SOURCE_PORTAGE_BRANCH}" == "true" ]]; then
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_GENTOO}" ]]; then
+            output_error "当前系统不支持使用 portage 仓库相关命令选项，请确认后重试！"
+        fi
     fi
 }
 
@@ -1146,6 +1216,13 @@ function backup_original_mirrors() {
             # /etc/apk/repositories
             backup_file $File_AlpineRepositories $File_AlpineRepositoriesBackup "repositories"
             ;;
+        "${SYSTEM_GENTOO}")
+            # /etc/portage/make.conf
+            backup_file $File_GentooMakeConf $File_GentooMakeConfBackup "make.conf"
+            # /etc/portage/repos.conf/gentoo.conf
+            [ -d "${Dir_GentooReposConf}" ] || mkdir -p "${Dir_GentooReposConf}"
+            backup_file $File_GentooReposConf $File_GentooReposConfBackup "gentoo.conf"
+            ;;
         esac
     fi
 }
@@ -1261,6 +1338,9 @@ function remove_original_mirrors() {
     "${SYSTEM_ALPINE}")
         [ -f $File_AlpineRepositories ] && sed -i '1,$d' $File_AlpineRepositories
         ;;
+    "${SYSTEM_GENTOO}")
+        [ -f $File_GentooReposConf ] && sed -i '1,$d' $File_GentooReposConf
+        ;;
     esac
 }
 
@@ -1319,6 +1399,10 @@ function change_mirrors_main() {
             "${SYSTEM_ALPINE}")
                 diff_file $File_AlpineRepositoriesBackup $File_AlpineRepositories
                 ;;
+            "${SYSTEM_GENTOO}")
+                diff_file $File_GentooMakeConfBackup $File_GentooMakeConf
+                diff_file $File_GentooReposConfBackup $File_GentooReposConf
+                ;;
             esac
         fi
     }
@@ -1345,6 +1429,9 @@ function change_mirrors_main() {
         ;;
     "${SYSTEM_ALPINE}")
         change_mirrors_Alpine
+        ;;
+    "${SYSTEM_GENTOO}")
+        change_mirrors_Gentoo
         ;;
     esac
     ## 比较差异
@@ -1382,6 +1469,9 @@ function change_mirrors_main() {
     "${SYSTEM_ALPINE}")
         apk update -f
         ;;
+    "${SYSTEM_GENTOO}")
+        emerge --sync --quiet
+        ;;
     esac
     if [ $? -eq 0 ]; then
         echo -e "\n$SUCCESS 软件源更换完毕"
@@ -1398,12 +1488,6 @@ function change_mirrors_main() {
 ## 升级软件包
 function upgrade_software() {
     function clean_cache() {
-        ## 跳过特殊系统
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_RHEL}" | "${SYSTEM_OPENSUSE}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}")
-            return
-            ;;
-        esac
         ## 交互确认
         if [[ -z "${CLEAN_CACHE}" ]]; then
             CLEAN_CACHE="false"
@@ -1447,16 +1531,27 @@ function upgrade_software() {
             $package_manager autoremove -y >/dev/null 2>&1
             $package_manager clean packages -y >/dev/null 2>&1
             ;;
+        "${SYSTEM_OPENSUSE}")
+            rm -rf /var/cache/zypp/* >/dev/null 2>&1
+            ;;
+        "${SYSTEM_ALPINE}")
+            rm -rf /var/cache/apk/* >/dev/null 2>&1
+            ;;
+        "${SYSTEM_GENTOO}")
+            eclean-dist --deep >/dev/null 2>&1
+            eclean-packages --deep >/dev/null 2>&1
+            ;;
         esac
         echo -e "\n$COMPLETE 清理完毕"
     }
 
     ## 跳过特殊系统
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_ARCH}" | "${SYSTEM_RHEL}")
+    "${SYSTEM_ARCH}")
         return
         ;;
     esac
+
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
         UPGRADE_SOFTWARE="false"
@@ -1504,6 +1599,9 @@ function upgrade_software() {
         ;;
     "${SYSTEM_ALPINE}")
         apk upgrade --no-cache
+        ;;
+    "${SYSTEM_GENTOO}")
+        emerge --update --deep --with-bdeps=y --ask=n @world
         ;;
     esac
     ## 清理缓存
@@ -1578,7 +1676,7 @@ deb ${1} ${2}-security ${3}
             echo "${tips}
 $(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
             # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${SOURCE_BRANCH}-security"}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}"
             echo "$(gen_debian_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         else
             echo "deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
@@ -1591,7 +1689,7 @@ $(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sec
 $(gen_ubuntu_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         ;;
     "${SYSTEM_KALI}")
-        repository_sections="main non-free contrib"
+        repository_sections="main contrib non-free non-free-firmware"
         echo "${tips}
 deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
 # deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
@@ -1618,7 +1716,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
             echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
             # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_BRANCH_SECURITY:-"${base_system_source_branch}-security"}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${base_system_source_branch}-security"}"
             echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
@@ -1658,7 +1756,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
     fi
 }
 
-## 更换基于 RedHat 系 Linux 发行版软件源
+## 更换基于 RedHat 系 Linux 发行版的软件源
 function change_mirrors_RedHat() {
     ## 仅 EPEL 模式
     if [[ "${ONLY_EPEL}" == "true" ]]; then
@@ -1728,13 +1826,13 @@ function change_mirrors_RedHat() {
                 sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
                 # 单独处理 CentOS-Linux-Sources.repo
-                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo
+                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Linux-Sources.repo
                 ;;
             7)
                 sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
                 sed -i "s/\$releasever/7/g" CentOS-*
                 # 单独处理 CentOS-Sources.repo
-                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo
+                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo
                 ;;
             esac
             sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
@@ -1750,13 +1848,13 @@ function change_mirrors_RedHat() {
             # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 分支
             sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
             sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Linux-Sources.repo # 单独处理 CentOS-Linux-Sources.repo
+            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Linux-Sources.repo # 单独处理 CentOS-Linux-Sources.repo
             ;;
         7)
             # 最终版本为 7.9.2009，从 2024-07 开始切换至 centos-vault 分支
             sed -i "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
             sed -i "s/\$releasever/7.9.2009/g" CentOS-*
-            sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"centos-vault"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
+            sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
             ;;
         esac
         sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
@@ -1772,7 +1870,7 @@ function change_mirrors_RedHat() {
                 centos-addons.repo
             ;;
         8)
-            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"${SOURCE_BRANCH}"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
+            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"${SOURCE_BRANCH}"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
             sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -e "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
@@ -1807,7 +1905,7 @@ function change_mirrors_RedHat() {
         9)
             sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
+                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"almalinux-vault"}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
                 almalinux-*
@@ -1815,7 +1913,7 @@ function change_mirrors_RedHat() {
         8)
             sed -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_BRANCH_VAULT:-"almalinux-vault"}|g" \
+                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"almalinux-vault"}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
                 almalinux-ha.repo \
@@ -1861,7 +1959,7 @@ function change_mirrors_RedHat() {
     change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
-## 更换基于 OpenCloudOS 发行版的软件源
+## 更换 OpenCloudOS 发行版软件源
 function change_mirrors_OpenCloudOS() {
     ## 生成官方 repo 源文件
     gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
@@ -1885,7 +1983,7 @@ function change_mirrors_OpenCloudOS() {
     change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
-## 更换基于 openEuler 发行版的软件源
+## 更换 openEuler 发行版软件源
 function change_mirrors_openEuler() {
     ## 生成官方 repo 源文件
     gen_repo_files_openEuler
@@ -1907,7 +2005,7 @@ function change_mirrors_openEuler() {
     change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
-## 更换基于 openSUSE 发行版的软件源
+## 更换 openSUSE 发行版软件源
 function change_mirrors_openSUSE() {
     ## 生成官方 repo 源文件
     case "${SYSTEM_ID}" in
@@ -1973,7 +2071,7 @@ function change_mirrors_openSUSE() {
     esac
 }
 
-## 更换基于 Arch Linux 发行版的软件源
+## 更换 Arch Linux 发行版软件源
 function change_mirrors_ArchLinux() {
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -1994,7 +2092,7 @@ function change_mirrors_ArchLinux() {
     esac
 }
 
-## 更换基于 Alpine Linux 发行版的软件源
+## 更换 Alpine Linux 发行版软件源
 function change_mirrors_Alpine() {
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -2010,6 +2108,34 @@ function change_mirrors_Alpine() {
     ## 修改源
     echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
 ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/community" >>$File_AlpineRepositories
+}
+
+## 更换 Gentoo 发行版软件源
+function change_mirrors_Gentoo() {
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        grep -Eq "^GENTOO_MIRRORS=" $File_GentooMakeConf
+        if [ $? -eq 0 ]; then
+            sed -i "/^GENTOO_MIRRORS=/d" $File_GentooMakeConf
+        fi
+        [ -f $File_GentooReposConf ] && rm -rf $File_GentooReposConf
+        return
+    fi
+    ## 修改源
+    grep -Eq "^GENTOO_MIRRORS=" $File_GentooMakeConf
+    if [ $? -eq 0 ]; then
+        sed -i "s|^GENTOO_MIRRORS=.*|GENTOO_MIRRORS=\"${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\"|g" $File_GentooMakeConf
+    else
+        echo -e "\nGENTOO_MIRRORS=\"${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\"" >>$File_GentooMakeConf
+    fi
+    echo "[DEFAULT]
+main-repo = gentoo
+
+[gentoo]
+location = /usr/portage
+sync-type = rsync
+sync-uri = rsync://${SOURCE_PORTAGE:-"${SOURCE}"}/${SOURCE_PORTAGE_BRANCH:-"gentoo-portage"}
+auto-sync = yes" >$File_GentooReposConf
 }
 
 ## EPEL (Extra Packages for Enterprise Linux) 附加软件包 - 安装或更换软件源
@@ -2061,12 +2187,11 @@ function change_mirrors_or_install_EPEL() {
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
-    ## 修改源（仓库分支名称暂时固定为 epel）
-    local epel_branch="epel"
+    ## 修改源
     sed -e "s|^#baseurl=http\(s\)\?|baseurl=${WEB_PROTOCOL}|g" \
         -e "s|^metalink=|#metalink=|g" \
-        -e "s|download.example/pub/epel|${SOURCE}/${epel_branch}|g" \
-        -e "s|download.fedoraproject.org/pub/epel|${SOURCE}/${epel_branch}|g" \
+        -e "s|download.example/pub/epel|${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}|g" \
+        -e "s|download.fedoraproject.org/pub/epel|${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}|g" \
         -i \
         $Dir_YumRepos/epel*
 }

@@ -3,6 +3,8 @@ hide:
   - feedback
 ---
 
+!!! question "请在使用前检查目标镜像站是否支持您所使用的操作系统"
+
 ## 一键执行命令
 
 === ":material-home: 中国大陆（默认）"
@@ -10,8 +12,6 @@ hide:
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh)
     ```
-
-    !!! question "请在使用前检查目标镜像站是否支持您所使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -37,8 +37,6 @@ hide:
 
     1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-    !!! question "请在使用前检查目标镜像站是否支持您所使用的操作系统"
-
     ??? quote "原始执行命令"
 
         === ":simple-github: GitHub"
@@ -62,8 +60,6 @@ hide:
     ```
 
     1.  通过 `--abroad` 命令选项来使用海外软件源
-
-    !!! question "请在使用前检查目标镜像站是否支持您所使用的操作系统"
 
     ??? quote "原始执行命令"
 
@@ -89,19 +85,19 @@ hide:
 
     ---
 
-    切换命令为 `sudo -i` 或 `su root`，不同系统环境使用的命令不一样，因为有些系统没有在初始安装时为 ROOT 用户设置固定密码（例如Ubuntu）所以需要使用 `sudo` 指令来提权
+    切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为有些系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu），故需要使用 `sudo -i` 命令来切换至 ROOT
 
 -   :material-numeric-2:{style="color: #3CA7E5" .lg} __建议使用 `SSH` 远程工具__
 
     ---
 
-    如果你使用的系统终端界面不支持 `UTF-8` 编码那么将无法正常显示中文内容，导致无法查看交互内容。大部分系统都会自动开启该服务，否则请参考[启用方法](help.md#关于开启-ssh-远程登录的方法)
+    如果你使用的系统终端界面无法正常显示中文内容那么将导致无法查看交互内容。部分系统会自动开启 SSH 服务，否则请参考[启用方法](help.md#关于开启-ssh-远程登录的方法)
 
 -   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新系统上首次执行脚本__
 
     ---
 
-    当前执行方式依赖 `curl` 指令来获取脚本内容并执行，所以需要先通过包管理工具来安装该软件包，否则会报错 `Command not found`，安装方法详见[常见问题](help.md#关于报错-command-not-found)，若无法安装就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)到本地新建`.sh`脚本，然后通过 `bash` 手动执行
+    当前执行方式依赖 `curl` 指令获取脚本内容并执行，但部分操作系统没有预装此软件包，届时则会报错 `Command not found`，安装方法详见[常见问题](help.md#关于报错-command-not-found)。还可自行复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名称的 `.sh` 脚本，粘贴源码内容后通过 `bash` 指令手动执行
 
 </div>
 

@@ -10,7 +10,7 @@ hide:
 
 > 下方列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` `openEuler` 软件源，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
 
-| 镜像站 | IPv6 | Arch Linux | Kali Linux | Deepin | Rocky Linux | AlmaLinux | EPEL | Fedora | OpenCloudOS | Alpine Linux | Armbian | Proxmox | Linux Mint |
+| 镜像站 | IPv6 | Arch Linux | Kali Linux | Deepin | Rocky Linux | AlmaLinux | EPEL :material-information-outline:{ title="EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版" } | Fedora | OpenCloudOS | Alpine Linux | Armbian | Proxmox | Linux Mint |
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: |
 | [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: |
@@ -47,7 +47,6 @@ hide:
     | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn "https://mirrors.zju.edu.cn") |
     | 山东大学 | [mirrors.sdu.edu.cn](https://mirrors.sdu.edu.cn "https://mirrors.sdu.edu.cn") |
     | 吉林大学 | [mirrors.jlu.edu.cn](https://mirrors.jlu.edu.cn "https://mirrors.jlu.edu.cn") |
-    | 上海交通大学 | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn "https://mirror.sjtu.edu.cn") |
     | 上海科技大学 | [mirrors.shanghaitech.edu.cn](https://mirrors.shanghaitech.edu.cn "https://mirrors.shanghaitech.edu.cn") |
     | 南方科技大学 | [mirrors.sustech.edu.cn](https://mirrors.sustech.edu.cn "https://mirrors.sustech.edu.cn") |
     | 南京邮电大学 | [mirrors.njupt.edu.cn](https://mirrors.njupt.edu.cn "https://mirrors.njupt.edu.cn") |
@@ -60,6 +59,7 @@ hide:
     | 西安交通大学 | [mirrors.xjtu.edu.cn](https://mirrors.xjtu.edu.cn "https://mirrors.xjtu.edu.cn") |
     | 江西理工大学 | [mirrors.jxust.edu.cn](https://mirrors.jxust.edu.cn "https://mirrors.jxust.edu.cn") |
     | 重庆邮电大学 | [mirrors.cqupt.edu.cn](https://mirrors.cqupt.edu.cn "https://mirrors.cqupt.edu.cn") |
+    | 华中科技大学 | [mirrors.hust.edu.cn](https://mirrors.hust.edu.cn "https://mirrors.hust.edu.cn") |
     | 南阳理工学院 | [mirror.nyist.edu.cn](https://mirror.nyist.edu.cn "https://mirror.nyist.edu.cn") |
     | 武昌首义学院 | [mirrors.wsyu.edu.cn](https://mirrors.wsyu.edu.cn "https://mirrors.wsyu.edu.cn") |
     | 荆楚理工学院 | [mirrors.jcut.edu.cn](https://mirrors.jcut.edu.cn "https://mirrors.jcut.edu.cn") |
@@ -67,6 +67,8 @@ hide:
     | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn "https://mirrors.ustc.edu.cn") |
     | 西北农林科技大学 | [mirrors.nwafu.edu.cn](https://mirrors.nwafu.edu.cn "https://mirrors.nwafu.edu.cn") |
     | 大连东软信息学院 | [mirrors.neusoft.edu.cn](https://mirrors.neusoft.edu.cn "https://mirrors.neusoft.edu.cn") |
+    | 上海交通大学（思源） | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn "https://mirror.sjtu.edu.cn") |
+    | 上海交通大学（致远） | [mirrors.sjtug.sjtu.edu.cn](https://mirrors.sjtug.sjtu.edu.cn "https://mirrors.sjtug.sjtu.edu.cn") |
 
 ## 海外地区 :flag-world-map:
 
@@ -78,6 +80,7 @@ hide:
     | 亚洲 · 01Link · 香港 :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
     | 亚洲 · 新加坡国立大学(NUS) · 新加坡 :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
     | 亚洲 · SG.GS · 新加坡 :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
+    | 亚洲 · xTom · 新加坡 :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
     | 亚洲 · 自由软件实验室(NCHC) · 台湾 :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | 亚洲 · OSS Planet · 台湾 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
@@ -174,6 +177,7 @@ hide:
     | 亚洲 · 01Link · 香港 :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
     | 亚洲 · 新加坡国立大学(NUS) · 新加坡 :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
     | 亚洲 · SG.GS · 新加坡 :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
+    | 亚洲 · xTom · 新加坡 :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
     | 亚洲 · 自由软件实验室(NCHC) · 台湾 :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | 亚洲 · OSS Planet · 台湾 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |

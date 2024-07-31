@@ -2,70 +2,76 @@
 | - | - | :-: |
 | `--abroad` | 使用海外软件源 | 无 |
 | `--edu` | 使用中国大陆教育网软件源 | 无 |
-| `--source` | 指定软件源地址(域名或IP) | 地址 |
-| `--source-security` | 指定 Debian 的 security 软件源地址(域名或IP) | 地址 |
-| `--source-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源地址(域名或IP) | 地址 |
-| `--use-official-source` | 使用操作系统官方软件源 | 无 |
-| `--branch` | 指定软件源分支(路径) | 分支名 |
-| `--branch-security` | 指定 Debian 的 security 软件源分支(路径) | 分支名 |
-| `--branch-vault` | 指定 CentOS/AlmaLinux 的 vault 软件源分支(路径) | 分支名 |
+| `--source` | 指定软件源地址（域名或IP） | 地址 |
+| `--source-epel` | 指定 EPEL 附加软件包仓库的软件源地址（域名或IP） | 地址 |
+| `--source-security` | 指定 Debian 系统 security 仓库的软件源地址（域名或IP） | 地址 |
+| `--source-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | 地址 |
+| `--source-portage` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | 地址 |
+| `--branch` | 指定软件源分支（路径） | 分支名 |
+| `--branch-epel` | 指定 EPEL 附加软件包仓库的软件源分支（路径） | 分支名 |
+| `--branch-security` | 指定 Debian 系统 security 仓库的软件源分支（路径） | 分支名 |
+| `--branch-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径）   分支名 | 分支名 |
+| `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | 分支名 |
 | `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
 | `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
-| `--intranet` | 优先使用内网地址 | `true` 或 `false` |
-| `--install-epel` | 安装 EPEL 附加软件包 | `true` 或 `false` |
+| `--install-epel` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
+| `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
+| `--backup` | 是否备份原有软件源 | `true` 或 `false` |
+| `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
+| `--clean-cache` | 是否清理下载缓存 | `true` 或 `false` |
+| `--print-diff` | 是否打印源文件修改前后差异 | `true` 或 `false` |
+| `--use-intranet-source` | 优先使用内网软件源地址 | 无 |
+| `--use-official-source` | 使用目标操作系统的官方软件源 | 无 |
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
-| `--close-firewall` | 关闭防火墙 | `true` 或 `false` |
-| `--backup` | 备份原有软件源 | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
-| `--upgrade-software` | 更新软件包 | `true` 或 `false` |
-| `--clean-cache` | 清理下载缓存 | `true` 或 `false` |
-| `--print-diff` | 打印源文件修改前后差异 | `true` 或 `false` |
 | `--help` | 查看帮助菜单 | 无 |
 
 > 软件源格式 `<指定WEB协议>://<软件源地址>/<软件源分支>`
 
-## 示例
+---
 
-### 指定软件源地址
-
-若不想通过交互选择默认提供的软件源，你可以使用该命令选项指定软件源地址
+## 指定软件源地址
 
 ``` { .bash .no-copy }
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
     --source mirror.example.com
 ```
 
-### 指定软件源分支
+---
 
-使用场景：目标镜像站有对应的系统镜像但是不符合本项目脚本关于软件源分支设置的默认规则  
+## 指定软件源仓库分支
 
-项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配，默认使用的分支名称如下
+主要使用场景：目标镜像站有对应的系统镜像但是不符合本项目脚本关于软件源分支设置的默认规则
 
-<div class="annotate" markdown>
-| 系统名称 | 涉及的分支名称 |
-| --- | :---: |
-| <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian | debian / debian-archive |
-| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu | ubuntu / ubuntu-ports |
-| <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | kali |
-| <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | linuxmint / ubuntu / ubuntu-ports / debian |
-| <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin | deepin |
-| <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
-| <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | proxmox |
-| <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>Rocky Linux</code>， 7、8版本使用<code>CentOS</code>" } | centos / centos-altarch / rocky |
-| <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Fedora | fedora |
-| <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
-| <a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | rocky |
-| <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> AlmaLinux | almalinux / almalinux-vault |
-| <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS | opencloudos |
-| <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler | openeuler |
-| <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | opensuse |
-| <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | archlinux / archlinuxarm |
-| <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | alpine |
-</div>
+??? note "项目默认使用的系统分支名称"
+
+    项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配
+
+    | 系统名称 | 涉及的分支名称 |
+    | --- | :---: |
+    | <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian | debian / debian-archive |
+    | <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu | ubuntu / ubuntu-ports |
+    | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | kali |
+    | <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | linuxmint / ubuntu / ubuntu-ports / debian |
+    | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin | deepin |
+    | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
+    | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | proxmox |
+    | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | centos / centos-stream / centos-altarch / centos-vault |
+    | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Fedora | fedora |
+    | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
+    | <a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | rocky |
+    | <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> AlmaLinux | almalinux / almalinux-vault |
+    | <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS | opencloudos |
+    | <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler | openeuler |
+    | <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | opensuse |
+    | <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | archlinux / archlinuxarm |
+    | <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | alpine |
+    | <a href="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Gentoo | gentoo / gentoo-portage |
+
 
 请看下面的例子
 
-``` { .bash title="使用阿里云的 Rocky Linux 软件源" }
+``` { .bash title="使用阿里云镜像站的 Rocky Linux 软件源" }
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source mirrors.aliyun.com \
   --branch rockylinux
@@ -73,9 +79,11 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 
 阿里云镜像站的 Rocky Linux 镜像分支名称为 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现。
 
-什么是默认规则？参考这几个例子： `Debian GNU/Linux => debian`、`Rocky Linux => rocky`、`AlmaLinux => almalinux`
+> 部分系统会同时配置多个仓库的软件源，具体详见命令选项
 
-### 单独更换 EPEL 源
+---
+
+## 单独更换 EPEL 源
 
 !!! info "EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版，配置 EPEL 仓库已成为广大用户的普遍需求，建议默认安装它"
 
@@ -85,7 +93,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
 ```
 
-### 恢复使用官方源
+---
+
+## 恢复使用官方源
 
 当你不小心删除了官方源的备份时可以使用此命令来恢复，使用此命令选项后将跳过选择软件源步骤
 
@@ -94,7 +104,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source
 ```
 > 部分系统不存在官方源例如 `Arch Linux`，届时会自动更换成兼容性较高的阿里云镜像站
 
-### 自定义 Debian Security 源
+---
+
+## 自定义 Debian Security 源
 
 如果你想尽可能提高服务器的安全性则建议使用官方源，因为镜像同步存在延迟
 
@@ -104,7 +116,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --branch-security debian-security
 ```
 
-### 指定 Debian 系 Linux 操作系统的版本代号
+---
+
+## 指定 Debian 系 Linux 操作系统的版本代号
 
 大多数情况下自定义版本代号用于更换系统版本，请看下面的例子
 
@@ -128,7 +142,9 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
 ```
 
-### 更换 Ubuntu EOF版本软件源
+---
+
+## 更换 Ubuntu EOF版本软件源
 
 !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 分支"
 
@@ -140,9 +156,11 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --branch ubuntu-old-releases
 ```
 
-## 无人值守
+---
 
-不通过交互完成换源操作，需要使用大量命令选项来实现，建议熟悉后再使用
+## 无人值守（自动化）
+
+不通过交互完成换源操作，至少需要使用如下命令选项来实现，建议熟悉后再使用
 
 ``` { .bash .no-copy title="参考命令" }
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
