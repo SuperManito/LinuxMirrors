@@ -499,7 +499,7 @@ function handle_command_options() {
             IGNORE_BACKUP_TIPS="true"
             ;;
         ## 更新软件包
-        --upgrade-software | --updata-software)
+        --upgrade-software | --update-software)
             if [ "$2" ]; then
                 case "$2" in
                 [Tt]rue | [Ff]alse)
