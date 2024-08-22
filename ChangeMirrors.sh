@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-07-31
+## Modified: 2024-08-22
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -245,7 +245,7 @@ function main() {
 function handle_command_options() {
     ## 命令帮助
     function output_command_help() {
-        echo -e "\n命令选项(参数名/含义/参数值)：
+        echo -e "\n命令选项(名称/含义/选项值)：
 
   --abroad                 使用海外软件源                                                 无
   --edu                    使用中国大陆教育网软件源                                       无
@@ -261,13 +261,13 @@ function handle_command_options() {
   --branch-portage         指定 Gentoo 系统 portage 仓库的软件源分支(路径)                分支名
   --codename               指定 Debian 系操作系统的版本代号                               代号名称
   --protocol               指定 WEB 协议                                                  http 或 https
+  --use-intranet-source    是否优先使用内网软件源地址                                     true 或 false
+  --use-official-source    是否使用目标操作系统的官方软件源                               true 或 false
   --install-epel           是否安装 EPEL 附加软件包                                       true 或 false
   --close-firewall         是否关闭防火墙                                                 true 或 false
   --backup                 是否备份原有软件源                                             true 或 false
   --upgrade-software       是否更新软件包                                                 true 或 false
   --clean-cache            是否清理下载缓存                                               true 或 false
-  --use-intranet-source    优先使用内网软件源地址                                         无
-  --use-official-source    使用目标操作系统的官方软件源                                   无
   --only-epel              仅更换 EPEL 软件源模式                                         无
   --ignore-backup-tips     忽略覆盖备份提示                                               无
   --print-diff             打印源文件修改前后差异                                         无
@@ -291,70 +291,66 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
             ;;
         --source-epel)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
                 else
                     SOURCE_EPEL="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
             ;;
         --source-security)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
                 else
                     SOURCE_SECURITY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
             ;;
         --source-vault)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
                 else
                     SOURCE_VAULT="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
             ;;
         --source-portage)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
                 else
                     SOURCE_PORTAGE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
-            ;;
-        ## 使用官方源
-        --use-official-source)
-            USE_OFFICIAL_SOURCE="true"
             ;;
         ## 指定软件源分支
         --branch)
@@ -362,7 +358,7 @@ function handle_command_options() {
                 SOURCE_BRANCH="$2"
                 shift
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
             fi
             ;;
         --branch-epel)
@@ -370,7 +366,7 @@ function handle_command_options() {
                 SOURCE_EPEL_BRANCH="$2"
                 shift
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
             fi
             ;;
         --branch-security)
@@ -378,7 +374,7 @@ function handle_command_options() {
                 SOURCE_SECURITY_BRANCH="$2"
                 shift
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
             fi
             ;;
         --branch-vault)
@@ -386,7 +382,7 @@ function handle_command_options() {
                 SOURCE_VAULT_BRANCH="$2"
                 shift
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
             fi
             ;;
         --branch-portage)
@@ -394,7 +390,7 @@ function handle_command_options() {
                 SOURCE_PORTAGE_BRANCH="$2"
                 shift
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
             fi
             ;;
         ## 指定 Debian 系操作系统的版本代号
@@ -403,15 +399,27 @@ function handle_command_options() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定版本代号！"
             fi
             ;;
-        ## 优先使用内网地址
-        --use-intranet-source)
-            USE_INTRANET_SOURCE="true"
+        ## 使用官方源
+        --use-official-source)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    USE_OFFICIAL_SOURCE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    ;;
+                esac
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+            fi
             ;;
-        --intranet)
-            ## 废弃的命令选项
+        ## 使用内网地址
+        --intranet | --use-intranet-source)
             if [ "$2" ]; then
                 case "$2" in
                 [Tt]rue | [Ff]alse)
@@ -419,11 +427,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
         ## WEB 协议（HTTP/HTTPS）
@@ -435,11 +443,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 http 或 https 作为参数值！"
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该选项后指定 http 或 https ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 WEB 协议（HTTP/HTTPS）！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 WEB 协议（http/https）！"
             fi
             ;;
         ## 安装 EPEL 附加软件包
@@ -451,11 +459,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
         --only-epel)
@@ -471,11 +479,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
         ## 备份原有软件源
@@ -487,11 +495,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -507,11 +515,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
         ## 清理下载缓存
@@ -523,11 +531,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
         ## 打印源文件修改前后差异
@@ -540,7 +548,7 @@ function handle_command_options() {
             exit
             ;;
         *)
-            output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
+            output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请确认后重新输入！"
             ;;
         esac
         shift
@@ -889,10 +897,7 @@ function choose_mirrors() {
         local intranet_source
         for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
             if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
-                # echo "${SOURCE}"
                 intranet_source="${mirror_list_intranet[i]}"
-                # echo "${intranet_source}"
-                # exit
                 ONLY_HTTP="True"
                 break
             else

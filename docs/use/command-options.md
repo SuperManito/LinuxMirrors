@@ -14,14 +14,14 @@
 | `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | 分支名 |
 | `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
 | `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
+| `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
+| `--use-official-source` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `--install-epel` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
 | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
 | `--backup` | 是否备份原有软件源 | `true` 或 `false` |
 | `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 是否清理下载缓存 | `true` 或 `false` |
 | `--print-diff` | 是否打印源文件修改前后差异 | `true` 或 `false` |
-| `--use-intranet-source` | 优先使用内网软件源地址 | 无 |
-| `--use-official-source` | 使用目标操作系统的官方软件源 | 无 |
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 | `--help` | 查看帮助菜单 | 无 |
@@ -166,7 +166,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
   --source mirror.example.com \
   --protocol http \
-  --intranet false \
+  --use-intranet-source false \
   --install-epel true \
   --close-firewall true \
   --backup true \

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-07-26
+## Modified: 2024-08-22
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -134,7 +134,7 @@ function handle_command_options() {
     ## 命令帮助
     function output_command_help() {
         echo -e "
-命令选项(参数名/含义/参数值)：
+命令选项(名称/含义/选项值)：
 
   --source                 指定 Docker CE 源地址                     地址
   --source-registry        指定 Docker Registry 源地址               地址
@@ -154,13 +154,13 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
             ;;
         ## 指定 Docker Registry 仓库地址
@@ -168,13 +168,13 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "检测到无效参数值 ${BLUE}$2${PLAIN} ，请输入有效的地址！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
                 else
                     SOURCE_REGISTRY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定软件源地址！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定镜像仓库地址！"
             fi
             ;;
         ## 指定 Debian 版本代号
@@ -183,7 +183,7 @@ function handle_command_options() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定版本代号！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定版本代号！"
             fi
             ;;
         ## 安装最新版本
@@ -195,11 +195,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该参数后指定 true 或 false 作为参数值！"
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
                     ;;
                 esac
             else
-                output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请在该参数后指定 true 或 false 作为参数值！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -212,7 +212,7 @@ function handle_command_options() {
             exit
             ;;
         *)
-            output_error "检测到 ${BLUE}$1${PLAIN} 为无效参数，请确认后重新输入！"
+            output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请确认后重新输入！"
             ;;
         esac
         shift
