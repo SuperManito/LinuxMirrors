@@ -100,7 +100,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
 当你不小心删除了官方源的备份时可以使用此命令来恢复，使用此命令选项后将跳过选择软件源步骤
 
 ``` bash
-bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source
+bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source true
 ```
 > 部分系统不存在官方源例如 `Arch Linux`，届时会自动更换成兼容性较高的阿里云镜像站
 
