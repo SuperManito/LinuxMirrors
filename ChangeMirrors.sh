@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-08-22
+## Modified: 2024-10-07
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -153,6 +153,7 @@ SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
 SYSTEM_DEEPIN="Deepin"
 SYSTEM_LINUX_MINT="Linuxmint"
+SYSTEM_ZORIN="Zorin"
 SYSTEM_REDHAT="RedHat"
 SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
@@ -697,7 +698,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}")
         # 理论全部支持或不作判断
         ;;
     *)
@@ -745,7 +746,7 @@ function collect_system_info() {
                 ;;
             esac
             ;;
-        "${SYSTEM_UBUNTU}")
+        "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
             if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
                 SOURCE_BRANCH="ubuntu"
             else
@@ -1650,7 +1651,7 @@ deb ${1} ${2}-security ${3}
         "${SYSTEM_DEBIAN}")
             SOURCE="deb.debian.org"
             ;;
-        "${SYSTEM_UBUNTU}")
+        "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
             SOURCE="archive.ubuntu.com"
             ;;
         "${SYSTEM_KALI}")
@@ -1688,7 +1689,7 @@ $(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sec
 # deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
         fi
         ;;
-    "${SYSTEM_UBUNTU}")
+    "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
         repository_sections="main restricted universe multiverse"
         echo "${tips}
 $(gen_ubuntu_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList

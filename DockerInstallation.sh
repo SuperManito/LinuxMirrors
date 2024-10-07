@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-08-22
+## Modified: 2024-10-07
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -62,6 +62,7 @@ SYSTEM_UBUNTU="Ubuntu"
 SYSTEM_KALI="Kali"
 SYSTEM_DEEPIN="Deepin"
 SYSTEM_LINUX_MINT="Linuxmint"
+SYSTEM_ZORIN="Zorin"
 SYSTEM_REDHAT="RedHat"
 SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
@@ -340,7 +341,7 @@ function collect_system_info() {
         "${SYSTEM_DEBIAN}")
             SOURCE_BRANCH="debian"
             ;;
-        "${SYSTEM_UBUNTU}")
+        "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
             SOURCE_BRANCH="ubuntu"
             ;;
         "${SYSTEM_RHEL}")
@@ -595,8 +596,8 @@ function uninstall_original_version() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_UBUNTU}")
-            package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine"
+        "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
+            package_list="docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc"
             ;;
         *)
             package_list="docker.io docker-doc docker-compose podman-docker containerd runc"
@@ -642,8 +643,10 @@ function configure_docker_ce_mirror() {
         apt-key del 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88 >/dev/null 2>&1 # 删除旧的密钥
         [ -f $file_keyring ] && rm -rf $file_keyring
         install -m 0755 -d /etc/apt/keyrings
-        echo ${SOURCE}
-        curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg -o $file_keyring >/dev/null 2>&1
+        curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg -o $file_keyring >/dev/null
+        if [ $? -ne 0 ]; then
+            output_error "GPG 密钥下载失败，请检查网络或更换 Docker CE 软件源后重试！"
+        fi
         chmod a+r $file_keyring
         ## 添加源
         echo "deb [arch=${SOURCE_ARCH} signed-by=${file_keyring}] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1

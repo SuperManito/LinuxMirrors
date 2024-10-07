@@ -35,7 +35,11 @@
         <td align="center">19.0 ~ 21 / LMDE 6</td>
     </tr>
     <tr>
-        <td><a href="https://www.deepin.org" target="_blank"><img src="./docs/assets/images/icon/deepin.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Deepin</td>
+        <td><a href="https://www.deepin.org" target="_blank"><img src="./docs/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;deepin</td>
+        <td align="center">all</td>
+    </tr>
+    <tr>
+        <td><a href="https://zorin.com/os" target="_blank"><img src="./docs/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Zorin OS</td>
         <td align="center">all</td>
     </tr>
     <tr>
@@ -100,7 +104,7 @@
 
 ***
 
-这是一个完全开源的非盈利项目，旨在为从事计算机相关行业的朋友们提供便利，让换源更简单
+这是一个完全开源的非盈利项目，旨在为从事计算机相关行业的朋友们提供便利，使换源更简单
 
 ### LICENSE
 
