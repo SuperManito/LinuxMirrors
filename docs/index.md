@@ -2,6 +2,7 @@
 title: LinuxMirrors · 使换源更简单
 comments: true
 glightbox: false
+comments_description: 该评论区仅用于展示项目使用评价和经验分享，反馈问题或提出建议请前往<a href="/community">社区</a>
 hide:
   - navigation
   - toc
@@ -58,7 +59,7 @@ hide:
 
     ---
 
-    如有适配请求或意见与建议请可以提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues)  
+    如有适配请求或意见与建议请提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues) 或直接在 [社区](./community/index.md) 中参与讨论  
     若愿意贡献代码，请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
 
 </div>
