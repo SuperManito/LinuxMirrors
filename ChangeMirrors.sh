@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-10-07
+## Modified: 2024-10-22
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2166,6 +2166,10 @@ function change_mirrors_or_install_EPEL() {
         return
         ;;
     esac
+    ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，已无适配的必要）
+    if [[ "${target_version}" == "7" ]]; then
+        return
+    fi
     ## 安装 EPEL 软件包
     if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
