@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-10-22
+## Modified: 2024-10-24
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -163,6 +163,7 @@ SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
+SYSTEM_ANOLISOS="Anolis OS"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
 SYSTEM_ALPINE="Alpine"
@@ -175,6 +176,7 @@ File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
+File_AnolisOSRelease=/etc/anolis-release
 File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
 File_GentooRelease=/etc/gentoo-release
@@ -603,6 +605,8 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [ -s $File_AnolisOSRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}"
     elif [ -f $File_ArchLinuxRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ARCH}"
     elif [ -f $File_AlpineRelease ]; then
@@ -682,6 +686,11 @@ function collect_system_info() {
         ;;
     "${SYSTEM_OPENEULER}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-4] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_ANOLISOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 23 ]]; then
             is_supported="false"
         fi
         ;;
@@ -799,7 +808,7 @@ function collect_system_info() {
     "${SYSTEM_DEBIAN}" | "${SYSTEM_ALPINE}")
         SYNC_MIRROR_TEXT="更新软件源"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         SYNC_MIRROR_TEXT="生成软件源缓存"
         ;;
     "${SYSTEM_OPENSUSE}")
@@ -822,9 +831,16 @@ function check_command_options() {
         fi
     fi
     if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] || [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_REDHAT}" && "${SYSTEM_FACTIONS}" && "${SYSTEM_OPENCLOUDOS}" || "${SYSTEM_FACTIONS}" && "${SYSTEM_OPENEULER}" ]]; then
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}")
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
+                output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+            fi
+            ;;
+        *)
             output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
-        fi
+            ;;
+        esac
     fi
     if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_SECURITY_BRANCH}" == "true" ]]; then
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
@@ -1028,7 +1044,7 @@ function choose_install_epel_packages() {
 
     ## 判断是否支持且需要处理 EPEL 附加软件包
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}")
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] || [[ "${INSTALL_EPEL}" == "false" ]]; then
             INSTALL_EPEL="false"
             return
@@ -1206,7 +1222,7 @@ function backup_original_mirrors() {
                 backup_file $File_LinuxMintSourceList $File_LinuxMintSourceListBackup "official-package-repositories.list"
             fi
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
             # /etc/yum.repos.d
             backup_dir $Dir_YumRepos $Dir_YumReposBackup
             ;;
@@ -1335,6 +1351,9 @@ function remove_original_mirrors() {
     "${SYSTEM_OPENEULER}")
         [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/openEuler.repo
         ;;
+    "${SYSTEM_ANOLISOS}")
+        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/AnolisOS*
+        ;;
     "${SYSTEM_OPENSUSE}")
         [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos/ | grep -E "^repo-" | grep -Ev "openh264" | xargs rm -rf
         ;;
@@ -1393,7 +1412,7 @@ function change_mirrors_main() {
                     diff_file $File_LinuxMintSourceListBackup $File_LinuxMintSourceList
                 fi
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
                 diff_dir $Dir_YumReposBackup $Dir_YumRepos
                 ;;
             "${SYSTEM_OPENSUSE}")
@@ -1427,6 +1446,9 @@ function change_mirrors_main() {
     "${SYSTEM_OPENEULER}")
         change_mirrors_openEuler
         ;;
+    "${SYSTEM_ANOLISOS}")
+        change_mirrors_AnolisOS
+        ;;
     "${SYSTEM_OPENSUSE}")
         change_mirrors_openSUSE
         ;;
@@ -1450,20 +1472,8 @@ function change_mirrors_main() {
     "${SYSTEM_DEBIAN}")
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        local package_manager="yum"
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                package_manager="dnf"
-                ;;
-            esac
-            ;;
-        "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            package_manager="dnf"
-            ;;
-        esac
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+        local package_manager="$(get_package_manager)"
         $package_manager makecache
         ;;
     "${SYSTEM_OPENSUSE}")
@@ -1520,20 +1530,8 @@ function upgrade_software() {
             apt-get autoremove -y >/dev/null 2>&1
             apt-get clean >/dev/null 2>&1
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            local package_manager="yum"
-            case "${SYSTEM_JUDGMENT}" in
-            "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
-                9)
-                    package_manager="dnf"
-                    ;;
-                esac
-                ;;
-            "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-                package_manager="dnf"
-                ;;
-            esac
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+            local package_manager="$(get_package_manager)"
             $package_manager autoremove -y >/dev/null 2>&1
             $package_manager clean packages -y >/dev/null 2>&1
             ;;
@@ -1584,20 +1582,8 @@ function upgrade_software() {
     "${SYSTEM_DEBIAN}")
         apt-get upgrade -y
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        local package_manager="yum"
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                package_manager="dnf"
-                ;;
-            esac
-            ;;
-        "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            package_manager="dnf"
-            ;;
-        esac
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+        local package_manager="$(get_package_manager)"
         $package_manager update -y --skip-broken
         ;;
     "${SYSTEM_OPENSUSE}")
@@ -2011,6 +1997,31 @@ function change_mirrors_openEuler() {
     change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
+## 更换 Anolis OS 发行版软件源
+function change_mirrors_AnolisOS() {
+    ## 生成官方 repo 源文件
+    gen_repo_files_AnolisOS "${SYSTEM_VERSION_NUMBER}"
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        change_mirrors_or_install_EPEL # EPEL 附加软件包
+        return
+    fi
+
+    ## 修改源
+    cd $Dir_YumRepos
+    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    23)
+        sed -e "s|https://mirrors.openanolis.cn/anolis|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
+            -i \
+            AnolisOS-Debuginfo.repo \
+            AnolisOS.repo \
+            AnolisOS-Source.repo
+        ;;
+    esac
+
+    change_mirrors_or_install_EPEL # EPEL 附加软件包
+}
+
 ## 更换 openSUSE 发行版软件源
 function change_mirrors_openSUSE() {
     ## 生成官方 repo 源文件
@@ -2159,9 +2170,6 @@ function change_mirrors_or_install_EPEL() {
             target_version="${SYSTEM_VERSION_NUMBER:0:1}"
         fi
         ;;
-    "${SYSTEM_OPENEULER}")
-        target_version="9"
-        ;;
     *)
         return
         ;;
@@ -2173,19 +2181,7 @@ function change_mirrors_or_install_EPEL() {
     ## 安装 EPEL 软件包
     if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
-        local package_manager="yum"
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
-            9)
-                package_manager="dnf"
-                ;;
-            esac
-            ;;
-        "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-            package_manager="dnf"
-            ;;
-        esac
+        local package_manager="$(get_package_manager)"
         $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${target_version}.noarch.rpm
         rm -rf $Dir_YumRepos/epel*
     fi
@@ -2204,6 +2200,24 @@ function change_mirrors_or_install_EPEL() {
         -e "s|download.fedoraproject.org/pub/epel|${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}|g" \
         -i \
         $Dir_YumRepos/epel*
+}
+
+## 选择系统包管理器
+function get_package_manager() {
+    local command="yum"
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            command="dnf"
+            ;;
+        esac
+        ;;
+    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+        command="dnf"
+        ;;
+    esac
+    echo "${command}"
 }
 
 ##############################################################################
@@ -5038,6 +5052,80 @@ enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
 EOF
+}
+
+## 生成 Anolis OS 官方 repo 源文件
+function gen_repo_files_AnolisOS() {
+    case "$1" in
+    23)
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS.repo
+[os]
+name=AnolisOS-$releasever - os
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/os/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[updates]
+name=AnolisOS-$releasever - updates
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/updates/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[kernel-6]
+name=AnolisOS-$releasever - kernel-6
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-6/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Source.repo
+[os-source]
+name=AnolisOS-$releasever - os Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/os/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[updates-source]
+name=AnolisOS-$releasever - updates Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/updates/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[kernel-source]
+name=AnolisOS-$releasever - kernel-6 Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/kernel-6/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Debuginfo.repo
+[os-debuginfo]
+name=AnolisOS-$releasever - os Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/os/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[updates-debuginfo]
+name=AnolisOS-$releasever - updates Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/updates/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[kernel-6-debuginfo]
+name=AnolisOS-$releasever - kernel-6 Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/kernel-6/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        ;;
+    esac
 }
 
 ## 生成 openSUSE 官方 repo 源文件

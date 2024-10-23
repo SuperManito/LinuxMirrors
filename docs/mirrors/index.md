@@ -10,22 +10,22 @@ hide:
 
 > 下方列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` `openEuler` 软件源，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
 
-| 镜像站 | IPv6 | Arch Linux | Kali Linux | Deepin | Rocky Linux | AlmaLinux | EPEL :material-information-outline:{ title="EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版" } | Fedora | OpenCloudOS | Alpine Linux | Armbian | Proxmox | Linux Mint | Gentoo |
-| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
-| [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: |
-| [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: |
-| [华为云](https://mirrors.huaweicloud.com "mirrors.huaweicloud.com") | :unsupport: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: |
-| [网易](https://mirrors.163.com "mirrors.163.com") | :unsupport: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: | :supported: | :supported: |
-| [火山引擎](https://developer.volcengine.com/mirror "mirrors.volces.com") | :unsupport: | :unsupport: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
-| [清华大学](https://mirrors.tuna.tsinghua.edu.cn "mirrors.tuna.tsinghua.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: |
-| [北京大学](https://mirrors.pku.edu.cn/Mirrors "mirrors.pku.edu.cn") | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
-| [浙江大学](https://mirrors.zju.edu.cn "mirrors.zju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: |
-| [南京大学](https://mirrors.nju.edu.cn "mirrors.nju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: |
-| [兰州大学](https://mirror.lzu.edu.cn "mirror.lzu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: |
-| [上海交通大学](https://mirror.sjtu.edu.cn "mirror.sjtu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :incompatible: | :incompatible: | :supported: | :incompatible: | :supported: | :unsupport: | :supported: | :incompatible: |
-| [重庆邮电大学](https://mirrors.cqupt.edu.cn "mirrors.cqu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: |
-| [中国科学技术大学](https://mirrors.ustc.edu.cn "mirrors.ustc.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: |
-| [中国科学院软件研究所](https://mirror.iscas.ac.cn "mirror.iscas.ac.cn") | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: |
+| 镜像站 | IPv6 | Arch Linux | Kali Linux | Deepin | Rocky Linux | AlmaLinux | EPEL :material-information-outline:{ title="EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版" } | Fedora | OpenCloudOS | Alpine Linux | Armbian | Proxmox | Linux Mint | Gentoo | Anolis OS |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| [阿里云](https://mirrors.aliyun.com "mirrors.aliyun.com") | :supported: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: |
+| [腾讯云](https://mirrors.tencent.com "mirrors.tencent.com") | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: |
+| [华为云](https://mirrors.huaweicloud.com "mirrors.huaweicloud.com") | :unsupport: | :supported: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: |
+| [网易](https://mirrors.163.com "mirrors.163.com") | :unsupport: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: |
+| [火山引擎](https://developer.volcengine.com/mirror "mirrors.volces.com") | :unsupport: | :unsupport: | :supported: | :supported: | :incompatible: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
+| [清华大学](https://mirrors.tuna.tsinghua.edu.cn "mirrors.tuna.tsinghua.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: |
+| [北京大学](https://mirrors.pku.edu.cn/Mirrors "mirrors.pku.edu.cn") | :supported: | :supported: | :unsupport: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :unsupport: | :unsupport: | :unsupport: | :unsupport: |
+| [浙江大学](https://mirrors.zju.edu.cn "mirrors.zju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :supported: |
+| [南京大学](https://mirrors.nju.edu.cn "mirrors.nju.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: |
+| [兰州大学](https://mirror.lzu.edu.cn "mirror.lzu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :unsupport: | :unsupport: | :supported: | :supported: | :unsupport: |
+| [上海交通大学](https://mirror.sjtu.edu.cn "mirror.sjtu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :incompatible: | :incompatible: | :supported: | :incompatible: | :supported: | :unsupport: | :supported: | :incompatible: | :unsupport: |
+| [重庆邮电大学](https://mirrors.cqupt.edu.cn "mirrors.cqu.edu.cn") | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :unsupport: | :unsupport: | :unsupport: |
+| [中国科学技术大学](https://mirrors.ustc.edu.cn "mirrors.ustc.edu.cn") | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: |
+| [中国科学院软件研究所](https://mirror.iscas.ac.cn "mirror.iscas.ac.cn") | :unsupport: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :supported: | :unsupport: |
 
 ???+ question "使用帮助"
 
@@ -33,7 +33,7 @@ hide:
 
     如果这里没有想使用的镜像站那可以看看其它运行模式和命令选项。软件源的速度区分刷新速度和下行速率，后者才是关键，具体请结合实际地理位置选择尝试，还可以通过[辅助工具网站](#工具网站)进行一些测试
 
-    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `腾讯云`、`阿里云`，海外或复杂网络环境下不建议使用 `清华(TUNA)` `浙江大学` 等容易阻断的镜像站
+    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `阿里云`、`腾讯云`，海外或复杂网络环境下不建议使用 `清华(TUNA)` 等容易阻断的镜像站
 
 ??? note "中国大陆教育网软件源列表"
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-10-07
+## Modified: 2024-10-24
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -72,6 +72,7 @@ SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
+SYSTEM_ANOLISOS="Anolis OS"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
 SYSTEM_ALPINE="Alpine"
@@ -270,6 +271,8 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [ -s $File_AnolisOSRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_OpenCloudOSRelease ]; then
@@ -367,7 +370,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         SOURCE_BRANCH="centos"
         ;;
     esac
@@ -376,7 +379,7 @@ function collect_system_info() {
     "${SYSTEM_DEBIAN}")
         SYNC_MIRROR_TEXT="更新软件源"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         SYNC_MIRROR_TEXT="生成软件源缓存"
         ;;
     esac
@@ -550,7 +553,7 @@ function install_dependency_packages() {
         sed -i '/docker-ce/d' $File_DebianSourceList
         rm -rf $Dir_DebianExtendSource/docker.list
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         rm -rf $Dir_YumRepos/*docker*.repo
         ;;
     esac
@@ -559,7 +562,7 @@ function install_dependency_packages() {
     "${SYSTEM_DEBIAN}")
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         yum makecache
         ;;
     esac
@@ -572,7 +575,7 @@ function install_dependency_packages() {
     "${SYSTEM_DEBIAN}")
         apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         # 注：红帽 8 版本才发布了 dnf 包管理工具，为了兼容性而优先选择安装 dnf-utils
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         7)
@@ -604,21 +607,15 @@ function uninstall_original_version() {
             ;;
         esac
         ;;
-    "${SYSTEM_REDHAT}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_FEDORA}")
+        "${SYSTEM_FEDORA}" | "${SYSTEM_RHEL}")
             package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine podman runc"
-            ;;
-        "${SYSTEM_RHEL}")
-            package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine"
             ;;
         *)
             package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine"
             ;;
         esac
-        ;;
-    "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
-        package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine"
         ;;
     esac
     # 卸载软件包并清理残留
@@ -627,7 +624,7 @@ function uninstall_original_version() {
         apt-get remove -y $package_list
         apt-get autoremove -y >/dev/null 2>&1
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         yum remove -y $package_list
         yum autoremove -y >/dev/null 2>&1
         ;;
@@ -652,7 +649,7 @@ function configure_docker_ce_mirror() {
         echo "deb [arch=${SOURCE_ARCH} signed-by=${file_keyring}] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
         sed -i "s|download.docker.com|${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
         ## 兼容处理版本号
@@ -683,7 +680,7 @@ function install_docker_engine() {
             apt-cache madison docker-ce-cli | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
             yum list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
             yum list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
@@ -699,7 +696,7 @@ function install_docker_engine() {
             "${SYSTEM_DEBIAN}")
                 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
                 yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             esac
@@ -743,7 +740,7 @@ function install_docker_engine() {
                 esac
                 apt-get install -y docker-ce=${INSTALL_JUDGMENT}${DOCKER_VERSION}* docker-ce-cli=5:${DOCKER_VERSION}* containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
                 yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             esac
@@ -791,7 +788,7 @@ function install_docker_engine() {
     "${SYSTEM_DEBIAN}")
         dpkg -l | grep docker-ce-cli -q
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
         rpm -qa | grep docker-ce-cli -q
         ;;
     esac
@@ -861,7 +858,7 @@ function check_version() {
                 echo -e '请尝试手动执行安装命令： apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
                 echo ''
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
                 echo -e "\n检查源文件：cat $Dir_YumRepos/docker.repo"
                 echo -e '请尝试手动执行安装命令： yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
                 ;;

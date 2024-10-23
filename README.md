@@ -79,6 +79,10 @@
         <td align="center">21.03 ~ 24</td>
     </tr>
     <tr>
+        <td><a href="https://openanolis.cn" target="_blank"><img src="./docs/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;Anolis OS</td>
+        <td align="center">23</td>
+    </tr>
+    <tr>
         <td><a href="https://www.opensuse.org" target="_blank"><img src="./docs/assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;openSUSE</td>
         <td align="center">Leep 15 / Tumbleweed</td>
     </tr>

@@ -48,6 +48,13 @@ hide:
     脚本使换源变得更简单，默认交互运行，逐步引导用户选择软件源配置  
     同时提供了强大的命令选项，可实现各种定制需求和无交互操作
 
+-   :material-pencil-ruler-outline:{ .lg .middle } __高度可定制__
+
+    ---
+
+    脚本命令选项设计遵循正式应用程序规范，能够满足各种高级需求  
+    代码结构清晰，易于阅读和修改，可克隆后根据需求自行定制
+
 -   :material-scale-balance:{ .lg .middle } __开源，MIT__
 
     ---
@@ -81,6 +88,7 @@ hide:
 | <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux | 8 ~ 9 |
 | <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS | 8 ~ 9 |
 | <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler | 21.03 ~ 24 |
+| <a href="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS | 23 |
 | <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | Leep 15 / Tumbleweed |
 | <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | all |
 | <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | v3 / edge |
