@@ -141,7 +141,7 @@ function handle_command_options() {
   --source                 指定 Docker CE 源地址                     地址
   --source-registry        指定 Docker Registry 源地址               地址
   --codename               指定 Debian 系操作系统的版本代号          代号名称
-  --install-latested       控制是否安装最新版本的 Docker Engine      true 或 false
+  --install-latest       控制是否安装最新版本的 Docker Engine        true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                          无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
@@ -189,7 +189,7 @@ function handle_command_options() {
             fi
             ;;
         ## 安装最新版本
-        --install-latested)
+        --install-latest | --install-latested)
             if [ "$2" ]; then
                 case "$2" in
                 [Tt]rue | [Ff]alse)

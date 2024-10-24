@@ -70,7 +70,7 @@ hide:
     | 上海交通大学（思源） | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn "https://mirror.sjtu.edu.cn") |
     | 上海交通大学（致远） | [mirrors.sjtug.sjtu.edu.cn](https://mirrors.sjtug.sjtu.edu.cn "https://mirrors.sjtug.sjtu.edu.cn") |
 
-## 海外地区 :flag-world-map:
+## 境外与海外地区 :flag-world-map:
 
 === ":fontawesome-solid-earth-asia: 亚洲"
 

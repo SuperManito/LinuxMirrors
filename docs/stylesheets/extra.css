@@ -46,3 +46,6 @@
 .md-typeset {
     font-size: 16px;
 }
+.md-typeset .emojione, .md-typeset .gemoji, .md-typeset .twemoji {
+    vertical-align: -0.2em !important;
+}
