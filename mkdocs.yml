@@ -143,10 +143,7 @@ plugins:
   - glightbox
 nav:
   - "介绍": index.md
-  - "使用方法":
-      - "使用方法": use/index.md
-      - "常见问题": use/help.md
-      - "命令选项": use/command-options.md
+  - "使用方法": use/index.md
   - "软件源列表": mirrors/index.md
   - "其它工具": other/index.md
   - "社区": community/index.md

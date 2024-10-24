@@ -5,6 +5,8 @@ hide:
   - footer
 ---
 
+> 如果您觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 :octicons-heart-fill-24:{ .heart style="color: red" }
+
 ## :fontawesome-brands-docker:{style="color: #086dd7"} Docker 安装脚本
 
 支持 `选择或更换软件源以及镜像仓库`、`安装指定版本`、`重装` 等功能  
@@ -98,12 +100,12 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
         > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Armbian` &nbsp; `Proxmox`
 
-    === "RedHat 系 / OpenCloudOS / openEuler"
+    === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
 
         ``` bash
         yum remove -y docker* containerd.io podman* runc
         ```
 
-        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler`
+        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
 
     卸载完成后重新执行脚本安装即可

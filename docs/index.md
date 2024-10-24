@@ -62,7 +62,7 @@ hide:
     项目已设立开源许可协议，脚本代码完全开源且免费使用  
     请尊重作者的知识成果，传播时请在显著位置标注来源和作者
 
--   :octicons-report-24:{ .lg .middle } __意见与建议__
+-   :material-information-variant-box-outline:{ .lg .middle } __意见与建议__
 
     ---
 
