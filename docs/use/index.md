@@ -88,7 +88,7 @@ hide:
 
 选项卡分别代表脚本调用位置和软件源地理位置，请在使用前检查目标镜像站是否支持您所使用的操作系统，
 
-- ### 相关注意事项
+- ### 注意事项
 
     <div class="grid cards" markdown>
 
@@ -111,32 +111,6 @@ hide:
         当前执行方式依赖 `curl` 指令获取脚本内容并执行，但部分操作系统没有预装此软件包，届时则会报错 `Command not found`，安装方法详见下方 [_关于报错 Command not found_](#关于报错-command-not-found)。还可自行复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名称的 `.sh` 脚本，粘贴源码内容后通过 `bash` 指令手动执行
 
     </div>
-
-- ### 关于调用脚本的互联网位置
-
-    项目利用 GitHub Action 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名 CDN 云服务商几乎没有被劫持的风险可放心使用
-
-    当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有三个不同的地址，默认的 CDN 地址更易于访问和记忆
-
-- ### 关于未启用的软件源
-
-    脚本遵循系统默认设置即没有启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，如果你有使用需求请阅读下面的启用方法
-
-    === "Debian 系"
-
-        默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
-
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
-
-    === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
-
-        部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
-
-        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
-
-    === "openSUSE"
-
-        部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
 - ### 常见问题
 
@@ -190,26 +164,26 @@ hide:
 
         !!! quote ""
 
-            - ### 验证是否已安装 `SSH` 服务
+            - 验证是否已安装 `SSH` 服务
 
                 ``` bash
                 ls /etc | grep ssh
                 ```
                 > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包
 
-            - ### 设置允许 Root 用户登录
+            - 设置允许 Root 用户登录
 
                 ``` bash
                 cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
                 ```
 
-            - ### 设置密码认证
+            - 设置密码认证
 
                 ``` bash
                 cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
                 ```
 
-            - ### 启动/重启 `SSH` 服务
+            - 启动/重启 `SSH` 服务
 
                 ``` bash
                 ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
@@ -273,6 +247,32 @@ hide:
         !!! quote ""
 
             - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行，切换命令为 `sudo -i` 或 `su root`
+
+- ### 关于调用脚本的互联网位置
+
+    项目利用 GitHub Action 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名 CDN 云服务商几乎没有被劫持的风险可放心使用
+
+    当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有三个不同的地址，默认的 CDN 地址更易于访问和记忆
+
+- ### 关于未启用的软件源
+
+    脚本遵循系统默认设置即没有启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，如果你有使用需求请阅读下面的启用方法
+
+    === "Debian 系"
+
+        默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
+
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
+
+    === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
+
+        部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
+
+        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
+
+    === "openSUSE"
+
+        部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
 
 ---

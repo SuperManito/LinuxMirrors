@@ -94,6 +94,7 @@ markdown_extensions:
   - toc:
       permalink: "#"
       permalink_title: 永久链接
+      toc_depth: 3
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
           case: lower
