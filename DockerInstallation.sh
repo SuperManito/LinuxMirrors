@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-10-24
+## Modified: 2024-10-29
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -26,6 +26,7 @@ mirror_list_docker_ce=(
 ## Docker Registry 仓库列表
 # 格式："软件源名称@软件源地址"
 mirror_list_registry=(
+    "Docker Proxy（推荐）@dockerproxy.net"
     "道客 DaoCloud@docker.m.daocloud.io"
     "AtomHub 可信镜像中心@hub.atomgit.com"
     "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
