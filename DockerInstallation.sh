@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-10-29
+## Modified: 2024-10-31
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -85,6 +85,7 @@ File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
+File_AnolisOSRelease=/etc/anolis-release
 File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
 File_ProxmoxVersion=/etc/pve/.version
@@ -277,7 +278,10 @@ function collect_system_info() {
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为官方宣称8版本基于红帽而9版本不是
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" == 9 ]]; then
+            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+        fi
+        # SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为官方宣称8版本基于红帽而9版本不是
     else
         output_error "无法判断当前运行环境或不支持当前操作系统！"
     fi
@@ -564,7 +568,8 @@ function install_dependency_packages() {
         apt-get update
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
-        yum makecache
+        local package_manager="$(get_package_manager)"
+        $package_manager makecache
         ;;
     esac
     VERIFICATION_SOURCESYNC=$?
@@ -577,17 +582,36 @@ function install_dependency_packages() {
         apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        local package_manager="$(get_package_manager)"
         # 注：红帽 8 版本才发布了 dnf 包管理工具，为了兼容性而优先选择安装 dnf-utils
         case ${SYSTEM_VERSION_NUMBER:0:1} in
         7)
-            yum install -y yum-utils device-mapper-persistent-data lvm2
+            $package_manager install -y yum-utils device-mapper-persistent-data lvm2
             ;;
         *)
-            yum install -y dnf-utils device-mapper-persistent-data lvm2
+            $package_manager install -y dnf-utils device-mapper-persistent-data lvm2
             ;;
         esac
         ;;
     esac
+}
+
+## 选择系统包管理器
+function get_package_manager() {
+    local command="yum"
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        9)
+            command="dnf"
+            ;;
+        esac
+        ;;
+    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+        command="dnf"
+        ;;
+    esac
+    echo "${command}"
 }
 
 ## 卸载 Docker Engine 原有版本软件包
@@ -622,12 +646,13 @@ function uninstall_original_version() {
     # 卸载软件包并清理残留
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        apt-get remove -y $package_list
+        apt-get remove -y $package_list >/dev/null 2>&1
         apt-get autoremove -y >/dev/null 2>&1
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
-        yum remove -y $package_list
-        yum autoremove -y >/dev/null 2>&1
+        local package_manager="$(get_package_manager)"
+        $package_manager remove -y $package_list >/dev/null 2>&1
+        $package_manager autoremove -y >/dev/null 2>&1
         ;;
     esac
 }
@@ -665,7 +690,8 @@ function configure_docker_ce_mirror() {
                 ;;
             esac
             sed -i "s|\$releasever|${target_version}|g" $Dir_YumRepos/docker-ce.repo
-            yum makecache
+            local package_manager="$(get_package_manager)"
+            $package_manager makecache
         fi
         ;;
     esac
@@ -698,7 +724,8 @@ function install_docker_engine() {
                 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
-                yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                local package_manager="$(get_package_manager)"
+                $package_manager install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             esac
         else
@@ -742,7 +769,8 @@ function install_docker_engine() {
                 apt-get install -y docker-ce=${INSTALL_JUDGMENT}${DOCKER_VERSION}* docker-ce-cli=5:${DOCKER_VERSION}* containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
-                yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io docker-buildx-plugin docker-compose-plugin
+                local package_manager="$(get_package_manager)"
+                $package_manager install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             esac
         fi
@@ -823,9 +851,7 @@ function install_docker_engine() {
         [[ -z "${INPUT}" ]] && INPUT=Y
         case $INPUT in
         [Yy] | [Yy][Ee][Ss])
-            echo -en "\n$WORKING 正在卸载之前的版本...\n"
             uninstall_original_version
-            echo -e "\n$COMPLETE 卸载完毕\n"
             install_main
             ;;
         [Nn] | [Nn][Oo]) ;;
@@ -860,8 +886,9 @@ function check_version() {
                 echo ''
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+                local package_manager="$(get_package_manager)"
                 echo -e "\n检查源文件：cat $Dir_YumRepos/docker.repo"
-                echo -e '请尝试手动执行安装命令： yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
+                echo -e '请尝试手动执行安装命令： $package_manager install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
                 ;;
             esac
             exit 1
