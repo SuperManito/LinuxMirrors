@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-10-24
+## Modified: 2024-10-31
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1050,7 +1050,7 @@ function choose_install_epel_packages() {
 
     ## 判断是否支持且需要处理 EPEL 附加软件包
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}")
+    "${SYSTEM_REDHAT}")
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] || [[ "${INSTALL_EPEL}" == "false" ]]; then
             INSTALL_EPEL="false"
             return
@@ -1963,7 +1963,6 @@ function change_mirrors_OpenCloudOS() {
     gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        change_mirrors_or_install_EPEL # EPEL 附加软件包
         return
     fi
 
@@ -1977,8 +1976,6 @@ function change_mirrors_OpenCloudOS() {
             OpenCloudOS.repo
         ;;
     esac
-
-    change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
 ## 更换 openEuler 发行版软件源
@@ -2169,7 +2166,7 @@ function change_mirrors_or_install_EPEL() {
     ## 确定安装版本（不支持安装的系统直接跳出）
     local target_version
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}")
+    "${SYSTEM_REDHAT}")
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
             return
         else
