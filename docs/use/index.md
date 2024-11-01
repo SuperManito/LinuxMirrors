@@ -8,51 +8,41 @@ hide:
 
 ## 一键执行命令
 
-=== ":octicons-globe-16: CDN（推荐）"
+=== ":material-home-city: 中国大陆"
 
     !!! quote ""
 
-        === ":material-home: 中国大陆（默认）"
+        === ":octicons-globe-16: CDN（推荐）"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh)
             ```
 
-        === ":material-school: 中国大陆教育网"
-
-            ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
-            ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
-
-        === ":octicons-globe-16: 海外地区"
-
-            ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
-            ```
-
-            2.  通过 `--abroad` 命令选项来使用海外软件源
-
-=== ":simple-github: GitHub"
-
-    !!! quote ""
-
-        === ":material-home: 中国大陆（默认）"
+        === ":simple-github: GitHub"
 
             ``` bash
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
             ```
 
-        === ":material-school: 中国大陆教育网"
+        === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
 
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+=== ":material-earth: 境外以及海外地区"
 
-        === ":octicons-globe-16: 海外地区"
+    !!! quote ""
+
+        === ":octicons-globe-16: CDN（推荐）"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
+            ```
+
+            1.  通过 `--abroad` 命令选项来使用海外软件源
+
+        === ":simple-github: GitHub"
 
             ``` bash
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad # (1)!
@@ -60,33 +50,43 @@ hide:
 
             2.  通过 `--abroad` 命令选项来使用海外软件源
 
-=== ":simple-gitee: Gitee"
-
-    !!! quote ""
-
-        === ":material-home: 中国大陆（默认）"
-
-            ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
-            ```
-
-        === ":material-school: 中国大陆教育网"
-
-            ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
-            ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
-
-        === ":octicons-globe-16: 海外地区"
+        === ":simple-gitee: Gitee"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            1.  通过 `--abroad` 命令选项来使用海外软件源
+            3.  通过 `--abroad` 命令选项来使用海外软件源
 
-选项卡分别代表获取脚本途径和脚本内置软件源类型，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在[软件源列表](/mirrors)中查看具体有哪些软件源。
+=== ":material-library: 中国大陆教育网"
+
+    !!! quote ""
+
+        === ":octicons-globe-16: CDN（推荐）"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
+            ```
+
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+
+        === ":simple-gitee: Gitee"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            2.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+
+选项卡分别代表脚本内置软件源类型和获取脚本途径，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在[软件源列表](/mirrors)中查看具体有哪些软件源。
 
 - ### 注意事项
 
@@ -322,7 +322,7 @@ hide:
 
     主要使用场景：目标镜像站有对应的系统镜像但是不符合本项目脚本关于软件源分支设置的默认规则
 
-    ??? note "项目默认使用的系统分支名称"
+    ??? note "项目默认使用的系统分支名称（点击展开查看）"
 
         项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配
 

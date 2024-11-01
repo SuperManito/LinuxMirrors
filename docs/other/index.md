@@ -69,7 +69,7 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
     脚本集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，可选择安装版本、下载软件源、镜像加速器，支持海内外服务器环境和 `arm` 架构处理器环境使用
 
-    `Docker CE` 软件仓库，全称 Docker Community Edition (Docker 社区版)，用于下载并安装 Docker 相关软件包  
+    `Docker CE` 软件仓库，全称 Docker Community Edition（Docker 社区版），用于下载并安装 Docker 相关软件包  
     `Docker Registry` 镜像仓库，用于控制下载镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
 
 ### 命令选项

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-10-31
+## Modified: 2024-11-02
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -928,8 +928,7 @@ function choose_mirrors() {
             fi
         done
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
+            local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -977,8 +976,7 @@ function choose_mirrors() {
             print_mirrors_list "${mirror_list_name}" 31
         fi
 
-        local CHOICE
-        CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+        local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
         while true; do
             read -rp "${CHOICE}" INPUT
             case "${INPUT}" in
@@ -1013,8 +1011,7 @@ function choose_protocol() {
         if [[ "${ONLY_HTTP}" == "True" ]]; then
             WEB_PROTOCOL="http"
         else
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+            local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1034,7 +1031,7 @@ function choose_protocol() {
     WEB_PROTOCOL="${WEB_PROTOCOL,,}"
 }
 
-# 适用于部分红帽系统的 EPEL 附加软件包（安装/换源）
+# 选择安装/换源 EPEL 附加软件包（适用于部分红帽系统）
 function choose_install_epel_packages() {
     function check_install_status() {
         ## 判断是否已安装 EPEL 软件包
@@ -1066,11 +1063,9 @@ function choose_install_epel_packages() {
     ## 选择是否安装 EPEL 附加软件包
     if [[ -z "${INSTALL_EPEL}" ]]; then
         if [ $VERIFICATION_EPEL -eq 0 ]; then
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
+            local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
         else
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+            local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
         fi
         read -rp "${CHOICE}" INPUT
         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -1096,8 +1091,7 @@ function close_firewall_service() {
     fi
     if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
         if [[ -z "${CLOSE_FIREWALL}" ]]; then
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+            local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1135,8 +1129,7 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
-            local CHOICE_BACKUP
-            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+            local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
             read -rp "${CHOICE_BACKUP}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1174,8 +1167,7 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
-            local CHOICE_BACKUP
-            CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+            local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
             read -rp "${CHOICE_BACKUP}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1499,10 +1491,13 @@ function change_mirrors_main() {
         echo -e "\n$SUCCESS 软件源更换完毕"
     else
         echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败\n"
-        echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致"
-        echo -e "1. 网络问题：例如连接异常、由地区影响的网络间歇式中断等"
-        echo -e "2. 软件源问题：建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题"
-        echo -e "\n软件源地址：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
+        echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致：\n"
+        echo -e "1. 网络连通性问题：例如连接异常、由地区影响的网络间歇式中断、禁止外部访问等\n"
+        echo -e "2. 目标软件源异常：请手动前往软件源（镜像站）地址进行验证：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
+        echo -e "      若报错内容是提示某个文件不存在那么有可能是软件源的问题，多常见于正在同步中的软件源"
+        echo -e "      若报错内容是目录（path）不存在也有可能是目标软件源不存在当前系统镜像仓库，即不支持当前系统"
+        echo -e "      建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题\n"
+        echo -e "3. 原有软件源报错：请先排除系统原有的其它软件源报错，因为脚本不会干预这些无关的软件源仓库，解决后重新运行脚本即可\n"
         exit 1
     fi
 }
@@ -1513,8 +1508,7 @@ function upgrade_software() {
         ## 交互确认
         if [[ -z "${CLEAN_CACHE}" ]]; then
             CLEAN_CACHE="false"
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+            local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1565,8 +1559,7 @@ function upgrade_software() {
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
         UPGRADE_SOFTWARE="false"
-        local CHOICE
-        CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
+        local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
         read -rp "${CHOICE}" INPUT
         [[ -z "${INPUT}" ]] && INPUT=Y
         case "${INPUT}" in
@@ -1984,7 +1977,6 @@ function change_mirrors_openEuler() {
     gen_repo_files_openEuler
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        change_mirrors_or_install_EPEL # EPEL 附加软件包
         return
     fi
 
@@ -1996,8 +1988,6 @@ function change_mirrors_openEuler() {
         -e "s|openEuler-version|openEuler-${version_name}|g" \
         -i \
         openEuler.repo
-
-    change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
 ## 更换 Anolis OS 发行版软件源
@@ -2006,7 +1996,6 @@ function change_mirrors_AnolisOS() {
     gen_repo_files_AnolisOS "${SYSTEM_VERSION_NUMBER}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        change_mirrors_or_install_EPEL # EPEL 附加软件包
         return
     fi
 
@@ -2021,8 +2010,6 @@ function change_mirrors_AnolisOS() {
             AnolisOS-Source.repo
         ;;
     esac
-
-    change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
 ## 更换 openSUSE 发行版软件源
@@ -5650,64 +5637,64 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
         ;;
-    7)
-        cat <<'EOF' >$Dir_YumRepos/epel.repo
-[epel]
-name=Extra Packages for Enterprise Linux 7 - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
-failovermethod=priority
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+#     7)
+#         cat <<'EOF' >$Dir_YumRepos/epel.repo
+# [epel]
+# name=Extra Packages for Enterprise Linux 7 - $basearch
+# #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
+# metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
+# failovermethod=priority
+# enabled=1
+# gpgcheck=1
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
-[epel-debuginfo]
-name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
-#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
+# [epel-debuginfo]
+# name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
+# #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
+# metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
+# failovermethod=priority
+# enabled=0
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+# gpgcheck=1
 
-[epel-source]
-name=Extra Packages for Enterprise Linux 7 - $basearch - Source
-#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
-EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
-[epel-testing]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+# [epel-source]
+# name=Extra Packages for Enterprise Linux 7 - $basearch - Source
+# #baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
+# metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
+# failovermethod=priority
+# enabled=0
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+# gpgcheck=1
+# EOF
+#         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+# [epel-testing]
+# name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
+# #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
+# metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
+# failovermethod=priority
+# enabled=0
+# gpgcheck=1
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
-[epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
+# [epel-testing-debuginfo]
+# name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
+# #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
+# metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
+# failovermethod=priority
+# enabled=0
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+# gpgcheck=1
 
-[epel-testing-source]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
-EOF
-        ;;
+# [epel-testing-source]
+# name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
+# #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
+# metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
+# failovermethod=priority
+# enabled=0
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+# gpgcheck=1
+# EOF
+#         ;;
     esac
 }
 
