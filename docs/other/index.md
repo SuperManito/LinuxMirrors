@@ -47,23 +47,23 @@ hide:
 </tr>
 </table>
 
-``` bash
-bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
-```
+=== ":octicons-globe-16: CDN（推荐）"
 
-??? quote "原始执行脚本方法"
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+    ```
 
-    === ":simple-github: GitHub"
+=== ":simple-github: GitHub"
 
-        ``` bash
-        bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
-        ```
+    ``` bash
+    bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
+    ```
 
-    === ":simple-gitee: Gitee"
+=== ":simple-gitee: Gitee"
 
-        ``` bash
-        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
-        ```
+    ``` bash
+    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+    ```
 
 !!! node ""
 
