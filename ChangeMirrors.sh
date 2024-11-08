@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-11-02
+## Modified: 2024-11-08
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -254,20 +254,22 @@ function main() {
 function handle_command_options() {
     ## 命令帮助
     function output_command_help() {
-        echo -e "\n命令选项(名称/含义/选项值)：
+        echo -e "\n命令选项(名称/含义/值)：
 
-  --abroad                 使用海外软件源                                                 无
+  --abroad                 使用境外以及海外软件源                                         无
   --edu                    使用中国大陆教育网软件源                                       无
   --source                 指定软件源地址(域名或IP)                                       地址
   --source-epel            指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                 地址
   --source-security        指定 Debian 系统 security 仓库的软件源地址(域名或IP)           地址
   --source-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)    地址
   --source-portage         指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)            地址
+  --source-base-system     指定 Linux Mint 系统底层系统的软件源地址(域名或IP)	          地址
   --branch                 指定软件源分支(路径)                                           分支名
   --branch-epel            指定 EPEL 附加软件包仓库的软件源分支(路径)                     分支名
   --branch-security        指定 Debian 系统 security 仓库的软件源分支(路径)               分支名
   --branch-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支(路径)        分支名
   --branch-portage         指定 Gentoo 系统 portage 仓库的软件源分支(路径)                分支名
+  --branch-base-system	   指定 Linux Mint 系统底层系统的软件源分支(路径)	          分支名
   --codename               指定 Debian 系操作系统的版本代号                               代号名称
   --protocol               指定 WEB 协议                                                  http 或 https
   --use-intranet-source    是否优先使用内网软件源地址                                     true 或 false
@@ -361,6 +363,19 @@ function handle_command_options() {
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
             ;;
+        --source-base-system)
+            if [ "$2" ]; then
+                echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
+                if [ $? -eq 0 ]; then
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                else
+                    SOURCE_BASE_SYSTEM="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
+                    shift
+                fi
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+            fi
+            ;;
         ## 指定软件源分支
         --branch)
             if [ "$2" ]; then
@@ -397,6 +412,14 @@ function handle_command_options() {
         --branch-portage)
             if [ "$2" ]; then
                 SOURCE_PORTAGE_BRANCH="$2"
+                shift
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
+            fi
+            ;;
+        --branch-base-system)
+            if [ "$2" ]; then
+                SOURCE_BASE_SYSTEM_BRANCH="$2"
                 shift
             else
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
@@ -622,7 +645,7 @@ function collect_system_info() {
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为官方宣称8版本基于红帽而9版本不是
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，自 9.0 版本起不再基于红帽
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
@@ -666,7 +689,7 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_LINUX_MINT}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 19 && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-1] && "${SYSTEM_VERSION_NUMBER:0:2}" != 6 ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 19 && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-2] && "${SYSTEM_VERSION_NUMBER:0:2}" != 6 ]]; then
             is_supported="false"
         fi
         ;;
@@ -1698,25 +1721,28 @@ deb ${base_url} ${repository_sections}
 deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
 " >>$File_LinuxMintSourceList
         ## 底层系统软件源
-        local base_system_source_branch base_system_codename
+        local base_system_branch base_system_codename
         if [[ "${SYSTEM_VERSION_NUMBER}" == 6 ]]; then
             # Debian 版（LMDE）
-            base_system_source_branch="debian"
+            base_system_branch="debian"
             base_system_codename="bookworm"
             repository_sections="main contrib non-free non-free-firmware"
-            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
             # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${base_system_source_branch}-security"}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-${base_system_branch}-security}}"
             echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
             if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
-                base_system_source_branch="ubuntu"
+                base_system_branch="ubuntu"
             else
-                base_system_source_branch="ubuntu-ports"
+                base_system_branch="ubuntu-ports"
             fi
             case "${SYSTEM_VERSION_NUMBER:0:2}" in
+            22)
+                base_system_codename="noble"
+                ;;
             21)
                 base_system_codename="jammy"
                 ;;
@@ -1728,7 +1754,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
                 ;;
             esac
             repository_sections="main restricted universe multiverse"
-            base_url="${WEB_PROTOCOL}://${SOURCE}/${base_system_source_branch}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         fi
         ;;

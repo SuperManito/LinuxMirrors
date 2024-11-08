@@ -281,19 +281,21 @@ hide:
 
 | 名称 | 含义 | 选项值 |
 | - | - | :-: |
-| `--abroad` | 使用海外软件源 | 无 |
+| `--abroad` | 使用境外以及海外软件源 | 无 |
 | `--edu` | 使用中国大陆教育网软件源 | 无 |
-| `--source` | 指定软件源地址（域名或IP） | 地址 |
-| `--source-epel` | 指定 EPEL 附加软件包仓库的软件源地址（域名或IP） | 地址 |
-| `--source-security` | 指定 Debian 系统 security 仓库的软件源地址（域名或IP） | 地址 |
-| `--source-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | 地址 |
-| `--source-portage` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | 地址 |
-| `--branch` | 指定软件源分支（路径） | 分支名 |
-| `--branch-epel` | 指定 EPEL 附加软件包仓库的软件源分支（路径） | 分支名 |
-| `--branch-security` | 指定 Debian 系统 security 仓库的软件源分支（路径） | 分支名 |
-| `--branch-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径）   分支名 | 分支名 |
-| `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | 分支名 |
-| `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
+| `--source` | 指定软件源地址（域名或IP） | `地址` |
+| `--source-epel` | 指定 EPEL 附加软件包仓库的软件源地址（域名或IP） | `地址` |
+| `--source-security` | 指定 Debian 系统 security 仓库的软件源地址（域名或IP） | `地址` |
+| `--source-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
+| `--source-portage` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
+| `--source-base-system` | 指定 Linux Mint 系统底层系统的软件源地址（域名或IP） | `地址` |
+| `--branch` | 指定软件源分支（路径） | `分支名` |
+| `--branch-epel` | 指定 EPEL 附加软件包仓库的软件源分支（路径） | `分支名` |
+| `--branch-security` | 指定 Debian 系统 security 仓库的软件源分支（路径） | `分支名` |
+| `--branch-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径） | `分支名` |
+| `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | `分支名` |
+| `--branch-base-system` | 指定 Linux Mint 系统底层系统的软件源分支（路径） | `分支名` |
+| `--codename` | 指定 Debian 系操作系统的版本代号 | `代号名称` |
 | `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
 | `--use-official-source` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
@@ -461,11 +463,13 @@ hide:
 | `SOURCE_SECURITY` | 指定 Debian 系统 security 仓库的软件源地址（域名或IP） | `地址` |
 | `SOURCE_VAULT` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
 | `SOURCE_PORTAGE` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
+| `SOURCE_BASE_SYSTEM` | 指定 Linux Mint 系统底层系统的软件源地址（域名或IP） | `地址` |
 | `SOURCE_BRANCH` | 指定软件源分支（路径） | `分支名` |
 | `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加软件包仓库的软件源分支（路径） | `分支名` |
 | `SOURCE_SECURITY_BRANCH` | 指定 Debian 系统 security 仓库的软件源分支（路径） | `分支名` |
 | `SOURCE_VAULT_BRANCH` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径） | `分支名` |
 | `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | `分支名` |
+| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint 系统底层系统的软件源分支（路径） | `分支名` |
 | `DEBIAN_CODENAME` | 指定 Debian 系操作系统的版本代号 | `代号名称` |
 | `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |

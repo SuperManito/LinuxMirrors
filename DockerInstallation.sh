@@ -138,7 +138,7 @@ function handle_command_options() {
     ## 命令帮助
     function output_command_help() {
         echo -e "
-命令选项(名称/含义/选项值)：
+命令选项(名称/含义/值)：
 
   --source                 指定 Docker CE 源地址                     地址
   --source-registry        指定 Docker Registry 源地址               地址
@@ -283,7 +283,7 @@ function collect_system_info() {
         if [[ "${SYSTEM_VERSION_NUMBER:0:1}" == 9 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
-        # SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，因为官方宣称8版本基于红帽而9版本不是
+        # SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，自 9.0 版本起不再基于红帽
     else
         output_error "无法判断当前运行环境或不支持当前操作系统！"
     fi
