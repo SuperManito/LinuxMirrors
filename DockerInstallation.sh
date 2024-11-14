@@ -441,12 +441,13 @@ function choose_mirrors() {
     function print_title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
         local arch=""${DEVICE_ARCH}""
-        local date="$(date "+%Y-%m-%d %H:%M:%S")"
-        local timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+        local date_time time_zone
+        date_time="$(date "+%Y-%m-%d %H:%M")"
+        timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
         echo -e ''
         echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e " 系统时间 ${BLUE}${date} ${timezone}${PLAIN}"
+        echo -e " 系统时间 ${BLUE}${date_time} ${timezone}${PLAIN}"
     }
 
     print_title

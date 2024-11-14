@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-11-08
+## Modified: 2024-11-14
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -973,7 +973,7 @@ function choose_mirrors() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
         local arch="${DEVICE_ARCH}"
         local date_time time_zone
-        date_time="$(date "+%Y-%m-%d %H:%M:%S")"
+        date_time="$(date "+%Y-%m-%d %H:%M")"
         time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
         echo -e ''
@@ -1376,7 +1376,7 @@ function remove_original_mirrors() {
         [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/AnolisOS*
         ;;
     "${SYSTEM_OPENSUSE}")
-        [ -d $Dir_openSUSERepos ] && ls $Dir_openSUSERepos/ | grep -E "^repo-" | grep -Ev "openh264" | xargs rm -rf
+        [ -d $Dir_openSUSERepos ] && rm -rf $Dir_YumRepos/repo-*
         ;;
     "${SYSTEM_ARCH}")
         [ -f $File_ArchLinuxMirrorList ] && sed -i '1,$d' $File_ArchLinuxMirrorList
@@ -2083,6 +2083,7 @@ function change_mirrors_openSUSE() {
                 repo-debug-update-non-oss.repo \
                 repo-debug-update.repo \
                 repo-non-oss.repo \
+                repo-openh264.repo \
                 repo-oss.repo \
                 repo-sle-debug-update.repo \
                 repo-sle-update.repo \
@@ -5299,6 +5300,15 @@ name=Non-OSS Repository
 enabled=1
 autorefresh=1
 baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
+type=rpm-md
+keeppackages=0
+EOF
+        cat <<'EOF' >$Dir_openSUSERepos/repo-openh264.repo
+[repo-openh264]
+name=Open H.264 Codec (openSUSE Leap)
+enabled=1
+autorefresh=1
+baseurl=http://codecs.opensuse.org/openh264/openSUSE_Leap/
 type=rpm-md
 keeppackages=0
 EOF

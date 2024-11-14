@@ -98,7 +98,7 @@ hide:
         apt-get remove -y docker* containerd.io runc && apt-get autoremove
         ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Armbian` &nbsp; `Proxmox`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
 
     === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
 
@@ -109,3 +109,45 @@ hide:
         > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
 
     卸载完成后重新执行脚本安装即可
+
+## 其它
+
+提供一些常见服务的一键换源命令，用于备忘
+
+### NPM
+
+适用于 `npm` `yarn` `pnpm` 等
+
+=== "淘宝源"
+
+    ``` bash
+    npm config set registry https://registry.npmmirror.com/
+    ```
+
+=== "腾讯云"
+
+    ``` bash
+    npm config set registry https://mirrors.tencent.com/npm/
+    ```
+
+### PYPI
+
+适用于 `pip` `pip3`
+
+=== "阿里云"
+
+    ``` bash
+    pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple/
+    ```
+
+=== "腾讯云"
+
+    ``` bash
+    pip3 config set global.index-url https://mirrors.tencent.com/pypi/simple/
+    ```
+
+=== "中科大"
+
+    ``` bash
+    pip3 config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple/
+    ```
