@@ -118,13 +118,13 @@ hide:
 
         !!! quote ""
 
-            === "Debian 系"
+            === "Debian 系 / openKylin"
 
                 ``` sh
                 apt-get install -y curl
                 ```
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox` &nbsp; `openKylin`
 
                 新装系统需要先执行一遍更新 `apt-get update`
 
@@ -195,14 +195,14 @@ hide:
 
         !!! quote ""
 
-            === "Debian 系"
+            === "Debian 系 / openKylin"
 
                 ``` sh
                 cp -rf /etc/apt/sources.list.bak /etc/apt/sources.list
                 apt-get update
                 ```
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox` &nbsp; `openKylin`
 
             === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
 
@@ -258,11 +258,11 @@ hide:
 
     脚本遵循系统默认设置即没有启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，如果你有使用需求请阅读下面的启用方法
 
-    === "Debian 系"
+    === "Debian 系 / openKylin"
 
         默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox` &nbsp; `openKylin`
 
     === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
 
@@ -295,7 +295,7 @@ hide:
 | `--branch-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径） | `分支名` |
 | `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | `分支名` |
 | `--branch-base-system` | 指定 Linux Mint 系统底层系统的软件源分支（路径） | `分支名` |
-| `--codename` | 指定 Debian 系操作系统的版本代号 | `代号名称` |
+| `--codename` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
 | `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
 | `--use-official-source` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
@@ -334,7 +334,7 @@ hide:
         | <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu | ubuntu / ubuntu-ports |
         | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | kali |
         | <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | linuxmint / ubuntu / ubuntu-ports / debian |
-        | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin | deepin |
+        | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin（深度） | deepin |
         | <a href="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> Zorin OS | ubuntu / ubuntu-ports |
         | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
         | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | proxmox |
@@ -343,9 +343,10 @@ hide:
         | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
         | <a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | rocky |
         | <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux | almalinux / almalinux-vault |
-        | <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS | opencloudos |
-        | <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler | openeuler |
-        | <a href="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS | anolis |
+        | <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS（鸥栖） | opencloudos |
+        | <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler（开源欧拉） | openeuler |
+        | <a href="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS（龙蜥） | anolis |
+        | <a href="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> openKylin（开放麒麟） | openkylin |
         | <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | opensuse |
         | <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | archlinux / archlinuxarm |
         | <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | alpine |
@@ -450,11 +451,11 @@ hide:
 
 ## 定制脚本
 
-如果你是其它项目的开发者希望通过本项目来制作专属脚本，可以在克隆仓库后查看脚本头部注释，目前已经有国内教育单位镜像站的维护者这样做了，下面具体介绍一下定制方法。
+如果你是其它项目的开发者希望通过本项目来制作专属脚本，目前已经有国内教育单位镜像站的维护者这样做了，下面简单介绍一下具体定制方法。
 
-首先不建议修改代码的底层逻辑，应尽量与本项目源码保持同步，不过你可以简单去除一些无关内容，例如你可以将三个软件源列表（数组）中的内容删除 `例：mirror_list_default=()`。
-
-相关脚本功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，你只需要将这些变量声明在脚本头部即可快速完成定制，具体变量详见如下表格：
+1.  首先不建议修改代码的底层逻辑，应尽量与本项目源码保持同步，脚本内容执行顺序由 `main` 函数控制，代码逻辑清晰  
+2.  你可以简单去除一些无关内容，例如将三个软件源列表（数组）中的内容删除 `例：mirror_list_default=()`
+3.  脚本主要功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，具体变量详见如下表格，你只需要将这些变量声明在脚本头部（预留注释区域）即可快速完成定制
 
 | 变量名 | 含义 | 值类型 |
 | :-: | :-: | :-: |
@@ -470,7 +471,7 @@ hide:
 | `SOURCE_VAULT_BRANCH` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径） | `分支名` |
 | `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | `分支名` |
 | `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint 系统底层系统的软件源分支（路径） | `分支名` |
-| `DEBIAN_CODENAME` | 指定 Debian 系操作系统的版本代号 | `代号名称` |
+| `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
 | `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |
 | `WEB_PROTOCOL` | 指定 WEB 协议 | `http` 或 `https` |
@@ -483,4 +484,4 @@ hide:
 | `CLEAN_CACHE` | 是否清理下载缓存 | `true` 或 `false` |
 | `PRINT_DIFF` | 是否打印源文件修改前后差异 | `true` 或 `false` |
 
-> 部分变量存在默认值，另外如果对应功能配置不存在那么就可能会出现交互
+> 部分变量存在默认值，未涉及的变量无需声明为空值（空字符串），另外如果对应功能配置不存在那么就可能会出现交互

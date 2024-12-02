@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-11-14
+## Modified: 2024-12-02
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -170,6 +170,7 @@ SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_ANOLISOS="Anolis OS"
+SYSTEM_OPENKYLIN="openKylin"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
 SYSTEM_ALPINE="Alpine"
@@ -183,6 +184,7 @@ File_ArmbianRelease=/etc/armbian-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
 File_AnolisOSRelease=/etc/anolis-release
+File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
 File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
 File_GentooRelease=/etc/gentoo-release
@@ -270,7 +272,7 @@ function handle_command_options() {
   --branch-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支(路径)        分支名
   --branch-portage         指定 Gentoo 系统 portage 仓库的软件源分支(路径)                分支名
   --branch-base-system	   指定 Linux Mint 系统底层系统的软件源分支(路径)	          分支名
-  --codename               指定 Debian 系操作系统的版本代号                               代号名称
+  --codename               指定 Debian 系/openKylin 操作系统的版本代号                    代号名称
   --protocol               指定 WEB 协议                                                  http 或 https
   --use-intranet-source    是否优先使用内网软件源地址                                     true 或 false
   --use-official-source    是否使用目标操作系统的官方软件源                               true 或 false
@@ -632,20 +634,22 @@ function collect_system_info() {
     ## 判定当前系统派系
     if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
+    elif [ -s $File_RedHatRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
+    elif [ -s $File_OpenCloudOSRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，自 9.0 版本起不再基于红帽
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_AnolisOSRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}"
+    elif [ -s $File_openKylinVersion ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENKYLIN}"
     elif [ -f $File_ArchLinuxRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ARCH}"
     elif [ -f $File_AlpineRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
     elif [ -f $File_GentooRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_GENTOO}"
-    elif [ -s $File_RedHatRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
-    elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，自 9.0 版本起不再基于红帽
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
@@ -653,7 +657,7 @@ function collect_system_info() {
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         if [ ! -x /usr/bin/lsb_release ]; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
@@ -736,7 +740,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}")
         # 理论全部支持或不作判断
         ;;
     *)
@@ -834,7 +838,7 @@ function collect_system_info() {
     fi
     ## 定义软件源更新文字
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}" | "${SYSTEM_ALPINE}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_ALPINE}" | "${SYSTEM_OPENKYLIN}")
         SYNC_MIRROR_TEXT="更新软件源"
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
@@ -855,7 +859,7 @@ function check_command_options() {
         output_error "两种模式不可同时使用！"
     fi
     if [[ "${DEBIAN_CODENAME}" ]]; then
-        if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" ]]; then
+        if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" && "${SYSTEM_FACTIONS}" != "${SYSTEM_OPENKYLIN}" ]]; then
             output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
         fi
     fi
@@ -1216,7 +1220,7 @@ function backup_original_mirrors() {
     BACKED_UP="false" # 是否已备份
     if [[ "${BACKUP}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
+        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
             if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
                 # /etc/apt/sources.list
                 backup_file $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
@@ -1273,7 +1277,7 @@ function backup_original_mirrors() {
 ## 移除原有软件源
 function remove_original_mirrors() {
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
             [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
         fi
@@ -1416,7 +1420,7 @@ function change_mirrors_main() {
 
         if [[ -x /usr/bin/diff && "${BACKED_UP}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}")
+            "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
                 if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
                     diff_file $File_DebianSourceListBackup $File_DebianSourceList
                 fi
@@ -1482,6 +1486,9 @@ function change_mirrors_main() {
     "${SYSTEM_GENTOO}")
         change_mirrors_Gentoo
         ;;
+    "${SYSTEM_OPENKYLIN}")
+        change_mirrors_openKylin
+        ;;
     esac
     ## 比较差异
     if [[ "${PRINT_DIFF}" == "true" ]]; then
@@ -1490,7 +1497,7 @@ function change_mirrors_main() {
     ## 更新软件源
     echo -e "\n$WORKING 开始${SYNC_MIRROR_TEXT}...\n"
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         apt-get update
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
@@ -1549,7 +1556,7 @@ function upgrade_software() {
         fi
         ## 调用系统命令
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
+        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
             apt-get autoremove -y >/dev/null 2>&1
             apt-get clean >/dev/null 2>&1
             ;;
@@ -1601,7 +1608,7 @@ function upgrade_software() {
     echo -e ''
     ## 调用系统命令
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         apt-get upgrade -y
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
@@ -2170,6 +2177,28 @@ location = /usr/portage
 sync-type = rsync
 sync-uri = rsync://${SOURCE_PORTAGE:-"${SOURCE}"}/${SOURCE_PORTAGE_BRANCH:-"gentoo-portage"}
 auto-sync = yes" >$File_GentooReposConf
+}
+
+## 更换 openKylin 发行版软件源
+function change_mirrors_openKylin() {
+    function gen_source() {
+        echo "deb ${1} ${2} ${3}
+# deb-src ${1} ${2} ${3}
+deb ${1} ${2}-security ${3}
+# deb-src ${1} ${2}-security ${3}
+deb ${1} ${2}-updates ${3}
+# deb-src ${1} ${2}-updates ${3}"
+    }
+
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        SOURCE="archive.build.openkylin.top"
+    fi
+    local repository_sections="main cross pty" # 仓库区域
+    local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
+    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+    echo "${tips}
+$(gen_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
 }
 
 ## EPEL (Extra Packages for Enterprise Linux) 附加软件包 - 安装或更换软件源

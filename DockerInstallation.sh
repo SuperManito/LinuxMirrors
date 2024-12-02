@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-11-02
+## Modified: 2024-12-02
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -273,10 +273,6 @@ function collect_system_info() {
     ## 判定当前系统派系
     if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
-    elif [ -s $File_openEulerRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
-    elif [ -s $File_AnolisOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_OpenCloudOSRelease ]; then
@@ -284,6 +280,10 @@ function collect_system_info() {
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         # SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，自 9.0 版本起不再基于红帽
+    elif [ -s $File_openEulerRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [ -s $File_AnolisOSRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}"
     else
         output_error "无法判断当前运行环境或不支持当前操作系统！"
     fi

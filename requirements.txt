@@ -1,3 +1,3 @@
-mkdocs-material==9.5.44
+mkdocs-material==9.5.47
 mkdocs-glightbox==0.4.0
 mkdocs-exclude-search==0.6.6

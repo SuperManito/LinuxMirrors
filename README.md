@@ -35,7 +35,7 @@
         <td align="center">19 ~ 22 / LMDE 6</td>
     </tr>
     <tr>
-        <td><a href="https://www.deepin.org" target="_blank"><img src="./docs/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;deepin</td>
+        <td><a href="https://www.deepin.org" target="_blank"><img src="./docs/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Deepin（深度）</td>
         <td align="center">all</td>
     </tr>
     <tr>
@@ -71,16 +71,20 @@
         <td align="center">8 ~ 9</td>
     </tr>
     <tr>
-        <td><a href="https://www.opencloudos.org" target="_blank"><img src="./docs/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;OpenCloudOS</td>
+        <td><a href="https://www.opencloudos.org" target="_blank"><img src="./docs/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;OpenCloudOS（鸥栖）</td>
         <td align="center">8 ~ 9</td>
     </tr>
     <tr>
-        <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;openEuler</td>
+        <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;openEuler（开源欧拉）</td>
         <td align="center">21 ~ 24</td>
     </tr>
     <tr>
-        <td><a href="https://openanolis.cn" target="_blank"><img src="./docs/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;Anolis OS</td>
+        <td><a href="https://openanolis.cn" target="_blank"><img src="./docs/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;Anolis OS（龙蜥）</td>
         <td align="center">23</td>
+    </tr>
+    <tr>
+        <td><a href="https://www.openkylin.top" target="_blank"><img src="./docs/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;openKylin（开放麒麟）</td>
+        <td align="center">all</td>
     </tr>
     <tr>
         <td><a href="https://www.opensuse.org" target="_blank"><img src="./docs/assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;openSUSE</td>
@@ -102,7 +106,7 @@
 
 <p align="center">
     <strong>
-        <a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/help" style="text-decoration: none;">常见问题</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>
+        <a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>
     </strong>
 </p>
 
