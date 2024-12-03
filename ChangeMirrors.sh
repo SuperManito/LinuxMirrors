@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-02
+## Modified: 2024-12-03
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -168,6 +168,7 @@ SYSTEM_ROCKY="Rocky"
 SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
+SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_ANOLISOS="Anolis OS"
 SYSTEM_OPENKYLIN="openKylin"
@@ -707,8 +708,13 @@ function collect_system_info() {
             is_supported="false"
         fi
         ;;
-    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_OPENCLOUDOS}")
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}")
         if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER}" != 23 ]] || [[ "${SYSTEM_VERSION_NUMBER:0:1}" == 8 && "${SYSTEM_VERSION_NUMBER#*.}" -lt 5 ]]; then
             is_supported="false"
         fi
         ;;
@@ -789,7 +795,7 @@ function collect_system_info() {
             esac
             ;;
         "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH}" == "x86_64" || "${DEVICE_ARCH}" == *i?86* ]]; then
                 SOURCE_BRANCH="ubuntu"
             else
                 SOURCE_BRANCH="ubuntu-ports"
@@ -828,10 +834,18 @@ function collect_system_info() {
             esac
             ;;
         "${SYSTEM_ARCH}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH}" == "x86_64" || "${DEVICE_ARCH}" == *i?86* ]]; then
                 SOURCE_BRANCH="archlinux"
             else
                 SOURCE_BRANCH="archlinuxarm"
+            fi
+            ;;
+        "${SYSTEM_OPENCLOUDOS}")
+            # OpenCloudOS Stream
+            grep -q "${SYSTEM_OPENCLOUDOS_STREAM}" $File_OpenCloudOSRelease
+            if [ $? -eq 0 ]; then
+                SOURCE_BRANCH="${SYSTEM_OPENCLOUDOS_STREAM,,}"
+                SOURCE_BRANCH="${SOURCE_BRANCH// /-}"
             fi
             ;;
         esac
@@ -1741,7 +1755,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]] || [[ "${DEVICE_ARCH}" == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH}" == "x86_64" || "${DEVICE_ARCH}" == *i?86* ]]; then
                 base_system_branch="ubuntu"
             else
                 base_system_branch="ubuntu-ports"
@@ -1815,7 +1829,7 @@ function change_mirrors_RedHat() {
         gen_repo_files_Fedora "${SYSTEM_VERSION_NUMBER}"
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER}"
         ;;
     esac
     ## 使用官方源
@@ -1986,7 +2000,7 @@ function change_mirrors_RedHat() {
 ## 更换 OpenCloudOS 发行版软件源
 function change_mirrors_OpenCloudOS() {
     ## 生成官方 repo 源文件
-    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER:0:1}"
+    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
@@ -1994,14 +2008,17 @@ function change_mirrors_OpenCloudOS() {
 
     ## 修改源
     cd $Dir_YumRepos
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
-    9)
+    if [[ "${SYSTEM_VERSION_NUMBER}" == 23 ]]; then
+        sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+            -e "s|mirrors.opencloudos.tech/opencloudos-stream|${SOURCE}/${SOURCE_BRANCH}|g" \
+            -i \
+            OpenCloudOS-Stream.repo
+    else
         sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
             -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
             -i \
             OpenCloudOS.repo
-        ;;
-    esac
+    fi
 }
 
 ## 更换 openEuler 发行版软件源
@@ -4803,9 +4820,54 @@ EOF
 
 ## 生成 OpenCloudOS 官方 repo 源文件
 function gen_repo_files_OpenCloudOS() {
-    case "$1" in
-    9)
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+    if [[ "${SYSTEM_VERSION_NUMBER}" == 23 ]]; then
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Stream.repo
+[BaseOS]
+name=BaseOS $releasever - $basearch
+baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/BaseOS/$basearch/Packages/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+
+[AppStream]
+name=AppStream $releasever - $basearch
+baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/AppStream/$basearch/Packages/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+
+[BaseOS-debug]
+name=BaseOS-debug $releasever - $basearch
+baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/BaseOS/$basearch/debug/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+
+[AppStream-debug]
+name=AppStream-debug $releasever - $basearch
+baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/AppStream/$basearch/debug/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+
+[BaseOS-source]
+name=BaseOS-source $releasever
+baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/BaseOS/source/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+
+[AppStream-source]
+name=AppStream-source $releasever
+baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/AppStream/source/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+EOF
+    else
+        case "${1:0:1}" in
+        9)
+            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
 [BaseOS]
 name=BaseOS $releasever - $basearch
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
@@ -4869,9 +4931,9 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 EOF
-        ;;
-    8)
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo
+            ;;
+        8)
+            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo
 # OpenCloudOS-Debuginfo.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -4925,7 +4987,8 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+            if [[ "${1}" == "8.6" ]]; then
+                cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
 # OpenCloudOS.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -4979,7 +5042,70 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Sources.repo
+            else
+                cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+# OpenCloudOS.repo
+#
+# Author: OpenCloudOS <infrastructure@opencloudos.tech>
+#
+[BaseOS]
+name=OpenCloudOS $releasever - BaseOS
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+
+[AppStream]
+name=OpenCloudOS $releasever - AppStream
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/os/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+
+[Extras]
+name=OpenCloudOS $releasever - Extras
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Extras/$basearch/os/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+
+[HighAvailability]
+name=OpenCloudOS $releasever - HighAvailability
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/HighAvailability/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+
+[NFV]
+name=OpenCloudOS $releasever - NFV
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/NFV/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+
+[PowerTools]
+name=OpenCloudOS $releasever - PowerTools
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/PowerTools/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+
+[ResilientStorage]
+name=OpenCloudOS $releasever - ResilientStorage
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/ResilientStorage/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+
+[Plus]
+name=OpenCloudOS $releasever - Plus
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Plus/$basearch/os/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+EOF
+            fi
+            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Sources.repo
 # OpenCloudOS-Sources.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -5033,71 +5159,9 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-        ;;
-    esac
-}
-
-## 生成 openEuler 官方 repo 源文件
-function gen_repo_files_openEuler() {
-    cat <<'EOF' >$Dir_YumRepos/openEuler.repo
-#generic-repos is licensed under the Mulan PSL v2.
-#You can use this software according to the terms and conditions of the Mulan PSL v2.
-#You may obtain a copy of Mulan PSL v2 at:
-#    http://license.coscl.org.cn/MulanPSL2
-#THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
-#IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
-#PURPOSE.
-#See the Mulan PSL v2 for more details.
-
-[OS]
-name=OS
-baseurl=http://repo.openeuler.org/openEuler-version/OS/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
-
-[everything]
-name=everything
-baseurl=http://repo.openeuler.org/openEuler-version/everything/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/everything/$basearch/RPM-GPG-KEY-openEuler
-
-[EPOL]
-name=EPOL
-baseurl=http://repo.openeuler.org/openEuler-version/EPOL/main/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
-
-[debuginfo]
-name=debuginfo
-baseurl=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/RPM-GPG-KEY-openEuler
-
-[source]
-name=source
-baseurl=http://repo.openeuler.org/openEuler-version/source/
-enabled=1
-gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
-
-[update]
-name=update
-baseurl=http://repo.openeuler.org/openEuler-version/update/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
-
-[update-source]
-name=update-source
-baseurl=http://repo.openeuler.org/openEuler-version/update/source/
-enabled=1
-gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
-EOF
+            ;;
+        esac
+    fi
 }
 
 ## 生成 Anolis OS 官方 repo 源文件
@@ -5332,7 +5396,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-        cat <<'EOF' >$Dir_openSUSERepos/repo-openh264.repo
+            cat <<'EOF' >$Dir_openSUSERepos/repo-openh264.repo
 [repo-openh264]
 name=Open H.264 Codec (openSUSE Leap)
 enabled=1
@@ -5702,64 +5766,64 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
         ;;
-#     7)
-#         cat <<'EOF' >$Dir_YumRepos/epel.repo
-# [epel]
-# name=Extra Packages for Enterprise Linux 7 - $basearch
-# #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
-# metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
-# failovermethod=priority
-# enabled=1
-# gpgcheck=1
-# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+        #     7)
+        #         cat <<'EOF' >$Dir_YumRepos/epel.repo
+        # [epel]
+        # name=Extra Packages for Enterprise Linux 7 - $basearch
+        # #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
+        # metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
+        # failovermethod=priority
+        # enabled=1
+        # gpgcheck=1
+        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
-# [epel-debuginfo]
-# name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
-# #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
-# metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
-# failovermethod=priority
-# enabled=0
-# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-# gpgcheck=1
+        # [epel-debuginfo]
+        # name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
+        # #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
+        # metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
+        # failovermethod=priority
+        # enabled=0
+        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+        # gpgcheck=1
 
-# [epel-source]
-# name=Extra Packages for Enterprise Linux 7 - $basearch - Source
-# #baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
-# metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
-# failovermethod=priority
-# enabled=0
-# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-# gpgcheck=1
-# EOF
-#         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
-# [epel-testing]
-# name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
-# #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
-# metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
-# failovermethod=priority
-# enabled=0
-# gpgcheck=1
-# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+        # [epel-source]
+        # name=Extra Packages for Enterprise Linux 7 - $basearch - Source
+        # #baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
+        # metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
+        # failovermethod=priority
+        # enabled=0
+        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+        # gpgcheck=1
+        # EOF
+        #         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+        # [epel-testing]
+        # name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
+        # #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
+        # metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
+        # failovermethod=priority
+        # enabled=0
+        # gpgcheck=1
+        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
-# [epel-testing-debuginfo]
-# name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
-# #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
-# metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
-# failovermethod=priority
-# enabled=0
-# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-# gpgcheck=1
+        # [epel-testing-debuginfo]
+        # name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
+        # #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
+        # metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
+        # failovermethod=priority
+        # enabled=0
+        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+        # gpgcheck=1
 
-# [epel-testing-source]
-# name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
-# #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
-# metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
-# failovermethod=priority
-# enabled=0
-# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-# gpgcheck=1
-# EOF
-#         ;;
+        # [epel-testing-source]
+        # name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
+        # #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
+        # metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
+        # failovermethod=priority
+        # enabled=0
+        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+        # gpgcheck=1
+        # EOF
+        #         ;;
     esac
 }
 
