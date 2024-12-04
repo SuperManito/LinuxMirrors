@@ -55,11 +55,11 @@
         <td align="center">7 ~ 9</td>
     </tr>
     <tr>
-        <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="./docs/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Fedora</td>
+        <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="./docs/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;Fedora</td>
         <td align="center">30 ~ 41</td>
     </tr>
     <tr>
-        <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;CentOS</td>
+        <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;CentOS</td>
         <td align="center">7 ~ 8 / Stream 8 ~ 9</td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@
     </tr>
     <tr>
         <td><a href="https://openanolis.cn" target="_blank"><img src="./docs/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;Anolis OS（龙蜥）</td>
-        <td align="center">23</td>
+        <td align="center">8 / 23</td>
     </tr>
     <tr>
         <td><a href="https://www.opensuse.org" target="_blank"><img src="./docs/assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.15em"></a>&nbsp;openSUSE</td>

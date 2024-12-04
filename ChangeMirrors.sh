@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-03
+## Modified: 2024-12-05
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -170,7 +170,7 @@ SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
 SYSTEM_OPENEULER="openEuler"
-SYSTEM_ANOLISOS="Anolis OS"
+SYSTEM_ANOLISOS="Anolis"
 SYSTEM_OPENKYLIN="openKylin"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
@@ -217,8 +217,8 @@ Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
 Dir_YumRepos=/etc/yum.repos.d
 Dir_YumReposBackup=/etc/yum.repos.d.bak
-Dir_openSUSERepos=/etc/zypp/repos.d
-Dir_openSUSEReposBackup=/etc/zypp/repos.d.bak
+Dir_ZYppRepos=/etc/zypp/repos.d
+Dir_ZYppReposBackup=/etc/zypp/repos.d.bak
 
 ## 定义颜色变量
 RED='\033[31m'
@@ -229,13 +229,20 @@ PURPLE='\033[35m'
 AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS="[\033[1;32m成功${PLAIN}]"
-COMPLETE="[\033[1;32m完成${PLAIN}]"
-WARN="[\033[1;5;33m注意${PLAIN}]"
-ERROR="[\033[1;31m错误${PLAIN}]"
-FAIL="[\033[1;31m失败${PLAIN}]"
-TIP="[\033[1;32m提示${PLAIN}]"
-WORKING="[\033[1;36m >_ ${PLAIN}]"
+SUCCESS="\033[1;32m✔${PLAIN}"
+COMPLETE="\033[1;32m✔${PLAIN}"
+WARN="\033[1;43m 警告 ${PLAIN}"
+ERROR="\033[1;31m✘${PLAIN}"
+FAIL="\033[1;31m✘${PLAIN}"
+TIP="\033[1;44m 提示 ${PLAIN}"
+WORKING="\033[1;36m>_${PLAIN}"
+# SUCCESS="[\033[1;32m成功${PLAIN}]"
+# COMPLETE="[\033[1;32m完成${PLAIN}]"
+# WARN="[\033[1;5;33m注意${PLAIN}]"
+# ERROR="[\033[1;31m错误${PLAIN}]"
+# FAIL="[\033[1;31m失败${PLAIN}]"
+# TIP="[\033[1;32m提示${PLAIN}]"
+# WORKING="[\033[1;36m >_ ${PLAIN}]"
 
 function main() {
     permission_judgment
@@ -282,6 +289,7 @@ function handle_command_options() {
   --backup                 是否备份原有软件源                                             true 或 false
   --upgrade-software       是否更新软件包                                                 true 或 false
   --clean-cache            是否清理下载缓存                                               true 或 false
+  --clean-screen           是否在运行前清除屏幕上的所有内容                               true 或 false
   --only-epel              仅更换 EPEL 软件源模式                                         无
   --ignore-backup-tips     忽略覆盖备份提示                                               无
   --print-diff             打印源文件修改前后差异                                         无
@@ -573,6 +581,22 @@ function handle_command_options() {
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
+        ## 清除屏幕上的所有内容
+        --clean-screen)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    CLEAN_SCREEN="${2,,}"
+                    shift
+                    ;;
+                *)
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    ;;
+                esac
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+            fi
+            ;;
         ## 打印源文件修改前后差异
         --print-diff)
             PRINT_DIFF="true"
@@ -597,7 +621,11 @@ function handle_command_options() {
 }
 
 function run_start() {
-    [ -z "${SOURCE}" ] && clear
+    if [ -z "${CLEAN_SCREEN}" ]; then
+        [ -z "${SOURCE}" ] && clear
+    elif [ "${CLEAN_SCREEN}" == "true" ]; then
+        clear
+    fi
     echo -e ' +-----------------------------------+'
     echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
     echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
@@ -606,8 +634,7 @@ function run_start() {
 }
 
 function run_end() {
-    echo -e "\n---------- 脚本执行结束 ----------"
-    echo -e "\n\033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
+    echo -e "\n✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
 }
 
 ## 报错退出
@@ -630,6 +657,8 @@ function collect_system_info() {
     grep -q "PRETTY_NAME=" $File_LinuxRelease && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统版本号
     SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    SYSTEM_VERSION_NUMBER_MAJOR="${SYSTEM_VERSION_NUMBER%.*}"
+    SYSTEM_VERSION_NUMBER_MINOR="${SYSTEM_VERSION_NUMBER#*.}"
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 判定当前系统派系
@@ -638,11 +667,11 @@ function collect_system_info() {
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，自 9.0 版本起不再基于红帽
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_AnolisOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}"
+        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
     elif [ -s $File_openKylinVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENKYLIN}"
     elif [ -f $File_ArchLinuxRelease ]; then
@@ -654,7 +683,7 @@ function collect_system_info() {
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     else
-        output_error "无法判断当前运行环境！"
+        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -680,63 +709,63 @@ function collect_system_info() {
         SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
         ;;
     esac
-    ## 判断系统及版本是否受适配
+    ## 判断系统及版本是否适配
     local is_supported="true"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 1[0-3] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -lt 8 || "${SYSTEM_VERSION_NUMBER_MAJOR}" -gt 13 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_UBUNTU}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 1[4-9] && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-4] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -lt 14 || "${SYSTEM_VERSION_NUMBER_MAJOR}" -gt 24 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_LINUX_MINT}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 19 && "${SYSTEM_VERSION_NUMBER:0:2}" != 2[0-2] && "${SYSTEM_VERSION_NUMBER:0:2}" != 6 ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 19 && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 2[0-2] && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 6 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_RHEL}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-9] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [7-9] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_CENTOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [7-8] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [7-8] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] ]]; then
-            is_supported="false"
-        fi
-        ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" != [8-9] && "${SYSTEM_VERSION_NUMBER}" != 23 ]] || [[ "${SYSTEM_VERSION_NUMBER:0:1}" == 8 && "${SYSTEM_VERSION_NUMBER#*.}" -lt 5 ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [8-9] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_FEDORA}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != [3-4][0-9] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [3-4][0-9] ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [8-9] && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 23 ]] || [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 && "$SYSTEM_VERSION_NUMBER_MINOR" -lt 6 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 2[1-4] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 2[1-4] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_ANOLISOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 23 ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 8 && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 23 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_OPENSUSE}")
         case "${SYSTEM_ID}" in
         "opensuse-leap")
-            if [[ "${SYSTEM_VERSION_NUMBER:0:2}" != 15 ]]; then
+            if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 15 ]]; then
                 is_supported="false"
             fi
             ;;
@@ -750,7 +779,7 @@ function collect_system_info() {
         # 理论全部支持或不作判断
         ;;
     *)
-        is_supported="false"
+        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
         ;;
     esac
     if [[ "${is_supported}" == "false" ]]; then
@@ -785,7 +814,7 @@ function collect_system_info() {
         ## 处理特殊的分支名称
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
             8 | 9 | 10)
                 SOURCE_BRANCH="debian-archive" # EOF
                 ;;
@@ -802,7 +831,7 @@ function collect_system_info() {
             fi
             ;;
         "${SYSTEM_RHEL}")
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
             9)
                 SOURCE_BRANCH="centos-stream" # 使用 CentOS Stream 仓库
                 ;;
@@ -820,7 +849,7 @@ function collect_system_info() {
             ;;
         "${SYSTEM_CENTOS_STREAM}")
             # 自 CentOS Stream 9 开始使用 centos-stream 仓库，旧版本使用 centos 仓库
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
             8)
                 if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
                     SOURCE_BRANCH="centos-vault" # EOF
@@ -879,7 +908,7 @@ function check_command_options() {
     fi
     if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}")
+        "${SYSTEM_REDHAT}")
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
                 output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
             fi
@@ -1267,7 +1296,7 @@ function backup_original_mirrors() {
             ;;
         "${SYSTEM_OPENSUSE}")
             # /etc/zypp/repos.d
-            backup_dir $Dir_openSUSERepos $Dir_openSUSEReposBackup
+            backup_dir $Dir_ZYppRepos $Dir_ZYppReposBackup
             ;;
         "${SYSTEM_ARCH}")
             # /etc/pacman.d/mirrorlist
@@ -1334,9 +1363,8 @@ function remove_original_mirrors() {
             fi
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_RHEL}")
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
                 9)
-                    rm -rf $Dir_YumRepos/rocky* # 注：本脚本旧版遗留问题
                     rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
                     ;;
                 *)
@@ -1356,7 +1384,7 @@ function remove_original_mirrors() {
                 fi
                 ;;
             "${SYSTEM_CENTOS_STREAM}")
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
                 9)
                     rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
                     ;;
@@ -1366,7 +1394,7 @@ function remove_original_mirrors() {
                 esac
                 ;;
             "${SYSTEM_ROCKY}")
-                case ${SYSTEM_VERSION_NUMBER:0:1} in
+                case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
                 9)
                     rm -rf $Dir_YumRepos/rocky*
                     ;;
@@ -1381,20 +1409,35 @@ function remove_original_mirrors() {
             "${SYSTEM_OPENCLOUDOS}")
                 rm -rf $Dir_YumRepos/OpenCloudOS*
                 ;;
+            "${SYSTEM_ANOLISOS}")
+                rm -rf $Dir_YumRepos/AnolisOS*
+                ;;
             esac
         fi
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/OpenCloudOS*
+        if [ ! -d $Dir_YumRepos ]; then
+            mkdir -p $Dir_YumRepos
+            return
+        fi
+        rm -rf $Dir_YumRepos/OpenCloudOS*
         ;;
     "${SYSTEM_OPENEULER}")
-        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/openEuler.repo
+        if [ ! -d $Dir_YumRepos ]; then
+            mkdir -p $Dir_YumRepos
+            return
+        fi
+        rm -rf $Dir_YumRepos/openEuler.repo
         ;;
     "${SYSTEM_ANOLISOS}")
-        [ -d $Dir_YumRepos ] && rm -rf $Dir_YumRepos/AnolisOS*
+        if [ ! -d $Dir_YumRepos ]; then
+            mkdir -p $Dir_YumRepos
+            return
+        fi
+        rm -rf $Dir_YumRepos/AnolisOS*
         ;;
     "${SYSTEM_OPENSUSE}")
-        [ -d $Dir_openSUSERepos ] && rm -rf $Dir_YumRepos/repo-*
+        [ -d $Dir_ZYppRepos ] && rm -rf $Dir_ZYppRepos/repo-*
         ;;
     "${SYSTEM_ARCH}")
         [ -f $File_ArchLinuxMirrorList ] && sed -i '1,$d' $File_ArchLinuxMirrorList
@@ -1455,7 +1498,7 @@ function change_mirrors_main() {
                 diff_dir $Dir_YumReposBackup $Dir_YumRepos
                 ;;
             "${SYSTEM_OPENSUSE}")
-                diff_dir $Dir_openSUSEReposBackup $Dir_openSUSERepos
+                diff_dir $Dir_ZYppReposBackup $Dir_ZYppRepos
                 ;;
             "${SYSTEM_ARCH}")
                 diff_file $File_ArchLinuxMirrorListBackup $File_ArchLinuxMirrorList
@@ -1536,12 +1579,12 @@ function change_mirrors_main() {
     else
         echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败\n"
         echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致：\n"
-        echo -e "1. 网络连通性问题：例如连接异常、由地区影响的网络间歇式中断、禁止外部访问等\n"
+        echo -e "1. 网络连通性问题：例如连接异常、由地区影响的网络间歇式中断、禁止外部访问、软件源网站防火墙阻断等\n"
         echo -e "2. 目标软件源异常：请手动前往软件源（镜像站）地址进行验证：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
-        echo -e "      若报错内容是提示某个文件不存在那么有可能是软件源的问题，多常见于正在同步中的软件源"
+        echo -e "      若报错内容是提示某个文件不存在那么有可能是软件源的问题，多常见于正在同步中的软件源仓库"
         echo -e "      若报错内容是目录（path）不存在也有可能是目标软件源不存在当前系统镜像仓库，即不支持当前系统"
         echo -e "      建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题\n"
-        echo -e "3. 原有软件源报错：请先排除系统原有的其它软件源报错，因为脚本不会干预这些无关的软件源仓库，解决后重新运行脚本即可\n"
+        echo -e "3. 原有软件源报错：请先排除系统原有的其它软件源报错，因为脚本不会干预这些无关的软件源配置，解决后重新运行脚本即可\n"
         exit 1
     fi
 }
@@ -1760,7 +1803,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             else
                 base_system_branch="ubuntu-ports"
             fi
-            case "${SYSTEM_VERSION_NUMBER:0:2}" in
+            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
             22)
                 base_system_codename="noble"
                 ;;
@@ -1804,32 +1847,35 @@ function change_mirrors_RedHat() {
     ## 生成官方 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         9)
-            gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
+            gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER_MAJOR}"
             ;;
         *)
-            gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
+            gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER_MAJOR}"
             ;;
         esac
         ;;
     "${SYSTEM_CENTOS}")
-        gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER_MAJOR}"
         ;;
     "${SYSTEM_CENTOS_STREAM}")
-        gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER_MAJOR}"
         ;;
     "${SYSTEM_ROCKY}")
-        gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER_MAJOR}"
         ;;
     "${SYSTEM_ALMALINUX}")
-        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_NUMBER:0:1}"
+        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_NUMBER_MAJOR}"
         ;;
     "${SYSTEM_FEDORA}")
         gen_repo_files_Fedora "${SYSTEM_VERSION_NUMBER}"
         ;;
     "${SYSTEM_OPENCLOUDOS}")
         gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER}"
+        ;;
+    "${SYSTEM_ANOLISOS}")
+        gen_repo_files_AnolisOS "${SYSTEM_VERSION_NUMBER}"
         ;;
     esac
     ## 使用官方源
@@ -1842,7 +1888,7 @@ function change_mirrors_RedHat() {
     cd $Dir_YumRepos
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         9)
             sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^metalink=|#metalink=|g" \
@@ -1859,7 +1905,7 @@ function change_mirrors_RedHat() {
         *)
             sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
             sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
             8)
                 sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
@@ -1881,7 +1927,7 @@ function change_mirrors_RedHat() {
         sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
         sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
         ## CentOS 7/8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         8)
             # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 分支
             sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
@@ -1898,7 +1944,7 @@ function change_mirrors_RedHat() {
         sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
         ;;
     "${SYSTEM_CENTOS_STREAM}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         9)
             sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^metalink=|#metalink=|g" \
@@ -1918,7 +1964,7 @@ function change_mirrors_RedHat() {
         esac
         ;;
     "${SYSTEM_ROCKY}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         9)
             sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
@@ -1939,7 +1985,7 @@ function change_mirrors_RedHat() {
         esac
         ;;
     "${SYSTEM_ALMALINUX}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         9)
             sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
@@ -1968,11 +2014,9 @@ function change_mirrors_RedHat() {
         ;;
     "${SYSTEM_FEDORA}")
         # 自 Fedora 39 起不再使用 modular 仓库
-        local fedora_repo_files
+        local fedora_repo_files="fedora.repo fedora-updates.repo fedora-updates-testing.repo"
         if [[ "${SYSTEM_VERSION_NUMBER}" -lt 39 ]]; then
-            fedora_repo_files="fedora.repo fedora-updates.repo fedora-updates-testing.repo fedora-modular.repo fedora-updates-modular.repo fedora-updates-testing-modular.repo"
-        else
-            fedora_repo_files="fedora.repo fedora-updates.repo fedora-updates-testing.repo"
+            fedora_repo_files="${fedora_repo_files} fedora-modular.repo fedora-updates-modular.repo fedora-updates-testing-modular.repo"
         fi
         sed -e "s|^metalink=|#metalink=|g" \
             -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
@@ -1981,7 +2025,7 @@ function change_mirrors_RedHat() {
             $fedora_repo_files
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         8)
             sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
@@ -1989,6 +2033,16 @@ function change_mirrors_RedHat() {
                 OpenCloudOS-Debuginfo.repo \
                 OpenCloudOS.repo \
                 OpenCloudOS-Sources.repo
+            ;;
+        esac
+        ;;
+    "${SYSTEM_ANOLISOS}")
+        # Anolis OS 仓库配置特殊，baseurl 同时使用 http 和 https 协议，gpgkey 同时使用软件源仓库远程路径和本地路径
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        8)
+            sed -e "s|http\(s\)\?://mirrors.openanolis.cn/anolis|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                AnolisOS-*
             ;;
         esac
         ;;
@@ -2051,13 +2105,19 @@ function change_mirrors_AnolisOS() {
 
     ## 修改源
     cd $Dir_YumRepos
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    # Anolis OS 仓库配置特殊，baseurl 同时使用 http 和 https 协议，gpgkey 同时使用软件源仓库远程路径和本地路径
+    case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
     23)
-        sed -e "s|https://mirrors.openanolis.cn/anolis|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
+        sed -e "s|http\(s\)\?://mirrors.openanolis.cn/anolis|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
             -i \
             AnolisOS-Debuginfo.repo \
             AnolisOS.repo \
             AnolisOS-Source.repo
+        ;;
+    8)
+        sed -e "s|http\(s\)\?://mirrors.openanolis.cn/anolis|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
+            -i \
+            AnolisOS-*
         ;;
     esac
 }
@@ -2079,7 +2139,7 @@ function change_mirrors_openSUSE() {
     fi
 
     ## 修改源
-    cd $Dir_openSUSERepos
+    cd $Dir_ZYppRepos
     # 更换软件源
     sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" repo-*
     case "${SYSTEM_ID}" in
@@ -2161,7 +2221,7 @@ function change_mirrors_Alpine() {
     if [ $? -eq 0 ]; then
         version_name="edge"
     else
-        version_name="v${SYSTEM_VERSION_NUMBER%.*}"
+        version_name="v${SYSTEM_VERSION_NUMBER_MAJOR}"
     fi
     ## 修改源
     echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
@@ -2230,14 +2290,14 @@ function change_mirrors_or_install_EPEL() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
             return
         else
-            target_version="${SYSTEM_VERSION_NUMBER:0:1}"
+            target_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
         fi
         ;;
     *)
         return
         ;;
     esac
-    ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，已无适配的必要）
+    ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，暂无适配的必要）
     if [[ "${target_version}" == "7" ]]; then
         return
     fi
@@ -2252,7 +2312,7 @@ function change_mirrors_or_install_EPEL() {
     [ "${VERIFICATION_EPELFILES}" -eq 0 ] && rm -rf $Dir_YumRepos/epel*
     [ "${VERIFICATION_EPELBACKUPFILES}" -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
     ## 生成 repo 源文件
-    gen_repo_files_EPEL
+    gen_repo_files_EPEL "${SYSTEM_VERSION_NUMBER_MAJOR}"
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
@@ -2270,7 +2330,7 @@ function get_package_manager() {
     local command="yum"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         9)
             command="dnf"
             ;;
@@ -4820,7 +4880,8 @@ EOF
 
 ## 生成 OpenCloudOS 官方 repo 源文件
 function gen_repo_files_OpenCloudOS() {
-    if [[ "${SYSTEM_VERSION_NUMBER}" == 23 ]]; then
+    case "${1%.*}" in
+    23)
         cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Stream.repo
 [BaseOS]
 name=BaseOS $releasever - $basearch
@@ -4864,10 +4925,9 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
 EOF
-    else
-        case "${1:0:1}" in
-        9)
-            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+        ;;
+    9)
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
 [BaseOS]
 name=BaseOS $releasever - $basearch
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
@@ -4931,9 +4991,9 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
 EOF
-            ;;
-        8)
-            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo
+        ;;
+    8)
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo
 # OpenCloudOS-Debuginfo.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -4987,8 +5047,8 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-            if [[ "${1}" == "8.6" ]]; then
-                cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+        if [[ "${1}" == "8.6" ]]; then
+            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
 # OpenCloudOS.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -5042,8 +5102,8 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-            else
-                cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+        else
+            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
 # OpenCloudOS.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -5104,8 +5164,8 @@ gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-            fi
-            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Sources.repo
+        fi
+        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Sources.repo
 # OpenCloudOS-Sources.repo
 #
 # Author: OpenCloudOS <infrastructure@opencloudos.tech>
@@ -5159,14 +5219,13 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
-            ;;
-        esac
-    fi
+        ;;
+    esac
 }
 
 ## 生成 Anolis OS 官方 repo 源文件
 function gen_repo_files_AnolisOS() {
-    case "$1" in
+    case "${1%.*}" in
     23)
         cat <<'EOF' >$Dir_YumRepos/AnolisOS.repo
 [os]
@@ -5235,6 +5294,162 @@ gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
 gpgcheck=1
 EOF
         ;;
+    8)
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-AppStream.repo
+[AppStream]
+name=AnolisOS-$releasever - AppStream
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/AppStream/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-BaseOS.repo
+[BaseOS]
+name=AnolisOS-$releasever - BaseOS
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/BaseOS/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-DDE.repo
+[DDE]
+name=AnolisOS-$releasever - DDE
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/DDE/$basearch/os
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Debuginfo.repo
+[AppStream-debuginfo]
+name=AnolisOS-$releasever - AppStream Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/AppStream/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[BaseOS-debuginfo]
+name=AnolisOS-$releasever - BaseOS Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/BaseOS/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[Plus-debuginfo]
+name=AnolisOS-$releasever - Plus Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/Plus/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+          
+[PowerTools-debuginfo]
+name=AnolisOS-$releasever - PowerTools Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/PowerTools/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+
+[DDE-debuginfo]
+name=AnolisOS-$releasever - DDE Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/DDE/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Extras.repo
+[Extras]
+name=AnolisOS-$releasever - Extras
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/Extras/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-HighAvailability.repo
+[HighAvailability]
+name=AnolisOS-$releasever - HighAvailability
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/HighAvailability/$basearch/os
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        if [[ "${1#*.}" -ge 8 ]]; then
+            cat <<'EOF' >$Dir_YumRepos/AnolisOS-kernel-5.10.repo
+[kernel-5.10]
+name=AnolisOS-$releasever - Kernel 5.10
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[kernel-5.10-source]
+name=AnolisOS-$releasever - Kernel 5.10 source
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/source
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[kernel-5.10-debug]
+name=AnolisOS-$releasever - Kernel 5.10 debug
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/debug
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        fi
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Plus.repo
+[Plus]
+name=AnolisOS-$releasever - Plus
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/Plus/$basearch/os
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-PowerTools.repo
+[PowerTools]
+name=AnolisOS-$releasever - PowerTools
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/PowerTools/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Source.repo
+[AppStream-source]
+name=AnolisOS-$releasever - AppStream Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/AppStream/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[BaseOS-source]
+name=AnolisOS-$releasever - BaseOS Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/BaseOS/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[Plus-source]
+name=AnolisOS-$releasever - Plus Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/Plus/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+          
+[PowerTools-source]
+name=AnolisOS-$releasever - PowerTools Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/PowerTools/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+
+[DDE-source]
+name=AnolisOS-$releasever - DDE Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/DDE/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        ;;
     esac
 }
 
@@ -5244,7 +5459,7 @@ function gen_repo_files_openSUSE() {
     "leap")
         case "$2" in
         15.[0-2])
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
 [repo-debug-non-oss]
 name=Debug Repository (Non-OSS)
 enabled=0
@@ -5253,7 +5468,7 @@ baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/no
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
 [repo-debug]
 name=Debug Repository
 enabled=0
@@ -5262,7 +5477,7 @@ baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/os
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
 [repo-debug-update-non-oss]
 name=Update Repository (Debug, Non-OSS)
 enabled=0
@@ -5271,7 +5486,7 @@ baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
 [repo-debug-update]
 name=Update Repository (Debug)
 enabled=0
@@ -5280,7 +5495,7 @@ baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
 [repo-non-oss]
 name=Non-OSS Repository
 enabled=1
@@ -5289,7 +5504,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
 [repo-oss]
 name=Main Repository
 enabled=1
@@ -5298,7 +5513,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-source-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-source-non-oss.repo
 [repo-source-non-oss]
 name=Source Repository (Non-OSS)
 enabled=0
@@ -5307,7 +5522,7 @@ baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/n
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-source.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
 [repo-source]
 name=Source Repository
 enabled=0
@@ -5316,7 +5531,7 @@ baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/o
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-update-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
 [repo-update-non-oss]
 name=Update Repository (Non-Oss)
 enabled=1
@@ -5325,7 +5540,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
 [repo-update]
 name=Main Update Repository
 enabled=1
@@ -5336,7 +5551,7 @@ keeppackages=0
 EOF
             ;;
         *)
-            cat <<'EOF' >$Dir_openSUSERepos/repo-backports-debug-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-backports-debug-update.repo
 [repo-backports-debug-update]
 name=Update repository with updates for openSUSE Leap debuginfo packages from openSUSE Backports
 enabled=0
@@ -5345,7 +5560,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/backports_debug/
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-backports-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-backports-update.repo
 [repo-backports-update]
 name=Update repository of openSUSE Backports
 enabled=1
@@ -5355,7 +5570,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
 [repo-debug-non-oss]
 name=Debug Repository (Non-OSS)
 enabled=0
@@ -5363,7 +5578,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/non-oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
 [repo-debug]
 name=Debug Repository
 enabled=0
@@ -5371,7 +5586,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
 [repo-debug-update-non-oss]
 name=Update Repository (Debug, Non-OSS)
 enabled=0
@@ -5379,7 +5594,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-debug-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
 [repo-debug-update]
 name=Update Repository (Debug)
 enabled=0
@@ -5387,7 +5602,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
 [repo-non-oss]
 name=Non-OSS Repository
 enabled=1
@@ -5396,7 +5611,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-openh264.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-openh264.repo
 [repo-openh264]
 name=Open H.264 Codec (openSUSE Leap)
 enabled=1
@@ -5405,7 +5620,7 @@ baseurl=http://codecs.opensuse.org/openh264/openSUSE_Leap/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
 [repo-oss]
 name=Main Repository
 enabled=1
@@ -5414,7 +5629,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-sle-debug-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-sle-debug-update.repo
 [repo-sle-debug-update]
 name=Update repository with debuginfo for updates from SUSE Linux Enterprise 15
 enabled=0
@@ -5424,7 +5639,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-sle-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-sle-update.repo
 [repo-sle-update]
 name=Update repository with updates from SUSE Linux Enterprise 15
 enabled=1
@@ -5434,7 +5649,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-source.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
 [repo-source]
 name=Source Repository
 enabled=0
@@ -5442,7 +5657,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-update-non-oss.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
 [repo-update-non-oss]
 name=Update Repository (Non-Oss)
 enabled=1
@@ -5451,7 +5666,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_openSUSERepos/repo-update.repo
+            cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
 [repo-update]
 name=Main Update Repository
 enabled=1
@@ -5464,7 +5679,7 @@ EOF
         esac
         ;;
     "tumbleweed")
-        cat <<'EOF' >$Dir_openSUSERepos/repo-debug.repo
+        cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
 [repo-debug]
 name=openSUSE-Tumbleweed-Debug
 enabled=0
@@ -5473,7 +5688,7 @@ baseurl=http://download.opensuse.org/debug/tumbleweed/repo/oss/
 path=/
 keeppackages=0
 EOF
-        cat <<'EOF' >$Dir_openSUSERepos/repo-non-oss.repo
+        cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
 [repo-non-oss]
 name=openSUSE-Tumbleweed-Non-Oss
 enabled=1
@@ -5483,7 +5698,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-        cat <<'EOF' >$Dir_openSUSERepos/repo-openh264.repo
+        cat <<'EOF' >$Dir_ZYppRepos/repo-openh264.repo
 [repo-openh264]
 name=Open H.264 Codec (openSUSE Tumbleweed)
 enabled=1
@@ -5493,7 +5708,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-        cat <<'EOF' >$Dir_openSUSERepos/repo-oss.repo
+        cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
 [repo-oss]
 name=openSUSE-Tumbleweed-Oss
 enabled=1
@@ -5503,7 +5718,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-        cat <<'EOF' >$Dir_openSUSERepos/repo-source.repo
+        cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
 [repo-source]
 name=openSUSE-Tumbleweed-Source
 enabled=0
@@ -5512,7 +5727,7 @@ baseurl=http://download.opensuse.org/source/tumbleweed/repo/oss/
 path=/
 keeppackages=0
 EOF
-        cat <<'EOF' >$Dir_openSUSERepos/repo-update.repo
+        cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
 [repo-update]
 name=openSUSE-Tumbleweed-Update
 enabled=1
@@ -5528,7 +5743,7 @@ EOF
 
 ## 生成 EPEL 附加软件包官方 repo 源文件
 function gen_repo_files_EPEL() {
-    case ${SYSTEM_VERSION_NUMBER:0:1} in
+    case "${1}" in
     9)
         cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
@@ -5766,64 +5981,64 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 EOF
         ;;
-        #     7)
-        #         cat <<'EOF' >$Dir_YumRepos/epel.repo
-        # [epel]
-        # name=Extra Packages for Enterprise Linux 7 - $basearch
-        # #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
-        # metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
-        # failovermethod=priority
-        # enabled=1
-        # gpgcheck=1
-        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+    7)
+        cat <<'EOF' >$Dir_YumRepos/epel.repo
+[epel]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
-        # [epel-debuginfo]
-        # name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
-        # #baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
-        # metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
-        # failovermethod=priority
-        # enabled=0
-        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-        # gpgcheck=1
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
+#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
 
-        # [epel-source]
-        # name=Extra Packages for Enterprise Linux 7 - $basearch - Source
-        # #baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
-        # metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
-        # failovermethod=priority
-        # enabled=0
-        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-        # gpgcheck=1
-        # EOF
-        #         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
-        # [epel-testing]
-        # name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
-        # #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
-        # metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
-        # failovermethod=priority
-        # enabled=0
-        # gpgcheck=1
-        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+[epel-source]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Source
+#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+[epel-testing]
+name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
-        # [epel-testing-debuginfo]
-        # name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
-        # #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
-        # metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
-        # failovermethod=priority
-        # enabled=0
-        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-        # gpgcheck=1
+[epel-testing-debuginfo]
+name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
+#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
 
-        # [epel-testing-source]
-        # name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
-        # #baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
-        # metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
-        # failovermethod=priority
-        # enabled=0
-        # gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-        # gpgcheck=1
-        # EOF
-        #         ;;
+[epel-testing-source]
+name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
+#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+EOF
+        ;;
     esac
 }
 

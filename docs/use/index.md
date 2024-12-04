@@ -304,12 +304,13 @@ hide:
 | `--backup` | 是否备份原有软件源 | `true` 或 `false` |
 | `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 是否清理下载缓存 | `true` 或 `false` |
+| `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
 | `--print-diff` | 是否打印源文件修改前后差异 | `true` 或 `false` |
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 | `--help` | 查看帮助菜单 | 无 |
 
-> 软件源格式 `<指定WEB协议>://<软件源地址>/<软件源分支>`
+> 软件源格式 `<WEB协议>://<软件源地址>/<软件源分支>`
 
 接下来是一些高级用法的举例
 
@@ -339,8 +340,8 @@ hide:
         | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
         | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | proxmox |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | centos / centos-stream / centos-altarch / centos-vault |
-        | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Fedora | fedora |
-        | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.2em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
+        | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora | fedora |
+        | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
         | <a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | rocky |
         | <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux | almalinux / almalinux-vault |
         | <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS（鸥栖） | opencloudos |
@@ -451,11 +452,17 @@ hide:
 
 ## 定制脚本
 
-如果你是其它项目的开发者希望通过本项目来制作专属脚本，目前已经有国内教育单位镜像站的维护者这样做了，下面简单介绍一下具体定制方法。
+如果你是其它项目的开发者希望通过本项目来制作专属脚本那么请参考下面提到的内容，目前已经有国内教育单位镜像站的维护者这样做了。
 
-1.  首先不建议修改代码的底层逻辑，应尽量与本项目源码保持同步，脚本内容执行顺序由 `main` 函数控制，代码逻辑清晰  
-2.  你可以简单去除一些无关内容，例如将三个软件源列表（数组）中的内容删除 `例：mirror_list_default=()`
-3.  脚本主要功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，具体变量详见如下表格，你只需要将这些变量声明在脚本头部（预留注释区域）即可快速完成定制
+1.  首先不建议修改代码的底层逻辑，应尽量与本项目源码保持同步，脚本内容执行顺序由 `main` 函数控制，代码逻辑清晰
+2.  你可以简单去除一些无关内容，例如将软件源列表（数组）`mirror_list_(default|edu|abroad|extranet|intranet)` 中的内容删除，例：`mirror_list_default=()`
+3.  如果你想定制脚本打印内容可直接修改 `run_start` `run_end` `print_title` 这三个函数中的内容
+4.  如果你想添加自定义 Shell 内容详见 `main` 函数中脚本执行顺序，可以在对应位置直接插入内容也可以封装函数后调用
+5.  如果你想要缩减脚本体积那么可以删除一些不必要的内容，除了上面提到的软件源列表还有一些涉及脚本工作的部分模块内容，具体如下：
+    1. 首先在删除内容时应尽可能保留脚本原始结构，直接把涉及函数中的内容删除即可，使其保留为空函数
+    2. 可以删除一些不使用（操作系统）的软件源原始内容 `gen_repo_files_xxx`，这些内容占据了脚本 `60%` 以上的体积
+    3. 如果你不使用某些功能那么可以删除对应功能模块函数中的内容，`命令选项 handle_command_options`、`关闭防火墙 close_firewall_service`、`备份原有软件源 backup_original_mirrors`、`更新软件包 upgrade_software`
+6.  脚本主要功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，具体变量详见如下表格，你只需要将这些变量声明在脚本头部（预留注释区域）即可快速完成定制
 
 | 变量名 | 含义 | 值类型 |
 | :-: | :-: | :-: |
@@ -482,6 +489,7 @@ hide:
 | `IGNORE_BACKUP_TIPS` | 忽略覆盖备份提示（即不覆盖备份） | `true` 或 `false` |
 | `UPGRADE_SOFTWARE` | 是否更新软件包 | `true` 或 `false` |
 | `CLEAN_CACHE` | 是否清理下载缓存 | `true` 或 `false` |
+| `CLEAN_SCREEN` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
 | `PRINT_DIFF` | 是否打印源文件修改前后差异 | `true` 或 `false` |
 
 > 部分变量存在默认值，未涉及的变量无需声明为空值（空字符串），另外如果对应功能配置不存在那么就可能会出现交互

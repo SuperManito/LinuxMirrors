@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-02
+## Modified: 2024-12-05
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -73,7 +73,7 @@ SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENEULER="openEuler"
-SYSTEM_ANOLISOS="Anolis OS"
+SYSTEM_ANOLISOS="Anolis"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
 SYSTEM_ALPINE="Alpine"
@@ -112,13 +112,20 @@ PURPLE='\033[35m'
 AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS="[\033[1;32m成功${PLAIN}]"
-COMPLETE="[\033[1;32m完成${PLAIN}]"
-WARN="[\033[1;5;33m注意${PLAIN}]"
-ERROR="[\033[1;31m错误${PLAIN}]"
-FAIL="[\033[1;31m失败${PLAIN}]"
-TIP="[\033[1;32m提示${PLAIN}]"
-WORKING="[\033[1;36m >_ ${PLAIN}]"
+SUCCESS="\033[1;32m✔${PLAIN}"
+COMPLETE="\033[1;32m✔${PLAIN}"
+WARN="\033[1;43m 警告 ${PLAIN}"
+ERROR="\033[1;31m✘${PLAIN}"
+FAIL="\033[1;31m✘${PLAIN}"
+TIP="\033[1;44m 提示 ${PLAIN}"
+WORKING="\033[1;36m>_${PLAIN}"
+# SUCCESS="[\033[1;32m成功${PLAIN}]"
+# COMPLETE="[\033[1;32m完成${PLAIN}]"
+# WARN="[\033[1;5;33m注意${PLAIN}]"
+# ERROR="[\033[1;31m错误${PLAIN}]"
+# FAIL="[\033[1;31m失败${PLAIN}]"
+# TIP="[\033[1;32m提示${PLAIN}]"
+# WORKING="[\033[1;36m >_ ${PLAIN}]"
 
 function main() {
     permission_judgment
@@ -143,7 +150,8 @@ function handle_command_options() {
   --source                 指定 Docker CE 源地址                     地址
   --source-registry        指定 Docker Registry 源地址               地址
   --codename               指定 Debian 系操作系统的版本代号          代号名称
-  --install-latest       控制是否安装最新版本的 Docker Engine        true 或 false
+  --install-latest         是否安装最新版本的 Docker Engine          true 或 false
+  --clean-screen           是否在运行前清除屏幕上的所有内容          true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                          无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
@@ -210,6 +218,22 @@ function handle_command_options() {
         --ignore-backup-tips)
             IGNORE_BACKUP_TIPS="true"
             ;;
+        ## 清除屏幕上的所有内容
+        --clean-screen)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    CLEAN_SCREEN="${2,,}"
+                    shift
+                    ;;
+                *)
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    ;;
+                esac
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+            fi
+            ;;
         ## 命令帮助
         --help)
             output_command_help
@@ -226,7 +250,11 @@ function handle_command_options() {
 }
 
 function run_start() {
-    [[ -z "${SOURCE}" || -z "${SOURCE_REGISTRY}" ]] && clear
+    if [ -z "${CLEAN_SCREEN}" ]; then
+        [[ -z "${SOURCE}" || -z "${SOURCE_REGISTRY}" ]] && clear
+    elif [ "${CLEAN_SCREEN}" == "true" ]; then
+        clear
+    fi
     echo -e ' +-----------------------------------+'
     echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
     echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
@@ -236,9 +264,8 @@ function run_start() {
 
 ## 运行结束
 function run_end() {
-    echo -e "\n---------- 脚本执行结束 ----------"
-    echo -e "\n\033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
-    # echo -e "\n     ------ 脚本执行结束 ------"
+    echo -e "\n✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
+    # echo -e "\n     ------ 脚本运行结束 ------"
     # echo -e ' \033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m┐\033[0m'
     # echo -e ' \033[0;1;31;91m│▞\033[0;1;33;93m▀▖\033[0m            \033[0;1;32;92m▙▗\033[0;1;36;96m▌\033[0m      \033[0;1;31;91m▗\033[0;1;33;93m▐\033[0m     \033[0;1;34;94m│\033[0m'
     # echo -e ' \033[0;1;33;93m│▚\033[0;1;32;92m▄\033[0m \033[0;1;36;96m▌\033[0m \033[0;1;34;94m▌▛\033[0;1;35;95m▀▖\033[0;1;31;91m▞▀\033[0;1;33;93m▖▙\033[0;1;32;92m▀▖\033[0;1;36;96m▌▘\033[0;1;34;94m▌▝\033[0;1;35;95m▀▖\033[0;1;31;91m▛▀\033[0;1;33;93m▖▄\033[0;1;32;92m▜▀\033[0m \033[0;1;36;96m▞\033[0;1;34;94m▀▖\033[0;1;35;95m│\033[0m'
@@ -268,6 +295,8 @@ function collect_system_info() {
     grep -q "PRETTY_NAME=" $File_LinuxRelease && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统版本号
     SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    SYSTEM_VERSION_NUMBER_MAJOR="${SYSTEM_VERSION_NUMBER%%.*}"
+    SYSTEM_VERSION_NUMBER_MINOR="${SYSTEM_VERSION_NUMBER#*.}"
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 判定当前系统派系
@@ -276,16 +305,21 @@ function collect_system_info() {
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        if [[ "${SYSTEM_VERSION_NUMBER:0:1}" == 9 ]]; then
+        # 拦截 OpenCloudOS 9 及以上版本，非红帽版本不支持从 Docker 官方仓库安装
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -ge 9 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
-        # SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 注：RedHat 判断优先级需要高于 OpenCloudOS，自 9.0 版本起不再基于红帽
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_AnolisOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}"
+        # 拦截 Anolis OS 8 版本，不支持从 Docker 官方仓库安装
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 ]]; then
+            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+        fi
+        SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
     else
-        output_error "无法判断当前运行环境或不支持当前操作系统！"
+        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -371,6 +405,10 @@ function collect_system_info() {
             ;;
         "${SYSTEM_RHEL}")
             SOURCE_BRANCH="rhel"
+            ;;
+        "${SYSTEM_ANOLISOS}")
+            # 拦截 Anolis OS 8 版本，不支持从 Docker 官方仓库安装
+            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
             ;;
         *)
             SOURCE_BRANCH="centos"
@@ -588,7 +626,7 @@ function install_dependency_packages() {
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         # 注：红帽 8 版本才发布了 dnf 包管理工具，为了兼容性而优先选择安装 dnf-utils
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         7)
             $package_manager install -y yum-utils device-mapper-persistent-data lvm2
             ;;
@@ -605,7 +643,7 @@ function get_package_manager() {
     local command="yum"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-        case ${SYSTEM_VERSION_NUMBER:0:1} in
+        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         9)
             command="dnf"
             ;;
@@ -685,9 +723,9 @@ function configure_docker_ce_mirror() {
         ## 兼容处理版本号
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
             local target_version
-            case ${SYSTEM_VERSION_NUMBER:0:1} in
+            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
             7 | 8 | 9)
-                target_version="${SYSTEM_VERSION_NUMBER:0:1}"
+                target_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
                 ;;
             *)
                 target_version="9" # 使用较新的版本
@@ -813,6 +851,9 @@ function install_docker_engine() {
             echo -e '{\n  "registry-mirrors": ["https://SOURCE"]\n}' >$DockerConfig
             sed -i "s|SOURCE|${SOURCE_REGISTRY}|g" $DockerConfig
             systemctl daemon-reload
+            if [[ $(systemctl is-active docker) == "active" ]]; then
+                systemctl restart docker
+            fi
         fi
     }
 
@@ -834,9 +875,6 @@ function install_docker_engine() {
                 echo -e "\n$COMPLETE 检测到已安装 Docker Engine 最新版本，跳过安装"
                 rm -rf $DockerVersionFile
                 change_docker_registry_mirror
-                if [[ $(systemctl is-active docker) == "active" ]]; then
-                    systemctl restart docker
-                fi
                 systemctl enable --now docker >/dev/null 2>&1
                 check_version
                 run_end
@@ -857,6 +895,7 @@ function install_docker_engine() {
         [Yy] | [Yy][Ee][Ss])
             uninstall_original_version
             install_main
+            [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
             ;;
         [Nn] | [Nn][Oo]) ;;
         *)
@@ -867,9 +906,9 @@ function install_docker_engine() {
     else
         uninstall_original_version
         install_main
+        [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
     fi
     change_docker_registry_mirror
-    systemctl stop docker >/dev/null 2>&1
     systemctl enable --now docker >/dev/null 2>&1
 }
 
