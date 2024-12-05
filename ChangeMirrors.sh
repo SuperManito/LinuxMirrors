@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-05
+## Modified: 2024-12-06
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -182,8 +182,8 @@ File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
-File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
+File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
 File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
 File_ArchLinuxRelease=/etc/arch-release
@@ -229,13 +229,13 @@ PURPLE='\033[35m'
 AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS="\033[1;32m✔${PLAIN}"
-COMPLETE="\033[1;32m✔${PLAIN}"
-WARN="\033[1;43m 警告 ${PLAIN}"
-ERROR="\033[1;31m✘${PLAIN}"
-FAIL="\033[1;31m✘${PLAIN}"
-TIP="\033[1;44m 提示 ${PLAIN}"
-WORKING="\033[1;36m>_${PLAIN}"
+SUCCESS=" \033[1;32m✔${PLAIN}"
+COMPLETE=" \033[1;32m✔${PLAIN}"
+WARN=" \033[1;43m 警告 ${PLAIN}"
+ERROR=" \033[1;31m✘${PLAIN}"
+FAIL=" \033[1;31m✘${PLAIN}"
+TIP=" \033[1;44m 提示 ${PLAIN}"
+WORKING=" \033[1;36m>_${PLAIN}"
 # SUCCESS="[\033[1;32m成功${PLAIN}]"
 # COMPLETE="[\033[1;32m完成${PLAIN}]"
 # WARN="[\033[1;5;33m注意${PLAIN}]"
@@ -634,7 +634,7 @@ function run_start() {
 }
 
 function run_end() {
-    echo -e "\n✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
+    echo -e "\n ✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
 }
 
 ## 报错退出
@@ -666,10 +666,10 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
-    elif [ -s $File_OpenCloudOSRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
+    elif [ -s $File_OpenCloudOSRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s $File_AnolisOSRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
     elif [ -s $File_openKylinVersion ]; then
@@ -747,13 +747,13 @@ function collect_system_info() {
             is_supported="false"
         fi
         ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [8-9] && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 23 ]] || [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 && "$SYSTEM_VERSION_NUMBER_MINOR" -lt 6 ]]; then
+    "${SYSTEM_OPENEULER}")
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 2[1-4] ]]; then
             is_supported="false"
         fi
         ;;
-    "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 2[1-4] ]]; then
+    "${SYSTEM_OPENCLOUDOS}")
+        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [8-9] && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 23 ]] || [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 && "$SYSTEM_VERSION_NUMBER_MINOR" -lt 6 ]]; then
             is_supported="false"
         fi
         ;;
@@ -884,7 +884,7 @@ function collect_system_info() {
     "${SYSTEM_DEBIAN}" | "${SYSTEM_ALPINE}" | "${SYSTEM_OPENKYLIN}")
         SYNC_MIRROR_TEXT="更新软件源"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         SYNC_MIRROR_TEXT="生成软件源缓存"
         ;;
     "${SYSTEM_OPENSUSE}")
@@ -894,6 +894,11 @@ function collect_system_info() {
         SYNC_MIRROR_TEXT="同步软件源"
         ;;
     esac
+    ## 判断是否可以使用高级交互式选择器
+    CAN_USE_ADVANCED_INTERACTIVE_SELECTION="false"
+    if [ ! -z "$(command -v tput)" ]; then
+        CAN_USE_ADVANCED_INTERACTIVE_SELECTION="true"
+    fi
 }
 
 ## 命令选项兼容性判断
@@ -975,8 +980,8 @@ function choose_mirrors() {
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
-                tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')  # 软件源地址
+                tmp_mirror_name="${list_arr[i]%@*}" # 软件源名称
+                tmp_mirror_url="${list_arr[i]#*@}"  # 软件源地址
                 arr_num=$((i + 1))
                 echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
             done
@@ -991,26 +996,35 @@ function choose_mirrors() {
         for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
             if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
                 intranet_source="${mirror_list_intranet[i]}"
-                ONLY_HTTP="True"
+                ONLY_HTTP="true" # 内网地址一般不支持 HTTPS 协议
                 break
             else
                 continue
             fi
         done
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
-            local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss]) ;;
-            [Nn] | [Nn][Oo])
-                SOURCE="${intranet_source}"
-                echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不使用内网地址！"
-                ;;
-            esac
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                echo ''
+                interactive_select_boolean "${BOLD}默认使用软件源的公网地址，是否继续?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "false" ]]; then
+                    SOURCE="${intranet_source}"
+                    echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                fi
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss]) ;;
+                [Nn] | [Nn][Oo])
+                    SOURCE="${intranet_source}"
+                    echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不使用内网地址！"
+                    ;;
+                esac
+            fi
         elif [[ "${USE_INTRANET_SOURCE}" == "true" ]]; then
             SOURCE="${intranet_source}"
         fi
@@ -1034,39 +1048,44 @@ function choose_mirrors() {
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
             return
         fi
-
-        if [[ ${USE_ABROAD_SOURCE} = "true" ]]; then
-            local mirror_list_name="mirror_list_abroad"
-            print_mirrors_list "${mirror_list_name}" 60
-        elif [[ ${USE_EDU_SOURCE} = "true" ]]; then
-            local mirror_list_name="mirror_list_edu"
-            print_mirrors_list "${mirror_list_name}" 31
+        local mirror_list_name mirror_list_print_length
+        if [[ "${USE_ABROAD_SOURCE}" = "true" ]]; then
+            mirror_list_name="mirror_list_abroad"
+            mirror_list_print_length=60
+        elif [[ "${USE_EDU_SOURCE}" = "true" ]]; then
+            mirror_list_name="mirror_list_edu"
+            mirror_list_print_length=31
         else
-            local mirror_list_name="mirror_list_default"
-            print_mirrors_list "${mirror_list_name}" 31
+            mirror_list_name="mirror_list_default"
+            mirror_list_print_length=31
         fi
 
-        local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
-        while true; do
-            read -rp "${CHOICE}" INPUT
-            case "${INPUT}" in
-            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                local tmp_source
-                tmp_source="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
-                if [[ -z "${tmp_source}" ]]; then
-                    echo -e "\n$WARN 请输入有效的数字序号！"
-                else
-                    SOURCE="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]} | awk -F '@' '{print$2}')"
-                    # echo "${SOURCE}"
-                    # exit
-                    break
-                fi
-                ;;
-            *)
-                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
-                ;;
-            esac
-        done
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的软件源：\${PLAIN}\\n\""
+            SOURCE="${_SELECT_RESULT#*@}"
+            echo -e "\n ${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}" | sed "s| · | |g"
+        else
+            print_mirrors_list "${mirror_list_name}" $mirror_list_print_length
+            local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+            while true; do
+                read -rp "${CHOICE}" INPUT
+                case "${INPUT}" in
+                [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                    local tmp_source
+                    tmp_source="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
+                    if [[ -z "${tmp_source}" ]]; then
+                        echo -e "\n$WARN 请输入有效的数字序号！"
+                    else
+                        SOURCE="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]} | awk -F '@' '{print$2}')"
+                        break
+                    fi
+                    ;;
+                *)
+                    echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                    ;;
+                esac
+            done
+        fi
     fi
 
     ## 选择软件源内网地址
@@ -1078,24 +1097,34 @@ function choose_mirrors() {
 ## 选择同步或更新软件源所使用的 WEB 协议（ HTTP/HTTPS）
 function choose_protocol() {
     if [[ -z "${WEB_PROTOCOL}" ]]; then
-        if [[ "${ONLY_HTTP}" == "True" ]]; then
+        if [[ "${ONLY_HTTP}" == "true" ]]; then
             WEB_PROTOCOL="http"
         else
-            local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                WEB_PROTOCOL="http"
-                ;;
-            [Nn] | [Nn][Oo])
-                WEB_PROTOCOL="https"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
-                WEB_PROTOCOL="https"
-                ;;
-            esac
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                echo ''
+                interactive_select_boolean "${BOLD}软件源是否使用 HTTP 协议?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                    WEB_PROTOCOL="http"
+                else
+                    WEB_PROTOCOL="https"
+                fi
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss])
+                    WEB_PROTOCOL="http"
+                    ;;
+                [Nn] | [Nn][Oo])
+                    WEB_PROTOCOL="https"
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
+                    WEB_PROTOCOL="https"
+                    ;;
+                esac
+            fi
         fi
     fi
     WEB_PROTOCOL="${WEB_PROTOCOL,,}"
@@ -1132,25 +1161,39 @@ function choose_install_epel_packages() {
     esac
     ## 选择是否安装 EPEL 附加软件包
     if [[ -z "${INSTALL_EPEL}" ]]; then
-        if [ $VERIFICATION_EPEL -eq 0 ]; then
-            local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            echo ''
+            if [ $VERIFICATION_EPEL -eq 0 ]; then
+                interactive_select_boolean "${BOLD}检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源?${PLAIN}"
+            else
+                interactive_select_boolean "${BOLD}是否安装 EPEL 附加软件包?${PLAIN}"
+            fi
+            if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                INSTALL_EPEL="true"
+            else
+                INSTALL_EPEL="false"
+            fi
         else
-            local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+            if [ $VERIFICATION_EPEL -eq 0 ]; then
+                local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
+            fi
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                INSTALL_EPEL="true"
+                ;;
+            [Nn] | [Nn][Oo])
+                INSTALL_EPEL="false"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不更换！"
+                INSTALL_EPEL="false"
+                ;;
+            esac
         fi
-        read -rp "${CHOICE}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case "${INPUT}" in
-        [Yy] | [Yy][Ee][Ss])
-            INSTALL_EPEL="true"
-            ;;
-        [Nn] | [Nn][Oo])
-            INSTALL_EPEL="false"
-            ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不更换！"
-            INSTALL_EPEL="false"
-            ;;
-        esac
     fi
 }
 
@@ -1161,18 +1204,26 @@ function close_firewall_service() {
     fi
     if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
         if [[ -z "${CLOSE_FIREWALL}" ]]; then
-            local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                CLOSE_FIREWALL="true"
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不关闭！"
-                ;;
-            esac
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                echo ''
+                interactive_select_boolean "${BOLD}是否关闭防火墙和 SELinux ?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                    CLOSE_FIREWALL="true"
+                fi
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss])
+                    CLOSE_FIREWALL="true"
+                    ;;
+                [Nn] | [Nn][Oo]) ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不关闭！"
+                    ;;
+                esac
+            fi
         fi
         if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
             local SelinuxConfig=/etc/selinux/config
@@ -1199,20 +1250,30 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
-            local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE_BACKUP}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss]) ;;
-            [Nn] | [Nn][Oo])
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                cp -rvf "${target_file}" "${backup_file}" 2>&1
-                BACKED_UP="true"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不覆盖！"
-                ;;
-            esac
+                interactive_select_boolean "${BOLD}检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "false" ]]; then
+                    echo ''
+                    cp -rvf "${target_file}" "${backup_file}" 2>&1
+                    BACKED_UP="true"
+                fi
+            else
+                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE_BACKUP}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss]) ;;
+                [Nn] | [Nn][Oo])
+                    echo ''
+                    cp -rvf "${target_file}" "${backup_file}" 2>&1
+                    BACKED_UP="true"
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不覆盖！"
+                    ;;
+                esac
+            fi
         else
             echo ''
             cp -rvf "${target_file}" "${backup_file}" 2>&1
@@ -1237,20 +1298,30 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
-            local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE_BACKUP}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss]) ;;
-            [Nn] | [Nn][Oo])
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                cp -rvf $target_dir/* "${backup_dir}" 2>&1
-                BACKED_UP="true"
-                ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不覆盖！"
-                ;;
-            esac
+                interactive_select_boolean "${BOLD}检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "false" ]]; then
+                    echo ''
+                    cp -rvf $target_dir/* "${backup_dir}" 2>&1
+                    BACKED_UP="true"
+                fi
+            else
+                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE_BACKUP}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss]) ;;
+                [Nn] | [Nn][Oo])
+                    echo ''
+                    cp -rvf $target_dir/* "${backup_dir}" 2>&1
+                    BACKED_UP="true"
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不覆盖！"
+                    ;;
+                esac
+            fi
         else
             echo ''
             cp -rvf $target_dir/* "${backup_dir}" 2>&1
@@ -1290,7 +1361,7 @@ function backup_original_mirrors() {
                 backup_file $File_LinuxMintSourceList $File_LinuxMintSourceListBackup "official-package-repositories.list"
             fi
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
             # /etc/yum.repos.d
             backup_dir $Dir_YumRepos $Dir_YumReposBackup
             ;;
@@ -1415,19 +1486,19 @@ function remove_original_mirrors() {
             esac
         fi
         ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        if [ ! -d $Dir_YumRepos ]; then
-            mkdir -p $Dir_YumRepos
-            return
-        fi
-        rm -rf $Dir_YumRepos/OpenCloudOS*
-        ;;
     "${SYSTEM_OPENEULER}")
         if [ ! -d $Dir_YumRepos ]; then
             mkdir -p $Dir_YumRepos
             return
         fi
         rm -rf $Dir_YumRepos/openEuler.repo
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        if [ ! -d $Dir_YumRepos ]; then
+            mkdir -p $Dir_YumRepos
+            return
+        fi
+        rm -rf $Dir_YumRepos/OpenCloudOS*
         ;;
     "${SYSTEM_ANOLISOS}")
         if [ ! -d $Dir_YumRepos ]; then
@@ -1494,7 +1565,7 @@ function change_mirrors_main() {
                     diff_file $File_LinuxMintSourceListBackup $File_LinuxMintSourceList
                 fi
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 diff_dir $Dir_YumReposBackup $Dir_YumRepos
                 ;;
             "${SYSTEM_OPENSUSE}")
@@ -1522,11 +1593,11 @@ function change_mirrors_main() {
     "${SYSTEM_REDHAT}")
         change_mirrors_RedHat
         ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        change_mirrors_OpenCloudOS
-        ;;
     "${SYSTEM_OPENEULER}")
         change_mirrors_openEuler
+        ;;
+    "${SYSTEM_OPENCLOUDOS}")
+        change_mirrors_OpenCloudOS
         ;;
     "${SYSTEM_ANOLISOS}")
         change_mirrors_AnolisOS
@@ -1557,7 +1628,7 @@ function change_mirrors_main() {
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         local package_manager="$(get_package_manager)"
         $package_manager makecache
         ;;
@@ -1595,18 +1666,26 @@ function upgrade_software() {
         ## 交互确认
         if [[ -z "${CLEAN_CACHE}" ]]; then
             CLEAN_CACHE="false"
-            local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                CLEAN_CACHE="true"
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不清理！"
-                ;;
-            esac
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                echo ''
+                interactive_select_boolean "${BOLD}是否清理已下载的软件包缓存?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                    CLEAN_CACHE="true"
+                fi
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss])
+                    CLEAN_CACHE="true"
+                    ;;
+                [Nn] | [Nn][Oo]) ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不清理！"
+                    ;;
+                esac
+            fi
         fi
         if [[ "${CLEAN_CACHE}" == "false" ]]; then
             return
@@ -1617,7 +1696,7 @@ function upgrade_software() {
             apt-get autoremove -y >/dev/null 2>&1
             apt-get clean >/dev/null 2>&1
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
             local package_manager="$(get_package_manager)"
             $package_manager autoremove -y >/dev/null 2>&1
             $package_manager clean packages -y >/dev/null 2>&1
@@ -1646,18 +1725,26 @@ function upgrade_software() {
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
         UPGRADE_SOFTWARE="false"
-        local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
-        read -rp "${CHOICE}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case "${INPUT}" in
-        [Yy] | [Yy][Ee][Ss]) ;;
-        [Nn] | [Nn][Oo])
-            UPGRADE_SOFTWARE="true"
-            ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不更新！"
-            ;;
-        esac
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            echo ''
+            interactive_select_boolean "${BOLD}是否跳过更新软件包?${PLAIN}"
+            if [[ "${_SELECT_RESULT}" == "false" ]]; then
+                UPGRADE_SOFTWARE="true"
+            fi
+        else
+            local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss]) ;;
+            [Nn] | [Nn][Oo])
+                UPGRADE_SOFTWARE="true"
+                ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不更新！"
+                ;;
+            esac
+        fi
     fi
     if [[ "${UPGRADE_SOFTWARE}" == "false" ]]; then
         return
@@ -1668,7 +1755,7 @@ function upgrade_software() {
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         apt-get upgrade -y
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         local package_manager="$(get_package_manager)"
         $package_manager update -y --skip-broken
         ;;
@@ -2336,11 +2423,176 @@ function get_package_manager() {
             ;;
         esac
         ;;
-    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         command="dnf"
         ;;
     esac
     echo "${command}"
+}
+
+function interactive_select_mirror() {
+    _SELECT_RESULT=""
+    local options=("$@")
+    local message="${options[${#options[@]} - 1]}"
+    unset options[${#options[@]}-1]
+    local selected=0
+    local start=0
+    local page_size=$(($(tput lines) - 3)) # 减去1行用于显示提示信息
+    function clear_menu() {
+        tput rc
+        for ((i = 0; i < ${#options[@]} + 1; i++)); do
+            echo -e "\r\033[K"
+        done
+        tput rc
+    }
+    function cleanup() {
+        clear_menu
+        tput rc
+        tput cnorm
+        tput rmcup
+        exit
+    }
+    function draw_menu() {
+        tput clear
+        tput cup 0 0
+        echo -e "${message}"
+        local end=$((start + page_size - 1))
+        if [ $end -ge ${#options[@]} ]; then
+            end=${#options[@]}-1
+        fi
+        for ((i = start; i <= end; i++)); do
+            if [ "$i" -eq "$selected" ]; then
+                echo -e "\e[34;4m➤ ${options[$i]%@*}\e[0m"
+            else
+                echo -e "  ${options[$i]%@*}"
+            fi
+        done
+    }
+    function read_key() {
+        IFS= read -rsn1 key
+        if [[ $key == $'\x1b' ]]; then
+            IFS= read -rsn2 key
+            key="$key"
+        fi
+        echo "$key"
+    }
+    tput smcup              # 保存当前屏幕并切换到新屏幕
+    tput sc                 # 保存光标位置
+    tput civis              # 隐藏光标
+    trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
+    draw_menu               # 初始化菜单位置
+    # 处理选择
+    while true; do
+        key=$(read_key)
+        case "$key" in
+        "[A")
+            # 上箭头
+            if [ "$selected" -gt 0 ]; then
+                selected=$((selected - 1))
+                if [ "$selected" -lt "$start" ]; then
+                    start=$((start - 1))
+                fi
+            fi
+            ;;
+        "[B")
+            # 下箭头
+            if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
+                selected=$((selected + 1))
+                if [ "$selected" -ge $((start + page_size)) ]; then
+                    start=$((start + 1))
+                fi
+            fi
+            ;;
+        "")
+            # Enter 键
+            tput rmcup
+            break
+            ;;
+        *) ;;
+        esac
+        draw_menu
+    done
+    # clear_menu # 清除菜单
+    tput cnorm # 恢复光标
+    tput rmcup # 恢复之前的屏幕
+    # tput rc    # 恢复光标位置
+    # 处理结果
+    _SELECT_RESULT="${options[$selected]}"
+}
+
+function interactive_select_boolean() {
+    _SELECT_RESULT=""
+    local selected=0
+    local message="$1"
+    function clear_menu() {
+        tput rc
+        for ((i = 0; i < 2 + 2; i++)); do
+            echo -e "\r\033[K"
+        done
+        tput rc
+    }
+    function cleanup() {
+        clear_menu
+        tput rc
+        tput cnorm
+        tput rmcup
+        exit
+    }
+    function draw_menu() {
+        tput rc
+        echo -e "╭─ ${message}"
+        echo -e "│"
+        if [ "$selected" -eq 0 ]; then
+            echo -e "╰─ \033[32m●\033[0m 是\033[2m / ○ 否\033[0m"
+        else
+            echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m 否"
+        fi
+    }
+    function read_key() {
+        IFS= read -rsn1 key
+        if [[ $key == $'\x1b' ]]; then
+            IFS= read -rsn2 key
+            key="$key"
+        fi
+        echo "$key"
+    }
+    tput sc                 # 保存光标位置
+    tput civis              # 隐藏光标
+    trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
+    draw_menu               # 初始化菜单位置
+    # 处理选择
+    while true; do
+        key=$(read_key)
+        case "$key" in
+        "[D")
+            # 左箭头
+            if [ "$selected" -gt 0 ]; then
+                selected=$((selected - 1))
+            fi
+            ;;
+        "[C")
+            # 右箭头
+            if [ "$selected" -lt 1 ]; then
+                selected=$((selected + 1))
+            fi
+            ;;
+        "")
+            # Enter 键
+            break
+            ;;
+        *) ;;
+        esac
+        draw_menu
+    done
+    # clear_menu # 清除菜单
+    tput cnorm # 恢复光标
+    # tput rc    # 恢复光标位置
+    # 处理结果
+    if [ "$selected" -eq 0 ]; then
+        _SELECT_RESULT="true"
+    else
+        _SELECT_RESULT="false"
+    fi
 }
 
 ##############################################################################

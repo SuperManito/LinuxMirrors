@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-05
+## Modified: 2024-12-06
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -83,8 +83,8 @@ File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
-File_OpenCloudOSRelease=/etc/opencloudos-release
 File_openEulerRelease=/etc/openEuler-release
+File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
 File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
@@ -112,13 +112,13 @@ PURPLE='\033[35m'
 AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS="\033[1;32m✔${PLAIN}"
-COMPLETE="\033[1;32m✔${PLAIN}"
-WARN="\033[1;43m 警告 ${PLAIN}"
-ERROR="\033[1;31m✘${PLAIN}"
-FAIL="\033[1;31m✘${PLAIN}"
-TIP="\033[1;44m 提示 ${PLAIN}"
-WORKING="\033[1;36m>_${PLAIN}"
+SUCCESS=" \033[1;32m✔${PLAIN}"
+COMPLETE=" \033[1;32m✔${PLAIN}"
+WARN=" \033[1;43m 警告 ${PLAIN}"
+ERROR=" \033[1;31m✘${PLAIN}"
+FAIL=" \033[1;31m✘${PLAIN}"
+TIP=" \033[1;44m 提示 ${PLAIN}"
+WORKING=" \033[1;36m>_${PLAIN}"
 # SUCCESS="[\033[1;32m成功${PLAIN}]"
 # COMPLETE="[\033[1;32m完成${PLAIN}]"
 # WARN="[\033[1;5;33m注意${PLAIN}]"
@@ -264,7 +264,7 @@ function run_start() {
 
 ## 运行结束
 function run_end() {
-    echo -e "\n✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
+    echo -e "\n ✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
     # echo -e "\n     ------ 脚本运行结束 ------"
     # echo -e ' \033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m┐\033[0m'
     # echo -e ' \033[0;1;31;91m│▞\033[0;1;33;93m▀▖\033[0m            \033[0;1;32;92m▙▗\033[0;1;36;96m▌\033[0m      \033[0;1;31;91m▗\033[0;1;33;93m▐\033[0m     \033[0;1;34;94m│\033[0m'
@@ -304,14 +304,14 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
+    elif [ -s $File_openEulerRelease ]; then
+        SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_OpenCloudOSRelease ]; then
         # 拦截 OpenCloudOS 9 及以上版本，非红帽版本不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -ge 9 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
-    elif [ -s $File_openEulerRelease ]; then
-        SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_AnolisOSRelease ]; then
         # 拦截 Anolis OS 8 版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 ]]; then
@@ -415,7 +415,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         SOURCE_BRANCH="centos"
         ;;
     esac
@@ -424,10 +424,15 @@ function collect_system_info() {
     "${SYSTEM_DEBIAN}")
         SYNC_MIRROR_TEXT="更新软件源"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         SYNC_MIRROR_TEXT="生成软件源缓存"
         ;;
     esac
+    ## 判断是否可以使用高级交互式选择器
+    CAN_USE_ADVANCED_INTERACTIVE_SELECTION="false"
+    if [ ! -z "$(command -v tput)" ]; then
+        CAN_USE_ADVANCED_INTERACTIVE_SELECTION="true"
+    fi
 }
 
 function choose_mirrors() {
@@ -468,8 +473,8 @@ function choose_mirrors() {
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
-                tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')  # 软件源地址
+                tmp_mirror_name="${list_arr[i]%@*}" # 软件源名称
+                tmp_mirror_url="${list_arr[i]#*@}"  # 软件源地址
                 arr_num=$((i + 1))
                 echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
             done
@@ -491,74 +496,95 @@ function choose_mirrors() {
     print_title
     if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
         ## 是否手动选择安装版本
-        local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
-        read -p "${CHOICE_A}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case $INPUT in
-        [Yy] | [Yy][Ee][Ss])
-            INSTALL_LATESTED_DOCKER="true"
-            ;;
-        [Nn] | [Nn][Oo])
-            ## 安装旧版本只有官方仓库有
-            INSTALL_LATESTED_DOCKER="false"
-            SOURCE="download.docker.com"
-            ;;
-        *)
-            INSTALL_LATESTED_DOCKER="true"
-            echo -e "\n$WARN 输入错误，默认安装最新版本！"
-            ;;
-        esac
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            echo ''
+            interactive_select_boolean "${BOLD}是否安装最新版本的 Docker Engine?${PLAIN}"
+            if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                INSTALL_LATESTED_DOCKER="true"
+            else
+                ## 安装旧版本只有官方仓库有
+                INSTALL_LATESTED_DOCKER="false"
+                SOURCE="download.docker.com"
+            fi
+        else
+            local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
+            read -p "${CHOICE_A}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case $INPUT in
+            [Yy] | [Yy][Ee][Ss])
+                INSTALL_LATESTED_DOCKER="true"
+                ;;
+            [Nn] | [Nn][Oo])
+                ## 安装旧版本只有官方仓库有
+                INSTALL_LATESTED_DOCKER="false"
+                SOURCE="download.docker.com"
+                ;;
+            *)
+                INSTALL_LATESTED_DOCKER="true"
+                echo -e "\n$WARN 输入错误，默认安装最新版本！"
+                ;;
+            esac
+        fi
     fi
 
     local mirror_list_name
+
     if [[ -z "${SOURCE}" ]]; then
-        local mirror_list_name="mirror_list_docker_ce"
-        print_mirrors_list "${mirror_list_name}" 38
-        local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
-        while true; do
-            read -p "${CHOICE_B}" INPUT
-            case "${INPUT}" in
-            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
-                if [[ -z "${tmp_source}" ]]; then
-                    echo -e "\n$WARN 请输入有效的数字序号！"
-                else
-                    SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
-                    # echo "${SOURCE}"
-                    # exit
-                    break
-                fi
-                ;;
-            *)
-                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
-                ;;
-            esac
-        done
+        mirror_list_name="mirror_list_docker_ce"
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker CE 源：\${PLAIN}\\n\""
+            SOURCE="${_SELECT_RESULT#*@}"
+            echo -e "\n ${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
+        else
+            print_mirrors_list "${mirror_list_name}" 38
+            local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+            while true; do
+                read -p "${CHOICE_B}" INPUT
+                case "${INPUT}" in
+                [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                    local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                    if [[ -z "${tmp_source}" ]]; then
+                        echo -e "\n$WARN 请输入有效的数字序号！"
+                    else
+                        SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                        break
+                    fi
+                    ;;
+                *)
+                    echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                    ;;
+                esac
+            done
+        fi
     fi
 
     if [[ -z "${SOURCE_REGISTRY}" ]]; then
         mirror_list_name="mirror_list_registry"
-        print_mirrors_list "${mirror_list_name}" 44
-        local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
-        while true; do
-            read -p "${CHOICE_C}" INPUT
-            case "${INPUT}" in
-            [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
-                if [[ -z "${tmp_source}" ]]; then
-                    echo -e "\n$WARN 请输入有效的数字序号！"
-                else
-                    SOURCE_REGISTRY="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
-                    # echo "${SOURCE_REGISTRY}"
-                    # exit
-                    break
-                fi
-                ;;
-            *)
-                echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
-                ;;
-            esac
-        done
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker Registry 源：\${PLAIN}\\n\""
+            SOURCE_REGISTRY="${_SELECT_RESULT#*@}"
+            echo -e "\n ${GREEN}➜${PLAIN}  Docker Registry：${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
+        else
+            print_mirrors_list "${mirror_list_name}" 44
+            local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+            while true; do
+                read -p "${CHOICE_C}" INPUT
+                case "${INPUT}" in
+                [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
+                    local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                    if [[ -z "${tmp_source}" ]]; then
+                        echo -e "\n$WARN 请输入有效的数字序号！"
+                    else
+                        SOURCE_REGISTRY="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                        break
+                    fi
+                    ;;
+                *)
+                    echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                    ;;
+                esac
+            done
+        fi
     fi
 }
 
@@ -569,19 +595,26 @@ function close_firewall_service() {
     fi
     if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
         if [[ -z "${CLOSE_FIREWALL}" ]]; then
-            local CHOICE
-            CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-            read -rp "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case "${INPUT}" in
-            [Yy] | [Yy][Ee][Ss])
-                CLOSE_FIREWALL="true"
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不关闭！"
-                ;;
-            esac
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                echo ''
+                interactive_select_boolean "${BOLD}是否关闭防火墙和 SELinux ?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                    CLOSE_FIREWALL="true"
+                fi
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss])
+                    CLOSE_FIREWALL="true"
+                    ;;
+                [Nn] | [Nn][Oo]) ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认不关闭！"
+                    ;;
+                esac
+            fi
         fi
         if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
             local SelinuxConfig=/etc/selinux/config
@@ -600,7 +633,7 @@ function install_dependency_packages() {
         sed -i '/docker-ce/d' $File_DebianSourceList
         rm -rf $Dir_DebianExtendSource/docker.list
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         rm -rf $Dir_YumRepos/*docker*.repo
         ;;
     esac
@@ -610,7 +643,7 @@ function install_dependency_packages() {
         package_manager="apt-get"
         $package_manager update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         package_manager="$(get_package_manager)"
         $package_manager makecache
         ;;
@@ -649,7 +682,7 @@ function get_package_manager() {
             ;;
         esac
         ;;
-    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         command="dnf"
         ;;
     esac
@@ -674,7 +707,7 @@ function uninstall_original_version() {
             ;;
         esac
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_FEDORA}" | "${SYSTEM_RHEL}")
             package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine podman runc"
@@ -691,7 +724,7 @@ function uninstall_original_version() {
         apt-get remove -y $package_list >/dev/null 2>&1
         apt-get autoremove -y >/dev/null 2>&1
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         local package_manager="$(get_package_manager)"
         $package_manager remove -y $package_list >/dev/null 2>&1
         $package_manager autoremove -y >/dev/null 2>&1
@@ -717,7 +750,7 @@ function configure_docker_ce_mirror() {
         echo "deb [arch=${SOURCE_ARCH} signed-by=${file_keyring}] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
         apt-get update
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
         sed -i "s|download.docker.com|${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
         ## 兼容处理版本号
@@ -749,7 +782,7 @@ function install_docker_engine() {
             apt-cache madison docker-ce-cli | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
             yum list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
             yum list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
@@ -765,7 +798,7 @@ function install_docker_engine() {
             "${SYSTEM_DEBIAN}")
                 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 local package_manager="$(get_package_manager)"
                 $package_manager install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
@@ -810,7 +843,7 @@ function install_docker_engine() {
                 esac
                 apt-get install -y docker-ce=${INSTALL_JUDGMENT}${DOCKER_VERSION}* docker-ce-cli=5:${DOCKER_VERSION}* containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 local package_manager="$(get_package_manager)"
                 $package_manager install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
@@ -820,10 +853,20 @@ function install_docker_engine() {
 
     ## 修改 Docker Registry 镜像仓库源
     function change_docker_registry_mirror() {
-        if [[ "${REGISTRY_SOURCEL}" != "registry.hub.docker.com" ]]; then
-            if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
-                if [ -e $DockerConfigBackup ]; then
-                    if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
+        if [[ "${REGISTRY_SOURCEL}" == "registry.hub.docker.com" ]]; then
+            return
+        fi
+        if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
+            if [ -e $DockerConfigBackup ]; then
+                if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
+                    if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                        echo ''
+                        interactive_select_boolean "${BOLD}检测到已备份的 Docker 配置文件，是否跳过覆盖备份?${PLAIN}"
+                        if [[ "${_SELECT_RESULT}" == "false" ]]; then
+                            echo ''
+                            cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+                        fi
+                    else
                         local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                         read -p "${CHOICE_BACKUP}" INPUT
                         [[ -z "${INPUT}" ]] && INPUT=Y
@@ -838,22 +881,22 @@ function install_docker_engine() {
                             ;;
                         esac
                     fi
-                else
-                    echo ''
-                    cp -rvf $DockerConfig $DockerConfigBackup 2>&1
-                    echo -e "\n$COMPLETE 已备份原有 Docker 配置文件至 $DockerConfigBackup"
                 fi
-                sleep 2s
             else
-                mkdir -p $DockerDir >/dev/null 2>&1
-                touch $DockerConfig
+                echo ''
+                cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+                echo -e "\n$COMPLETE 已备份原有 Docker 配置文件至 $DockerConfigBackup"
             fi
-            echo -e '{\n  "registry-mirrors": ["https://SOURCE"]\n}' >$DockerConfig
-            sed -i "s|SOURCE|${SOURCE_REGISTRY}|g" $DockerConfig
-            systemctl daemon-reload
-            if [[ $(systemctl is-active docker) == "active" ]]; then
-                systemctl restart docker
-            fi
+            sleep 2s
+        else
+            mkdir -p $DockerDir >/dev/null 2>&1
+            touch $DockerConfig
+        fi
+        echo -e '{\n  "registry-mirrors": ["https://SOURCE"]\n}' >$DockerConfig
+        sed -i "s|SOURCE|${SOURCE_REGISTRY}|g" $DockerConfig
+        systemctl daemon-reload
+        if [[ $(systemctl is-active docker) == "active" ]]; then
+            systemctl restart docker
         fi
     }
 
@@ -862,7 +905,7 @@ function install_docker_engine() {
     "${SYSTEM_DEBIAN}")
         dpkg -l | grep docker-ce-cli -q
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         rpm -qa | grep docker-ce-cli -q
         ;;
     esac
@@ -870,38 +913,68 @@ function install_docker_engine() {
         export_version_list
         DOCKER_INSTALLED_VERSION="$(docker -v | grep -Eo "[0-9][0-9]\.[0-9]{1,2}\.[0-9]{1,2}")"
         DOCKER_VERSION_LATEST="$(cat $DockerVersionFile | head -n 1)"
-        if [[ "${DOCKER_INSTALLED_VERSION}" == "${DOCKER_VERSION_LATEST}" ]]; then
-            if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-                echo -e "\n$COMPLETE 检测到已安装 Docker Engine 最新版本，跳过安装"
-                rm -rf $DockerVersionFile
-                change_docker_registry_mirror
-                systemctl enable --now docker >/dev/null 2>&1
-                check_version
-                run_end
-                exit
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            if [[ "${DOCKER_INSTALLED_VERSION}" == "${DOCKER_VERSION_LATEST}" ]]; then
+                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
+                    echo -e "\n$COMPLETE 检测到已安装 Docker Engine 最新版本，跳过安装"
+                    rm -rf $DockerVersionFile
+                    change_docker_registry_mirror
+                    systemctl enable --now docker >/dev/null 2>&1
+                    check_version
+                    run_end
+                    exit
+                else
+                    echo ''
+                    interactive_select_boolean "${BOLD}检测到已安装 Docker Engine 最新版本，是否继续安装其它版本?${PLAIN}"
+                fi
             else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 最新版本，是否继续安装其它版本? [Y/n] ${PLAIN}")
+                echo ''
+                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
+                    interactive_select_boolean "${BOLD}检测到已安装 Docker Engine 旧版本，是否覆盖安装为最新版本?${PLAIN}"
+                else
+                    interactive_select_boolean "${BOLD}检测到已安装 Docker Engine 旧版本，是否继续安装其它版本?${PLAIN}"
+                fi
+            fi
+            if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                uninstall_original_version
+                install_main
+                [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
             fi
         else
-            if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-                local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 旧版本，是否覆盖安装为最新版本? [Y/n] ${PLAIN}")
+            if [[ "${DOCKER_INSTALLED_VERSION}" == "${DOCKER_VERSION_LATEST}" ]]; then
+                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
+                    echo -e "\n$COMPLETE 检测到已安装 Docker Engine 最新版本，跳过安装"
+                    rm -rf $DockerVersionFile
+                    change_docker_registry_mirror
+                    systemctl enable --now docker >/dev/null 2>&1
+                    check_version
+                    run_end
+                    exit
+                else
+                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 最新版本，是否继续安装其它版本? [Y/n] ${PLAIN}")
+                fi
             else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 旧版本，是否继续安装其它版本? [Y/n] ${PLAIN}")
+                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
+                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 旧版本，是否覆盖安装为最新版本? [Y/n] ${PLAIN}")
+                else
+                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 旧版本，是否继续安装其它版本? [Y/n] ${PLAIN}")
+                fi
             fi
+            read -p "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case $INPUT in
+            [Yy] | [Yy][Ee][Ss])
+                uninstall_original_version
+                install_main
+                [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不覆盖安装！\n"
+                ;;
+            esac
         fi
-        read -p "${CHOICE}" INPUT
-        [[ -z "${INPUT}" ]] && INPUT=Y
-        case $INPUT in
-        [Yy] | [Yy][Ee][Ss])
-            uninstall_original_version
-            install_main
-            [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
-            ;;
-        [Nn] | [Nn][Oo]) ;;
-        *)
-            echo -e "\n$WARN 输入错误，默认不覆盖安装！\n"
-            ;;
-        esac
+
         rm -rf $DockerVersionFile
     else
         uninstall_original_version
@@ -927,7 +1000,7 @@ function check_version() {
                 echo -e "\n检查源文件：cat $Dir_DebianExtendSource/docker.list"
                 echo -e '请尝试手动执行安装命令：apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_ANOLISOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 local package_manager="$(get_package_manager)"
                 echo -e "\n检查源文件：cat $Dir_YumRepos/docker.repo"
                 echo -e "请尝试手动执行安装命令：$package_manager install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n"
@@ -948,6 +1021,171 @@ function check_version() {
         fi
     else
         echo -e "\n$ERROR 安装失败\n"
+    fi
+}
+
+function interactive_select_mirror() {
+    _SELECT_RESULT=""
+    local options=("$@")
+    local message="${options[${#options[@]} - 1]}"
+    unset options[${#options[@]}-1]
+    local selected=0
+    local start=0
+    local page_size=$(($(tput lines) - 3)) # 减去1行用于显示提示信息
+    function clear_menu() {
+        tput rc
+        for ((i = 0; i < ${#options[@]} + 1; i++)); do
+            echo -e "\r\033[K"
+        done
+        tput rc
+    }
+    function cleanup() {
+        clear_menu
+        tput rc
+        tput cnorm
+        tput rmcup
+        exit
+    }
+    function draw_menu() {
+        tput clear
+        tput cup 0 0
+        echo -e "${message}"
+        local end=$((start + page_size - 1))
+        if [ $end -ge ${#options[@]} ]; then
+            end=${#options[@]}-1
+        fi
+        for ((i = start; i <= end; i++)); do
+            if [ "$i" -eq "$selected" ]; then
+                echo -e "\e[34;4m➤ ${options[$i]%@*}\e[0m"
+            else
+                echo -e "  ${options[$i]%@*}"
+            fi
+        done
+    }
+    function read_key() {
+        IFS= read -rsn1 key
+        if [[ $key == $'\x1b' ]]; then
+            IFS= read -rsn2 key
+            key="$key"
+        fi
+        echo "$key"
+    }
+    tput smcup              # 保存当前屏幕并切换到新屏幕
+    tput sc                 # 保存光标位置
+    tput civis              # 隐藏光标
+    trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
+    draw_menu               # 初始化菜单位置
+    # 处理选择
+    while true; do
+        key=$(read_key)
+        case "$key" in
+        "[A")
+            # 上箭头
+            if [ "$selected" -gt 0 ]; then
+                selected=$((selected - 1))
+                if [ "$selected" -lt "$start" ]; then
+                    start=$((start - 1))
+                fi
+            fi
+            ;;
+        "[B")
+            # 下箭头
+            if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
+                selected=$((selected + 1))
+                if [ "$selected" -ge $((start + page_size)) ]; then
+                    start=$((start + 1))
+                fi
+            fi
+            ;;
+        "")
+            # Enter 键
+            tput rmcup
+            break
+            ;;
+        *) ;;
+        esac
+        draw_menu
+    done
+    # clear_menu # 清除菜单
+    tput cnorm # 恢复光标
+    tput rmcup # 恢复之前的屏幕
+    # tput rc    # 恢复光标位置
+    # 处理结果
+    _SELECT_RESULT="${options[$selected]}"
+}
+
+function interactive_select_boolean() {
+    _SELECT_RESULT=""
+    local selected=0
+    local message="$1"
+    function clear_menu() {
+        tput rc
+        for ((i = 0; i < 2 + 2; i++)); do
+            echo -e "\r\033[K"
+        done
+        tput rc
+    }
+    function cleanup() {
+        clear_menu
+        tput rc
+        tput cnorm
+        tput rmcup
+        exit
+    }
+    function draw_menu() {
+        tput rc
+        echo -e "╭─ ${message}"
+        echo -e "│"
+        if [ "$selected" -eq 0 ]; then
+            echo -e "╰─ \033[32m●\033[0m 是\033[2m / ○ 否\033[0m"
+        else
+            echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m 否"
+        fi
+    }
+    function read_key() {
+        IFS= read -rsn1 key
+        if [[ $key == $'\x1b' ]]; then
+            IFS= read -rsn2 key
+            key="$key"
+        fi
+        echo "$key"
+    }
+    tput sc                 # 保存光标位置
+    tput civis              # 隐藏光标
+    trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
+    draw_menu               # 初始化菜单位置
+    # 处理选择
+    while true; do
+        key=$(read_key)
+        case "$key" in
+        "[D")
+            # 左箭头
+            if [ "$selected" -gt 0 ]; then
+                selected=$((selected - 1))
+            fi
+            ;;
+        "[C")
+            # 右箭头
+            if [ "$selected" -lt 1 ]; then
+                selected=$((selected + 1))
+            fi
+            ;;
+        "")
+            # Enter 键
+            break
+            ;;
+        *) ;;
+        esac
+        draw_menu
+    done
+    # clear_menu # 清除菜单
+    tput cnorm # 恢复光标
+    # tput rc    # 恢复光标位置
+    # 处理结果
+    if [ "$selected" -eq 0 ]; then
+        _SELECT_RESULT="true"
+    else
+        _SELECT_RESULT="false"
     fi
 }
 

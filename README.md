@@ -71,12 +71,12 @@
         <td align="center">8 ~ 9</td>
     </tr>
     <tr>
-        <td><a href="https://www.opencloudos.org" target="_blank"><img src="./docs/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;OpenCloudOS（鸥栖）</td>
-        <td align="center">8.6 ~ 9 / Stream 23</td>
-    </tr>
-    <tr>
         <td><a href="https://www.openeuler.org/zh" target="_blank"><img src="./docs/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;openEuler（开源欧拉）</td>
         <td align="center">21 ~ 24</td>
+    </tr>
+    <tr>
+        <td><a href="https://www.opencloudos.org" target="_blank"><img src="./docs/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;OpenCloudOS（鸥栖）</td>
+        <td align="center">8.6 ~ 9 / Stream 23</td>
     </tr>
     <tr>
         <td><a href="https://www.openkylin.top" target="_blank"><img src="./docs/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;openKylin（开放麒麟）</td>
