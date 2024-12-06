@@ -112,20 +112,13 @@ PURPLE='\033[35m'
 AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS=" \033[1;32m✔${PLAIN}"
-COMPLETE=" \033[1;32m✔${PLAIN}"
-WARN=" \033[1;43m 警告 ${PLAIN}"
-ERROR=" \033[1;31m✘${PLAIN}"
-FAIL=" \033[1;31m✘${PLAIN}"
-TIP=" \033[1;44m 提示 ${PLAIN}"
-WORKING=" \033[1;36m>_${PLAIN}"
-# SUCCESS="[\033[1;32m成功${PLAIN}]"
-# COMPLETE="[\033[1;32m完成${PLAIN}]"
-# WARN="[\033[1;5;33m注意${PLAIN}]"
-# ERROR="[\033[1;31m错误${PLAIN}]"
-# FAIL="[\033[1;31m失败${PLAIN}]"
-# TIP="[\033[1;32m提示${PLAIN}]"
-# WORKING="[\033[1;36m >_ ${PLAIN}]"
+SUCCESS="\033[1;32m✔${PLAIN}"
+COMPLETE="\033[1;32m✔${PLAIN}"
+WARN="\033[1;43m 警告 ${PLAIN}"
+ERROR="\033[1;31m✘${PLAIN}"
+FAIL="\033[1;31m✘${PLAIN}"
+TIP="\033[1;44m 提示 ${PLAIN}"
+WORKING="\033[1;36m>_${PLAIN}"
 
 function main() {
     permission_judgment
@@ -147,12 +140,13 @@ function handle_command_options() {
         echo -e "
 命令选项(名称/含义/值)：
 
-  --source                 指定 Docker CE 源地址                     地址
-  --source-registry        指定 Docker Registry 源地址               地址
-  --codename               指定 Debian 系操作系统的版本代号          代号名称
-  --install-latest         是否安装最新版本的 Docker Engine          true 或 false
-  --clean-screen           是否在运行前清除屏幕上的所有内容          true 或 false
-  --ignore-backup-tips     忽略覆盖备份提示                          无
+  --source                 指定 Docker CE 源地址                地址
+  --source-registry        指定 Docker Registry 源地址          地址
+  --codename               指定 Debian 系操作系统的版本代号     代号名称
+  --install-latest         是否安装最新版本的 Docker Engine     true 或 false
+  --close-firewall         是否关闭防火墙                       true 或 false
+  --clean-screen           是否在运行前清除屏幕上的所有内容     true 或 false
+  --ignore-backup-tips     忽略覆盖备份提示                     无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
   "
@@ -218,6 +212,22 @@ function handle_command_options() {
         --ignore-backup-tips)
             IGNORE_BACKUP_TIPS="true"
             ;;
+        ## 关闭防火墙
+        --close-firewall)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    CLOSE_FIREWALL="${2,,}"
+                    shift
+                    ;;
+                *)
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    ;;
+                esac
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+            fi
+            ;;
         ## 清除屏幕上的所有内容
         --clean-screen)
             if [ "$2" ]; then
@@ -255,16 +265,16 @@ function run_start() {
     elif [ "${CLEAN_SCREEN}" == "true" ]; then
         clear
     fi
-    echo -e ' +-----------------------------------+'
-    echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
-    echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
-    echo -e ' +-----------------------------------+'
-    echo -e ' 欢迎使用 Docker Engine 安装与换源脚本'
+    echo -e '+-----------------------------------+'
+    echo -e "| \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
+    echo -e "| \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
+    echo -e '+-----------------------------------+'
+    echo -e '欢迎使用 Docker Engine 安装与换源脚本'
 }
 
 ## 运行结束
 function run_end() {
-    echo -e "\n ✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
+    echo -e "\n✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
     # echo -e "\n     ------ 脚本运行结束 ------"
     # echo -e ' \033[0;1;35;95m┌─\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m──\033[0;1;34;94m──\033[0;1;35;95m──\033[0;1;31;91m──\033[0;1;33;93m──\033[0;1;32;92m──\033[0;1;36;96m┐\033[0m'
     # echo -e ' \033[0;1;31;91m│▞\033[0;1;33;93m▀▖\033[0m            \033[0;1;32;92m▙▗\033[0;1;36;96m▌\033[0m      \033[0;1;31;91m▗\033[0;1;33;93m▐\033[0m     \033[0;1;34;94m│\033[0m'
@@ -469,7 +479,7 @@ function choose_mirrors() {
                 for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
                     tmp_mirror_name="${tmp_mirror_name} "
                 done
-                printf " ❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+                printf "❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
@@ -489,8 +499,8 @@ function choose_mirrors() {
         timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
         echo -e ''
-        echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e " 系统时间 ${BLUE}${date_time} ${timezone}${PLAIN}"
+        echo -e "运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
+        echo -e "系统时间 ${BLUE}${date_time} ${timezone}${PLAIN}"
     }
 
     print_title
@@ -534,7 +544,7 @@ function choose_mirrors() {
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker CE 源：\${PLAIN}\\n\""
             SOURCE="${_SELECT_RESULT#*@}"
-            echo -e "\n ${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
         else
             print_mirrors_list "${mirror_list_name}" 38
             local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
@@ -563,7 +573,7 @@ function choose_mirrors() {
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker Registry 源：\${PLAIN}\\n\""
             SOURCE_REGISTRY="${_SELECT_RESULT#*@}"
-            echo -e "\n ${GREEN}➜${PLAIN}  Docker Registry：${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
+            echo -e "\n${GREEN}➜${PLAIN}  Docker Registry：${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
         else
             print_mirrors_list "${mirror_list_name}" 44
             local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
@@ -597,12 +607,12 @@ function close_firewall_service() {
         if [[ -z "${CLOSE_FIREWALL}" ]]; then
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}是否关闭防火墙和 SELinux ?${PLAIN}"
+                interactive_select_boolean "${BOLD}是否关闭系统防火墙和 SELinux ?${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     CLOSE_FIREWALL="true"
                 fi
             else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
+                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭系统防火墙和 SELinux ? [Y/n] ${PLAIN}")
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in

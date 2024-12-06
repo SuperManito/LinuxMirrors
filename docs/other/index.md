@@ -80,6 +80,7 @@ hide:
 | `--source-registry` | 指定镜像仓库地址(域名或IP) | 地址 |
 | `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
 | `--install-latest` | 是否安装最新版本的 Docker Engine | `true` 或 `false` |
+| `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
 | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 

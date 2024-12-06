@@ -229,20 +229,13 @@ PURPLE='\033[35m'
 AZURE='\033[36m'
 PLAIN='\033[0m'
 BOLD='\033[1m'
-SUCCESS=" \033[1;32m✔${PLAIN}"
-COMPLETE=" \033[1;32m✔${PLAIN}"
-WARN=" \033[1;43m 警告 ${PLAIN}"
-ERROR=" \033[1;31m✘${PLAIN}"
-FAIL=" \033[1;31m✘${PLAIN}"
-TIP=" \033[1;44m 提示 ${PLAIN}"
-WORKING=" \033[1;36m>_${PLAIN}"
-# SUCCESS="[\033[1;32m成功${PLAIN}]"
-# COMPLETE="[\033[1;32m完成${PLAIN}]"
-# WARN="[\033[1;5;33m注意${PLAIN}]"
-# ERROR="[\033[1;31m错误${PLAIN}]"
-# FAIL="[\033[1;31m失败${PLAIN}]"
-# TIP="[\033[1;32m提示${PLAIN}]"
-# WORKING="[\033[1;36m >_ ${PLAIN}]"
+SUCCESS="\033[1;32m✔${PLAIN}"
+COMPLETE="\033[1;32m✔${PLAIN}"
+WARN="\033[1;43m 警告 ${PLAIN}"
+ERROR="\033[1;31m✘${PLAIN}"
+FAIL="\033[1;31m✘${PLAIN}"
+TIP="\033[1;44m 提示 ${PLAIN}"
+WORKING="\033[1;36m>_${PLAIN}"
 
 function main() {
     permission_judgment
@@ -252,7 +245,6 @@ function main() {
     choose_mirrors
     choose_protocol
     choose_install_epel_packages
-    close_firewall_service
     backup_original_mirrors
     remove_original_mirrors
     change_mirrors_main
@@ -285,7 +277,6 @@ function handle_command_options() {
   --use-intranet-source    是否优先使用内网软件源地址                                     true 或 false
   --use-official-source    是否使用目标操作系统的官方软件源                               true 或 false
   --install-epel           是否安装 EPEL 附加软件包                                       true 或 false
-  --close-firewall         是否关闭防火墙                                                 true 或 false
   --backup                 是否备份原有软件源                                             true 或 false
   --upgrade-software       是否更新软件包                                                 true 或 false
   --clean-cache            是否清理下载缓存                                               true 或 false
@@ -513,22 +504,6 @@ function handle_command_options() {
             ONLY_EPEL="true"
             INSTALL_EPEL="true"
             ;;
-        ## 关闭防火墙
-        --close-firewall)
-            if [ "$2" ]; then
-                case "$2" in
-                [Tt]rue | [Ff]alse)
-                    CLOSE_FIREWALL="${2,,}"
-                    shift
-                    ;;
-                *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
-                    ;;
-                esac
-            else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
-            fi
-            ;;
         ## 备份原有软件源
         --backup)
             if [ "$2" ]; then
@@ -626,15 +601,15 @@ function run_start() {
     elif [ "${CLEAN_SCREEN}" == "true" ]; then
         clear
     fi
-    echo -e ' +-----------------------------------+'
-    echo -e " | \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
-    echo -e " | \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
-    echo -e ' +-----------------------------------+'
-    echo -e ' 欢迎使用 GNU/Linux 更换系统软件源脚本'
+    echo -e '+-----------------------------------+'
+    echo -e "| \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
+    echo -e "| \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
+    echo -e '+-----------------------------------+'
+    echo -e '欢迎使用 GNU/Linux 更换系统软件源脚本'
 }
 
 function run_end() {
-    echo -e "\n ✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
+    echo -e "\n✨️ \033[1;34mPowered by https://linuxmirrors.cn\033[0m\n"
 }
 
 ## 报错退出
@@ -976,7 +951,7 @@ function choose_mirrors() {
                 for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
                     tmp_mirror_name="${tmp_mirror_name} "
                 done
-                printf " ❖  %-$((default_mirror_name_length + tmp_mirror_name_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+                printf "❖  %-$((default_mirror_name_length + tmp_mirror_name_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
@@ -1038,8 +1013,8 @@ function choose_mirrors() {
         time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
         echo -e ''
-        echo -e " 运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e " 系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
+        echo -e "运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
+        echo -e "系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
     }
 
     print_title
@@ -1063,7 +1038,7 @@ function choose_mirrors() {
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的软件源：\${PLAIN}\\n\""
             SOURCE="${_SELECT_RESULT#*@}"
-            echo -e "\n ${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}" | sed "s| · | |g"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}" | sed "s| · | |g"
         else
             print_mirrors_list "${mirror_list_name}" $mirror_list_print_length
             local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
@@ -1136,12 +1111,6 @@ function choose_install_epel_packages() {
         ## 判断是否已安装 EPEL 软件包
         rpm -qa | grep epel-release -q
         VERIFICATION_EPEL=$?
-        ## 判断 /etc/yum.repos.d 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_YumRepos ] && ls $Dir_YumRepos | grep epel -q
-        VERIFICATION_EPELFILES=$?
-        ## 判断 /etc/yum.repos.d.bak 目录下是否存在 epel 附加软件包 repo 源文件
-        [ -d $Dir_YumReposBackup ] && ls $Dir_YumReposBackup | grep epel -q
-        VERIFICATION_EPELBACKUPFILES=$?
     }
 
     ## 判断是否支持且需要处理 EPEL 附加软件包
@@ -1197,42 +1166,6 @@ function choose_install_epel_packages() {
     fi
 }
 
-## 关闭防火墙和SELinux
-function close_firewall_service() {
-    if [ ! -x /usr/bin/systemctl ]; then
-        return
-    fi
-    if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
-        if [[ -z "${CLOSE_FIREWALL}" ]]; then
-            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-                echo ''
-                interactive_select_boolean "${BOLD}是否关闭防火墙和 SELinux ?${PLAIN}"
-                if [[ "${_SELECT_RESULT}" == "true" ]]; then
-                    CLOSE_FIREWALL="true"
-                fi
-            else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭防火墙和 SELinux ? [Y/n] ${PLAIN}")
-                read -rp "${CHOICE}" INPUT
-                [[ -z "${INPUT}" ]] && INPUT=Y
-                case "${INPUT}" in
-                [Yy] | [Yy][Ee][Ss])
-                    CLOSE_FIREWALL="true"
-                    ;;
-                [Nn] | [Nn][Oo]) ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不关闭！"
-                    ;;
-                esac
-            fi
-        fi
-        if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
-            local SelinuxConfig=/etc/selinux/config
-            systemctl disable --now firewalld >/dev/null 2>&1
-            [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
-        fi
-    fi
-}
-
 ## 备份原有软件源（文件/目录）
 function backup_original_mirrors() {
     function backup_file() {
@@ -1252,14 +1185,14 @@ function backup_original_mirrors() {
             fi
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份?${PLAIN}"
+                interactive_select_boolean "${BOLD}检测到系统存在已备份的 ${type} 源文件，是否跳过覆盖备份?${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     echo ''
                     cp -rvf "${target_file}" "${backup_file}" 2>&1
                     BACKED_UP="true"
                 fi
             else
-                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -rp "${CHOICE_BACKUP}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1300,14 +1233,14 @@ function backup_original_mirrors() {
             fi
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份?${PLAIN}"
+                interactive_select_boolean "${BOLD}检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份?${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     echo ''
                     cp -rvf $target_dir/* "${backup_dir}" 2>&1
                     BACKED_UP="true"
                 fi
             else
-                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统中存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
                 read -rp "${CHOICE_BACKUP}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1662,66 +1595,12 @@ function change_mirrors_main() {
 
 ## 升级软件包
 function upgrade_software() {
-    function clean_cache() {
-        ## 交互确认
-        if [[ -z "${CLEAN_CACHE}" ]]; then
-            CLEAN_CACHE="false"
-            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-                echo ''
-                interactive_select_boolean "${BOLD}是否清理已下载的软件包缓存?${PLAIN}"
-                if [[ "${_SELECT_RESULT}" == "true" ]]; then
-                    CLEAN_CACHE="true"
-                fi
-            else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否清理已下载的软件包缓存? [Y/n] ${PLAIN}")
-                read -rp "${CHOICE}" INPUT
-                [[ -z "${INPUT}" ]] && INPUT=Y
-                case "${INPUT}" in
-                [Yy] | [Yy][Ee][Ss])
-                    CLEAN_CACHE="true"
-                    ;;
-                [Nn] | [Nn][Oo]) ;;
-                *)
-                    echo -e "\n$WARN 输入错误，默认不清理！"
-                    ;;
-                esac
-            fi
-        fi
-        if [[ "${CLEAN_CACHE}" == "false" ]]; then
-            return
-        fi
-        ## 调用系统命令
-        case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-            apt-get autoremove -y >/dev/null 2>&1
-            apt-get clean >/dev/null 2>&1
-            ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-            local package_manager="$(get_package_manager)"
-            $package_manager autoremove -y >/dev/null 2>&1
-            $package_manager clean packages -y >/dev/null 2>&1
-            ;;
-        "${SYSTEM_OPENSUSE}")
-            rm -rf /var/cache/zypp/* >/dev/null 2>&1
-            ;;
-        "${SYSTEM_ALPINE}")
-            rm -rf /var/cache/apk/* >/dev/null 2>&1
-            ;;
-        "${SYSTEM_GENTOO}")
-            eclean-dist --deep >/dev/null 2>&1
-            eclean-packages --deep >/dev/null 2>&1
-            ;;
-        esac
-        echo -e "\n$COMPLETE 清理完毕"
-    }
-
     ## 跳过特殊系统
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_ARCH}")
         return
         ;;
     esac
-
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
         UPGRADE_SOFTWARE="false"
@@ -1749,8 +1628,31 @@ function upgrade_software() {
     if [[ "${UPGRADE_SOFTWARE}" == "false" ]]; then
         return
     fi
+    if [[ -z "${CLEAN_CACHE}" ]]; then
+        CLEAN_CACHE="false"
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            echo ''
+            interactive_select_boolean "${BOLD}在更新软件包后，是否自动清理下载缓存?${PLAIN}"
+            if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                CLEAN_CACHE="true"
+            fi
+        else
+            local CHOICE=$(echo -e "\n${BOLD}└─ 在更新软件包后，是否自动清理下载缓存? [Y/n] ${PLAIN}")
+            read -rp "${CHOICE}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case "${INPUT}" in
+            [Yy] | [Yy][Ee][Ss])
+                CLEAN_CACHE="true"
+                ;;
+            [Nn] | [Nn][Oo]) ;;
+            *)
+                echo -e "\n$WARN 输入错误，默认不清理！"
+                ;;
+            esac
+        fi
+    fi
+
     echo -e ''
-    ## 调用系统命令
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         apt-get upgrade -y
@@ -1769,8 +1671,31 @@ function upgrade_software() {
         emerge --update --deep --with-bdeps=y --ask=n @world
         ;;
     esac
-    ## 清理缓存
-    clean_cache
+    if [[ "${CLEAN_CACHE}" == "false" ]]; then
+        return
+    fi
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
+        apt-get autoremove -y >/dev/null 2>&1
+        apt-get clean >/dev/null 2>&1
+        ;;
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        local package_manager="$(get_package_manager)"
+        $package_manager autoremove -y >/dev/null 2>&1
+        $package_manager clean packages -y >/dev/null 2>&1
+        ;;
+    "${SYSTEM_OPENSUSE}")
+        rm -rf /var/cache/zypp/* >/dev/null 2>&1
+        ;;
+    "${SYSTEM_ALPINE}")
+        rm -rf /var/cache/apk/* >/dev/null 2>&1
+        ;;
+    "${SYSTEM_GENTOO}")
+        eclean-dist --deep >/dev/null 2>&1
+        eclean-packages --deep >/dev/null 2>&1
+        ;;
+    esac
+    echo -e "\n$COMPLETE 清理完毕"
 }
 
 ##############################################################################
@@ -2389,15 +2314,21 @@ function change_mirrors_or_install_EPEL() {
         return
     fi
     ## 安装 EPEL 软件包
-    if [ "${VERIFICATION_EPEL}" -ne 0 ]; then
+    if [ $VERIFICATION_EPEL -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
         local package_manager="$(get_package_manager)"
         $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${target_version}.noarch.rpm
         rm -rf $Dir_YumRepos/epel*
     fi
     ## 删除原有 repo 源文件
-    [ "${VERIFICATION_EPELFILES}" -eq 0 ] && rm -rf $Dir_YumRepos/epel*
-    [ "${VERIFICATION_EPELBACKUPFILES}" -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
+    if [ -d $Dir_YumRepos ]; then
+        ls $Dir_YumRepos | grep epel -q
+        [ $? -eq 0 ] && rm -rf $Dir_YumRepos/epel*
+    fi
+    if [ -d $Dir_YumReposBackup ]; then
+        ls $Dir_YumReposBackup | grep epel -q
+        [ $? -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
+    fi
     ## 生成 repo 源文件
     gen_repo_files_EPEL "${SYSTEM_VERSION_NUMBER_MAJOR}"
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then

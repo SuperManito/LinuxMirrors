@@ -118,9 +118,11 @@ hide:
 
         !!! quote ""
 
+            此报错是因为系统没有预装 `curl` 软件包，下面是安装命令
+
             === "Debian 系 / openKylin"
 
-                ``` sh
+                ``` bash
                 apt-get install -y curl
                 ```
 
@@ -130,7 +132,7 @@ hide:
 
             === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
 
-                ``` sh
+                ``` bash
                 dnf install -y curl || yum install -y curl
                 ```
 
@@ -138,27 +140,47 @@ hide:
 
             === "openSUSE"
 
-                ``` sh
+                ``` bash
                 zypper install curl
                 ```
 
             === "Arch Linux"
 
-                ``` sh
+                ``` bash
                 pacman -S curl
                 ```
 
             === "Alpine Linux"
 
-                ``` sh
+                ``` bash
                 apk --no-cache add -f curl bash
                 ```
 
             === "Gentoo"
 
-                ``` sh
+                ``` bash
                 emerge --ask curl
                 ```
+
+            ??? tip "安装不上？（点击展开查看其它解决方法）"
+
+                假如有这么一种情况：系统原有软件源是坏的安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供两个在线获取脚本的应急方法，否则就只能手动复制粘贴源代码了
+
+                === "使用 Python 下载脚本"
+
+                    适用于大部分操作系统（`Alpine Linux` 除外），`python3` 要是不存在那就再试试 `python` 指令
+                    ``` bash
+                    python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'linuxmirrors-main.sh')"
+                    ```
+
+                === "使用 wget 下载脚本"
+
+                    一般没有预装 `curl` 软件包的系统也不会预装 `wget` 软件包，所以大概率这个方法应该是不行的
+                    ``` bash
+                    wget -O linuxmirrors-main.sh https://linuxmirrors.cn/main.sh
+                    ```
+
+                之后再执行 `bash linuxmirrors-main.sh` 即可
 
     - #### 关于开启 SSH 远程登录的方法
 
@@ -197,7 +219,7 @@ hide:
 
             === "Debian 系 / openKylin"
 
-                ``` sh
+                ``` bash
                 cp -rf /etc/apt/sources.list.bak /etc/apt/sources.list
                 apt-get update
                 ```
@@ -206,7 +228,7 @@ hide:
 
             === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
 
-                ``` sh
+                ``` bash
                 cp -rf /etc/yum.repos.d.bak /etc/yum.repos.d
                 yum makecache
                 ```
@@ -215,28 +237,28 @@ hide:
 
             === "openSUSE"
 
-                ``` sh
+                ``` bash
                 cp -rf /etc/zypp/repos.d.bak /etc/zypp/repos.d
                 zypper ref
                 ```
 
             === "Arch Linux"
 
-                ``` sh
+                ``` bash
                 cp -rf /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
                 pacman -Sy
                 ```
 
             === "Alpine Linux"
 
-                ``` sh
+                ``` bash
                 cp -rf /etc/apk/repositories.bak /etc/apk/repositories
                 apk update -f
                 ```
 
             === "Gentoo"
 
-                ``` sh
+                ``` bash
                 cp -rf /etc/portage/make.conf.bak /etc/portage/make.conf
                 [ -d /etc/portage/repos.conf ] && cp -rf /etc/portage/repos.conf/gentoo.conf.bak /etc/portage/repos.conf/gentoo.conf
                 emerge --sync --quiet
@@ -300,7 +322,6 @@ hide:
 | `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
 | `--use-official-source` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `--install-epel` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
-| `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
 | `--backup` | 是否备份原有软件源 | `true` 或 `false` |
 | `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 是否清理下载缓存 | `true` 或 `false` |
@@ -461,7 +482,7 @@ hide:
 5.  如果你想要缩减脚本体积那么可以删除一些不必要的内容，除了上面提到的软件源列表还有一些涉及脚本工作的部分模块内容，具体如下：
     1. 首先在删除内容时应尽可能保留脚本原始结构，直接把涉及函数中的内容删除即可，使其保留为空函数
     2. 可以删除一些不使用（操作系统）的软件源原始内容 `gen_repo_files_xxx`，这些内容占据了脚本 `60%` 以上的体积
-    3. 如果你不使用某些功能那么可以删除对应功能模块函数中的内容，`命令选项 handle_command_options`、`关闭防火墙 close_firewall_service`、`备份原有软件源 backup_original_mirrors`、`更新软件包 upgrade_software`
+    3. 如果你不使用某些功能那么可以删除对应功能模块函数中的内容，`命令选项 handle_command_options`、`备份原有软件源 backup_original_mirrors`、`更新软件包 upgrade_software`
 6.  脚本主要功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，具体变量详见如下表格，你只需要将这些变量声明在脚本头部（预留注释区域）即可快速完成定制
 
 | 变量名 | 含义 | 值类型 |
@@ -484,7 +505,6 @@ hide:
 | `WEB_PROTOCOL` | 指定 WEB 协议 | `http` 或 `https` |
 | `INSTALL_EPEL` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
 | `ONLY_EPEL` | 仅更换 EPEL 软件源模式 | `true` 或 `false` |
-| `CLOSE_FIREWALL` | 是否关闭防火墙 | `true` 或 `false` |
 | `BACKUP` | 是否备份原有软件源 | `true` 或 `false` |
 | `IGNORE_BACKUP_TIPS` | 忽略覆盖备份提示（即不覆盖备份） | `true` 或 `false` |
 | `UPGRADE_SOFTWARE` | 是否更新软件包 | `true` 或 `false` |
