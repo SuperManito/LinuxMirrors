@@ -1,0 +1,1853 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../mirrors/">
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.47">
+    
+    
+      
+        <title>使用方法 - LinuxMirrors</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.75 1.75 0 0 1 1 7.775m1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.5 1.75v11.5c0 .138.112.25.25.25h3.17a.75.75 0 0 1 0 1.5H2.75A1.75 1.75 0 0 1 1 13.25V1.75C1 .784 1.784 0 2.75 0h8.5C12.216 0 13 .784 13 1.75v7.736a.75.75 0 0 1-1.5 0V1.75a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25m13.274 9.537zl-4.557 4.45a.75.75 0 0 1-1.055-.008l-1.943-1.95a.75.75 0 0 1 1.062-1.058l1.419 1.425 4.026-3.932a.75.75 0 1 1 1.048 1.074M4.75 4h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5M4 7.75A.75.75 0 0 1 4.75 7h2a.75.75 0 0 1 0 1.5h-2A.75.75 0 0 1 4 7.75"/></svg>');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13M6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75M8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/></svg>');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M297.2 248.9c14.4-20.6 22.8-45.7 22.8-72.9 0-70.7-57.3-128-128-128S64 105.3 64 176c0 27.2 8.4 52.3 22.8 72.9 3.7 5.3 8.1 11.3 12.8 17.7 12.9 17.7 28.3 38.9 39.8 59.8 10.4 19 15.7 38.8 18.3 57.5l-48.7.1c-2.2-12-5.9-23.7-11.8-34.5-9.9-18-22.2-34.9-34.5-51.8-5.2-7.1-10.4-14.2-15.4-21.4C27.6 247.9 16 213.3 16 176 16 78.8 94.8 0 192 0s176 78.8 176 176c0 37.3-11.6 71.9-31.4 100.3-5 7.2-10.2 14.3-15.4 21.4-12.3 16.8-24.6 33.7-34.5 51.8-5.9 10.8-9.6 22.5-11.8 34.5h-48.6c2.6-18.7 7.9-38.6 18.3-57.5 11.5-20.9 26.9-42.1 39.8-59.8 4.7-6.4 9-12.4 12.7-17.7zM192 128c-26.5 0-48 21.5-48 48 0 8.8-7.2 16-16 16s-16-7.2-16-16c0-44.2 35.8-80 80-80 8.8 0 16 7.2 16 16s-7.2 16-16 16m0 384c-44.2 0-80-35.8-80-80v-16h160v16c0 44.2-35.8 80-80 80"/></svg>');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0"/></svg>');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13M6.92 6.085h.001a.749.749 0 1 1-1.342-.67c.169-.339.436-.701.849-.977C6.845 4.16 7.369 4 8 4a2.76 2.76 0 0 1 1.637.525c.503.377.863.965.863 1.725 0 .448-.115.83-.329 1.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6 6 0 0 0-.26.16 1 1 0 0 0-.276.245.75.75 0 0 1-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1 1 0 0 0 .277-.245C8.96 6.514 9 6.427 9 6.25a.61.61 0 0 0-.262-.525A1.27 1.27 0 0 0 8 5.5c-.369 0-.595.09-.74.187a1 1 0 0 0-.34.398M9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg>');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0M9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg>');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg>');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.504.43a1.516 1.516 0 0 1 2.437 1.713L10.415 5.5h2.123c1.57 0 2.346 1.909 1.22 3.004l-7.34 7.142a1.25 1.25 0 0 1-.871.354h-.302a1.25 1.25 0 0 1-1.157-1.723L5.633 10.5H3.462c-1.57 0-2.346-1.909-1.22-3.004zm1.047 1.074L3.286 8.571A.25.25 0 0 0 3.462 9H6.75a.75.75 0 0 1 .694 1.034l-1.713 4.188 6.982-6.793A.25.25 0 0 0 12.538 7H9.25a.75.75 0 0 1-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005 0-.009.004"/></svg>');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4.72.22a.75.75 0 0 1 1.06 0l1 .999a3.5 3.5 0 0 1 2.441 0l.999-1a.748.748 0 0 1 1.265.332.75.75 0 0 1-.205.729l-.775.776c.616.63.995 1.493.995 2.444v.327q0 .15-.025.292c.408.14.764.392 1.029.722l1.968-.787a.75.75 0 0 1 .556 1.392L13 7.258V9h2.25a.75.75 0 0 1 0 1.5H13v.5q-.002.615-.141 1.186l2.17.868a.75.75 0 0 1-.557 1.392l-2.184-.873A5 5 0 0 1 8 16a5 5 0 0 1-4.288-2.427l-2.183.873a.75.75 0 0 1-.558-1.392l2.17-.868A5 5 0 0 1 3 11v-.5H.75a.75.75 0 0 1 0-1.5H3V7.258L.971 6.446a.75.75 0 0 1 .558-1.392l1.967.787c.265-.33.62-.583 1.03-.722a1.7 1.7 0 0 1-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72 1.28a.75.75 0 0 1 0-1.06m.53 6.28a.75.75 0 0 0-.75.75V11a3.5 3.5 0 1 0 7 0V7.25a.75.75 0 0 0-.75-.75ZM6.173 5h3.654A.17.17 0 0 0 10 4.827V4.5a2 2 0 1 0-4 0v.327c0 .096.077.173.173.173"/></svg>');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5 5.782V2.5h-.25a.75.75 0 0 1 0-1.5h6.5a.75.75 0 0 1 0 1.5H11v3.282l3.666 5.76C15.619 13.04 14.543 15 12.767 15H3.233c-1.776 0-2.852-1.96-1.899-3.458Zm-2.4 6.565a.75.75 0 0 0 .633 1.153h9.534a.75.75 0 0 0 .633-1.153L12.225 10.5h-8.45ZM9.5 2.5h-3V6c0 .143-.04.283-.117.403L4.73 9h6.54L9.617 6.403A.75.75 0 0 1 9.5 6Z"/></svg>');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.75 2.5h10.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5m4 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5M2.5 7.75v6a.75.75 0 0 1-1.5 0v-6a.75.75 0 0 1 1.5 0"/></svg>');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-WG7T40F7YP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-WG7T40F7YP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-WG7T40F7YP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#一键执行命令" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="https://linuxmirrors.cn" title="LinuxMirrors" class="md-header__button md-logo" aria-label="LinuxMirrors" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LinuxMirrors
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              使用方法
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="跟随系统"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="跟随系统" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="white"  aria-label="亮色主题"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="亮色主题" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0M8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0M3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8m13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8m-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13m3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061M2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-.018 1.042.75.75 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="深色主题"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="深色主题" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.598 1.591a.75.75 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786m1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SuperManito/LinuxMirrors" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  介绍
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  使用方法
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../mirrors/" class="md-tabs__link">
+        
+  
+    
+  
+  软件源列表
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../other/" class="md-tabs__link">
+        
+  
+    
+  
+  其它工具
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../community/" class="md-tabs__link">
+        
+  
+    
+  
+  社区
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://linuxmirrors.cn" title="LinuxMirrors" class="md-nav__button md-logo" aria-label="LinuxMirrors" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    LinuxMirrors
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SuperManito/LinuxMirrors" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    使用方法
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    使用方法
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#一键执行命令" class="md-nav__link">
+    <span class="md-ellipsis">
+      一键执行命令
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一键执行命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#注意事项" class="md-nav__link">
+    <span class="md-ellipsis">
+      注意事项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#关于调用脚本的互联网位置" class="md-nav__link">
+    <span class="md-ellipsis">
+      关于调用脚本的互联网位置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#关于未启用的软件源" class="md-nav__link">
+    <span class="md-ellipsis">
+      关于未启用的软件源
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#命令选项高级用法" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令选项（高级用法）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="命令选项（高级用法）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#指定软件源地址" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定软件源地址
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定软件源仓库分支" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定软件源仓库分支
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#单独更换-epel-源" class="md-nav__link">
+    <span class="md-ellipsis">
+      单独更换 EPEL 源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#恢复使用官方源" class="md-nav__link">
+    <span class="md-ellipsis">
+      恢复使用官方源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#自定义-debian-security-源" class="md-nav__link">
+    <span class="md-ellipsis">
+      自定义 Debian Security 源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-debian-系-linux-操作系统的版本代号" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定 Debian 系 Linux 操作系统的版本代号
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#更换-ubuntu-eof版本软件源" class="md-nav__link">
+    <span class="md-ellipsis">
+      更换 Ubuntu EOF版本软件源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#无人值守自动化" class="md-nav__link">
+    <span class="md-ellipsis">
+      无人值守（自动化）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#定制脚本" class="md-nav__link">
+    <span class="md-ellipsis">
+      定制脚本
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    软件源列表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    其它工具
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../community/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    社区
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#一键执行命令" class="md-nav__link">
+    <span class="md-ellipsis">
+      一键执行命令
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一键执行命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#注意事项" class="md-nav__link">
+    <span class="md-ellipsis">
+      注意事项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#关于调用脚本的互联网位置" class="md-nav__link">
+    <span class="md-ellipsis">
+      关于调用脚本的互联网位置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#关于未启用的软件源" class="md-nav__link">
+    <span class="md-ellipsis">
+      关于未启用的软件源
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#命令选项高级用法" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令选项（高级用法）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="命令选项（高级用法）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#指定软件源地址" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定软件源地址
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定软件源仓库分支" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定软件源仓库分支
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#单独更换-epel-源" class="md-nav__link">
+    <span class="md-ellipsis">
+      单独更换 EPEL 源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#恢复使用官方源" class="md-nav__link">
+    <span class="md-ellipsis">
+      恢复使用官方源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#自定义-debian-security-源" class="md-nav__link">
+    <span class="md-ellipsis">
+      自定义 Debian Security 源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-debian-系-linux-操作系统的版本代号" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定 Debian 系 Linux 操作系统的版本代号
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#更换-ubuntu-eof版本软件源" class="md-nav__link">
+    <span class="md-ellipsis">
+      更换 Ubuntu EOF版本软件源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#无人值守自动化" class="md-nav__link">
+    <span class="md-ellipsis">
+      无人值守（自动化）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#定制脚本" class="md-nav__link">
+    <span class="md-ellipsis">
+      定制脚本
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>使用方法</h1>
+
+<blockquote>
+<p>如果您觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 <span class="twemoji heart" style="color: red"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 20.408c-.492.308-.903.546-1.192.709q-.23.129-.463.252h-.002a.75.75 0 0 1-.686 0 17 17 0 0 1-.465-.252 31 31 0 0 1-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31 31 0 0 1 14 20.408"/></svg></span></p>
+</blockquote>
+<h2 id="一键执行命令">一键执行命令<a class="headerlink" href="#一键执行命令" title="永久链接">#</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="中国大陆" name="__tabbed_1" type="radio" /><input id="境外以及海外地区" name="__tabbed_1" type="radio" /><input id="中国大陆教育网" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="中国大陆"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 21V10l7.5-5 7.5 5v11h-5v-7H5v7zM24 2v19h-7V8.93l-1-.66V6h-2v.93l-4-2.66V2zm-3 12h-2v2h2zm0-4h-2v2h2zm0-4h-2v2h2z"/></svg></span> 中国大陆</label><label for="境外以及海外地区"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> 境外以及海外地区</label><label for="中国大陆教育网"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg></span> 中国大陆教育网</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="cdn推荐" name="__tabbed_2" type="radio" /><input id="github" name="__tabbed_2" type="radio" /><input id="gitee" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="cdn推荐"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M5.78 8.75a9.64 9.64 0 0 0 1.363 4.177q.383.64.857 1.215c.245-.296.551-.705.857-1.215A9.64 9.64 0 0 0 10.22 8.75Zm4.44-1.5a9.64 9.64 0 0 0-1.363-4.177c-.307-.51-.612-.919-.857-1.215a10 10 0 0 0-.857 1.215A9.64 9.64 0 0 0 5.78 7.25Zm-5.944 1.5H1.543a6.51 6.51 0 0 0 4.666 5.5q-.184-.271-.352-.552c-.715-1.192-1.437-2.874-1.581-4.948m-2.733-1.5h2.733c.144-2.074.866-3.756 1.58-4.948q.18-.295.353-.552a6.51 6.51 0 0 0-4.666 5.5m10.181 1.5c-.144 2.074-.866 3.756-1.58 4.948q-.18.296-.353.552a6.51 6.51 0 0 0 4.666-5.5Zm2.733-1.5a6.51 6.51 0 0 0-4.666-5.5q.184.272.353.552c.714 1.192 1.436 2.874 1.58 4.948Z"/></svg></span> CDN（推荐）</label><label for="github"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh<span class="o">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="cdn推荐_1" name="__tabbed_3" type="radio" /><input id="github_1" name="__tabbed_3" type="radio" /><input id="gitee_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="cdn推荐_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M5.78 8.75a9.64 9.64 0 0 0 1.363 4.177q.383.64.857 1.215c.245-.296.551-.705.857-1.215A9.64 9.64 0 0 0 10.22 8.75Zm4.44-1.5a9.64 9.64 0 0 0-1.363-4.177c-.307-.51-.612-.919-.857-1.215a10 10 0 0 0-.857 1.215A9.64 9.64 0 0 0 5.78 7.25Zm-5.944 1.5H1.543a6.51 6.51 0 0 0 4.666 5.5q-.184-.271-.352-.552c-.715-1.192-1.437-2.874-1.581-4.948m-2.733-1.5h2.733c.144-2.074.866-3.756 1.58-4.948q.18-.295.353-.552a6.51 6.51 0 0 0-4.666 5.5m10.181 1.5c-.144 2.074-.866 3.756-1.58 4.948q-.18.296-.353.552a6.51 6.51 0 0 0 4.666-5.5Zm2.733-1.5a6.51 6.51 0 0 0-4.666-5.5q.184.272.353.552c.714 1.192 1.436 2.874 1.58 4.948Z"/></svg></span> CDN（推荐）</label><label for="github_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--abroad<span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<ol>
+<li>通过 <code>--abroad</code> 命令选项来使用海外软件源</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--abroad<span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<ol>
+<li>通过 <code>--abroad</code> 命令选项来使用海外软件源</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--abroad<span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<ol>
+<li>通过 <code>--abroad</code> 命令选项来使用海外软件源</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="cdn推荐_2" name="__tabbed_4" type="radio" /><input id="github_2" name="__tabbed_4" type="radio" /><input id="gitee_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="cdn推荐_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M5.78 8.75a9.64 9.64 0 0 0 1.363 4.177q.383.64.857 1.215c.245-.296.551-.705.857-1.215A9.64 9.64 0 0 0 10.22 8.75Zm4.44-1.5a9.64 9.64 0 0 0-1.363-4.177c-.307-.51-.612-.919-.857-1.215a10 10 0 0 0-.857 1.215A9.64 9.64 0 0 0 5.78 7.25Zm-5.944 1.5H1.543a6.51 6.51 0 0 0 4.666 5.5q-.184-.271-.352-.552c-.715-1.192-1.437-2.874-1.581-4.948m-2.733-1.5h2.733c.144-2.074.866-3.756 1.58-4.948q.18-.295.353-.552a6.51 6.51 0 0 0-4.666 5.5m10.181 1.5c-.144 2.074-.866 3.756-1.58 4.948q-.18.296-.353.552a6.51 6.51 0 0 0 4.666-5.5Zm2.733-1.5a6.51 6.51 0 0 0-4.666-5.5q.184.272.353.552c.714 1.192 1.436 2.874 1.58 4.948Z"/></svg></span> CDN（推荐）</label><label for="github_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--edu<span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<ol>
+<li>通过 <code>--edu</code> 命令选项来使用中国大陆教育单位软件源</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--edu<span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<ol>
+<li>通过 <code>--edu</code> 命令选项来使用中国大陆教育单位软件源</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--edu<span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<ol>
+<li>通过 <code>--edu</code> 命令选项来使用中国大陆教育单位软件源</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>选项卡分别代表脚本内置软件源类型和获取脚本途径，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在<a href="../mirrors/">软件源列表</a>中查看具体有哪些软件源。</p>
+<ul>
+<li>
+<h3 id="注意事项">注意事项<a class="headerlink" href="#注意事项" title="永久链接">#</a></h3>
+<div class="grid cards" markdown>
+<ul>
+<li>
+<p><span class="twemoji lg" style="color: #3CA7E5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 7v2h2v8h2V7z"/></svg></span> <strong>需使用 <code>ROOT</code> 用户执行脚本</strong></p>
+<hr />
+<p>切换命令为 <code>sudo -i</code> 或 <code>su root</code>。不同系统使用的命令不同，因为有些系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu），故需要使用 <code>sudo -i</code> 命令来切换至 ROOT</p>
+</li>
+<li>
+<p><span class="twemoji lg" style="color: #3CA7E5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 7v2h4v2h-2a2 2 0 0 0-2 2v4h6v-2h-4v-2h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></span> <strong>建议使用 <code>SSH</code> 远程工具</strong></p>
+<hr />
+<p>如果你使用的系统终端界面无法正常显示中文内容那么将导致无法查看交互内容。部分系统会自动开启 SSH 服务，否则请参考 <a href="#关于开启-ssh-远程登录的方法"><em>关于开启 SSH 远程登录的方法</em></a></p>
+</li>
+<li>
+<p><span class="twemoji lg" style="color: #3CA7E5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 15v-1.5a1.5 1.5 0 0 0-1.5-1.5 1.5 1.5 0 0 0 1.5-1.5V9a2 2 0 0 0-2-2H9v2h4v2h-2v2h2v2H9v2h4a2 2 0 0 0 2-2"/></svg></span> <strong>如果是在新系统上首次执行脚本</strong></p>
+<hr />
+<p>当前执行方式依赖 <code>curl</code> 指令获取脚本内容并执行，但部分操作系统没有预装此软件包，届时则会报错 <code>Command not found</code>，安装方法详见下方 <a href="#关于报错-command-not-found"><em>关于报错 Command not found</em></a>。还可自行复制<a href="https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh">源码</a>至本地新建任意名称的 <code>.sh</code> 脚本，粘贴源码内容后通过 <code>bash</code> 指令手动执行</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<h3 id="常见问题">常见问题<a class="headerlink" href="#常见问题" title="永久链接">#</a></h3>
+<ul>
+<li>
+<h4 id="关于报错-command-not-found">关于报错 Command not found<a class="headerlink" href="#关于报错-command-not-found" title="永久链接">#</a></h4>
+<div class="admonition quote">
+<p>此报错是因为系统没有预装 <code>curl</code> 软件包，下面是安装命令</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:6"><input checked="checked" id="debian-系--openkylin" name="__tabbed_5" type="radio" /><input id="redhat-系--opencloudos--openeuler--anolis-os" name="__tabbed_5" type="radio" /><input id="opensuse" name="__tabbed_5" type="radio" /><input id="arch-linux" name="__tabbed_5" type="radio" /><input id="alpine-linux" name="__tabbed_5" type="radio" /><input id="gentoo" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin">Debian 系 / openKylin</label><label for="redhat-系--opencloudos--openeuler--anolis-os">RedHat 系 / OpenCloudOS / openEuler / Anolis OS</label><label for="opensuse">openSUSE</label><label for="arch-linux">Arch Linux</label><label for="alpine-linux">Alpine Linux</label><label for="gentoo">Gentoo</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl
+</code></pre></div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+<p>新装系统需要先执行一遍更新 <code>apt-get update</code></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl<span class="w"> </span><span class="o">||</span><span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>openEuler</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>zypper<span class="w"> </span>install<span class="w"> </span>curl
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pacman<span class="w"> </span>-S<span class="w"> </span>curl
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>apk<span class="w"> </span>--no-cache<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>curl<span class="w"> </span>bash
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>emerge<span class="w"> </span>--ask<span class="w"> </span>curl
+</code></pre></div>
+</div>
+</div>
+</div>
+<details class="tip">
+<summary>安装不上？（点击展开查看其它解决方法）</summary>
+<p>假如有这么一种情况：系统原有软件源是坏的安装不上 <code>curl</code> 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供两个在线获取脚本的应急方法，否则就只能手动复制粘贴源代码了</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="使用-python-下载脚本" name="__tabbed_6" type="radio" /><input id="使用-wget-下载脚本" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="使用-python-下载脚本">使用 Python 下载脚本</label><label for="使用-wget-下载脚本">使用 wget 下载脚本</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>适用于大部分操作系统（<code>Alpine Linux</code> 除外），<code>python3</code> 要是不存在那就再试试 <code>python</code> 指令
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import urllib.request; urllib.request.urlretrieve(&#39;https://linuxmirrors.cn/main.sh&#39;, &#39;linuxmirrors-main.sh&#39;)&quot;</span>
+</code></pre></div></p>
+</div>
+<div class="tabbed-block">
+<p>一般没有预装 <code>curl</code> 软件包的系统也不会预装 <code>wget</code> 软件包，所以大概率这个方法应该是不行的
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>wget<span class="w"> </span>-O<span class="w"> </span>linuxmirrors-main.sh<span class="w"> </span>https://linuxmirrors.cn/main.sh
+</code></pre></div></p>
+</div>
+</div>
+</div>
+<p>之后再执行 <code>bash linuxmirrors-main.sh</code> 即可</p>
+</details>
+</div>
+</li>
+<li>
+<h4 id="关于开启-ssh-远程登录的方法">关于开启 SSH 远程登录的方法<a class="headerlink" href="#关于开启-ssh-远程登录的方法" title="永久链接">#</a></h4>
+<div class="admonition quote">
+<ul>
+<li>
+<p>验证是否已安装 <code>SSH</code> 服务</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>ls<span class="w"> </span>/etc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh
+</code></pre></div>
+<blockquote>
+<p>如果没有这个文件夹说明系统未安装 <code>SSH</code> 服务，你需要通过包管理工具安装 <code>openssh</code> 软件包</p>
+</blockquote>
+</li>
+<li>
+<p>设置允许 Root 用户登录</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cat<span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Eq<span class="w"> </span><span class="s2">&quot;^[# ]?PermitRootLogin &quot;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g&#39;</span><span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nPermitRootLogin yes&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/ssh/sshd_config
+</code></pre></div>
+</li>
+<li>
+<p>设置密码认证</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cat<span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Eq<span class="w"> </span><span class="s2">&quot;^[# ]?PasswordAuthentication &quot;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g&#39;</span><span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nPasswordAuthentication yes&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/ssh/sshd_config
+</code></pre></div>
+</li>
+<li>
+<p>启动/重启 <code>SSH</code> 服务</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>ps<span class="w"> </span>-ef<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span>ssh<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>sshd<span class="w"> </span><span class="o">||</span><span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>sshd
+</code></pre></div>
+</li>
+</ul>
+<blockquote>
+<p>命令仅供参考，只适配了部分常见发行版</p>
+</blockquote>
+</div>
+</li>
+<li>
+<h4 id="还原已备份的软件源">还原已备份的软件源<a class="headerlink" href="#还原已备份的软件源" title="永久链接">#</a></h4>
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="7:6"><input checked="checked" id="debian-系--openkylin_1" name="__tabbed_7" type="radio" /><input id="redhat-系--opencloudos--openeuler--anolis-os_1" name="__tabbed_7" type="radio" /><input id="opensuse_1" name="__tabbed_7" type="radio" /><input id="arch-linux_1" name="__tabbed_7" type="radio" /><input id="alpine-linux_1" name="__tabbed_7" type="radio" /><input id="gentoo_1" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin_1">Debian 系 / openKylin</label><label for="redhat-系--opencloudos--openeuler--anolis-os_1">RedHat 系 / OpenCloudOS / openEuler / Anolis OS</label><label for="opensuse_1">openSUSE</label><label for="arch-linux_1">Arch Linux</label><label for="alpine-linux_1">Alpine Linux</label><label for="gentoo_1">Gentoo</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/apt/sources.list.bak<span class="w"> </span>/etc/apt/sources.list
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>apt-get<span class="w"> </span>update
+</code></pre></div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/yum.repos.d.bak<span class="w"> </span>/etc/yum.repos.d
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>yum<span class="w"> </span>makecache
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>openEuler</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/zypp/repos.d.bak<span class="w"> </span>/etc/zypp/repos.d
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>zypper<span class="w"> </span>ref
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/pacman.d/mirrorlist.bak<span class="w"> </span>/etc/pacman.d/mirrorlist
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>pacman<span class="w"> </span>-Sy
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/apk/repositories.bak<span class="w"> </span>/etc/apk/repositories
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>apk<span class="w"> </span>update<span class="w"> </span>-f
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/portage/make.conf.bak<span class="w"> </span>/etc/portage/make.conf
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>/etc/portage/repos.conf<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/portage/repos.conf/gentoo.conf.bak<span class="w"> </span>/etc/portage/repos.conf/gentoo.conf
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>emerge<span class="w"> </span>--sync<span class="w"> </span>--quiet
+</code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<h4 id="其它">其它<a class="headerlink" href="#其它" title="永久链接">#</a></h4>
+<div class="admonition quote">
+<ul>
+<li>如果提示 <code>bash: /proc/self/fd/11: No such file or directory</code>，请切换至 <code>Root</code> 用户执行，切换命令为 <code>sudo -i</code> 或 <code>su root</code></li>
+</ul>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="关于调用脚本的互联网位置">关于调用脚本的互联网位置<a class="headerlink" href="#关于调用脚本的互联网位置" title="永久链接">#</a></h3>
+<p>项目利用 GitHub Action 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名 CDN 云服务商几乎没有被劫持的风险可放心使用</p>
+<p>当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有三个不同的地址，默认的 CDN 地址更易于访问和记忆</p>
+</li>
+<li>
+<h3 id="关于未启用的软件源">关于未启用的软件源<a class="headerlink" href="#关于未启用的软件源" title="永久链接">#</a></h3>
+<p>脚本遵循系统默认设置即没有启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，如果你有使用需求请阅读下面的启用方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:3"><input checked="checked" id="debian-系--openkylin_2" name="__tabbed_8" type="radio" /><input id="redhat-系--opencloudos--openeuler--anolis-os_2" name="__tabbed_8" type="radio" /><input id="opensuse_2" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin_2">Debian 系 / openKylin</label><label for="redhat-系--opencloudos--openeuler--anolis-os_2">RedHat 系 / OpenCloudOS / openEuler / Anolis OS</label><label for="opensuse_2">openSUSE</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>默认禁用了<code>deb-src</code>源码仓库和<code>proposed</code>预发布软件源，若需启用请将 <code>/etc/apt/sources.list</code> 文件中相关内容的所在行取消注释</p>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<p>部分仓库默认没有启用，若需启用请将 <code>/etc/yum.repos.d</code> 目录下相关 repo 文件中的 <code>enabled</code> 值修改为 <code>1</code></p>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>openEuler</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<p>部分仓库默认没有启用，若需启用请将 <code>/etc/zypp/repos.d</code> 目录下相关 repo 文件中的 <code>enabled</code> 值修改为 <code>1</code></p>
+</div>
+</div>
+</div>
+</li>
+</ul>
+<hr />
+<h2 id="命令选项高级用法">命令选项（高级用法）<a class="headerlink" href="#命令选项高级用法" title="永久链接">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+<th style="text-align: center;">选项值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--abroad</code></td>
+<td>使用境外以及海外软件源</td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td><code>--edu</code></td>
+<td>使用中国大陆教育网软件源</td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td><code>--source</code></td>
+<td>指定软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td><code>--source-epel</code></td>
+<td>指定 EPEL 附加软件包仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td><code>--source-security</code></td>
+<td>指定 Debian 系统 security 仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td><code>--source-vault</code></td>
+<td>指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td><code>--source-portage</code></td>
+<td>指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td><code>--source-base-system</code></td>
+<td>指定 Linux Mint 系统底层系统的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td><code>--branch</code></td>
+<td>指定软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td><code>--branch-epel</code></td>
+<td>指定 EPEL 附加软件包仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td><code>--branch-security</code></td>
+<td>指定 Debian 系统 security 仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td><code>--branch-vault</code></td>
+<td>指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td><code>--branch-portage</code></td>
+<td>指定 Gentoo 系统 portage 仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td><code>--branch-base-system</code></td>
+<td>指定 Linux Mint 系统底层系统的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td><code>--codename</code></td>
+<td>指定 Debian 系 / openKylin 操作系统的版本代号</td>
+<td style="text-align: center;"><code>代号名称</code></td>
+</tr>
+<tr>
+<td><code>--protocol</code></td>
+<td>指定 WEB 协议</td>
+<td style="text-align: center;"><code>http</code> 或 <code>https</code></td>
+</tr>
+<tr>
+<td><code>--use-intranet-source</code></td>
+<td>是否优先使用内网软件源地址</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--use-official-source</code></td>
+<td>是否使用目标操作系统的官方软件源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--install-epel</code></td>
+<td>是否安装 EPEL 附加软件包</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--backup</code></td>
+<td>是否备份原有软件源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--upgrade-software</code></td>
+<td>是否更新软件包</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--clean-cache</code></td>
+<td>是否清理下载缓存</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--clean-screen</code></td>
+<td>是否在运行前清除屏幕上的所有内容</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--print-diff</code></td>
+<td>是否打印源文件修改前后差异</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--only-epel</code></td>
+<td>仅更换 EPEL 软件源模式</td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td><code>--ignore-backup-tips</code></td>
+<td>忽略覆盖备份提示（即不覆盖备份）</td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>查看帮助菜单</td>
+<td style="text-align: center;">无</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>软件源格式 <code>&lt;WEB协议&gt;://&lt;软件源地址&gt;/&lt;软件源分支&gt;</code></p>
+</blockquote>
+<p>接下来是一些高级用法的举例</p>
+<ul>
+<li>
+<h3 id="指定软件源地址">指定软件源地址<a class="headerlink" href="#指定软件源地址" title="永久链接">#</a></h3>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">    </span>--source<span class="w"> </span>mirror.example.com
+</code></pre></div>
+</li>
+<li>
+<h3 id="指定软件源仓库分支">指定软件源仓库分支<a class="headerlink" href="#指定软件源仓库分支" title="永久链接">#</a></h3>
+<p>主要使用场景：目标镜像站有对应的系统镜像但是不符合本项目脚本关于软件源分支设置的默认规则</p>
+<details class="note">
+<summary>项目默认使用的系统分支名称（点击展开查看）</summary>
+<p>项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配</p>
+<table>
+<thead>
+<tr>
+<th>系统名称</th>
+<th style="text-align: center;">涉及的分支名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian</td>
+<td style="text-align: center;">debian / debian-archive</td>
+</tr>
+<tr>
+<td><a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu</td>
+<td style="text-align: center;">ubuntu / ubuntu-ports</td>
+</tr>
+<tr>
+<td><a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux</td>
+<td style="text-align: center;">kali</td>
+</tr>
+<tr>
+<td><a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint</td>
+<td style="text-align: center;">linuxmint / ubuntu / ubuntu-ports / debian</td>
+</tr>
+<tr>
+<td><a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin（深度）</td>
+<td style="text-align: center;">deepin</td>
+</tr>
+<tr>
+<td><a href="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> Zorin OS</td>
+<td style="text-align: center;">ubuntu / ubuntu-ports</td>
+</tr>
+<tr>
+<td><a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian</td>
+<td style="text-align: center;">armbian</td>
+</tr>
+<tr>
+<td><a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox</td>
+<td style="text-align: center;">proxmox</td>
+</tr>
+<tr>
+<td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux <span class="twemoji" title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg></span></td>
+<td style="text-align: center;">centos / centos-stream / centos-altarch / centos-vault</td>
+</tr>
+<tr>
+<td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora</td>
+<td style="text-align: center;">fedora</td>
+</tr>
+<tr>
+<td><a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS</td>
+<td style="text-align: center;">centos / centos-stream / centos-altarch / centos-vault</td>
+</tr>
+<tr>
+<td><a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux</td>
+<td style="text-align: center;">rocky</td>
+</tr>
+<tr>
+<td><a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux</td>
+<td style="text-align: center;">almalinux / almalinux-vault</td>
+</tr>
+<tr>
+<td><a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler（开源欧拉）</td>
+<td style="text-align: center;">openeuler</td>
+</tr>
+<tr>
+<td><a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS（鸥栖）</td>
+<td style="text-align: center;">opencloudos</td>
+</tr>
+<tr>
+<td><a href="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> openKylin（开放麒麟）</td>
+<td style="text-align: center;">openkylin</td>
+</tr>
+<tr>
+<td><a href="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS（龙蜥）</td>
+<td style="text-align: center;">anolis</td>
+</tr>
+<tr>
+<td><a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE</td>
+<td style="text-align: center;">opensuse</td>
+</tr>
+<tr>
+<td><a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux</td>
+<td style="text-align: center;">archlinux / archlinuxarm</td>
+</tr>
+<tr>
+<td><a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux</td>
+<td style="text-align: center;">alpine</td>
+</tr>
+<tr>
+<td><a href="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Gentoo</td>
+<td style="text-align: center;">gentoo / gentoo-portage</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p>请看下面的例子</p>
+<div class="highlight"><span class="filename">使用阿里云镜像站的 Rocky Linux 软件源</span><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span>--source<span class="w"> </span>mirrors.aliyun.com<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span>--branch<span class="w"> </span>rockylinux
+</code></pre></div>
+<p>阿里云镜像站的 Rocky Linux 镜像分支名称为 <a href="https://mirrors.aliyun.com/rockylinux"><code>rockylinux</code></a>，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现。</p>
+<blockquote>
+<p>部分系统会同时配置多个仓库的软件源，具体详见命令选项</p>
+</blockquote>
+</li>
+<li>
+<h3 id="单独更换-epel-源">单独更换 EPEL 源<a class="headerlink" href="#单独更换-epel-源" title="永久链接">#</a></h3>
+<div class="admonition info">
+<p class="admonition-title">EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版，配置 EPEL 仓库已成为广大用户的普遍需求，建议默认安装它</p>
+</div>
+<p>有些时候你会发现想使用的镜像站没有 epel 镜像仓库，那么你可以在第一次运行脚本时不安装或更换 epel 源然后再单独执行下面的命令</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--only-epel
+</code></pre></div>
+</li>
+<li>
+<h3 id="恢复使用官方源">恢复使用官方源<a class="headerlink" href="#恢复使用官方源" title="永久链接">#</a></h3>
+<p>当你不小心删除了官方源的备份时可以使用此命令来恢复，使用此命令选项后将跳过选择软件源步骤</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--use-official-source<span class="w"> </span><span class="nb">true</span>
+</code></pre></div>
+<blockquote>
+<p>部分系统不存在官方源例如 <code>Arch Linux</code>，届时会自动更换成兼容性较高的阿里云镜像站</p>
+</blockquote>
+</li>
+<li>
+<h3 id="自定义-debian-security-源">自定义 Debian Security 源<a class="headerlink" href="#自定义-debian-security-源" title="永久链接">#</a></h3>
+<p>如果你想尽可能提高服务器的安全性则建议使用官方源，因为镜像同步存在延迟</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span>--source-security<span class="w"> </span>security.debian.org<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span>--branch-security<span class="w"> </span>debian-security
+</code></pre></div>
+</li>
+<li>
+<h3 id="指定-debian-系-linux-操作系统的版本代号">指定 Debian 系 Linux 操作系统的版本代号<a class="headerlink" href="#指定-debian-系-linux-操作系统的版本代号" title="永久链接">#</a></h3>
+<p>大多数情况下自定义版本代号用于更换系统版本，请看下面的例子</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="升级-debian-至最新-12-版本-bookworm" name="__tabbed_9" type="radio" /><input id="将-debian-版本切换到测试分支" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="升级-debian-至最新-12-版本-bookworm">升级 Debian 至最新 12 版本 Bookworm</label><label for="将-debian-版本切换到测试分支">将 Debian 版本切换到测试分支</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span>--codename<span class="w"> </span>bookworm
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span>--codename<span class="w"> </span>testing
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>更换软件源后还需要执行系统更新命令 <code>apt-get dist-upgrade</code>，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题</p>
+<div class="highlight"><span class="filename">若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换</span><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;s/</span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2">/指定版本代号/g&quot;</span><span class="w"> </span>/etc/apt/sources.list
+</code></pre></div>
+</li>
+<li>
+<h3 id="更换-ubuntu-eof版本软件源">更换 Ubuntu EOF版本软件源<a class="headerlink" href="#更换-ubuntu-eof版本软件源" title="永久链接">#</a></h3>
+<div class="admonition info">
+<p class="admonition-title">EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 <code>Ubuntu Old Releases</code> 分支</p>
+</div>
+<p>具体版本支持情况详见官方 <a href="https://wiki.ubuntu.com/Releases">Wiki</a>，关于 <code>Ubuntu Old Releases</code> 分支的支持情况详见各镜像站</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span>--source<span class="w"> </span>mirrors.ustc.edu.cn<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span>--branch<span class="w"> </span>ubuntu-old-releases
+</code></pre></div>
+</li>
+<li>
+<h3 id="无人值守自动化">无人值守（自动化）<a class="headerlink" href="#无人值守自动化" title="永久链接">#</a></h3>
+<p>不通过交互完成换源操作，至少需要使用如下命令选项来实现，建议熟悉后再使用</p>
+<div class="no-copy highlight"><span class="filename">参考命令</span><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span>--source<span class="w"> </span>mirror.example.com<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">  </span>--protocol<span class="w"> </span>http<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">  </span>--use-intranet-source<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">  </span>--install-epel<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">  </span>--close-firewall<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">  </span>--backup<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">  </span>--upgrade-software<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="w">  </span>--clean-cache<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="w">  </span>--ignore-backup-tips
+</code></pre></div>
+</li>
+</ul>
+<hr />
+<h2 id="定制脚本">定制脚本<a class="headerlink" href="#定制脚本" title="永久链接">#</a></h2>
+<p>如果你是其它项目的开发者希望通过本项目来制作专属脚本那么请参考下面提到的内容，目前已经有国内教育单位镜像站的维护者这样做了。</p>
+<ol>
+<li>首先不建议修改代码的底层逻辑，应尽量与本项目源码保持同步，脚本内容执行顺序由 <code>main</code> 函数控制，代码逻辑清晰</li>
+<li>你可以简单去除一些无关内容，例如将软件源列表（数组）<code>mirror_list_(default|edu|abroad|extranet|intranet)</code> 中的内容删除，例：<code>mirror_list_default=()</code></li>
+<li>如果你想定制脚本打印内容可直接修改 <code>run_start</code> <code>run_end</code> <code>print_title</code> 这三个函数中的内容</li>
+<li>如果你想添加自定义 Shell 内容详见 <code>main</code> 函数中脚本执行顺序，可以在对应位置直接插入内容也可以封装函数后调用</li>
+<li>如果你想要缩减脚本体积那么可以删除一些不必要的内容，除了上面提到的软件源列表还有一些涉及脚本工作的部分模块内容，具体如下：<ol>
+<li>首先在删除内容时应尽可能保留脚本原始结构，直接把涉及函数中的内容删除即可，使其保留为空函数</li>
+<li>可以删除一些不使用（操作系统）的软件源原始内容 <code>gen_repo_files_xxx</code>，这些内容占据了脚本 <code>60%</code> 以上的体积</li>
+<li>如果你不使用某些功能那么可以删除对应功能模块函数中的内容，<code>命令选项 handle_command_options</code>、<code>备份原有软件源 backup_original_mirrors</code>、<code>更新软件包 upgrade_software</code></li>
+</ol>
+</li>
+<li>脚本主要功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，具体变量详见如下表格，你只需要将这些变量声明在脚本头部（预留注释区域）即可快速完成定制</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">变量名</th>
+<th style="text-align: center;">含义</th>
+<th style="text-align: center;">值类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>SOURCE</code></td>
+<td style="text-align: center;">指定软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_EPEL</code></td>
+<td style="text-align: center;">指定 EPEL 附加软件包仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_SECURITY</code></td>
+<td style="text-align: center;">指定 Debian 系统 security 仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_VAULT</code></td>
+<td style="text-align: center;">指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_PORTAGE</code></td>
+<td style="text-align: center;">指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_BASE_SYSTEM</code></td>
+<td style="text-align: center;">指定 Linux Mint 系统底层系统的软件源地址（域名或IP）</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_BRANCH</code></td>
+<td style="text-align: center;">指定软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_EPEL_BRANCH</code></td>
+<td style="text-align: center;">指定 EPEL 附加软件包仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_SECURITY_BRANCH</code></td>
+<td style="text-align: center;">指定 Debian 系统 security 仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_VAULT_BRANCH</code></td>
+<td style="text-align: center;">指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_PORTAGE_BRANCH</code></td>
+<td style="text-align: center;">指定 Gentoo 系统 portage 仓库的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_BASE_SYSTEM_BRANCH</code></td>
+<td style="text-align: center;">指定 Linux Mint 系统底层系统的软件源分支（路径）</td>
+<td style="text-align: center;"><code>分支名</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>DEBIAN_CODENAME</code></td>
+<td style="text-align: center;">指定 Debian 系 / openKylin 操作系统的版本代号</td>
+<td style="text-align: center;"><code>代号名称</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>USE_OFFICIAL_SOURCE</code></td>
+<td style="text-align: center;">是否使用目标操作系统的官方软件源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>USE_INTRANET_SOURCE</code></td>
+<td style="text-align: center;">是否优先使用内网软件源地址</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>WEB_PROTOCOL</code></td>
+<td style="text-align: center;">指定 WEB 协议</td>
+<td style="text-align: center;"><code>http</code> 或 <code>https</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>INSTALL_EPEL</code></td>
+<td style="text-align: center;">是否安装 EPEL 附加软件包</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>ONLY_EPEL</code></td>
+<td style="text-align: center;">仅更换 EPEL 软件源模式</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>BACKUP</code></td>
+<td style="text-align: center;">是否备份原有软件源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>IGNORE_BACKUP_TIPS</code></td>
+<td style="text-align: center;">忽略覆盖备份提示（即不覆盖备份）</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>UPGRADE_SOFTWARE</code></td>
+<td style="text-align: center;">是否更新软件包</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>CLEAN_CACHE</code></td>
+<td style="text-align: center;">是否清理下载缓存</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>CLEAN_SCREEN</code></td>
+<td style="text-align: center;">是否在运行前清除屏幕上的所有内容</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>PRINT_DIFF</code></td>
+<td style="text-align: center;">是否打印源文件修改前后差异</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>部分变量存在默认值，未涉及的变量无需声明为空值（空字符串），另外如果对应功能配置不存在那么就可能会出现交互</p>
+</blockquote>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        此页面上的内容对你有帮助吗？
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 9v12H1V9zm4 12a2 2 0 0 1-2-2V9c0-.55.22-1.05.59-1.41L14.17 1l1.06 1.06c.27.27.44.64.44 1.05l-.03.32L14.69 8H21a2 2 0 0 1 2 2v2c0 .26-.05.5-.14.73l-3.02 7.05C19.54 20.5 18.83 21 18 21zm0-2h9.03L21 12v-2h-8.79l1.13-5.32L9 9.03z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 15V3h4v12zM15 3a2 2 0 0 1 2 2v10c0 .55-.22 1.05-.59 1.41L9.83 23l-1.06-1.06c-.27-.27-.44-.64-.44-1.06l.03-.31.95-4.57H3a2 2 0 0 1-2-2v-2c0-.26.05-.5.14-.73l3.02-7.05C4.46 3.5 5.17 3 6 3zm0 2H5.97L3 12v2h8.78l-1.13 5.32L15 14.97z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              感谢反馈！
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              感谢反馈！使用<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank" rel="noopener">反馈表单</a></br>帮助我们改进此页面。
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" hidden>
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="上一页: 介绍">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                介绍
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../mirrors/" class="md-footer__link md-footer__link--next" aria-label="下一页: 软件源列表">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                软件源列表
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://gitee.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="gitee.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tabs", "navigation.path", "navigation.instant", "navigation.indexes", "navigation.footer", "navigation.tracking", "navigation.sections", "content.tooltips", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight", "announce.dismiss"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
