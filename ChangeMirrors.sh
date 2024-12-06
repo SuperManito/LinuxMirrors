@@ -1036,6 +1036,7 @@ function choose_mirrors() {
         fi
 
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            sleep 1 >/dev/null 2>&1
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的软件源：\${PLAIN}\\n\""
             SOURCE="${_SELECT_RESULT#*@}"
             echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}" | sed "s| · | |g"
@@ -1695,7 +1696,6 @@ function upgrade_software() {
         eclean-packages --deep >/dev/null 2>&1
         ;;
     esac
-    echo -e "\n$COMPLETE 清理完毕"
 }
 
 ##############################################################################

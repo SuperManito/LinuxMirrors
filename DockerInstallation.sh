@@ -542,6 +542,7 @@ function choose_mirrors() {
     if [[ -z "${SOURCE}" ]]; then
         mirror_list_name="mirror_list_docker_ce"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            sleep 1 >/dev/null 2>&1
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker CE 源：\${PLAIN}\\n\""
             SOURCE="${_SELECT_RESULT#*@}"
             echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
@@ -571,6 +572,7 @@ function choose_mirrors() {
     if [[ -z "${SOURCE_REGISTRY}" ]]; then
         mirror_list_name="mirror_list_registry"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            sleep 1 >/dev/null 2>&1
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker Registry 源：\${PLAIN}\\n\""
             SOURCE_REGISTRY="${_SELECT_RESULT#*@}"
             echo -e "\n${GREEN}➜${PLAIN}  Docker Registry：${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
