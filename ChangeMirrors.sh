@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-06
+## Modified: 2024-12-12
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -31,36 +31,36 @@ mirror_list_default=(
 )
 # 中国大陆教育网格式："软件源名称@软件源地址"
 mirror_list_edu=(
-    "清华大学@mirrors.tuna.tsinghua.edu.cn"
     "北京大学@mirrors.pku.edu.cn"
-    "南京大学@mirrors.nju.edu.cn"
-    "重庆大学@mirrors.cqu.edu.cn"
-    "兰州大学@mirror.lzu.edu.cn"
-    "浙江大学@mirrors.zju.edu.cn"
-    "山东大学@mirrors.sdu.edu.cn"
-    "吉林大学@mirrors.jlu.edu.cn"
-    "上海科技大学@mirrors.shanghaitech.edu.cn"
-    "南方科技大学@mirrors.sustech.edu.cn"
-    "南京邮电大学@mirrors.njupt.edu.cn"
-    "南京工业大学@mirrors.njtech.edu.cn"
-    "电子科技大学@mirrors.uestc.cn"
     "北京交通大学@mirror.bjtu.edu.cn"
-    "北京邮电大学@mirrors.bupt.edu.cn"
-    "齐鲁工业大学@mirrors.qlu.edu.cn"
-    "华南农业大学@mirrors.scau.edu.cn"
-    "西安交通大学@mirrors.xjtu.edu.cn"
-    "江西理工大学@mirrors.jxust.edu.cn"
-    "重庆邮电大学@mirrors.cqupt.edu.cn"
-    "华中科技大学@mirrors.hust.edu.cn"
-    "南阳理工学院@mirror.nyist.edu.cn"
-    "武昌首义学院@mirrors.wsyu.edu.cn"
-    "荆楚理工学院@mirrors.jcut.edu.cn"
     "北京外国语大学@mirrors.bfsu.edu.cn"
-    "中国科学技术大学@mirrors.ustc.edu.cn"
-    "西北农林科技大学@mirrors.nwafu.edu.cn"
+    "北京邮电大学@mirrors.bupt.edu.cn"
+    "重庆大学@mirrors.cqu.edu.cn"
+    "重庆邮电大学@mirrors.cqupt.edu.cn"
     "大连东软信息学院@mirrors.neusoft.edu.cn"
+    "电子科技大学@mirrors.uestc.cn"
+    "华南农业大学@mirrors.scau.edu.cn"
+    "华中科技大学@mirrors.hust.edu.cn"
+    "吉林大学@mirrors.jlu.edu.cn"
+    "荆楚理工学院@mirrors.jcut.edu.cn"
+    "江西理工大学@mirrors.jxust.edu.cn"
+    "兰州大学@mirror.lzu.edu.cn"
+    "南京大学@mirrors.nju.edu.cn"
+    "南京工业大学@mirrors.njtech.edu.cn"
+    "南京邮电大学@mirrors.njupt.edu.cn"
+    "南方科技大学@mirrors.sustech.edu.cn"
+    "南阳理工学院@mirror.nyist.edu.cn"
+    "齐鲁工业大学@mirrors.qlu.edu.cn"
+    "清华大学@mirrors.tuna.tsinghua.edu.cn"
+    "山东大学@mirrors.sdu.edu.cn"
+    "上海科技大学@mirrors.shanghaitech.edu.cn"
     "上海交通大学（思源）@mirror.sjtu.edu.cn"
     "上海交通大学（致远）@mirrors.sjtug.sjtu.edu.cn"
+    "武昌首义学院@mirrors.wsyu.edu.cn"
+    "西安交通大学@mirrors.xjtu.edu.cn"
+    "西北农林科技大学@mirrors.nwafu.edu.cn"
+    "浙江大学@mirrors.zju.edu.cn"
+    "中国科学技术大学@mirrors.ustc.edu.cn"
 )
 # 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
@@ -836,6 +836,11 @@ function collect_system_info() {
                 SOURCE_BRANCH="centos-stream"
                 ;;
             esac
+            ;;
+        "${SYSTEM_FEDORA}")
+            if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -lt 39 ]]; then
+                SOURCE_BRANCH="fedora-archive"
+            fi
             ;;
         "${SYSTEM_ARCH}")
             if [[ "${DEVICE_ARCH}" == "x86_64" || "${DEVICE_ARCH}" == *i?86* ]]; then
@@ -1660,7 +1665,7 @@ function upgrade_software() {
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         local package_manager="$(get_package_manager)"
-        $package_manager update -y --skip-broken
+        $package_manager upgrade -y --skip-broken
         ;;
     "${SYSTEM_OPENSUSE}")
         zypper update -y

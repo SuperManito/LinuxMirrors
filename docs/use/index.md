@@ -153,7 +153,7 @@ hide:
             === "Alpine Linux"
 
                 ``` bash
-                apk --no-cache add -f curl bash
+                apk --no-cache add -f curl bash ncurses
                 ```
 
             === "Gentoo"
@@ -164,23 +164,41 @@ hide:
 
             ??? tip "安装不上？（点击展开查看其它解决方法）"
 
-                假如有这么一种情况：系统原有软件源是坏的安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供两个在线获取脚本的应急方法，否则就只能手动复制粘贴源代码了
+                假如系统原有软件源是无效的导致安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供两个在线获取脚本的应急方法，否则就只能手动复制粘贴源代码了
 
                 === "使用 Python 下载脚本"
 
                     适用于大部分操作系统（`Alpine Linux` 除外），`python3` 要是不存在那就再试试 `python` 指令
                     ``` bash
-                    python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'linuxmirrors-main.sh')"
+                    python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'linuxmirrors.sh')"
                     ```
 
                 === "使用 wget 下载脚本"
 
                     一般没有预装 `curl` 软件包的系统也不会预装 `wget` 软件包，所以大概率这个方法应该是不行的
                     ``` bash
-                    wget -O linuxmirrors-main.sh https://linuxmirrors.cn/main.sh
+                    wget -O linuxmirrors.sh https://linuxmirrors.cn/main.sh
                     ```
 
-                之后再执行 `bash linuxmirrors-main.sh` 即可
+                之后再执行脚本即可
+
+                === ":material-home-city: 中国大陆"
+
+                    ``` bash
+                    bash linuxmirrors.sh
+                    ```
+
+                === ":material-earth: 境外以及海外地区"
+
+                    ``` bash
+                    bash linuxmirrors.sh --abroad
+                    ```
+
+                === ":material-library: 中国大陆教育网"
+
+                    ``` bash
+                    bash linuxmirrors.sh --edu
+                    ```
 
     - #### 关于开启 SSH 远程登录的方法
 
@@ -211,7 +229,7 @@ hide:
                 ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
                 ```
 
-            > 命令仅供参考，只适配了部分常见发行版
+            > 命令以及配置步骤仅供参考，只适配了部分常见发行版
 
     - #### 还原已备份的软件源
 
@@ -361,7 +379,7 @@ hide:
         | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
         | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | proxmox |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | centos / centos-stream / centos-altarch / centos-vault |
-        | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora | fedora |
+        | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora | fedora / fedora-archive |
         | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
         | <a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | rocky |
         | <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux | almalinux / almalinux-vault |
