@@ -838,7 +838,7 @@ function collect_system_info() {
             esac
             ;;
         "${SYSTEM_FEDORA}")
-            if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -lt 39 ]]; then
+            if [[ "${SYSTEM_VERSION_NUMBER}" -lt 39 ]]; then
                 SOURCE_BRANCH="fedora-archive"
             fi
             ;;
