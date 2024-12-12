@@ -718,7 +718,7 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_FEDORA}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [3-4][0-9] ]]; then
+        if [[ "${SYSTEM_VERSION_NUMBER}" != [3-4][0-9] ]]; then
             is_supported="false"
         fi
         ;;
