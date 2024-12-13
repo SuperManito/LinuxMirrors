@@ -65,12 +65,16 @@ hide:
     bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
     ```
 
-!!! node ""
+脚本集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，可选择安装版本、下载软件源、镜像加速器，支持 ARM 架构处理器
 
-    脚本集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，可选择安装版本、下载软件源、镜像加速器，支持海内外服务器环境和 `arm` 架构处理器环境使用
+Docker Compose 自 V2 版本起开始作为 Docker CLI 的一部分，不再需要单独安装，请使用 `docker compose` 命令代替 `docker-compose`
+
+!!! node "软件源说明"
 
     `Docker CE` 软件仓库，全称 Docker Community Edition（Docker 社区版），用于下载并安装 Docker 相关软件包  
-    `Docker Registry` 镜像仓库，用于控制下载镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
+    `Docker Registry` 镜像仓库，用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
+
+    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 从而导致无法拉取镜像，建议使用推荐的镜像源，不过速度可能会很慢
 
 ### 命令选项
 
@@ -84,7 +88,7 @@ hide:
 | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 
-> 软件源格式 `<WEB协议>://<软件源地址>/<软件源分支>`
+> 软件源完整格式 `<WEB协议>://<软件源地址（域名或IP）>/<软件源仓库（路径）>`
 
 ### 关于服务报错无法启动
 
@@ -102,13 +106,13 @@ hide:
 
         > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
 
-    === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
+    === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
         ``` bash
         yum remove -y docker* containerd.io podman* runc
         ```
 
-        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
+        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
     卸载完成后重新执行脚本安装即可
 

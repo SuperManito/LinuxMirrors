@@ -130,13 +130,13 @@ hide:
 
                 新装系统需要先执行一遍更新 `apt-get update`
 
-            === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
+            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
                 ``` bash
                 dnf install -y curl || yum install -y curl
                 ```
 
-                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
+                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
             === "openSUSE"
 
@@ -244,14 +244,14 @@ hide:
 
                 > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox` &nbsp; `openKylin`
 
-            === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
+            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
                 ``` bash
                 cp -rf /etc/yum.repos.d.bak /etc/yum.repos.d
                 yum makecache
                 ```
 
-                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
+                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
             === "openSUSE"
 
@@ -304,11 +304,11 @@ hide:
 
         > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox` &nbsp; `openKylin`
 
-    === "RedHat 系 / OpenCloudOS / openEuler / Anolis OS"
+    === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
         部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
-        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `OpenCloudOS` &nbsp; `openEuler` &nbsp; `Anolis OS`
+        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
     === "openSUSE"
 
@@ -329,12 +329,12 @@ hide:
 | `--source-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
 | `--source-portage` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
 | `--source-base-system` | 指定 Linux Mint 系统底层系统的软件源地址（域名或IP） | `地址` |
-| `--branch` | 指定软件源分支（路径） | `分支名` |
-| `--branch-epel` | 指定 EPEL 附加软件包仓库的软件源分支（路径） | `分支名` |
-| `--branch-security` | 指定 Debian 系统 security 仓库的软件源分支（路径） | `分支名` |
-| `--branch-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径） | `分支名` |
-| `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | `分支名` |
-| `--branch-base-system` | 指定 Linux Mint 系统底层系统的软件源分支（路径） | `分支名` |
+| `--branch` | 指定软件源仓库（路径） | `仓库名` |
+| `--branch-epel` | 指定 EPEL 附加软件包仓库的软件源仓库（路径） | `仓库名` |
+| `--branch-security` | 指定 Debian 系统 security 仓库的软件源仓库（路径） | `仓库名` |
+| `--branch-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
+| `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
+| `--branch-base-system` | 指定 Linux Mint 系统底层系统的软件源仓库（路径） | `仓库名` |
 | `--codename` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
 | `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
@@ -349,7 +349,7 @@ hide:
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 | `--help` | 查看帮助菜单 | 无 |
 
-> 软件源格式 `<WEB协议>://<软件源地址>/<软件源分支>`
+> 软件源完整格式 `<WEB协议>://<软件源地址（域名或IP）>/<软件源仓库（路径）>`
 
 接下来是一些高级用法的举例
 
@@ -360,37 +360,39 @@ hide:
         --source mirror.example.com
     ```
 
-- ### 指定软件源仓库分支
+- ### 指定软件源仓库
 
-    主要使用场景：目标镜像站有对应的系统镜像但是不符合本项目脚本关于软件源分支设置的默认规则
+    主要使用场景：目标镜像站有对应的系统镜像仓库但是不符合本项目脚本关于软件源仓库设置的默认规则
 
-    ??? note "项目默认使用的系统分支名称（点击展开查看）"
+    由于仓库软件源仓库作用在软件源地址上，因此也可以使用多级路径，例如 `<WEB协议>://<软件源地址>/linux/debian` > `https://mirrors.example.com/linux/debian`，
 
-        项目脚本为了适配大的环境不会针对某一镜像站独特的镜像分支名称而单独适配
+    ??? note "项目对于各操作系统所使用的默认仓库名称（点击展开查看）"
 
-        | 系统名称 | 涉及的分支名称 |
+        项目脚本为了适配大的环境不会针对某一镜像站独特的仓库名称而单独适配
+
+        | 系统名称 | 涉及的名称 |
         | --- | :---: |
-        | <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian | debian / debian-archive |
-        | <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu | ubuntu / ubuntu-ports |
-        | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | kali |
-        | <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | linuxmint / ubuntu / ubuntu-ports / debian |
-        | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin（深度） | deepin |
-        | <a href="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> Zorin OS | ubuntu / ubuntu-ports |
-        | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | armbian |
-        | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | proxmox |
-        | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | centos / centos-stream / centos-altarch / centos-vault |
-        | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora | fedora / fedora-archive |
-        | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS | centos / centos-stream / centos-altarch / centos-vault |
-        | <a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | rocky |
-        | <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux | almalinux / almalinux-vault |
-        | <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler（开源欧拉） | openeuler |
-        | <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS（鸥栖） | opencloudos |
-        | <a href="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> openKylin（开放麒麟） | openkylin |
-        | <a href="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS（龙蜥） | anolis |
-        | <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | opensuse |
-        | <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | archlinux / archlinuxarm |
-        | <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | alpine |
-        | <a href="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Gentoo | gentoo / gentoo-portage |
+        | <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian | `debian` `debian-archive` |
+        | <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu | `ubuntu` `ubuntu-ports` |
+        | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | `kali` |
+        | <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | `linuxmint` `ubuntu` `ubuntu-ports` `debian` |
+        | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin（深度） | `deepin` |
+        | <a href="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> Zorin OS | `ubuntu` `ubuntu-ports` |
+        | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | `armbian` |
+        | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox | `proxmox` |
+        | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora | `fedora` `fedora-archive` |
+        | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a> Rocky Linux | `rocky` |
+        | <a href="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux | `almalinux` `almalinux-vault` |
+        | <a href="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler（开源欧拉） | `openeuler` |
+        | <a href="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS（鸥栖） | `opencloudos` |
+        | <a href="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> openKylin（开放麒麟） | `openkylin` |
+        | <a href="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS（龙蜥） | `anolis` |
+        | <a href="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> openSUSE | `opensuse` |
+        | <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | `archlinux` `archlinuxarm` |
+        | <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | `alpine` |
+        | <a href="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Gentoo | `gentoo` `gentoo-portage` |
 
 
     请看下面的例子
@@ -401,7 +403,7 @@ hide:
       --branch rockylinux
     ```
 
-    阿里云镜像站的 Rocky Linux 镜像分支名称为 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现。
+    阿里云镜像站的 Rocky Linux 仓库名称为 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合默认规则，但是可以通过命令选项绕过脚本默认规则来实现。
 
     > 部分系统会同时配置多个仓库的软件源，具体详见命令选项
 
@@ -460,9 +462,9 @@ hide:
 
 - ### 更换 Ubuntu EOF版本软件源
 
-    !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 分支"
+    !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 仓库"
 
-    具体版本支持情况详见官方 [Wiki](https://wiki.ubuntu.com/Releases)，关于 `Ubuntu Old Releases` 分支的支持情况详见各镜像站
+    具体版本支持情况详见官方 [Wiki](https://wiki.ubuntu.com/Releases)，关于 `Ubuntu Old Releases` 仓库的支持情况详见各镜像站
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
@@ -511,12 +513,12 @@ hide:
 | `SOURCE_VAULT` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
 | `SOURCE_PORTAGE` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
 | `SOURCE_BASE_SYSTEM` | 指定 Linux Mint 系统底层系统的软件源地址（域名或IP） | `地址` |
-| `SOURCE_BRANCH` | 指定软件源分支（路径） | `分支名` |
-| `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加软件包仓库的软件源分支（路径） | `分支名` |
-| `SOURCE_SECURITY_BRANCH` | 指定 Debian 系统 security 仓库的软件源分支（路径） | `分支名` |
-| `SOURCE_VAULT_BRANCH` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支（路径） | `分支名` |
-| `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源分支（路径） | `分支名` |
-| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint 系统底层系统的软件源分支（路径） | `分支名` |
+| `SOURCE_BRANCH` | 指定软件源仓库（路径） | `仓库名` |
+| `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加软件包仓库的软件源仓库（路径） | `仓库名` |
+| `SOURCE_SECURITY_BRANCH` | 指定 Debian 系统 security 仓库的软件源仓库（路径） | `仓库名` |
+| `SOURCE_VAULT_BRANCH` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
+| `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
+| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint 系统底层系统的软件源仓库（路径） | `仓库名` |
 | `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
 | `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |

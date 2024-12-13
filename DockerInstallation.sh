@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-06
+## Modified: 2024-12-13
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -388,7 +388,7 @@ function collect_system_info() {
         output_error "未知的系统架构：$(uname -m)"
         ;;
     esac
-    ## 定义软件源分支名称
+    ## 定义软件源仓库名称
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         case "${SYSTEM_JUDGMENT}" in
@@ -1002,8 +1002,8 @@ function check_version() {
     if [ -x /usr/bin/docker ]; then
         echo -en "\n当前安装版本："
         docker -v
-        VERIFICATION_DOCKER=$?
-        if [ ${VERIFICATION_DOCKER} -eq 0 ]; then
+        if [ $? -eq 0 ]; then
+            echo -e "Compose 版本：$(docker compose version 2>&1)"
             echo -e "\n$COMPLETE 安装完成"
         else
             echo -e "\n$ERROR 安装失败"
@@ -1091,8 +1091,8 @@ function interactive_select_mirror() {
     while true; do
         key=$(read_key)
         case "$key" in
-        "[A")
-            # 上箭头
+        "[A" | "w" | "W")
+            # 上箭头 / W
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
                 if [ "$selected" -lt "$start" ]; then
@@ -1100,8 +1100,8 @@ function interactive_select_mirror() {
                 fi
             fi
             ;;
-        "[B")
-            # 下箭头
+        "[B" | "s" | "S")
+            # 下箭头 / S
             if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
                 selected=$((selected + 1))
                 if [ "$selected" -ge $((start + page_size)) ]; then
@@ -1170,14 +1170,14 @@ function interactive_select_boolean() {
     while true; do
         key=$(read_key)
         case "$key" in
-        "[D")
-            # 左箭头
+        "[D" | "a" | "A")
+            # 左箭头 / A
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
             fi
             ;;
-        "[C")
-            # 右箭头
+        "[C" | "d" | "D")
+            # 右箭头 / D
             if [ "$selected" -lt 1 ]; then
                 selected=$((selected + 1))
             fi

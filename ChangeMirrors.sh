@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-12
+## Modified: 2024-12-13
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -8,7 +8,7 @@
 ## 定制方法
 # 只需要在头部（此处）定义全局变量即可，具体详见官网文档，简单写几个例子
 # SOURCE="www.example.com"  # 指定软件源地址
-# BRANCH="branch"           # 指定软件源分支
+# BRANCH="branch"           # 指定软件源仓库
 # WEB_PROTOCOL="https"      # 指定 WEB 协议
 
 ## 软件源列表
@@ -266,12 +266,12 @@ function handle_command_options() {
   --source-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)    地址
   --source-portage         指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)            地址
   --source-base-system     指定 Linux Mint 系统底层系统的软件源地址(域名或IP)	          地址
-  --branch                 指定软件源分支(路径)                                           分支名
-  --branch-epel            指定 EPEL 附加软件包仓库的软件源分支(路径)                     分支名
-  --branch-security        指定 Debian 系统 security 仓库的软件源分支(路径)               分支名
-  --branch-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源分支(路径)        分支名
-  --branch-portage         指定 Gentoo 系统 portage 仓库的软件源分支(路径)                分支名
-  --branch-base-system	   指定 Linux Mint 系统底层系统的软件源分支(路径)	          分支名
+  --branch                 指定软件源仓库(路径)                                           仓库名
+  --branch-epel            指定 EPEL 附加软件包仓库的软件源仓库(路径)                     仓库名
+  --branch-security        指定 Debian 系统 security 仓库的软件源仓库(路径)               仓库名
+  --branch-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源仓库(路径)        仓库名
+  --branch-portage         指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                仓库名
+  --branch-base-system	   指定 Linux Mint 系统底层系统的软件源仓库(路径)	          仓库名
   --codename               指定 Debian 系/openKylin 操作系统的版本代号                    代号名称
   --protocol               指定 WEB 协议                                                  http 或 https
   --use-intranet-source    是否优先使用内网软件源地址                                     true 或 false
@@ -378,13 +378,13 @@ function handle_command_options() {
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
             fi
             ;;
-        ## 指定软件源分支
+        ## 指定软件源仓库
         --branch)
             if [ "$2" ]; then
                 SOURCE_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
             fi
             ;;
         --branch-epel)
@@ -392,7 +392,7 @@ function handle_command_options() {
                 SOURCE_EPEL_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
             fi
             ;;
         --branch-security)
@@ -400,7 +400,7 @@ function handle_command_options() {
                 SOURCE_SECURITY_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
             fi
             ;;
         --branch-vault)
@@ -408,7 +408,7 @@ function handle_command_options() {
                 SOURCE_VAULT_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
             fi
             ;;
         --branch-portage)
@@ -416,7 +416,7 @@ function handle_command_options() {
                 SOURCE_PORTAGE_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
             fi
             ;;
         --branch-base-system)
@@ -424,7 +424,7 @@ function handle_command_options() {
                 SOURCE_BASE_SYSTEM_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源分支！"
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
             fi
             ;;
         ## 指定 Debian 系操作系统的版本代号
@@ -781,12 +781,12 @@ function collect_system_info() {
         DEVICE_ARCH="$(uname -m)"
         ;;
     esac
-    ## 定义软件源分支名称
+    ## 定义软件源仓库名称
     if [[ -z "${SOURCE_BRANCH}" ]]; then
         ## 默认为系统名称小写，替换空格
         SOURCE_BRANCH="${SYSTEM_JUDGMENT,,}"
         SOURCE_BRANCH="${SOURCE_BRANCH// /-}"
-        ## 处理特殊的分支名称
+        ## 处理特殊的仓库名称
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
             case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
@@ -1861,7 +1861,7 @@ function change_mirrors_RedHat() {
         change_mirrors_or_install_EPEL # EPEL 附加软件包
         return
     fi
-    ## 生成官方 repo 源文件
+    ## 生成 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
         case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
@@ -1946,13 +1946,13 @@ function change_mirrors_RedHat() {
         ## CentOS 7/8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本
         case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
         8)
-            # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 分支
+            # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 仓库
             sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
             sed -i "s/\$releasever/8.5.2111/g" CentOS-*
             sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Linux-Sources.repo # 单独处理 CentOS-Linux-Sources.repo
             ;;
         7)
-            # 最终版本为 7.9.2009，从 2024-07 开始切换至 centos-vault 分支
+            # 最终版本为 7.9.2009，从 2024-07 开始切换至 centos-vault 仓库
             sed -i "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
             sed -i "s/\$releasever/7.9.2009/g" CentOS-*
             sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
@@ -2070,7 +2070,7 @@ function change_mirrors_RedHat() {
 
 ## 更换 OpenCloudOS 发行版软件源
 function change_mirrors_OpenCloudOS() {
-    ## 生成官方 repo 源文件
+    ## 生成 repo 源文件
     gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -2094,7 +2094,7 @@ function change_mirrors_OpenCloudOS() {
 
 ## 更换 openEuler 发行版软件源
 function change_mirrors_openEuler() {
-    ## 生成官方 repo 源文件
+    ## 生成 repo 源文件
     gen_repo_files_openEuler
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -2113,7 +2113,7 @@ function change_mirrors_openEuler() {
 
 ## 更换 Anolis OS 发行版软件源
 function change_mirrors_AnolisOS() {
-    ## 生成官方 repo 源文件
+    ## 生成 repo 源文件
     gen_repo_files_AnolisOS "${SYSTEM_VERSION_NUMBER}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -2141,7 +2141,7 @@ function change_mirrors_AnolisOS() {
 
 ## 更换 openSUSE 发行版软件源
 function change_mirrors_openSUSE() {
-    ## 生成官方 repo 源文件
+    ## 生成 repo 源文件
     case "${SYSTEM_ID}" in
     "opensuse-leap")
         gen_repo_files_openSUSE "leap" "${SYSTEM_VERSION_NUMBER}"
@@ -2421,8 +2421,8 @@ function interactive_select_mirror() {
     while true; do
         key=$(read_key)
         case "$key" in
-        "[A")
-            # 上箭头
+        "[A" | "w" | "W")
+            # 上箭头 / W
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
                 if [ "$selected" -lt "$start" ]; then
@@ -2430,8 +2430,8 @@ function interactive_select_mirror() {
                 fi
             fi
             ;;
-        "[B")
-            # 下箭头
+        "[B" | "s" | "S")
+            # 下箭头 / S
             if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
                 selected=$((selected + 1))
                 if [ "$selected" -ge $((start + page_size)) ]; then
@@ -2500,14 +2500,14 @@ function interactive_select_boolean() {
     while true; do
         key=$(read_key)
         case "$key" in
-        "[D")
-            # 左箭头
+        "[D" | "a" | "A")
+            # 左箭头 / A
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
             fi
             ;;
-        "[C")
-            # 右箭头
+        "[C" | "d" | "D")
+            # 右箭头 / D
             if [ "$selected" -lt 1 ]; then
                 selected=$((selected + 1))
             fi
@@ -2533,21 +2533,11 @@ function interactive_select_boolean() {
 
 ##############################################################################
 
-## 生成 CentOS 官方 repo 源文件
+## 生成 CentOS repo 源文件
 function gen_repo_files_CentOS() {
     case "$1" in
     8)
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-AppStream.repo
-# CentOS-Linux-AppStream.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [appstream]
 name=CentOS Linux $releasever - AppStream
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=AppStream&infra=$infra
@@ -2557,16 +2547,6 @@ enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-BaseOS.repo
-# CentOS-Linux-BaseOS.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [baseos]
 name=CentOS Linux $releasever - BaseOS
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=BaseOS&infra=$infra
@@ -2576,23 +2556,6 @@ enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-ContinuousRelease.repo
-# CentOS-Linux-ContinuousRelease.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-#
-# The Continuous Release (CR) repository contains packages for the next minor
-# release of CentOS Linux.  This repository only has content in the time period
-# between an upstream release and the official CentOS Linux release.  These
-# packages have not been fully tested yet and should be considered beta
-# quality.  They are made available for people willing to test and provide
-# feedback for the next release.
-
 [cr]
 name=CentOS Linux $releasever - ContinuousRelease
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=cr&infra=$infra
@@ -2602,11 +2565,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Debuginfo.repo
-# CentOS-Linux-Debuginfo.repo
-#
-# All debug packages are merged into a single repo, split by basearch, and are
-# not signed.
-
 [debuginfo]
 name=CentOS Linux $releasever - Debuginfo
 baseurl=http://debuginfo.centos.org/$releasever/$basearch/
@@ -2615,16 +2573,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Devel.repo
-# CentOS-Linux-Devel.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [devel]
 name=CentOS Linux $releasever - Devel WARNING! FOR BUILDROOT USE ONLY!
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=Devel&infra=$infra
@@ -2634,16 +2582,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Extras.repo
-# CentOS-Linux-Extras.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [extras]
 name=CentOS Linux $releasever - Extras
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra
@@ -2653,16 +2591,6 @@ enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-FastTrack.repo
-# CentOS-Linux-FastTrack.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [fasttrack]
 name=CentOS Linux $releasever - FastTrack
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=fasttrack&infra=$infra
@@ -2672,16 +2600,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-HighAvailability.repo
-# CentOS-Linux-HighAvailability.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [ha]
 name=CentOS Linux $releasever - HighAvailability
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=HighAvailability&infra=$infra
@@ -2691,11 +2609,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Media.repo
-# CentOS-Linux-Media.repo
-#
-# You can use this repo to install items directly off the installation media.
-# Verify your mount point matches one of the below file:// paths.
-
 [media-baseos]
 name=CentOS Linux $releasever - Media - BaseOS
 baseurl=file:///media/CentOS/BaseOS
@@ -2715,16 +2628,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Plus.repo
-# CentOS-Linux-Plus.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [plus]
 name=CentOS Linux $releasever - Plus
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra
@@ -2734,16 +2637,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-PowerTools.repo
-# CentOS-Linux-PowerTools.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [powertools]
 name=CentOS Linux $releasever - PowerTools
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=PowerTools&infra=$infra
@@ -2753,9 +2646,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Sources.repo
-# CentOS-Linux-Sources.repo
-
-
 [baseos-source]
 name=CentOS Linux $releasever - BaseOS - Source
 baseurl=http://vault.centos.org/$contentdir/$releasever/BaseOS/Source/
@@ -2787,18 +2677,6 @@ EOF
         ;;
     7)
         cat <<'EOF' >$Dir_YumRepos/CentOS-Base.repo
-# CentOS-Base.repo
-#
-# The mirror system uses the connecting IP address of the client and the
-# update status of each mirror to pick mirrors that are updated to and
-# geographically close to the client.  You should use this for CentOS updates
-# unless you are manually picking other mirrors.
-#
-# If the mirrorlist= does not work for you, as a fall back you can try the 
-# remarked out baseurl= line instead.
-#
-#
-
 [base]
 name=CentOS-$releasever - Base
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra
@@ -2806,7 +2684,6 @@ mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
-#released updates 
 [updates]
 name=CentOS-$releasever - Updates
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra
@@ -2814,7 +2691,6 @@ mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
-#additional packages that may be useful
 [extras]
 name=CentOS-$releasever - Extras
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra
@@ -2822,7 +2698,6 @@ mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
-#additional packages that extend functionality of existing packages
 [centosplus]
 name=CentOS-$releasever - Plus
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra
@@ -2832,28 +2707,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-CR.repo
-# CentOS-CR.repo
-#
-# The Continuous Release ( CR )  repository contains rpms that are due in the next
-# release for a specific CentOS Version ( eg. next release in CentOS-7 ); these rpms
-# are far less tested, with no integration checking or update path testing having
-# taken place. They are still built from the upstream sources, but might not map 
-# to an exact upstream distro release.
-#
-# These packages are made available soon after they are built, for people willing 
-# to test their environments, provide feedback on content for the next release, and
-# for people looking for early-access to next release content.
-#
-# The CR repo is shipped in a disabled state by default; its important that users 
-# understand the implications of turning this on. 
-#
-# NOTE: We do not use a mirrorlist for the CR repos, to ensure content is available
-#       to everyone as soon as possible, and not need to wait for the external
-#       mirror network to seed first. However, many local mirrors will carry CR repos
-#       and if desired you can use one of these local mirrors by editing the baseurl
-#       line in the repo config below.
-#
-
 [cr]
 name=CentOS-$releasever - cr
 baseurl=http://mirror.centos.org/centos/$releasever/cr/$basearch/
@@ -2862,27 +2715,12 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 enabled=0
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Debuginfo.repo
-# CentOS-Debug.repo
-#
-# The mirror system uses the connecting IP address of the client and the
-# update status of each mirror to pick mirrors that are updated to and
-# geographically close to the client.  You should use this for CentOS updates
-# unless you are manually picking other mirrors.
-#
-
-# All debug packages from all the various CentOS-7 releases
-# are merged into a single repo, split by BaseArch
-#
-# Note: packages in the debuginfo repo are currently not signed
-#
-
 [base-debuginfo]
 name=CentOS-7 - Debuginfo
 baseurl=http://debuginfo.centos.org/7/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7
 enabled=0
-#
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-fasttrack.repo
 [fasttrack]
@@ -2894,19 +2732,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Media.repo
-# CentOS-Media.repo
-#
-#  This repo can be used with mounted DVD media, verify the mount point for
-#  CentOS-7.  You can use this repo and yum to install items directly off the
-#  DVD ISO that we release.
-#
-# To use this repo, put in your DVD and use it with the other repos too:
-#  yum --enablerepo=c7-media [command]
-#  
-# or for ONLY the media repo, do this:
-#
-#  yum --disablerepo=\* --enablerepo=c7-media [command]
-
 [c7-media]
 name=CentOS-$releasever - Media
 baseurl=file:///media/CentOS/
@@ -2917,18 +2742,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Sources.repo
-# CentOS-Sources.repo
-#
-# The mirror system uses the connecting IP address of the client and the
-# update status of each mirror to pick mirrors that are updated to and
-# geographically close to the client.  You should use this for CentOS updates
-# unless you are manually picking other mirrors.
-#
-# If the mirrorlist= does not work for you, as a fall back you can try the 
-# remarked out baseurl= line instead.
-#
-#
-
 [base-source]
 name=CentOS-$releasever - Base Sources
 baseurl=http://vault.centos.org/centos/$releasever/os/Source/
@@ -2936,7 +2749,6 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
-#released updates 
 [updates-source]
 name=CentOS-$releasever - Updates Sources
 baseurl=http://vault.centos.org/centos/$releasever/updates/Source/
@@ -2944,7 +2756,6 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
-#additional packages that may be useful
 [extras-source]
 name=CentOS-$releasever - Extras Sources
 baseurl=http://vault.centos.org/centos/$releasever/extras/Source/
@@ -2952,7 +2763,6 @@ gpgcheck=1
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
-#additional packages that extend functionality of existing packages
 [centosplus-source]
 name=CentOS-$releasever - Plus Sources
 baseurl=http://vault.centos.org/centos/$releasever/centosplus/Source/
@@ -2964,7 +2774,7 @@ EOF
     esac
 }
 
-## 生成 CentOS Stream 官方 repo 源文件
+## 生成 CentOS Stream repo 源文件
 function gen_repo_files_CentOSStream() {
     case "$1" in
     9)
@@ -3196,16 +3006,6 @@ EOF
         ;;
     8)
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-AppStream.repo
-# CentOS-Stream-AppStream.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [appstream]
 name=CentOS Stream $releasever - AppStream
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=AppStream&infra=$infra
@@ -3215,16 +3015,6 @@ enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-BaseOS.repo
-# CentOS-Stream-BaseOS.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [baseos]
 name=CentOS Stream $releasever - BaseOS
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=BaseOS&infra=$infra
@@ -3234,11 +3024,6 @@ enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Debuginfo.repo
-# CentOS-Stream-Debuginfo.repo
-#
-# All debug packages are merged into a single repo, split by basearch, and are
-# not signed.
-
 [debuginfo]
 name=CentOS Stream $releasever - Debuginfo
 baseurl=http://debuginfo.centos.org/$stream/$basearch/
@@ -3247,16 +3032,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Extras-common.repo
-# CentOS-Stream-Extras-common.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [extras-common]
 name=CentOS Stream $releasever - Extras common packages
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=extras-extras-common
@@ -3266,16 +3041,6 @@ enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Extras.repo
-# CentOS-Stream-Extras.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [extras]
 name=CentOS Stream $releasever - Extras
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=extras&infra=$infra
@@ -3285,16 +3050,6 @@ enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-HighAvailability.repo
-# CentOS-Stream-HighAvailability.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [ha]
 name=CentOS Stream $releasever - HighAvailability
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=HighAvailability&infra=$infra
@@ -3304,11 +3059,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Media.repo
-# CentOS-Stream-Media.repo
-#
-# You can use this repo to install items directly off the installation media.
-# Verify your mount point matches one of the below file:// paths.
-
 [media-baseos]
 name=CentOS Stream $releasever - Media - BaseOS
 baseurl=file:///media/CentOS/BaseOS
@@ -3328,16 +3078,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-NFV.repo
-# CentOS-Stream-NFV.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [nfv]
 name=CentOS Stream $releasever - NFV
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=NFV&infra=$infra
@@ -3347,16 +3087,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-PowerTools.repo
-# CentOS-Stream-PowerTools.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [powertools]
 name=CentOS Stream $releasever - PowerTools
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=PowerTools&infra=$infra
@@ -3366,16 +3096,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-RealTime.repo
-# CentOS-Stream-RealTime.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [rt]
 name=CentOS Stream $releasever - RealTime
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=RT&infra=$infra
@@ -3385,16 +3105,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-ResilientStorage.repo
-# CentOS-Stream-ResilientStorage.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [resilientstorage]
 name=CentOS Stream $releasever - ResilientStorage
 mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=ResilientStorage&infra=$infra
@@ -3404,8 +3114,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Sources.repo
-# CentOS-Stream-Sources.repo
-
 [baseos-source]
 name=CentOS Stream $releasever - BaseOS - Source
 baseurl=http://vault.centos.org/$contentdir/$stream/BaseOS/Source/
@@ -3466,21 +3174,11 @@ EOF
     esac
 }
 
-## 生成 Rocky Linux 官方 repo 源文件
+## 生成 Rocky Linux repo 源文件
 function gen_repo_files_RockyLinux() {
     case "$1" in
     9)
         cat <<'EOF' >$Dir_YumRepos/rocky.repo
-# rocky.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [baseos]
 name=Rocky Linux $releasever - BaseOS
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltype
@@ -3566,16 +3264,6 @@ metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 EOF
         cat <<'EOF' >$Dir_YumRepos/rocky-addons.repo
-# rocky-addons.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [highavailability]
 name=Rocky Linux $releasever - High Availability
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever$rltype
@@ -3745,10 +3433,6 @@ metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 EOF
         cat <<'EOF' >$Dir_YumRepos/rocky-devel.repo
-# rocky-devel.repo
-#
-# devel and no-package-left-behind
-
 [devel]
 name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever$rltype
@@ -3759,16 +3443,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 EOF
         cat <<'EOF' >$Dir_YumRepos/rocky-extras.repo
-# rocky-extras.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [extras]
 name=Rocky Linux $releasever - Extras
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever$rltype
@@ -3828,16 +3502,6 @@ EOF
         ;;
     8)
         cat <<'EOF' >$Dir_YumRepos/Rocky-AppStream.repo
-# Rocky-AppStream.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [appstream]
 name=Rocky Linux $releasever - AppStream
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever
@@ -3848,16 +3512,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-BaseOS.repo
-# Rocky-BaseOS.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [baseos]
 name=Rocky Linux $releasever - BaseOS
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever
@@ -3868,9 +3522,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-Debuginfo.repo
-# Rocky-Debuginfo.repo
-#
-
 [baseos-debug]
 name=Rocky Linux $releasever - BaseOS - Source
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug
@@ -3912,9 +3563,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-Devel.repo
-# Rocky-Devel.repo
-#
-
 [devel]
 name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT AND KOJI USE
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=Devel-$releasever
@@ -3925,16 +3573,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-Extras.repo
-# Rocky-Extras.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [extras]
 name=Rocky Linux $releasever - Extras
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever
@@ -3945,16 +3583,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-HighAvailability.repo
-# Rocky-HighAvailability.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [ha]
 name=Rocky Linux $releasever - HighAvailability
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever
@@ -3965,11 +3593,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-Media.repo
-# Rocky-Media.repo
-#
-# You can use this repo to install items directly off the installation media.
-# Verify your mount point matches one of the below file:// paths.
-
 [media-baseos]
 name=Rocky Linux $releasever - Media - BaseOS
 baseurl=file:///media/Rocky/BaseOS
@@ -3989,16 +3612,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-NFV.repo
-# Rocky-NFV.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [nfv]
 name=Rocky Linux $releasever - NFV
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever
@@ -4009,16 +3622,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-Plus.repo
-# Rocky-Plus.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [plus]
 name=Rocky Linux $releasever - Plus
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=rockyplus-$releasever
@@ -4029,16 +3632,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-PowerTools.repo
-# Rocky-PowerTools.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [powertools]
 name=Rocky Linux $releasever - PowerTools
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=PowerTools-$releasever
@@ -4049,16 +3642,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-ResilientStorage.repo
-# Rocky-ResilientStorage.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [resilient-storage]
 name=Rocky Linux $releasever - ResilientStorage
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever
@@ -4069,16 +3652,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-RT.repo
-# Rocky-RT.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for Rocky updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [rt]
 name=Rocky Linux $releasever - Realtime
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever
@@ -4089,8 +3662,6 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
 EOF
         cat <<'EOF' >$Dir_YumRepos/Rocky-Sources.repo
-# Rocky-Sources.repo
-
 [baseos-source]
 name=Rocky Linux $releasever - BaseOS - Source
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source
@@ -4151,7 +3722,7 @@ EOF
     esac
 }
 
-## 生成 AlmaLinux 官方 repo 源文件
+## 生成 AlmaLinux repo 源文件
 function gen_repo_files_AlmaLinux() {
     case "$1" in
     9)
@@ -4510,8 +4081,6 @@ EOF
         ;;
     8)
         cat <<'EOF' >$Dir_YumRepos/almalinux-ha.repo
-# almalinux-ha.repo
-
 [ha]
 name=AlmaLinux $releasever - HighAvailability
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/ha
@@ -4521,7 +4090,6 @@ gpgcheck=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [ha-source]
 name=AlmaLinux $releasever - HighAvailability Source
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/ha-source
@@ -4530,7 +4098,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [ha-debuginfo]
 name=AlmaLinux $releasever - HighAvailability debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/ha-debuginfo
@@ -4540,8 +4107,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux-nfv.repo
-# almalinux-nfv.repo
-
 [nfv]
 name=AlmaLinux $releasever - Real Time for NFV
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv
@@ -4550,7 +4115,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [nfv-source]
 name=AlmaLinux $releasever - Real Time for NFV Sources
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-source
@@ -4559,7 +4123,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [nfv-debuginfo]
 name=AlmaLinux $releasever - Real Time for NFV Debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-debuginfo
@@ -4569,8 +4132,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux-plus.repo
-# almalinux-plus.repo
-
 [plus]
 name=AlmaLinux $releasever - Plus
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus
@@ -4580,7 +4141,6 @@ gpgcheck=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [plus-source]
 name=AlmaLinux $releasever - Plus Source
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus-source
@@ -4589,7 +4149,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [plus-debuginfo]
 name=AlmaLinux $releasever - Plus debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus-debuginfo
@@ -4599,8 +4158,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux-powertools.repo
-# almalinux-powertools.repo
-
 [powertools]
 name=AlmaLinux $releasever - PowerTools
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/powertools
@@ -4610,7 +4167,6 @@ gpgcheck=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [powertools-source]
 name=AlmaLinux $releasever - PowerTools Source
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/powertools-source
@@ -4619,7 +4175,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [powertools-debuginfo]
 name=AlmaLinux $releasever - PowerTools debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/powertools-debuginfo
@@ -4629,8 +4184,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux-resilientstorage.repo
-# almalinux-resilientstorage.repo
-
 [resilientstorage]
 name=AlmaLinux $releasever - ResilientStorage
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage
@@ -4640,7 +4193,6 @@ gpgcheck=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [resilientstorage-source]
 name=AlmaLinux $releasever - ResilientStorage Source
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage-source
@@ -4649,7 +4201,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [resilientstorage-debuginfo]
 name=AlmaLinux $releasever - ResilientStorage debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage-debuginfo
@@ -4659,8 +4210,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux-rt.repo
-# almalinux-rt.repo
-
 [rt]
 name=AlmaLinux $releasever - Real Time
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt
@@ -4669,7 +4218,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [rt-source]
 name=AlmaLinux $releasever - Real Time Sources
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-source
@@ -4678,7 +4226,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [rt-debuginfo]
 name=AlmaLinux $releasever - Real Time Debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-debuginfo
@@ -4688,8 +4235,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux-sap.repo
-# almalinux-sap.repo
-
 [sap]
 name=AlmaLinux $releasever - SAP
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap
@@ -4699,7 +4244,6 @@ gpgcheck=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [sap-source]
 name=AlmaLinux $releasever - SAP Sources
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-source
@@ -4708,7 +4252,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [sap-debuginfo]
 name=AlmaLinux $releasever - SAP Debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-debuginfo
@@ -4718,8 +4261,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux-saphana.repo
-# almalinux-saphana.repo
-
 [saphana]
 name=AlmaLinux $releasever - SAP HANA
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana
@@ -4729,7 +4270,6 @@ gpgcheck=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [saphana-source]
 name=AlmaLinux $releasever - SAP HANA Sources
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-source
@@ -4738,7 +4278,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [saphana-debuginfo]
 name=AlmaLinux $releasever - SAP HANA Debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-debuginfo
@@ -4748,8 +4287,6 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 EOF
         cat <<'EOF' >$Dir_YumRepos/almalinux.repo
-# almalinux.repo
-
 [baseos]
 name=AlmaLinux $releasever - BaseOS
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos
@@ -4777,7 +4314,6 @@ gpgcheck=1
 countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Sources
 [baseos-source]
 name=AlmaLinux $releasever - BaseOS Source
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-source
@@ -4802,7 +4338,6 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
-## Debuginfo
 [baseos-debuginfo]
 name=AlmaLinux $releasever - BaseOS debuginfo
 mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-debuginfo
@@ -4831,7 +4366,7 @@ EOF
     esac
 }
 
-## 生成 Fedora 官方 repo 源文件
+## 生成 Fedora repo 源文件
 function gen_repo_files_Fedora() {
     cat <<'EOF' >$Dir_YumRepos/fedora.repo
 [fedora]
@@ -5066,7 +4601,7 @@ EOF
     fi
 }
 
-## 生成 OpenCloudOS 官方 repo 源文件
+## 生成 OpenCloudOS repo 源文件
 function gen_repo_files_OpenCloudOS() {
     case "${1%.*}" in
     23)
@@ -5182,10 +4717,6 @@ EOF
         ;;
     8)
         cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo
-# OpenCloudOS-Debuginfo.repo
-#
-# Author: OpenCloudOS <infrastructure@opencloudos.tech>
-#
 [BaseOS-debuginfo]
 name=OpenCloudOS $releasever - BaseOS-debuginfo
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/debug/tree/
@@ -5237,10 +4768,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
         if [[ "${1}" == "8.6" ]]; then
             cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
-# OpenCloudOS.repo
-#
-# Author: OpenCloudOS <infrastructure@opencloudos.tech>
-#
 [BaseOS]
 name=OpenCloudOS $releasever - BaseOS
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
@@ -5292,10 +4819,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
         else
             cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
-# OpenCloudOS.repo
-#
-# Author: OpenCloudOS <infrastructure@opencloudos.tech>
-#
 [BaseOS]
 name=OpenCloudOS $releasever - BaseOS
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
@@ -5354,10 +4877,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
 EOF
         fi
         cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Sources.repo
-# OpenCloudOS-Sources.repo
-#
-# Author: OpenCloudOS <infrastructure@opencloudos.tech>
-#
 [BaseOS-source]
 name=OpenCloudOS $releasever - Base-source
 baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/source/tree/
@@ -5411,7 +4930,7 @@ EOF
     esac
 }
 
-## 生成 Anolis OS 官方 repo 源文件
+## 生成 Anolis OS repo 源文件
 function gen_repo_files_AnolisOS() {
     case "${1%.*}" in
     23)
@@ -5536,7 +5055,6 @@ enabled=0
 gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
 gpgcheck=1
 
-
 [DDE-debuginfo]
 name=AnolisOS-$releasever - DDE Debuginfo
 baseurl=https://mirrors.openanolis.cn/anolis/$releasever/DDE/$basearch/debug
@@ -5629,7 +5147,6 @@ enabled=0
 gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
 gpgcheck=1
 
-
 [DDE-source]
 name=AnolisOS-$releasever - DDE Source
 baseurl=https://mirrors.openanolis.cn/anolis/$releasever/DDE/source/
@@ -5641,7 +5158,7 @@ EOF
     esac
 }
 
-## 生成 openSUSE 官方 repo 源文件
+## 生成 openSUSE repo 源文件
 function gen_repo_files_openSUSE() {
     case "$1" in
     "leap")
@@ -5929,15 +5446,13 @@ EOF
     esac
 }
 
-## 生成 EPEL 附加软件包官方 repo 源文件
+## 生成 EPEL 附加软件包 repo 源文件
 function gen_repo_files_EPEL() {
     case "${1}" in
     9)
         cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
 name=Extra Packages for Enterprise Linux $releasever - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/$releasever/Everything/$basearch/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=1
@@ -5947,8 +5462,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
 
 [epel-debuginfo]
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/$releasever/Everything/$basearch/debug/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -5957,8 +5470,6 @@ gpgcheck=1
 
 [epel-source]
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/$releasever/Everything/source/tree/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -5968,8 +5479,6 @@ EOF
         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
 [epel-testing]
 name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/testing/$releasever/Everything/$basearch/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -5979,8 +5488,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
 
 [epel-testing-debuginfo]
 name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/testing/$releasever/Everything/$basearch/debug/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -5989,8 +5496,6 @@ gpgcheck=1
 
 [epel-testing-source]
 name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/testing/$releasever/Everything/source/tree/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6037,8 +5542,6 @@ EOF
         cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
 name=Extra Packages for Enterprise Linux 8 - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/8/Everything/$basearch
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=1
@@ -6048,8 +5551,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-debuginfo]
 name=Extra Packages for Enterprise Linux 8 - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/8/Everything/$basearch/debug
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6058,8 +5559,6 @@ gpgcheck=1
 
 [epel-source]
 name=Extra Packages for Enterprise Linux 8 - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place it's address here.
 #baseurl=https://download.example/pub/epel/8/Everything/source/tree/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6069,8 +5568,6 @@ EOF
         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
 [epel-testing]
 name=Extra Packages for Enterprise Linux 8 - Testing - $basearch
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/testing/8/Everything/$basearch
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6080,8 +5577,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-testing-debuginfo]
 name=Extra Packages for Enterprise Linux 8 - Testing - $basearch - Debug
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/testing/8/Everything/$basearch/debug
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6090,8 +5585,6 @@ gpgcheck=1
 
 [epel-testing-source]
 name=Extra Packages for Enterprise Linux 8 - Testing - $basearch - Source
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place it's address here.
 #baseurl=https://download.example/pub/epel/testing/8/Everything/source/tree/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6100,10 +5593,7 @@ gpgcheck=1
 EOF
         cat <<'EOF' >$Dir_YumRepos/epel-modular.repo
 [epel-modular]
-# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - $basearch - RETIRED
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/8/Modular/$basearch
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6112,10 +5602,7 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-modular-debuginfo]
-# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - $basearch - Debug - RETIRED
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/8/Modular/$basearch/debug
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-debug-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6123,10 +5610,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 
 [epel-modular-source]
-# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - $basearch - Source - RETIRED
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place it's address here.
 #baseurl=https://download.example/pub/epel/8/Modular/source/tree/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-source-8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6135,10 +5619,7 @@ gpgcheck=1
 EOF
         cat <<'EOF' >$Dir_YumRepos/epel-testing-modular.repo
 [epel-testing-modular]
-# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - RETIRED
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/testing/8/Modular/$basearch
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6147,10 +5628,7 @@ countme=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 
 [epel-testing-modular-debuginfo]
-# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - Debug - RETIRED
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place its address here.
 #baseurl=https://download.example/pub/epel/testing/8/Modular/$basearch/debug
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-debug-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
@@ -6158,10 +5636,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
 gpgcheck=1
 
 [epel-testing-modular-source]
-# This repo has been RETIRED, see https://pagure.io/epel/issue/198 for more details.
 name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - Source - RETIRED
-# It is much more secure to use the metalink, but if you wish to use a local mirror
-# place it's address here.
 #baseurl=https://download.example/pub/epel/testing/8/Modular/source/tree/
 metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-source-epel8&arch=$basearch&infra=$infra&content=$contentdir
 enabled=0
