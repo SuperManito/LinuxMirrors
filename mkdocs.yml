@@ -3,6 +3,10 @@ repo_name: GitHub
 repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
 copyright: 'Copyright &copy; 2024 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
+
+extra_css:
+  - stylesheets/extra.css
+
 theme:
   logo: assets/images/logo.png
   name: material
@@ -36,18 +40,16 @@ theme:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: white
-      accent: white
       toggle:
         icon: octicons/sun-16
-        name: 亮色主题
+        name: 亮色模式
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: blue
-      accent: blue
+      primary: black
       toggle:
         icon: octicons/moon-16
-        name: 深色主题
+        name: 暗黑模式
   features:
     - header.autohide
     - navigation.top
@@ -88,8 +90,6 @@ extra:
           data: 0
           note: >-
             感谢反馈！使用<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank" rel="noopener">反馈表单</a></br>帮助我们改进此页面。
-extra_css:
-  - stylesheets/extra.css
 markdown_extensions:
   - toc:
       permalink: "#"
@@ -141,7 +141,6 @@ plugins:
       exclude:
         - mirrors.md
   - tags
-  - glightbox
 nav:
   - "介绍": index.md
   - "使用方法": use/index.md

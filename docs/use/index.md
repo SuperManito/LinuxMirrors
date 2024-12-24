@@ -482,7 +482,6 @@ hide:
       --protocol http \
       --use-intranet-source false \
       --install-epel true \
-      --close-firewall true \
       --backup true \
       --upgrade-software false \
       --clean-cache false \

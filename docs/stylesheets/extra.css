@@ -12,7 +12,7 @@
 }
 
 [data-md-color-scheme='slate'] .md-header {
-    background-color: hsla(240, 4%, 11%, 0.33);
+    background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
 }
 
 .md-tabs {
@@ -20,7 +20,7 @@
 }
 
 [data-md-color-scheme='slate'] .md-tabs {
-    background-color: hsla(240, 4%, 11%, 0.33);
+    background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
 }
 
 @font-face {
