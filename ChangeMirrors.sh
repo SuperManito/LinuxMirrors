@@ -4601,6 +4601,60 @@ EOF
     fi
 }
 
+## 生成 openEuler repo 源文件
+function gen_repo_files_openEuler() {
+    cat <<'EOF' >$Dir_YumRepos/openEuler.repo
+[OS]
+name=OS
+baseurl=http://repo.openeuler.org/openEuler-version/OS/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+
+[everything]
+name=everything
+baseurl=http://repo.openeuler.org/openEuler-version/everything/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-version/everything/$basearch/RPM-GPG-KEY-openEuler
+
+[EPOL]
+name=EPOL
+baseurl=http://repo.openeuler.org/openEuler-version/EPOL/main/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+
+[debuginfo]
+name=debuginfo
+baseurl=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/RPM-GPG-KEY-openEuler
+
+[source]
+name=source
+baseurl=http://repo.openeuler.org/openEuler-version/source/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
+
+[update]
+name=update
+baseurl=http://repo.openeuler.org/openEuler-version/update/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+
+[update-source]
+name=update-source
+baseurl=http://repo.openeuler.org/openEuler-version/update/source/
+enabled=1
+gpgcheck=1
+gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
+EOF
+}
+
 ## 生成 OpenCloudOS repo 源文件
 function gen_repo_files_OpenCloudOS() {
     case "${1%.*}" in
