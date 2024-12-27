@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-13
+## Modified: 2024-12-28
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2098,6 +2098,9 @@ function change_mirrors_openEuler() {
     gen_repo_files_openEuler
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        sed -e "s|openEuler-version|openEuler-${version_name}|g" \
+            -i \
+            openEuler.repo
         return
     fi
 
