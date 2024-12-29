@@ -9,9 +9,6 @@ hide:
 
 ## :fontawesome-brands-docker:{style="color: #086dd7"} Docker 安装脚本
 
-支持 `选择或更换软件源以及镜像仓库`、`安装指定版本`、`重装` 等功能  
-脚本参考 [官方文档](https://docs.docker.com/engine/install) 使用包管理工具实现安装，支持的系统详见下方表格
-
 <table>
 <tr>
     <td><a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian</td>
@@ -47,7 +44,7 @@ hide:
 </tr>
 </table>
 
-=== ":octicons-globe-16: CDN（推荐）"
+=== ":octicons-globe-16: 官网（推荐）"
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
@@ -59,62 +56,70 @@ hide:
     bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
     ```
 
-=== ":simple-gitee: Gitee"
+=== ":simple-gitee: Gitee 码云"
 
     ``` bash
     bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
     ```
 
-脚本集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，可选择安装版本、下载软件源、镜像加速器，支持 ARM 架构处理器
+=== ":simple-jsdelivr: jsDelivr"
 
-Docker Compose 自 V2 版本起开始作为 Docker CLI 的一部分，不再需要单独安装，请使用 `docker compose` 命令代替 `docker-compose`
+    ``` bash
+    bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
+    ```
+
+支持 `选择或更换软件源以及镜像仓库`、`安装指定版本`、`重装` 等功能，支持 ARM 架构处理器
+
+脚本参考 [官方文档](https://docs.docker.com/engine/install) 使用系统包管理工具安装，集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)
+
+> 注：Docker Compose 自 V2 版本起开始作为 Docker CLI 的一部分，不再需要单独安装，请使用 `docker compose` 命令替代 `docker-compose`
 
 !!! node "软件源说明"
 
     `Docker CE` 软件仓库，全称 Docker Community Edition（Docker 社区版），用于下载并安装 Docker 相关软件包  
     `Docker Registry` 镜像仓库，用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
 
-    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 从而导致无法拉取镜像，建议使用推荐的镜像源，不过速度可能会很慢
+    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，使用推荐的镜像源勉强能够使用不过速度可能会很慢
 
-### 命令选项
+- ### 命令选项
 
-| 名称 | 含义 | 选项值 |
-| :-: | :-: | :-: |
-| `--source` | 指定 `Docker CE` 源地址(域名或IP) | 地址 |
-| `--source-registry` | 指定镜像仓库地址(域名或IP) | 地址 |
-| `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
-| `--install-latest` | 是否安装最新版本的 Docker Engine | `true` 或 `false` |
-| `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
-| `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
-| `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
+    | 名称 | 含义 | 选项值 |
+    | :-: | :-: | :-: |
+    | `--source` | 指定 `Docker CE` 源地址(域名或IP) | 地址 |
+    | `--source-registry` | 指定镜像仓库地址(域名或IP) | 地址 |
+    | `--codename` | 指定 Debian 系操作系统的版本代号 | 代号名称 |
+    | `--install-latest` | 是否安装最新版本的 Docker Engine | `true` 或 `false` |
+    | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
+    | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
+    | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 
-> 软件源完整格式 `<WEB协议>://<软件源地址（域名或IP）>/<软件源仓库（路径）>`
+    > 软件源完整格式 `<WEB协议>://<软件源地址（域名或IP）>/<软件源仓库（路径）>`
 
-### 关于服务报错无法启动
+- ### 关于服务报错无法启动
 
-!!! quote ""
+    !!! quote ""
 
-    非新装环境可能会在运行脚本后遇到 `Docker` 服务无法启动的情况，建议重新安装来解决，卸载不会删除镜像和容器数据
+        非新装环境可能会在运行脚本后遇到 `Docker` 服务无法启动的情况，建议重新安装来解决，卸载不会删除镜像和容器数据
 
-    卸载命令如下：
+        卸载命令如下：
 
-    === "Debian 系"
+        === "Debian 系"
 
-        ``` bash
-        apt-get remove -y docker* containerd.io runc && apt-get autoremove
-        ```
+            ``` bash
+            apt-get remove -y docker* containerd.io runc && apt-get autoremove
+            ```
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox`
 
-    === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
-        ``` bash
-        yum remove -y docker* containerd.io podman* runc
-        ```
+            ``` bash
+            yum remove -y docker* containerd.io podman* runc
+            ```
 
-        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
-    卸载完成后重新执行脚本安装即可
+        卸载完成后重新执行脚本安装即可
 
 ## 其它
 

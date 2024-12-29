@@ -12,7 +12,7 @@ hide:
 
     !!! quote ""
 
-        === ":octicons-globe-16: CDN（推荐）"
+        === ":octicons-globe-16: 官网（推荐）"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh)
@@ -24,17 +24,23 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
             ```
 
-        === ":simple-gitee: Gitee"
+        === ":simple-gitee: Gitee 码云"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            ```
+
+        === ":simple-jsdelivr: jsDelivr"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
             ```
 
 === ":material-earth: 境外以及海外地区"
 
     !!! quote ""
 
-        === ":octicons-globe-16: CDN（推荐）"
+        === ":octicons-globe-16: 官网（推荐）"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
@@ -48,21 +54,29 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            2.  通过 `--abroad` 命令选项来使用海外软件源
+            1.  通过 `--abroad` 命令选项来使用海外软件源
 
-        === ":simple-gitee: Gitee"
+        === ":simple-gitee: Gitee 码云"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            3.  通过 `--abroad` 命令选项来使用海外软件源
+            1.  通过 `--abroad` 命令选项来使用海外软件源
+
+        === ":simple-jsdelivr: jsDelivr"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad # (1)!
+            ```
+
+            1.  通过 `--abroad` 命令选项来使用海外软件源
 
 === ":material-library: 中国大陆教育网"
 
     !!! quote ""
 
-        === ":octicons-globe-16: CDN（推荐）"
+        === ":octicons-globe-16: 官网（推荐）"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
@@ -78,13 +92,21 @@ hide:
 
             1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-        === ":simple-gitee: Gitee"
+        === ":simple-gitee: Gitee 码云"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
             ```
 
-            2.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+
+        === ":simple-jsdelivr: jsDelivr"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
 选项卡分别代表脚本内置软件源类型和获取脚本途径，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在[软件源列表](../mirrors/index.md)中查看具体有哪些软件源。
 
@@ -96,19 +118,25 @@ hide:
 
         ---
 
-        切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为有些系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu），故需要使用 `sudo -i` 命令来切换至 ROOT
+        切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为有些系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu），故需要使用 `sudo -i` 命令来切换至 ROOT。
 
     -   :material-numeric-2:{style="color: #3CA7E5" .lg} __建议使用 `SSH` 远程工具__
 
         ---
 
-        如果你使用的系统终端界面无法正常显示中文内容那么将导致无法查看交互内容。部分系统会自动开启 SSH 服务，否则请参考 [_关于开启 SSH 远程登录的方法_](#关于开启-ssh-远程登录的方法)
+        如果你使用的系统终端界面无法正常显示中文内容那么将导致无法查看交互内容。部分系统会自动开启 SSH 服务，否则请参考 [_关于开启 SSH 远程登录的方法_](#关于开启-ssh-远程登录的方法)。
 
     -   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新系统上首次执行脚本__
 
         ---
 
-        当前执行方式依赖 `curl` 指令获取脚本内容并执行，但部分操作系统没有预装此软件包，届时则会报错 `Command not found`，安装方法详见下方 [_关于报错 Command not found_](#关于报错-command-not-found)。还可自行复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名称的 `.sh` 脚本，粘贴源码内容后通过 `bash` 指令手动执行
+        当前执行方式依赖 `curl` 指令获取脚本内容并执行，但部分操作系统没有预装此软件包，届时则会报错 `Command not found`，安装方法详见下方 [_关于报错 Command not found_](#关于报错-command-not-found)。
+
+    -   :material-numeric-4:{style="color: #3CA7E5" .lg} __脚本需要通过交互进行配置__
+
+        ---
+
+        交互主要有两种呈现方式，一种是铺满全屏竖向选择软件源地址的列表，另一种是横向选择 “是/否” 的选项。请通过键盘方向键或 `WASD` 控制选项、回车键确认。
 
     </div>
 
@@ -164,41 +192,47 @@ hide:
 
             ??? tip "安装不上？（点击展开查看其它解决方法）"
 
-                假如系统原有软件源是无效的导致安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供两个在线获取脚本的应急方法，否则就只能手动复制粘贴源代码了
+                假如系统原有软件源是无效的导致安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供几个在线获取脚本的应急方法
 
                 === "使用 Python 下载脚本"
 
                     适用于大部分操作系统（`Alpine Linux` 除外），`python3` 要是不存在那就再试试 `python` 指令
                     ``` bash
-                    python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'linuxmirrors.sh')"
+                    python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'main.sh')"
                     ```
 
                 === "使用 wget 下载脚本"
 
                     一般没有预装 `curl` 软件包的系统也不会预装 `wget` 软件包，所以大概率这个方法应该是不行的
                     ``` bash
-                    wget -O linuxmirrors.sh https://linuxmirrors.cn/main.sh
+                    wget https://linuxmirrors.cn/main.sh
                     ```
+
+                === "使用浏览器下载"
+
+                    如果可以访问系统 GUI 图像界面和桌面的话那可以直接在浏览器中打开链接下载脚本，很多系统都会预装 Firefox 火狐浏览器
 
                 之后再执行脚本即可
 
                 === ":material-home-city: 中国大陆"
 
                     ``` bash
-                    bash linuxmirrors.sh
+                    bash main.sh
                     ```
 
                 === ":material-earth: 境外以及海外地区"
 
                     ``` bash
-                    bash linuxmirrors.sh --abroad
+                    bash main.sh --abroad
                     ```
 
                 === ":material-library: 中国大陆教育网"
 
                     ``` bash
-                    bash linuxmirrors.sh --edu
+                    bash main.sh --edu
                     ```
+
+                如果以上方法试了都不行，那就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名称的 `.sh` 脚本，粘贴源码内容后通过 `bash` 指令手动执行。
 
     - #### 关于开启 SSH 远程登录的方法
 
@@ -290,9 +324,9 @@ hide:
 
 - ### 关于调用脚本的互联网位置
 
-    项目利用 GitHub Action 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名 CDN 云服务商几乎没有被劫持的风险可放心使用
+    项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L24) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名 CDN 云服务商几乎没有被劫持的风险可放心使用
 
-    当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有三个不同的地址，默认的 CDN 地址更易于访问和记忆
+    当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于访问和记忆
 
 - ### 关于未启用的软件源
 
@@ -356,8 +390,7 @@ hide:
 - ### 指定软件源地址
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-        --source mirror.example.com
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --source mirror.example.com
     ```
 
 - ### 指定软件源仓库
@@ -443,15 +476,13 @@ hide:
     === "升级 Debian 至最新 12 版本 Bookworm"
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-          --codename bookworm
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
         ```
 
     === "将 Debian 版本切换到测试分支"
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-          --codename testing
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
         ```
 
     更换软件源后还需要执行系统更新命令 `apt-get dist-upgrade`，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题

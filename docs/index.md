@@ -11,12 +11,28 @@ hide:
   - footer
 ---
 
+<div class="grid" markdown>
 <figure style="margin: 0" markdown>
   ![](assets/images/brand/light/2.png#only-light){ width="300" }
   ![](assets/images/brand/dark/2.png#only-dark){ width="300" }
   <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</figcaption>
   <figcaption>脚本使换源更简单</figcaption>
 </figure>
+<figure style="margin: 0; width: 500px; display: flex; flex-direction: column; justify-content: center" markdown>
+=== "GNU/Linux"
+
+    ``` { .bash title="一键命令" }
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+    ```
+
+=== "Docker"
+
+    ``` { .bash title="一键命令" }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+    ```
+
+</figure>
+</div>
 
 <div class="grid" markdown>
 
@@ -27,7 +43,7 @@ hide:
     ---
 
     深入考察了国内镜像站的系统适配情况，测试了下载速度与IPv6兼容性  
-    另外提供全网搜集的中国大陆教育网镜像站和海外镜像站供用户选择
+    另外提供全网搜集的国内教育网镜像站和海外镜像站供用户选择
 
 -   :material-rocket-launch-outline:{ .lg .middle } __零技术门槛__
 

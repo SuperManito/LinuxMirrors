@@ -33,7 +33,7 @@ hide:
 
     如果这里没有想使用的镜像站那可以看看其它运行模式和命令选项。软件源的速度区分刷新速度和下行速率，后者才是关键，具体请结合实际地理位置选择尝试，还可以通过[辅助工具网站](#工具网站)进行一些测试
 
-    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `阿里云`、`腾讯云`，海外或复杂网络环境下不建议使用 `清华(TUNA)` 等容易阻断的镜像站
+    :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节跳动(火山引擎)`，地域兼容性上推荐 `阿里云`、`腾讯云`，境外、海外或复杂网络环境下不建议使用 `清华(TUNA)` 等容易阻断的镜像站
 
 ??? note "中国大陆教育网（点击展开查看）"
 
@@ -241,15 +241,15 @@ hide:
     | 非洲 · Liquid Telecom · 肯尼亚 :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com "https://mirror.liquidtelecom.com") |
     | 非洲 · Dimension Data · 南非 :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com "https://mirror.dimensiondata.com") |
 
-???+ note "帮助项目完善更多海外软件源"
+???+ note "帮助项目完善更多境外、海外软件源"
 
     该列表中的软件源参考自 [`Ubuntu 镜像列表`](https://launchpad.net/ubuntu/+cdmirrors "https://launchpad.net/ubuntu/+cdmirrors")、[`Debian 镜像列表`](https://www.debian.org/CD/http-ftp/#mirrors "https://www.debian.org/CD/http-ftp/#mirrors")、[`Fedora Mirror Manager`](https://admin.fedoraproject.org/mirrormanager/mirrors "https://admin.fedoraproject.org/mirrormanager/mirrors") 并且在此之前全部经过了有效性验证，但未作实际测试
 
-    作者没有精力持续维护列表中的这些海外镜像站，如果你想补充更多海外软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L60 "https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L66") 并按照下面的编辑规范进行修改
+    作者没有精力持续维护列表中的这些境外、海外镜像站，如果你想补充更多软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L60 "https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L66") 并按照下面的编辑规范进行修改
 
     你可以在确认软件源地址无误后前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls "https://github.com/SuperManito/LinuxMirrors/pulls")，也可以 :material-source-fork: Fork 仓库后自行定制使用
 
-    - 海外软件源编辑规范：
+    - 境外以及海外软件源编辑规范：
 
         完整格式：`洲 · 软件源名称 · 国家/地区@软件源地址(域名)`
 
@@ -257,9 +257,9 @@ hide:
 
         - 教育单位：需使用中文译名，全称中若含有国家或地区的名称则也要带上，注意区分下属单位，例如学院、学生会、社团等。常见的二级域名格式 `ftp.mirrors.xxx.xxx` 应直接采用顶级单位的名称，如果有三级域名则应考虑是否在名称中加上下属单位，以域名为优先原则
 
-            注：`Technology` 一词应称为 `理工` 而不能使用翻译结果的 `技术` 一词
+            注：`Technology` 一词应称为 `理工` 而不能使用翻译结果的 `技术` 一词，大部分教育单位都有正式或公认的中文译名
 
-        - 非教育单位：应优先采用其上属官网所自称的英文品牌名称，注意是正式的英文名称不是logo中的字符，如果没有并且是除中文、英文以外的语言应使用域名作为名称
+        - 非教育单位：应优先采用其上属官网所自称的品牌名称，注意是正式的英文名称而不是logo中的字符，如果没有并且网站是除中文、英文以外的语言文字应使用网站域名作为名称
  
 ## 工具网站
 
@@ -268,4 +268,4 @@ hide:
 <button class="md-button" title="https://tools.ipip.net/traceroute.php" onclick="window.open('https://tools.ipip.net/traceroute.php')">Tracert 路由追踪测试</button>
 <button class="md-button" title="https://ipw.cn/ipv6webcheck" onclick="window.open('https://ipw.cn/ipv6webcheck')">IPv6 接入测试</button>
 
-!!! tip "该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](../use/index.md#命令选项高级用法)</br>特此声明：本页面用到的旗帜符号仅用于快速区分地理位置不代表作者的任何政治立场，请不要过度解读！"
+!!! tip "该页面展示的均为脚本默认提供可供选择的软件源地址，如果没有找到你想使用的也没有关系，脚本支持命令选项可自定义使用，详见[高级用法](../use/index.md#命令选项高级用法)</br>特此声明：本页面涉及的旗帜图标仅用于快速区分地理位置不代表作者的任何政治立场，请不要过度解读！"
