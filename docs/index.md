@@ -12,7 +12,7 @@ hide:
 ---
 
 <div class="grid" markdown>
-<figure style="margin: 0" markdown>
+<figure style="margin: 0 auto" markdown>
   ![](assets/images/brand/light/2.png#only-light){ width="300" }
   ![](assets/images/brand/dark/2.png#only-dark){ width="300" }
   <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</figcaption>

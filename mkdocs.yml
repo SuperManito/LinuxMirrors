@@ -31,19 +31,16 @@ theme:
       example: octicons/beaker-16
       quote: octicons/quote-16
   palette:
-    # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
       toggle:
         icon: material/brightness-auto
         name: 跟随系统
-    # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: white
       toggle:
         icon: octicons/sun-16
         name: 亮色模式
-    # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
