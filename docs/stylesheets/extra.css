@@ -43,6 +43,10 @@
     }
 }
 
+.home-cmd pre>code {
+    padding-right: 3em;
+}
+
 .heart {
     animation: heart 1000ms infinite;
 }
@@ -106,6 +110,25 @@
     max-width: 100%;
     height: auto;
     vertical-align: middle;
+}
+
+.sponsor-flex-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.sponsor-flex-item {
+    flex: 0 1 calc(33.33% - 1rem);
+    min-width: 200px;
+    max-width: 300px;
+}
+
+@media screen and (max-width: 960px) {
+    .sponsor-flex-item {
+        flex: 0 1 calc(50% - 1rem);
+    }
 }
 
 @media screen and (max-width: 768px) {

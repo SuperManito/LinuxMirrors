@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-13
+## Modified: 2025-01-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -125,6 +125,7 @@ function main() {
     collect_system_info
     run_start
     choose_mirrors
+    choose_protocol
     close_firewall_service
     install_dependency_packages
     configure_docker_ce_mirror
@@ -140,9 +141,12 @@ function handle_command_options() {
         echo -e "
 命令选项(名称/含义/值)：
 
-  --source                 指定 Docker CE 源地址                地址
-  --source-registry        指定 Docker Registry 源地址          地址
+  --source                 指定 Docker CE 源地址(域名或IP)      地址
+  --source-registry        指定镜像仓库地址(域名或IP)           地址
+  --branch                 指定 Docker CE 源仓库(路径)          仓库名
   --codename               指定 Debian 系操作系统的版本代号     代号名称
+  --designated-version     指定 Docker CE 安装版本              版本号
+  --protocol               指定 Docker CE 源的 WEB 协议         http 或 https
   --install-latest         是否安装最新版本的 Docker Engine     true 或 false
   --close-firewall         是否关闭防火墙                       true 或 false
   --clean-screen           是否在运行前清除屏幕上的所有内容     true 或 false
@@ -183,6 +187,15 @@ function handle_command_options() {
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定镜像仓库地址！"
             fi
             ;;
+        ## 指定 Docker CE 软件源仓库
+        --branch)
+            if [ "$2" ]; then
+                SOURCE_BRANCH="$2"
+                shift
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+            fi
+            ;;
         ## 指定 Debian 版本代号
         --codename)
             if [ "$2" ]; then
@@ -190,6 +203,36 @@ function handle_command_options() {
                 shift
             else
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定版本代号！"
+            fi
+            ;;
+        ## 指定 Docker Engine 安装版本
+        --designated-version)
+            if [ "$2" ]; then
+                echo "$2" | grep -Eq "^[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}$"
+                if [ $? -eq 0 ]; then
+                    DESIGNATED_DOCKER_VERSION="$2"
+                    shift
+                else
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的版本号！"
+                fi
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定版本号！"
+            fi
+            ;;
+        ## WEB 协议（HTTP/HTTPS）
+        --protocol)
+            if [ "$2" ]; then
+                case "$2" in
+                http | https | HTTP | HTTPS)
+                    WEB_PROTOCOL="${2,,}"
+                    shift
+                    ;;
+                *)
+                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该选项后指定 http 或 https ！"
+                    ;;
+                esac
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 WEB 协议（http/https）！"
             fi
             ;;
         ## 安装最新版本
@@ -257,6 +300,9 @@ function handle_command_options() {
     done
     ## 给部分命令选项赋予默认值
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
+    if [[ "${DESIGNATED_DOCKER_VERSION}" ]]; then
+        INSTALL_LATESTED_DOCKER="false"
+    fi
 }
 
 function run_start() {
@@ -317,13 +363,13 @@ function collect_system_info() {
     elif [ -s $File_openEulerRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s $File_OpenCloudOSRelease ]; then
-        # 拦截 OpenCloudOS 9 及以上版本，非红帽版本不支持从 Docker 官方仓库安装
+        # 拦截 OpenCloudOS 9 及以上版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -ge 9 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s $File_AnolisOSRelease ]; then
-        # 拦截 Anolis OS 8 版本，不支持从 Docker 官方仓库安装
+        # 拦截 Anolis OS 8.8 及以上版本，不支持从 Docker 官方仓库安装，23 版本支持
         if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
@@ -345,6 +391,10 @@ function collect_system_info() {
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
+        # 拦截 Anolis OS 8.8 以下版本，不支持从 Docker 官方仓库安装
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_ANOLISOS}" ]]; then
+            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+        fi
         ## 特殊系统判断
         # Red Hat Enterprise Linux
         grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
@@ -389,46 +439,44 @@ function collect_system_info() {
         ;;
     esac
     ## 定义软件源仓库名称
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        case "${SYSTEM_JUDGMENT}" in
+    if [[ -z "${SOURCE_BRANCH}" ]]; then
+        case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
-            SOURCE_BRANCH="debian"
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_DEBIAN}")
+                SOURCE_BRANCH="debian"
+                ;;
+            "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
+                SOURCE_BRANCH="ubuntu"
+                ;;
+            "${SYSTEM_RHEL}")
+                SOURCE_BRANCH="rhel"
+                ;;
+            *)
+                # 部分 Debian 系衍生操作系统使用 Debian 12 的 docker ce 源
+                SOURCE_BRANCH="debian"
+                SYSTEM_VERSION_CODENAME="bookworm"
+                ;;
+            esac
             ;;
-        "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
-            SOURCE_BRANCH="ubuntu"
+        "${SYSTEM_REDHAT}")
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_FEDORA}")
+                SOURCE_BRANCH="fedora"
+                ;;
+            "${SYSTEM_RHEL}")
+                SOURCE_BRANCH="rhel"
+                ;;
+            *)
+                SOURCE_BRANCH="centos"
+                ;;
+            esac
             ;;
-        "${SYSTEM_RHEL}")
-            SOURCE_BRANCH="rhel"
-            ;;
-        *)
-            # 部分 Debian 系衍生操作系统使用 Debian 12 的 docker ce 源
-            SOURCE_BRANCH="debian"
-            SYSTEM_VERSION_CODENAME="bookworm"
-            ;;
-        esac
-        ;;
-    "${SYSTEM_REDHAT}")
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_FEDORA}")
-            SOURCE_BRANCH="fedora"
-            ;;
-        "${SYSTEM_RHEL}")
-            SOURCE_BRANCH="rhel"
-            ;;
-        "${SYSTEM_ANOLISOS}")
-            # 拦截 Anolis OS 8 版本，不支持从 Docker 官方仓库安装
-            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
-            ;;
-        *)
+        "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
             SOURCE_BRANCH="centos"
             ;;
         esac
-        ;;
-    "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        SOURCE_BRANCH="centos"
-        ;;
-    esac
+    fi
     ## 定义软件源更新文字
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
@@ -504,48 +552,15 @@ function choose_mirrors() {
     }
 
     print_title
-    if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
-        ## 是否手动选择安装版本
-        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-            echo ''
-            interactive_select_boolean "${BOLD}是否安装最新版本的 Docker Engine?${PLAIN}"
-            if [[ "${_SELECT_RESULT}" == "true" ]]; then
-                INSTALL_LATESTED_DOCKER="true"
-            else
-                ## 安装旧版本只有官方仓库有
-                INSTALL_LATESTED_DOCKER="false"
-                SOURCE="download.docker.com"
-            fi
-        else
-            local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否安装最新版本的 Docker Engine? [Y/n] ${PLAIN}")
-            read -p "${CHOICE_A}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case $INPUT in
-            [Yy] | [Yy][Ee][Ss])
-                INSTALL_LATESTED_DOCKER="true"
-                ;;
-            [Nn] | [Nn][Oo])
-                ## 安装旧版本只有官方仓库有
-                INSTALL_LATESTED_DOCKER="false"
-                SOURCE="download.docker.com"
-                ;;
-            *)
-                INSTALL_LATESTED_DOCKER="true"
-                echo -e "\n$WARN 输入错误，默认安装最新版本！"
-                ;;
-            esac
-        fi
-    fi
 
     local mirror_list_name
-
     if [[ -z "${SOURCE}" ]]; then
         mirror_list_name="mirror_list_docker_ce"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             sleep 1 >/dev/null 2>&1
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker CE 源：\${PLAIN}\\n\""
             SOURCE="${_SELECT_RESULT#*@}"
-            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker CE: ${_SELECT_RESULT%@*}${PLAIN}"
         else
             print_mirrors_list "${mirror_list_name}" 38
             local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
@@ -575,7 +590,7 @@ function choose_mirrors() {
             sleep 1 >/dev/null 2>&1
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker Registry 源：\${PLAIN}\\n\""
             SOURCE_REGISTRY="${_SELECT_RESULT#*@}"
-            echo -e "\n${GREEN}➜${PLAIN}  Docker Registry：${BOLD}${_SELECT_RESULT%@*}${PLAIN}"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker Registry: ${_SELECT_RESULT%@*}${PLAIN}"
         else
             print_mirrors_list "${mirror_list_name}" 44
             local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
@@ -598,6 +613,42 @@ function choose_mirrors() {
             done
         fi
     fi
+}
+
+## 选择同步或更新软件源所使用的 WEB 协议（ HTTP/HTTPS）
+function choose_protocol() {
+    if [[ -z "${WEB_PROTOCOL}" ]]; then
+        if [[ "${ONLY_HTTP}" == "true" ]]; then
+            WEB_PROTOCOL="http"
+        else
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                echo ''
+                interactive_select_boolean "${BOLD}软件源是否使用 HTTP 协议?${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                    WEB_PROTOCOL="http"
+                else
+                    WEB_PROTOCOL="https"
+                fi
+            else
+                local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+                read -rp "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss])
+                    WEB_PROTOCOL="http"
+                    ;;
+                [Nn] | [Nn][Oo])
+                    WEB_PROTOCOL="https"
+                    ;;
+                *)
+                    echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
+                    WEB_PROTOCOL="https"
+                    ;;
+                esac
+            fi
+        fi
+    fi
+    WEB_PROTOCOL="${WEB_PROTOCOL,,}"
 }
 
 ## 关闭防火墙和SELinux
@@ -681,6 +732,7 @@ function install_dependency_packages() {
         esac
         ;;
     esac
+    echo ''
 }
 
 ## 选择系统包管理器
@@ -703,31 +755,19 @@ function get_package_manager() {
 
 ## 卸载 Docker Engine 原有版本软件包
 function uninstall_original_version() {
-    # 先停止并禁用 Docker 服务
-    systemctl disable --now docker >/dev/null 2>&1
-    sleep 2s
+    if [ -x /usr/bin/docker ]; then
+        # 先停止并禁用 Docker 服务
+        systemctl disable --now docker >/dev/null 2>&1
+        sleep 2s
+    fi
     # 确定需要卸载的软件包
     local package_list
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
-            package_list="docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc"
-            ;;
-        *)
-            package_list="docker.io docker-doc docker-compose podman-docker containerd runc"
-            ;;
-        esac
+        package_list='docker* podman podman-docker containerd runc'
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_FEDORA}" | "${SYSTEM_RHEL}")
-            package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine podman runc"
-            ;;
-        *)
-            package_list="docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine"
-            ;;
-        esac
+        package_list='docker* podman podman-docker runc'
         ;;
     esac
     # 卸载软件包并清理残留
@@ -759,12 +799,12 @@ function configure_docker_ce_mirror() {
         fi
         chmod a+r $file_keyring
         ## 添加源
-        echo "deb [arch=${SOURCE_ARCH} signed-by=${file_keyring}] https://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
+        echo "deb [arch=${SOURCE_ARCH} signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
         apt-get update
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
-        sed -i "s|download.docker.com|${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
+        sed -i "s|https://download.docker.com|${WEB_PROTOCOL}://${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
         ## 兼容处理版本号
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
             local target_version
@@ -795,8 +835,9 @@ function install_docker_engine() {
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-            yum list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
-            yum list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
+            local package_manager="$(get_package_manager)"
+            $package_manager list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
+            $package_manager list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
             grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
             ;;
         esac
@@ -805,6 +846,7 @@ function install_docker_engine() {
 
     ## 安装
     function install_main() {
+        local target_docker_version
         if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
@@ -817,31 +859,53 @@ function install_docker_engine() {
             esac
         else
             export_version_list
-            echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：27.1.0 ---------- ${PLAIN}\n"
-            cat $DockerVersionFile
-            echo -e '\n注：以上可供选择的安装版本由官方源提供，此列表以外的版本则无法安装在当前操作系统上'
-            while true; do
-                local CHOICE=$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")
-                read -p "${CHOICE}" DOCKER_VERSION
-                echo ''
-                cat $DockerVersionFile | grep -Eqw "${DOCKER_VERSION}"
-                if [ $? -eq 0 ]; then
-                    echo "${DOCKER_VERSION}" | grep -Eqw '[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}'
-                    if [ $? -eq 0 ]; then
-                        rm -rf $DockerVersionFile
-                        break
-                    else
-                        echo -e "$ERROR 请输入正确的版本号！"
-                    fi
-                else
-                    echo -e "$ERROR 输入错误请重新输入！"
+            if [ ! -s $DockerVersionFile ]; then
+                rm -rf $DockerVersionFile
+                output_error "查询 Docker Engine 版本列表失败！"
+            fi
+            if [[ "${DESIGNATED_DOCKER_VERSION}" ]]; then
+                cat $DockerVersionFile | grep -Eq "^${DESIGNATED_DOCKER_VERSION}$"
+                if [ $? -ne 0 ]; then
+                    rm -rf $DockerVersionFile
+                    output_error "指定的 Docker Engine 版本不存在或不支持安装！"
                 fi
-            done
+                target_docker_version="${DESIGNATED_DOCKER_VERSION}"
+            else
+                if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                    local version_list=(
+                        $(cat $DockerVersionFile | sort -t '.' -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ' | sed 's/ $//')
+                    )
+                    local mirror_list_name="version_list"
+                    eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想安装的版本：\${PLAIN}\\n\""
+                    target_docker_version="${_SELECT_RESULT}"
+                    echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}指定安装版本：${target_docker_version}${PLAIN}\n"
+                else
+                    echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：27.4.0 ---------- ${PLAIN}\n"
+                    cat $DockerVersionFile
+                    while true; do
+                        local CHOICE=$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")
+                        read -p "${CHOICE}" target_docker_version
+                        echo ''
+                        cat $DockerVersionFile | grep -Eqw "${target_docker_version}"
+                        if [ $? -eq 0 ]; then
+                            echo "${target_docker_version}" | grep -Eqw '[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}'
+                            if [ $? -eq 0 ]; then
+                                break
+                            else
+                                echo -e "$ERROR 请输入正确的版本号！"
+                            fi
+                        else
+                            echo -e "$ERROR 输入错误请重新输入！"
+                        fi
+                    done
+                fi
+            fi
+            rm -rf $DockerVersionFile
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                check_version="$(echo ${DOCKER_VERSION} | cut -c1-2)"
-                CheckSubversion="$(echo ${DOCKER_VERSION} | cut -c4-5)"
-                case ${check_version} in
+                check_version="$(echo ${target_docker_version} | cut -c1-2)"
+                CheckSubversion="$(echo ${target_docker_version} | cut -c4-5)"
+                case "${check_version}" in
                 18)
                     if [ ${CheckSubversion} == "09" ]; then
                         INSTALL_JUDGMENT="5:"
@@ -853,11 +917,11 @@ function install_docker_engine() {
                     INSTALL_JUDGMENT="5:"
                     ;;
                 esac
-                apt-get install -y docker-ce=${INSTALL_JUDGMENT}${DOCKER_VERSION}* docker-ce-cli=5:${DOCKER_VERSION}* containerd.io docker-buildx-plugin docker-compose-plugin
+                apt-get install -y docker-ce=${INSTALL_JUDGMENT}${target_docker_version}* docker-ce-cli=5:${target_docker_version}* containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 local package_manager="$(get_package_manager)"
-                $package_manager install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io docker-buildx-plugin docker-compose-plugin
+                $package_manager install -y docker-ce-${target_docker_version} docker-ce-cli-${target_docker_version} containerd.io docker-buildx-plugin docker-compose-plugin
                 ;;
             esac
         fi
@@ -912,6 +976,36 @@ function install_docker_engine() {
         fi
     }
 
+    ## 判断是否手动选择安装版本
+    if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
+        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+            echo ''
+            interactive_select_boolean "${BOLD}是否安装最新版本的 Docker Engine ?${PLAIN}"
+            if [[ "${_SELECT_RESULT}" == "true" ]]; then
+                INSTALL_LATESTED_DOCKER="true"
+            else
+                INSTALL_LATESTED_DOCKER="false"
+            fi
+        else
+            local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否安装最新版本的 Docker Engine ? [Y/n] ${PLAIN}")
+            read -p "${CHOICE_A}" INPUT
+            [[ -z "${INPUT}" ]] && INPUT=Y
+            case $INPUT in
+            [Yy] | [Yy][Ee][Ss])
+                INSTALL_LATESTED_DOCKER="true"
+                ;;
+            [Nn] | [Nn][Oo])
+                INSTALL_LATESTED_DOCKER="false"
+                ;;
+            *)
+                INSTALL_LATESTED_DOCKER="true"
+                echo -e "\n$WARN 输入错误，默认安装最新版本！"
+                ;;
+            esac
+        fi
+        echo ''
+    fi
+
     ## 判定是否已安装
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
@@ -923,87 +1017,29 @@ function install_docker_engine() {
     esac
     if [ $? -eq 0 ]; then
         export_version_list
-        DOCKER_INSTALLED_VERSION="$(docker -v | grep -Eo "[0-9][0-9]\.[0-9]{1,2}\.[0-9]{1,2}")"
-        DOCKER_VERSION_LATEST="$(cat $DockerVersionFile | head -n 1)"
-        if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-            if [[ "${DOCKER_INSTALLED_VERSION}" == "${DOCKER_VERSION_LATEST}" ]]; then
-                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-                    echo -e "\n$COMPLETE 检测到已安装 Docker Engine 最新版本，跳过安装"
-                    rm -rf $DockerVersionFile
-                    change_docker_registry_mirror
-                    systemctl enable --now docker >/dev/null 2>&1
-                    check_version
-                    run_end
-                    exit
-                else
-                    echo ''
-                    interactive_select_boolean "${BOLD}检测到已安装 Docker Engine 最新版本，是否继续安装其它版本?${PLAIN}"
-                fi
-            else
-                echo ''
-                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-                    interactive_select_boolean "${BOLD}检测到已安装 Docker Engine 旧版本，是否覆盖安装为最新版本?${PLAIN}"
-                else
-                    interactive_select_boolean "${BOLD}检测到已安装 Docker Engine 旧版本，是否继续安装其它版本?${PLAIN}"
-                fi
-            fi
-            if [[ "${_SELECT_RESULT}" == "true" ]]; then
-                uninstall_original_version
-                install_main
-                [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
-            fi
-        else
-            if [[ "${DOCKER_INSTALLED_VERSION}" == "${DOCKER_VERSION_LATEST}" ]]; then
-                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-                    echo -e "\n$COMPLETE 检测到已安装 Docker Engine 最新版本，跳过安装"
-                    rm -rf $DockerVersionFile
-                    change_docker_registry_mirror
-                    systemctl enable --now docker >/dev/null 2>&1
-                    check_version
-                    run_end
-                    exit
-                else
-                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 最新版本，是否继续安装其它版本? [Y/n] ${PLAIN}")
-                fi
-            else
-                if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 旧版本，是否覆盖安装为最新版本? [Y/n] ${PLAIN}")
-                else
-                    local CHOICE=$(echo -e "\n${BOLD}└─ 检测到已安装 Docker Engine 旧版本，是否继续安装其它版本? [Y/n] ${PLAIN}")
-                fi
-            fi
-            read -p "${CHOICE}" INPUT
-            [[ -z "${INPUT}" ]] && INPUT=Y
-            case $INPUT in
-            [Yy] | [Yy][Ee][Ss])
-                uninstall_original_version
-                install_main
-                [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
-                ;;
-            [Nn] | [Nn][Oo]) ;;
-            *)
-                echo -e "\n$WARN 输入错误，默认不覆盖安装！\n"
-                ;;
-            esac
-        fi
-
+        local current_docker_version="$(docker -v | grep -Eo "[0-9][0-9]\.[0-9]{1,2}\.[0-9]{1,2}")"
+        local latest_docker_version="$(cat $DockerVersionFile | head -n 1)"
         rm -rf $DockerVersionFile
-    else
-        uninstall_original_version
-        install_main
-        [ $? -ne 0 ] && output_error "安装 Docker Engine 失败"
+        if [[ "${current_docker_version}" == "${latest_docker_version}" ]] && [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
+            echo -e "\n$TIP 检测到系统中的 Docker Engine 已经是最新的版本，跳过安装"
+            change_docker_registry_mirror
+            return
+        fi
     fi
+    uninstall_original_version
+    install_main
+    [ $? -ne 0 ] && output_error "安装 Docker Engine 失败！"
     change_docker_registry_mirror
-    systemctl enable --now docker >/dev/null 2>&1
 }
 
 ## 查看版本并验证安装结果
 function check_version() {
     if [ -x /usr/bin/docker ]; then
+        systemctl enable --now docker >/dev/null 2>&1
         echo -en "\n当前安装版本："
         docker -v
         if [ $? -eq 0 ]; then
-            echo -e "Compose 版本：$(docker compose version 2>&1)"
+            echo -e "              $(docker compose version 2>&1)"
             echo -e "\n$COMPLETE 安装完成"
         else
             echo -e "\n$ERROR 安装失败"
@@ -1154,6 +1190,16 @@ function interactive_select_boolean() {
             echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m 否"
         fi
     }
+    function draw_menu_confirmed() {
+        tput rc
+        echo -e "╭─ ${message}"
+        echo -e "│"
+        if [ "$selected" -eq 0 ]; then
+            echo -e "╰─ \033[32m●\033[0m \033[1m是\033[0m\033[2m / ○ 否\033[0m"
+        else
+            echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
+        fi
+    }
     function read_key() {
         IFS= read -rsn1 key
         if [[ $key == $'\x1b' ]]; then
@@ -1184,6 +1230,7 @@ function interactive_select_boolean() {
             ;;
         "")
             # Enter 键
+            draw_menu_confirmed
             break
             ;;
         *) ;;

@@ -1,5 +1,5 @@
 ---
-title: 脚本使换源更简单
+title: 一键脚本使换源更简单
 description: GNU/Linux 更换系统软件源脚本及 Docker 安装脚本
 comments: true
 glightbox: false
@@ -16,9 +16,9 @@ hide:
   ![](assets/images/brand/light/2.png#only-light){ width="300" }
   ![](assets/images/brand/dark/2.png#only-dark){ width="300" }
   <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</figcaption>
-  <figcaption>脚本使换源更简单</figcaption>
+  <figcaption>一键脚本使换源更简单</figcaption>
 </figure>
-<figure style="margin: 0; width: 500px; display: flex; flex-direction: column; justify-content: center" markdown>
+<figure class="home-cmd" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
 === "GNU/Linux"
 
     ``` { .bash title="一键命令" }
@@ -30,13 +30,19 @@ hide:
     ``` { .bash title="一键命令" }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
     ```
-
 </figure>
 </div>
 
 <div class="grid" markdown>
 
 <div class="grid cards" style="height: fit-content" markdown>
+
+-   :material-thumb-up-outline:{ .lg .middle } __轻松使用__
+
+    ---
+
+    只需要一行命令就能直接运行，无需安装任何依赖  
+    文档提供了各种场景的解决方案，Linux 初学者也能轻松上手
 
 -   :material-source-branch:{ .lg .middle } __多元软件源适配__
 
@@ -49,7 +55,7 @@ hide:
 
     ---
 
-    无需了解相关技术，文档提供了全面的知识储备和操作指引，轻松上手  
+    无需了解相关技术，文档提供了全面的知识储备和操作指引  
     文档还提供了一些常见问题的解决方法以及一些高级用法的示例
 
 -   :material-vector-polyline:{ .lg .middle } __广泛的系统支持__
@@ -64,7 +70,7 @@ hide:
     ---
 
     脚本使换源变得更简单，默认交互运行，逐步引导用户选择软件源配置  
-    同时提供了强大的命令选项，可实现各种定制需求和无交互操作
+    同时提供了强大的命令选项，可实现各种高级定制需求
 
 -   :material-pencil-ruler-outline:{ .lg .middle } __高度可定制__
 
@@ -116,3 +122,19 @@ hide:
 </div>
 
 [开 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [查看软件源列表](mirrors/index.md){ .md-button }
+
+<div class="md-nav__sponsor-bottom" style="border-top: none; margin-top: 0">
+  <div class="sponsor-label">
+    <strong>赞助商</strong>
+  </div>
+  <div class="sponsor-wrapper sponsor-flex-wrapper">
+    <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://www.dkdun.cn/aff/VAWGETUL" title="林枫云">
+      <img src="/assets/images/sponsor/linfengyun-light.png#only-light" alt="林枫云" style="width: 60%" />
+      <img src="/assets/images/sponsor/linfengyun-dark.png#only-dark" alt="林枫云" style="width: 60%" />
+    </a>
+    <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://arcadia.cool" title="Arcadia 一站式代码运维平台">
+      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia 一站式代码运维平台" style="width: 60%" />
+      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia 一站式代码运维平台" style="width: 60%" />
+    </a>
+  </div>
+</div>

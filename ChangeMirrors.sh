@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2024-12-28
+## Modified: 2025-01-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -473,7 +473,7 @@ function handle_command_options() {
             if [ "$2" ]; then
                 case "$2" in
                 http | https | HTTP | HTTPS)
-                    WEB_PROTOCOL="$2"
+                    WEB_PROTOCOL="${2,,}"
                     shift
                     ;;
                 *)
@@ -2319,6 +2319,7 @@ function change_mirrors_or_install_EPEL() {
     esac
     ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，暂无适配的必要）
     if [[ "${target_version}" == "7" ]]; then
+        [ -z "${SOURCE_EPEL_BRANCH}" ] && SOURCE_EPEL_BRANCH="epel-archive"
         return
     fi
     ## 安装 EPEL 软件包
@@ -2487,6 +2488,16 @@ function interactive_select_boolean() {
             echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m 否"
         fi
     }
+    function draw_menu_confirmed() {
+        tput rc
+        echo -e "╭─ ${message}"
+        echo -e "│"
+        if [ "$selected" -eq 0 ]; then
+            echo -e "╰─ \033[32m●\033[0m \033[1m是\033[0m\033[2m / ○ 否\033[0m"
+        else
+            echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
+        fi
+    }
     function read_key() {
         IFS= read -rsn1 key
         if [[ $key == $'\x1b' ]]; then
@@ -2517,6 +2528,7 @@ function interactive_select_boolean() {
             ;;
         "")
             # Enter 键
+            draw_menu_confirmed
             break
             ;;
         *) ;;
