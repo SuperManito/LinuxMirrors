@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-01-04
+## Modified: 2025-01-22
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -185,10 +185,11 @@ File_ArmbianRelease=/etc/armbian-release
 File_openEulerRelease=/etc/openEuler-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
-File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
+File_OracleLinuxRelease=/etc/oracle-release
 File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
 File_GentooRelease=/etc/gentoo-release
+File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
 File_ProxmoxVersion=/etc/pve/.version
 
 ## 定义软件源相关文件或目录
@@ -639,6 +640,8 @@ function collect_system_info() {
     ## 判定当前系统派系
     if [ -s $File_DebianVersion ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
+    elif [ -s $File_OracleLinuxRelease ]; then
+        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
     elif [ -s $File_RedHatRelease ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s $File_openEulerRelease ]; then

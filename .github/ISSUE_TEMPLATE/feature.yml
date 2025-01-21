@@ -5,6 +5,6 @@ body:
   - type: textarea
     id: content
     attributes:
-      label: '请在下方描述您的功能请求或建议'
+      label: '描述您的功能请求或建议'
     validations:
       required: false
