@@ -2,7 +2,7 @@ site_name: LinuxMirrors
 repo_name: LinuxMirrors
 repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
-copyright: 'Copyright &copy; 2024 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
+copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
 
 extra_css:
   - stylesheets/extra.css
@@ -62,6 +62,7 @@ theme:
     - content.code.annotate
     - search.suggest
     - search.highlight
+    - search.share
     - announce.dismiss
 extra:
   generator: false

@@ -99,7 +99,11 @@
         <td align="center">v3 / edge</td>
     </tr>
     <tr>
-        <td><a href="https://www.gentoo.org" target="_blank"><img src="./docs/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.25em"/></a>&nbsp;Gentoo</td>
+        <td><a href="https://www.gentoo.org" target="_blank"><img src="./docs/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"/></a>&nbsp;Gentoo</td>
+        <td align="center">all</td>
+    </tr>
+    <tr>
+        <td><a href="https://nixos.org" target="_blank"><img src="./docs/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;NixOS</td>
         <td align="center">all</td>
     </tr>
 </table>
@@ -116,7 +120,7 @@
 
 ### LICENSE
 
-Copyright © 2024, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
+Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
 <a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
  <picture>

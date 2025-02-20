@@ -110,35 +110,35 @@ hide:
 
 选项卡分别代表脚本内置软件源类型和获取脚本途径，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在[软件源列表](../mirrors/index.md)中查看具体有哪些软件源。
 
-- ### 注意事项
+!!! tip "默认自动备份原有软件源内容，如需了解更多请翻阅下方文档"
 
-    <div class="grid cards" markdown>
+<div class="grid cards" markdown>
 
-    -   :material-numeric-1:{style="color: #3CA7E5" .lg} __需使用 `ROOT` 用户执行脚本__
+-   :material-numeric-1:{style="color: #3CA7E5" .lg} __需使用 `ROOT` 用户执行脚本__
 
-        ---
+    ---
 
-        切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为部分系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu）或系统默认禁止 ROOT 用户登录。
+    切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为部分系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu）或系统默认禁止 ROOT 用户登录。
 
-    -   :material-numeric-2:{style="color: #3CA7E5" .lg} __建议使用支持 `SSH` 的现代化终端应用__
+-   :material-numeric-2:{style="color: #3CA7E5" .lg} __建议使用支持 `SSH` 的现代化终端应用__
 
-        ---
+    ---
 
-        如果你系统命令行界面的中文显示乱码那么将导致无法查看交互内容，此外部分系统 GUI 图形界面的终端应用可能存在一些无法预料的显示问题。关于 SSH 服务部分系统会自动开启，否则请参考[开启方法](#关于开启-ssh-远程登录的方法)。
+    如果你系统命令行界面的中文显示乱码那么将导致无法查看交互内容，此外部分系统 GUI 图形界面的终端应用可能存在一些无法预料的显示问题。关于 SSH 服务部分系统会自动开启，否则请参考[开启方法](#关于开启-ssh-远程登录的方法)。
 
-    -   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新装系统上首次执行脚本__
+-   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新装系统上首次执行脚本__
 
-        ---
+    ---
 
-        当前执行方式依赖 `curl` 指令获取脚本内容并执行，但部分操作系统没有预装此软件包，届时则会报错 `Command not found`，安装方法详见下方 [_关于报错 Command not found_](#关于报错-command-not-found)。
+    当前执行方式依赖 `curl` 指令获取脚本内容并执行，但部分操作系统没有预装此软件包，届时则会报错 `Command not found`，安装方法详见下方 [_关于报错 Command not found_](#关于报错-command-not-found)。
 
-    -   :material-numeric-4:{style="color: #3CA7E5" .lg} __脚本运行期间需要交互选择配置__
+-   :material-numeric-4:{style="color: #3CA7E5" .lg} __脚本运行期间需要交互选择配置__
 
-        ---
+    ---
 
-        请通过方向键 ++arrow-up++++arrow-down++++arrow-left++++arrow-right++ 或 ++w++++a++++s++++d++ 控制选项并按 ++enter++ 回车键确认。如果发现交互异常那么请改变终端软件的窗口大小后重试，窗口尽量不要太小。
+    请通过方向键 ++arrow-up++++arrow-down++++arrow-left++++arrow-right++ 或 ++w++++a++++s++++d++ 控制选项并按 ++enter++ 回车键确认。如果发现交互异常那么请改变终端软件的窗口大小后重试，窗口尽量不要太小。
 
-    </div>
+</div>
 
 - ### 常见问题
 
@@ -188,6 +188,12 @@ hide:
 
                 ``` bash
                 emerge --ask curl
+                ```
+
+            === "NixOS"
+
+                ``` bash
+                nix-env -iA nixos.curl
                 ```
 
             ??? tip "安装不上？（点击展开查看其它解决方法）"
@@ -316,11 +322,21 @@ hide:
                 emerge --sync --quiet
                 ```
 
+            === "NixOS"
+
+                ``` bash
+                cp -rf /etc/nix/nix.conf.bak /etc/nix/nix.conf
+                ```
+
     - #### 其它
 
         !!! quote ""
 
             - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行，切换命令为 `sudo -i` 或 `su root`
+
+- ### 关于备份原有软件源
+
+    脚本会自动备份原有软件源内容，备份路径为原有文件或目录的绝对路径加上 `.bak` 后缀，例如 `/etc/apt/sources.list => /etc/apt/sources.list.bak`，当检查到已存在备份内容时会询问是否覆盖备份。
 
 - ### 关于调用脚本的互联网位置
 
@@ -330,15 +346,15 @@ hide:
 
 - ### 关于软件源下载速度相关问题
 
-    首先在[软件源列表](../mirrors/index.md)页面的使用帮助有使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
+    首先，在[软件源列表](../mirrors/index.md)的使用帮助处有写使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
 
     软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行带宽很高但实际测速却并不理想，因为这与镜像站的并发性能和负载策略有关。
 
-    网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能无法实现精准测速的功能。
+    网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能无法实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
 
-- ### 关于未启用的软件源
+- ### 关于未启用的软件源和仓库
 
-    脚本遵循系统默认设置即没有启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，具体启用方法如下：
+    脚本遵循系统默认设置，默认不启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，具体启用方法如下：
 
     === "Debian 系 / openKylin"
 
@@ -434,6 +450,7 @@ hide:
         | <a href="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Arch Linux | `archlinux` `archlinuxarm` |
         | <a href="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> Alpine Linux | `alpine` |
         | <a href="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Gentoo | `gentoo` `gentoo-portage` |
+        | <a href="https://nixos.org" target="_blank"><img src="/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"></a> NixOS | `nix-channels` |
 
 
     请看下面的例子

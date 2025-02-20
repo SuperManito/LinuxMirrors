@@ -9,10 +9,6 @@ hide:
 
 ## :fontawesome-brands-docker:{style="color: #086dd7"} Docker 安装脚本
 
-???+ tip inline end "友情提示"
-
-    该脚本近期进行了大量优化，代码逻辑变动较大，如有问题请及时反馈
-
 <table>
 <tr>
     <td><a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian</td>
@@ -72,7 +68,9 @@ hide:
     bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
     ```
 
-脚本参考 [官方文档](https://docs.docker.com/engine/install) 使用系统包管理工具安装，集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构处理器
+集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构处理器
+
+脚本参考 [官方文档](https://docs.docker.com/engine/install) 采用官方提供的方法使用系统包管理工具进行安装，这意味着可安装的版本是由官方仓库决定的，本脚本不存在兼容性等问题。
 
 > 注：Docker Compose 自 V2 版本起开始作为 Docker CLI 的一部分，不再需要单独安装，请使用 `docker compose` 命令替代 `docker-compose`
 

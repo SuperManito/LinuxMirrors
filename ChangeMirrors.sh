@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-01-22
+## Modified: 2025-02-20
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -176,6 +176,7 @@ SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
 SYSTEM_ALPINE="Alpine"
 SYSTEM_GENTOO="Gentoo"
+SYSTEM_NIXOS="NixOS"
 
 ## 定义系统版本文件
 File_LinuxRelease=/etc/os-release
@@ -213,6 +214,8 @@ File_GentooMakeConf=/etc/portage/make.conf
 File_GentooMakeConfBackup=/etc/portage/make.conf.bak
 File_GentooReposConf=/etc/portage/repos.conf/gentoo.conf
 File_GentooReposConfBackup=/etc/portage/repos.conf/gentoo.conf.bak
+File_NixConf=/etc/nix/nix.conf
+File_NixConfBackup=/etc/nix/nix.conf.bak
 Dir_GentooReposConf=/etc/portage/repos.conf
 Dir_DebianExtendSource=/etc/apt/sources.list.d
 Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
@@ -220,6 +223,7 @@ Dir_YumRepos=/etc/yum.repos.d
 Dir_YumReposBackup=/etc/yum.repos.d.bak
 Dir_ZYppRepos=/etc/zypp/repos.d
 Dir_ZYppReposBackup=/etc/zypp/repos.d.bak
+Dir_NixConfig=/etc/nix
 
 ## 定义颜色变量
 RED='\033[31m'
@@ -660,6 +664,8 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_GENTOO}"
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
+    elif [[ "${SYSTEM_NAME}" == *"NixOS"* ]]; then
+        SYSTEM_FACTIONS="${SYSTEM_NIXOS}"
     else
         output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
     fi
@@ -753,7 +759,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}" | "${SYSTEM_NIXOS}")
         # 理论全部支持或不作判断
         ;;
     *)
@@ -860,6 +866,9 @@ function collect_system_info() {
                 SOURCE_BRANCH="${SOURCE_BRANCH// /-}"
             fi
             ;;
+        "${SYSTEM_NIXOS}")
+            SOURCE_BRANCH="nix-channels"
+            ;;
         esac
     fi
     ## 定义软件源更新文字
@@ -875,6 +884,9 @@ function collect_system_info() {
         ;;
     "${SYSTEM_ARCH}" | "${SYSTEM_GENTOO}")
         SYNC_MIRROR_TEXT="同步软件源"
+        ;;
+    "${SYSTEM_NIXOS}")
+        SYNC_MIRROR_TEXT="更新二进制缓存与频道源"
         ;;
     esac
     ## 判断是否可以使用高级交互式选择器
@@ -1326,6 +1338,11 @@ function backup_original_mirrors() {
             [ -d "${Dir_GentooReposConf}" ] || mkdir -p "${Dir_GentooReposConf}"
             backup_file $File_GentooReposConf $File_GentooReposConfBackup "gentoo.conf"
             ;;
+        "${SYSTEM_NIXOS}")
+            [ ! -d $Dir_NixConfig ] && mkdir -p $Dir_NixConfig
+            # /etc/nix/nix.conf
+            backup_file $File_NixConf $File_NixConfBackup "nix.conf"
+            ;;
         esac
     fi
 }
@@ -1523,6 +1540,9 @@ function change_mirrors_main() {
                 diff_file $File_GentooMakeConfBackup $File_GentooMakeConf
                 diff_file $File_GentooReposConfBackup $File_GentooReposConf
                 ;;
+            "${SYSTEM_NIXOS}")
+                diff_file $File_NixConfBackup $File_NixConf
+                ;;
             esac
         fi
     }
@@ -1559,6 +1579,9 @@ function change_mirrors_main() {
     "${SYSTEM_OPENKYLIN}")
         change_mirrors_openKylin
         ;;
+    "${SYSTEM_NIXOS}")
+        change_mirrors_NixOS
+        ;;
     esac
     ## 比较差异
     if [[ "${PRINT_DIFF}" == "true" ]]; then
@@ -1585,6 +1608,10 @@ function change_mirrors_main() {
         ;;
     "${SYSTEM_GENTOO}")
         emerge --sync --quiet
+        ;;
+    "${SYSTEM_NIXOS}")
+        nix-store --verify
+        nix-channel --update
         ;;
     esac
     if [ $? -eq 0 ]; then
@@ -1679,6 +1706,9 @@ function upgrade_software() {
     "${SYSTEM_GENTOO}")
         emerge --update --deep --with-bdeps=y --ask=n @world
         ;;
+    "${SYSTEM_NIXOS}")
+        nixos-rebuild switch
+        ;;
     esac
     if [[ "${CLEAN_CACHE}" == "false" ]]; then
         return
@@ -1702,6 +1732,9 @@ function upgrade_software() {
     "${SYSTEM_GENTOO}")
         eclean-dist --deep >/dev/null 2>&1
         eclean-packages --deep >/dev/null 2>&1
+        ;;
+    "${SYSTEM_NIXOS}")
+        nix-collect-garbage -d >/dev/null 2>&1
         ;;
     esac
 }
@@ -2299,6 +2332,23 @@ deb ${1} ${2}-updates ${3}
     local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
     echo "${tips}
 $(gen_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+}
+
+## 更换 NixOS 发行版软件源
+function change_mirrors_NixOS() {
+    local binary_cache_source channel_source
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        binary_cache_source="https://cache.nixos.org/"
+        channel_source="https://nixos.org/channels"
+    else
+        binary_cache_source="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/store https://cache.nixos.org/"
+        channel_source="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+    fi
+    # binary cache
+    sed -i "s|^substituters.*|substituters = ${binary_cache_source}|g" $File_NixConf
+    # channel
+    nix-channel --add "${channel_source}/nixos-${SYSTEM_VERSION_NUMBER}" nixos
+    nix-channel --update >/dev/null 2>&1
 }
 
 ## EPEL (Extra Packages for Enterprise Linux) 附加软件包 - 安装或更换软件源
