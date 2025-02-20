@@ -104,7 +104,7 @@
     </tr>
     <tr>
         <td><a href="https://nixos.org" target="_blank"><img src="./docs/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"/></a>&nbsp;NixOS</td>
-        <td align="center">all</td>
+        <td align="center">19 ~ 24</td>
     </tr>
 </table>
 
@@ -116,7 +116,7 @@
 
 ***
 
-这是一个完全开源的非盈利项目，旨在为从事计算机相关行业的朋友们提供便利，使换源更简单
+这是一个完全开源的项目，旨在为从事计算机相关行业的朋友们提供便利，使换源更简单
 
 ### LICENSE
 
