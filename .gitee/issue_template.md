@@ -26,7 +26,7 @@
 - [ ] `Deepin`
 - [ ] `Zorin OS`
 - [ ] `Armbian`
-- [ ] `Proxmox`
+- [ ] `Proxmox VE`
 - [ ] `Red Hat Enterprise Linux`
 - [ ] `Fedora`
 - [ ] `CentOS`

@@ -1306,7 +1306,7 @@ function backup_original_mirrors() {
             if [ -f $File_ArmbianRelease ]; then
                 backup_file $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
             fi
-            # Proxmox
+            # Proxmox VE
             if [ -f $File_ProxmoxVersion ]; then
                 backup_file $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
             fi
@@ -1368,7 +1368,7 @@ function remove_original_mirrors() {
         if [ -f $File_ArmbianRelease ]; then
             [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
         fi
-        # Proxmox
+        # Proxmox VE
         if [ -f $File_ProxmoxVersion ]; then
             [ -f $File_ProxmoxSourceList ] && sed -i '1,$d' $File_ProxmoxSourceList
         fi
@@ -1515,7 +1515,7 @@ function change_mirrors_main() {
                 if [ -f $File_ArmbianRelease ]; then
                     diff_file $File_ArmbianSourceListBackup $File_ArmbianSourceList
                 fi
-                # Proxmox
+                # Proxmox VE
                 if [ -f $File_ProxmoxVersion ]; then
                     diff_file $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
                 fi
@@ -1881,7 +1881,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
     if [ -f $File_ArmbianRelease ]; then
         echo "deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_ArmbianSourceList
     fi
-    # Proxmox
+    # Proxmox VE
     if [ -f $File_ProxmoxVersion ]; then
         echo "deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pve ${SYSTEM_VERSION_CODENAME} pve-no-subscription
 # deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs ${SYSTEM_VERSION_CODENAME} pbs-no-subscription

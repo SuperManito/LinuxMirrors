@@ -47,7 +47,7 @@
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://www.proxmox.com" target="_blank"><img src="./docs/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Proxmox</td>
+        <td><a href="https://www.proxmox.com" target="_blank"><img src="./docs/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Proxmox VE</td>
         <td align="center">all</td>
     </tr>
     <tr>
