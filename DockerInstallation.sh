@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-01-04
+## Modified: 2025-03-14
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -741,7 +741,7 @@ function get_package_manager() {
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
         case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
-        9)
+        9 | 10)
             command="dnf"
             ;;
         esac
@@ -812,8 +812,12 @@ function configure_docker_ce_mirror() {
             7 | 8 | 9)
                 target_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
                 ;;
+            10)
+                ## 跳过尚未正式推出的 10 版本
+                target_version="9"
+                ;;
             *)
-                target_version="9" # 使用较新的版本
+                target_version="9" # 使用最新的版本
                 ;;
             esac
             sed -i "s|\$releasever|${target_version}|g" $Dir_YumRepos/docker-ce.repo

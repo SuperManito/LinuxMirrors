@@ -60,7 +60,7 @@
     </tr>
     <tr>
         <td><a href="https://www.centos.org" target="_blank"><img src="./docs/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;CentOS</td>
-        <td align="center">7 ~ 8 / Stream 8 ~ 9</td>
+        <td align="center">7 ~ 8 / Stream 8 ~ 10</td>
     </tr>
     <tr>
         <td><a href="https://rockylinux.org" target="_blank"><img src="./docs/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.25em"></a>&nbsp;Rocky Linux</td>

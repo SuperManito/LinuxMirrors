@@ -340,7 +340,7 @@ hide:
 
 - ### 关于调用脚本的互联网位置
 
-    项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L24) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名 CDN 云服务商几乎没有被劫持的风险请放心使用。
+    项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于知名 CDN 云服务商几乎没有被劫持的风险请放心使用。
 
     当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
 
