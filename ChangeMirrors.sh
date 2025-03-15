@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-14
+## Modified: 2025-03-15
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -160,6 +160,7 @@ SYSTEM_KALI="Kali"
 SYSTEM_DEEPIN="Deepin"
 SYSTEM_LINUX_MINT="Linuxmint"
 SYSTEM_ZORIN="Zorin"
+SYSTEM_RASPBERRY_PI_OS="Raspberry Pi OS"
 SYSTEM_REDHAT="RedHat"
 SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
@@ -183,6 +184,7 @@ File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
+File_RaspberryPiRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
@@ -206,6 +208,8 @@ File_ProxmoxSourceList=/etc/apt/sources.list.d/pve-no-subscription.list
 File_ProxmoxSourceListBackup=/etc/apt/sources.list.d/pve-no-subscription.list.bak
 File_LinuxMintSourceList=/etc/apt/sources.list.d/official-package-repositories.list
 File_LinuxMintSourceListBackup=/etc/apt/sources.list.d/official-package-repositories.list.bak
+File_RaspberryPiSourceList=/etc/apt/sources.list.d/raspi.list
+File_RaspberryPiSourceListBackup=/etc/apt/sources.list.d/raspi.list.bak
 File_ArchLinuxMirrorList=/etc/pacman.d/mirrorlist
 File_ArchLinuxMirrorListBackup=/etc/pacman.d/mirrorlist.bak
 File_AlpineRepositories=/etc/apk/repositories
@@ -263,32 +267,32 @@ function handle_command_options() {
     function output_command_help() {
         echo -e "\n命令选项(名称/含义/值)：
 
-  --abroad                 使用境外以及海外软件源                                         无
-  --edu                    使用中国大陆教育网软件源                                       无
-  --source                 指定软件源地址(域名或IP)                                       地址
-  --source-epel            指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                 地址
-  --source-security        指定 Debian 系统 security 仓库的软件源地址(域名或IP)           地址
-  --source-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)    地址
-  --source-portage         指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)            地址
-  --source-base-system     指定 Linux Mint 系统底层系统的软件源地址(域名或IP)	          地址
-  --branch                 指定软件源仓库(路径)                                           仓库名
-  --branch-epel            指定 EPEL 附加软件包仓库的软件源仓库(路径)                     仓库名
-  --branch-security        指定 Debian 系统 security 仓库的软件源仓库(路径)               仓库名
-  --branch-vault           指定 CentOS/AlmaLinux 系统 vault 仓库的软件源仓库(路径)        仓库名
-  --branch-portage         指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                仓库名
-  --branch-base-system	   指定 Linux Mint 系统底层系统的软件源仓库(路径)	          仓库名
-  --codename               指定 Debian 系/openKylin 操作系统的版本代号                    代号名称
-  --protocol               指定 WEB 协议                                                  http 或 https
-  --use-intranet-source    是否优先使用内网软件源地址                                     true 或 false
-  --use-official-source    是否使用目标操作系统的官方软件源                               true 或 false
-  --install-epel           是否安装 EPEL 附加软件包                                       true 或 false
-  --backup                 是否备份原有软件源                                             true 或 false
-  --upgrade-software       是否更新软件包                                                 true 或 false
-  --clean-cache            是否清理下载缓存                                               true 或 false
-  --clean-screen           是否在运行前清除屏幕上的所有内容                               true 或 false
-  --only-epel              仅更换 EPEL 软件源模式                                         无
-  --ignore-backup-tips     忽略覆盖备份提示                                               无
-  --print-diff             打印源文件修改前后差异                                         无
+  --abroad                 使用境外以及海外软件源                                            无
+  --edu                    使用中国大陆教育网软件源                                          无
+  --source                 指定软件源地址(域名或IP)                                          地址
+  --source-epel            指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                    地址
+  --source-security        指定 Debian 系统 security 仓库的软件源地址(域名或IP)              地址
+  --source-vault           指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)     地址
+  --source-portage         指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)               地址
+  --source-base-system     指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)  地址
+  --branch                 指定软件源仓库(路径)                                              仓库名
+  --branch-epel            指定 EPEL 附加软件包仓库的软件源仓库(路径)                        仓库名
+  --branch-security        指定 Debian 系统 security 仓库的软件源仓库(路径)                  仓库名
+  --branch-vault           指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)         仓库名
+  --branch-portage         指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                   仓库名
+  --branch-base-system	   指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)      仓库名
+  --codename               指定 Debian 系 / openKylin 操作系统的版本代号                     代号名称
+  --protocol               指定 WEB 协议                                                     http 或 https
+  --use-intranet-source    是否优先使用内网软件源地址                                        true 或 false
+  --use-official-source    是否使用目标操作系统的官方软件源                                  true 或 false
+  --install-epel           是否安装 EPEL 附加软件包                                          true 或 false
+  --backup                 是否备份原有软件源                                                true 或 false
+  --upgrade-software       是否更新软件包                                                    true 或 false
+  --clean-cache            是否清理下载缓存                                                  true 或 false
+  --clean-screen           是否在运行前清除屏幕上的所有内容                                  true 或 false
+  --only-epel              仅更换 EPEL 软件源模式                                            无
+  --ignore-backup-tips     忽略覆盖备份提示                                                  无
+  --print-diff             打印源文件修改前后差异                                            无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues\n"
     }
@@ -680,6 +684,11 @@ function collect_system_info() {
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
         SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
+        # Raspberry Pi OS
+        if [ -s $File_RaspberryPiRelease ]; then
+            SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
+            SYSTEM_PRETTY_NAME="${SYSTEM_RASPBERRY_PI_OS}"
+        fi
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
@@ -759,7 +768,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}" | "${SYSTEM_NIXOS}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_RASPBERRY_PI_OS}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}" | "${SYSTEM_NIXOS}")
         # 理论全部支持或不作判断
         ;;
     *)
@@ -770,12 +779,16 @@ function collect_system_info() {
         output_error "当前系统版本不在本脚本的支持范围内，请前往官网查看支持列表！"
     fi
     ## 判定系统处理器架构
-    case "$(uname -m)" in
+    DEVICE_ARCH_RAW="$(uname -m)"
+    case "${DEVICE_ARCH_ORIGIN}" in
     x86_64)
         DEVICE_ARCH="x86_64"
         ;;
     aarch64)
         DEVICE_ARCH="ARM64"
+        ;;
+    armv8l)
+        DEVICE_ARCH="ARMv8_32"
         ;;
     armv7l)
         DEVICE_ARCH="ARMv7"
@@ -783,11 +796,14 @@ function collect_system_info() {
     armv6l)
         DEVICE_ARCH="ARMv6"
         ;;
+    armv5tel)
+        DEVICE_ARCH="ARMv5"
+        ;;
     i686)
         DEVICE_ARCH="x86_32"
         ;;
     *)
-        DEVICE_ARCH="$(uname -m)"
+        DEVICE_ARCH="${DEVICE_ARCH_RAW}"
         ;;
     esac
     ## 定义软件源仓库名称
@@ -813,6 +829,9 @@ function collect_system_info() {
             else
                 SOURCE_BRANCH="ubuntu-ports"
             fi
+            ;;
+        "${SYSTEM_RASPBERRY_PI_OS}")
+            SOURCE_BRANCH="raspberrypi"
             ;;
         "${SYSTEM_RHEL}")
             case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
@@ -919,7 +938,7 @@ function check_command_options() {
         esac
     fi
     if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_SECURITY_BRANCH}" == "true" ]]; then
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]]; then
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]] || [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" && "${DEVICE_ARCH_RAW}" != "x86_64" && "${DEVICE_ARCH_RAW}" != "aarch64" ]]; then
             output_error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
         fi
     fi
@@ -1318,6 +1337,10 @@ function backup_original_mirrors() {
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
                 backup_file $File_LinuxMintSourceList $File_LinuxMintSourceListBackup "official-package-repositories.list"
             fi
+            # Raspberry Pi OS
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" ]]; then
+                backup_file $File_RaspberryPiSourceList $File_RaspberryPiSourceListBackup "raspi.list"
+            fi
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
             # /etc/yum.repos.d
@@ -1379,6 +1402,10 @@ function remove_original_mirrors() {
         # Linux Mint
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
             [ -f $File_LinuxMintSourceList ] && sed -i '1,$d' $File_LinuxMintSourceList
+        fi
+        # Raspberry Pi OS
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" ]]; then
+            [ -f $File_RaspberryPiSourceList ] && sed -i '1,$d' $File_RaspberryPiSourceList
         fi
         ;;
     "${SYSTEM_REDHAT}")
@@ -1526,6 +1553,10 @@ function change_mirrors_main() {
                 # Linux Mint
                 if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
                     diff_file $File_LinuxMintSourceListBackup $File_LinuxMintSourceList
+                fi
+                # Raspberry Pi OS
+                if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" ]]; then
+                    diff_file $File_RaspberryPiSourceListBackup $File_RaspberryPiSourceList
                 fi
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
@@ -1755,6 +1786,12 @@ deb ${1} ${2}-updates ${3}
 deb ${1} ${2}-backports ${3}
 # deb-src ${1} ${2}-backports ${3}"
     }
+    function gen_debian_source_no_backports() {
+        echo "deb ${1} ${2} ${3}
+# deb-src ${1} ${2} ${3}
+deb ${1} ${2}-updates ${3}
+# deb-src ${1} ${2}-updates ${3}"
+    }
     function gen_debian_security_source() {
         echo "deb ${1} ${2}-security ${3}
 # deb-src ${1} ${2}-security ${3}"
@@ -1839,8 +1876,7 @@ deb ${base_url} ${repository_sections}
         ## 专用源
         repository_sections="main upstream import backport"
         echo "${tips}
-deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-" >>$File_LinuxMintSourceList
+deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_LinuxMintSourceList
         ## 底层系统软件源
         local base_system_branch base_system_codename
         if [[ "${SYSTEM_VERSION_NUMBER}" == 6 ]]; then
@@ -1851,7 +1887,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
             # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-${base_system_branch}-security}}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
             echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
@@ -1878,6 +1914,62 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         fi
+        ;;
+    "${SYSTEM_RASPBERRY_PI_OS}")
+        ## 专用源
+        repository_sections="main"
+        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+            SOURCE="archive.raspberrypi.org"
+            SOURCE_BRANCH="debian"
+            base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+        fi
+        echo "${tips}
+deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_RaspberryPiSourceList
+        ## 底层系统软件源（64位系统为 Debian 官方仓库，32位为 Raspbian 仓库）
+        local base_system_branch base_system_codename
+        case "${DEVICE_ARCH_RAW}" in
+        x86_64 | aarch64)
+            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            8 | 9 | 10)
+                base_system_branch="debian-archive" # EOF
+                ;;
+            *)
+                base_system_branch="debian"
+                ;;
+            esac
+            base_system_codename="${SYSTEM_VERSION_CODENAME}"
+            case "${SYSTEM_VERSION_NUMBER}" in
+            8 | 9 | 10 | 11)
+                repository_sections="main contrib non-free"
+                ;;
+            *)
+                repository_sections="main contrib non-free non-free-firmware"
+                ;;
+            esac
+            if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+                SOURCE="deb.debian.org"
+            fi
+            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            echo "${tips}
+$(gen_debian_source_no_backports "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
+            # 处理 debian-security 仓库源
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
+            ;;
+        *)
+            base_system_branch="raspbian"
+            base_system_codename="${SYSTEM_VERSION_CODENAME}"
+            repository_sections="main contrib non-free rpi"
+            if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+                SOURCE="raspbian.raspberrypi.org"
+            fi
+            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            echo "${tips}
+deb ${base_url} ${base_system_codename} ${repository_sections}
+# deb-src ${base_url} ${base_system_codename} ${repository_sections}" >>$File_DebianSourceList
+            ;;
+        esac
         ;;
     esac
     ## 处理其它衍生操作系统的专用源

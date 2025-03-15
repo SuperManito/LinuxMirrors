@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-14
+## Modified: 2025-03-15
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -64,6 +64,7 @@ SYSTEM_KALI="Kali"
 SYSTEM_DEEPIN="Deepin"
 SYSTEM_LINUX_MINT="Linuxmint"
 SYSTEM_ZORIN="Zorin"
+SYSTEM_RASPBERRY_PI_OS="Raspberry Pi OS"
 SYSTEM_REDHAT="RedHat"
 SYSTEM_RHEL="Red Hat Enterprise Linux"
 SYSTEM_CENTOS="CentOS"
@@ -388,6 +389,11 @@ function collect_system_info() {
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
         SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
+        # Raspberry Pi OS
+        if [ -s $File_RaspberryPiRelease ]; then
+            SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
+            SYSTEM_PRETTY_NAME="${SYSTEM_RASPBERRY_PI_OS}"
+        fi
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
@@ -406,36 +412,37 @@ function collect_system_info() {
         ;;
     esac
     ## 判定系统处理器架构
-    case "$(uname -m)" in
+    DEVICE_ARCH_RAW="$(uname -m)"
+    case "${DEVICE_ARCH_RAW}" in
     x86_64)
         DEVICE_ARCH="x86_64"
-        SOURCE_ARCH="amd64"
         ;;
     aarch64)
         DEVICE_ARCH="ARM64"
-        SOURCE_ARCH="arm64"
+        ;;
+    armv8l)
+        DEVICE_ARCH="ARMv8_32"
         ;;
     armv7l)
         DEVICE_ARCH="ARMv7"
-        SOURCE_ARCH="armhf"
         ;;
     armv6l)
         DEVICE_ARCH="ARMv6"
-        SOURCE_ARCH="armhf"
+        ;;
+    armv5tel)
+        DEVICE_ARCH="ARMv5"
         ;;
     ppc64le)
         DEVICE_ARCH="ppc64le"
-        SOURCE_ARCH="ppc64le"
         ;;
     s390x)
         DEVICE_ARCH="s390x"
-        SOURCE_ARCH="s390x"
         ;;
     i386 | i686)
         output_error "Docker Engine 不支持安装在 x86_32 架构的环境上！"
         ;;
     *)
-        output_error "未知的系统架构：$(uname -m)"
+        output_error "未知的系统架构：${DEVICE_ARCH_RAW}"
         ;;
     esac
     ## 定义软件源仓库名称
@@ -451,6 +458,16 @@ function collect_system_info() {
                 ;;
             "${SYSTEM_RHEL}")
                 SOURCE_BRANCH="rhel"
+                ;;
+            "${SYSTEM_RASPBERRY_PI_OS}")
+                case "${DEVICE_ARCH_RAW}" in
+                x86_64 | aarch64)
+                    SOURCE_BRANCH="debian"
+                    ;;
+                *)
+                    SOURCE_BRANCH="raspbian"
+                    ;;
+                esac
                 ;;
             *)
                 # 部分 Debian 系衍生操作系统使用 Debian 12 的 docker ce 源
@@ -799,7 +816,7 @@ function configure_docker_ce_mirror() {
         fi
         chmod a+r $file_keyring
         ## 添加源
-        echo "deb [arch=${SOURCE_ARCH} signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
         apt-get update
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")

@@ -51,6 +51,10 @@
         <td align="center">all</td>
     </tr>
     <tr>
+        <td><a href="https://www.raspberrypi.com" target="_blank"><img src="./docs/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a>&nbsp;Raspberry Pi OS</td>
+        <td align="center">all</td>
+    </tr>
+    <tr>
         <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="./docs/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a>&nbsp;Red Hat Enterprise Linux</td>
         <td align="center">7 ~ 9</td>
     </tr>

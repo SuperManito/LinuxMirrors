@@ -154,7 +154,7 @@ hide:
                 apt-get install -y curl
                 ```
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `openKylin`
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
                 新装系统需要先执行一遍更新 `apt-get update`
 
@@ -282,7 +282,7 @@ hide:
                 apt-get update
                 ```
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `openKylin`
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
             === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
@@ -360,7 +360,7 @@ hide:
 
         默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
 
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `openKylin`
+        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
     === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
@@ -384,15 +384,15 @@ hide:
 | `--source` | 指定软件源地址（域名或IP） | `地址` |
 | `--source-epel` | 指定 EPEL 附加软件包仓库的软件源地址（域名或IP） | `地址` |
 | `--source-security` | 指定 Debian 系统 security 仓库的软件源地址（域名或IP） | `地址` |
-| `--source-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
+| `--source-vault` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
 | `--source-portage` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
-| `--source-base-system` | 指定 Linux Mint 系统底层系统的软件源地址（域名或IP） | `地址` |
+| `--source-base-system` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址（域名或IP） | `地址` |
 | `--branch` | 指定软件源仓库（路径） | `仓库名` |
 | `--branch-epel` | 指定 EPEL 附加软件包仓库的软件源仓库（路径） | `仓库名` |
 | `--branch-security` | 指定 Debian 系统 security 仓库的软件源仓库（路径） | `仓库名` |
-| `--branch-vault` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
+| `--branch-vault` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
 | `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
-| `--branch-base-system` | 指定 Linux Mint 系统底层系统的软件源仓库（路径） | `仓库名` |
+| `--branch-base-system` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库（路径） | `仓库名` |
 | `--codename` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
 | `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
@@ -437,6 +437,7 @@ hide:
         | <a href="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> Zorin OS | `ubuntu` `ubuntu-ports` |
         | <a href="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian | `armbian` |
         | <a href="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox VE | `proxmox` |
+        | <a href="https://www.raspberrypi.com" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> Raspberry Pi OS | `raspberrypi` `raspbian` `debian` `debian-archive` |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora | `fedora` `fedora-archive` |
         | <a href="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS | `centos` `centos-stream` `centos-altarch` `centos-vault` |
@@ -565,15 +566,15 @@ hide:
 | `SOURCE` | 指定软件源地址（域名或IP） | `地址` |
 | `SOURCE_EPEL` | 指定 EPEL 附加软件包仓库的软件源地址（域名或IP） | `地址` |
 | `SOURCE_SECURITY` | 指定 Debian 系统 security 仓库的软件源地址（域名或IP） | `地址` |
-| `SOURCE_VAULT` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
+| `SOURCE_VAULT` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
 | `SOURCE_PORTAGE` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
-| `SOURCE_BASE_SYSTEM` | 指定 Linux Mint 系统底层系统的软件源地址（域名或IP） | `地址` |
+| `SOURCE_BASE_SYSTEM` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址（域名或IP） | `地址` |
 | `SOURCE_BRANCH` | 指定软件源仓库（路径） | `仓库名` |
 | `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加软件包仓库的软件源仓库（路径） | `仓库名` |
 | `SOURCE_SECURITY_BRANCH` | 指定 Debian 系统 security 仓库的软件源仓库（路径） | `仓库名` |
-| `SOURCE_VAULT_BRANCH` | 指定 CentOS/AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
+| `SOURCE_VAULT_BRANCH` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
 | `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
-| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint 系统底层系统的软件源仓库（路径） | `仓库名` |
+| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库（路径） | `仓库名` |
 | `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
 | `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |
