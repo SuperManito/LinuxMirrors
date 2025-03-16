@@ -84,6 +84,7 @@ File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
+File_RaspberryPiRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
