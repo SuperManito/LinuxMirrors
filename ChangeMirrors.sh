@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-15
+## Modified: 2025-03-16
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -184,7 +184,7 @@ File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
-File_RaspberryPiRelease=/etc/rpi-issue
+File_RaspberryPiOSRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
@@ -646,25 +646,25 @@ function collect_system_info() {
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 判定当前系统派系
-    if [ -s $File_DebianVersion ]; then
+    if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
-    elif [ -s $File_OracleLinuxRelease ]; then
+    elif [ -s "${File_OracleLinuxRelease}" ]; then
         output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
-    elif [ -s $File_RedHatRelease ]; then
+    elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
-    elif [ -s $File_openEulerRelease ]; then
+    elif [ -s "${File_openEulerRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
-    elif [ -s $File_OpenCloudOSRelease ]; then
+    elif [ -s "${File_OpenCloudOSRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
-    elif [ -s $File_AnolisOSRelease ]; then
+    elif [ -s "${File_AnolisOSRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
-    elif [ -s $File_openKylinVersion ]; then
+    elif [ -s "${File_openKylinVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENKYLIN}"
-    elif [ -f $File_ArchLinuxRelease ]; then
+    elif [ -f "${File_ArchLinuxRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_ARCH}"
-    elif [ -f $File_AlpineRelease ]; then
+    elif [ -f "${File_AlpineRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_ALPINE}"
-    elif [ -f $File_GentooRelease ]; then
+    elif [ -f "${File_GentooRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_GENTOO}"
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
@@ -685,7 +685,7 @@ function collect_system_info() {
         SYSTEM_JUDGMENT="$(lsb_release -is)"
         SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
         # Raspberry Pi OS
-        if [ -s $File_RaspberryPiRelease ]; then
+        if [ -s "${File_RaspberryPiOSRelease}" ]; then
             SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
             SYSTEM_PRETTY_NAME="${SYSTEM_RASPBERRY_PI_OS}"
         fi
@@ -1319,18 +1319,18 @@ function backup_original_mirrors() {
             ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
             # Debian DEB822 格式源文件
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
-                [ -f $File_DebianSources ] && backup_file $File_DebianSources $File_DebianSourcesBackup "debian.sources"
+                [ -f "${File_DebianSources}" ] && backup_file $File_DebianSources $File_DebianSourcesBackup "debian.sources"
             fi
             # Ubuntu DEB822 格式源文件
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
-                [ -f $File_UbuntuSources ] && backup_file $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
+                [ -f "${File_UbuntuSources}" ] && backup_file $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
             fi
             # Armbian
-            if [ -f $File_ArmbianRelease ]; then
+            if [ -f "${File_ArmbianRelease}" ]; then
                 backup_file $File_ArmbianSourceList $File_ArmbianSourceListBackup "armbian.list"
             fi
             # Proxmox VE
-            if [ -f $File_ProxmoxVersion ]; then
+            if [ -f "${File_ProxmoxVersion}" ]; then
                 backup_file $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
             fi
             # Linux Mint
@@ -1366,7 +1366,7 @@ function backup_original_mirrors() {
             backup_file $File_GentooReposConf $File_GentooReposConfBackup "gentoo.conf"
             ;;
         "${SYSTEM_NIXOS}")
-            [ ! -d $Dir_NixConfig ] && mkdir -p $Dir_NixConfig
+            [ ! -d "${Dir_NixConfig}" ] && mkdir -p "${Dir_NixConfig}"
             # /etc/nix/nix.conf
             backup_file $File_NixConf $File_NixConfBackup "nix.conf"
             ;;
@@ -1379,38 +1379,38 @@ function remove_original_mirrors() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
-            [ -f $File_DebianSourceList ] && sed -i '1,$d' $File_DebianSourceList
+            [ -f "${File_DebianSourceList}" ] && sed -i '1,$d' $File_DebianSourceList
         fi
-        [ -d $Dir_DebianExtendSource ] || mkdir -p $Dir_DebianExtendSource
+        [ -d "${Dir_DebianExtendSource}" ] || mkdir -p $Dir_DebianExtendSource
         ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
         # Debian DEB822 格式源文件
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
-            [ -f $File_DebianSources ] && rm -rf $File_DebianSources
+            [ -f "${File_DebianSources}" ] && rm -rf "${File_DebianSources}"
         fi
         # Ubuntu DEB822 格式源文件
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
-            [ -f $File_UbuntuSources ] && rm -rf $File_UbuntuSources
+            [ -f "${File_UbuntuSources}" ] && rm -rf "${File_UbuntuSources}"
         fi
         # Armbian
-        if [ -f $File_ArmbianRelease ]; then
-            [ -f $File_ArmbianSourceList ] && sed -i '1,$d' $File_ArmbianSourceList
+        if [ -f "${File_ArmbianRelease}" ]; then
+            [ -f "${File_ArmbianSourceList}" ] && sed -i '1,$d' $File_ArmbianSourceList
         fi
         # Proxmox VE
-        if [ -f $File_ProxmoxVersion ]; then
-            [ -f $File_ProxmoxSourceList ] && sed -i '1,$d' $File_ProxmoxSourceList
+        if [ -f "${File_ProxmoxVersion}" ]; then
+            [ -f "${File_ProxmoxSourceList}" ] && sed -i '1,$d' $File_ProxmoxSourceList
         fi
         # Linux Mint
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
-            [ -f $File_LinuxMintSourceList ] && sed -i '1,$d' $File_LinuxMintSourceList
+            [ -f "${File_LinuxMintSourceList}" ] && sed -i '1,$d' $File_LinuxMintSourceList
         fi
         # Raspberry Pi OS
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" ]]; then
-            [ -f $File_RaspberryPiSourceList ] && sed -i '1,$d' $File_RaspberryPiSourceList
+            [ -f "${File_RaspberryPiSourceList}" ] && sed -i '1,$d' $File_RaspberryPiSourceList
         fi
         ;;
     "${SYSTEM_REDHAT}")
-        if [ ! -d $Dir_YumRepos ]; then
-            mkdir -p $Dir_YumRepos
+        if [ ! -d "${Dir_YumRepos}" ]; then
+            mkdir -p "${Dir_YumRepos}"
             return
         fi
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
@@ -1429,7 +1429,7 @@ function remove_original_mirrors() {
                     rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
                     ;;
                 *)
-                    if [ -f $Dir_YumRepos/epel.repo ]; then
+                    if [ -f "${Dir_YumRepos}/epel.repo" ]; then
                         ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
                     else
                         rm -rf $Dir_YumRepos/*
@@ -1438,7 +1438,7 @@ function remove_original_mirrors() {
                 esac
                 ;;
             "${SYSTEM_CENTOS}")
-                if [ -f $Dir_YumRepos/epel.repo ]; then
+                if [ -f "${Dir_YumRepos}/epel.repo" ]; then
                     ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
                 else
                     rm -rf $Dir_YumRepos/*
@@ -1477,37 +1477,37 @@ function remove_original_mirrors() {
         fi
         ;;
     "${SYSTEM_OPENEULER}")
-        if [ ! -d $Dir_YumRepos ]; then
+        if [ ! -d "${Dir_YumRepos}" ]; then
             mkdir -p $Dir_YumRepos
             return
         fi
         rm -rf $Dir_YumRepos/openEuler.repo
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        if [ ! -d $Dir_YumRepos ]; then
+        if [ ! -d "${Dir_YumRepos}" ]; then
             mkdir -p $Dir_YumRepos
             return
         fi
         rm -rf $Dir_YumRepos/OpenCloudOS*
         ;;
     "${SYSTEM_ANOLISOS}")
-        if [ ! -d $Dir_YumRepos ]; then
+        if [ ! -d "${Dir_YumRepos}" ]; then
             mkdir -p $Dir_YumRepos
             return
         fi
         rm -rf $Dir_YumRepos/AnolisOS*
         ;;
     "${SYSTEM_OPENSUSE}")
-        [ -d $Dir_ZYppRepos ] && rm -rf $Dir_ZYppRepos/repo-*
+        [ -d "${Dir_ZYppRepos}" ] && rm -rf $Dir_ZYppRepos/repo-*
         ;;
     "${SYSTEM_ARCH}")
-        [ -f $File_ArchLinuxMirrorList ] && sed -i '1,$d' $File_ArchLinuxMirrorList
+        [ -f "${File_ArchLinuxMirrorList}" ] && sed -i '1,$d' $File_ArchLinuxMirrorList
         ;;
     "${SYSTEM_ALPINE}")
-        [ -f $File_AlpineRepositories ] && sed -i '1,$d' $File_AlpineRepositories
+        [ -f "${File_AlpineRepositories}" ] && sed -i '1,$d' $File_AlpineRepositories
         ;;
     "${SYSTEM_GENTOO}")
-        [ -f $File_GentooReposConf ] && sed -i '1,$d' $File_GentooReposConf
+        [ -f "${File_GentooReposConf}" ] && sed -i '1,$d' $File_GentooReposConf
         ;;
     esac
 }
@@ -1520,7 +1520,7 @@ function change_mirrors_main() {
         function diff_file() {
             local diff_file=$1
             local origin_file=$2
-            if [[ -s $diff_file ]] && [[ -s $origin_file ]]; then
+            if [ -s "${diff_file}" ] && [ -s "${origin_file}" ]; then
                 if [[ "$(cat "${diff_file}")" != "$(cat "${origin_file}")" ]]; then
                     echo -e "\n${BLUE}${diff_file}${PLAIN} -> ${BLUE}${origin_file}${PLAIN}"
                     diff "${diff_file}" "${origin_file}" -d --color=always -I -B -E
@@ -1543,11 +1543,11 @@ function change_mirrors_main() {
                     diff_file $File_DebianSourceListBackup $File_DebianSourceList
                 fi
                 # Armbian
-                if [ -f $File_ArmbianRelease ]; then
+                if [ -f "${File_ArmbianRelease}" ]; then
                     diff_file $File_ArmbianSourceListBackup $File_ArmbianSourceList
                 fi
                 # Proxmox VE
-                if [ -f $File_ProxmoxVersion ]; then
+                if [ -f "${File_ProxmoxVersion}" ]; then
                     diff_file $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
                 fi
                 # Linux Mint
@@ -1974,11 +1974,11 @@ deb ${base_url} ${base_system_codename} ${repository_sections}
     esac
     ## 处理其它衍生操作系统的专用源
     # Armbian
-    if [ -f $File_ArmbianRelease ]; then
+    if [ -f "${File_ArmbianRelease}" ]; then
         echo "deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_ArmbianSourceList
     fi
     # Proxmox VE
-    if [ -f $File_ProxmoxVersion ]; then
+    if [ -f "${File_ProxmoxVersion}" ]; then
         echo "deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pve ${SYSTEM_VERSION_CODENAME} pve-no-subscription
 # deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs ${SYSTEM_VERSION_CODENAME} pbs-no-subscription
 # deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs-client ${SYSTEM_VERSION_CODENAME} pbs-client-no-subscription
@@ -2388,7 +2388,7 @@ function change_mirrors_Gentoo() {
         if [ $? -eq 0 ]; then
             sed -i "/^GENTOO_MIRRORS=/d" $File_GentooMakeConf
         fi
-        [ -f $File_GentooReposConf ] && rm -rf $File_GentooReposConf
+        [ -f "${File_GentooReposConf}" ] && rm -rf $File_GentooReposConf
         return
     fi
     ## 修改源
@@ -2483,11 +2483,11 @@ function change_mirrors_or_install_EPEL() {
         rm -rf $Dir_YumRepos/epel*
     fi
     ## 删除原有 repo 源文件
-    if [ -d $Dir_YumRepos ]; then
+    if [ -d "${Dir_YumRepos}" ]; then
         ls $Dir_YumRepos | grep epel -q
         [ $? -eq 0 ] && rm -rf $Dir_YumRepos/epel*
     fi
-    if [ -d $Dir_YumReposBackup ]; then
+    if [ -d "${Dir_YumReposBackup}" ]; then
         ls $Dir_YumReposBackup | grep epel -q
         [ $? -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
     fi

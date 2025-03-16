@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-15
+## Modified: 2025-03-16
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -84,7 +84,7 @@ File_LinuxRelease=/etc/os-release
 File_RedHatRelease=/etc/redhat-release
 File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
-File_RaspberryPiRelease=/etc/rpi-issue
+File_RaspberryPiOSRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
@@ -358,19 +358,19 @@ function collect_system_info() {
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 判定当前系统派系
-    if [ -s $File_DebianVersion ]; then
+    if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
-    elif [ -s $File_RedHatRelease ]; then
+    elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
-    elif [ -s $File_openEulerRelease ]; then
+    elif [ -s "${File_openEulerRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
-    elif [ -s $File_OpenCloudOSRelease ]; then
+    elif [ -s "${File_OpenCloudOSRelease}" ]; then
         # 拦截 OpenCloudOS 9 及以上版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -ge 9 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
-    elif [ -s $File_AnolisOSRelease ]; then
+    elif [ -s "${File_AnolisOSRelease}" ]; then
         # 拦截 Anolis OS 8.8 及以上版本，不支持从 Docker 官方仓库安装，23 版本支持
         if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
@@ -391,7 +391,7 @@ function collect_system_info() {
         SYSTEM_JUDGMENT="$(lsb_release -is)"
         SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
         # Raspberry Pi OS
-        if [ -s $File_RaspberryPiRelease ]; then
+        if [ -s "${File_RaspberryPiOSRelease}" ]; then
             SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
             SYSTEM_PRETTY_NAME="${SYSTEM_RASPBERRY_PI_OS}"
         fi
@@ -700,7 +700,7 @@ function close_firewall_service() {
         if [[ "${CLOSE_FIREWALL}" == "true" ]]; then
             local SelinuxConfig=/etc/selinux/config
             systemctl disable --now firewalld >/dev/null 2>&1
-            [ -s $SelinuxConfig ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
+            [ -s "${SelinuxConfig}" ] && sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" $SelinuxConfig && setenforce 0 >/dev/null 2>&1
         fi
     fi
 }
@@ -809,7 +809,7 @@ function configure_docker_ce_mirror() {
         ## 处理 GPG 密钥
         local file_keyring="/etc/apt/keyrings/docker.asc"
         apt-key del 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88 >/dev/null 2>&1 # 删除旧的密钥
-        [ -f $file_keyring ] && rm -rf $file_keyring
+        [ -f "${file_keyring}" ] && rm -rf $file_keyring
         install -m 0755 -d /etc/apt/keyrings
         curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg -o $file_keyring >/dev/null
         if [ $? -ne 0 ]; then
@@ -881,7 +881,7 @@ function install_docker_engine() {
             esac
         else
             export_version_list
-            if [ ! -s $DockerVersionFile ]; then
+            if [ ! -s "${DockerVersionFile}" ]; then
                 rm -rf $DockerVersionFile
                 output_error "查询 Docker Engine 版本列表失败！"
             fi
@@ -954,8 +954,8 @@ function install_docker_engine() {
         if [[ "${REGISTRY_SOURCEL}" == "registry.hub.docker.com" ]]; then
             return
         fi
-        if [ -d $DockerDir ] && [ -e $DockerConfig ]; then
-            if [ -e $DockerConfigBackup ]; then
+        if [ -d "${DockerDir}" ] && [ -e "${DockerConfig}" ]; then
+            if [ -e "${DockerConfigBackup}" ]; then
                 if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                     if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                         echo ''
