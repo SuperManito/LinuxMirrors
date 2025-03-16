@@ -1159,10 +1159,6 @@ function choose_install_epel_packages() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]] || [[ "${INSTALL_EPEL}" == "false" ]]; then
             INSTALL_EPEL="false"
             return
-        elif [ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 10 ]; then
-            # 跳过尚未正式推出的 10 版本
-            INSTALL_EPEL="false"
-            return
         else
             check_install_status
         fi
@@ -2469,10 +2465,6 @@ function change_mirrors_or_install_EPEL() {
     ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，暂无适配的必要）
     if [[ "${target_version}" == "7" ]]; then
         [ -z "${SOURCE_EPEL_BRANCH}" ] && SOURCE_EPEL_BRANCH="epel-archive"
-        return
-    fi
-    ## 跳过尚未正式推出的 10 版本
-    if [[ "${target_version}" == "10" ]]; then
         return
     fi
     ## 安装 EPEL 软件包
@@ -5898,6 +5890,72 @@ EOF
 ## 生成 EPEL 附加软件包 repo 源文件
 function gen_repo_files_EPEL() {
     case "${1}" in
+    10)
+        cat <<'EOF' >$Dir_YumRepos/epel.repo
+[epel]
+name=Extra Packages for Enterprise Linux $releasever - $basearch
+#baseurl=https://download.example/pub/epel/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=24h
+countme=1
+enabled=1
+
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
+#baseurl=https://download.example/pub/epel/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=24h
+enabled=0
+
+[epel-source]
+name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
+#baseurl=https://download.example/pub/epel/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=24h
+enabled=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+[epel-testing]
+name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
+#baseurl=https://download.example/pub/epel/testing/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=24h
+countme=1
+enabled=0
+
+[epel-testing-debuginfo]
+name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
+#baseurl=https://download.example/pub/epel/testing/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=24h
+enabled=0
+
+[epel-testing-source]
+name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
+#baseurl=https://download.example/pub/epel/testing/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=24h
+enabled=0
+EOF
+        ;;
     9)
         cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
