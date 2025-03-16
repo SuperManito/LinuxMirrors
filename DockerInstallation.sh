@@ -827,15 +827,12 @@ function configure_docker_ce_mirror() {
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
             local target_version
             case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
-            7 | 8 | 9)
+            7 | 8 | 9 | 10)
                 target_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
                 ;;
-            10)
-                ## 跳过尚未正式推出的 10 版本
-                target_version="9"
-                ;;
             *)
-                target_version="9" # 使用最新的版本
+                ## 目前红帽系衍生系统还没有普及 10 版本
+                target_version="9" # 使用较新的版本
                 ;;
             esac
             sed -i "s|\$releasever|${target_version}|g" $Dir_YumRepos/docker-ce.repo
