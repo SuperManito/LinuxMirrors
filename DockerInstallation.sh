@@ -1111,7 +1111,8 @@ function interactive_select_mirror() {
         tput rc
         tput cnorm
         tput rmcup
-        exit
+        echo -e "\n${TIP} ${RED}操作已取消${PLAIN}\n"
+        exit 130
     }
     function draw_menu() {
         tput clear
@@ -1201,7 +1202,8 @@ function interactive_select_boolean() {
     function cleanup() {
         clear_menu
         tput cnorm
-        exit
+        echo -e "\n${TIP} ${RED}操作已取消${PLAIN}\n"
+        exit 130
     }
     function draw_menu() {
         # 绘制菜单不改变光标位置
