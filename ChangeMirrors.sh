@@ -2465,29 +2465,26 @@ function change_mirrors_or_install_EPEL() {
     ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，暂无适配的必要）
     if [[ "${epel_version}" == "7" ]]; then
         [ -z "${SOURCE_EPEL_BRANCH}" ] && SOURCE_EPEL_BRANCH="epel-archive"
-        echo -e "\n$WARN Extra Packages for Enterprise Linux 7 已结束生命周期并被官方移动至 ${BLUE}epel-archive${PLAIN} 仓库！"
-        echo -e "\n$TIP 目前部分镜像站没有同步该仓库，若换源后出现错误那么请先检查目标镜像站是否支持该仓库！\n\n       ${GREEN}➜${PLAIN}  ${WEB_PROTOCOL}://${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}"
+        echo -e "\n$WARN Extra Packages for Enterprise Linux 7 已结束生命周期并被官方移至归档库！"
+        echo -e "\n$TIP 目前部分镜像站没有同步该归档仓库，若换源后出现错误那么请先检查目标镜像站是否支持该仓库。\n\n${GREEN}➜${PLAIN}  ${WEB_PROTOCOL}://${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}"
     fi
     ## 安装 EPEL 软件包
     if [ $VERIFICATION_EPEL -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
         local package_manager="$(get_package_manager)"
+        local package_url="https://mirrors.cloud.tencent.com/epel/epel-release-latest-${epel_version}.noarch.rpm"
         case "${epel_version}" in
         7)
-            $package_manager install -y https://mirrors.cloud.tencent.com/epel-archive/7/${DEVICE_ARCH_RAW}/Packages/e/epel-release-7-14.noarch.rpm
+            package_url="https://mirrors.cloud.tencent.com/epel-archive/7/${DEVICE_ARCH_RAW}/Packages/e/epel-release-7-14.noarch.rpm"
             ;;
         9)
-            ## CentOS Stream 9 特殊，有两个不同的发行包
+            ## CentOS Stream 9 特殊，有两个不同的发行包 epel-release epel-next-release
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
-                $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel{,-next}-release-latest-9.noarch.rpm
-            else
-                $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-9.noarch.rpm
+                package_url="https://mirrors.cloud.tencent.com/epel/epel{,-next}-release-latest-9.noarch.rpm"
             fi
             ;;
-        *)
-            $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${epel_version}.noarch.rpm
-            ;;
         esac
+        $package_manager install -y "${package_url}"
         rm -rf $Dir_YumRepos/epel*
     fi
     ## 删除原有 repo 源文件
