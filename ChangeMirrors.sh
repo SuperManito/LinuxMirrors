@@ -2449,13 +2449,13 @@ function change_mirrors_or_install_EPEL() {
         return
     fi
     ## 确定安装版本（不支持安装的系统直接跳出）
-    local target_version
+    local epel_version
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_REDHAT}")
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
             return
         else
-            target_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
+            epel_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
         fi
         ;;
     *)
@@ -2463,15 +2463,31 @@ function change_mirrors_or_install_EPEL() {
         ;;
     esac
     ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，暂无适配的必要）
-    if [[ "${target_version}" == "7" ]]; then
+    if [[ "${epel_version}" == "7" ]]; then
         [ -z "${SOURCE_EPEL_BRANCH}" ] && SOURCE_EPEL_BRANCH="epel-archive"
-        return
+        echo -e "\n$WARN Extra Packages for Enterprise Linux 7 已结束生命周期并被官方移动至 ${BLUE}epel-archive${PLAIN} 仓库！"
+        echo -e "\n$TIP 目前部分镜像站没有同步该仓库，若换源后出现错误那么请先检查目标镜像站是否支持该仓库！\n\n       ${GREEN}➜${PLAIN}  ${WEB_PROTOCOL}://${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}"
     fi
     ## 安装 EPEL 软件包
     if [ $VERIFICATION_EPEL -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
         local package_manager="$(get_package_manager)"
-        $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${target_version}.noarch.rpm
+        case "${epel_version}" in
+        7)
+            $package_manager install -y https://mirrors.cloud.tencent.com/epel-archive/7/${DEVICE_ARCH_RAW}/Packages/e/epel-release-7-14.noarch.rpm
+            ;;
+        9)
+            ## CentOS Stream 9 特殊，有两个不同的发行包
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
+                $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel{,-next}-release-latest-9.noarch.rpm
+            else
+                $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-9.noarch.rpm
+            fi
+            ;;
+        *)
+            $package_manager install -y https://mirrors.cloud.tencent.com/epel/epel-release-latest-${epel_version}.noarch.rpm
+            ;;
+        esac
         rm -rf $Dir_YumRepos/epel*
     fi
     ## 删除原有 repo 源文件
@@ -2485,6 +2501,9 @@ function change_mirrors_or_install_EPEL() {
     fi
     ## 生成 repo 源文件
     gen_repo_files_EPEL "${SYSTEM_VERSION_NUMBER_MAJOR}"
+    if [[ "${epel_version}" == 9 ]] && [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
+        gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_NUMBER_MAJOR}"
+    fi
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
     fi
@@ -2492,9 +2511,17 @@ function change_mirrors_or_install_EPEL() {
     sed -e "s|^#baseurl=http\(s\)\?|baseurl=${WEB_PROTOCOL}|g" \
         -e "s|^metalink=|#metalink=|g" \
         -e "s|download.example/pub/epel|${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}|g" \
-        -e "s|download.fedoraproject.org/pub/epel|${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}|g" \
         -i \
         $Dir_YumRepos/epel*
+    ## 启用所需的仓库（EPEL 需要结合 PowerTools / CRB 使用）
+    case "${epel_version}" in
+    9 | 10)
+        dnf config-manager --set-enabled crb >/dev/null 2>&1
+        ;;
+    8)
+        dnf config-manager --set-enabled powertools >/dev/null 2>&1
+        ;;
+    esac
 }
 
 ## 选择系统包管理器
@@ -6155,8 +6182,8 @@ EOF
         cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
 name=Extra Packages for Enterprise Linux 7 - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
+#baseurl=http://download.example/pub/epel/7/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch&infra=$infra&content=$contentdir
 failovermethod=priority
 enabled=1
 gpgcheck=1
@@ -6164,8 +6191,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
 [epel-debuginfo]
 name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
-#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
+#baseurl=http://download.example/pub/epel/7/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch&infra=$infra&content=$contentdir
 failovermethod=priority
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
@@ -6173,8 +6200,8 @@ gpgcheck=1
 
 [epel-source]
 name=Extra Packages for Enterprise Linux 7 - $basearch - Source
-#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
+#baseurl=http://download.example/pub/epel/7/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch&infra=$infra&content=$contentdir
 failovermethod=priority
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
@@ -6183,8 +6210,8 @@ EOF
         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
 [epel-testing]
 name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
+#baseurl=http://download.example/pub/epel/testing/7/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch&infra=$infra&content=$contentdir
 failovermethod=priority
 enabled=0
 gpgcheck=1
@@ -6192,8 +6219,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 
 [epel-testing-debuginfo]
 name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
+#baseurl=http://download.example/pub/epel/testing/7/$basearch/debug
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch&infra=$infra&content=$contentdir
 failovermethod=priority
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
@@ -6201,11 +6228,71 @@ gpgcheck=1
 
 [epel-testing-source]
 name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
-#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
+#baseurl=http://download.example/pub/epel/testing/7/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch&infra=$infra&content=$contentdir
 failovermethod=priority
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+EOF
+        ;;
+    esac
+}
+
+## 生成 EPEL 附加软件包 NEXT repo 源文件
+function gen_repo_files_EPEL_NEXT() {
+    case "${1}" in
+    9)
+        cat <<'EOF' >$Dir_YumRepos/epel-next.repo
+[epel-next]
+name=Extra Packages for Enterprise Linux 9 - Next - $basearch
+#baseurl=https://download.example/pub/epel/next/9/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-9&arch=$basearch&infra=$infra&content=$contentdir
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
+
+[epel-next-debuginfo]
+name=Extra Packages for Enterprise Linux 9 - Next - $basearch - Debug
+#baseurl=https://download.example/pub/epel/next/9/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-debug-9&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
+gpgcheck=1
+
+[epel-next-source]
+name=Extra Packages for Enterprise Linux 9 - Next - $basearch - Source
+#baseurl=https://download.example/pub/epel/next/9/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-source-9&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
+gpgcheck=1
+EOF
+        cat <<'EOF' >$Dir_YumRepos/epel-next-testing.repo
+[epel-next-testing]
+name=Extra Packages for Enterprise Linux 9 - Next - Testing - $basearch
+#baseurl=https://download.example/pub/epel/testing/next/9/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-9&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
+
+[epel-next-testing-debuginfo]
+name=Extra Packages for Enterprise Linux 9 - Next - Testing - $basearch - Debug
+#baseurl=https://download.example/pub/epel/testing/next/9/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-debug-9&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
+gpgcheck=1
+
+[epel-next-testing-source]
+name=Extra Packages for Enterprise Linux 9 - Next - Testing - $basearch - Source
+#baseurl=https://download.example/pub/epel/testing/next/9/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-source-9&arch=$basearch&infra=$infra&content=$contentdir
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
 gpgcheck=1
 EOF
         ;;
