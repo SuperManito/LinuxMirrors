@@ -136,7 +136,7 @@ hide:
 
     ---
 
-    请通过方向键 ++arrow-up++++arrow-down++++arrow-left++++arrow-right++ 或 ++w++++a++++s++++d++ 控制选项并按 ++enter++ 回车键确认。如果发现交互异常那么请改变终端软件的窗口大小后重试，窗口尽量不要太小。
+    请通过方向键 ++arrow-up++++arrow-down++++arrow-left++++arrow-right++ 或 ++w++++a++++s++++d++ 控制选项并按 ++enter++ 回车键确认。如果发现交互异常那么请改变终端软件的窗口大小后重试，另外窗口不要铺满全屏。
 
 </div>
 

@@ -1185,22 +1185,26 @@ function interactive_select_boolean() {
     _SELECT_RESULT=""
     local selected=0
     local message="$1"
+    local menu_height=3 # 菜单总高度(标题行+空行+选项行)
+    local original_line
+    function store_position() {
+        # 保存菜单开始前的行位置
+        original_line=$(tput lines)
+    }
     function clear_menu() {
-        tput rc
-        for ((i = 0; i < 2 + 2; i++)); do
-            echo -e "\r\033[K"
+        # 向上移动到菜单开始位置并清除菜单
+        for ((i = 0; i < ${menu_height}; i++)); do
+            tput cuu1 # 光标上移一行
+            tput el   # 清除当前行
         done
-        tput rc
     }
     function cleanup() {
         clear_menu
-        tput rc
         tput cnorm
-        tput rmcup
         exit
     }
     function draw_menu() {
-        tput rc
+        # 绘制菜单不改变光标位置
         echo -e "╭─ ${message}"
         echo -e "│"
         if [ "$selected" -eq 0 ]; then
@@ -1209,16 +1213,7 @@ function interactive_select_boolean() {
             echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m 否"
         fi
     }
-    function draw_menu_confirmed() {
-        tput rc
-        echo -e "╭─ ${message}"
-        echo -e "│"
-        if [ "$selected" -eq 0 ]; then
-            echo -e "╰─ \033[32m●\033[0m \033[1m是\033[0m\033[2m / ○ 否\033[0m"
-        else
-            echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
-        fi
-    }
+
     function read_key() {
         IFS= read -rsn1 key
         if [[ $key == $'\x1b' ]]; then
@@ -1227,10 +1222,10 @@ function interactive_select_boolean() {
         fi
         echo "$key"
     }
-    tput sc                 # 保存光标位置
-    tput civis              # 隐藏光标
-    trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
-    draw_menu               # 初始化菜单位置
+    tput civis     # 隐藏光标
+    store_position # 记录当前位置
+    trap "cleanup" INT TERM
+    draw_menu # 初始化菜单位置
     # 处理选择
     while true; do
         key=$(read_key)
@@ -1239,32 +1234,36 @@ function interactive_select_boolean() {
             # 左箭头 / A
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
+                clear_menu
+                draw_menu
             fi
             ;;
         "[C" | "d" | "D")
             # 右箭头 / D
             if [ "$selected" -lt 1 ]; then
                 selected=$((selected + 1))
+                clear_menu
+                draw_menu
             fi
             ;;
         "")
             # Enter 键
-            draw_menu_confirmed
+            clear_menu # 先清除菜单
             break
             ;;
         *) ;;
         esac
-        draw_menu
     done
-    # clear_menu # 清除菜单
-    tput cnorm # 恢复光标
-    # tput rc    # 恢复光标位置
-    # 处理结果
+    echo -e "╭─ ${message}"
+    echo -e "│"
     if [ "$selected" -eq 0 ]; then
+        echo -e "╰─ \033[32m●\033[0m \033[1m是\033[0m\033[2m / ○ 否\033[0m"
         _SELECT_RESULT="true"
     else
+        echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
         _SELECT_RESULT="false"
     fi
+    tput cnorm # 恢复光标
 }
 
 handle_command_options "$@"
