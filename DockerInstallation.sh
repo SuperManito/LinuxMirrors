@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-16
+## Modified: 2025-03-20
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -382,7 +382,7 @@ function collect_system_info() {
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        if [ ! -x /usr/bin/lsb_release ]; then
+        if ! command -v lsb_release &>/dev/null; then
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
                 output_error "lsb-release 软件包安装失败\n\n本脚本依赖 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
@@ -506,7 +506,7 @@ function collect_system_info() {
     esac
     ## 判断是否可以使用高级交互式选择器
     CAN_USE_ADVANCED_INTERACTIVE_SELECTION="false"
-    if [ ! -z "$(command -v tput)" ]; then
+    if command -v tput &>/dev/null; then
         CAN_USE_ADVANCED_INTERACTIVE_SELECTION="true"
     fi
 }
@@ -527,7 +527,7 @@ function choose_mirrors() {
         for ((a = 0; a < $list_arr_sum; a++)); do
             list_arr[$a]="$(eval echo \${$1[a]})"
         done
-        if [ -x /usr/bin/printf ]; then
+        if command -v printf &>/dev/null; then
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
                 tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
                 # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
@@ -671,7 +671,7 @@ function choose_protocol() {
 
 ## 关闭防火墙和SELinux
 function close_firewall_service() {
-    if [ ! -x /usr/bin/systemctl ]; then
+    if ! command -v systemctl &>/dev/null; then
         return
     fi
     if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
@@ -773,7 +773,7 @@ function get_package_manager() {
 
 ## 卸载 Docker Engine 原有版本软件包
 function uninstall_original_version() {
-    if [ -x /usr/bin/docker ]; then
+    if command -v docker &>/dev/null; then
         # 先停止并禁用 Docker 服务
         systemctl disable --now docker >/dev/null 2>&1
         sleep 2s
@@ -1053,7 +1053,7 @@ function install_docker_engine() {
 
 ## 查看版本并验证安装结果
 function check_version() {
-    if [ -x /usr/bin/docker ]; then
+    if command -v docker &>/dev/null; then
         systemctl enable --now docker >/dev/null 2>&1
         echo -en "\n当前安装版本："
         docker -v
