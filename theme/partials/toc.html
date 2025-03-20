@@ -1,0 +1,32 @@
+<nav class="md-nav md-nav--secondary" aria-label="{{ title }}">
+  {% set toc = page.toc %} {% set first = toc | first %} {% if first and first.level == 1 %} {% set toc = first.children %} {% endif %} {% if toc %}
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    {{ title }}
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+    {% for toc_item in toc %} {% include "partials/toc-item.html" %} {% endfor %}
+  </ul>
+
+  <div class="md-nav__sponsor-bottom">
+    <div class="sponsor-label">
+      <strong>赞助商</strong>
+    </div>
+    <div class="sponsor-wrapper">
+      <a class="sponsor-item" target="_blank" href="https://www.dkdun.cn/aff/VAWGETUL" title="林枫云">
+        <img src="/assets/images/sponsor/linfengyun-light.png#only-light" alt="林枫云" style="width: 60%" />
+        <img src="/assets/images/sponsor/linfengyun-dark.png#only-dark" alt="林枫云" style="width: 60%" />
+      </a>
+      <a class="sponsor-item" target="_blank" href="https://arcadia.cool" title="Arcadia 一站式代码运维平台">
+        <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia 一站式代码运维平台" style="width: 60%" />
+        <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia 一站式代码运维平台" style="width: 60%" />
+      </a>
+      <a class="sponsor-item" target="_blank" href="/sponsor/">
+        <span style="font-size: 0.6rem">
+          <strong>成为赞助商</strong>
+        </span>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</nav>
