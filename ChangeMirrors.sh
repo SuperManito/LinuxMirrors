@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-20
+## Modified: 2025-03-23
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -649,7 +649,7 @@ function collect_system_info() {
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s "${File_OracleLinuxRelease}" ]; then
-        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
+        output_error "当前操作系统（Oracle Linux）不在本脚本的支持范围内，请前往官网查看支持列表！"
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s "${File_openEulerRelease}" ]; then
@@ -772,7 +772,7 @@ function collect_system_info() {
         # 理论全部支持或不作判断
         ;;
     *)
-        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
+        output_error "当前操作系统不在本脚本的支持范围内（系统版本未知），请前往官网查看支持列表！"
         ;;
     esac
     if [[ "${is_supported}" == "false" ]]; then
