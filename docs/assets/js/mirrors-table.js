@@ -145,7 +145,6 @@ const app = {
             <t-table
                 :columns="columns"
                 :data="data"
-                :hover="true"
                 row-key="name"
                 size="small"
             >
