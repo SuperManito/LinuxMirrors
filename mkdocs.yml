@@ -4,7 +4,13 @@ repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
 copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
 
+extra_javascript:
+  - assets/js/vue.global.prod.js
+  - assets/js/tdesign.min.js
+  - assets/js/mirrors-table-data.js
+  - assets/js/mirrors-table.js
 extra_css:
+  - assets/css/tdesign.min.css
   - stylesheets/extra.css
 
 theme:
@@ -13,6 +19,7 @@ theme:
   custom_dir: docs/theme
   language: zh
   favicon: assets/favicon.ico
+  font: false
   icon:
     repo: fontawesome/brands/github
     edit: material/file-document-edit-outline
