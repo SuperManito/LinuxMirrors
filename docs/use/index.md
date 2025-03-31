@@ -30,7 +30,7 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
 
-        === ":simple-jsdelivr: jsDelivr"
+        === ":simple-jsdelivr: jsDelivr（CDN）"
 
             ``` bash
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
@@ -54,7 +54,7 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            1.  通过 `--abroad` 命令选项来使用海外软件源
+            2.  通过 `--abroad` 命令选项来使用海外软件源
 
         === ":simple-gitee: Gitee 码云"
 
@@ -62,15 +62,15 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            1.  通过 `--abroad` 命令选项来使用海外软件源
+            3.  通过 `--abroad` 命令选项来使用海外软件源
 
-        === ":simple-jsdelivr: jsDelivr"
+        === ":simple-jsdelivr: jsDelivr（CDN）"
 
             ``` bash
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            1.  通过 `--abroad` 命令选项来使用海外软件源
+            4.  通过 `--abroad` 命令选项来使用海外软件源
 
 === ":material-library: 中国大陆教育网"
 
@@ -90,7 +90,7 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu # (1)!
             ```
 
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+            2.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
         === ":simple-gitee: Gitee 码云"
 
@@ -98,15 +98,15 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
             ```
 
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+            3.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-        === ":simple-jsdelivr: jsDelivr"
+        === ":simple-jsdelivr: jsDelivr（CDN）"
 
             ``` bash
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu # (1)!
             ```
 
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+            4.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
 选项卡分别代表脚本内置软件源类型和获取脚本途径，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在[软件源列表](../mirrors/index.md)中查看具体有哪些软件源。
 

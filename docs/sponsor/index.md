@@ -11,6 +11,9 @@ hide:
     <strong>赞助商</strong>
   </div>
   <div class="sponsor-wrapper sponsor-flex-wrapper">
+    <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://1panel.cn" title="1Panel · 新一代的 Linux 服务器运维管理面板">
+      <img src="/assets/images/sponsor/1panel.png" alt="1Panel · 新一代的 Linux 服务器运维管理面板" style="width: 60%" />
+    </a>
     <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://www.dkdun.cn/aff/VAWGETUL" title="林枫云">
       <img src="/assets/images/sponsor/linfengyun-light.png#only-light" alt="林枫云" style="width: 60%" />
       <img src="/assets/images/sponsor/linfengyun-dark.png#only-dark" alt="林枫云" style="width: 60%" />

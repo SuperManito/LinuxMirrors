@@ -66,7 +66,7 @@ hide:
     bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
     ```
 
-=== ":simple-jsdelivr: jsDelivr"
+=== ":simple-jsdelivr: jsDelivr（CDN）"
 
     ``` bash
     bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)

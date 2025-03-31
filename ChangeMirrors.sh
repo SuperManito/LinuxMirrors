@@ -618,7 +618,7 @@ function run_start() {
 }
 
 function run_end() {
-    echo -e "\n✨️ \033[3;1mPowered by \033[34mhttps://linuxmirrors.cn\033[0m\n"
+    echo -e "\n✨ \033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n\n   访问官网以了解更多信息 \033[3mhttps://linuxmirrors.cn\033[0m\n\n🔥 1Panel · Linux 面板｜极简运维 ➜  https://1panel.cn 【广告】\n"
 }
 
 ## 报错退出
