@@ -134,4 +134,4 @@ Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under
  </picture>
 </a>
 
-__如果您觉得这个项目不错对您有所帮助的话，方便在右上角给颗 ⭐ 并分享给更多的朋友吗？__
+__如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 ⭐ 并分享给更多的朋友。__

@@ -5,7 +5,7 @@ hide:
   - footer
 ---
 
-> 如果您觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 :octicons-heart-fill-24:{ .heart style="color: red" }
+> 如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 :octicons-heart-fill-24:{ .heart style="color: red" }
 
 ## :fontawesome-brands-docker:{style="color: #086dd7"} Docker 安装脚本
 
@@ -48,7 +48,7 @@ hide:
 </tr>
 </table>
 
-=== ":octicons-globe-16: 官网（推荐）"
+=== ":linuxmirrors: 官网（推荐）"
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh)

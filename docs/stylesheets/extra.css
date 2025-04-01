@@ -24,6 +24,14 @@
     background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
 }
 
+[data-md-color-scheme="default"] .md-logo img {
+    content: url(/assets/images/brand/svg/logo-light.svg);
+}
+  
+[data-md-color-scheme="slate"] .md-logo img {
+    content: url(/assets/images/brand/svg/logo-dark.svg);
+}
+
 @font-face {
     font-family: 'SF Mono';
     src: url('./fonts/SF-Mono-Regular.otf');

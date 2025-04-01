@@ -14,7 +14,7 @@ extra_css:
   - stylesheets/extra.css
 
 theme:
-  logo: assets/images/logo.png
+  logo: assets/images/brand/svg/logo-light.svg
   name: material
   custom_dir: docs/theme
   language: zh
