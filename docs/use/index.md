@@ -333,6 +333,7 @@ hide:
         !!! quote ""
 
             - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行，切换命令为 `sudo -i` 或 `su root`
+            - 如果交互打印界面发现是输入而不是新式的方向键交互，那么请自行安装 `ncurses` 或 `nano` 软件包，新式的方向键交互依赖 `tput` 指令实现。
 
 - ### 关于备份原有软件源
 

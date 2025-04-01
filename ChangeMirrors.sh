@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-23
+## Modified: 2025-04-01
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -640,9 +640,9 @@ function collect_system_info() {
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     grep -q "PRETTY_NAME=" $File_LinuxRelease && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统版本号
-    SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    SYSTEM_VERSION_NUMBER_MAJOR="${SYSTEM_VERSION_NUMBER%.*}"
-    SYSTEM_VERSION_NUMBER_MINOR="${SYSTEM_VERSION_NUMBER#*.}"
+    SYSTEM_VERSION_ID="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
+    SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 判定当前系统派系
@@ -677,6 +677,7 @@ function collect_system_info() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         if ! command -v lsb_release &>/dev/null; then
+            apt-get update
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
                 output_error "lsb-release 软件包安装失败\n\n本脚本依赖 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
@@ -688,6 +689,14 @@ function collect_system_info() {
         if [ -s "${File_RaspberryPiOSRelease}" ]; then
             SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
             SYSTEM_PRETTY_NAME="${SYSTEM_RASPBERRY_PI_OS}"
+        fi
+        # Debian 尚未正式发布的版本
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]] && [[ -z "${SYSTEM_VERSION_ID}" ]]; then
+            if [[ "${SYSTEM_VERSION_CODENAME}" == "trixie" ]]; then
+                SYSTEM_VERSION_ID="13"
+                SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
+                SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
+            fi
         fi
         ;;
     "${SYSTEM_REDHAT}")
@@ -706,59 +715,64 @@ function collect_system_info() {
     local is_supported="true"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -lt 8 || "${SYSTEM_VERSION_NUMBER_MAJOR}" -gt 13 ]]; then
-            is_supported="false"
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" =~ ^[0-9]{1,2}$ ]]; then
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" -lt 8 || "${SYSTEM_VERSION_ID_MAJOR}" -gt 13 ]]; then
+                is_supported="false"
+            fi
+        fi
+        if [[ "${SYSTEM_VERSION_CODENAME}" == "sid" ]]; then
+            echo -e "\n${WARN} 检测到当前系统为 ${BLUE}unstable(sid)${PLAIN} 版本，可能会产生一些无法预料的问题。\n"
         fi
         ;;
     "${SYSTEM_UBUNTU}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -lt 14 || "${SYSTEM_VERSION_NUMBER_MAJOR}" -gt 24 ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" -lt 14 || "${SYSTEM_VERSION_ID_MAJOR}" -gt 24 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_LINUX_MINT}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 19 && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 2[0-2] && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 6 ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 19 && "${SYSTEM_VERSION_ID_MAJOR}" != 2[0-2] && "${SYSTEM_VERSION_ID_MAJOR}" != 6 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_RHEL}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [7-9] ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [7-9] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_CENTOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [7-8] ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [7-8] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [8-9] && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 10 ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [8-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 10 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_FEDORA}")
-        if [[ "${SYSTEM_VERSION_NUMBER}" != [3-4][0-9] ]]; then
+        if [[ "${SYSTEM_VERSION_ID}" != [3-4][0-9] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 2[1-4] ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 2[1-4] ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != [8-9] && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 23 ]] || [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 && "$SYSTEM_VERSION_NUMBER_MINOR" -lt 6 ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [8-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 23 ]] || [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 && "${SYSTEM_VERSION_ID_MINOR}" -lt 6 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_ANOLISOS}")
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 8 && "${SYSTEM_VERSION_NUMBER_MAJOR}" != 23 ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 8 && "${SYSTEM_VERSION_ID_MAJOR}" != 23 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_OPENSUSE}")
         case "${SYSTEM_ID}" in
         "opensuse-leap")
-            if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" != 15 ]]; then
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 15 ]]; then
                 is_supported="false"
             fi
             ;;
@@ -780,7 +794,7 @@ function collect_system_info() {
     fi
     ## 判定系统处理器架构
     DEVICE_ARCH_RAW="$(uname -m)"
-    case "${DEVICE_ARCH_ORIGIN}" in
+    case "${DEVICE_ARCH_RAW}" in
     x86_64)
         DEVICE_ARCH="x86_64"
         ;;
@@ -814,7 +828,7 @@ function collect_system_info() {
         ## 处理特殊的仓库名称
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
-            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
             8 | 9 | 10)
                 SOURCE_BRANCH="debian-archive" # EOF
                 ;;
@@ -824,7 +838,7 @@ function collect_system_info() {
             esac
             ;;
         "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" || "${DEVICE_ARCH}" == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
                 SOURCE_BRANCH="ubuntu"
             else
                 SOURCE_BRANCH="ubuntu-ports"
@@ -834,7 +848,7 @@ function collect_system_info() {
             SOURCE_BRANCH="raspberrypi"
             ;;
         "${SYSTEM_RHEL}")
-            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
             9)
                 SOURCE_BRANCH="centos-stream" # 使用 CentOS Stream 仓库
                 ;;
@@ -844,7 +858,7 @@ function collect_system_info() {
             esac
             ;;
         "${SYSTEM_CENTOS}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
+            if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
                 SOURCE_BRANCH="centos-vault" # EOF
             else
                 SOURCE_BRANCH="centos-altarch"
@@ -852,9 +866,9 @@ function collect_system_info() {
             ;;
         "${SYSTEM_CENTOS_STREAM}")
             # 自 CentOS Stream 9 开始使用 centos-stream 仓库，旧版本使用 centos 仓库
-            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
             8)
-                if [[ "${DEVICE_ARCH}" == "x86_64" ]]; then
+                if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
                     SOURCE_BRANCH="centos-vault" # EOF
                 else
                     SOURCE_BRANCH="centos-altarch"
@@ -866,12 +880,12 @@ function collect_system_info() {
             esac
             ;;
         "${SYSTEM_FEDORA}")
-            if [[ "${SYSTEM_VERSION_NUMBER}" -lt 39 ]]; then
+            if [[ "${SYSTEM_VERSION_ID}" -lt 39 ]]; then
                 SOURCE_BRANCH="fedora-archive"
             fi
             ;;
         "${SYSTEM_ARCH}")
-            if [[ "${DEVICE_ARCH}" == "x86_64" || "${DEVICE_ARCH}" == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
                 SOURCE_BRANCH="archlinux"
             else
                 SOURCE_BRANCH="archlinuxarm"
@@ -1045,7 +1059,7 @@ function choose_mirrors() {
     }
 
     function print_title() {
-        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
+        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_ID}"}"
         local arch="${DEVICE_ARCH}"
         local date_time time_zone
         date_time="$(date "+%Y-%m-%d %H:%M")"
@@ -1215,7 +1229,6 @@ function backup_original_mirrors() {
         ## 判断是否存在源文件
         [ -f "${target_file}" ] || touch "${target_file}"
         if [ ! -s "${target_file}" ]; then
-            echo -e ''
             return
         fi
         ## 判断是否存在已备份的源文件
@@ -1420,7 +1433,7 @@ function remove_original_mirrors() {
             fi
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_RHEL}")
-                case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+                case "${SYSTEM_VERSION_ID_MAJOR}" in
                 9)
                     rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
                     ;;
@@ -1441,7 +1454,7 @@ function remove_original_mirrors() {
                 fi
                 ;;
             "${SYSTEM_CENTOS_STREAM}")
-                case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+                case "${SYSTEM_VERSION_ID_MAJOR}" in
                 9 | 10)
                     rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
                     ;;
@@ -1451,7 +1464,7 @@ function remove_original_mirrors() {
                 esac
                 ;;
             "${SYSTEM_ROCKY}")
-                case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+                case "${SYSTEM_VERSION_ID_MAJOR}" in
                 9)
                     rm -rf $Dir_YumRepos/rocky*
                     ;;
@@ -1832,7 +1845,7 @@ deb ${1} ${2}-security ${3}
     local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
-        case "${SYSTEM_VERSION_NUMBER}" in
+        case "${SYSTEM_VERSION_ID}" in
         8 | 9 | 10 | 11)
             repository_sections="main contrib non-free"
             ;;
@@ -1847,7 +1860,8 @@ $(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sec
             base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}"
             echo "$(gen_debian_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         else
-            echo "deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
+            echo "${tips}
+deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
 # deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
         fi
         ;;
@@ -1863,9 +1877,13 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
 # deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
         ;;
     "${SYSTEM_DEEPIN}")
-        repository_sections="apricot main contrib non-free"
+        if [[ "${SYSTEM_VERSION_ID}" == "25" ]]; then
+            repository_sections="main commercial community"
+        else
+            repository_sections="main contrib non-free"
+        fi
         echo "${tips}
-deb ${base_url} ${repository_sections}
+deb ${base_url}/${SYSTEM_VERSION_CODENAME} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
 # deb-src ${base_url} ${repository_sections}" >>$File_DebianSourceList
         ;;
     "${SYSTEM_LINUX_MINT}")
@@ -1875,7 +1893,7 @@ deb ${base_url} ${repository_sections}
 deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_LinuxMintSourceList
         ## 底层系统软件源
         local base_system_branch base_system_codename
-        if [[ "${SYSTEM_VERSION_NUMBER}" == 6 ]]; then
+        if [[ "${SYSTEM_VERSION_ID}" == 6 ]]; then
             # Debian 版（LMDE）
             base_system_branch="debian"
             base_system_codename="bookworm"
@@ -1887,12 +1905,12 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
             echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
-            if [[ "${DEVICE_ARCH}" == "x86_64" || "${DEVICE_ARCH}" == *i?86* ]]; then
+            if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
                 base_system_branch="ubuntu"
             else
                 base_system_branch="ubuntu-ports"
             fi
-            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
             22)
                 base_system_codename="noble"
                 ;;
@@ -1926,7 +1944,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
         local base_system_branch base_system_codename
         case "${DEVICE_ARCH_RAW}" in
         x86_64 | aarch64)
-            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
             8 | 9 | 10)
                 base_system_branch="debian-archive" # EOF
                 ;;
@@ -1935,7 +1953,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
                 ;;
             esac
             base_system_codename="${SYSTEM_VERSION_CODENAME}"
-            case "${SYSTEM_VERSION_NUMBER}" in
+            case "${SYSTEM_VERSION_ID}" in
             8 | 9 | 10 | 11)
                 repository_sections="main contrib non-free"
                 ;;
@@ -1992,35 +2010,35 @@ function change_mirrors_RedHat() {
     ## 生成 repo 源文件
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         9 | 10)
-            gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER_MAJOR}"
+            gen_repo_files_CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
             ;;
         *)
-            gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER_MAJOR}"
+            gen_repo_files_CentOS "${SYSTEM_VERSION_ID_MAJOR}"
             ;;
         esac
         ;;
     "${SYSTEM_CENTOS}")
-        gen_repo_files_CentOS "${SYSTEM_VERSION_NUMBER_MAJOR}"
+        gen_repo_files_CentOS "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_CENTOS_STREAM}")
-        gen_repo_files_CentOSStream "${SYSTEM_VERSION_NUMBER_MAJOR}"
+        gen_repo_files_CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_ROCKY}")
-        gen_repo_files_RockyLinux "${SYSTEM_VERSION_NUMBER_MAJOR}"
+        gen_repo_files_RockyLinux "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_ALMALINUX}")
-        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_NUMBER_MAJOR}"
+        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_FEDORA}")
-        gen_repo_files_Fedora "${SYSTEM_VERSION_NUMBER}"
+        gen_repo_files_Fedora "${SYSTEM_VERSION_ID}"
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER}"
+        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_ID}"
         ;;
     "${SYSTEM_ANOLISOS}")
-        gen_repo_files_AnolisOS "${SYSTEM_VERSION_NUMBER}"
+        gen_repo_files_AnolisOS "${SYSTEM_VERSION_ID}"
         ;;
     esac
     ## 使用官方源
@@ -2033,7 +2051,7 @@ function change_mirrors_RedHat() {
     cd $Dir_YumRepos
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         9)
             sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^metalink=|#metalink=|g" \
@@ -2050,7 +2068,7 @@ function change_mirrors_RedHat() {
         *)
             sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
             sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
             8)
                 sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
                 sed -i "s/\$releasever/8.5.2111/g" CentOS-*
@@ -2072,7 +2090,7 @@ function change_mirrors_RedHat() {
         sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
         sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
         ## CentOS 7/8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         8)
             # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 仓库
             sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
@@ -2089,7 +2107,7 @@ function change_mirrors_RedHat() {
         sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
         ;;
     "${SYSTEM_CENTOS_STREAM}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         9 | 10)
             sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^metalink=|#metalink=|g" \
@@ -2109,7 +2127,7 @@ function change_mirrors_RedHat() {
         esac
         ;;
     "${SYSTEM_ROCKY}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         9)
             sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
@@ -2130,7 +2148,7 @@ function change_mirrors_RedHat() {
         esac
         ;;
     "${SYSTEM_ALMALINUX}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         9)
             sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
@@ -2160,7 +2178,7 @@ function change_mirrors_RedHat() {
     "${SYSTEM_FEDORA}")
         # 自 Fedora 39 起不再使用 modular 仓库
         local fedora_repo_files="fedora.repo fedora-updates.repo fedora-updates-testing.repo"
-        if [[ "${SYSTEM_VERSION_NUMBER}" -lt 39 ]]; then
+        if [[ "${SYSTEM_VERSION_ID}" -lt 39 ]]; then
             fedora_repo_files="${fedora_repo_files} fedora-modular.repo fedora-updates-modular.repo fedora-updates-testing-modular.repo"
         fi
         sed -e "s|^metalink=|#metalink=|g" \
@@ -2170,7 +2188,7 @@ function change_mirrors_RedHat() {
             $fedora_repo_files
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         8)
             sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|mirrors.opencloudos.tech/opencloudos|${SOURCE}/${SOURCE_BRANCH}|g" \
@@ -2183,7 +2201,7 @@ function change_mirrors_RedHat() {
         ;;
     "${SYSTEM_ANOLISOS}")
         # Anolis OS 仓库配置特殊，baseurl 同时使用 http 和 https 协议，gpgkey 同时使用软件源仓库远程路径和本地路径
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         8)
             sed -e "s|http\(s\)\?://mirrors.openanolis.cn/anolis|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
@@ -2199,7 +2217,7 @@ function change_mirrors_RedHat() {
 ## 更换 OpenCloudOS 发行版软件源
 function change_mirrors_OpenCloudOS() {
     ## 生成 repo 源文件
-    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_NUMBER}"
+    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_ID}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
@@ -2207,7 +2225,7 @@ function change_mirrors_OpenCloudOS() {
 
     ## 修改源
     cd $Dir_YumRepos
-    if [[ "${SYSTEM_VERSION_NUMBER}" == 23 ]]; then
+    if [[ "${SYSTEM_VERSION_ID}" == 23 ]]; then
         sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
             -e "s|mirrors.opencloudos.tech/opencloudos-stream|${SOURCE}/${SOURCE_BRANCH}|g" \
             -i \
@@ -2245,7 +2263,7 @@ function change_mirrors_openEuler() {
 ## 更换 Anolis OS 发行版软件源
 function change_mirrors_AnolisOS() {
     ## 生成 repo 源文件
-    gen_repo_files_AnolisOS "${SYSTEM_VERSION_NUMBER}"
+    gen_repo_files_AnolisOS "${SYSTEM_VERSION_ID}"
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
@@ -2254,7 +2272,7 @@ function change_mirrors_AnolisOS() {
     ## 修改源
     cd $Dir_YumRepos
     # Anolis OS 仓库配置特殊，baseurl 同时使用 http 和 https 协议，gpgkey 同时使用软件源仓库远程路径和本地路径
-    case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+    case "${SYSTEM_VERSION_ID_MAJOR}" in
     23)
         sed -e "s|http\(s\)\?://mirrors.openanolis.cn/anolis|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
             -i \
@@ -2275,7 +2293,7 @@ function change_mirrors_openSUSE() {
     ## 生成 repo 源文件
     case "${SYSTEM_ID}" in
     "opensuse-leap")
-        gen_repo_files_openSUSE "leap" "${SYSTEM_VERSION_NUMBER}"
+        gen_repo_files_openSUSE "leap" "${SYSTEM_VERSION_ID}"
         ;;
     "opensuse-tumbleweed")
         gen_repo_files_openSUSE "tumbleweed"
@@ -2292,7 +2310,7 @@ function change_mirrors_openSUSE() {
     sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" repo-*
     case "${SYSTEM_ID}" in
     opensuse-leap)
-        case "${SYSTEM_VERSION_NUMBER}" in
+        case "${SYSTEM_VERSION_ID}" in
         15.[0-2])
             sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
                 repo-debug-non-oss.repo \
@@ -2369,7 +2387,7 @@ function change_mirrors_Alpine() {
     if [ $? -eq 0 ]; then
         version_name="edge"
     else
-        version_name="v${SYSTEM_VERSION_NUMBER_MAJOR}"
+        version_name="v${SYSTEM_VERSION_ID_MAJOR}"
     fi
     ## 修改源
     echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
@@ -2439,7 +2457,7 @@ function change_mirrors_NixOS() {
     # binary cache
     sed -i "s|^substituters.*|substituters = ${binary_cache_source}|g" $File_NixConf
     # channel
-    nix-channel --add "${channel_source}/nixos-${SYSTEM_VERSION_NUMBER}" nixos
+    nix-channel --add "${channel_source}/nixos-${SYSTEM_VERSION_ID}" nixos
     nix-channel --update >/dev/null 2>&1
 }
 
@@ -2455,7 +2473,7 @@ function change_mirrors_or_install_EPEL() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
             return
         else
-            epel_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
+            epel_version="${SYSTEM_VERSION_ID_MAJOR}"
         fi
         ;;
     *)
@@ -2497,9 +2515,9 @@ function change_mirrors_or_install_EPEL() {
         [ $? -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
     fi
     ## 生成 repo 源文件
-    gen_repo_files_EPEL "${SYSTEM_VERSION_NUMBER_MAJOR}"
+    gen_repo_files_EPEL "${SYSTEM_VERSION_ID_MAJOR}"
     if [[ "${epel_version}" == 9 ]] && [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
-        gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_NUMBER_MAJOR}"
+        gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_ID_MAJOR}"
     fi
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         return
@@ -2526,7 +2544,7 @@ function get_package_manager() {
     local command="yum"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         9 | 10)
             command="dnf"
             ;;

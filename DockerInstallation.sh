@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-03-20
+## Modified: 2025-04-01
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -73,11 +73,15 @@ SYSTEM_ROCKY="Rocky"
 SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
+SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_ANOLISOS="Anolis"
+SYSTEM_OPENKYLIN="openKylin"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
 SYSTEM_ALPINE="Alpine"
+SYSTEM_GENTOO="Gentoo"
+SYSTEM_NIXOS="NixOS"
 
 ## 定义系统版本文件
 File_LinuxRelease=/etc/os-release
@@ -88,6 +92,7 @@ File_RaspberryPiOSRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
+File_OracleLinuxRelease=/etc/oracle-release
 File_ArchLinuxRelease=/etc/arch-release
 File_AlpineRelease=/etc/alpine-release
 File_ProxmoxVersion=/etc/pve/.version
@@ -352,27 +357,29 @@ function collect_system_info() {
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     grep -q "PRETTY_NAME=" $File_LinuxRelease && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 定义系统版本号
-    SYSTEM_VERSION_NUMBER="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    SYSTEM_VERSION_NUMBER_MAJOR="${SYSTEM_VERSION_NUMBER%%.*}"
-    SYSTEM_VERSION_NUMBER_MINOR="${SYSTEM_VERSION_NUMBER#*.}"
+    SYSTEM_VERSION_ID="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
+    SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
     ## 定义系统ID
     SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     ## 判定当前系统派系
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
+    elif [ -s "${File_OracleLinuxRelease}" ]; then
+        output_error "当前操作系统（Oracle Linux）不在本脚本的支持范围内，请前往官网查看支持列表！"
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s "${File_openEulerRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s "${File_OpenCloudOSRelease}" ]; then
         # 拦截 OpenCloudOS 9 及以上版本，不支持从 Docker 官方仓库安装
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" -ge 9 ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 9 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s "${File_AnolisOSRelease}" ]; then
         # 拦截 Anolis OS 8.8 及以上版本，不支持从 Docker 官方仓库安装，23 版本支持
-        if [[ "${SYSTEM_VERSION_NUMBER_MAJOR}" == 8 ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
             output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
@@ -383,6 +390,7 @@ function collect_system_info() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         if ! command -v lsb_release &>/dev/null; then
+            apt-get update
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
                 output_error "lsb-release 软件包安装失败\n\n本脚本依赖 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
@@ -558,8 +566,8 @@ function choose_mirrors() {
     }
 
     function print_title() {
-        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_NUMBER}"}"
-        local arch=""${DEVICE_ARCH}""
+        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_ID}"}"
+        local arch="${DEVICE_ARCH}"
         local date_time time_zone
         date_time="$(date "+%Y-%m-%d %H:%M")"
         timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
@@ -608,7 +616,7 @@ function choose_mirrors() {
             sleep 1 >/dev/null 2>&1
             eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker Registry 源：\${PLAIN}\\n\""
             SOURCE_REGISTRY="${_SELECT_RESULT#*@}"
-            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker Registry: ${_SELECT_RESULT%@*}${PLAIN}"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker Registry: $(echo "${_SELECT_RESULT%@*}" | sed 's|（推荐）||g')${PLAIN}"
         else
             print_mirrors_list "${mirror_list_name}" 44
             local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
@@ -740,7 +748,7 @@ function install_dependency_packages() {
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         # 注：红帽 8 版本才发布了 dnf 包管理工具，为了兼容性而优先选择安装 dnf-utils
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         7)
             $package_manager install -y yum-utils device-mapper-persistent-data lvm2
             ;;
@@ -758,7 +766,7 @@ function get_package_manager() {
     local command="yum"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-        case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
         9 | 10)
             command="dnf"
             ;;
@@ -826,9 +834,9 @@ function configure_docker_ce_mirror() {
         ## 兼容处理版本号
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
             local target_version
-            case "${SYSTEM_VERSION_NUMBER_MAJOR}" in
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
             7 | 8 | 9 | 10)
-                target_version="${SYSTEM_VERSION_NUMBER_MAJOR}"
+                target_version="${SYSTEM_VERSION_ID_MAJOR}"
                 ;;
             *)
                 ## 目前红帽系衍生系统还没有普及 10 版本
@@ -922,11 +930,11 @@ function install_docker_engine() {
             rm -rf $DockerVersionFile
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                check_version="$(echo ${target_docker_version} | cut -c1-2)"
-                CheckSubversion="$(echo ${target_docker_version} | cut -c4-5)"
-                case "${check_version}" in
+                local major_version="$(echo ${target_docker_version} | cut -c1-2)"
+                local minor_version="$(echo ${target_docker_version} | cut -c4-5)"
+                case "${major_version}" in
                 18)
-                    if [ ${CheckSubversion} == "09" ]; then
+                    if [ "${minor_version}" == "09" ]; then
                         INSTALL_JUDGMENT="5:"
                     else
                         INSTALL_JUDGMENT=""
@@ -980,7 +988,7 @@ function install_docker_engine() {
             else
                 echo ''
                 cp -rvf $DockerConfig $DockerConfigBackup 2>&1
-                echo -e "\n$COMPLETE 已备份原有 Docker 配置文件至 $DockerConfigBackup"
+                echo -e "\n$COMPLETE 已备份原有 Docker 配置文件"
             fi
             sleep 2s
         else
@@ -1040,7 +1048,7 @@ function install_docker_engine() {
         local latest_docker_version="$(cat $DockerVersionFile | head -n 1)"
         rm -rf $DockerVersionFile
         if [[ "${current_docker_version}" == "${latest_docker_version}" ]] && [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-            echo -e "\n$TIP 检测到系统中的 Docker Engine 已经是最新的版本，跳过安装"
+            echo -e "\n$TIP 检测到系统已安装 Docker Engine 且是最新版本，跳过安装"
             change_docker_registry_mirror
             return
         fi
@@ -1059,7 +1067,7 @@ function check_version() {
         docker -v
         if [ $? -eq 0 ]; then
             echo -e "              $(docker compose version 2>&1)"
-            echo -e "\n$COMPLETE 安装完成"
+            # echo -e "\n$COMPLETE 安装完成"
         else
             echo -e "\n$ERROR 安装失败"
             case "${SYSTEM_FACTIONS}" in
@@ -1087,7 +1095,7 @@ function check_version() {
             fi
         fi
     else
-        echo -e "\n$ERROR 安装失败\n"
+        echo -e "\n$ERROR 安装失败"
     fi
 }
 
