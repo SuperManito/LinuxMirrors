@@ -102,6 +102,26 @@ hide:
 
     > 软件源完整格式 `<WEB协议>://<软件源地址(域名或IP)>/<软件源仓库(路径)>`
 
+    <!-- termynal -->
+    ```
+    $ bash DockerInstallation.sh --help 
+
+    命令选项(名称/含义/值)：
+
+      --source                 指定 Docker CE 源地址(域名或IP)     地址
+      --source-registry        指定镜像仓库地址(域名或IP)           地址
+      --branch                 指定 Docker CE 源仓库(路径)         仓库名
+      --codename               指定 Debian 系操作系统的版本代号     代号名称
+      --designated-version     指定 Docker CE 安装版本             版本号
+      --protocol               指定 Docker CE 源的 WEB 协议        http 或 https
+      --install-latest         是否安装最新版本的 Docker Engine    true 或 false
+      --close-firewall         是否关闭防火墙                      true 或 false
+      --clean-screen           是否在运行前清除屏幕上的所有内容      true 或 false
+      --ignore-backup-tips     忽略覆盖备份提示                    无
+
+    问题报告 https://github.com/SuperManito/LinuxMirrors/issues
+    ```
+
     - #### 指定 Docker CE 软件源地址
 
         ``` { .bash .no-copy }

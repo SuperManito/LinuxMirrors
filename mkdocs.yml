@@ -146,6 +146,7 @@ plugins:
       exclude:
         - mirrors.md
   - tags
+  - termynal
 nav:
   - "介绍": index.md
   - "使用方法": use/index.md
