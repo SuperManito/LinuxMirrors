@@ -1,3 +1,4 @@
+// 表格数据
 const mirrorsTableData = [
     {
         name: '阿里云',
@@ -321,4 +322,27 @@ const mirrorsTableData = [
         nix: true,
         raspberry: true,
     },
+]
+
+// 表格列配置
+const mirrorsTableColumns = [
+    { colKey: 'name', title: '镜像站', align: 'center', width: '160', fixed: 'left' },
+    { colKey: 'ipv6', title: 'IPv6', align: 'center' },
+    { colKey: 'epel', title: 'EPEL', align: 'center', tooltip: 'Extra Packages for Enterprise Linux (EPEL) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版。' },
+    { colKey: 'archlinux', title: 'Arch Linux', align: 'center' },
+    { colKey: 'kalilinux', title: 'Kali Linux', align: 'center' },
+    { colKey: 'armbian', title: 'Armbian', align: 'center' },
+    { colKey: 'deepin', title: 'Deepin', align: 'center' },
+    { colKey: 'raspberry', title: 'Raspberry Pi OS', align: 'center', width: '130' },
+    { colKey: 'linuxmint', title: 'Linux Mint', align: 'center' },
+    { colKey: 'proxmox', title: 'Proxmox VE', align: 'center' },
+    { colKey: 'fedora', title: 'Fedora', align: 'center' },
+    { colKey: 'rockylinux', title: 'Rocky Linux', align: 'center' },
+    { colKey: 'almalinux', title: 'AlmaLinux', align: 'center' },
+    { colKey: 'opencloudos', title: 'OpenCloudOS', align: 'center', width: '120' },
+    { colKey: 'anolis', title: 'Anolis OS', align: 'center' },
+    { colKey: 'openkylin', title: 'openKylin', align: 'center' },
+    { colKey: 'alpinelinux', title: 'Alpine Linux', align: 'center' },
+    { colKey: 'gentoo', title: 'Gentoo', align: 'center' },
+    { colKey: 'nix', title: 'NixOS', align: 'center' },
 ]

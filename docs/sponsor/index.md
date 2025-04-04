@@ -12,15 +12,15 @@ hide:
   </div>
   <div class="sponsor-wrapper sponsor-flex-wrapper">
     <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://1panel.cn" title="1Panel · 新一代的 Linux 服务器运维管理面板">
-      <img src="/assets/images/sponsor/1panel.png" alt="1Panel · 新一代的 Linux 服务器运维管理面板" style="width: 60%" />
+      <img src="/assets/images/sponsor/1panel.png" alt="1Panel" style="width: 60%" />
     </a>
-    <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://www.dkdun.cn/aff/VAWGETUL" title="林枫云">
+    <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://www.dkdun.cn/aff/VAWGETUL" title="林枫云 · 专注独立IP高频VPS｜R9/i9系列定制">
       <img src="/assets/images/sponsor/linfengyun-light.png#only-light" alt="林枫云" style="width: 60%" />
       <img src="/assets/images/sponsor/linfengyun-dark.png#only-dark" alt="林枫云" style="width: 60%" />
     </a>
     <a class="sponsor-item sponsor-flex-item" target="_blank" href="https://arcadia.cool" title="Arcadia 一站式代码运维平台">
-      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia 一站式代码运维平台" style="width: 60%" />
-      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia 一站式代码运维平台" style="width: 60%" />
+      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="width: 60%" />
+      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="width: 60%" />
     </a>
   </div>
 </div>

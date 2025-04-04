@@ -7,7 +7,7 @@ hide:
 
 > 如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 :octicons-heart-fill-24:{ .heart style="color: red" }
 
-## :fontawesome-brands-docker:{style="color: #086dd7"} Docker 安装脚本
+## :simple-docker:{style="color: #1d63ed"} Docker 安装脚本
 
 <table>
 <tr>
@@ -48,29 +48,31 @@ hide:
 </tr>
 </table>
 
-=== ":linuxmirrors: 官网（推荐）"
+!!! quote ""
 
-    ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
-    ```
+    === ":linuxmirrors: 官网（推荐）"
 
-=== ":simple-github: GitHub"
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+        ```
 
-    ``` bash
-    bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
-    ```
+    === ":simple-github: GitHub"
 
-=== ":simple-gitee: Gitee 码云"
+        ``` bash
+        bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
+        ```
 
-    ``` bash
-    bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
-    ```
+    === ":simple-gitee: Gitee 码云"
 
-=== ":simple-jsdelivr: jsDelivr（CDN）"
+        ``` bash
+        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+        ```
 
-    ``` bash
-    bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
-    ```
+    === ":simple-jsdelivr: jsDelivr（CDN）"
+
+        ``` bash
+        bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
+        ```
 
 集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构处理器
 
@@ -137,7 +139,7 @@ hide:
 
     - #### 指定 Docker CE 软件源仓库
 
-        一般无需指定，脚本默认会自动判断
+        脚本默认会自动判断一般无需指定，除非你有特殊需求
 
         ``` { .bash .no-copy }
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos

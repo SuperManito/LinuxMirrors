@@ -8,6 +8,7 @@
 
 .md-header {
     background-color: hsla(240, 9%, 75%, 0.33);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     z-index: 999 !important;
 }
@@ -27,7 +28,7 @@
 [data-md-color-scheme="default"] .md-logo img {
     content: url(/assets/images/brand/svg/logo-light.svg);
 }
-  
+
 [data-md-color-scheme="slate"] .md-logo img {
     content: url(/assets/images/brand/svg/logo-dark.svg);
 }
@@ -146,6 +147,7 @@
     }
 }
 
+/* TDesign 组件相关 */
 .t-tag .t-icon {
     margin-right: 0 !important;
 }
@@ -165,4 +167,33 @@
 
 [theme-mode="dark"] .t-table--hoverable tbody tr:hover {
     background-color: rgba(240, 241, 244, 0.016) !important;
+}
+
+/* termynal 插件 */
+.termy {
+    padding: 65px 25px 35px !important;
+}
+
+/* 切换主题动画 */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+.dark::view-transition-old(root) {
+    z-index: 999;
+}
+
+.dark::view-transition-new(root) {
+    z-index: 1;
+}
+
+/* 浅色主题下的设置 */
+::view-transition-old(root) {
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 999;
 }

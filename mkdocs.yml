@@ -2,13 +2,16 @@ site_name: LinuxMirrors
 repo_name: LinuxMirrors
 repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
-copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank"> SuperManito</a> <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
+copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank">SuperManito</a></br>本网站由 <a href="https://www.netlify.com" target="_blank">Netlify</a> 部署并提供全球 CDN 边缘加速服务 <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
 
 extra_javascript:
-  - assets/js/vue.global.prod.js
-  - assets/js/tdesign.min.js
-  - assets/js/mirrors-table-data.js
-  - assets/js/mirrors-table.js
+  - assets/js/modules/vue.global.prod.js
+  - assets/js/modules/tdesign.min.js
+  - assets/js/modules/tdesign-theme.js
+  - assets/js/common.js
+  - assets/js/component.js
+  - assets/js/components/mirrors-table/data.js
+  - assets/js/components/mirrors-table/index.js
 extra_css:
   - assets/css/tdesign.min.css
   - stylesheets/extra.css
@@ -32,13 +35,13 @@ theme:
       success: octicons/check-16
       question: octicons/question-16
       warning: octicons/alert-16
-      failure: octicons/x-circle-16
       danger: octicons/zap-16
       bug: octicons/bug-16
       example: octicons/beaker-16
       quote: octicons/quote-16
   palette:
     - media: "(prefers-color-scheme)"
+      scheme: system
       toggle:
         icon: material/brightness-auto
         name: 跟随系统
@@ -60,6 +63,7 @@ theme:
     - navigation.tabs
     - navigation.path
     - navigation.instant
+    - navigation.instant.progress
     - navigation.indexes
     - navigation.footer
     - navigation.tracking
