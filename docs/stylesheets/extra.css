@@ -33,6 +33,10 @@
     content: url(/assets/images/brand/svg/logo-dark.svg);
 }
 
+[data-md-color-scheme="slate"] .md-typeset .admonition.quote, .md-typeset details.quote {
+    border-color: hsla(225deg,15%,90%,0.24);
+}
+
 @font-face {
     font-family: 'SF Mono';
     src: url('./fonts/SF-Mono-Regular.otf');

@@ -240,36 +240,11 @@ hide:
 
                 如果以上方法试了都不行，那就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名称的 `.sh` 脚本，粘贴源码内容后通过 `bash` 指令手动执行。
 
-    - #### 关于开启 SSH 远程登录的方法
+    - #### 备份原有软件源
 
         !!! quote ""
 
-            - 验证是否已安装 `SSH` 服务
-
-                ``` bash
-                ls /etc | grep ssh
-                ```
-                > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包
-
-            - 设置允许 Root 用户登录
-
-                ``` bash
-                cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
-                ```
-
-            - 设置密码认证
-
-                ``` bash
-                cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
-                ```
-
-            - 启动/重启 `SSH` 服务
-
-                ``` bash
-                ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
-                ```
-
-            > 命令以及配置步骤仅供参考，只适配了部分常见发行版
+            脚本会自动备份原有软件源内容，备份路径为原有文件或目录的绝对路径加上 `.bak` 后缀，例如 `/etc/apt/sources.list => /etc/apt/sources.list.bak`，当检查到已存在备份内容时会询问是否覆盖备份。
 
     - #### 还原已备份的软件源
 
@@ -328,50 +303,83 @@ hide:
                 cp -rf /etc/nix/nix.conf.bak /etc/nix/nix.conf
                 ```
 
+    - #### 关于开启 SSH 远程登录的方法
+
+        !!! quote ""
+
+            - 验证是否已安装 `SSH` 服务
+
+                ``` bash
+                ls /etc | grep ssh
+                ```
+                > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包
+
+            - 设置允许 Root 用户登录
+
+                ``` bash
+                cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
+                ```
+
+            - 设置密码认证
+
+                ``` bash
+                cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
+                ```
+
+            - 启动/重启 `SSH` 服务
+
+                ``` bash
+                ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
+                ```
+
+            > 命令以及配置步骤仅供参考，只适配了部分常见发行版
+
+    - #### 关于调用脚本的互联网位置
+
+        !!! quote ""
+
+            项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 :netlify: [Netlify](https://www.netlify.com)，几乎没有被劫持的风险请放心使用。
+
+            当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
+
+    - #### 关于软件源下载速度相关问题
+
+        !!! quote ""
+
+            首先，在[软件源列表](../mirrors/index.md)的使用帮助处有写使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
+
+            软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行带宽很高但实际测速却并不理想，因为这与镜像站的并发性能和负载策略有关。
+
+            网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能无法实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
+
+    - #### 关于未启用的软件源仓库
+
+        !!! quote ""
+
+            很多系统的软件源会启用多个仓库，脚本遵循系统默认设置，默认不启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，具体启用方法如下：
+
+            === "Debian 系 / openKylin"
+
+                默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
+
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+
+                部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
+
+                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+            === "openSUSE"
+
+                部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
+
     - #### 其它
 
         !!! quote ""
 
             - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行，切换命令为 `sudo -i` 或 `su root`
             - 如果交互打印界面发现是输入而不是新式的方向键交互，那么请自行安装 `ncurses` 或 `nano` 软件包，新式的方向键交互依赖 `tput` 指令实现。
-
-- ### 关于备份原有软件源
-
-    脚本会自动备份原有软件源内容，备份路径为原有文件或目录的绝对路径加上 `.bak` 后缀，例如 `/etc/apt/sources.list => /etc/apt/sources.list.bak`，当检查到已存在备份内容时会询问是否覆盖备份。
-
-- ### 关于调用脚本的互联网位置
-
-    项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 :netlify: Netlify，几乎没有被劫持的风险请放心使用。
-
-    当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
-
-- ### 关于软件源下载速度相关问题
-
-    首先，在[软件源列表](../mirrors/index.md)的使用帮助处有写使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
-
-    软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行带宽很高但实际测速却并不理想，因为这与镜像站的并发性能和负载策略有关。
-
-    网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能无法实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
-
-- ### 关于未启用的软件源和仓库
-
-    脚本遵循系统默认设置，默认不启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，具体启用方法如下：
-
-    === "Debian 系 / openKylin"
-
-        默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
-
-        > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
-
-    === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
-
-        部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
-
-        > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
-
-    === "openSUSE"
-
-        部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
 
 ---
@@ -401,11 +409,12 @@ hide:
 | `--install-epel` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
 | `--backup` | 是否备份原有软件源 | `true` 或 `false` |
 | `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
-| `--clean-cache` | 是否清理下载缓存 | `true` 或 `false` |
+| `--clean-cache` | 是否在更新软件包后清理下载缓存 | `true` 或 `false` |
 | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
 | `--print-diff` | 是否打印源文件修改前后差异 | `true` 或 `false` |
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
+| `--pure-mode` | 纯净模式，精简打印内容 | 无 |
 | `--help` | 查看帮助菜单 | 无 |
 
 > 软件源完整格式 `<WEB协议>://<软件源地址(域名或IP)>/<软件源仓库(路径)>`
@@ -437,11 +446,12 @@ $ bash ChangeMirrors.sh --help
   --install-epel           是否安装 EPEL 附加软件包                                          true 或 false
   --backup                 是否备份原有软件源                                                true 或 false
   --upgrade-software       是否更新软件包                                                    true 或 false
-  --clean-cache            是否清理下载缓存                                                  true 或 false
+  --clean-cache            是否在更新软件包后清理下载缓存                                     true 或 false
   --clean-screen           是否在运行前清除屏幕上的所有内容                                   true 或 false
   --only-epel              仅更换 EPEL 软件源模式                                            无
   --ignore-backup-tips     忽略覆盖备份提示                                                  无
   --print-diff             打印源文件修改前后差异                                            无
+  --pure-mode              纯净模式，精简打印内容                                            无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
 ```
@@ -456,9 +466,9 @@ $ bash ChangeMirrors.sh --help
 
 - ### 指定软件源仓库
 
-    主要使用场景：目标镜像站有对应的系统镜像仓库但是不符合本项目脚本关于软件源仓库设置的默认规则
+    这里的软件源仓库与系统内容软件源仓库不同，指的是软件源地址后面的路径即镜像站分支仓库，虽然名义上都是仓库但是非常容易混淆
 
-    由于仓库软件源仓库作用在软件源地址上，因此也可以使用多级路径，例如 `<WEB协议>://<软件源地址>/linux/debian` > `https://mirrors.example.com/linux/debian`，
+    主要使用场景：目标镜像站有对应的系统镜像仓库但是不符合本项目脚本关于软件源仓库设置的默认规则
 
     ??? note "项目对于各操作系统所使用的默认仓库名称（点击展开查看）"
 
@@ -490,7 +500,6 @@ $ bash ChangeMirrors.sh --help
         | <a href="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Gentoo | `gentoo` `gentoo-portage` |
         | <a href="https://nixos.org" target="_blank"><img src="/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"></a> NixOS | `nix-channels` |
 
-
     请看下面的例子
 
     ``` { .bash title="使用阿里云镜像站的 Rocky Linux 软件源" }
@@ -503,11 +512,13 @@ $ bash ChangeMirrors.sh --help
 
     > 部分系统会同时配置多个仓库的软件源，具体详见命令选项
 
+    > 由于软件源仓库作用在软件源地址上因此也可以使用多级路径，例如 `--branch "linux/debian"` -> `https://mirrors.example.com/linux/debian`，
+
 - ### 单独更换 EPEL 源
 
     !!! info "EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版，配置 EPEL 仓库已成为广大用户的普遍需求，建议默认安装它"
 
-    有些时候你会发现想使用的镜像站没有 epel 镜像仓库，那么你可以在第一次运行脚本时不安装或更换 epel 源然后再单独执行下面的命令
+    有些时候你会发现想使用的镜像站没有 EPEL 仓库，那么你可以在第一次运行脚本时不安装或更换 EPEL 源然后再单独执行下面的命令
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
@@ -582,6 +593,15 @@ $ bash ChangeMirrors.sh --help
       --ignore-backup-tips
     ```
 
+- ### 纯净模式
+
+    !!! tip "该功能目前处于试验阶段，滚动输出的命令日志可能存在无法预料的显示问题，目前暂未发现异常"
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode
+    ```
+    > 为了便于开发者使用故推出此功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+
 ---
 
 ## 定制脚本
@@ -621,8 +641,9 @@ $ bash ChangeMirrors.sh --help
 | `BACKUP` | 是否备份原有软件源 | `true` 或 `false` |
 | `IGNORE_BACKUP_TIPS` | 忽略覆盖备份提示（即不覆盖备份） | `true` 或 `false` |
 | `UPGRADE_SOFTWARE` | 是否更新软件包 | `true` 或 `false` |
-| `CLEAN_CACHE` | 是否清理下载缓存 | `true` 或 `false` |
+| `CLEAN_CACHE` | 是否在更新软件包后清理下载缓存 | `true` 或 `false` |
 | `CLEAN_SCREEN` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
 | `PRINT_DIFF` | 是否打印源文件修改前后差异 | `true` 或 `false` |
+| `PURE_MODE` | 纯净模式，精简打印内容 | `true` 或 `false` |
 
 > 部分变量存在默认值，未涉及的变量无需声明为空值（空字符串），另外如果对应功能配置不存在那么就可能会出现交互

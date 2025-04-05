@@ -7,6 +7,8 @@ hide:
 
 > 如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 :octicons-heart-fill-24:{ .heart style="color: red" }
 
+!!! tip inline end "本项目脚本已被众多开源项目使用，广受社区用户好评"
+
 ## :simple-docker:{style="color: #1d63ed"} Docker 安装脚本
 
 <table>
@@ -101,6 +103,7 @@ hide:
     | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
     | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
     | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
+    | `--pure-mode` | 纯净模式，精简打印内容 | 无 |
 
     > 软件源完整格式 `<WEB协议>://<软件源地址(域名或IP)>/<软件源仓库(路径)>`
 
@@ -120,6 +123,7 @@ hide:
       --close-firewall         是否关闭防火墙                      true 或 false
       --clean-screen           是否在运行前清除屏幕上的所有内容      true 或 false
       --ignore-backup-tips     忽略覆盖备份提示                    无
+      --pure-mode              纯净模式，精简打印内容               无
 
     问题报告 https://github.com/SuperManito/LinuxMirrors/issues
     ```
@@ -156,7 +160,7 @@ hide:
         ```
         > 如果指定的版本不存在或者不支持当前系统，届时脚本会报错跳出
 
-        ??? tip "如何查看版本列表？"
+        ??? quote "查看版本列表的方法"
 
             === "Debian 系"
 
@@ -169,7 +173,7 @@ hide:
             === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
                 ``` bash
-                yum list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
+                dnf list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
                 ```
 
                 > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
@@ -183,7 +187,7 @@ hide:
 
         ``` { .bash .no-copy title="参考命令" }
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
-          --source mirror.example.com \
+          --source mirror.example.com/docker-ce \
           --source-registry registry.hub.docker.com \
           --protocol http \
           --use-intranet-source false \
@@ -191,6 +195,15 @@ hide:
           --close-firewall true \
           --ignore-backup-tips
         ```
+
+    - #### 纯净模式
+
+        !!! tip "该功能目前处于试验阶段，滚动输出的命令日志可能存在无法预料的显示问题，目前暂未发现异常"
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
+        ```
+        > 为了便于开发者使用故推出此功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
 - ### 关于服务报错无法启动
 

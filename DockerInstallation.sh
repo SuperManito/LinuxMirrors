@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-04-01
+## Modified: 2025-04-05
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -158,6 +158,7 @@ function handle_command_options() {
   --close-firewall         是否关闭防火墙                       true 或 false
   --clean-screen           是否在运行前清除屏幕上的所有内容     true 或 false
   --ignore-backup-tips     忽略覆盖备份提示                     无
+  --pure-mode              纯净模式，精简打印内容               无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
   "
@@ -294,6 +295,10 @@ function handle_command_options() {
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
             ;;
+        ## 纯净模式
+        --pure-mode)
+            PURE_MODE="true"
+            ;;
         ## 命令帮助
         --help)
             output_command_help
@@ -305,11 +310,12 @@ function handle_command_options() {
         esac
         shift
     done
-    ## 给部分命令选项赋予默认值
+    ## 设置部分功能的默认值
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
     if [[ "${DESIGNATED_DOCKER_VERSION}" ]]; then
         INSTALL_LATESTED_DOCKER="false"
     fi
+    PURE_MODE="${PURE_MODE:-"false"}"
 }
 
 function run_start() {
@@ -318,15 +324,22 @@ function run_start() {
     elif [ "${CLEAN_SCREEN}" == "true" ]; then
         clear
     fi
-    echo -e '+-----------------------------------+'
+    if [[ "${PURE_MODE}" == "true" ]]; then
+        return
+    fi
+    echo -e "+-----------------------------------+"
     echo -e "| \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
     echo -e "| \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
-    echo -e '+-----------------------------------+'
-    echo -e '欢迎使用 Docker Engine 安装与换源脚本'
+    echo -e "+-----------------------------------+"
+    echo -e "欢迎使用 Docker Engine 安装与换源脚本"
 }
 
 ## 运行结束
 function run_end() {
+    if [[ "${PURE_MODE}" == "true" ]]; then
+        echo ''
+        return
+    fi
     echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n\n🔥 1Panel · Linux 面板｜极简运维 ➜  https://1panel.cn \033[3;2m【广告】\033[0m\n🔥 林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  https://www.dkdun.cn \033[3;2m【广告】\033[0m\n\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
 }
 
@@ -569,7 +582,7 @@ function choose_mirrors() {
         echo -e "系统时间 ${BLUE}${date_time} ${timezone}${PLAIN}"
     }
 
-    print_title
+    [[ "${PURE_MODE}" != "true" ]] && print_title
 
     local mirror_list_name
     if [[ -z "${SOURCE}" ]]; then
@@ -707,7 +720,7 @@ function close_firewall_service() {
 
 ## 安装环境包
 function install_dependency_packages() {
-    local package_manager
+    local commands package_manager
     ## 删除原有源
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
@@ -718,39 +731,73 @@ function install_dependency_packages() {
         rm -rf $Dir_YumRepos/*docker*.repo
         ;;
     esac
-    echo -e "\n$WORKING ${SYNC_MIRROR_TEXT}...\n"
+    ## 更新软件源
+    commands=()
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         package_manager="apt-get"
-        $package_manager update
+        commands+=("${package_manager} update")
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         package_manager="$(get_package_manager)"
-        $package_manager makecache
+        commands+=("${package_manager} makecache")
         ;;
     esac
-    VERIFICATION_SOURCESYNC=$?
-    if [ ${VERIFICATION_SOURCESYNC} -ne 0 ]; then
+    if [[ "${PURE_MODE}" == "true" ]]; then
+        local exec_cmd=""
+        for cmd in "${commands[@]}"; do
+            if [[ -z "${exec_cmd}" ]]; then
+                exec_cmd="${cmd}"
+            else
+                exec_cmd="${exec_cmd} && ${cmd}"
+            fi
+        done
+        echo ''
+        animate_exec "${exec_cmd}" "${SYNC_MIRROR_TEXT}"
+    else
+        echo -e "\n$WORKING ${SYNC_MIRROR_TEXT}...\n"
+        for cmd in "${commands[@]}"; do
+            eval "${cmd}"
+        done
+        echo -e "\n$COMPLETE ${SYNC_MIRROR_TEXT}结束\n"
+    fi
+    if [ $? -ne 0 ]; then
         output_error "${SYNC_MIRROR_TEXT}出错，请先解决系统原有软件源错误以确保 ${BLUE}${package_manager}${PLAIN} 软件包管理工具可用！"
     fi
-    echo -e "\n$COMPLETE ${SYNC_MIRROR_TEXT}结束\n"
+
+    commands=()
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        $package_manager install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+        commands+=("${package_manager} install -y ca-certificates curl")
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        # 注：红帽 8 版本才发布了 dnf 包管理工具，为了兼容性而优先选择安装 dnf-utils
+        # 注：红帽 8 版本才发布了 dnf 包管理工具
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         7)
-            $package_manager install -y yum-utils device-mapper-persistent-data lvm2
+            commands+=("${package_manager} install -y yum-utils device-mapper-persistent-data lvm2")
             ;;
         *)
-            $package_manager install -y dnf-utils device-mapper-persistent-data lvm2
+            commands+=("${package_manager} install -y dnf-plugins-core")
             ;;
         esac
         ;;
     esac
-    echo ''
+    if [[ "${PURE_MODE}" == "true" ]]; then
+        local exec_cmd=""
+        for cmd in "${commands[@]}"; do
+            if [[ -z "${exec_cmd}" ]]; then
+                exec_cmd="${cmd}"
+            else
+                exec_cmd="${exec_cmd} && ${cmd}"
+            fi
+        done
+        echo ''
+        animate_exec "${exec_cmd}" "安装环境软件包"
+    else
+        for cmd in "${commands[@]}"; do
+            eval "${cmd}"
+        done
+    fi
 }
 
 ## 选择系统包管理器
@@ -804,6 +851,7 @@ function uninstall_original_version() {
 
 ## 配置 Docker CE 源
 function configure_docker_ce_mirror() {
+    local commands=()
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         ## 处理 GPG 密钥
@@ -818,10 +866,17 @@ function configure_docker_ce_mirror() {
         chmod a+r $file_keyring
         ## 添加源
         echo "deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
-        apt-get update
+        commands+=("apt-get update")
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
+        7)
+            yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+            ;;
+        *)
+            dnf config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+            ;;
+        esac
         sed -i "s|https://download.docker.com|${WEB_PROTOCOL}://${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
         ## 兼容处理版本号
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
@@ -837,10 +892,26 @@ function configure_docker_ce_mirror() {
             esac
             sed -i "s|\$releasever|${target_version}|g" $Dir_YumRepos/docker-ce.repo
             local package_manager="$(get_package_manager)"
-            $package_manager makecache
+            commands+=("${package_manager} makecache")
         fi
         ;;
     esac
+    echo ''
+    if [[ "${PURE_MODE}" == "true" ]]; then
+        local exec_cmd=""
+        for cmd in "${commands[@]}"; do
+            if [[ -z "${exec_cmd}" ]]; then
+                exec_cmd="${cmd}"
+            else
+                exec_cmd="${exec_cmd} && ${cmd}"
+            fi
+        done
+        animate_exec "${exec_cmd}" "${SYNC_MIRROR_TEXT}"
+    else
+        for cmd in "${commands[@]}"; do
+            eval "${cmd}"
+        done
+    fi
 }
 
 ## 安装 Docker Engine
@@ -866,14 +937,15 @@ function install_docker_engine() {
     ## 安装
     function install_main() {
         local target_docker_version
+        local commands=()
         if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                commands+=("apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin")
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 local package_manager="$(get_package_manager)"
-                $package_manager install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                commands+=("${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin")
                 ;;
             esac
         else
@@ -936,14 +1008,31 @@ function install_docker_engine() {
                     INSTALL_JUDGMENT="5:"
                     ;;
                 esac
-                apt-get install -y docker-ce=${INSTALL_JUDGMENT}${target_docker_version}* docker-ce-cli=5:${target_docker_version}* containerd.io docker-buildx-plugin docker-compose-plugin
+                commands+=("apt-get install -y docker-ce=${INSTALL_JUDGMENT}${target_docker_version}* docker-ce-cli=5:${target_docker_version}* containerd.io docker-buildx-plugin docker-compose-plugin")
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 local package_manager="$(get_package_manager)"
-                $package_manager install -y docker-ce-${target_docker_version} docker-ce-cli-${target_docker_version} containerd.io docker-buildx-plugin docker-compose-plugin
+                commands+=("${package_manager} install -y docker-ce-${target_docker_version} docker-ce-cli-${target_docker_version} containerd.io docker-buildx-plugin docker-compose-plugin")
                 ;;
             esac
         fi
+        echo ''
+        if [[ "${PURE_MODE}" == "true" ]]; then
+            local exec_cmd=""
+            for cmd in "${commands[@]}"; do
+                if [[ -z "${exec_cmd}" ]]; then
+                    exec_cmd="${cmd}"
+                else
+                    exec_cmd="${exec_cmd} && ${cmd}"
+                fi
+            done
+            animate_exec "${exec_cmd}" "安装 Docker Engine"
+        else
+            for cmd in "${commands[@]}"; do
+                eval "${cmd}"
+            done
+        fi
+        [ $? -ne 0 ] && output_error "安装 Docker Engine 失败！"
     }
 
     ## 修改 Docker Registry 镜像仓库源
@@ -1022,7 +1111,6 @@ function install_docker_engine() {
                 ;;
             esac
         fi
-        echo ''
     fi
 
     ## 判定是否已安装
@@ -1047,7 +1135,6 @@ function install_docker_engine() {
     fi
     uninstall_original_version
     install_main
-    [ $? -ne 0 ] && output_error "安装 Docker Engine 失败！"
     change_docker_registry_mirror
 }
 
@@ -1069,8 +1156,8 @@ function check_version() {
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
                 local package_manager="$(get_package_manager)"
-                echo -e "\n检查源文件：cat $Dir_YumRepos/docker.repo"
-                echo -e "请尝试手动执行安装命令：$package_manager install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n"
+                echo -e "\n检查源文件：cat ${Dir_YumRepos}/docker.repo"
+                echo -e "请尝试手动执行安装命令：${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n"
                 ;;
             esac
             exit 1
@@ -1266,6 +1353,206 @@ function interactive_select_boolean() {
         _SELECT_RESULT="false"
     fi
     tput cnorm 2>/dev/null # 恢复光标
+}
+
+function animate_exec() {
+    local cmd="$1"
+    local title="$2"
+    local max_lines=${3:-5}          # 默认显示5行
+    local spinner_style="${4:-dots}" # 动画样式
+    local refresh_rate="${5:-0.1}"   # 刷新率
+    # 动画样式
+    local -A spinners=([dots]="⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏" [circle]="◐ ◓ ◑ ◒" [classic]="-\\ |/")
+    local -A recommended_rates=([dots]="0.08" [circle]="0.12" [classic]="0.12")
+    [[ -z "${spinners[$spinner_style]}" ]] && spinner_style="dots"
+    [[ "${refresh_rate}" == "0.1" ]] && refresh_rate="${recommended_rates[$spinner_style]}"
+    # 获取终端宽度
+    local term_width=$(tput cols 2>/dev/null || echo 80)
+    local display_width=$((term_width - 2))
+    # 截断行
+    function simple_truncate() {
+        local line="$1"
+        local truncate_marker="..."
+        local max_length=$((display_width - 3))
+        # 快速判断：如果ASCII行长度在范围内，直接返回
+        if [[ "${line}" =~ ^[[:ascii:]]*$ && ${#line} -le $display_width ]]; then
+            echo "${line}"
+            return
+        fi
+        # 1. 计算非ASCII字符数量
+        local non_ascii_count=$(echo "${line// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;" | wc -m)
+        # 2. 总字符数
+        local total_length=${#line}
+        # 3. 实际显示宽度 = 总字符数 + 非ASCII字符数
+        # 非ASCII字符额外占用1个宽度单位（即总共2个）
+        local display_length=$((total_length + non_ascii_count))
+        # 4. 中文引号特殊处理（引号只占1个宽度，需要减去额外计算的部分）
+        local quote_count=0
+        [[ $(echo "${line}" | grep -c "“") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "“")))
+        [[ $(echo "${line}" | grep -c "”") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "”")))
+        [[ $(echo "${line}" | grep -c "‘") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "‘")))
+        [[ $(echo "${line}" | grep -c "’") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "’")))
+        # 5. 调整宽度（减去引号额外计算的部分）
+        display_length=$((display_length - quote_count))
+        # 如果计算宽度在显示范围内，直接显示
+        if [[ $display_length -le $display_width ]]; then
+            echo "$line"
+            return
+        fi
+        # 需要截断，逐字符构建
+        local result=""
+        local current_width=0
+        local i=0
+        while [ $i -lt ${#line} ]; do
+            local char="${line:$i:1}"
+            local char_width=1
+            # 是否是中文等宽字符(非ASCII)
+            if ! [[ "$char" =~ [0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·] ]]; then
+                # 不是中文引号则算2个宽度
+                if [[ "$char" != "“" && "$char" != "”" && "$char" != "‘" && "$char" != "’" ]]; then
+                    char_width=2
+                fi
+            fi
+            # 检查添加此字符是否会超出限制
+            if [[ $((current_width + char_width)) -gt $max_length ]]; then
+                echo "${result}${truncate_marker}"
+                return
+            fi
+            result+="${char}"
+            current_width=$((current_width + char_width))
+            ((i++))
+        done
+        # 完整遍历未超出限制
+        echo "${line}"
+    }
+    # 清理函数
+    function cleanup() {
+        [ -f "${temp_file}" ] && rm -f "${temp_file}"
+        tput cnorm 2>/dev/null
+        echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
+        exit 130
+    }
+    # 创建临时文件
+    function make_temp_file() {
+        local temp_dirs=("." "/tmp")
+        local tmp_file=""
+        for dir in "${temp_dirs[@]}"; do
+            [[ ! -d "${dir}" || ! -w "${dir}" ]] && continue
+            tmp_file="${dir}/animate_exec_$$_$(date +%s)"
+            touch "${tmp_file}" 2>/dev/null || continue
+            if [[ -f "${tmp_file}" && -w "${tmp_file}" ]]; then
+                echo "${tmp_file}"
+                return
+            fi
+        done
+        echo "${tmp_file}"
+    }
+    # 更新显示
+    function update_display() {
+        local current_size=$(wc -c <"${temp_file}" 2>/dev/null || echo 0)
+        # 如果文件大小没变，不更新
+        if [[ $current_size -le $last_size ]]; then
+            return 1
+        fi
+        # 只在必要时读取文件
+        local -a lines=()
+        mapfile -t -n "${max_lines}" lines < <(tail -n "$max_lines" "${temp_file}")
+        # 处理每一行
+        local -a processed_lines=()
+        for ((i = 0; i < ${#lines[@]}; i++)); do
+            processed_lines[i]=$(simple_truncate "${lines[i]}")
+        done
+        # 更新显示
+        tput cud1 2>/dev/null # 移动到标题下
+        echo -ne "\r\033[K"   # 清空当前行
+        tput cud1 2>/dev/null # 移动到内容区
+        # 显示处理后的行
+        for ((i = 0; i < $max_lines; i++)); do
+            echo -ne "\r\033[K" # 清空当前行
+            [[ $i -lt ${#processed_lines[@]} ]] && echo -ne "\033[2m${processed_lines[$i]}\033[0m"
+            [[ $i -lt $((max_lines - 1)) ]] && tput cud1 2>/dev/null
+        done
+        # 返回到标题行
+        for ((i = 0; i < $max_lines + 1; i++)); do
+            tput cuu1 2>/dev/null
+        done
+        # 更新文件大小记录
+        last_size=$current_size
+        return 0
+    }
+    # 初始化
+    local spinner_frames=(${spinners[$spinner_style]})
+    local temp_file="$(make_temp_file)"
+    trap "cleanup" INT TERM
+    tput civis 2>/dev/null # 隐藏光标
+    # 预留显示空间
+    echo '' # 标题行
+    echo '' # 空行
+    for ((i = 0; i < $max_lines; i++)); do
+        echo ''
+    done
+    # 执行命令
+    eval "${cmd}" >"${temp_file}" 2>&1 &
+    local cmd_pid=$!
+    local last_size=0
+    local spin_idx=0
+    # 返回到标题行
+    tput cuu $((max_lines + 2)) 2>/dev/null
+    # 添加延迟允许命令开始执行
+    sleep 0.05
+    # 显示初始状态
+    echo -ne "\r\033[K◉ ${title} [\033[1m\033[34m${spinner_frames[$spin_idx]}\033[0m]"
+    spin_idx=$(((spin_idx + 1) % ${#spinner_frames[@]}))
+    # 检查初始输出
+    update_display
+    # 监控命令执行 - 增加自适应刷新
+    local update_count=0
+    local adaptive_rate=$refresh_rate
+    while kill -0 $cmd_pid 2>/dev/null; do
+        echo -ne "\r\033[K◉ ${title} [\033[1m\033[34m${spinner_frames[$spin_idx]}\033[0m]"
+        spin_idx=$(((spin_idx + 1) % ${#spinner_frames[@]}))
+        if update_display; then
+            update_count=$((update_count + 1))
+            # 连续更新太频繁则调整刷新率
+            if [[ $update_count -gt 5 ]]; then
+                adaptive_rate=$(awk "BEGIN {print $adaptive_rate * 1.5; exit}")
+                [[ $(awk "BEGIN {print ($adaptive_rate > 0.5); exit}") -eq 1 ]] && adaptive_rate=0.5
+                update_count=0
+            fi
+        else
+            update_count=0
+            adaptive_rate=$refresh_rate
+        fi
+        sleep $adaptive_rate
+    done
+    wait $cmd_pid
+    local exit_status=$?
+    # 最后一次更新显示
+    update_display
+    # 显示完成状态
+    if [ $exit_status -eq 0 ]; then
+        echo -ne "\r\033[K◉ ${title} [\033[1m\033[32m✓\033[0m]\n"
+    else
+        echo -ne "\r\033[K◉ ${title} [\033[1m\033[31m✗\033[0m]\n"
+    fi
+    # 空行
+    echo -ne "\r\033[K\n"
+    # 显示最终输出
+    local actual_lines=$(wc -l <"${temp_file}" 2>/dev/null || echo 0)
+    [[ $actual_lines -gt $max_lines ]] && actual_lines=$max_lines
+    if [[ $actual_lines -gt 0 ]]; then
+        local -a final_lines=()
+        mapfile -t -n "$actual_lines" final_lines < <(tail -n "$actual_lines" "${temp_file}")
+
+        for ((i = 0; i < actual_lines; i++)); do
+            local line=$(simple_truncate "${final_lines[$i]}")
+            echo -ne "\r\033[K\033[2m${line}\033[0m\n"
+        done
+    fi
+    # 清理并返回
+    tput cnorm 2>/dev/null
+    rm -f "${temp_file}"
+    return $exit_status
 }
 
 handle_command_options "$@"
