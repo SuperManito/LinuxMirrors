@@ -179,6 +179,10 @@
     max-width: 300px;
 }
 
+.sponsor-flex-item img {
+    width: 60% !important;
+}
+
 @media screen and (max-width: 768px) {
     .sponsor-flex-item {
         flex: 0 1 calc(50% - 1rem);
