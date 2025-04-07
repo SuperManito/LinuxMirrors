@@ -23,8 +23,9 @@
       if (typeof document.startViewTransition !== 'function') {
           return // 不支持 View Transitions API 的浏览器直接返回
       }
-      // 获取所有主题切换按钮
-      const themeToggles = document.querySelectorAll('.md-header__button.md-icon')
+      // 获取所有主题切换按钮 - 更精确的选择器
+      // 只选择form[data-md-component="palette"]内部的按钮，而不是所有md-header__button
+      const themeToggles = document.querySelectorAll('form[data-md-component="palette"] .md-header__button.md-icon')
       themeToggles.forEach((toggle) => {
           toggle.addEventListener(
               'click',
@@ -36,28 +37,12 @@
                   const targetId = this.getAttribute('for')
                   const targetInput = document.getElementById(targetId)
                   if (!targetInput) return
-                  // 获取当前存储的主题信息和即将切换到的主题信息
-                  const currentPalette = __md_get('__palette')
-                  const currentScheme = currentPalette?.color?.scheme || ''
-                  const currentMedia = currentPalette?.color?.media || ''
-                  // 获取新主题信息
-                  const newScheme = targetInput.getAttribute('data-md-color-scheme')
-                  const newMedia = targetInput.getAttribute('data-md-color-media')
-                  // 判断当前浏览器/系统主题
-                  const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-                  // 判断是否切换到暗色主题
-                  const isDark = newScheme != 'default'
-                  // 确定当前主题的实际暗色状态
-                  let isCurrentDark = currentScheme.includes('slate')
-                  if (currentMedia === '(prefers-color-scheme)') {
-                      isCurrentDark = isSystemDark
-                  }
-                  // 确定新主题的实际暗色状态
-                  let isNewDark = newScheme.includes('slate')
-                  if (newMedia === '(prefers-color-scheme)') {
-                      isNewDark = isSystemDark
-                  }
-                  // 如果当前主题和目标主题相同，则不需要动画
+                  // 获取当前主题状态
+                  const currentScheme = document.body.getAttribute('data-md-color-scheme')
+                  const isCurrentDark = currentScheme.includes('slate')
+                  // 点击后会切换到相反的主题
+                  const isNewDark = !isCurrentDark
+                  // 当前主题和目标主题相同则不触发动画
                   if (isCurrentDark === isNewDark) {
                       targetInput.click()
                       return
@@ -74,8 +59,8 @@
                           // 切换主题
                           targetInput.click()
                           // 添加暗/亮模式类，用于动画控制
-                          document.documentElement.classList.remove(isDark ? 'light' : 'dark')
-                          document.documentElement.classList.add(isDark ? 'dark' : 'light')
+                          document.documentElement.classList.remove(isNewDark ? 'light' : 'dark')
+                          document.documentElement.classList.add(isNewDark ? 'dark' : 'light')
                           // 等待主题变化完成
                           await new Promise((resolve) => setTimeout(resolve, 100))
                       })
@@ -83,12 +68,12 @@
                           // 视图过渡准备就绪，开始动画
                           document.documentElement.animate(
                               {
-                                  clipPath: isDark ? [...clipPath].reverse() : clipPath,
+                                  clipPath: isNewDark ? [...clipPath].reverse() : clipPath,
                               },
                               {
                                   duration: 500,
                                   easing: 'ease-in',
-                                  pseudoElement: isDark ? '::view-transition-old(root)' : '::view-transition-new(root)',
+                                  pseudoElement: isNewDark ? '::view-transition-old(root)' : '::view-transition-new(root)',
                               }
                           )
                       })
@@ -97,8 +82,7 @@
           )
       })
       // 初始化主题状态类
-      const currentPalette = __md_get('__palette')
-      const currentScheme = currentPalette?.color?.scheme || ''
+      const currentScheme = document.body.getAttribute('data-md-color-scheme')
       const isDark = currentScheme.includes('slate')
       document.documentElement.classList.add(isDark ? 'dark' : 'light')
   })

@@ -631,7 +631,16 @@ function run_end() {
         echo ''
         return
     fi
-    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n\n🔥 1Panel · Linux 面板｜极简运维 ➜  https://1panel.cn \033[3;2m【广告】\033[0m\n🔥 林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  https://www.dkdun.cn \033[3;2m【广告】\033[0m\n\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
+    local sponsor_ad=(
+        "🔥 1Panel · Linux 面板｜极简运维 ➜  https://1panel.cn \033[3;2m【广告】\033[0m"
+        "🔥 林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  https://www.dkdun.cn \033[3;2m【广告】\033[0m"
+        "🔥 乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  https://www.qiaoxh.com \033[3;2m【广告】\033[0m"
+    )
+    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n"
+    for ad in "${sponsor_ad[@]}"; do
+        echo -e "  ${ad}"
+    done
+    echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
 }
 
 ## 报错退出

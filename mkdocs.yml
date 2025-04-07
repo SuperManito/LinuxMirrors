@@ -48,12 +48,14 @@ theme:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: white
+      accent: blue
       toggle:
         icon: octicons/sun-16
         name: 亮色模式
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
+      accent: blue
       toggle:
         icon: octicons/moon-16
         name: 暗黑模式
@@ -146,11 +148,19 @@ plugins:
   - search:
       lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
-  - exclude-search:
-      exclude:
-        - mirrors.md
   - tags
   - termynal
+  - minify:
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+          remove_comments: true
+      cache_safe: true
+      js_files:
+        - assets/js/common.js
+        - assets/js/component.js
+        - assets/js/components/mirrors-table/data.js
+        - assets/js/components/mirrors-table/index.js
 nav:
   - "介绍": index.md
   - "使用方法": use/index.md

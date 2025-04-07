@@ -4,6 +4,8 @@ hide:
   - toc
   - feedback
   - footer
+search:
+  exclude: true
 ---
 
 ## 中国大陆 :flag-CN:

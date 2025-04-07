@@ -6,6 +6,21 @@
     --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
 }
 
+[data-md-color-primary=white] {
+    --md-typeset-a-color: #2080f0;
+}
+
+[data-md-color-scheme='slate'][data-md-color-primary=black] {
+    --md-typeset-a-color: #2080f0;
+}
+
+.md-typeset .admonition.tip, .md-typeset details.tip {
+    border-color: #009400;
+}
+.md-typeset .tip>.admonition-title, .md-typeset .tip>summary {
+    background-color: #0094001a;
+}
+
 .md-header {
     background-color: hsla(240, 9%, 75%, 0.33);
     -webkit-backdrop-filter: blur(8px);
@@ -85,25 +100,25 @@
     vertical-align: -0.35em !important;
 }
 
-.md-nav__sponsor-bottom {
+.sponsor {
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid var(--md-default-fg-color--lightest);
 }
 
-.md-nav__sponsor-bottom .sponsor-label {
+.sponsor .sponsor-label {
     font-size: 0.8rem;
     text-align: center;
     margin-bottom: 0.2rem;
     color: var(--md-default-fg-color);
 }
 
-.md-nav__sponsor-bottom .sponsor-wrapper {
+.sponsor .sponsor-wrapper {
     width: 100%;
     padding: 0.5rem 0;
 }
 
-.md-nav__sponsor-bottom .sponsor-item {
+.sponsor .sponsor-item {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -116,11 +131,11 @@
     max-height: 80px;
 }
 
-.md-nav__sponsor-bottom .sponsor-item:hover {
+.sponsor .sponsor-item:hover {
     background-color: var(--md-code-bg-color);
 }
 
-.md-nav__sponsor-bottom .sponsor-item img {
+.sponsor .sponsor-item img {
     max-width: 100%;
     height: auto;
     vertical-align: middle;
@@ -139,14 +154,23 @@
     max-width: 300px;
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 768px) {
     .sponsor-flex-item {
         flex: 0 1 calc(50% - 1rem);
+        min-width: 150px;
+        max-width: calc(50% - 1rem);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sponsor .sponsor-item {
+        padding: 0;
+        height: 40px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .md-nav__sponsor-bottom {
+    .sponsor-toc {
         display: none;
     }
 }

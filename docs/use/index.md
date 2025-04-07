@@ -110,7 +110,9 @@ hide:
 
 选项卡分别代表脚本内置软件源类型和获取脚本途径，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在[软件源列表](../mirrors/index.md)中查看具体有哪些软件源。
 
-!!! tip "默认自动备份原有软件源内容，如需了解更多请翻阅下方文档"
+!!! tip "默认自动备份原有软件源内容，如需了解更多请翻阅下方文档。若使用过程中的某些选项令你疑惑不解，那么在选择软件源后一路回车即是最佳实践。"
+
+</br>
 
 <div class="grid cards" markdown>
 
@@ -140,246 +142,245 @@ hide:
 
 </div>
 
-- ### 常见问题
+### 常见问题
 
-    - #### 关于报错 Command not found
+- #### 关于报错 Command not found
 
-        !!! quote ""
+    !!! quote ""
 
-            此报错是因为系统没有安装 `curl` 软件包，下面是安装命令
+        此报错是因为系统没有安装 `curl` 软件包，下面是安装命令
 
-            === "Debian 系 / openKylin"
+        === "Debian 系 / openKylin"
 
+            ``` bash
+            apt-get install -y curl
+            ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+            新装系统需要先执行一遍更新 `apt-get update`
+
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+
+            ``` bash
+            dnf install -y curl || yum install -y curl
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        === "openSUSE"
+
+            ``` bash
+            zypper install curl
+            ```
+
+        === "Arch Linux"
+
+            ``` bash
+            pacman -S curl
+            ```
+
+        === "Alpine Linux"
+
+            ``` bash
+            apk --no-cache add -f curl bash ncurses
+            ```
+
+        === "Gentoo"
+
+            ``` bash
+            emerge --ask curl
+            ```
+
+        === "NixOS"
+
+            ``` bash
+            nix-env -iA nixos.curl
+            ```
+
+        ??? tip "安装不上？（点击展开查看其它解决方法）"
+
+            假如系统原有软件源是无效的导致安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供几个在线获取脚本的应急方法
+
+            === "使用 Python 下载脚本"
+
+                适用于大部分操作系统（`Alpine Linux` 除外），`python3` 要是不存在那就再试试 `python` 指令
                 ``` bash
-                apt-get install -y curl
+                python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'main.sh')"
                 ```
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+            === "使用 wget 下载脚本"
 
-                新装系统需要先执行一遍更新 `apt-get update`
-
-            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
-
+                一般没有预装 `curl` 软件包的系统也不会预装 `wget` 软件包，所以大概率这个方法应该是不行的
                 ``` bash
-                dnf install -y curl || yum install -y curl
+                wget https://linuxmirrors.cn/main.sh
                 ```
 
-                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+            === "使用浏览器下载"
 
-            === "openSUSE"
+                如果可以访问系统 GUI 图像界面和桌面的话那可以直接在浏览器中打开链接下载脚本，很多系统都会预装 Firefox 火狐浏览器
 
-                ``` bash
-                zypper install curl
-                ```
+            之后再执行脚本即可
 
-            === "Arch Linux"
+            === ":material-home-city: 中国大陆"
 
                 ``` bash
-                pacman -S curl
+                bash main.sh
                 ```
 
-            === "Alpine Linux"
+            === ":material-earth: 境外以及海外地区"
 
                 ``` bash
-                apk --no-cache add -f curl bash ncurses
+                bash main.sh --abroad
                 ```
 
-            === "Gentoo"
+            === ":material-library: 中国大陆教育网"
 
                 ``` bash
-                emerge --ask curl
+                bash main.sh --edu
                 ```
 
-            === "NixOS"
+            如果以上方法试了都不行，那就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名称的 `.sh` 脚本，粘贴源码内容后通过 `bash` 指令手动执行。
 
-                ``` bash
-                nix-env -iA nixos.curl
-                ```
+- #### 备份原有软件源
 
-            ??? tip "安装不上？（点击展开查看其它解决方法）"
+    !!! quote ""
 
-                假如系统原有软件源是无效的导致安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供几个在线获取脚本的应急方法
+        脚本会自动备份原有软件源内容，备份路径为原有文件或目录的绝对路径加上 `.bak` 后缀，例如 `/etc/apt/sources.list => /etc/apt/sources.list.bak`，当检查到已存在备份内容时会询问是否覆盖备份。
 
-                === "使用 Python 下载脚本"
+- #### 还原已备份的软件源
 
-                    适用于大部分操作系统（`Alpine Linux` 除外），`python3` 要是不存在那就再试试 `python` 指令
-                    ``` bash
-                    python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'main.sh')"
-                    ```
+    !!! quote ""
 
-                === "使用 wget 下载脚本"
+        === "Debian 系 / openKylin"
 
-                    一般没有预装 `curl` 软件包的系统也不会预装 `wget` 软件包，所以大概率这个方法应该是不行的
-                    ``` bash
-                    wget https://linuxmirrors.cn/main.sh
-                    ```
+            ``` bash
+            cp -rf /etc/apt/sources.list.bak /etc/apt/sources.list
+            apt-get update
+            ```
 
-                === "使用浏览器下载"
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
-                    如果可以访问系统 GUI 图像界面和桌面的话那可以直接在浏览器中打开链接下载脚本，很多系统都会预装 Firefox 火狐浏览器
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
-                之后再执行脚本即可
+            ``` bash
+            cp -rf /etc/yum.repos.d.bak /etc/yum.repos.d
+            yum makecache
+            ```
 
-                === ":material-home-city: 中国大陆"
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
-                    ``` bash
-                    bash main.sh
-                    ```
+        === "openSUSE"
 
-                === ":material-earth: 境外以及海外地区"
+            ``` bash
+            cp -rf /etc/zypp/repos.d.bak /etc/zypp/repos.d
+            zypper ref
+            ```
 
-                    ``` bash
-                    bash main.sh --abroad
-                    ```
+        === "Arch Linux"
 
-                === ":material-library: 中国大陆教育网"
+            ``` bash
+            cp -rf /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
+            pacman -Sy
+            ```
 
-                    ``` bash
-                    bash main.sh --edu
-                    ```
+        === "Alpine Linux"
 
-                如果以上方法试了都不行，那就复制[源码](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名称的 `.sh` 脚本，粘贴源码内容后通过 `bash` 指令手动执行。
+            ``` bash
+            cp -rf /etc/apk/repositories.bak /etc/apk/repositories
+            apk update -f
+            ```
 
-    - #### 备份原有软件源
+        === "Gentoo"
 
-        !!! quote ""
+            ``` bash
+            cp -rf /etc/portage/make.conf.bak /etc/portage/make.conf
+            [ -d /etc/portage/repos.conf ] && cp -rf /etc/portage/repos.conf/gentoo.conf.bak /etc/portage/repos.conf/gentoo.conf
+            emerge --sync --quiet
+            ```
 
-            脚本会自动备份原有软件源内容，备份路径为原有文件或目录的绝对路径加上 `.bak` 后缀，例如 `/etc/apt/sources.list => /etc/apt/sources.list.bak`，当检查到已存在备份内容时会询问是否覆盖备份。
+        === "NixOS"
 
-    - #### 还原已备份的软件源
+            ``` bash
+            cp -rf /etc/nix/nix.conf.bak /etc/nix/nix.conf
+            ```
 
-        !!! quote ""
+- #### 关于开启 SSH 远程登录的方法
 
-            === "Debian 系 / openKylin"
+    !!! quote ""
 
-                ``` bash
-                cp -rf /etc/apt/sources.list.bak /etc/apt/sources.list
-                apt-get update
-                ```
+        - 验证是否已安装 `SSH` 服务
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+            ``` bash
+            ls /etc | grep ssh
+            ```
+            > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包
 
-            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+        - 设置允许 Root 用户登录
 
-                ``` bash
-                cp -rf /etc/yum.repos.d.bak /etc/yum.repos.d
-                yum makecache
-                ```
+            ``` bash
+            cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
+            ```
 
-                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+        - 设置密码认证
 
-            === "openSUSE"
+            ``` bash
+            cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
+            ```
 
-                ``` bash
-                cp -rf /etc/zypp/repos.d.bak /etc/zypp/repos.d
-                zypper ref
-                ```
+        - 启动/重启 `SSH` 服务
 
-            === "Arch Linux"
+            ``` bash
+            ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
+            ```
 
-                ``` bash
-                cp -rf /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
-                pacman -Sy
-                ```
+        > 命令以及配置步骤仅供参考，只适配了部分常见发行版
 
-            === "Alpine Linux"
+- #### 关于未显示方向键交互控制界面
 
-                ``` bash
-                cp -rf /etc/apk/repositories.bak /etc/apk/repositories
-                apk update -f
-                ```
+    !!! quote ""
 
-            === "Gentoo"
+        如果发现交互界面是输入而不是新式的方向键控制，那么请自行安装 `ncurses` 或 `nano` 软件包，新式的按键交互依赖 `tput` 指令实现。
 
-                ``` bash
-                cp -rf /etc/portage/make.conf.bak /etc/portage/make.conf
-                [ -d /etc/portage/repos.conf ] && cp -rf /etc/portage/repos.conf/gentoo.conf.bak /etc/portage/repos.conf/gentoo.conf
-                emerge --sync --quiet
-                ```
+- #### 关于调用脚本的互联网位置
 
-            === "NixOS"
+    !!! quote ""
 
-                ``` bash
-                cp -rf /etc/nix/nix.conf.bak /etc/nix/nix.conf
-                ```
+        项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 :netlify: [Netlify](https://www.netlify.com)，几乎没有被劫持的风险请放心使用。
 
-    - #### 关于开启 SSH 远程登录的方法
+        当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
 
-        !!! quote ""
+- #### 关于软件源下载速度相关问题
 
-            - 验证是否已安装 `SSH` 服务
+    !!! quote ""
 
-                ``` bash
-                ls /etc | grep ssh
-                ```
-                > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包
+        首先，在[软件源列表](../mirrors/index.md)的使用帮助处有写使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
 
-            - 设置允许 Root 用户登录
+        软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行带宽很高但实际测速却并不理想，因为这与镜像站的并发性能和负载策略有关。
 
-                ``` bash
-                cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
-                ```
+        网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能无法实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
 
-            - 设置密码认证
+- #### 关于未启用的软件源仓库
 
-                ``` bash
-                cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
-                ```
+    !!! quote ""
 
-            - 启动/重启 `SSH` 服务
+        很多系统的软件源会启用多个仓库，脚本遵循系统默认设置，默认不启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，具体启用方法如下：
 
-                ``` bash
-                ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
-                ```
+        === "Debian 系 / openKylin"
 
-            > 命令以及配置步骤仅供参考，只适配了部分常见发行版
+            默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
 
-    - #### 关于调用脚本的互联网位置
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
-        !!! quote ""
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
-            项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 :netlify: [Netlify](https://www.netlify.com)，几乎没有被劫持的风险请放心使用。
+            部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
-            当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
-    - #### 关于软件源下载速度相关问题
+        === "openSUSE"
 
-        !!! quote ""
-
-            首先，在[软件源列表](../mirrors/index.md)的使用帮助处有写使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
-
-            软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行带宽很高但实际测速却并不理想，因为这与镜像站的并发性能和负载策略有关。
-
-            网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能无法实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
-
-    - #### 关于未启用的软件源仓库
-
-        !!! quote ""
-
-            很多系统的软件源会启用多个仓库，脚本遵循系统默认设置，默认不启用的软件源（仓库）不会在运行完本脚本后被启用，但是它们也随脚本更换了目标软件源地址，具体启用方法如下：
-
-            === "Debian 系 / openKylin"
-
-                默认禁用了`deb-src`源码仓库和`proposed`预发布软件源，若需启用请将 `/etc/apt/sources.list` 文件中相关内容的所在行取消注释
-
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
-
-            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
-
-                部分仓库默认没有启用，若需启用请将 `/etc/yum.repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
-
-                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
-
-            === "openSUSE"
-
-                部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
-
-    - #### 其它
-
-        !!! quote ""
-
-            - 如果提示 `bash: /proc/self/fd/11: No such file or directory`，请切换至 `Root` 用户执行，切换命令为 `sudo -i` 或 `su root`
-            - 如果交互打印界面发现是输入而不是新式的方向键交互，那么请自行安装 `ncurses` 或 `nano` 软件包，新式的方向键交互依赖 `tput` 指令实现。
+            部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
 
 ---
