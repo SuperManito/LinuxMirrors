@@ -100,10 +100,16 @@
     vertical-align: -0.35em !important;
 }
 
+/* 赞助组件 */
 .sponsor {
-    margin-top: 2rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--md-default-fg-color--lightest);
+    margin-top: 0;
+    border-top: none;
+}
+
+.sponsor-toc {
+    margin-top: 2rem !important;
+    border-top: 1px solid var(--md-default-fg-color--lightest) !important;
 }
 
 .sponsor .sponsor-label {
@@ -131,6 +137,13 @@
     max-height: 80px;
 }
 
+.sponsor-item-toc {
+    margin: 0; 
+    padding: 14px !important;
+    height: 66px !important;
+    box-sizing: border-box;
+}
+
 .sponsor .sponsor-item:hover {
     background-color: var(--md-code-bg-color);
 }
@@ -141,11 +154,23 @@
     vertical-align: middle;
 }
 
+.sponsor-item-toc img {
+    width: 50% !important;
+}
+
 .sponsor-flex-wrapper {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: center;
+}
+
+.sponsor-flex-wrapper-toc {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px !important;
+    padding: 0;
+    width: 100%;
 }
 
 .sponsor-flex-item {
