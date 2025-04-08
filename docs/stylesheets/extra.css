@@ -4,6 +4,8 @@
     --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
     --md-default-bg-color--light: #ffffff;
     --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
+    --view-transition-z-index-foreground: 999;
+    --view-transition-z-index-background: 1;
 }
 
 [data-md-color-primary=white] {
@@ -237,20 +239,15 @@
     animation: none;
     mix-blend-mode: normal;
 }
-
 .dark::view-transition-old(root) {
-    z-index: 999;
+    z-index: var(--view-transition-z-index-foreground);
 }
-
 .dark::view-transition-new(root) {
-    z-index: 1;
+    z-index: var(--view-transition-z-index-background);
 }
-
-/* 浅色主题下的设置 */
 ::view-transition-old(root) {
-    z-index: 1;
+    z-index: var(--view-transition-z-index-background)
 }
-
 ::view-transition-new(root) {
-    z-index: 999;
+    z-index: var(--view-transition-z-index-foreground);
 }

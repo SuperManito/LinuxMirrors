@@ -8,6 +8,7 @@ extra_javascript:
   - assets/js/modules/vue.global.prod.js
   - assets/js/modules/tdesign.min.js
   - assets/js/modules/tdesign-theme.js
+  - assets/js/useThemeTransition.js
   - assets/js/common.js
   - assets/js/component.js
   - assets/js/components/mirrors-table/data.js
@@ -157,6 +158,7 @@ plugins:
           remove_comments: true
       cache_safe: true
       js_files:
+        - assets/js/useThemeTransition.js
         - assets/js/common.js
         - assets/js/component.js
         - assets/js/components/mirrors-table/data.js
