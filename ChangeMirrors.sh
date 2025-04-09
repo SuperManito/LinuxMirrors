@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-04-05
+## Modified: 2025-04-09
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1902,7 +1902,7 @@ deb ${1} ${2}-security ${3}
     fi
     local repository_sections # 仓库区域
     local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
-    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
         case "${SYSTEM_VERSION_ID}" in
@@ -1917,7 +1917,7 @@ deb ${1} ${2}-security ${3}
             echo "${tips}
 $(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
             # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}/"
             echo "$(gen_debian_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         else
             echo "${tips}
@@ -1958,10 +1958,10 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
             base_system_branch="debian"
             base_system_codename="bookworm"
             repository_sections="main contrib non-free non-free-firmware"
-            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
             echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
             # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}/"
             echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
@@ -1985,7 +1985,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
                 ;;
             esac
             repository_sections="main restricted universe multiverse"
-            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
             echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         fi
         ;;
@@ -1995,7 +1995,7 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
             SOURCE="archive.raspberrypi.org"
             SOURCE_BRANCH="debian"
-            base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+            base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/"
         fi
         echo "${tips}
 deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
@@ -2024,11 +2024,11 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
                 SOURCE="deb.debian.org"
             fi
-            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
             echo "${tips}
 $(gen_debian_source_no_backports "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
             # 处理 debian-security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}/"
             echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
             ;;
         *)
@@ -2037,13 +2037,16 @@ $(gen_debian_source_no_backports "${base_url}" "${base_system_codename}" "${repo
             repository_sections="main contrib non-free rpi"
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
                 SOURCE="raspbian.raspberrypi.org"
-                base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+                base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
             else
                 base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/raspbian/"
             fi
             echo "${tips}
 deb ${base_url} ${base_system_codename} ${repository_sections}
 # deb-src ${base_url} ${base_system_codename} ${repository_sections}" >>$File_DebianSourceList
+            if [[ "${DEVICE_ARCH_RAW}" == "armv7l" && "${USE_OFFICIAL_SOURCE}" != "true" ]]; then
+                echo "# deb [arch=arm64] ${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/multiarch/ ${base_system_codename} ${repository_sections}" >>$File_DebianSourceList
+            fi
             ;;
         esac
         ;;
@@ -2501,7 +2504,7 @@ deb ${1} ${2}-updates ${3}
     fi
     local repository_sections="main cross pty" # 仓库区域
     local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
-    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
+    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/"
     echo "${tips}
 $(gen_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
 }
