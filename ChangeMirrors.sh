@@ -2037,8 +2037,10 @@ $(gen_debian_source_no_backports "${base_url}" "${base_system_codename}" "${repo
             repository_sections="main contrib non-free rpi"
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
                 SOURCE="raspbian.raspberrypi.org"
+                base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            else
+                base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/raspbian/"
             fi
-            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             echo "${tips}
 deb ${base_url} ${base_system_codename} ${repository_sections}
 # deb-src ${base_url} ${base_system_codename} ${repository_sections}" >>$File_DebianSourceList
