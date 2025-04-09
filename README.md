@@ -17,6 +17,10 @@
 
 <table align="center">
     <tr>
+        <th align="left">操作系统</th>
+        <th align="center">适配版本</th>
+    </tr>
+    <tr>
         <td><a href="https://www.debian.org" target="_blank"><sub><img src="docs/assets/images/icon/debian.svg" width="16" height="16"></sub></a>&nbsp;Debian</td>
         <td align="center">8 ~ 13</td>
     </tr>
