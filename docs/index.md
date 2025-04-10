@@ -13,8 +13,12 @@ hide:
 
 <div class="grid" markdown>
 <figure style="margin: 0 auto" markdown>
-  ![](assets/images/brand/light/2.png#only-light){ width="300" }
-  ![](assets/images/brand/dark/2.png#only-dark){ width="300" }
+  <div style="width: 350px; max-width: 100vw; height: 160px; position: absolute;">
+    <span style="top: 50%; width: 50%; height: 80px; position: absolute; background-image: var(--hero-background-image); filter: blur(68px); transform: translate(-50%, -50%);">
+    </span>
+  </div>
+  <img src="/assets/images/brand/light/2.png#only-light" alt="LinuxMirrors" style="width: 300px" />
+  <img src="/assets/images/brand/dark/2.png#only-dark" alt="LinuxMirrors" style="width: 300px" />
   <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</figcaption>
   <figcaption>一键脚本使换源更简单</figcaption>
 </figure>

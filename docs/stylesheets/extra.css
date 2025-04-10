@@ -6,6 +6,11 @@
     --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
     --view-transition-z-index-foreground: 999;
     --view-transition-z-index-background: 1;
+    --hero-background-image: linear-gradient(90deg, rgba(177, 177, 177, 1) 50%, rgba(177, 177, 177, 1) 50%);
+}
+
+[data-md-color-scheme='slate'] {
+    --hero-background-image: linear-gradient(90deg, rgba(147, 147, 147, 1) 50%, rgba(147, 147, 147, 1) 50%);
 }
 
 [data-md-color-primary=white] {
@@ -16,11 +21,19 @@
     --md-typeset-a-color: #2080f0;
 }
 
-.md-typeset .admonition.tip, .md-typeset details.tip {
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
     border-color: #009400;
 }
-.md-typeset .tip>.admonition-title, .md-typeset .tip>summary {
+
+.md-typeset .tip>.admonition-title,
+.md-typeset .tip>summary {
     background-color: #0094001a;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.quote,
+.md-typeset details.quote {
+    border-color: hsla(225deg, 15%, 90%, 0.24);
 }
 
 .md-header {
@@ -48,10 +61,6 @@
 
 [data-md-color-scheme="slate"] .md-logo img {
     content: url(/assets/images/brand/svg/logo-dark.svg);
-}
-
-[data-md-color-scheme="slate"] .md-typeset .admonition.quote, .md-typeset details.quote {
-    border-color: hsla(225deg,15%,90%,0.24);
 }
 
 @font-face {
@@ -140,7 +149,7 @@
 }
 
 .sponsor-item-toc {
-    margin: 0; 
+    margin: 0;
     padding: 14px !important;
     height: 66px !important;
     box-sizing: border-box;
@@ -233,21 +242,47 @@
     padding: 65px 25px 35px !important;
 }
 
+[data-termynal] {
+    color: #000 !important;
+    background: #e6e6e6 !important;
+}
+
+[data-md-color-scheme="slate"] [data-termynal] {
+    color: #eeeeee !important;
+    background: #252a33 !important;
+}
+
+button[data-terminal-control] {
+    color: var(--md-typeset-a-color) !important;
+}
+
+[data-termynal]:after {
+    color: #585858 !important;
+}
+
+[data-md-color-scheme="slate"] [data-termynal]:after {
+    color: #a2a2a2 !important;
+}
+
 /* 切换主题动画 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
 }
+
 .dark::view-transition-old(root) {
     z-index: var(--view-transition-z-index-foreground);
 }
+
 .dark::view-transition-new(root) {
     z-index: var(--view-transition-z-index-background);
 }
+
 ::view-transition-old(root) {
     z-index: var(--view-transition-z-index-background)
 }
+
 ::view-transition-new(root) {
     z-index: var(--view-transition-z-index-foreground);
 }

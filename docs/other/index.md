@@ -198,12 +198,13 @@ hide:
 
     - #### 纯净模式
 
-        !!! tip "该功能目前处于试验阶段，滚动输出的命令日志可能存在无法预料的显示问题，目前暂未发现异常"
+        为了便于开发者使用故推出此功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
         ```
-        > 为了便于开发者使用故推出此功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+
+        !!! tip "滚动输出的命令日志可能存在无法预料的显示问题，不过目前暂未发现异常"
 
 - ### 关于服务报错无法启动
 
@@ -230,45 +231,3 @@ hide:
             > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
         卸载完成后重新执行脚本安装即可
-
-## 其它
-
-提供一些常见服务的一键换源命令，用于备忘
-
-### NPM
-
-适用于 `npm` `yarn` `pnpm` 等
-
-=== "淘宝源"
-
-    ``` bash
-    npm config set registry https://registry.npmmirror.com/
-    ```
-
-=== "腾讯云"
-
-    ``` bash
-    npm config set registry https://mirrors.tencent.com/npm/
-    ```
-
-### PYPI
-
-适用于 `pip` `pip3`
-
-=== "阿里云"
-
-    ``` bash
-    pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple/
-    ```
-
-=== "腾讯云"
-
-    ``` bash
-    pip3 config set global.index-url https://mirrors.tencent.com/pypi/simple/
-    ```
-
-=== "中科大"
-
-    ``` bash
-    pip3 config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple/
-    ```

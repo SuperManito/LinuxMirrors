@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-04-05
+## Modified: 2025-04-10
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -10,7 +10,7 @@
 mirror_list_docker_ce=(
     "阿里云@mirrors.aliyun.com/docker-ce"
     "腾讯云@mirrors.tencent.com/docker-ce"
-    "华为云@repo.huaweicloud.com/docker-ce"
+    "华为云@mirrors.huaweicloud.com/docker-ce"
     "微软 Azure 中国@mirror.azure.cn/docker-ce"
     "网易@mirrors.163.com/docker-ce"
     "火山引擎@mirrors.volces.com/docker"

@@ -457,7 +457,7 @@ $ bash ChangeMirrors.sh --help
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
 ```
 
-接下来是一些高级用法的举例
+下面是一些高级用法的举例
 
 - ### 指定软件源地址
 
@@ -596,12 +596,13 @@ $ bash ChangeMirrors.sh --help
 
 - ### 纯净模式
 
-    !!! tip "该功能目前处于试验阶段，滚动输出的命令日志可能存在无法预料的显示问题，目前暂未发现异常"
+    为了便于开发者使用故推出此功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode
     ```
-    > 为了便于开发者使用故推出此功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+
+    !!! tip "滚动输出的命令日志可能存在无法预料的显示问题，不过目前暂未发现异常"
 
 ---
 
