@@ -1,0 +1,288 @@
+:root {
+    --md-text-font: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Segoe UI', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    --md-code-font: 'SF Mono';
+    --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
+    --md-default-bg-color--light: #ffffff;
+    --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
+    --view-transition-z-index-foreground: 999;
+    --view-transition-z-index-background: 1;
+    --hero-background-image: linear-gradient(90deg, rgba(177, 177, 177, 1) 50%, rgba(177, 177, 177, 1) 50%);
+}
+
+[data-md-color-scheme='slate'] {
+    --hero-background-image: linear-gradient(90deg, rgba(147, 147, 147, 1) 50%, rgba(147, 147, 147, 1) 50%);
+}
+
+[data-md-color-primary=white] {
+    --md-typeset-a-color: #2080f0;
+}
+
+[data-md-color-scheme='slate'][data-md-color-primary=black] {
+    --md-typeset-a-color: #2080f0;
+}
+
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+    border-color: #009400;
+}
+
+.md-typeset .tip>.admonition-title,
+.md-typeset .tip>summary {
+    background-color: #0094001a;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.quote,
+.md-typeset details.quote {
+    border-color: hsla(225deg, 15%, 90%, 0.24);
+}
+
+.md-header {
+    background-color: hsla(240, 9%, 75%, 0.33);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: 999 !important;
+}
+
+[data-md-color-scheme='slate'] .md-header {
+    background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
+}
+
+.md-tabs {
+    background-color: hsla(240, 9%, 75%, 0.33);
+}
+
+[data-md-color-scheme='slate'] .md-tabs {
+    background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
+}
+
+[data-md-color-scheme="default"] .md-logo img {
+    content: url(/assets/images/brand/svg/logo-light.svg);
+}
+
+[data-md-color-scheme="slate"] .md-logo img {
+    content: url(/assets/images/brand/svg/logo-dark.svg);
+}
+
+@font-face {
+    font-family: 'SF Mono';
+    src: url('./fonts/SF-Mono-Regular.otf');
+}
+
+@keyframes heart {
+
+    0%,
+    40%,
+    80%,
+    100% {
+        transform: scale(1);
+    }
+
+    20%,
+    60% {
+        transform: scale(1.15);
+    }
+}
+
+.home-cmd pre>code {
+    padding-right: 3em;
+}
+
+.heart {
+    animation: heart 1000ms infinite;
+}
+
+.md-tabs__link {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+}
+
+.md-typeset {
+    font-size: 16px;
+}
+
+.md-typeset .emojione,
+.md-typeset .gemoji,
+.md-typeset .twemoji {
+    height: 100%;
+    vertical-align: -0.2em !important;
+}
+
+.md-typeset .middle {
+    vertical-align: -0.35em !important;
+}
+
+/* 赞助组件 */
+.sponsor {
+    padding-top: 1rem;
+    margin-top: 0;
+    border-top: none;
+}
+
+.sponsor-toc {
+    margin-top: 2rem !important;
+    border-top: 1px solid var(--md-default-fg-color--lightest) !important;
+}
+
+.sponsor .sponsor-label {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 0.2rem;
+    color: var(--md-default-fg-color);
+}
+
+.sponsor .sponsor-wrapper {
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+.sponsor .sponsor-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    height: 80px;
+    max-height: 80px;
+}
+
+.sponsor-item-toc {
+    margin: 0;
+    padding: 14px !important;
+    height: 66px !important;
+    box-sizing: border-box;
+}
+
+.sponsor .sponsor-item:hover {
+    background-color: var(--md-code-bg-color);
+}
+
+.sponsor .sponsor-item img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.sponsor-item-toc img {
+    width: 50% !important;
+}
+
+.sponsor-flex-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.sponsor-flex-wrapper-toc {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px !important;
+    padding: 0;
+    width: 100%;
+}
+
+.sponsor-flex-item {
+    flex: 0 1 calc(33.33% - 1rem);
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.sponsor-flex-item img {
+    width: 60% !important;
+}
+
+@media screen and (max-width: 768px) {
+    .sponsor-flex-item {
+        flex: 0 1 calc(50% - 1rem);
+        min-width: 150px;
+        max-width: calc(50% - 1rem);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sponsor .sponsor-item {
+        padding: 0;
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sponsor-toc {
+        display: none;
+    }
+}
+
+/* TDesign 组件相关 */
+.t-tag .t-icon {
+    margin-right: 0 !important;
+}
+
+[theme-mode="dark"] .t-table {
+    --td-bg-color-container: hsla(var(--md-hue), 15%, 14%, 1) !important;
+    --td-component-border: hsla(225deg, 15%, 95%, 0.12) !important;
+}
+
+[theme-mode="dark"] .t-tag {
+    --td-warning-color-light: #cf6e2d48 !important;
+}
+
+.t-table--hoverable tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.016) !important;
+}
+
+[theme-mode="dark"] .t-table--hoverable tbody tr:hover {
+    background-color: rgba(240, 241, 244, 0.016) !important;
+}
+
+/* termynal 插件 */
+.termy {
+    padding: 65px 25px 35px !important;
+}
+
+[data-termynal] {
+    color: #000 !important;
+    background: #e6e6e6 !important;
+}
+
+[data-md-color-scheme="slate"] [data-termynal] {
+    color: #eeeeee !important;
+    background: #252a33 !important;
+}
+
+button[data-terminal-control] {
+    color: var(--md-typeset-a-color) !important;
+}
+
+[data-termynal]:after {
+    color: #585858 !important;
+}
+
+[data-md-color-scheme="slate"] [data-termynal]:after {
+    color: #a2a2a2 !important;
+}
+
+/* 切换主题动画 */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+.dark::view-transition-old(root) {
+    z-index: var(--view-transition-z-index-foreground);
+}
+
+.dark::view-transition-new(root) {
+    z-index: var(--view-transition-z-index-background);
+}
+
+::view-transition-old(root) {
+    z-index: var(--view-transition-z-index-background)
+}
+
+::view-transition-new(root) {
+    z-index: var(--view-transition-z-index-foreground);
+}
