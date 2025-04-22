@@ -534,49 +534,51 @@ $ bash ChangeMirrors.sh --help
     ```
     > 部分系统不存在官方源例如 `Arch Linux`，届时会自动更换成兼容性较高的阿里云镜像站
 
-- ### 自定义 Debian Security 源
+- ### 特定系统的使用示例
 
-    如果你想尽可能提高服务器的安全性则建议使用官方源，因为镜像同步存在延迟
+    - #### 自定义 GNU/Linux Debian 操作系统 Security 源
 
-    ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-      --source-security security.debian.org \
-      --branch-security debian-security
-    ```
-
-- ### 指定 Debian 系 Linux 操作系统的版本代号
-
-    大多数情况下自定义版本代号用于更换系统版本，请看下面的例子
-
-    === "升级 Debian 至最新 12 版本 Bookworm"
+        如果你想尽可能提高服务器的安全性则建议使用官方源，因为镜像同步存在延迟
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+          --source-security security.debian.org \
+          --branch-security debian-security
         ```
 
-    === "将 Debian 版本切换到测试分支"
+    - #### 指定 Debian 系 Linux 操作系统的版本代号
+
+        大多数情况下自定义版本代号用于更换系统版本，请看下面的例子
+
+        === "升级 GNU/Linux Debian 至最新 12 版本 Bookworm"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
+            ```
+
+        === "将 GNU/Linux Debian 版本切换到测试分支"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
+            ```
+
+        更换软件源后还需要执行系统更新命令 `apt-get dist-upgrade`，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题
+
+        ``` { .bash title="若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换" }
+        sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
+        ```
+
+    - #### 更换 Ubuntu EOF版本软件源
+
+        !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 仓库"
+
+        具体版本支持情况详见官方 [Wiki](https://wiki.ubuntu.com/Releases)，关于 `Ubuntu Old Releases` 仓库的支持情况详见各镜像站
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+          --source mirrors.ustc.edu.cn \
+          --branch ubuntu-old-releases
         ```
-
-    更换软件源后还需要执行系统更新命令 `apt-get dist-upgrade`，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题
-
-    ``` { .bash title="若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换" }
-    sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
-    ```
-
-- ### 更换 Ubuntu EOF版本软件源
-
-    !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 仓库"
-
-    具体版本支持情况详见官方 [Wiki](https://wiki.ubuntu.com/Releases)，关于 `Ubuntu Old Releases` 仓库的支持情况详见各镜像站
-
-    ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-      --source mirrors.ustc.edu.cn \
-      --branch ubuntu-old-releases
-    ```
 
 - ### 无人值守（自动化）
 

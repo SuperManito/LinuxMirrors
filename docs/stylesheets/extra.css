@@ -6,11 +6,11 @@
     --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
     --view-transition-z-index-foreground: 999;
     --view-transition-z-index-background: 1;
-    --hero-background-image: linear-gradient(90deg, rgba(177, 177, 177, 1) 50%, rgba(177, 177, 177, 1) 50%);
+    --hero-background-image: linear-gradient(90deg, rgb(90 90 90) 50%, rgb(90 90 90) 50%);
 }
 
 [data-md-color-scheme='slate'] {
-    --hero-background-image: linear-gradient(90deg, rgba(147, 147, 147, 1) 50%, rgba(147, 147, 147, 1) 50%);
+    --hero-background-image: linear-gradient(90deg, rgb(114 114 114) 50%, rgb(114 114 114) 50%);
 }
 
 [data-md-color-primary=white] {
@@ -61,6 +61,16 @@
 
 [data-md-color-scheme="slate"] .md-logo img {
     content: url(/assets/images/brand/svg/logo-dark.svg);
+}
+
+@media screen and (max-width: 768px) {
+  .md-typeset .admonition .tabbed-set {
+    width: calc(100vw - 3rem - 2px);
+  }
+  .md-typeset .admonition .tabbed-labels {
+    width: calc(100vw - 3rem - 1.2rem);
+    padding-left: .6rem;
+  }
 }
 
 @font-face {
