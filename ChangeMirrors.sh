@@ -636,6 +636,7 @@ function run_end() {
         "🔥 林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  https://www.dkdun.cn"
         "🔥 乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  https://www.qiaoxh.com"
         "🔥 速拓云 · 国内高防云服务器新用户享5折优惠 ➜  https://www.sutuoyun.com"
+        "🔥 云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  https://yunyoo.cc"
     )
     echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n"
     for ad in "${sponsor_ad[@]}"; do
