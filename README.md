@@ -62,7 +62,7 @@
     </tr>
     <tr>
         <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><sub><img src="docs/assets/images/icon/fedora.ico" width="16" height="16"></sub></a>&nbsp;Fedora</td>
-        <td align="center">30 ~ 41</td>
+        <td align="center">30 ~ 42</td>
     </tr>
     <tr>
         <td><a href="https://www.centos.org" target="_blank"><sub><img src="docs/assets/images/icon/centos.svg" width="16" height="16"></sub></a>&nbsp;CentOS</td>
@@ -78,7 +78,7 @@
     </tr>
     <tr>
         <td><a href="https://www.openeuler.org/zh" target="_blank"><sub><img src="docs/assets/images/icon/openeuler.ico" width="16" height="16"></sub></a>&nbsp;openEuler（开源欧拉）</td>
-        <td align="center">21 ~ 24</td>
+        <td align="center">21 ~ 25</td>
     </tr>
     <tr>
         <td><a href="https://www.opencloudos.org" target="_blank"><sub><img src="docs/assets/images/icon/opencloudos.png" width="16" height="16"></sub></a>&nbsp;OpenCloudOS（鸥栖）</td>

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-04-10
+## Modified: 2025-04-25
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -779,7 +779,7 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 2[1-4] ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 2[1-5] ]]; then
             is_supported="false"
         fi
         ;;
@@ -1784,7 +1784,7 @@ function upgrade_software() {
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         local package_manager="$(get_package_manager)"
-        commands+=("${package_manager} upgrade -y --skip-broken")
+        commands+=("${package_manager} upgrade -y")
         ;;
     "${SYSTEM_OPENSUSE}")
         commands+=("zypper update -y")
