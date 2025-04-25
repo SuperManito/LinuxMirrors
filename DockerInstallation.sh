@@ -346,6 +346,7 @@ function run_end() {
         "🔥 乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  https://www.qiaoxh.com"
         "🔥 速拓云 · 国内高防云服务器新用户享5折优惠 ➜  https://www.sutuoyun.com"
         "🔥 云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  https://yunyoo.cc"
+        "🔥 圣道云 · 稳定高效云服务器｜低至9.9元/月起 ➜  https://www.shengdaoyun.com"
     )
     echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n"
     for ad in "${sponsor_ad[@]}"; do

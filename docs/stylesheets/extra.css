@@ -152,17 +152,10 @@
     width: 100%;
     text-align: center;
     padding: 1rem;
-    border-radius: 5px;
+    border-radius: 6px;
     transition: background-color 0.2s;
     height: 80px;
     max-height: 80px;
-}
-
-.sponsor-item-toc {
-    margin: 0;
-    padding: 14px !important;
-    height: 66px !important;
-    box-sizing: border-box;
 }
 
 .sponsor .sponsor-item:hover {
@@ -170,13 +163,77 @@
 }
 
 .sponsor .sponsor-item img {
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
     max-width: 100%;
     height: auto;
     vertical-align: middle;
 }
 
-.sponsor-item-toc img {
+.sponsor-item-toc {
+    margin: 0;
+    padding: 14px !important;
+    height: 72px !important;
+    border-radius: 6px;
+    box-sizing: border-box;
+    flex: 0 0 calc(50% - 4px) !important;
+    background-color: #f6f6f7;
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc {
+    background-color: #262930;
+}
+
+.sponsor-item-toc:hover {
+    background-color: #f6f6f7 !important;
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc:hover {
+    background-color: #262930 !important;
+}
+
+.sponsor-item-toc-full-row {
+    flex: 0 0 100% !important;
+}
+
+.sponsor-item-toc-full-row img {
     width: 50% !important;
+}
+
+.sponsor-item-toc img {
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    width: 100%;
+    object-fit: contain;
+    filter: grayscale(1) invert(0.6);
+    opacity: 0.7;
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc img {
+    filter: brightness(1.3) grayscale(1);
+    opacity: 0.75;
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc-lighter img {
+    filter: grayscale(1) invert(0.6);
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc-darker img {
+    filter: brightness(0.6) grayscale(1);
+}
+
+.sponsor-item-toc:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc:hover img,
+[data-md-color-scheme="slate"] .sponsor-item-toc-lighter:hover img,
+[data-md-color-scheme="slate"] .sponsor-item-toc-darker:hover img {
+    filter: grayscale(0%) brightness(1.2);
+    opacity: 1;
 }
 
 .sponsor-flex-wrapper {
@@ -188,7 +245,8 @@
 
 .sponsor-flex-wrapper-toc {
     display: flex !important;
-    flex-direction: column;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
     gap: 8px !important;
     padding: 0;
     width: 100%;
