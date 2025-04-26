@@ -593,6 +593,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
       --clean-cache false \
       --ignore-backup-tips
     ```
+    > 如果报错 `命令选项无效` 那么请检查选项合法性以及空格字符编码，示例中选项一行写一个是为了提高阅读性
 
 - ### 纯净模式
 

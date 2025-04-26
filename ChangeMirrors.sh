@@ -632,16 +632,17 @@ function run_end() {
         return
     fi
     local sponsor_ad=(
-        "🔥 1Panel · Linux 面板｜极简运维 ➜  https://1panel.cn"
-        "🔥 林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  https://www.dkdun.cn"
-        "🔥 乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  https://www.qiaoxh.com"
-        "🔥 速拓云 · 国内高防云服务器新用户享5折优惠 ➜  https://www.sutuoyun.com"
-        "🔥 云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  https://yunyoo.cc"
-        "🔥 圣道云 · 稳定高效云服务器｜低至9.9元/月起 ➜  https://www.shengdaoyun.com"
+        "1Panel · Linux 面板｜极简运维 ➜  https://1panel.cn"
+        "林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  https://www.dkdun.cn"
+        "乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  https://www.qiaoxh.com"
+        "速拓云 · 国内高防云服务器新用户享5折优惠 ➜  https://www.sutuoyun.com"
+        "云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  https://yunyoo.cc"
+        "圣道云 · 稳定高效云服务器｜低至9.9元/月起 ➜  https://www.shengdaoyun.com"
     )
     echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n"
     for ad in "${sponsor_ad[@]}"; do
-        echo -e "  ${ad} \033[3;2m【广告】\033[0m"
+        sleep 0.1
+        echo -e "  \033[2m${ad} \033[3m【广告】\033[0m\033[0m"
     done
     echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
 }
@@ -2749,7 +2750,6 @@ function interactive_select_boolean() {
             echo -e "╰─ \033[2m○ 是 / \033[0m\033[34m●\033[0m 否"
         fi
     }
-
     function read_key() {
         IFS= read -rsn1 key
         if [[ $key == $'\x1b' ]]; then
