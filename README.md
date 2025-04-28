@@ -1,8 +1,8 @@
 <p align="center">
-    <a href="https://linuxmirrors.cn">
+    <a href="https://linuxmirrors.cn" target="_blank">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="docs/assets/images/brand/dark/2.png" width="320">
-          <img alt="文本" src="docs/assets/images/brand/light/2.png" width="320">
+          <img src="docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
         </picture>
     </a>
 </p>
@@ -118,6 +118,15 @@
     <strong>
         <a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>
     </strong>
+</p>
+
+<p align="center">
+    <a href="https://hellogithub.com/repository/775d5b3d0aa04e90be9162104e757f2e" target="_blank">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=dark" width="250">
+          <img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=neutral" alt="Featured｜HelloGitHub" width="250">
+        </picture>
+    </a>
 </p>
 
 ***
