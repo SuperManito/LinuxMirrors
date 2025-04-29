@@ -64,13 +64,21 @@ hide:
         bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
         ```
 
-    === ":simple-gitee: Gitee 码云"
+    === ":simple-gitee: Gitee 码云 (镜像仓库)"
 
         ``` bash
         bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
         ```
+        > 实时同步、无延迟，国内网络环境下推荐使用
 
-    === ":simple-jsdelivr: jsDelivr（CDN）"
+    === ":gitcode: GitCode (镜像仓库)"
+
+        ``` bash
+        bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh)
+        ```
+        > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+
+    === ":simple-jsdelivr: jsDelivr (CDN)"
 
         ``` bash
         bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)

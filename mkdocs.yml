@@ -82,10 +82,15 @@ extra:
   generator: false
   homepage: https://linuxmirrors.cn
   social:
+    - icon: simple/google
+      link: https://gitcode.com/SuperManito/LinuxMirrors
+      name: GitCode
     - icon: simple/gitee
       link: https://gitee.com/SuperManito/LinuxMirrors
+      name: Gitee
     - icon: fontawesome/brands/github
       link: https://github.com/SuperManito/LinuxMirrors
+      name: GitHub
   analytics:
     provider: google
     property: G-WG7T40F7YP

@@ -1,19 +1,13 @@
 <p align="center">
-    <a href="https://linuxmirrors.cn" target="_blank">
+    <a href="https://linuxmirrors.cn">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="docs/assets/images/brand/dark/2.png" width="320">
           <img src="docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
         </picture>
     </a>
 </p>
-<p align="center">
-    GNU/Linux 更换系统软件源脚本及 Docker 安装脚本
-</p>
-<p align="center">
-    <strong>
-        <a href="https://linuxmirrors.cn" style="text-decoration: none;">官方网站</a>
-    </strong>
-</p>
+<p align="center">GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</p>
+<p align="center"><strong><a href="https://linuxmirrors.cn" style="text-decoration: none;">官方网站</a></strong></p>
 
 <table align="center">
     <tr>

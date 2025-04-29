@@ -24,13 +24,21 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
             ```
 
-        === ":simple-gitee: Gitee 码云"
+        === ":simple-gitee: Gitee 码云 (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
+            > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":simple-jsdelivr: jsDelivr（CDN）"
+        === ":gitcode: GitCode (镜像仓库)"
+
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            ```
+            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
@@ -54,23 +62,35 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            2.  通过 `--abroad` 命令选项来使用海外软件源
+            1.  通过 `--abroad` 命令选项来使用海外软件源
 
-        === ":simple-gitee: Gitee 码云"
+        === ":simple-gitee: Gitee 码云 (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            3.  通过 `--abroad` 命令选项来使用海外软件源
+            1.  通过 `--abroad` 命令选项来使用海外软件源
 
-        === ":simple-jsdelivr: jsDelivr（CDN）"
+            > 实时同步、无延迟，国内网络环境下推荐使用
+
+        === ":gitcode: GitCode (镜像仓库)"
+
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
+            ```
+
+            1.  通过 `--abroad` 命令选项来使用海外软件源
+
+            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad # (1)!
             ```
 
-            4.  通过 `--abroad` 命令选项来使用海外软件源
+            1.  通过 `--abroad` 命令选项来使用海外软件源
 
 === ":material-library: 中国大陆教育网"
 
@@ -90,23 +110,35 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu # (1)!
             ```
 
-            2.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-        === ":simple-gitee: Gitee 码云"
+        === ":simple-gitee: Gitee 码云 (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
             ```
 
-            3.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
-        === ":simple-jsdelivr: jsDelivr（CDN）"
+            > 实时同步、无延迟，国内网络环境下推荐使用
+
+        === ":gitcode: GitCode (镜像仓库)"
+
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+
+            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu # (1)!
             ```
 
-            4.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
 选项卡分别代表脚本内置软件源类型和获取脚本途径，请在使用前检查目标镜像站是否支持您所使用的操作系统，可以在[软件源列表](../mirrors/index.md)中查看具体有哪些软件源。
 

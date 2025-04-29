@@ -6,7 +6,7 @@
     --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
     --view-transition-z-index-foreground: 999;
     --view-transition-z-index-background: 1;
-    --hero-background-image: linear-gradient(90deg, rgb(90 90 90) 50%, rgb(90 90 90) 50%);
+    --hero-background-image: linear-gradient(90deg, rgb(104 104 104) 50%, rgb(104 104 104) 50%);
 }
 
 [data-md-color-scheme='slate'] {
@@ -225,14 +225,14 @@
 }
 
 .sponsor-item-toc:hover img {
-    filter: grayscale(0%);
+    filter: grayscale(0%) !important;
     opacity: 1;
 }
 
 [data-md-color-scheme="slate"] .sponsor-item-toc:hover img,
 [data-md-color-scheme="slate"] .sponsor-item-toc-lighter:hover img,
 [data-md-color-scheme="slate"] .sponsor-item-toc-darker:hover img {
-    filter: grayscale(0%) brightness(1.2);
+    filter: grayscale(0%) brightness(1.2) !important;
     opacity: 1;
 }
 
