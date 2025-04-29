@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-04-25
+## Modified: 2025-04-29
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2112,6 +2112,25 @@ function change_mirrors_RedHat() {
     esac
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        ## CentOS 停服专用
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
+            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
+            sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
+            8)
+                sed -i "s|mirror.centos.org/\$contentdir|vault.centos.org|g" CentOS-*
+                sed -i "s/\$releasever/8.5.2111/g" CentOS-*
+                sed -i "s|vault.centos.org/\$contentdir|vault.centos.org|g" CentOS-Linux-Sources.repo
+                ;;
+            7)
+                sed -i "s|mirror.centos.org/centos|vault.centos.org|g" CentOS-*
+                sed -i "s/\$releasever/7.9.2009/g" CentOS-*
+                sed -i "s|vault.centos.org/centos|vault.centos.org|g" CentOS-Sources.repo
+                ;;
+            esac
+            sed -i "s|mirror.centos.org|vault.centos.org|g" CentOS-*
+        fi
+
         change_mirrors_or_install_EPEL # EPEL 附加软件包
         return
     fi
