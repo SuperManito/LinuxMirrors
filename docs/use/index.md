@@ -393,33 +393,34 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
 命令选项(名称/含义/值)：
 
-  --abroad                 使用境外以及海外软件源                                            无
-  --edu                    使用中国大陆教育网软件源                                          无
-  --source                 指定软件源地址(域名或IP)                                         地址
-  --source-epel            指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                     地址
-  --source-security        指定 Debian 系统 security 仓库的软件源地址(域名或IP)              地址
-  --source-vault           指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)     地址
-  --source-portage         指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)               地址
-  --source-base-system     指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)  地址
-  --branch                 指定软件源仓库(路径)                                             仓库名
-  --branch-epel            指定 EPEL 附加软件包仓库的软件源仓库(路径)                        仓库名
-  --branch-security        指定 Debian 系统 security 仓库的软件源仓库(路径)                  仓库名
-  --branch-vault           指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)         仓库名
-  --branch-portage         指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                   仓库名
-  --branch-base-system     指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)      仓库名
-  --codename               指定 Debian 系 / openKylin 操作系统的版本代号                     代号名称
-  --protocol               指定 WEB 协议                                                    http 或 https
-  --use-intranet-source    是否优先使用内网软件源地址                                        true 或 false
-  --use-official-source    是否使用目标操作系统的官方软件源                                   true 或 false
-  --install-epel           是否安装 EPEL 附加软件包                                          true 或 false
-  --backup                 是否备份原有软件源                                                true 或 false
-  --upgrade-software       是否更新软件包                                                    true 或 false
-  --clean-cache            是否在更新软件包后清理下载缓存                                     true 或 false
-  --clean-screen           是否在运行前清除屏幕上的所有内容                                   true 或 false
-  --only-epel              仅更换 EPEL 软件源模式                                            无
-  --ignore-backup-tips     忽略覆盖备份提示                                                  无
-  --print-diff             打印源文件修改前后差异                                            无
-  --pure-mode              纯净模式，精简打印内容                                            无
+  --abroad                      使用境外以及海外软件源                                            无
+  --edu                         使用中国大陆教育网软件源                                          无
+  --source                      指定软件源地址(域名或IP)                                         地址
+  --source-epel                 指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                     地址
+  --source-security             指定 Debian 系统 security 仓库的软件源地址(域名或IP)              地址
+  --source-vault                指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)     地址
+  --source-portage              指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)               地址
+  --source-base-system          指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)  地址
+  --branch                      指定软件源仓库(路径)                                             仓库名
+  --branch-epel                 指定 EPEL 附加软件包仓库的软件源仓库(路径)                        仓库名
+  --branch-security             指定 Debian 系统 security 仓库的软件源仓库(路径)                  仓库名
+  --branch-vault                指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)         仓库名
+  --branch-portage              指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                   仓库名
+  --branch-base-system          指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)      仓库名
+  --codename                    指定 Debian 系 / openKylin 操作系统的版本代号                     代号名称
+  --protocol                    指定 WEB 协议                                                    http 或 https
+  --use-intranet-source         是否优先使用内网软件源地址                                        true 或 false
+  --use-official-source         是否使用目标操作系统的官方软件源                                   true 或 false
+  --use-official-source-epel    是否使用 EPEL 附加软件包的官方软件源                               true 或 false
+  --install-epel                是否安装 EPEL 附加软件包                                          true 或 false
+  --backup                      是否备份原有软件源                                                true 或 false
+  --upgrade-software            是否更新软件包                                                    true 或 false
+  --clean-cache                 是否在更新软件包后清理下载缓存                                     true 或 false
+  --clean-screen                是否在运行前清除屏幕上的所有内容                                   true 或 false
+  --only-epel                   仅更换 EPEL 软件源模式                                            无
+  --ignore-backup-tips          忽略覆盖备份提示                                                  无
+  --print-diff                  打印源文件修改前后差异                                            无
+  --pure-mode                   纯净模式，精简打印内容                                            无
 ```
 
 | 名称 | 含义 | 选项值 |
@@ -442,6 +443,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
 | `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
 | `--use-official-source` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
+| `--use-official-source-epel` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
 | `--install-epel` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
 | `--backup` | 是否备份原有软件源 | `true` 或 `false` |
 | `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
@@ -523,6 +525,8 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
     ```
 
+    对于已经 EOF 的 EPEL 7 注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 仓库，境外以及海外网络环境建议通过命令选项 `--use-official-source-epel true` 使用官方源
+
 - ### 恢复使用官方源
 
     当你不小心删除了官方源的备份时可以使用此命令来恢复，使用此命令选项后将跳过选择软件源步骤
@@ -534,7 +538,29 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
 - ### 特定系统的使用示例
 
-    - #### 自定义 GNU/Linux Debian 操作系统 Security 源
+    - #### 关于 CentOS 停服问题
+
+        脚本对于已经 EOF 的 CentOS 7/8、CentOS Stream 8 进行了适配
+
+        <div class="grid cards" markdown>
+
+        -   __国内网络环境__
+
+            ---
+
+            直接正常使用即可，因为国内大部分镜像站都同步了 [`CentOS Vault`](https://vault.centos.org/) 仓库
+
+        -   __境外以及海外网络环境__
+
+            ---
+
+            建议使用 `腾讯云` 或 `阿里云` 镜像站，或者通过 `--use-official-source true` 命令选项使用官方源
+
+        </div>
+
+        另外关于 EPEL 7 也进入了 EOF，脚本同样对其进行了适配
+
+    - #### 指定 GNU/Linux Debian 操作系统的 Security 源
 
         如果你想尽可能提高服务器的安全性则建议使用官方源，因为镜像同步存在延迟
 
@@ -638,6 +664,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
 | `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |
+| `USE_INTRANET_SOURCE_EPEL` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
 | `WEB_PROTOCOL` | 指定 WEB 协议 | `http` 或 `https` |
 | `INSTALL_EPEL` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
 | `ONLY_EPEL` | 仅更换 EPEL 软件源模式 | `true` 或 `false` |

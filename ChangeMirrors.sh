@@ -267,33 +267,34 @@ function handle_command_options() {
     function output_command_help() {
         echo -e "\n命令选项(名称/含义/值)：
 
-  --abroad                 使用境外以及海外软件源                                            无
-  --edu                    使用中国大陆教育网软件源                                          无
-  --source                 指定软件源地址(域名或IP)                                          地址
-  --source-epel            指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                    地址
-  --source-security        指定 Debian 系统 security 仓库的软件源地址(域名或IP)              地址
-  --source-vault           指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)     地址
-  --source-portage         指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)               地址
-  --source-base-system     指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)  地址
-  --branch                 指定软件源仓库(路径)                                              仓库名
-  --branch-epel            指定 EPEL 附加软件包仓库的软件源仓库(路径)                        仓库名
-  --branch-security        指定 Debian 系统 security 仓库的软件源仓库(路径)                  仓库名
-  --branch-vault           指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)         仓库名
-  --branch-portage         指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                   仓库名
-  --branch-base-system	   指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)      仓库名
-  --codename               指定 Debian 系 / openKylin 操作系统的版本代号                     代号名称
-  --protocol               指定 WEB 协议                                                     http 或 https
-  --use-intranet-source    是否优先使用内网软件源地址                                        true 或 false
-  --use-official-source    是否使用目标操作系统的官方软件源                                  true 或 false
-  --install-epel           是否安装 EPEL 附加软件包                                          true 或 false
-  --backup                 是否备份原有软件源                                                true 或 false
-  --upgrade-software       是否更新软件包                                                    true 或 false
-  --clean-cache            是否在更新软件包后清理下载缓存                                    true 或 false
-  --clean-screen           是否在运行前清除屏幕上的所有内容                                  true 或 false
-  --only-epel              仅更换 EPEL 软件源模式                                            无
-  --ignore-backup-tips     忽略覆盖备份提示                                                  无
-  --print-diff             打印源文件修改前后差异                                            无
-  --pure-mode              纯净模式，精简打印内容                                            无
+  --abroad                     使用境外以及海外软件源                                            无
+  --edu                        使用中国大陆教育网软件源                                          无
+  --source                     指定软件源地址(域名或IP)                                          地址
+  --source-epel                指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                    地址
+  --source-security            指定 Debian 系统 security 仓库的软件源地址(域名或IP)              地址
+  --source-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)     地址
+  --source-portage             指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)               地址
+  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)  地址
+  --branch                     指定软件源仓库(路径)                                              仓库名
+  --branch-epel                指定 EPEL 附加软件包仓库的软件源仓库(路径)                        仓库名
+  --branch-security            指定 Debian 系统 security 仓库的软件源仓库(路径)                  仓库名
+  --branch-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)         仓库名
+  --branch-portage             指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                   仓库名
+  --branch-base-system	       指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)      仓库名
+  --codename                   指定 Debian 系 / openKylin 操作系统的版本代号                     代号名称
+  --protocol                   指定 WEB 协议                                                     http 或 https
+  --use-intranet-source        是否优先使用内网软件源地址                                        true 或 false
+  --use-official-source        是否使用目标操作系统的官方软件源                                  true 或 false
+  --use-official-source-epel   是否使用 EPEL 附加软件包的官方软件源                              true 或 false
+  --install-epel               是否安装 EPEL 附加软件包                                          true 或 false
+  --backup                     是否备份原有软件源                                                true 或 false
+  --upgrade-software           是否更新软件包                                                    true 或 false
+  --clean-cache                是否在更新软件包后清理下载缓存                                    true 或 false
+  --clean-screen               是否在运行前清除屏幕上的所有内容                                  true 或 false
+  --only-epel                  仅更换 EPEL 软件源模式                                            无
+  --ignore-backup-tips         忽略覆盖备份提示                                                  无
+  --print-diff                 打印源文件修改前后差异                                            无
+  --pure-mode                  纯净模式，精简打印内容                                            无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues\n"
     }
@@ -452,6 +453,22 @@ function handle_command_options() {
                 case "$2" in
                 [Tt]rue | [Ff]alse)
                     USE_OFFICIAL_SOURCE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    ;;
+                esac
+            else
+                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+            fi
+            ;;
+        ## EPEL 使用 官方源
+        --use-official-source-epel)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    USE_OFFICIAL_SOURCE_EPEL="${2,,}"
                     shift
                     ;;
                 *)
@@ -2112,28 +2129,16 @@ function change_mirrors_RedHat() {
     esac
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        ## CentOS 停服专用
-        cd $Dir_YumRepos
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-            case "${SYSTEM_VERSION_ID_MAJOR}" in
-            8)
-                sed -i "s|mirror.centos.org/\$contentdir|vault.centos.org|g" CentOS-*
-                sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-                sed -i "s|vault.centos.org/\$contentdir|vault.centos.org|g" CentOS-Linux-Sources.repo
-                ;;
-            7)
-                sed -i "s|mirror.centos.org/centos|vault.centos.org|g" CentOS-*
-                sed -i "s/\$releasever/7.9.2009/g" CentOS-*
-                sed -i "s|vault.centos.org/centos|vault.centos.org|g" CentOS-Sources.repo
-                ;;
-            esac
-            sed -i "s|mirror.centos.org|vault.centos.org|g" CentOS-*
+            SOURCE="vault.centos.org"
+            SOURCE_BRANCH="centos"
+        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" && "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
+            SOURCE="vault.centos.org"
+            SOURCE_BRANCH="centos"
+        else
+            change_mirrors_or_install_EPEL # EPEL 附加软件包
+            return
         fi
-
-        change_mirrors_or_install_EPEL # EPEL 附加软件包
-        return
     fi
 
     ## 修改源
@@ -2300,6 +2305,16 @@ function change_mirrors_RedHat() {
         ;;
     esac
 
+    ## 重置使用官方源时定义的变量
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
+            SOURCE=""
+            SOURCE_BRANCH=""
+        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" && "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
+            SOURCE=""
+            SOURCE_BRANCH=""
+        fi
+    fi
     change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
@@ -2608,8 +2623,16 @@ function change_mirrors_or_install_EPEL() {
     if [[ "${epel_version}" == 9 ]] && [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
         gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_ID_MAJOR}"
     fi
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" || "${USE_OFFICIAL_SOURCE_EPEL}" == "true" ]]; then
+        case "${epel_version}" in
+        7)
+            SOURCE_EPEL="dl.fedoraproject.org/pub/archive"
+            ;;
+        *)
+            SOURCE_EPEL="dl.fedoraproject.org/pub"
+            ;;
+        esac
     fi
     ## 修改源
     sed -e "s|^#baseurl=http\(s\)\?|baseurl=${WEB_PROTOCOL}|g" \
