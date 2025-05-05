@@ -545,7 +545,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
     > 部分系统会同时配置多个仓库的软件源，具体详见命令选项
 
-    > 由于软件源仓库作用在软件源地址上因此也可以使用多级路径，例如 `--branch "linux/debian"` -> `https://mirrors.example.com/linux/debian`，
+    > 由于软件源仓库作用在软件源地址上因此也可以使用多级路径，例如 `--branch "linux/debian"` -> `https://mirrors.example.com/linux/debian`
 
 - ### 单独更换 EPEL 源
 
@@ -590,7 +590,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         </div>
 
-        另外关于 EPEL 7 也进入了 EOF，脚本同样对其进行了适配
+        另外 EPEL 7 也进入了 EOF，脚本同样对其进行了适配
 
     - #### 指定 GNU/Linux Debian 操作系统的 Security 源
 
@@ -606,13 +606,13 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         大多数情况下自定义版本代号用于更换系统版本，请看下面的例子
 
-        === "升级 GNU/Linux Debian 至最新 12 版本 Bookworm"
+        === "升级 GNU/Linux Debian 至 12 版本 Bookworm"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
             ```
 
-        === "将 GNU/Linux Debian 版本切换到测试分支"
+        === "将 GNU/Linux Debian 的版本切换到测试分支"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
@@ -626,7 +626,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
     - #### 更换 Ubuntu EOF版本软件源
 
-        !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非长期支持(LTS)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 仓库"
+        !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非LTS(长期支持)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 仓库"
 
         具体版本支持情况详见官方 [Wiki](https://wiki.ubuntu.com/Releases)，关于 `Ubuntu Old Releases` 仓库的支持情况详见各镜像站
 
