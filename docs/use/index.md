@@ -154,7 +154,7 @@ hide:
 
     切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为部分系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu）或系统默认禁止 ROOT 用户登录。
 
--   :material-numeric-2:{style="color: #3CA7E5" .lg} __建议使用支持 `SSH` 的现代化终端应用__
+-   :material-numeric-2:{style="color: #3CA7E5" .lg} __建议使用现代化的 `SSH` 客户端应用__
 
     ---
 
@@ -346,7 +346,8 @@ hide:
             ``` bash
             ls /etc | grep ssh
             ```
-            > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包
+            > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包  
+            > 需要注意的是不同系统上的软件包名称有所差异，可直接使用 `openssh*` 通配符进行安装
 
         - 设置允许 Root 用户登录
 
@@ -365,8 +366,9 @@ hide:
             ``` bash
             ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
             ```
+            > 不同系统上的服务名称有所差异，如果不是 `sshd` 那就试试 `ssh`
 
-        > 命令以及配置步骤仅供参考，只适配了部分常见发行版
+        > 命令以及配置步骤仅供参考，只适配了部分常见发行版。
 
 - #### 关于未显示方向键交互控制界面
 
@@ -390,7 +392,7 @@ hide:
 
         软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行带宽很高但实际测速却并不理想，因为这与镜像站的并发性能和负载策略有关。
 
-        网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能无法实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
+        网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能不太容易实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
 
 - #### 关于未启用的软件源仓库
 
@@ -655,7 +657,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
 - ### 纯净模式
 
-    为了便于开发者使用故推出此功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+    为了便于开发者使用所推出的功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode
@@ -694,9 +696,9 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
 | `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库（路径） | `仓库名` |
 | `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
-| `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |
-| `USE_INTRANET_SOURCE_EPEL` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
+| `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
+| `USE_OFFICIAL_SOURCE_EPEL` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
 | `WEB_PROTOCOL` | 指定 WEB 协议 | `http` 或 `https` |
 | `INSTALL_EPEL` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
 | `ONLY_EPEL` | 仅更换 EPEL 软件源模式 | `true` 或 `false` |
