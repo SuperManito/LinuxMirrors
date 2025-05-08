@@ -48,26 +48,19 @@ hide:
     只需要一行命令就能直接运行，无需安装任何依赖  
     文档提供了各种场景的解决方案，Linux 初学者也能轻松上手
 
+-   :material-vector-polyline:{ .lg .middle } __广泛的系统支持__
+
+    ---
+
+    适配众多操作系统，涵盖主流版本，精准识别系统类型及其版本  
+    脚本兼容性高，不支持的系统会有相应提示并无操作跳出
+
 -   :material-source-branch:{ .lg .middle } __多元软件源适配__
 
     ---
 
     深入考察了国内镜像站的系统适配情况，测试了下载速度与IPv6兼容性  
     另外提供全网搜集的国内教育网镜像站和海外镜像站供用户选择
-
--   :material-rocket-launch-outline:{ .lg .middle } __零技术门槛__
-
-    ---
-
-    无需了解相关技术，文档提供了全面的知识储备和操作指引  
-    文档还提供了一些常见问题的解决方法以及一些高级用法的示例
-
--   :material-vector-polyline:{ .lg .middle } __广泛的系统支持__
-
-    ---
-
-    适配众多操作系统，涵盖主流版本，精准识别系统类型及其版本  
-    脚本兼容性较高，不支持的系统会有相应提示并无操作跳出
 
 -   :material-arm-flex-outline:{ .lg .middle } __脚本功能强大__
 
@@ -76,6 +69,13 @@ hide:
     脚本使换源变得更简单，默认交互运行，逐步引导用户选择软件源配置  
     同时提供了强大的命令选项，可实现各种高级定制需求
 
+-   :material-rocket-launch-outline:{ .lg .middle } __零技术门槛__
+
+    ---
+
+    无需了解相关技术，文档提供了全面的知识储备和操作指引  
+    文档还提供了一些常见问题的解决方法以及一些高级用法的示例
+
 -   :material-pencil-ruler-outline:{ .lg .middle } __高度可定制__
 
     ---
@@ -83,12 +83,12 @@ hide:
     脚本命令选项设计遵循正式应用程序规范，能够满足各种高级需求  
     代码结构清晰，易于阅读和修改，可克隆后根据需求自行定制
 
--   :material-scale-balance:{ .lg .middle } __开源，MIT__
+-   :material-scale-balance:{ .lg .middle } __自由，开源，免费__
 
     ---
 
-    项目已设立开源许可协议，脚本代码完全开源且免费使用  
-    请尊重作者的知识成果，传播时请在显著位置标注来源和作者
+    项目已设立 MIT 开源许可协议，脚本代码完全开源且免费使用  
+    请尊重作者的知识成果，传播时请在显著位置标注来源或项目地址
 
 -   :material-information-variant-box-outline:{ .lg .middle } __意见与建议__
 
@@ -127,6 +127,8 @@ hide:
 
 </div>
 
+<div style="text-align: center; padding: 1rem 0" markdown>
 [开 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [查看软件源列表](mirrors/index.md){ .md-button }
+</div>
 
 --8<-- "docs/sponsor/main.html"

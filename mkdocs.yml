@@ -2,7 +2,7 @@ site_name: LinuxMirrors
 repo_name: LinuxMirrors
 repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
-copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank">SuperManito</a></br>本网站由 <a href="https://www.netlify.com" target="_blank">Netlify</a> 部署并提供全球 CDN 边缘加速服务 <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
+copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank">SuperManito</a></br>本网站由 <a href="https://www.netlify.com" target="_blank">Netlify</a> 部署并提供全球 CDN 边缘网络加速 <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
 
 extra_javascript:
   - assets/js/modules/vue.global.prod.js
