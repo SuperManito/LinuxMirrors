@@ -45,45 +45,45 @@ hide:
 
     ---
 
-    只需要一行命令就能直接运行，无需安装任何依赖  
+    只需要一行命令就能直接运行，零技术门槛，无需安装任何依赖  
     文档提供了各种场景的解决方案，Linux 初学者也能轻松上手
 
--   :material-vector-polyline:{ .lg .middle } __广泛的系统支持__
+-   :material-vector-polyline:{ .lg .middle } __系统支持广泛__
 
     ---
 
-    适配众多操作系统，涵盖主流版本，精准识别系统类型及其版本  
+    已适配高达 `23+` 操作系统，涵盖各类版本，精准识别系统类型  
     脚本兼容性高，不支持的系统会有相应提示并无操作跳出
 
--   :material-source-branch:{ .lg .middle } __多元软件源适配__
+-   :material-vector-triangle:{ .lg .middle } __多元软件源适配__
 
     ---
 
     深入考察了国内镜像站的系统适配情况，测试了下载速度与IPv6兼容性  
     另外提供全网搜集的国内教育网镜像站和海外镜像站供用户选择
 
--   :material-arm-flex-outline:{ .lg .middle } __脚本功能强大__
+-   :material-rocket-launch-outline:{ .lg .middle } __高效且飞快__
 
     ---
 
-    脚本使换源变得更简单，默认交互运行，逐步引导用户选择软件源配置  
-    同时提供了强大的命令选项，可实现各种高级定制需求
+    最快仅需 10 秒即可完成软件源的更换，高效运维，节省大量时间成本  
+    项目经过数年的迭代与优化，脚本运行稳定性能卓越，场景判断完善
 
--   :material-rocket-launch-outline:{ .lg .middle } __零技术门槛__
+-   :material-arm-flex-outline:{ .lg .middle } __功能强大，无以伦比__
 
     ---
 
-    无需了解相关技术，文档提供了全面的知识储备和操作指引  
-    文档还提供了一些常见问题的解决方法以及一些高级用法的示例
+    脚本通过方向键交互逐步引导用户选择软件源配置，使换源更简单  
+    另外脚本提供了丰富的命令选项，可实现各种自定义需求
 
 -   :material-pencil-ruler-outline:{ .lg .middle } __高度可定制__
 
     ---
 
-    脚本命令选项设计遵循正式应用程序规范，能够满足各种高级需求  
+    脚本命令选项遵循正式应用程序规范设计，能够满足各种高级需求  
     代码结构清晰，易于阅读和修改，可克隆后根据需求自行定制
 
--   :material-scale-balance:{ .lg .middle } __自由，开源，免费__
+-   :material-scale-balance:{ .lg .middle } __自由，开源__
 
     ---
 

@@ -7,7 +7,18 @@
     </a>
 </p>
 <p align="center">GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</p>
-<p align="center"><strong><a href="https://linuxmirrors.cn" style="text-decoration: none;">官方网站</a></strong></p>
+<p align="center">
+  <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
+  <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>
+</p>
+<p align="center">
+    <a href="https://hellogithub.com/repository/775d5b3d0aa04e90be9162104e757f2e" target="_blank">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=dark" width="250">
+          <img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=neutral" alt="Featured｜HelloGitHub" width="250">
+        </picture>
+    </a>
+</p>
 
 <table align="center">
     <tr>
@@ -110,26 +121,39 @@
 
 <p align="center">
     <strong>
-        <a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>
+        <a href="https://linuxmirrors.cn" style="text-decoration: none;">官方网站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/community" style="text-decoration: none;">社区</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/sponsor" style="text-decoration: none;">赞助</a>
     </strong>
-</p>
-
-<p align="center">
-    <a href="https://hellogithub.com/repository/775d5b3d0aa04e90be9162104e757f2e" target="_blank">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=dark" width="250">
-          <img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=neutral" alt="Featured｜HelloGitHub" width="250">
-        </picture>
-    </a>
 </p>
 
 ***
 
-### LICENSE
+## 快速开始
+
+- ### GNU/Linux 更换系统软件源脚本
+
+```bash
+bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+```
+
+- ### Docker 安装脚本
+
+```bash
+bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+```
+
+> 更多使用方法详见官方网站 [linuxmirrors.cn](https://linuxmirrors.cn/use)
+
+## LICENSE
 
 Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
 这是一个完全开源的项目，旨在为从事计算机相关行业的朋友们提供便利，使换源更简单
+
+## 特别感谢
+
+<a href="https://www.jetbrains.com/zh-cn" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/images/support/jetbrains-dark.svg" width="140" height="50"><img src="docs/assets/images/support/jetbrains-light.svg" alt="jetbrains" width="140" height="50"></picture></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.netlify.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/images/support/netlify-dark.png" width="110"><img src="docs/assets/images/support/netlify-light.png" alt="netlify" width="110"></picture></a>
+
+本项目已加入 JetBrains & Netlify 开源项目计划
 
 <a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
  <picture>

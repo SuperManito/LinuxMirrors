@@ -11,7 +11,7 @@ hide:
 #
 
 <figure style="margin: 0 auto" markdown>
-  <figcaption><h3 style="font-style: normal !important"><strong>成为赞助商</strong></h3></figcaption>
+  <figcaption><span style="font-size: 0.8rem; font-style: normal !important"><strong>成为赞助商</strong></span></figcaption>
   <figcaption>
     <button class="md-button md-button--primary" style="padding: 4px 8px 0 8px; border-radius: 5px" title="https://afdian.com/a/SuperManito" onclick="window.open('https://afdian.com/a/SuperManito')">
       <img src="/assets/images/sponsor/ifdian.png" alt="1Panel" style="user-select: none; -webkit-user-select: none; width: 120px" />
