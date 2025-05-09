@@ -15,6 +15,7 @@ body:
         - Zorin OS
         - Armbian
         - Proxmox VE
+        - Raspberry Pi OS
         - Red Hat Enterprise Linux
         - Fedora
         - CentOS
@@ -28,6 +29,7 @@ body:
         - Arch Linux
         - Alpine Linux
         - Gentoo
+        - NixOS
     validations:
       required: true
 

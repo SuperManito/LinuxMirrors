@@ -27,6 +27,7 @@
 - [ ] `Zorin OS`
 - [ ] `Armbian`
 - [ ] `Proxmox VE`
+- [ ] `Raspberry Pi OS`
 - [ ] `Red Hat Enterprise Linux`
 - [ ] `Fedora`
 - [ ] `CentOS`
@@ -40,6 +41,7 @@
 - [ ] `Arch Linux`
 - [ ] `Alpine Linux`
 - [ ] `Gentoo`
+- [ ] `NixOS`
 
 ## 2. 处理器架构
 <!-- 将中括号内的 "空格" 替换为 "x" ，即为选中，例：" - [x] 否 " -->
