@@ -62,12 +62,19 @@ hide:
     深入考察了国内镜像站的系统适配情况，测试了下载速度与IPv6兼容性  
     另外提供全网搜集的国内教育网镜像站和海外镜像站供用户选择
 
--   :material-rocket-launch-outline:{ .lg .middle } __高效且飞快__
+-   :material-rocket-launch-outline:{ .lg .middle } __快，且高效__
 
     ---
 
     最快仅需 10 秒即可完成软件源的更换，高效运维，节省大量时间成本  
     项目经过数年的迭代与优化，脚本运行稳定性能卓越，场景判断完善
+
+-   :octicons-globe-24:{ .lg .middle } __全球网络，调用无忧__
+
+    ---
+
+    本网站提供全球边缘网络加速，不惧各种网络环境，国内轻松访问  
+    同时提供了多个备用地址以确保项目脚本始终可用，真正做到使用无忧
 
 -   :material-arm-flex-outline:{ .lg .middle } __功能强大，无以伦比__
 
@@ -89,13 +96,6 @@ hide:
 
     项目已设立 MIT 开源许可协议，脚本代码完全开源且免费使用  
     请尊重作者的知识成果，传播时请在显著位置标注来源或项目地址
-
--   :material-information-variant-box-outline:{ .lg .middle } __意见与建议__
-
-    ---
-
-    如有适配请求或意见与建议请提交至 [Issues](https://github.com/SuperManito/LinuxMirrors/issues) 或直接在 [社区](./community/index.md) 中参与讨论  
-    若愿意贡献代码，请前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls)
 
 </div>
 

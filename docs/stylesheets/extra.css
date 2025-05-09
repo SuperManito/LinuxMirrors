@@ -216,23 +216,8 @@
     opacity: 0.75;
 }
 
-[data-md-color-scheme="slate"] .sponsor-item-toc-lighter img {
-    filter: grayscale(1) invert(0.6);
-}
-
-[data-md-color-scheme="slate"] .sponsor-item-toc-darker img {
-    filter: brightness(0.6) grayscale(1);
-}
-
 .sponsor-item-toc:hover img {
     filter: grayscale(0%) !important;
-    opacity: 1;
-}
-
-[data-md-color-scheme="slate"] .sponsor-item-toc:hover img,
-[data-md-color-scheme="slate"] .sponsor-item-toc-lighter:hover img,
-[data-md-color-scheme="slate"] .sponsor-item-toc-darker:hover img {
-    filter: grayscale(0%) brightness(1.2) !important;
     opacity: 1;
 }
 
