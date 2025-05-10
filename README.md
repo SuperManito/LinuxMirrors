@@ -31,7 +31,7 @@
     </tr>
     <tr>
         <td><a href="https://cn.ubuntu.com" target="_blank"><sub><img src="docs/assets/images/icon/ubuntu.svg" width="16" height="16"></sub></a>&nbsp;Ubuntu</td>
-        <td align="center">14 ~ 24</td>
+        <td align="center">14 ~ 25</td>
     </tr>
     <tr>
         <td><a href="https://www.kali.org" target="_blank"><sub><img src="docs/assets/images/icon/kali-linux.svg" width="16" height="16"></sub></a>&nbsp;Kali Linux</td>

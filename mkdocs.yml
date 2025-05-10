@@ -25,7 +25,7 @@ theme:
   favicon: assets/favicon.ico
   font: false
   icon:
-    repo: fontawesome/brands/github
+    repo: simple/github
     edit: material/file-document-edit-outline
     view: material/file-eye-outline
     admonition:
@@ -88,7 +88,7 @@ extra:
     - icon: simple/gitee
       link: https://gitee.com/SuperManito/LinuxMirrors
       name: Gitee
-    - icon: fontawesome/brands/github
+    - icon: simple/github
       link: https://github.com/SuperManito/LinuxMirrors
       name: GitHub
   analytics:

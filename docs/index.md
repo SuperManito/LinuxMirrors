@@ -102,7 +102,7 @@ hide:
 | 操作系统 | 适配版本 |
 | --- | :---: |
 | <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian | _8 ~ 13_ |
-| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu :material-information-outline:{ title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>由于迭代速度较快并不直接支持所有非 LTS 的版本，具体详见使用文档中的高级用法" } | _14 ~ 24_ |
+| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu :material-information-outline:{ title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>由于迭代速度较快并不直接支持所有非 LTS 的版本，具体详见使用文档中的高级用法" } | _14 ~ 25_ |
 | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | _all_ |
 | <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | _19 ~ 22 / LMDE 6_ |
 | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.25em"></a> Deepin（深度） | _all_ |
