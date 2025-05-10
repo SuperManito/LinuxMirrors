@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-05-10
+## Modified: 2025-05-11
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -5875,30 +5875,6 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
 gpgcheck=1
 EOF
-        if [[ "${1#*.}" -ge 8 ]]; then
-            cat <<'EOF' >$Dir_YumRepos/AnolisOS-kernel-5.10.repo
-[kernel-5.10]
-name=AnolisOS-$releasever - Kernel 5.10
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
-
-[kernel-5.10-source]
-name=AnolisOS-$releasever - Kernel 5.10 source
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/source
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
-
-[kernel-5.10-debug]
-name=AnolisOS-$releasever - Kernel 5.10 debug
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/debug
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
-EOF
-        fi
         cat <<'EOF' >$Dir_YumRepos/AnolisOS-Plus.repo
 [Plus]
 name=AnolisOS-$releasever - Plus
@@ -5951,6 +5927,64 @@ enabled=0
 gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
 gpgcheck=1
 EOF
+        ## 8.8 新增
+        if [[ "${1#*.}" -ge 8 ]]; then
+            cat <<'EOF' >$Dir_YumRepos/AnolisOS-kernel-5.10.repo
+[kernel-5.10]
+name=AnolisOS-$releasever - Kernel 5.10
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/os
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[kernel-5.10-source]
+name=AnolisOS-$releasever - Kernel 5.10 source
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/source
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[kernel-5.10-debug]
+name=AnolisOS-$releasever - Kernel 5.10 debug
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/debug
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        fi
+        ## 8.10 新增
+        if [[ "${1#*.}" -eq 10 ]]; then
+            cat <<'EOF' >$Dir_YumRepos/AnolisOS-Devel.repo
+[Devel]
+name=AnolisOS-$releasever - Devel
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/Devel/$basearch/os
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+            cat <<'EOF' >$Dir_YumRepos/AnolisOS-NDE.repo
+[NDE]
+name=AnolisOS-$releasever - NDE
+baseurl=http://mirrors.openanolis.cn/anolis/$releasever/NDE/$basearch/os
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[NDE-debuginfo]
+name=AnolisOS-$releasever - NDE Debuginfo
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/NDE/$basearch/debug
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+
+[NDE-source]
+name=AnolisOS-$releasever - NDE Source
+baseurl=https://mirrors.openanolis.cn/anolis/$releasever/NDE/source/
+enabled=0
+gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
+gpgcheck=1
+EOF
+        fi
         ;;
     esac
 }
