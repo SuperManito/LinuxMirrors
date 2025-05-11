@@ -7,9 +7,9 @@ hide:
 
 > 如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 :octicons-heart-fill-24:{ .heart style="color: red" }
 
-!!! tip inline end "本项目脚本已被众多开源项目使用，广受社区用户好评"
+!!! tip inline end "本项目已被众多流行项目使用，广受社区用户好评"
 
-## :simple-docker:{style="color: #1d63ed"} Docker 安装脚本
+## :simple-docker:{style="color: #1d63ed"} Docker 安装与换源脚本
 
 <table>
 <tr>
@@ -84,18 +84,59 @@ hide:
         bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
         ```
 
-集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构处理器
+集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
 
-脚本参考 [官方文档](https://docs.docker.com/engine/install) 采用官方提供的方法使用系统包管理工具进行安装，这意味着可安装的版本是由官方仓库决定的，本脚本不存在兼容性等问题。
+脚本参考 [_Docker 官方文档_](https://docs.docker.com/engine/install) 使用系统包管理工具进行安装，不存在兼容性、安全性等问题，可安装的版本由 Docker CE 仓库决定。
 
-> 注：Docker Compose 自 V2 版本起开始作为 Docker CLI 的一部分，不再需要单独安装，请使用 `docker compose` 命令替代 `docker-compose`
+脚本支持仅更换镜像加速器用于解决当前使用镜像源的失效问题，具体详见下方[仅更换镜像仓库](#仅更换镜像仓库)
 
 !!! node "软件源说明"
 
     `Docker CE` 软件仓库，全称 Docker Community Edition（Docker 社区版），用于下载并安装 Docker 相关软件包  
     `Docker Registry` 镜像仓库，用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
 
-    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，使用推荐的镜像源勉强能够使用不过速度可能会很慢
+    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，建议使用下方提到的国内可用镜像加速器
+
+!!! tip "关于 Docker Compose"
+
+    默认自动安装，Docker Compose 自 V2 版本起开始作为 Docker CLI 的一部分，不再需要单独安装，请使用 `docker compose` 命令替代 `docker-compose`
+
+!!! quote "项目内置的镜像仓库源"
+
+    <div style="text-align: center" markdown>
+    <div style="font-size: 0.8rem"><strong>国内可用</strong></div>
+
+    | 站点名称 | 地址 | 说明 |
+    | :--: | :--: | :-- |
+    | 毫秒镜像 | [docker.1ms.run](https://1ms.run "docker.1ms.run") | 速度快，支持付费定制 |
+    | 轩辕镜像 | [docker.xuanyuan.me](https://xuanyuan.me "docker.xuanyuan.me") | 专为科研提供，支持付费定制 |
+    | Docker Proxy | [dockerproxy.net](https://dockerproxy.net "dockerproxy.net") | 由 ghproxy 创建，可用性高但速度很慢，支持企业付费加速 |
+    | 道客 DaoCloud | [docker.m.daocloud.io](https://docker.m.daocloud.io "docker.m.daocloud.io") | 老牌企业镜像，速度较快，白名单模式 |
+    | 1Panel 镜像 | [docker.1panel.live](https://1panel.cn "docker.1panel.live") | 企业产品自用镜像 |
+
+    <blockquote style="border-left: none !important">本开源项目不适合采集个人自建的镜像加速器，如有需要请搭配命令选项自行使用</blockquote>
+
+    <div style="font-size: 0.8rem; margin-top: 1rem"><strong>其它</strong></div>
+
+    | 站点名称 | 地址 | 站点名称 | 地址 |
+    | :- | :-: | :- | :-: |
+    | 阿里云（杭州） | [registry.cn-hangzhou.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-hangzhou.aliyuncs.com") | 阿里云（日本-东京） | [registry.ap-northeast-1.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.ap-northeast-1.aliyuncs.com") |
+    | 阿里云（上海） | [registry.cn-shanghai.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-shanghai.aliyuncs.com") | 阿里云（新加坡） | [registry.ap-southeast-1.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.ap-southeast-1.aliyuncs.com") |
+    | 阿里云（青岛） | [registry.cn-qingdao.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-qingdao.aliyuncs.com") | 阿里云（马来西亚-吉隆坡） | [registry.ap-southeast-3.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.ap-southeast-3.aliyuncs.com") |
+    | 阿里云（北京） | [registry.cn-beijing.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-beijing.aliyuncs.com") | 阿里云（印度尼西亚-雅加达） | [registry.ap-southeast-5.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.ap-southeast-5.aliyuncs.com") |
+    | 阿里云（张家口） | [registry.cn-zhangjiakou.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-zhangjiakou.aliyuncs.com") | 阿里云（德国-法兰克福） | [registry.eu-central-1.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.eu-central-1.aliyuncs.com") |
+    | 阿里云（呼和浩特） | [registry.cn-huhehaote.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-huhehaote.aliyuncs.com") | 阿里云（英国-伦敦） | [registry.eu-west-1.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.eu-west-1.aliyuncs.com") |
+    | 阿里云（乌兰察布） | [registry.cn-wulanchabu.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-wulanchabu.aliyuncs.com") | 阿里云（美国西部-硅谷） | [registry.us-west-1.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.us-west-1.aliyuncs.com") |
+    | 阿里云（深圳） | [registry.cn-shenzhen.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-shenzhen.aliyuncs.com") | 阿里云（美国东部-弗吉尼亚） | [registry.us-east-1.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.us-east-1.aliyuncs.com") |
+    | 阿里云（河源） | [registry.cn-heyuan.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-heyuan.aliyuncs.com") | 阿里云（阿联酋-迪拜） | [registry.me-east-1.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.me-east-1.aliyuncs.com") |
+    | 阿里云（广州） | [registry.cn-guangzhou.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-guangzhou.aliyuncs.com") | 谷歌云（北美） | [gcr.io](https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn "https://gcr.io") |
+    | 阿里云（成都） | [registry.cn-chengdu.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-chengdu.aliyuncs.com") | 谷歌云（亚洲） | [asia.gcr.io](https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn "https://asia.gcr.io") |
+    | 阿里云（香港） | [registry.cn-hongkong.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-hongkong.aliyuncs.com") | 谷歌云（欧洲） | [eu.gcr.io](https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn "https://eu.gcr.io") |
+    | 腾讯云 | [mirror.ccs.tencentyun.com](https://cloud.tencent.com/document/product/1207/45596 "https://mirror.ccs.tencentyun.com") | Docker Hub 官方 | [registry.hub.docker.com](https://hub.docker.com/ "registry.hub.docker.com") |
+
+    <blockquote style="border-left: none !important">国内云计算企业的镜像仓库仅针对其业务，境内实例仍无法访问 Docker Hub</blockquote>
+
+    </div>
 
 - ### 命令选项（高级用法）
 
@@ -114,6 +155,7 @@ hide:
       --install-latest         是否安装最新版本的 Docker Engine    true 或 false
       --close-firewall         是否关闭防火墙                      true 或 false
       --clean-screen           是否在运行前清除屏幕上的所有内容      true 或 false
+      --only-registry          仅更换镜像仓库模式                   无
       --ignore-backup-tips     忽略覆盖备份提示                    无
       --pure-mode              纯净模式，精简打印内容               无
     ```
@@ -129,6 +171,7 @@ hide:
     | `--install-latest` | 是否安装最新版本的 Docker Engine | `true` 或 `false` |
     | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
     | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
+    | `--only-registry` | 仅更换镜像仓库模式 | 无 |
     | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
     | `--pure-mode` | 纯净模式，精简打印内容 | 无 |
 
@@ -146,6 +189,61 @@ hide:
         ``` { .bash .no-copy }
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
         ```
+
+    - #### 仅更换镜像仓库
+
+        === "使用脚本一键替换"
+
+            仅更换镜像加速器，当检测到未安装 Docker 时会报错跳出
+
+            ``` { .bash .no-copy }
+            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+            ```
+
+        === "手动替换"
+        
+            - 安装 `jq` 软件包
+
+                === "Debian 系 / openKylin"
+
+                    ``` bash
+                    apt-get install -y jq
+                    ```
+
+                    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+                    新装系统需要先执行一遍更新 `apt-get update`
+
+                === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+
+                    ``` bash
+                    dnf install -y jq || yum install -y jq
+                    ```
+
+                    > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+            - 指定镜像仓库地址
+
+                > 请手动替换 `<example.registry.com>` 为镜像仓库地址后在执行，详见上方 “项目内置的镜像仓库源” 表格中的地址列
+
+                ``` bash
+                SOURCE_REGISTRY='"https://<example.registry.com>"'
+                ```
+                还可以指定多个镜像仓库，例如 `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`，注意用英文逗号分割
+
+            - 替换镜像仓库地址
+
+                ``` bash
+                [ -s "/etc/docker/daemon.json" ] || echo "{}" >/etc/docker/daemon.json
+                jq '.["registry-mirrors"] = ['"${SOURCE_REGISTRY}"']' /etc/docker/daemon.json >/etc/docker/daemon.json.tmp && mv /etc/docker/daemon.json.tmp
+                ```
+
+            - 重启 Docker 服务
+
+                ``` bash
+                systemctl daemon-reload
+                [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
+                ```
 
     - #### 指定 Docker CE 软件源仓库
 

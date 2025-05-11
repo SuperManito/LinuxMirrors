@@ -6,7 +6,7 @@
         </picture>
     </a>
 </p>
-<p align="center">GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</p>
+<p align="center">GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</p>
 <p align="center">
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
   <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>

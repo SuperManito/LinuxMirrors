@@ -1,6 +1,6 @@
 ---
 title: 一键脚本使换源更简单
-description: GNU/Linux 更换系统软件源脚本及 Docker 安装脚本
+description: GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本
 comments: true
 glightbox: false
 comments_description: 该评论区仅用于展示项目使用评价和经验分享，反馈问题或提出建议请前往<a href="/community">社区</a>
@@ -19,7 +19,7 @@ hide:
   </div>
   <img src="/assets/images/brand/light/2.png#only-light" alt="LinuxMirrors" style="width: 300px" />
   <img src="/assets/images/brand/dark/2.png#only-dark" alt="LinuxMirrors" style="width: 300px" />
-  <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装脚本</figcaption>
+  <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</figcaption>
   <figcaption>一键脚本使换源更简单</figcaption>
 </figure>
 <figure class="home-cmd" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>

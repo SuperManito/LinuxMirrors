@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-04-10
+## Modified: 2025-05-12
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -26,9 +26,11 @@ mirror_list_docker_ce=(
 ## Docker Registry 仓库列表
 # 格式："软件源名称@软件源地址"
 mirror_list_registry=(
-    "Docker Proxy（推荐）@dockerproxy.net"
+    "毫秒镜像@docker.1ms.run"
+    "轩辕镜像@docker.xuanyuan.me"
+    "Docker Proxy@dockerproxy.net"
     "道客 DaoCloud@docker.m.daocloud.io"
-    "AtomHub 可信镜像中心@hub.atomgit.com"
+    "1Panel 镜像@docker.1panel.live"
     "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
     "阿里云（上海）@registry.cn-shanghai.aliyuncs.com"
     "阿里云（青岛）@registry.cn-qingdao.aliyuncs.com"
@@ -43,17 +45,17 @@ mirror_list_registry=(
     "阿里云（香港）@registry.cn-hongkong.aliyuncs.com"
     "阿里云（日本-东京）@registry.ap-northeast-1.aliyuncs.com"
     "阿里云（新加坡）@registry.ap-southeast-1.aliyuncs.com"
-    "阿里云（澳大利亚-悉尼）@registry.ap-southeast-2.aliyuncs.com"
     "阿里云（马来西亚-吉隆坡）@registry.ap-southeast-3.aliyuncs.com"
     "阿里云（印度尼西亚-雅加达）@registry.ap-southeast-5.aliyuncs.com"
-    "阿里云（印度-孟买）@registry.ap-south-1.aliyuncs.com"
     "阿里云（德国-法兰克福）@registry.eu-central-1.aliyuncs.com"
     "阿里云（英国-伦敦）@registry.eu-west-1.aliyuncs.com"
     "阿里云（美国西部-硅谷）@registry.us-west-1.aliyuncs.com"
     "阿里云（美国东部-弗吉尼亚）@registry.us-east-1.aliyuncs.com"
     "阿里云（阿联酋-迪拜）@registry.me-east-1.aliyuncs.com"
     "腾讯云@mirror.ccs.tencentyun.com"
-    "谷歌云@mirror.gcr.io"
+    "谷歌云（北美）@gcr.io"
+    "谷歌云（亚洲）@asia.gcr.io"
+    "谷歌云（欧洲）@eu.gcr.io"
     "官方 Docker Hub@registry.hub.docker.com"
 )
 
@@ -132,12 +134,17 @@ function main() {
     collect_system_info
     run_start
     choose_mirrors
-    choose_protocol
-    close_firewall_service
-    install_dependency_packages
-    configure_docker_ce_mirror
-    install_docker_engine
-    check_version
+    if [[ "${ONLY_REGISTRY}" == "true" ]]; then
+        only_change_docker_registry_mirror
+    else
+        choose_protocol
+        close_firewall_service
+        install_dependency_packages
+        configure_docker_ce_mirror
+        install_docker_engine
+        change_docker_registry_mirror
+        check_installed_result
+    fi
     run_end
 }
 
@@ -157,6 +164,7 @@ function handle_command_options() {
   --install-latest         是否安装最新版本的 Docker Engine     true 或 false
   --close-firewall         是否关闭防火墙                       true 或 false
   --clean-screen           是否在运行前清除屏幕上的所有内容     true 或 false
+  --only-registry          仅更换镜像仓库模式                   无
   --ignore-backup-tips     忽略覆盖备份提示                     无
   --pure-mode              纯净模式，精简打印内容               无
 
@@ -294,6 +302,10 @@ function handle_command_options() {
             else
                 output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
             fi
+            ;;
+        ## 仅更换镜像仓库模式
+        --only-registry)
+            ONLY_REGISTRY="true"
             ;;
         ## 纯净模式
         --pure-mode)
@@ -600,7 +612,7 @@ function choose_mirrors() {
     [[ "${PURE_MODE}" != "true" ]] && print_title
 
     local mirror_list_name
-    if [[ -z "${SOURCE}" ]]; then
+    if [[ -z "${SOURCE}" ]] && [[ "${ONLY_REGISTRY}" != "true" ]]; then
         mirror_list_name="mirror_list_docker_ce"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             sleep 1 >/dev/null 2>&1
@@ -815,55 +827,6 @@ function install_dependency_packages() {
     fi
 }
 
-## 选择系统包管理器
-function get_package_manager() {
-    local command="yum"
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
-        case "${SYSTEM_VERSION_ID_MAJOR}" in
-        9 | 10)
-            command="dnf"
-            ;;
-        esac
-        ;;
-    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        command="dnf"
-        ;;
-    esac
-    echo "${command}"
-}
-
-## 卸载 Docker Engine 原有版本软件包
-function uninstall_original_version() {
-    if command -v docker &>/dev/null; then
-        # 先停止并禁用 Docker 服务
-        systemctl disable --now docker >/dev/null 2>&1
-        sleep 2s
-    fi
-    # 确定需要卸载的软件包
-    local package_list
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        package_list='docker* podman podman-docker containerd runc'
-        ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        package_list='docker* podman podman-docker runc'
-        ;;
-    esac
-    # 卸载软件包并清理残留
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
-        apt-get remove -y $package_list >/dev/null 2>&1
-        apt-get autoremove -y >/dev/null 2>&1
-        ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        local package_manager="$(get_package_manager)"
-        $package_manager remove -y $package_list >/dev/null 2>&1
-        $package_manager autoremove -y >/dev/null 2>&1
-        ;;
-    esac
-}
-
 ## 配置 Docker CE 源
 function configure_docker_ce_mirror() {
     local commands=()
@@ -947,6 +910,37 @@ function install_docker_engine() {
             ;;
         esac
         rm -rf $DockerCEVersionFile $DockerCECLIVersionFile
+    }
+
+    ## 卸载 Docker Engine 原有版本软件包
+    function uninstall_original_version() {
+        if command -v docker &>/dev/null; then
+            # 先停止并禁用 Docker 服务
+            systemctl disable --now docker >/dev/null 2>&1
+            sleep 2s
+        fi
+        # 确定需要卸载的软件包
+        local package_list
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            package_list='docker* podman podman-docker containerd runc'
+            ;;
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+            package_list='docker* podman podman-docker runc'
+            ;;
+        esac
+        # 卸载软件包并清理残留
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            apt-get remove -y $package_list >/dev/null 2>&1
+            apt-get autoremove -y >/dev/null 2>&1
+            ;;
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+            local package_manager="$(get_package_manager)"
+            $package_manager remove -y $package_list >/dev/null 2>&1
+            $package_manager autoremove -y >/dev/null 2>&1
+            ;;
+        esac
     }
 
     ## 安装
@@ -1050,55 +1044,6 @@ function install_docker_engine() {
         [ $? -ne 0 ] && output_error "安装 Docker Engine 失败！"
     }
 
-    ## 修改 Docker Registry 镜像仓库源
-    function change_docker_registry_mirror() {
-        if [[ "${REGISTRY_SOURCEL}" == "registry.hub.docker.com" ]]; then
-            return
-        fi
-        if [ -d "${DockerDir}" ] && [ -e "${DockerConfig}" ]; then
-            if [ -e "${DockerConfigBackup}" ]; then
-                if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
-                    if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-                        echo ''
-                        interactive_select_boolean "${BOLD}检测到已备份的 Docker 配置文件，是否跳过覆盖备份?${PLAIN}"
-                        if [[ "${_SELECT_RESULT}" == "false" ]]; then
-                            echo ''
-                            cp -rvf $DockerConfig $DockerConfigBackup 2>&1
-                        fi
-                    else
-                        local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
-                        read -p "${CHOICE_BACKUP}" INPUT
-                        [[ -z "${INPUT}" ]] && INPUT=Y
-                        case $INPUT in
-                        [Yy] | [Yy][Ee][Ss]) ;;
-                        [Nn] | [Nn][Oo])
-                            echo ''
-                            cp -rvf $DockerConfig $DockerConfigBackup 2>&1
-                            ;;
-                        *)
-                            echo -e "\n$WARN 输入错误，默认不覆盖！"
-                            ;;
-                        esac
-                    fi
-                fi
-            else
-                echo ''
-                cp -rvf $DockerConfig $DockerConfigBackup 2>&1
-                echo -e "\n$COMPLETE 已备份原有 Docker 配置文件"
-            fi
-            sleep 2s
-        else
-            mkdir -p $DockerDir >/dev/null 2>&1
-            touch $DockerConfig
-        fi
-        echo -e '{\n  "registry-mirrors": ["https://SOURCE"]\n}' >$DockerConfig
-        sed -i "s|SOURCE|${SOURCE_REGISTRY}|g" $DockerConfig
-        systemctl daemon-reload
-        if [[ $(systemctl is-active docker) == "active" ]]; then
-            systemctl restart docker
-        fi
-    }
-
     ## 判断是否手动选择安装版本
     if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
@@ -1144,17 +1089,164 @@ function install_docker_engine() {
         rm -rf $DockerVersionFile
         if [[ "${current_docker_version}" == "${latest_docker_version}" ]] && [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             echo -e "\n$TIP 检测到系统已安装 Docker Engine 且是最新版本，跳过安装"
-            change_docker_registry_mirror
-            return
+        else
+            uninstall_original_version
+            install_main
+        fi
+    else
+        uninstall_original_version
+        install_main
+    fi
+}
+
+## 修改 Docker Registry 镜像仓库源
+function change_docker_registry_mirror() {
+    ## 使用官方 Docker Hub
+    if [[ "${REGISTRY_SOURCEL}" == "registry.hub.docker.com" ]]; then
+        if [ -s "${DockerConfig}" ]; then
+            ## 安装 jq
+            local package_manager="$(get_package_manager)"
+            $package_manager install -y jq
+            if command -v jq &>/dev/null; then
+                jq 'del(.["registry-mirrors"])' $DockerConfig >$DockerConfig.tmp && mv $DockerConfig.tmp $DockerConfig
+                # 重启服务
+                systemctl daemon-reload
+                if [[ $(systemctl is-active docker) == "active" ]]; then
+                    systemctl restart docker
+                fi
+            else
+                echo -e "\n${WARN} 请自行删除 $DockerConfig 中的 ${BLUE}registry-mirrors${PLAIN} 配置并重启服务 ${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}\n"
+            fi
+        fi
+        return
+    fi
+    ## 备份原有配置文件
+    if [ -d "${DockerDir}" ] && [ -e "${DockerConfig}" ]; then
+        if [ -e "${DockerConfigBackup}" ]; then
+            if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
+                if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                    echo ''
+                    interactive_select_boolean "${BOLD}检测到已备份的 Docker 配置文件，是否跳过覆盖备份?${PLAIN}"
+                    if [[ "${_SELECT_RESULT}" == "false" ]]; then
+                        echo ''
+                        cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+                    fi
+                else
+                    local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                    read -p "${CHOICE_BACKUP}" INPUT
+                    [[ -z "${INPUT}" ]] && INPUT=Y
+                    case $INPUT in
+                    [Yy] | [Yy][Ee][Ss]) ;;
+                    [Nn] | [Nn][Oo])
+                        echo ''
+                        cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+                        ;;
+                    *)
+                        echo -e "\n$WARN 输入错误，默认不覆盖！"
+                        ;;
+                    esac
+                fi
+            fi
+        else
+            echo ''
+            cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+            echo -e "\n$COMPLETE 已备份原有 Docker 配置文件"
+        fi
+        sleep 2s
+    else
+        mkdir -p $DockerDir >/dev/null 2>&1
+        touch $DockerConfig
+    fi
+
+    echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$DockerConfig
+    ## 重启服务
+    systemctl daemon-reload
+    if [[ $(systemctl is-active docker) == "active" ]]; then
+        systemctl restart docker
+    fi
+}
+
+## 仅修改 Docker Registry 镜像仓库源模式
+function only_change_docker_registry_mirror() {
+    ## 判定是否已安装
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}")
+        dpkg -l | grep docker-ce-cli -q
+        ;;
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        rpm -qa | grep docker-ce-cli -q
+        ;;
+    esac
+    if [ $? -ne 0 ]; then
+        ## 仅镜像仓库换源模式
+        if [[ "${ONLY_REGISTRY}" == "true" ]]; then
+            output_error "当前尚未安装 Docker Engine，请取消设置 ${BLUE}--only-registry${PLAIN} 命令选项后重新执行脚本！"
         fi
     fi
-    uninstall_original_version
-    install_main
-    change_docker_registry_mirror
+
+    [ -d "${DockerDir}" ] || mkdir -p "${DockerDir}"
+    if [ -s "${DockerConfig}" ]; then
+        ## 安装 jq
+        if ! command -v jq &>/dev/null; then
+            ## 更新软件源
+            local package_manager
+            local commands=()
+            case "${SYSTEM_FACTIONS}" in
+            "${SYSTEM_DEBIAN}")
+                package_manager="apt-get"
+                commands+=("${package_manager} update")
+                ;;
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+                package_manager="$(get_package_manager)"
+                commands+=("${package_manager} makecache")
+                ;;
+            esac
+            if [[ "${PURE_MODE}" == "true" ]]; then
+                local exec_cmd=""
+                for cmd in "${commands[@]}"; do
+                    if [[ -z "${exec_cmd}" ]]; then
+                        exec_cmd="${cmd}"
+                    else
+                        exec_cmd="${exec_cmd} && ${cmd}"
+                    fi
+                done
+                echo ''
+                animate_exec "${exec_cmd}" "${SYNC_MIRROR_TEXT}"
+            else
+                echo -e "\n$WORKING ${SYNC_MIRROR_TEXT}...\n"
+                for cmd in "${commands[@]}"; do
+                    eval "${cmd}"
+                done
+                echo -e "\n$COMPLETE ${SYNC_MIRROR_TEXT}结束\n"
+            fi
+            if [ $? -ne 0 ]; then
+                output_error "${SYNC_MIRROR_TEXT}出错，请先解决系统原有软件源错误以确保 ${BLUE}${package_manager}${PLAIN} 软件包管理工具可用！"
+            fi
+            $package_manager install -y jq
+            if ! command -v jq &>/dev/null; then
+                output_error "软件包 ${BLUE}jq${PLAIN} 安装失败，请自行安装后重新运行脚本！"
+            fi
+        fi
+        [ -s "${DockerConfig}" ] || echo "{}" >$DockerConfig
+        jq '.["registry-mirrors"] = ["https://'"${SOURCE_REGISTRY}"'"]' $DockerConfig >$DockerConfig.tmp && mv $DockerConfig.tmp $DockerConfig
+    else
+        echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$DockerConfig
+    fi
+
+    echo -e "\n${BLUE}\$${PLAIN} docker info --format '{{json .RegistryConfig.Mirrors}}'"
+    docker info --format '{{json .RegistryConfig.Mirrors}}'
+    ## 重启服务
+    systemctl daemon-reload
+    if [[ $(systemctl is-active docker) == "active" ]]; then
+        systemctl restart docker
+    fi
+    if [[ "${PURE_MODE}" != "true" ]]; then
+        echo -e "\n$COMPLETE 已更换镜像仓库"
+    fi
 }
 
 ## 查看版本并验证安装结果
-function check_version() {
+function check_installed_result() {
     if command -v docker &>/dev/null; then
         systemctl enable --now docker >/dev/null 2>&1
         echo -en "\n当前安装版本："
@@ -1191,6 +1283,24 @@ function check_version() {
     else
         echo -e "\n$ERROR 安装失败"
     fi
+}
+
+## 选择系统包管理器
+function get_package_manager() {
+    local command="yum"
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
+        9 | 10)
+            command="dnf"
+            ;;
+        esac
+        ;;
+    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        command="dnf"
+        ;;
+    esac
+    echo "${command}"
 }
 
 function interactive_select_mirror() {

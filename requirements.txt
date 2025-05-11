@@ -1,4 +1,4 @@
-mkdocs-material==9.6.12
+mkdocs-material==9.6.13
 mkdocs-glightbox==0.4.0
 mkdocs-exclude-search==0.6.6
 mkdocs-minify-plugin==0.8.0
