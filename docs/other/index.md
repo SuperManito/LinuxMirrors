@@ -95,7 +95,7 @@ hide:
     `Docker CE` 软件仓库，全称 Docker Community Edition（Docker 社区版），用于下载并安装 Docker 相关软件包  
     `Docker Registry` 镜像仓库，用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
 
-    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，建议使用下方提到的国内可用镜像加速器
+    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，建议使用下方提到的国内可用镜像仓库源
 
 !!! tip "关于 Docker Compose"
 
@@ -114,7 +114,7 @@ hide:
     | 道客 DaoCloud | [docker.m.daocloud.io](https://docker.m.daocloud.io "docker.m.daocloud.io") | 老牌企业镜像，速度较快，白名单模式 |
     | 1Panel 镜像 | [docker.1panel.live](https://1panel.cn "docker.1panel.live") | 企业产品自用镜像 |
 
-    <blockquote style="border-left: none !important">本开源项目不适合采集个人自建的镜像加速器，如有需要请搭配命令选项自行使用</blockquote>
+    <blockquote style="border-left: none !important">本开源项目不适合采集个人自建的镜像加速器，如有需要可搭配命令选项自行使用</blockquote>
 
     <div style="font-size: 0.8rem; margin-top: 1rem"><strong>其它</strong></div>
 
