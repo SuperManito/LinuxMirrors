@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-05-11
+## Modified: 2025-05-13
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -267,34 +267,34 @@ function handle_command_options() {
     function output_command_help() {
         echo -e "\n命令选项(名称/含义/值)：
 
-  --abroad                     使用境外以及海外软件源                                            无
-  --edu                        使用中国大陆教育网软件源                                          无
-  --source                     指定软件源地址(域名或IP)                                          地址
-  --source-epel                指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                    地址
-  --source-security            指定 Debian 系统 security 仓库的软件源地址(域名或IP)              地址
-  --source-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)     地址
-  --source-portage             指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)               地址
-  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)  地址
-  --branch                     指定软件源仓库(路径)                                              仓库名
-  --branch-epel                指定 EPEL 附加软件包仓库的软件源仓库(路径)                        仓库名
-  --branch-security            指定 Debian 系统 security 仓库的软件源仓库(路径)                  仓库名
-  --branch-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)         仓库名
-  --branch-portage             指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                   仓库名
-  --branch-base-system	       指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)      仓库名
-  --codename                   指定 Debian 系 / openKylin 操作系统的版本代号                     代号名称
-  --protocol                   指定 WEB 协议                                                     http 或 https
-  --use-intranet-source        是否优先使用内网软件源地址                                        true 或 false
-  --use-official-source        是否使用目标操作系统的官方软件源                                  true 或 false
-  --use-official-source-epel   是否使用 EPEL 附加软件包的官方软件源                              true 或 false
-  --install-epel               是否安装 EPEL 附加软件包                                          true 或 false
-  --backup                     是否备份原有软件源                                                true 或 false
-  --upgrade-software           是否更新软件包                                                    true 或 false
-  --clean-cache                是否在更新软件包后清理下载缓存                                    true 或 false
-  --clean-screen               是否在运行前清除屏幕上的所有内容                                  true 或 false
-  --only-epel                  仅更换 EPEL 软件源模式                                            无
-  --ignore-backup-tips         忽略覆盖备份提示                                                  无
-  --print-diff                 打印源文件修改前后差异                                            无
-  --pure-mode                  纯净模式，精简打印内容                                            无
+  --abroad                     使用境外以及海外软件源                                             无
+  --edu                        使用中国大陆教育网软件源                                           无
+  --source                     指定软件源地址(域名或IP)                                           地址
+  --source-epel                指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                     地址
+  --source-security            指定 Debian / Ubuntu 系统 security 仓库的软件源地址(域名或IP)      地址
+  --source-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)      地址
+  --source-portage             指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)                地址
+  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)   地址
+  --branch                     指定软件源仓库(路径)                                               仓库名
+  --branch-epel                指定 EPEL 附加软件包仓库的软件源仓库(路径)                         仓库名
+  --branch-security            指定 Debian 系统 security 仓库的软件源仓库(路径)                   仓库名
+  --branch-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)          仓库名
+  --branch-portage             指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                    仓库名
+  --branch-base-system	       指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)       仓库名
+  --codename                   指定 Debian 系 / openKylin 操作系统的版本代号                      代号名称
+  --protocol                   指定 WEB 协议                                                      http 或 https
+  --use-intranet-source        是否优先使用内网软件源地址                                         true 或 false
+  --use-official-source        是否使用目标操作系统的官方软件源                                   true 或 false
+  --use-official-source-epel   是否使用 EPEL 附加软件包的官方软件源                               true 或 false
+  --install-epel               是否安装 EPEL 附加软件包                                           true 或 false
+  --backup                     是否备份原有软件源                                                 true 或 false
+  --upgrade-software           是否更新软件包                                                     true 或 false
+  --clean-cache                是否在更新软件包后清理下载缓存                                     true 或 false
+  --clean-screen               是否在运行前清除屏幕上的所有内容                                   true 或 false
+  --only-epel                  仅更换 EPEL 软件源模式                                             无
+  --ignore-backup-tips         忽略覆盖备份提示                                                   无
+  --print-diff                 打印源文件修改前后差异                                             无
+  --pure-mode                  纯净模式，精简打印内容                                             无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues\n"
     }
@@ -977,7 +977,7 @@ function collect_system_info() {
 ## 命令选项兼容性判断
 function check_command_options() {
     if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
-        output_error "两种模式不可同时使用！"
+        output_error "不可同时使用两种软件源模式，请确认后重试！"
     fi
     if [[ "${DEBIAN_CODENAME}" ]]; then
         if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" && "${SYSTEM_FACTIONS}" != "${SYSTEM_OPENKYLIN}" ]]; then
@@ -988,28 +988,13 @@ function check_command_options() {
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_REDHAT}")
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
-                output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+                output_error "当前系统不支持安装 EPEL 附件软件包，请确认后重试！"
             fi
             ;;
         *)
-            output_error "当前系统不支持安装 EPEL 附件软件包故无法使用相关命令选项，请确认后重试！"
+            output_error "当前系统不支持安装 EPEL 附件软件包，请确认后重试！"
             ;;
         esac
-    fi
-    if [[ "${SOURCE_SECURITY}" == "true" || "${SOURCE_SECURITY_BRANCH}" == "true" ]]; then
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_DEBIAN}" ]] || [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" && "${DEVICE_ARCH_RAW}" != "x86_64" && "${DEVICE_ARCH_RAW}" != "aarch64" ]]; then
-            output_error "当前系统不支持使用 security 仓库相关命令选项，请确认后重试！"
-        fi
-    fi
-    if [[ "${SOURCE_VAULT}" == "true" || "${SOURCE_VAULT_BRANCH}" == "true" ]]; then
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_CENTOS}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_RHEL}" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_ALMALINUX}" ]]; then
-            output_error "当前系统不支持使用 vault 仓库相关命令选项，请确认后重试！"
-        fi
-    fi
-    if [[ "${SOURCE_PORTAGE}" == "true" || "${SOURCE_PORTAGE_BRANCH}" == "true" ]]; then
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_GENTOO}" ]]; then
-            output_error "当前系统不支持使用 portage 仓库相关命令选项，请确认后重试！"
-        fi
     fi
 }
 
@@ -1884,10 +1869,6 @@ deb ${1} ${2}-backports ${3}
 deb ${1} ${2}-updates ${3}
 # deb-src ${1} ${2}-updates ${3}"
     }
-    function gen_debian_security_source() {
-        echo "deb ${1} ${2}-security ${3}
-# deb-src ${1} ${2}-security ${3}"
-    }
     function gen_ubuntu_source() {
         echo "deb ${1} ${2} ${3}
 # deb-src ${1} ${2} ${3}
@@ -1895,12 +1876,15 @@ deb ${1} ${2}-updates ${3}
 # deb-src ${1} ${2}-updates ${3}
 deb ${1} ${2}-backports ${3}
 # deb-src ${1} ${2}-backports ${3}
-deb ${1} ${2}-security ${3}
-# deb-src ${1} ${2}-security ${3}
 
 ## 预发布软件源（不建议启用）
 # deb ${1} ${2}-proposed ${3}
 # deb-src ${1} ${2}-proposed ${3}"
+    }
+    function gen_security_source() {
+        echo "## 安全更新软件源
+deb ${1} ${2}-security ${3}
+# deb-src ${1} ${2}-security ${3}"
     }
 
     ## 使用官方源
@@ -1939,9 +1923,9 @@ deb ${1} ${2}-security ${3}
         if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
             echo "${tips}
 $(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
-            # 处理 debian-security 仓库源
+            # 处理 security 仓库源
             base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}/"
-            echo "$(gen_debian_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+            echo "$(gen_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         else
             echo "${tips}
 deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
@@ -1952,6 +1936,10 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
         repository_sections="main restricted universe multiverse"
         echo "${tips}
 $(gen_ubuntu_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+        # 处理 security 仓库源
+        base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE}}/${SOURCE_BRANCH}/"
+        echo "
+$(gen_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
         ;;
     "${SYSTEM_KALI}")
         repository_sections="main contrib non-free non-free-firmware"
@@ -1983,9 +1971,9 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
             repository_sections="main contrib non-free non-free-firmware"
             base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
             echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
-            # 处理 debian-security 仓库源
+            # 处理 security 仓库源
             base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}/"
-            echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            echo "$(gen_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
             if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
@@ -2010,6 +1998,10 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
             repository_sections="main restricted universe multiverse"
             base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
             echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            # 处理 security 仓库源
+            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
+            echo "
+$(gen_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         fi
         ;;
     "${SYSTEM_RASPBERRY_PI_OS}")
@@ -2050,9 +2042,9 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
             echo "${tips}
 $(gen_debian_source_no_backports "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
-            # 处理 debian-security 仓库源
+            # 处理 security 仓库源
             base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}/"
-            echo "$(gen_debian_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
+            echo "$(gen_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
             ;;
         *)
             base_system_branch="raspbian"
