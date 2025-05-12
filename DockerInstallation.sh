@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-05-12
+## Modified: 2025-05-13
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -100,8 +100,8 @@ File_AlpineRelease=/etc/alpine-release
 File_ProxmoxVersion=/etc/pve/.version
 
 ## 定义软件源相关文件或目录
-File_DebianSourceList=/etc/apt/sources.list
-Dir_DebianExtendSource=/etc/apt/sources.list.d
+File_AptSourceList=/etc/apt/sources.list
+Dir_AptAdditionalSources=/etc/apt/sources.list.d
 Dir_YumRepos=/etc/yum.repos.d
 
 ## 定义 Docker 相关变量
@@ -112,7 +112,7 @@ DockerVersionFile=docker-version.txt
 DockerCEVersionFile=docker-ce-version.txt
 DockerCECLIVersionFile=docker-ce-cli-version.txt
 
-## 定义颜色变量
+## 定义颜色和样式变量
 RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
@@ -751,8 +751,8 @@ function install_dependency_packages() {
     ## 删除原有源
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        sed -i '/docker-ce/d' $File_DebianSourceList
-        rm -rf $Dir_DebianExtendSource/docker.list
+        sed -i '/docker-ce/d' $File_AptSourceList
+        rm -rf $Dir_AptAdditionalSources/docker.list
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         rm -rf $Dir_YumRepos/*docker*.repo
@@ -843,7 +843,7 @@ function configure_docker_ce_mirror() {
         fi
         chmod a+r $file_keyring
         ## 添加源
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_DebianExtendSource/docker.list >/dev/null 2>&1
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_AptAdditionalSources/docker.list >/dev/null 2>&1
         commands+=("apt-get update")
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
@@ -1258,7 +1258,7 @@ function check_installed_result() {
             echo -e "\n$ERROR 安装失败"
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                echo -e "\n检查源文件：cat $Dir_DebianExtendSource/docker.list"
+                echo -e "\n检查源文件：cat $Dir_AptAdditionalSources/docker.list"
                 echo -e '请尝试手动执行安装命令：apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")

@@ -196,40 +196,40 @@ File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
 File_ProxmoxVersion=/etc/pve/.version
 
 ## 定义软件源相关文件或目录
-File_DebianSourceList=/etc/apt/sources.list
-File_DebianSourceListBackup=/etc/apt/sources.list.bak
-File_DebianSources=/etc/apt/sources.list.d/debian.sources
-File_DebianSourcesBackup=/etc/apt/sources.list.d/debian.sources.bak
-File_UbuntuSources=/etc/apt/sources.list.d/ubuntu.sources
-File_UbuntuSourcesBackup=/etc/apt/sources.list.d/ubuntu.sources.bak
-File_ArmbianSourceList=/etc/apt/sources.list.d/armbian.list
-File_ArmbianSourceListBackup=/etc/apt/sources.list.d/armbian.list.bak
-File_ProxmoxSourceList=/etc/apt/sources.list.d/pve-no-subscription.list
-File_ProxmoxSourceListBackup=/etc/apt/sources.list.d/pve-no-subscription.list.bak
-File_LinuxMintSourceList=/etc/apt/sources.list.d/official-package-repositories.list
-File_LinuxMintSourceListBackup=/etc/apt/sources.list.d/official-package-repositories.list.bak
-File_RaspberryPiSourceList=/etc/apt/sources.list.d/raspi.list
-File_RaspberryPiSourceListBackup=/etc/apt/sources.list.d/raspi.list.bak
-File_ArchLinuxMirrorList=/etc/pacman.d/mirrorlist
-File_ArchLinuxMirrorListBackup=/etc/pacman.d/mirrorlist.bak
-File_AlpineRepositories=/etc/apk/repositories
-File_AlpineRepositoriesBackup=/etc/apk/repositories.bak
-File_GentooMakeConf=/etc/portage/make.conf
-File_GentooMakeConfBackup=/etc/portage/make.conf.bak
-File_GentooReposConf=/etc/portage/repos.conf/gentoo.conf
-File_GentooReposConfBackup=/etc/portage/repos.conf/gentoo.conf.bak
-File_NixConf=/etc/nix/nix.conf
-File_NixConfBackup=/etc/nix/nix.conf.bak
-Dir_GentooReposConf=/etc/portage/repos.conf
-Dir_DebianExtendSource=/etc/apt/sources.list.d
-Dir_DebianExtendSourceBackup=/etc/apt/sources.list.d.bak
+Dir_AptAdditionalSources=/etc/apt/sources.list.d
+Dir_AptAdditionalSourcesBackup=$Dir_AptAdditionalSources.bak
 Dir_YumRepos=/etc/yum.repos.d
-Dir_YumReposBackup=/etc/yum.repos.d.bak
+Dir_YumReposBackup=$Dir_YumRepos.bak
 Dir_ZYppRepos=/etc/zypp/repos.d
-Dir_ZYppReposBackup=/etc/zypp/repos.d.bak
+Dir_ZYppReposBackup=$Dir_ZYppRepos.bak
+Dir_GentooReposConf=/etc/portage/repos.conf
 Dir_NixConfig=/etc/nix
+File_AptSourceList=/etc/apt/sources.list
+File_AptSourceListBackup=$File_AptSourceList.bak
+File_DebianSources=$Dir_AptAdditionalSources/debian.sources
+File_DebianSourcesBackup=$File_DebianSources.bak
+File_UbuntuSources=$Dir_AptAdditionalSources/ubuntu.sources
+File_UbuntuSourcesBackup=$File_UbuntuSources.bak
+File_ArmbianSourceList=$Dir_AptAdditionalSources/armbian.list
+File_ArmbianSourceListBackup=$File_ArmbianSourceList.bak
+File_ProxmoxSourceList=$Dir_AptAdditionalSources/pve-no-subscription.list
+File_ProxmoxSourceListBackup=$File_ProxmoxSourceList.bak
+File_LinuxMintSourceList=$Dir_AptAdditionalSources/official-package-repositories.list
+File_LinuxMintSourceListBackup=$File_LinuxMintSourceList.bak
+File_RaspberryPiSourceList=$Dir_AptAdditionalSources/raspi.list
+File_RaspberryPiSourceListBackup=$File_RaspberryPiSourceList.bak
+File_ArchLinuxMirrorList=/etc/pacman.d/mirrorlist
+File_ArchLinuxMirrorListBackup=$File_ArchLinuxMirrorList.bak
+File_AlpineRepositories=/etc/apk/repositories
+File_AlpineRepositoriesBackup=$File_AlpineRepositories.bak
+File_GentooMakeConf=/etc/portage/make.conf
+File_GentooMakeConfBackup=$File_GentooMakeConf.bak
+File_GentooReposConf=/etc/portage/repos.conf/gentoo.conf
+File_GentooReposConfBackup=$File_GentooReposConf.bak
+File_NixConf=/etc/nix/nix.conf
+File_NixConfBackup=$File_NixConf.bak
 
-## 定义颜色变量
+## 定义颜色和样式变量
 RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
@@ -730,23 +730,34 @@ function collect_system_info() {
         fi
         SYSTEM_JUDGMENT="$(lsb_release -is)"
         SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
-        # Raspberry Pi OS
-        if [ -s "${File_RaspberryPiOSRelease}" ]; then
+        ## Raspberry Pi OS 判定
+        if [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_DEBIAN}" ]] && [ -s "${File_RaspberryPiOSRelease}" ]; then
             SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
             SYSTEM_PRETTY_NAME="${SYSTEM_RASPBERRY_PI_OS}"
         fi
-        # Debian 尚未正式发布的版本
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]] && [[ -z "${SYSTEM_VERSION_ID}" ]]; then
-            if [[ "${SYSTEM_VERSION_CODENAME}" == "trixie" ]]; then
+        ## 针对特定系统的判定
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
+            ## 尚未正式发布的版本
+            if [[ -z "${SYSTEM_VERSION_ID}" && "${SYSTEM_VERSION_CODENAME}" == "trixie" ]]; then
                 SYSTEM_VERSION_ID="13"
                 SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
                 SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
+            fi
+            ## 是否使用 DEB822 格式
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" && "${SYSTEM_VERSION_ID_MAJOR}" -ge 13 ]]; then
+                USE_DEB822_FORMAT="true"
+            fi
+        fi
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
+            ## 是否使用 DEB822 格式
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" && "${SYSTEM_VERSION_ID_MAJOR}" -ge 24 ]]; then
+                USE_DEB822_FORMAT="true"
             fi
         fi
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
-        ## 特殊系统判断
+        ## 针对特定系统的判定
         # Red Hat Enterprise Linux
         grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
         # CentOS Stream
@@ -875,7 +886,7 @@ function collect_system_info() {
         "${SYSTEM_DEBIAN}")
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             8 | 9 | 10)
-                SOURCE_BRANCH="debian-archive" # EOF
+                SOURCE_BRANCH="debian-archive/debian"
                 ;;
             *)
                 SOURCE_BRANCH="debian"
@@ -898,13 +909,17 @@ function collect_system_info() {
                 SOURCE_BRANCH="centos-stream" # 使用 CentOS Stream 仓库
                 ;;
             *)
-                SOURCE_BRANCH="centos-vault" # EOF
+                if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
+                    SOURCE_BRANCH="centos-vault"
+                else
+                    SOURCE_BRANCH="centos-altarch"
+                fi
                 ;;
             esac
             ;;
         "${SYSTEM_CENTOS}")
             if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
-                SOURCE_BRANCH="centos-vault" # EOF
+                SOURCE_BRANCH="centos-vault"
             else
                 SOURCE_BRANCH="centos-altarch"
             fi
@@ -914,7 +929,7 @@ function collect_system_info() {
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             8)
                 if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
-                    SOURCE_BRANCH="centos-vault" # EOF
+                    SOURCE_BRANCH="centos-vault"
                 else
                     SOURCE_BRANCH="centos-altarch"
                 fi
@@ -1352,18 +1367,19 @@ function backup_original_mirrors() {
     if [[ "${BACKUP}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-            if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
-                # /etc/apt/sources.list
-                backup_file $File_DebianSourceList $File_DebianSourceListBackup "sources.list"
+            # /etc/apt/sources.list
+            if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" && -s "${File_AptSourceList}" ]]; then
+                backup_file $File_AptSourceList $File_AptSourceListBackup "sources.list"
             fi
-            ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
             # Debian DEB822 格式源文件
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
-                [ -f "${File_DebianSources}" ] && backup_file $File_DebianSources $File_DebianSourcesBackup "debian.sources"
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]] && [ -f "${File_DebianSources}" ]; then
+                backup_file $File_DebianSources $File_DebianSourcesBackup "debian.sources"
+                USE_DEB822_FORMAT="true"
             fi
             # Ubuntu DEB822 格式源文件
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
-                [ -f "${File_UbuntuSources}" ] && backup_file $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]] && [ -f "${File_UbuntuSources}" ]; then
+                backup_file $File_UbuntuSources $File_UbuntuSourcesBackup "ubuntu.sources"
+                USE_DEB822_FORMAT="true"
             fi
             # Armbian
             if [ -f "${File_ArmbianRelease}" ]; then
@@ -1418,18 +1434,21 @@ function backup_original_mirrors() {
 function remove_original_mirrors() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
-            [ -f "${File_DebianSourceList}" ] && sed -i '1,$d' $File_DebianSourceList
+        # /etc/apt/sources.list
+        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" && -s "${File_AptSourceList}" ]]; then
+            sed -i '1,$d' $File_AptSourceList
         fi
-        [ -d "${Dir_DebianExtendSource}" ] || mkdir -p $Dir_DebianExtendSource
-        ## 自新版本的 Debian 与 Ubuntu 起，软件源文件格式统一为 DEB822 格式，涉及 Debian 12 的容器镜像、Ubuntu 24.04 和未来尚未发布的版本
+        # /etc/apt/sources.list.d
+        [ -d "${Dir_AptAdditionalSources}" ] || mkdir -p $Dir_AptAdditionalSources
         # Debian DEB822 格式源文件
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
-            [ -f "${File_DebianSources}" ] && rm -rf "${File_DebianSources}"
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]] && [ -f "${File_DebianSources}" ]; then
+            sed -i '1,$d' $File_DebianSources
+            USE_DEB822_FORMAT="true"
         fi
         # Ubuntu DEB822 格式源文件
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
-            [ -f "${File_UbuntuSources}" ] && rm -rf "${File_UbuntuSources}"
+        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]] && [ -f "${File_UbuntuSources}" ]; then
+            sed -i '1,$d' $File_UbuntuSources
+            USE_DEB822_FORMAT="true"
         fi
         # Armbian
         if [ -f "${File_ArmbianRelease}" ]; then
@@ -1579,8 +1598,18 @@ function change_mirrors_main() {
         if command -v diff &>/dev/null && [[ "${BACKED_UP}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-                if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
-                    diff_file $File_DebianSourceListBackup $File_DebianSourceList
+                if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+                    # DEB822 格式源文件
+                    if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]]; then
+                        diff_file $File_DebianSourcesBackup $File_DebianSources
+                    fi
+                    if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
+                        diff_file $File_UbuntuSourcesBackup $File_UbuntuSources
+                    fi
+                else
+                    if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+                        diff_file $File_AptSourceListBackup $File_AptSourceList
+                    fi
                 fi
                 # Armbian
                 if [ -f "${File_ArmbianRelease}" ]; then
@@ -1636,6 +1665,9 @@ function change_mirrors_main() {
     "${SYSTEM_OPENCLOUDOS}")
         change_mirrors_OpenCloudOS
         ;;
+    "${SYSTEM_OPENKYLIN}")
+        change_mirrors_openKylin
+        ;;
     "${SYSTEM_ANOLISOS}")
         change_mirrors_AnolisOS
         ;;
@@ -1650,9 +1682,6 @@ function change_mirrors_main() {
         ;;
     "${SYSTEM_GENTOO}")
         change_mirrors_Gentoo
-        ;;
-    "${SYSTEM_OPENKYLIN}")
-        change_mirrors_openKylin
         ;;
     "${SYSTEM_NIXOS}")
         change_mirrors_NixOS
@@ -1855,36 +1884,69 @@ function upgrade_software() {
 
 ## 更换基于 Debian 系 Linux 发行版的软件源
 function change_mirrors_Debian() {
-    function gen_debian_source() {
-        echo "deb ${1} ${2} ${3}
-# deb-src ${1} ${2} ${3}
-deb ${1} ${2}-updates ${3}
-# deb-src ${1} ${2}-updates ${3}
-deb ${1} ${2}-backports ${3}
-# deb-src ${1} ${2}-backports ${3}"
+    ## 通用生成方法
+    function gen_deb_source() {
+        echo "deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}
+# deb-src ${WEB_PROTOCOL}://${1}/ ${2} ${3}"
     }
-    function gen_debian_source_no_backports() {
-        echo "deb ${1} ${2} ${3}
-# deb-src ${1} ${2} ${3}
-deb ${1} ${2}-updates ${3}
-# deb-src ${1} ${2}-updates ${3}"
+    function gen_deb_source_no_src() {
+        echo "deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}"
     }
-    function gen_ubuntu_source() {
-        echo "deb ${1} ${2} ${3}
-# deb-src ${1} ${2} ${3}
-deb ${1} ${2}-updates ${3}
-# deb-src ${1} ${2}-updates ${3}
-deb ${1} ${2}-backports ${3}
-# deb-src ${1} ${2}-backports ${3}
+    function gen_deb_disabled_source() {
+        echo "# deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}
+# # deb-src ${WEB_PROTOCOL}://${1}/ ${2} ${3}"
+    }
+    function gen_deb822_source() {
+        echo "Types: deb
+URIs: ${WEB_PROTOCOL}://${1}/
+Suites: ${2}
+Components: ${3}
+Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
+    }
+    function gen_deb822_disabled_source() {
+        echo "# Types: deb
+# URIs: ${WEB_PROTOCOL}://${1}/
+# Suites: ${2}
+# Components: ${3}
+# Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
+    }
+    function gen_deb_source_security() {
+        echo "## 安全更新软件源
+$(gen_deb_source "${1}" "${2}-security" "${3}")"
+    }
+    function gen_deb822_source_security() {
+        echo "## 安全更新软件源
+$(gen_deb822_source "${1}" "${2}-security" "${3}")"
+    }
+
+    ## 针对特定系统生成软件源
+    function gen_debian_deb_source() {
+        echo "$(gen_deb_source "${1}" "${2}" "${3}")
+$(gen_deb_source "${1}" "${2}-updates" "${3}")
+$(gen_deb_source "${1}" "${2}-backports" "${3}")"
+    }
+    function gen_debian_deb822_source() {
+        echo "$(gen_deb822_source "${1}" "${2} ${2}-updates ${2}-backports" "${3}")"
+    }
+    function gen_debian_deb_source_no_backports() {
+        echo "$(gen_deb_source "${1}" "${2}" "${3}")
+$(gen_deb_source "${1}" "${2}-updates" "${3}")"
+    }
+    function gen_debian_deb822_source_no_backports() {
+        echo "$(gen_deb822_source "${1}" "${2} ${2}-updates" "${3}")"
+    }
+    function gen_ubuntu_deb_source() {
+        echo "$(gen_deb_source "${1}" "${2}" "${3}")
+$(gen_deb_source "${1}" "${2}-updates" "${3}")
+$(gen_deb_source "${1}" "${2}-backports" "${3}")
+## 预发布软件源（不建议启用）
+$(gen_deb_disabled_source "${1}" "${2}-proposed" "${3}")"
+    }
+    function gen_ubuntu_deb822_source() {
+        echo "$(gen_deb822_source "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
 
 ## 预发布软件源（不建议启用）
-# deb ${1} ${2}-proposed ${3}
-# deb-src ${1} ${2}-proposed ${3}"
-    }
-    function gen_security_source() {
-        echo "## 安全更新软件源
-deb ${1} ${2}-security ${3}
-# deb-src ${1} ${2}-security ${3}"
+$(gen_deb822_disabled_source "${1}" "${2}-proposed" "${3}")"
     }
 
     ## 使用官方源
@@ -1907,9 +1969,12 @@ deb ${1} ${2}-security ${3}
             ;;
         esac
     fi
+
+    local deb_source_title="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
     local repository_sections # 仓库区域
-    local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
-    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/"
+    local source_host="${SOURCE}/${SOURCE_BRANCH}"
+    local source_host_security=""
+
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
         case "${SYSTEM_VERSION_ID}" in
@@ -1920,32 +1985,45 @@ deb ${1} ${2}-security ${3}
             repository_sections="main contrib non-free non-free-firmware"
             ;;
         esac
-        if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
-            echo "${tips}
-$(gen_debian_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
-            # 处理 security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}/"
-            echo "$(gen_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+        source_host_security="${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}"
+        if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+            if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
+                echo "$(gen_debian_deb822_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+
+$(gen_deb822_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSources
+            else
+                echo "$(gen_debian_deb822_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSources
+            fi
         else
-            echo "${tips}
-deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
+            if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
+                echo "${deb_source_title}
+$(gen_debian_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+$(gen_deb_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+            else
+                echo "${deb_source_title}
+$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+            fi
         fi
         ;;
+
     "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
         repository_sections="main restricted universe multiverse"
-        echo "${tips}
-$(gen_ubuntu_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
-        # 处理 security 仓库源
-        base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE}}/${SOURCE_BRANCH}/"
-        echo "
-$(gen_security_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
+        source_host_security="${SOURCE_SECURITY:-${SOURCE}}/${SOURCE_BRANCH}"
+        if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+            echo "$(gen_ubuntu_deb822_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+
+$(gen_deb822_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_UbuntuSources
+        else
+            echo "${deb_source_title}
+$(gen_ubuntu_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+$(gen_deb_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+        fi
         ;;
+
     "${SYSTEM_KALI}")
         repository_sections="main contrib non-free non-free-firmware"
-        echo "${tips}
-deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_DebianSourceList
+        echo "${deb_source_title}
+$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
         ;;
     "${SYSTEM_DEEPIN}")
         if [[ "${SYSTEM_VERSION_ID}" == "25" ]]; then
@@ -1953,15 +2031,15 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
         else
             repository_sections="main contrib non-free"
         fi
-        echo "${tips}
-deb ${base_url}/${SYSTEM_VERSION_CODENAME} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-# deb-src ${base_url} ${repository_sections}" >>$File_DebianSourceList
+        echo "${deb_source_title}
+$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
         ;;
+
     "${SYSTEM_LINUX_MINT}")
         ## 专用源
         repository_sections="main upstream import backport"
-        echo "${tips}
-deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_LinuxMintSourceList
+        echo "${deb_source_title}
+$(gen_deb_source_no_src "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_LinuxMintSourceList
         ## 底层系统软件源
         local base_system_branch base_system_codename
         if [[ "${SYSTEM_VERSION_ID}" == 6 ]]; then
@@ -1969,11 +2047,10 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
             base_system_branch="debian"
             base_system_codename="bookworm"
             repository_sections="main contrib non-free non-free-firmware"
-            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
-            echo "$(gen_debian_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
-            # 处理 security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}/"
-            echo "$(gen_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            source_host_security="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            echo "$(gen_debian_deb_source "${source_host}" "${base_system_codename}" "${repository_sections}")
+$(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         else
             # Ubuntu 版
             if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
@@ -1996,32 +2073,30 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_Linux
                 ;;
             esac
             repository_sections="main restricted universe multiverse"
-            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
-            echo "$(gen_ubuntu_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
-            # 处理 security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
-            echo "
-$(gen_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            source_host_security="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            echo "$(gen_ubuntu_deb_source "${source_host}" "${base_system_codename}" "${repository_sections}")
+$(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
         fi
         ;;
+
     "${SYSTEM_RASPBERRY_PI_OS}")
         ## 专用源
         repository_sections="main"
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
             SOURCE="archive.raspberrypi.org"
             SOURCE_BRANCH="debian"
-            base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/"
+            source_host="${SOURCE}/${SOURCE_BRANCH}"
         fi
-        echo "${tips}
-deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
-# deb-src ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}" >>$File_RaspberryPiSourceList
+        echo "${deb_source_title}
+$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_RaspberryPiSourceList
         ## 底层系统软件源（64位系统为 Debian 官方仓库，32位为 Raspbian 仓库）
         local base_system_branch base_system_codename
         case "${DEVICE_ARCH_RAW}" in
         x86_64 | aarch64)
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             8 | 9 | 10)
-                base_system_branch="debian-archive" # EOF
+                base_system_branch="debian-archive/debian"
                 ;;
             *)
                 base_system_branch="debian"
@@ -2039,12 +2114,11 @@ deb ${base_url} ${SYSTEM_VERSION_CODENAME} ${repository_sections}
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
                 SOURCE="deb.debian.org"
             fi
-            base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
-            echo "${tips}
-$(gen_debian_source_no_backports "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
-            # 处理 security 仓库源
-            base_url="${WEB_PROTOCOL}://${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}/"
-            echo "$(gen_security_source "${base_url}" "${base_system_codename}" "${repository_sections}")" >>$File_DebianSourceList
+            source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            source_host_security="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            echo "${deb_source_title}
+$(gen_debian_deb_source_no_backports "${source_host}" "${base_system_codename}" "${repository_sections}")
+$(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "${repository_sections}")" >>$File_AptSourceList
             ;;
         *)
             base_system_branch="raspbian"
@@ -2052,15 +2126,16 @@ $(gen_debian_source_no_backports "${base_url}" "${base_system_codename}" "${repo
             repository_sections="main contrib non-free rpi"
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
                 SOURCE="raspbian.raspberrypi.org"
-                base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/"
+                source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             else
-                base_url="${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/raspbian/"
+                source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/raspbian"
             fi
-            echo "${tips}
-deb ${base_url} ${base_system_codename} ${repository_sections}
-# deb-src ${base_url} ${base_system_codename} ${repository_sections}" >>$File_DebianSourceList
+            echo "${deb_source_title}
+$(gen_deb_source "${source_host}" "${base_system_codename}" "${repository_sections}")" >>$File_AptSourceList
+            ## multiarch 源
             if [[ "${DEVICE_ARCH_RAW}" == "armv7l" && "${USE_OFFICIAL_SOURCE}" != "true" ]]; then
-                echo "# deb [arch=arm64] ${WEB_PROTOCOL}://${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/multiarch/ ${base_system_codename} ${repository_sections}" >>$File_DebianSourceList
+                source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+                echo "# deb [arch=arm64] ${WEB_PROTOCOL}://${source_host}/multiarch/ ${base_system_codename} ${repository_sections}" >>$File_AptSourceList
             fi
             ;;
         esac
@@ -2154,45 +2229,73 @@ function change_mirrors_RedHat() {
                 centos-addons.repo
             ;;
         *)
-            sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-            sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
+            sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -i \
+                CentOS-*
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             8)
-                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/centos-vault|g" CentOS-*
-                sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-                # 单独处理 CentOS-Linux-Sources.repo
-                sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Linux-Sources.repo
+                sed -e "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" \
+                    -e "s|\$releasever|8.5.2111|g" \
+                    -i \
+                    CentOS-*
+                sed -e "s|vault.centos.org/\$contentdir|vault.centos.org/${SOURCE_VAULT_BRANCH:-centos-vault}|g" \
+                    -i \
+                    CentOS-Linux-Sources.repo
                 ;;
             7)
-                sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" CentOS-*
-                sed -i "s/\$releasever/7/g" CentOS-*
-                # 单独处理 CentOS-Sources.repo
-                sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"${SOURCE_BRANCH}"}|g" CentOS-Sources.repo
+                sed -e "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH}|g" \
+                    -e "s|\$releasever|7.9.2009|g" \
+                    -i \
+                    CentOS-*
+                sed -e "s|vault.centos.org/centos|vault.centos.org/${SOURCE_VAULT_BRANCH:-centos-vault}|g" \
+                    -i \
+                    CentOS-Sources.repo
                 ;;
             esac
-            sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
+            sed -e "s|mirror.centos.org|${SOURCE}|g" \
+                -e "s|vault.centos.org|${SOURCE_VAULT:-"${SOURCE}"}|g" \
+                -i \
+                CentOS-*
             ;;
         esac
         ;;
     "${SYSTEM_CENTOS}")
-        sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" CentOS-*
-        sed -i 's|^mirrorlist=|#mirrorlist=|g' CentOS-*
-        ## CentOS 7/8 操作系统版本结束了生命周期（EOL），Linux 社区已不再维护该操作系统版本
+        sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+            -e "s|^mirrorlist=|#mirrorlist=|g" \
+            -i \
+            CentOS-*
+        if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
+            SOURCE_BRANCH="centos-vault"
+        else
+            SOURCE_BRANCH="centos-altarch"
+        fi
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         8)
-            # 最终版本为 8.5.2011，从 2022-02 开始切换至 centos-vault 仓库
-            sed -i "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
-            sed -i "s/\$releasever/8.5.2111/g" CentOS-*
-            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Linux-Sources.repo # 单独处理 CentOS-Linux-Sources.repo
+            # 最终版本为 8.5.2011（2022-02）
+            sed -e "s|mirror.centos.org/\$contentdir|mirror.centos.org/${SOURCE_BRANCH}|g" \
+                -e "s|\$releasever|8.5.2111|g" \
+                -i \
+                CentOS-*
+            sed -e "s|vault.centos.org/\$contentdir|vault.centos.org/${SOURCE_VAULT_BRANCH:-centos-vault}|g" \
+                -i \
+                CentOS-Linux-Sources.repo
             ;;
         7)
-            # 最终版本为 7.9.2009，从 2024-07 开始切换至 centos-vault 仓库
-            sed -i "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH:-"centos-vault"}|g" CentOS-*
-            sed -i "s/\$releasever/7.9.2009/g" CentOS-*
-            sed -i "s|vault.centos.org/centos|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"centos-vault"}|g" CentOS-Sources.repo # 单独处理 CentOS-Sources.repo
+            # 最终版本为 7.9.2009（2024-07）
+            sed -e "s|mirror.centos.org/centos|mirror.centos.org/${SOURCE_BRANCH}|g" \
+                -e "s|\$releasever|7.9.2009|g" \
+                -i \
+                CentOS-*
+            sed -e "s|vault.centos.org/centos|vault.centos.org/${SOURCE_VAULT_BRANCH:-centos-vault}|g" \
+                -i \
+                CentOS-Sources.repo
             ;;
         esac
-        sed -i "s|mirror.centos.org|${SOURCE}|g" CentOS-*
+        sed -e "s|mirror.centos.org|${SOURCE}|g" \
+            -e "s|vault.centos.org|${SOURCE_VAULT:-"${SOURCE}"}|g" \
+            -i \
+            CentOS-*
         ;;
     "${SYSTEM_CENTOS_STREAM}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
@@ -2240,7 +2343,7 @@ function change_mirrors_RedHat() {
         9)
             sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"almalinux-vault"}|g" \
+                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-almalinux-vault}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
                 almalinux-*
@@ -2248,7 +2351,7 @@ function change_mirrors_RedHat() {
         8)
             sed -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"almalinux-vault"}|g" \
+                -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-almalinux-vault}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
                 almalinux-ha.repo \
@@ -2312,14 +2415,27 @@ function change_mirrors_RedHat() {
     change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
-## 更换 OpenCloudOS 发行版软件源
+## 更换 openEuler 软件源
+function change_mirrors_openEuler() {
+    ## 生成 repo 源文件
+    gen_repo_files_openEuler
+    ## 使用官方源
+    [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
+
+    ## 修改源
+    cd $Dir_YumRepos
+    sed -e "s|^baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+        -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+        -i \
+        openEuler.repo
+}
+
+## 更换 OpenCloudOS 软件源
 function change_mirrors_OpenCloudOS() {
     ## 生成 repo 源文件
     gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_ID}"
     ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
-    fi
+    [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
 
     ## 修改源
     cd $Dir_YumRepos
@@ -2336,36 +2452,33 @@ function change_mirrors_OpenCloudOS() {
     fi
 }
 
-## 更换 openEuler 发行版软件源
-function change_mirrors_openEuler() {
-    ## 生成 repo 源文件
-    gen_repo_files_openEuler
+## 更换 openKylin 软件源
+function change_mirrors_openKylin() {
+    function gen_deb_source() {
+        echo "deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}
+# deb-src ${WEB_PROTOCOL}://${1}/ ${2} ${3}
+deb ${WEB_PROTOCOL}://${1}/ ${2}-security ${3}
+# deb-src ${WEB_PROTOCOL}://${1}/ ${2}-security ${3}
+deb ${WEB_PROTOCOL}://${1}/ ${2}-updates ${3}
+# deb-src ${WEB_PROTOCOL}://${1}/ ${2}-updates ${3}"
+    }
+
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        sed -e "s|openEuler-version|openEuler-${version_name}|g" \
-            -i \
-            openEuler.repo
-        return
+        SOURCE="archive.build.openkylin.top"
     fi
-
-    ## 修改源
-    cd $Dir_YumRepos
-    local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g; s/[()]/ /g; s/  / /g; s/^ //g; s/ $//g; s/ /-/g; s/_/-/g")"
-    sed -e "s|^baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-        -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-        -e "s|openEuler-version|openEuler-${version_name}|g" \
-        -i \
-        openEuler.repo
+    local repository_sections="main cross pty" # 仓库区域
+    local source_host="${SOURCE}/${SOURCE_BRANCH}"
+    echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
+$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
 }
 
-## 更换 Anolis OS 发行版软件源
+## 更换 Anolis OS 软件源
 function change_mirrors_AnolisOS() {
     ## 生成 repo 源文件
     gen_repo_files_AnolisOS "${SYSTEM_VERSION_ID}"
     ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
-    fi
+    [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
 
     ## 修改源
     cd $Dir_YumRepos
@@ -2386,7 +2499,7 @@ function change_mirrors_AnolisOS() {
     esac
 }
 
-## 更换 openSUSE 发行版软件源
+## 更换 openSUSE 软件源
 function change_mirrors_openSUSE() {
     ## 生成 repo 源文件
     case "${SYSTEM_ID}" in
@@ -2398,19 +2511,20 @@ function change_mirrors_openSUSE() {
         ;;
     esac
     ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        return
-    fi
+    [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
 
     ## 修改源
     cd $Dir_ZYppRepos
     # 更换软件源
-    sed -i "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" repo-*
+    sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+        -i \
+        repo-*
     case "${SYSTEM_ID}" in
     opensuse-leap)
         case "${SYSTEM_VERSION_ID}" in
         15.[0-2])
-            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+            sed -e "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
                 repo-debug-non-oss.repo \
                 repo-debug.repo \
                 repo-debug-update-non-oss.repo \
@@ -2423,7 +2537,8 @@ function change_mirrors_openSUSE() {
                 repo-update.repo
             ;;
         *)
-            sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+            sed -e "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
                 repo-backports-debug-update.repo \
                 repo-backports-update.repo \
                 repo-debug-non-oss.repo \
@@ -2442,7 +2557,8 @@ function change_mirrors_openSUSE() {
         esac
         ;;
     opensuse-tumbleweed)
-        sed -i "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+        sed -e "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+            -i \
             repo-debug.repo \
             repo-non-oss.repo \
             repo-openh264.repo \
@@ -2453,7 +2569,7 @@ function change_mirrors_openSUSE() {
     esac
 }
 
-## 更换 Arch Linux 发行版软件源
+## 更换 Arch Linux 软件源
 function change_mirrors_ArchLinux() {
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -2474,7 +2590,7 @@ function change_mirrors_ArchLinux() {
     esac
 }
 
-## 更换 Alpine Linux 发行版软件源
+## 更换 Alpine Linux 软件源
 function change_mirrors_Alpine() {
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -2492,13 +2608,15 @@ function change_mirrors_Alpine() {
 ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/community" >>$File_AlpineRepositories
 }
 
-## 更换 Gentoo 发行版软件源
+## 更换 Gentoo 软件源
 function change_mirrors_Gentoo() {
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         grep -Eq "^GENTOO_MIRRORS=" $File_GentooMakeConf
         if [ $? -eq 0 ]; then
-            sed -i "/^GENTOO_MIRRORS=/d" $File_GentooMakeConf
+            sed -e "/^GENTOO_MIRRORS=/d" \
+                -i \
+                $File_GentooMakeConf
         fi
         [ -f "${File_GentooReposConf}" ] && rm -rf $File_GentooReposConf
         return
@@ -2506,7 +2624,9 @@ function change_mirrors_Gentoo() {
     ## 修改源
     grep -Eq "^GENTOO_MIRRORS=" $File_GentooMakeConf
     if [ $? -eq 0 ]; then
-        sed -i "s|^GENTOO_MIRRORS=.*|GENTOO_MIRRORS=\"${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\"|g" $File_GentooMakeConf
+        sed -e "s|^GENTOO_MIRRORS=.*|GENTOO_MIRRORS=\"${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\"|g" \
+            -i \
+            $File_GentooMakeConf
     else
         echo -e "\nGENTOO_MIRRORS=\"${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\"" >>$File_GentooMakeConf
     fi
@@ -2516,33 +2636,11 @@ main-repo = gentoo
 [gentoo]
 location = /usr/portage
 sync-type = rsync
-sync-uri = rsync://${SOURCE_PORTAGE:-"${SOURCE}"}/${SOURCE_PORTAGE_BRANCH:-"gentoo-portage"}
+sync-uri = rsync://${SOURCE_PORTAGE:-"${SOURCE}"}/${SOURCE_PORTAGE_BRANCH:-gentoo-portage}
 auto-sync = yes" >$File_GentooReposConf
 }
 
-## 更换 openKylin 发行版软件源
-function change_mirrors_openKylin() {
-    function gen_source() {
-        echo "deb ${1} ${2} ${3}
-# deb-src ${1} ${2} ${3}
-deb ${1} ${2}-security ${3}
-# deb-src ${1} ${2}-security ${3}
-deb ${1} ${2}-updates ${3}
-# deb-src ${1} ${2}-updates ${3}"
-    }
-
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        SOURCE="archive.build.openkylin.top"
-    fi
-    local repository_sections="main cross pty" # 仓库区域
-    local tips="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
-    local base_url="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/"
-    echo "${tips}
-$(gen_source "${base_url}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSourceList
-}
-
-## 更换 NixOS 发行版软件源
+## 更换 NixOS 软件源
 function change_mirrors_NixOS() {
     local binary_cache_source channel_source
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
@@ -2553,7 +2651,9 @@ function change_mirrors_NixOS() {
         channel_source="${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
     fi
     # binary cache
-    sed -i "s|^substituters.*|substituters = ${binary_cache_source}|g" $File_NixConf
+    sed -e "s|^substituters.*|substituters = ${binary_cache_source}|g" \
+        -i \
+        $File_NixConf
     # channel
     nix-channel --add "${channel_source}/nixos-${SYSTEM_VERSION_ID}" nixos
     nix-channel --update >/dev/null 2>&1
@@ -2582,7 +2682,7 @@ function change_mirrors_or_install_EPEL() {
     if [[ "${epel_version}" == "7" ]]; then
         [ -z "${SOURCE_EPEL_BRANCH}" ] && SOURCE_EPEL_BRANCH="epel-archive"
         [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN Extra Packages for Enterprise Linux 7 已结束生命周期并被官方移至归档库！"
-        [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$TIP 目前部分镜像站没有同步该归档仓库，若换源后出现错误那么请先检查目标镜像站是否支持该仓库。\n\n${GREEN}➜${PLAIN}  ${WEB_PROTOCOL}://${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}"
+        [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$TIP 目前部分镜像站没有同步该归档仓库，若换源后出现错误那么请先检查目标镜像站是否支持该仓库。\n\n${GREEN}➜${PLAIN}  ${WEB_PROTOCOL}://${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-epel}"
     fi
     ## 安装 EPEL 软件包
     if [ $VERIFICATION_EPEL -ne 0 ]; then
@@ -2631,7 +2731,7 @@ function change_mirrors_or_install_EPEL() {
     ## 修改源
     sed -e "s|^#baseurl=http\(s\)\?|baseurl=${WEB_PROTOCOL}|g" \
         -e "s|^metalink=|#metalink=|g" \
-        -e "s|download.example/pub/epel|${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-"epel"}|g" \
+        -e "s|download.example/pub/epel|${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-epel}|g" \
         -i \
         $Dir_YumRepos/epel*
     ## 启用所需的仓库（EPEL 需要结合 PowerTools / CRB 使用）
@@ -5388,6 +5488,11 @@ enabled=1
 gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
 EOF
+    ## 替换版本号
+    local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g; s/[()]/ /g; s/  / /g; s/^ //g; s/ $//g; s/ /-/g; s/_/-/g")"
+    sed -e "s|openEuler-version|openEuler-${version_name}|g" \
+        -i \
+        $Dir_YumRepos/openEuler.repo
 }
 
 ## 生成 OpenCloudOS repo 源文件
