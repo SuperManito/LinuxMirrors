@@ -21,9 +21,68 @@
     --md-typeset-a-color: #2080f0;
 }
 
+/* logo */
+[data-md-color-scheme="default"] .md-logo img {
+    content: url(/assets/images/brand/svg/logo-light.svg);
+}
+
+[data-md-color-scheme="slate"] .md-logo img {
+    content: url(/assets/images/brand/svg/logo-dark.svg);
+}
+
+/* 字体 */
+@import url("https://fontsapi.zeoseven.com/442/main/result.css");
+
+body {
+    font-family: "Maple Mono NF CN";
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'SF Mono';
+    src: url('./fonts/SF-Mono-Regular.otf');
+}
+
+/* 告诫 */
+.md-typeset .admonition,
+.md-typeset details {
+    background-color: var(--md-admonition-bg-color);
+    border: .075rem solid #448aff;
+    border-radius: .2rem;
+    box-shadow: var(--md-shadow-z1);
+    color: var(--md-admonition-fg-color);
+    display: flow-root;
+    font-size: .64rem;
+    margin: 1.5625em 0;
+    padding: 0 .6rem;
+    page-break-inside: avoid;
+    transition: box-shadow 125ms;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+    border-width: 0;
+    border-left-width: 4px;
+}
+
+.md-typeset .admonition.quote,
+.md-typeset details.quote {
+    border-width: .075rem;
+}
+
+[data-md-color-scheme='slate'] .md-typeset .admonition,
+[data-md-color-scheme='slate'] .md-typeset details {
+    box-shadow: var(--md-shadow-z2);
+}
+
 .md-typeset .admonition.tip,
 .md-typeset details.tip {
-    border-color: #009400;
+    border-color: #03b803;
+}
+
+.md-typeset .tip>.admonition-title:before,
+.md-typeset .tip>summary:before {
+    background-color: #03b803;
 }
 
 .md-typeset .tip>.admonition-title,
@@ -31,9 +90,36 @@
     background-color: #0094001a;
 }
 
+.md-typeset .admonition.tip:focus-within,
+.md-typeset details.tip:focus-within {
+    box-shadow: 0 0 0 .2rem #0094000a;
+}
+
 [data-md-color-scheme="slate"] .md-typeset .admonition.quote,
 .md-typeset details.quote {
     border-color: hsla(225deg, 15%, 90%, 0.24);
+}
+
+/* 着陆页 */
+.home-cmd pre>code {
+    padding-right: 3em;
+}
+
+.home-cmd .md-clipboard {
+    top: calc(100% - 60px);
+}
+
+@media screen and (max-width: 768px) {
+    .home-cmd .md-clipboard {
+        top: calc(100% - 50px);
+    }
+}
+
+/* 主题覆盖 */
+.no-select img {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
 }
 
 .md-header {
@@ -55,50 +141,15 @@
     background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
 }
 
-[data-md-color-scheme="default"] .md-logo img {
-    content: url(/assets/images/brand/svg/logo-light.svg);
-}
-
-[data-md-color-scheme="slate"] .md-logo img {
-    content: url(/assets/images/brand/svg/logo-dark.svg);
-}
-
 @media screen and (max-width: 768px) {
-  .md-typeset .admonition .tabbed-set {
-    width: calc(100vw - 3rem - 2px);
-  }
-  .md-typeset .admonition .tabbed-labels {
-    width: calc(100vw - 3rem - 1.2rem);
-    padding-left: .6rem;
-  }
-}
-
-@font-face {
-    font-family: 'SF Mono';
-    src: url('./fonts/SF-Mono-Regular.otf');
-}
-
-@keyframes heart {
-
-    0%,
-    40%,
-    80%,
-    100% {
-        transform: scale(1);
+    .md-typeset .admonition .tabbed-set {
+        width: calc(100vw - 3rem - 2px);
     }
 
-    20%,
-    60% {
-        transform: scale(1.15);
+    .md-typeset .admonition .tabbed-labels {
+        width: calc(100vw - 3rem - 1.2rem);
+        padding-left: .6rem;
     }
-}
-
-.home-cmd pre>code {
-    padding-right: 3em;
-}
-
-.heart {
-    animation: heart 1000ms infinite;
 }
 
 .md-tabs__link {
@@ -167,9 +218,6 @@
 }
 
 .sponsor .sponsor-item img {
-    user-select: none;
-    -webkit-user-drag: none;
-    -webkit-user-select: none;
     max-width: 100%;
     height: auto;
     vertical-align: middle;
@@ -202,9 +250,6 @@
 }
 
 .sponsor-item-toc img {
-    user-select: none;
-    -webkit-user-drag: none;
-    -webkit-user-select: none;
     width: 100%;
     object-fit: contain;
     filter: grayscale(1) invert(0.6);
@@ -268,6 +313,26 @@
     }
 }
 
+/* 图标动画 */
+.heart {
+    animation: heart 1000ms infinite;
+}
+
+@keyframes heart {
+
+    0%,
+    40%,
+    80%,
+    100% {
+        transform: scale(1);
+    }
+
+    20%,
+    60% {
+        transform: scale(1.15);
+    }
+}
+
 /* TDesign 组件相关 */
 .t-tag .t-icon {
     margin-right: 0 !important;
@@ -297,12 +362,14 @@
 
 [data-termynal] {
     color: #000 !important;
-    background: #e6e6e6 !important;
+    background: #f7f7f7 !important;
+    box-shadow: var(--md-shadow-z2);
 }
 
 [data-md-color-scheme="slate"] [data-termynal] {
     color: #eeeeee !important;
-    background: #252a33 !important;
+    background: #21252c !important;
+    box-shadow: var(--md-shadow-z2);
 }
 
 button[data-terminal-control] {

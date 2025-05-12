@@ -229,7 +229,7 @@ hide:
                 ``` bash
                 SOURCE_REGISTRY='"https://<example.registry.com>"'
                 ```
-                还可以指定多个镜像仓库，例如 `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`，注意用英文逗号分割
+                还可以指定多个镜像仓库，如 `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`，注意用英文逗号分割
 
             - 替换镜像仓库地址
 

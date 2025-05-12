@@ -22,18 +22,21 @@ hide:
   <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</figcaption>
   <figcaption>一键脚本使换源更简单</figcaption>
 </figure>
-<figure class="home-cmd" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
+<figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
 === "GNU/Linux"
 
-    ``` { .bash title="一键命令" }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh)
-    ```
+    <img src="/assets/images/brand/command/linux-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
+    <img src="/assets/images/brand/command/linux-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
+
+    <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)" title="复制"></button>
 
 === "Docker"
 
-    ``` { .bash title="一键命令" }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
-    ```
+    <img src="/assets/images/brand/command/docker-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
+    <img src="/assets/images/brand/command/docker-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
+
+    <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/docker.sh)" title="复制"></button>
+
 </figure>
 </div>
 
@@ -99,10 +102,12 @@ hide:
 
 </div>
 
+<div style="text-align: center" markdown>
+
 | 操作系统 | 适配版本 |
 | --- | :---: |
 | <a href="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian | _8 ~ 13_ |
-| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu :material-information-outline:{ title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>由于迭代速度较快并不直接支持所有非 LTS 的版本，具体详见使用文档中的高级用法" } | _14 ~ 25_ |
+| <a href="https://cn.ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Ubuntu :material-information-outline:{ title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>由于迭代速度较快并不直接支持所有非 LTS 的版本，具体详见文档" } | _14 ~ 25_ |
 | <a href="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux | _all_ |
 | <a href="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> Linux Mint | _19 ~ 22 / LMDE 6_ |
 | <a href="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> Deepin（深度） | _all_ |
@@ -126,9 +131,12 @@ hide:
 | <a href="https://nixos.org" target="_blank"><img src="/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"></a> NixOS | _19 ~ 24_ |
 
 </div>
+</div>
 
 <div style="text-align: center; padding: 1rem 0" markdown>
 [开 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [查看软件源列表](mirrors/index.md){ .md-button }
 </div>
 
 --8<-- "docs/sponsor/main.html"
+
+
