@@ -1,5 +1,5 @@
 :root {
-    --md-text-font: 'Maple Mono NF CN', system-ui, -apple-system, 'Roboto', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Segoe UI', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    --md-text-font: system-ui, -apple-system, 'Roboto', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Segoe UI', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     --md-code-font: 'SF Mono';
     --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
     --md-default-bg-color--light: #ffffff;
@@ -31,10 +31,7 @@
 }
 
 /* 字体 */
-@import url("https://fontsapi.zeoseven.com/442/main/result.css");
-
 body {
-    font-family: "Maple Mono NF CN";
     font-weight: normal;
 }
 
@@ -364,6 +361,7 @@ body {
     color: #000 !important;
     background: #f7f7f7 !important;
     box-shadow: var(--md-shadow-z2);
+    font-size: 14px !important;
 }
 
 [data-md-color-scheme="slate"] [data-termynal] {

@@ -186,7 +186,7 @@ hide:
 
     !!! quote ""
 
-        此报错是因为系统没有安装 `curl` 软件包，下面是安装命令
+        此报错是由于系统没有安装 `curl` 软件包导致，安装命令如下
 
         === "Debian 系 / openKylin"
 
@@ -292,10 +292,20 @@ hide:
 
         === "Debian 系 / openKylin"
 
-            ``` bash
-            cp -rf /etc/apt/sources.list.bak /etc/apt/sources.list
-            apt-get update
-            ```
+            === "传统格式"
+
+                ``` bash
+                cp -rf /etc/apt/sources.list.bak /etc/apt/sources.list
+                apt-get update
+                ```
+
+            === "DEB822 格式"
+
+                ``` bash
+                system_name="$(lsb_release -is | tr '[:upper:]' '[:lower:]')"
+                cp -rf "/etc/apt/sources.list.d/${system_name}.sources.bak" "/etc/apt/sources.list.d/${system_name}.sources"
+                apt-get update
+                ```
 
             > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
