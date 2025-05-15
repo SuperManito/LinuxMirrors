@@ -361,6 +361,7 @@ function run_end() {
         "圣道云 · 稳定高效云服务器｜低至9.9元/月起 ➜  https://www.shengdaoyun.com"
         "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  https://www.runxinyun.com"
         "新鸟云 · 2核2G云主机特价15元/月 ➜  https://www.xinniaoyun.com"
+        "语鹿云盾 · 专业CDN加速、防御，亚太百兆三网优化CDN低至9元起 ➜  https://www.lucdn.cn"
     )
     echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n"
     for ad in "${sponsor_ad[@]}"; do

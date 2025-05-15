@@ -176,8 +176,31 @@ body {
     border-top: none;
 }
 
+.sponsor-title {
+    font-size: 1.2rem;
+    font-weight: 550;
+    font-feature-settings: "kern", "liga";
+    color: #444;
+    font-family: var(--md-text-font-family);
+}
+
+[data-md-color-scheme="slate"] .sponsor-title {
+    color: #ddd;
+}
+
+.sponsor-title-toc {
+    font-weight: 550;
+    font-feature-settings: "kern", "liga";
+    color: hsl(225deg 0% 46.48% / 56%);
+    font-family: var(--md-text-font-family);
+}
+
+[data-md-color-scheme="slate"] .sponsor-title-toc {
+    color: hsl(225deg 5.64% 68.32% / 56%);
+}
+
 .sponsor-toc {
-    margin-top: 2rem !important;
+    margin-top: 24px !important;
     border-top: 1px solid var(--md-default-fg-color--lightest) !important;
 }
 
@@ -350,6 +373,10 @@ body {
 
 [theme-mode="dark"] .t-table--hoverable tbody tr:hover {
     background-color: rgba(240, 241, 244, 0.016) !important;
+}
+
+.t-table--column-fixed .t-table__cell--fixed-left {
+    z-index: 4;
 }
 
 /* termynal 插件 */
