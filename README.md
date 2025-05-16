@@ -129,13 +129,13 @@
 
 ## 快速开始
 
-- ### GNU/Linux 更换系统软件源脚本
+### GNU/Linux 更换系统软件源脚本
 
 ```bash
 bash <(curl -sSL https://linuxmirrors.cn/main.sh)
 ```
 
-- ### Docker 安装脚本
+### Docker 安装脚本
 
 ```bash
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
