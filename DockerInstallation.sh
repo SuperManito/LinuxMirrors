@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-05-13
+## Modified: 2025-05-19
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -105,12 +105,12 @@ Dir_AptAdditionalSources=/etc/apt/sources.list.d
 Dir_YumRepos=/etc/yum.repos.d
 
 ## 定义 Docker 相关变量
-DockerDir=/etc/docker
-DockerConfig=$DockerDir/daemon.json
-DockerConfigBackup=$DockerDir/daemon.json.bak
-DockerVersionFile=docker-version.txt
-DockerCEVersionFile=docker-ce-version.txt
-DockerCECLIVersionFile=docker-ce-cli-version.txt
+Dir_Docker=/etc/docker
+File_DockerConfig=$Dir_Docker/daemon.json
+File_DockerConfigBackup=$Dir_Docker/daemon.json.bak
+File_DockerVersionTmp=docker-version.txt
+File_DockerCEVersionTmp=docker-ce-version.txt
+File_DockerCECliVersionTmp=docker-ce-cli-version.txt
 
 ## 定义颜色和样式变量
 RED='\033[31m'
@@ -900,18 +900,18 @@ function install_docker_engine() {
     function export_version_list() {
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_DEBIAN}")
-            apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
-            apt-cache madison docker-ce-cli | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
-            grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
+            apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCEVersionTmp
+            apt-cache madison docker-ce-cli | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCECliVersionTmp
+            grep -wf $File_DockerCEVersionTmp $File_DockerCECliVersionTmp >$File_DockerVersionTmp
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
             local package_manager="$(get_package_manager)"
-            $package_manager list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCEVersionFile
-            $package_manager list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$DockerCECLIVersionFile
-            grep -wf $DockerCEVersionFile $DockerCECLIVersionFile >$DockerVersionFile
+            $package_manager list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCEVersionTmp
+            $package_manager list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCECliVersionTmp
+            grep -wf $File_DockerCEVersionTmp $File_DockerCECliVersionTmp >$File_DockerVersionTmp
             ;;
         esac
-        rm -rf $DockerCEVersionFile $DockerCECLIVersionFile
+        rm -rf $File_DockerCEVersionTmp $File_DockerCECliVersionTmp
     }
 
     ## 卸载 Docker Engine 原有版本软件包
@@ -961,21 +961,21 @@ function install_docker_engine() {
             esac
         else
             export_version_list
-            if [ ! -s "${DockerVersionFile}" ]; then
-                rm -rf $DockerVersionFile
+            if [ ! -s "${File_DockerVersionTmp}" ]; then
+                rm -rf $File_DockerVersionTmp
                 output_error "查询 Docker Engine 版本列表失败！"
             fi
             if [[ "${DESIGNATED_DOCKER_VERSION}" ]]; then
-                cat $DockerVersionFile | grep -Eq "^${DESIGNATED_DOCKER_VERSION}$"
+                cat $File_DockerVersionTmp | grep -Eq "^${DESIGNATED_DOCKER_VERSION}$"
                 if [ $? -ne 0 ]; then
-                    rm -rf $DockerVersionFile
+                    rm -rf $File_DockerVersionTmp
                     output_error "指定的 Docker Engine 版本不存在或不支持安装！"
                 fi
                 target_docker_version="${DESIGNATED_DOCKER_VERSION}"
             else
                 if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                     local version_list=(
-                        $(cat $DockerVersionFile | sort -t '.' -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ' | sed 's/ $//')
+                        $(cat $File_DockerVersionTmp | sort -t '.' -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ' | sed 's/ $//')
                     )
                     local mirror_list_name="version_list"
                     eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想安装的版本：\${PLAIN}\\n\""
@@ -983,12 +983,12 @@ function install_docker_engine() {
                     echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}指定安装版本：${target_docker_version}${PLAIN}\n"
                 else
                     echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：27.4.0 ---------- ${PLAIN}\n"
-                    cat $DockerVersionFile
+                    cat $File_DockerVersionTmp
                     while true; do
                         local CHOICE=$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")
                         read -p "${CHOICE}" target_docker_version
                         echo ''
-                        cat $DockerVersionFile | grep -Eqw "${target_docker_version}"
+                        cat $File_DockerVersionTmp | grep -Eqw "${target_docker_version}"
                         if [ $? -eq 0 ]; then
                             echo "${target_docker_version}" | grep -Eqw '[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}'
                             if [ $? -eq 0 ]; then
@@ -1002,7 +1002,7 @@ function install_docker_engine() {
                     done
                 fi
             fi
-            rm -rf $DockerVersionFile
+            rm -rf $File_DockerVersionTmp
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
                 local major_version="$(echo ${target_docker_version} | cut -c1-2)"
@@ -1087,8 +1087,8 @@ function install_docker_engine() {
     if [ $? -eq 0 ]; then
         export_version_list
         local current_docker_version="$(docker -v | grep -Eo "[0-9][0-9]\.[0-9]{1,2}\.[0-9]{1,2}")"
-        local latest_docker_version="$(cat $DockerVersionFile | head -n 1)"
-        rm -rf $DockerVersionFile
+        local latest_docker_version="$(cat $File_DockerVersionTmp | head -n 1)"
+        rm -rf $File_DockerVersionTmp
         if [[ "${current_docker_version}" == "${latest_docker_version}" ]] && [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             echo -e "\n$TIP 检测到系统已安装 Docker Engine 且是最新版本，跳过安装"
         else
@@ -1105,33 +1105,33 @@ function install_docker_engine() {
 function change_docker_registry_mirror() {
     ## 使用官方 Docker Hub
     if [[ "${REGISTRY_SOURCEL}" == "registry.hub.docker.com" ]]; then
-        if [ -s "${DockerConfig}" ]; then
+        if [ -s "${File_DockerConfig}" ]; then
             ## 安装 jq
             local package_manager="$(get_package_manager)"
             $package_manager install -y jq
             if command -v jq &>/dev/null; then
-                jq 'del(.["registry-mirrors"])' $DockerConfig >$DockerConfig.tmp && mv $DockerConfig.tmp $DockerConfig
+                jq 'del(.["registry-mirrors"])' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
                 # 重启服务
                 systemctl daemon-reload
                 if [[ $(systemctl is-active docker) == "active" ]]; then
                     systemctl restart docker
                 fi
             else
-                echo -e "\n${WARN} 请自行删除 $DockerConfig 中的 ${BLUE}registry-mirrors${PLAIN} 配置并重启服务 ${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}\n"
+                echo -e "\n${WARN} 请自行删除 $File_DockerConfig 中的 ${BLUE}registry-mirrors${PLAIN} 配置并重启服务 ${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}\n"
             fi
         fi
         return
     fi
     ## 备份原有配置文件
-    if [ -d "${DockerDir}" ] && [ -e "${DockerConfig}" ]; then
-        if [ -e "${DockerConfigBackup}" ]; then
+    if [ -d "${Dir_Docker}" ] && [ -e "${File_DockerConfig}" ]; then
+        if [ -e "${File_DockerConfigBackup}" ]; then
             if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                 if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                     echo ''
                     interactive_select_boolean "${BOLD}检测到已备份的 Docker 配置文件，是否跳过覆盖备份?${PLAIN}"
                     if [[ "${_SELECT_RESULT}" == "false" ]]; then
                         echo ''
-                        cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+                        cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
                     fi
                 else
                     local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
@@ -1141,7 +1141,7 @@ function change_docker_registry_mirror() {
                     [Yy] | [Yy][Ee][Ss]) ;;
                     [Nn] | [Nn][Oo])
                         echo ''
-                        cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+                        cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
                         ;;
                     *)
                         echo -e "\n$WARN 输入错误，默认不覆盖！"
@@ -1151,16 +1151,16 @@ function change_docker_registry_mirror() {
             fi
         else
             echo ''
-            cp -rvf $DockerConfig $DockerConfigBackup 2>&1
+            cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
             echo -e "\n$COMPLETE 已备份原有 Docker 配置文件"
         fi
         sleep 2s
     else
-        mkdir -p $DockerDir >/dev/null 2>&1
-        touch $DockerConfig
+        mkdir -p $Dir_Docker >/dev/null 2>&1
+        touch $File_DockerConfig
     fi
 
-    echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$DockerConfig
+    echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$File_DockerConfig
     ## 重启服务
     systemctl daemon-reload
     if [[ $(systemctl is-active docker) == "active" ]]; then
@@ -1186,8 +1186,8 @@ function only_change_docker_registry_mirror() {
         fi
     fi
 
-    [ -d "${DockerDir}" ] || mkdir -p "${DockerDir}"
-    if [ -s "${DockerConfig}" ]; then
+    [ -d "${Dir_Docker}" ] || mkdir -p "${Dir_Docker}"
+    if [ -s "${File_DockerConfig}" ]; then
         ## 安装 jq
         if ! command -v jq &>/dev/null; then
             ## 更新软件源
@@ -1229,14 +1229,14 @@ function only_change_docker_registry_mirror() {
                 output_error "软件包 ${BLUE}jq${PLAIN} 安装失败，请自行安装后重新运行脚本！"
             fi
         fi
-        [ -s "${DockerConfig}" ] || echo "{}" >$DockerConfig
-        jq '.["registry-mirrors"] = ["https://'"${SOURCE_REGISTRY}"'"]' $DockerConfig >$DockerConfig.tmp && mv $DockerConfig.tmp $DockerConfig
+        [ -s "${File_DockerConfig}" ] || echo "{}" >$File_DockerConfig
+        jq '.["registry-mirrors"] = ["https://'"${SOURCE_REGISTRY}"'"]' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
     else
-        echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$DockerConfig
+        echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$File_DockerConfig
     fi
 
     echo -e "\n${BLUE}\$${PLAIN} docker info --format '{{json .RegistryConfig.Mirrors}}'"
-    docker info --format '{{json .RegistryConfig.Mirrors}}'
+    echo -e "\n${GREEN}➜${PLAIN}  $(docker info --format '{{json .RegistryConfig.Mirrors}}')"
     ## 重启服务
     systemctl daemon-reload
     if [[ $(systemctl is-active docker) == "active" ]]; then
@@ -1278,7 +1278,7 @@ function check_installed_result() {
             systemctl enable --now docker >/dev/null 2>&1
             sleep 2
             if [[ $(systemctl is-active docker) != "active" ]]; then
-                echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能由于重复安装导致"
+                echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能是由于重复安装导致"
                 echo -e "\n${YELLOW} 请执行 "systemctl start docker" 或 "service docker start" 命令尝试启动，如若报错请尝试重新执行本脚本${PLAIN}"
             fi
         fi
