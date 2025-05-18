@@ -2,7 +2,7 @@
     --md-text-font: system-ui, -apple-system, 'Roboto', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Segoe UI', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     --md-code-font: 'SF Mono';
     --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
-    --md-default-bg-color--light: #ffffff;
+    --md-default-bg-color--light: #fff;
     --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
     --view-transition-z-index-foreground: 999;
     --view-transition-z-index-background: 1;
