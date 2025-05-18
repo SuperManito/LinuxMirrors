@@ -5,7 +5,7 @@ hide:
   - footer
 ---
 
-> 如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友 :octicons-heart-fill-24:{ .heart style="color: red" }
+> _如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友_ :octicons-heart-fill-24:{ .heart }
 
 !!! tip inline end "本项目已被众多流行项目使用，广受社区用户好评"
 
@@ -50,39 +50,79 @@ hide:
 </tr>
 </table>
 
-!!! quote ""
+### 一键执行命令
 
-    === ":linuxmirrors: 官网（推荐）"
+=== "安装"
 
-        ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
-        ```
+    !!! quote ""
 
-    === ":simple-github: GitHub"
+        === ":linuxmirrors: 官网（推荐）"
 
-        ``` bash
-        bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
-        ```
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+            ```
 
-    === ":simple-gitee: Gitee 码云 (镜像仓库)"
+        === ":simple-github: GitHub"
 
-        ``` bash
-        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
-        ```
-        > 实时同步、无延迟，国内网络环境下推荐使用
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
+            ```
 
-    === ":gitcode: GitCode (镜像仓库)"
+        === ":simple-gitee: Gitee 码云 (镜像仓库)"
 
-        ``` bash
-        bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh)
-        ```
-        > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+            ```
+            > 实时同步、无延迟，国内网络环境下推荐使用
 
-    === ":simple-jsdelivr: jsDelivr (CDN)"
+        === ":gitcode: GitCode (镜像仓库)"
 
-        ``` bash
-        bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
-        ```
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh)
+            ```
+            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
+            ```
+
+=== "仅更换镜像加速器"
+
+    !!! quote ""
+
+        === ":linuxmirrors: 官网（推荐）"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+            ```
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
+            ```
+
+        === ":simple-gitee: Gitee 码云 (镜像仓库)"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            ```
+            > 实时同步、无延迟，国内网络环境下推荐使用
+
+        === ":gitcode: GitCode (镜像仓库)"
+
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            ```
+            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --only-registry
+            ```
 
 集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
 
@@ -196,7 +236,7 @@ hide:
 
             仅更换镜像加速器，当检测到未安装 Docker 时会报错跳出
 
-            ``` { .bash .no-copy }
+            ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
             ```
 
@@ -299,11 +339,11 @@ hide:
           --close-firewall true \
           --ignore-backup-tips
         ```
-        > 如果报错 `命令选项无效` 那么请检查选项合法性以及空格字符编码，示例中选项一行写一个是为了提高阅读性
+        > 如果报错 `命令选项无效` 那么请检查选项合法性以及空格字符编码，在示例中一行写一个选项是为了提高命令的可读性
 
     - #### 纯净模式
 
-        为了便于开发者使用所推出的功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+        为了便于开发人员使用所推出的功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
