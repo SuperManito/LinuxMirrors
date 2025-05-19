@@ -151,6 +151,21 @@ mirror_list_intranet=(
     "mirrors.ivolces.com"
 )
 
+## 赞助商广告
+SPONSOR_ADS=(
+    "1Panel · Linux 面板｜极简运维 ➜  \033[3mhttps://1panel.cn\033[0m"
+    "多途云 · 智能化防护，每一次连接皆在安全之下 ➜  \033[3mhttps://www.duotuyun.com\033[0m"
+    "速拓云 · 国内高防云28元/月｜香港云100M优化线路9元/月 ➜  \033[3mhttps://www.sutuoyun.com\033[0m"
+    "林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  \033[3mhttps://www.dkdun.cn\033[0m"
+    "乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  \033[3mhttps://www.qiaoxh.com\033[0m"
+    "云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  \033[3mhttps://yunyoo.cc\033[0m"
+    "圣道云 · 稳定高效云服务器｜低至9.9元/月起 ➜  \033[3mhttps://www.shengdaoyun.com\033[0m"
+    "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  \033[3mhttps://www.runxinyun.com\033[0m"
+    "新鸟云 · 2核2G云主机特价15元/月 ➜  \033[3mhttps://www.xinniaoyun.com\033[0m"
+    "语鹿云盾 · 专业CDN加速、防御，亚太百兆三网优化CDN低至9元起 ➜  \033[3mhttps://www.lucdn.cn\033[0m"
+    "不死鸟CDN · 香港日本高防CDN，免实名/免备案，轻松阻断DDOS/CC攻击 ➜  \033[3mhttps://www.bsncdn.org\033[0m"
+)
+
 ##############################################################################
 
 ## 定义系统判定变量
@@ -648,23 +663,14 @@ function run_end() {
         echo ''
         return
     fi
-    local sponsor_ad=(
-        "1Panel · Linux 面板｜极简运维 ➜  https://1panel.cn"
-        "林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  https://www.dkdun.cn"
-        "乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  https://www.qiaoxh.com"
-        "速拓云 · 国内高防云28元/月｜香港云100M优化线路9元/月 ➜  https://www.sutuoyun.com"
-        "云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  https://yunyoo.cc"
-        "圣道云 · 稳定高效云服务器｜低至9.9元/月起 ➜  https://www.shengdaoyun.com"
-        "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  https://www.runxinyun.com"
-        "新鸟云 · 2核2G云主机特价15元/月 ➜  https://www.xinniaoyun.com"
-        "语鹿云盾 · 专业CDN加速、防御，亚太百兆三网优化CDN低至9元起 ➜  https://www.lucdn.cn"
-        "不死鸟CDN · 香港日本高防CDN，免实名/免备案，轻松阻断DDOS/CC攻击 ➜  https://www.bsncdn.org"
-    )
-    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m\n"
-    for ad in "${sponsor_ad[@]}"; do
-        sleep 0.1
-        echo -e "  \033[2m${ad} \033[3m【广告】\033[0m\033[0m"
-    done
+    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m"
+    if [[ "${#SPONSOR_ADS[@]}" -gt 0 ]]; then
+        echo -e "\n\033[2m【赞助商广告】\033[0m"
+        for ad in "${SPONSOR_ADS[@]}"; do
+            sleep 0.1
+            echo -e "  \033[2m${ad}\033[0m"
+        done
+    fi
     echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
 }
 
