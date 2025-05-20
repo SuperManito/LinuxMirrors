@@ -141,7 +141,7 @@ bash <(curl -sSL https://linuxmirrors.cn/main.sh)
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
 
-> 更多使用方法详见官方网站 [linuxmirrors.cn](https://linuxmirrors.cn/use)
+> 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [linuxmirrors.cn](https://linuxmirrors.cn/use)
 
 ## LICENSE
 
