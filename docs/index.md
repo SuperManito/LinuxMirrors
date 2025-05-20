@@ -13,8 +13,8 @@ hide:
 
 <div class="grid" markdown>
 <figure style="margin: 0 auto" markdown>
-  <div style="width: 350px; max-width: 100vw; height: 160px; position: absolute;">
-    <span style="top: 50%; width: 50%; height: 80px; position: absolute; background-image: var(--hero-background-image); filter: blur(68px); transform: translate(-50%, -50%);">
+  <div class="hero">
+    <span class="hero-background">
     </span>
   </div>
   <img src="/assets/images/brand/light/2.png#only-light" alt="LinuxMirrors" style="width: 300px" />
