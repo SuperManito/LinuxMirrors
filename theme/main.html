@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@orama/wc-components@latest/dist/orama-ui/orama-ui.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@orama/wc-components@latest/dist/cjs/orama-ui.cjs.js"></script>
+  {{ super() }}
+{% endblock %}
