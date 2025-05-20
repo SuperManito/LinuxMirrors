@@ -88,6 +88,8 @@ hide:
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
             ```
 
+        集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
+
 === "仅更换镜像加速器"
 
     !!! quote ""
@@ -124,11 +126,13 @@ hide:
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --only-registry
             ```
 
-集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose (插件)`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
+    脚本参考 [_Docker 官方文档_](https://docs.docker.com/engine/install) 使用系统包管理工具进行安装，不存在兼容性、安全性等问题，可安装的版本由 Docker CE 仓库决定。
 
-脚本参考 [_Docker 官方文档_](https://docs.docker.com/engine/install) 使用系统包管理工具进行安装，不存在兼容性、安全性等问题，可安装的版本由 Docker CE 仓库决定。
+!!! tip "关于 Docker Compose"
 
-脚本支持仅更换镜像加速器用于解决当前使用镜像源的失效问题，具体详见下方[仅更换镜像仓库](#仅更换镜像仓库)
+    Docker Compose 插件自 V2 版本起开始作为 Docker CLI（命令行）的一部分，不再需要单独安装，请使用 `docker compose` 命令替代 `docker-compose`
+
+
 
 !!! node "软件源说明"
 
@@ -136,10 +140,6 @@ hide:
     `Docker Registry` 镜像仓库，用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
 
     由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，建议使用下方提到的国内可用镜像仓库源
-
-!!! tip "关于 Docker Compose"
-
-    默认自动安装，Docker Compose 自 V2 版本起开始作为 Docker CLI 的一部分，不再需要单独安装，请使用 `docker compose` 命令替代 `docker-compose`
 
 !!! quote "内置的镜像仓库源"
 

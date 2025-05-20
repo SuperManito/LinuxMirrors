@@ -31,30 +31,12 @@
 }
 
 /* 字体 */
-body {
-    font-weight: normal;
-}
-
 @font-face {
     font-family: 'SF Mono';
     src: url('./fonts/SF-Mono-Regular.otf');
 }
 
 /* 告诫 */
-.md-typeset .admonition,
-.md-typeset details {
-    background-color: var(--md-admonition-bg-color);
-    border: .075rem solid #448aff;
-    border-radius: .2rem;
-    box-shadow: var(--md-shadow-z1);
-    color: var(--md-admonition-fg-color);
-    display: flow-root;
-    font-size: .64rem;
-    margin: 1.5625em 0;
-    padding: 0 .6rem;
-    page-break-inside: avoid;
-    transition: box-shadow 125ms;
-}
 
 .md-typeset .admonition,
 .md-typeset details {
@@ -64,12 +46,18 @@ body {
 
 .md-typeset .admonition.quote,
 .md-typeset details.quote {
-    border-width: .075rem;
+    border-width: .075rem !important;
+    border-color: var(--md-default-fg-color--lightest) !important;
 }
 
 [data-md-color-scheme='slate'] .md-typeset .admonition,
 [data-md-color-scheme='slate'] .md-typeset details {
-    box-shadow: var(--md-shadow-z2);
+    box-shadow: var(--md-shadow-z2) !important;
+}
+
+[data-md-color-scheme='slate'] .md-typeset .admonition.quote,
+[data-md-color-scheme='slate'] .md-typeset details.quote {
+    border-color: var(--md-default-fg-color--lightest) !important;
 }
 
 .md-typeset .admonition.tip,
