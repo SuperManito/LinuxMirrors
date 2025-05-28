@@ -129,19 +129,25 @@
 
 ## 快速开始
 
-### GNU/Linux 更换系统软件源脚本
+### GNU/Linux 更换系统软件源
 
 ```bash
-bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
 ```
 
-### Docker 安装脚本
+### Docker 安装与换源
 
 ```bash
-bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
 ```
 
-> 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [linuxmirrors.cn](https://linuxmirrors.cn/use)
+### 更换 Docker 镜像加速器
+
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
+```
+
+> 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [**linuxmirrors.cn**](https://linuxmirrors.cn/use)
 
 ## LICENSE
 
