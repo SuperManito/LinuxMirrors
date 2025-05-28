@@ -4,8 +4,6 @@ hide:
   - footer
 ---
 
-> _如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友_ :octicons-heart-fill-24:{ .heart }
-
 ## 一键执行命令
 
 === ":material-home-city: 中国大陆"

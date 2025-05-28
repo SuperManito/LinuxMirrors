@@ -5,8 +5,6 @@ hide:
   - footer
 ---
 
-> _如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友_ :octicons-heart-fill-24:{ .heart }
-
 !!! tip inline end "本项目已被众多流行项目使用，广受社区用户好评"
 
 ## :simple-docker:{style="color: #1d63ed"} Docker 安装与换源脚本

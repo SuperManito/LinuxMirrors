@@ -126,6 +126,16 @@
     background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
 }
 
+.md-banner {
+    font-style: italic;
+    color: var(--md-default-fg-color--light);
+    background-color: hsla(240, 9%, 75%, 0.53);
+}
+
+[data-md-color-scheme='slate'] .md-banner {
+    background-color: hsla(var(--md-hue), 15%, 9%, 0.83);
+}
+
 @media screen and (max-width: 768px) {
     .md-typeset .admonition .tabbed-set {
         width: calc(100vw - 3rem - 2px);

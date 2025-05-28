@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-05-13
+## Modified: 2025-05-29
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -798,7 +798,7 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_RHEL}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [7-9] ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [7-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 10 ]]; then
             is_supported="false"
         fi
         ;;
@@ -807,8 +807,13 @@ function collect_system_info() {
             is_supported="false"
         fi
         ;;
-    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}")
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ALMALINUX}")
         if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [8-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 10 ]]; then
+            is_supported="false"
+        fi
+        ;;
+    "${SYSTEM_ROCKY}")
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [8-9] ]]; then
             is_supported="false"
         fi
         ;;
@@ -912,15 +917,15 @@ function collect_system_info() {
             ;;
         "${SYSTEM_RHEL}")
             case "${SYSTEM_VERSION_ID_MAJOR}" in
-            9)
-                SOURCE_BRANCH="centos-stream" # 使用 CentOS Stream 仓库
-                ;;
-            *)
+            7 | 8)
                 if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
                     SOURCE_BRANCH="centos-vault"
                 else
                     SOURCE_BRANCH="centos-altarch"
                 fi
+                ;;
+            *)
+                SOURCE_BRANCH="centos-stream" # 使用 CentOS Stream 仓库
                 ;;
             esac
             ;;
@@ -1491,15 +1496,15 @@ function remove_original_mirrors() {
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_RHEL}")
                 case "${SYSTEM_VERSION_ID_MAJOR}" in
-                9)
-                    rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
-                    ;;
-                *)
+                7 | 8)
                     if [ -f "${Dir_YumRepos}/epel.repo" ]; then
                         ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
                     else
                         rm -rf $Dir_YumRepos/*
                     fi
+                    ;;
+                *)
+                    rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
                     ;;
                 esac
                 ;;
@@ -2173,11 +2178,11 @@ function change_mirrors_RedHat() {
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
-        9 | 10)
-            gen_repo_files_CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
+        7 | 8)
+            gen_repo_files_CentOS "${SYSTEM_VERSION_ID_MAJOR}"
             ;;
         *)
-            gen_repo_files_CentOS "${SYSTEM_VERSION_ID_MAJOR}"
+            gen_repo_files_CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
             ;;
         esac
         ;;
@@ -2222,20 +2227,7 @@ function change_mirrors_RedHat() {
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_RHEL}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
-        9)
-            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
-                -e "s|^metalink=|#metalink=|g" \
-                -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                centos.repo \
-                centos-addons.repo
-            # 禁用 GPG 签名检查
-            sed -e "s|gpgcheck=1|gpgcheck=0|g" \
-                -i \
-                centos.repo \
-                centos-addons.repo
-            ;;
-        *)
+        7 | 8)
             sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -i \
@@ -2264,6 +2256,19 @@ function change_mirrors_RedHat() {
                 -e "s|vault.centos.org|${SOURCE_VAULT:-"${SOURCE}"}|g" \
                 -i \
                 CentOS-*
+            ;;
+        *)
+            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^metalink=|#metalink=|g" \
+                -e "s|mirror.stream.centos.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                centos.repo \
+                centos-addons.repo
+            # 禁用 GPG 签名检查
+            sed -e "s|gpgcheck=1|gpgcheck=0|g" \
+                -i \
+                centos.repo \
+                centos-addons.repo
             ;;
         esac
         ;;
@@ -2347,13 +2352,39 @@ function change_mirrors_RedHat() {
         ;;
     "${SYSTEM_ALMALINUX}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
+        10)
+            sed -e "s|^# baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^mirrorlist=|#mirrorlist=|g" \
+                -e "s|vault.almalinux.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -i \
+                almalinux-appstream.repo \
+                almalinux-baseos.repo \
+                almalinux-crb.repo \
+                almalinux-extras.repo \
+                almalinux-highavailability.repo \
+                almalinux-nfv.repo \
+                almalinux-rt.repo \
+                almalinux-saphana.repo \
+                almalinux-sap.repo
+
+            ;;
         9)
             sed -e "s|^# baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-almalinux-vault}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
-                almalinux-*
+                almalinux-appstream.repo \
+                almalinux-baseos.repo \
+                almalinux-crb.repo \
+                almalinux-extras.repo \
+                almalinux-highavailability.repo \
+                almalinux-nfv.repo \
+                almalinux-plus.repo \
+                almalinux-resilientstorage.repo \
+                almalinux-rt.repo \
+                almalinux-sap.repo \
+                almalinux-saphana.repo
             ;;
         8)
             sed -e "s|^mirrorlist=|#mirrorlist=|g" \
@@ -4567,6 +4598,296 @@ EOF
 ## 生成 AlmaLinux repo 源文件
 function gen_repo_files_AlmaLinux() {
     case "$1" in
+    10)
+        cat <<'EOF' >$Dir_YumRepos/almalinux-appstream.repo
+[appstream]
+name=AlmaLinux $releasever - AppStream
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/AppStream/$basearch/os/
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=1
+
+[appstream-debuginfo]
+name=AlmaLinux $releasever - AppStream - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-debug
+# baseurl=https://vault.almalinux.org/$releasever/AppStream/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[appstream-source]
+name=AlmaLinux $releasever - AppStream - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-source
+# baseurl=https://vault.almalinux.org/$releasever/AppStream/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-baseos.repo
+[baseos]
+name=AlmaLinux $releasever - BaseOS
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/BaseOS/$basearch/os/
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=1
+
+[baseos-debuginfo]
+name=AlmaLinux $releasever - BaseOS - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-debug
+# baseurl=https://vault.almalinux.org/$releasever/BaseOS/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[baseos-source]
+name=AlmaLinux $releasever - BaseOS - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-source
+# baseurl=https://vault.almalinux.org/$releasever/BaseOS/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-crb.repo
+[crb]
+name=AlmaLinux $releasever - CRB
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/CRB/$basearch/os/
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[crb-debuginfo]
+name=AlmaLinux $releasever - CRB - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb-debug
+# baseurl=https://vault.almalinux.org/$releasever/CRB/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[crb-source]
+name=AlmaLinux $releasever - CRB - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb-source
+# baseurl=https://vault.almalinux.org/$releasever/CRB/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-extras.repo
+[extras]
+name=AlmaLinux $releasever - Extras
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/extras/$basearch/os/
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[extras-debuginfo]
+name=AlmaLinux $releasever - Extras - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-debug
+# baseurl=https://vault.almalinux.org/$releasever/extras/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[extras-source]
+name=AlmaLinux $releasever - Extras - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-source
+# baseurl=https://vault.almalinux.org/$releasever/extras/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-highavailability.repo
+[highavailability]
+name=AlmaLinux $releasever - HighAvailability
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/HighAvailability/$basearch/os/
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[highavailability-debuginfo]
+name=AlmaLinux $releasever - HighAvailability - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability-debug
+# baseurl=https://vault.almalinux.org/$releasever/HighAvailability/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[highavailability-source]
+name=AlmaLinux $releasever - HighAvailability - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability-source
+# baseurl=https://vault.almalinux.org/$releasever/HighAvailability/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-nfv.repo
+[nfv]
+name=AlmaLinux $releasever - NFV
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/NFV/$basearch/os/
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[nfv-debuginfo]
+name=AlmaLinux $releasever - NFV - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-debug
+# baseurl=https://vault.almalinux.org/$releasever/NFV/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[nfv-source]
+name=AlmaLinux $releasever - NFV - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-source
+# baseurl=https://vault.almalinux.org/$releasever/NFV/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-rt.repo
+[rt]
+name=AlmaLinux $releasever - RT
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/RT/$basearch/os/
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[rt-debuginfo]
+name=AlmaLinux $releasever - RT - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-debug
+# baseurl=https://vault.almalinux.org/$releasever/RT/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[rt-source]
+name=AlmaLinux $releasever - RT - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-source
+# baseurl=https://vault.almalinux.org/$releasever/RT/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-saphana.repo
+[saphana]
+name=AlmaLinux $releasever - SAPHANA
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAPHANA/$basearch/os/
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[saphana-debuginfo]
+name=AlmaLinux $releasever - SAPHANA - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-debug
+# baseurl=https://vault.almalinux.org/$releasever/SAPHANA/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[saphana-source]
+name=AlmaLinux $releasever - SAPHANA - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-source
+# baseurl=https://vault.almalinux.org/$releasever/SAPHANA/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        cat <<'EOF' >$Dir_YumRepos/almalinux-sap.repo
+[sap]
+name=AlmaLinux $releasever - SAP
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap
+# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAP/$basearch/os/
+enabled=0
+gpgcheck=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[sap-debuginfo]
+name=AlmaLinux $releasever - SAP - Debug
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-debug
+# baseurl=https://vault.almalinux.org/$releasever/SAP/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+
+[sap-source]
+name=AlmaLinux $releasever - SAP - Source
+mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-source
+# baseurl=https://vault.almalinux.org/$releasever/SAP/Source/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
+metadata_expire=86400
+enabled_metadata=0
+EOF
+        ;;
     9)
         cat <<'EOF' >$Dir_YumRepos/almalinux-appstream.repo
 [appstream]

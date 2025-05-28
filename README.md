@@ -63,7 +63,7 @@
     </tr>
     <tr>
         <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><sub><img src="docs/assets/images/icon/redhat.svg" width="16" height="16"></sub></a>&nbsp;Red Hat Enterprise Linux</td>
-        <td align="center">7 ~ 9</td>
+        <td align="center">7 ~ 10</td>
     </tr>
     <tr>
         <td><a href="https://fedoraproject.org/zh-Hans" target="_blank"><sub><img src="docs/assets/images/icon/fedora.ico" width="16" height="16"></sub></a>&nbsp;Fedora</td>
@@ -79,7 +79,7 @@
     </tr>
     <tr>
         <td><a href="https://almalinux.org/zh-hans" target="_blank"><sub><img src="docs/assets/images/icon/almalinux.svg" width="16" height="16"></sub></a>&nbsp;AlmaLinux</td>
-        <td align="center">8 ~ 9</td>
+        <td align="center">8 ~ 10</td>
     </tr>
     <tr>
         <td><a href="https://www.openeuler.org/zh" target="_blank"><sub><img src="docs/assets/images/icon/openeuler.ico" width="16" height="16"></sub></a>&nbsp;openEuler（开源欧拉）</td>
@@ -132,19 +132,19 @@
 ### GNU/Linux 更换系统软件源
 
 ```bash
-bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
+bash <(curl -sSL https://linuxmirrors.cn/main.sh)
 ```
 
 ### Docker 安装与换源
 
 ```bash
-bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
+bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
 
-### 更换 Docker 镜像加速器
+### Docker 更换镜像加速器
 
 ```bash
-bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
+bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
 ```
 
 > 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [**linuxmirrors.cn**](https://linuxmirrors.cn/use)
