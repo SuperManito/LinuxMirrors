@@ -106,6 +106,10 @@
         <td align="center">all</td>
     </tr>
     <tr>
+        <td><a href="https://manjaro.org" target="_blank"><sub><img src="docs/assets/images/icon/manjaro.svg" width="16" height="16"></sub></a>&nbsp;Manjaro</td>
+        <td align="center">all</td>
+    </tr>
+    <tr>
         <td><a href="https://www.alpinelinux.org" target="_blank"><sub><img src="docs/assets/images/icon/alpine.png" width="16" height="16"></sub></a>&nbsp;Alpine Linux</td>
         <td align="center">v3 / edge</td>
     </tr>
@@ -129,25 +133,25 @@
 
 ## 快速开始
 
-### GNU/Linux 更换系统软件源
-
-```bash
-bash <(curl -sSL https://linuxmirrors.cn/main.sh)
-```
-
-### Docker 安装与换源
-
-```bash
-bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
-```
-
-### Docker 更换镜像加速器
-
-```bash
-bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
-```
-
 > 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [**linuxmirrors.cn**](https://linuxmirrors.cn/use)
+
+- ### GNU/Linux 更换系统软件源
+
+    ```bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+    ```
+
+- ### Docker 安装与换源
+
+    ```bash
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+    ```
+
+- ### Docker 更换镜像加速器
+
+    ```bash
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+    ```
 
 ## LICENSE
 

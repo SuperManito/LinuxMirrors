@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-05-29
+## Modified: 2025-06-03
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -190,6 +190,7 @@ SYSTEM_ANOLISOS="Anolis"
 SYSTEM_OPENKYLIN="openKylin"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
+SYSTEM_MANJARO="Manjaro"
 SYSTEM_ALPINE="Alpine"
 SYSTEM_GENTOO="Gentoo"
 SYSTEM_NIXOS="NixOS"
@@ -205,6 +206,7 @@ File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
 File_OracleLinuxRelease=/etc/oracle-release
 File_ArchLinuxRelease=/etc/arch-release
+File_ManjaroRelease=/etc/manjaro-release
 File_AlpineRelease=/etc/alpine-release
 File_GentooRelease=/etc/gentoo-release
 File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
@@ -233,8 +235,8 @@ File_LinuxMintSourceList=$Dir_AptAdditionalSources/official-package-repositories
 File_LinuxMintSourceListBackup=$File_LinuxMintSourceList.bak
 File_RaspberryPiSourceList=$Dir_AptAdditionalSources/raspi.list
 File_RaspberryPiSourceListBackup=$File_RaspberryPiSourceList.bak
-File_ArchLinuxMirrorList=/etc/pacman.d/mirrorlist
-File_ArchLinuxMirrorListBackup=$File_ArchLinuxMirrorList.bak
+File_PacmanMirrorList=/etc/pacman.d/mirrorlist
+File_PacmanMirrorListBackup=$File_PacmanMirrorList.bak
 File_AlpineRepositories=/etc/apk/repositories
 File_AlpineRepositoriesBackup=$File_AlpineRepositories.bak
 File_GentooMakeConf=/etc/portage/make.conf
@@ -771,6 +773,13 @@ function collect_system_info() {
         # CentOS Stream
         grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
         ;;
+    "${SYSTEM_ARCH}")
+        if [ -f "${File_ManjaroRelease}" ]; then
+            SYSTEM_JUDGMENT="${SYSTEM_MANJARO}"
+        else
+            SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
+        fi
+        ;;
     *)
         SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
         ;;
@@ -851,7 +860,7 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_RASPBERRY_PI_OS}" | "${SYSTEM_ARCH}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}" | "${SYSTEM_NIXOS}")
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_RASPBERRY_PI_OS}" | "${SYSTEM_ARCH}" | "${SYSTEM_MANJARO}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}" | "${SYSTEM_NIXOS}")
         # 理论全部支持或不作判断
         ;;
     *)
@@ -1421,7 +1430,7 @@ function backup_original_mirrors() {
             ;;
         "${SYSTEM_ARCH}")
             # /etc/pacman.d/mirrorlist
-            backup_file $File_ArchLinuxMirrorList $File_ArchLinuxMirrorListBackup "mirrorlist"
+            backup_file $File_PacmanMirrorList $File_PacmanMirrorListBackup "mirrorlist"
             ;;
         "${SYSTEM_ALPINE}")
             # /etc/apk/repositories
@@ -1573,7 +1582,7 @@ function remove_original_mirrors() {
         [ -d "${Dir_ZYppRepos}" ] && rm -rf $Dir_ZYppRepos/repo-*
         ;;
     "${SYSTEM_ARCH}")
-        [ -f "${File_ArchLinuxMirrorList}" ] && sed -i '1,$d' $File_ArchLinuxMirrorList
+        [ -f "${File_PacmanMirrorList}" ] && sed -i '1,$d' $File_PacmanMirrorList
         ;;
     "${SYSTEM_ALPINE}")
         [ -f "${File_AlpineRepositories}" ] && sed -i '1,$d' $File_AlpineRepositories
@@ -1648,7 +1657,7 @@ function change_mirrors_main() {
                 diff_dir $Dir_ZYppReposBackup $Dir_ZYppRepos
                 ;;
             "${SYSTEM_ARCH}")
-                diff_file $File_ArchLinuxMirrorListBackup $File_ArchLinuxMirrorList
+                diff_file $File_PacmanMirrorListBackup $File_PacmanMirrorList
                 ;;
             "${SYSTEM_ALPINE}")
                 diff_file $File_AlpineRepositoriesBackup $File_AlpineRepositories
@@ -1769,12 +1778,6 @@ function change_mirrors_main() {
 
 ## 升级软件包
 function upgrade_software() {
-    ## 跳过特殊系统
-    case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_ARCH}")
-        return
-        ;;
-    esac
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
         UPGRADE_SOFTWARE="false"
@@ -1837,6 +1840,9 @@ function upgrade_software() {
     "${SYSTEM_OPENSUSE}")
         commands+=("zypper update -y")
         ;;
+    "${SYSTEM_ARCH}")
+        commands+=("pacman -Syu --noconfirm")
+        ;;
     "${SYSTEM_ALPINE}")
         commands+=("apk upgrade --no-cache")
         ;;
@@ -1879,6 +1885,9 @@ function upgrade_software() {
         ;;
     "${SYSTEM_OPENSUSE}")
         rm -rf /var/cache/zypp/* >/dev/null 2>&1
+        ;;
+    "${SYSTEM_ARCH}")
+        pacman -Scc --noconfirm >/dev/null 2>&1
         ;;
     "${SYSTEM_ALPINE}")
         rm -rf /var/cache/apk/* >/dev/null 2>&1
@@ -2608,25 +2617,34 @@ function change_mirrors_openSUSE() {
     esac
 }
 
-## 更换 Arch Linux 软件源
+## 更换 Arch Linux 系 Linux 发行版的软件源
 function change_mirrors_ArchLinux() {
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        SOURCE="mirrors.aliyun.com"
-        [[ "${PURE_MODE}" != "true" ]] && echo -e "\n${TIP} 由于 Arch Linux 无官方源因此已切换至阿里源\n"
-    fi
-    ## 修改源
-    case "${SOURCE_BRANCH}" in
-    "archlinuxarm")
-        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch/\$repo" >>$File_ArchLinuxMirrorList
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_ARCH}")
+        ## 修改源
+        case "${SOURCE_BRANCH}" in
+        "archlinuxarm")
+            [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && SOURCE="mirror.archlinuxarm.org" ## 使用官方源
+            echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch/\$repo" >>$File_PacmanMirrorList
+            ;;
+        *)
+            [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && SOURCE="mirror.pkgbuild.com" ## 使用官方源
+            echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$repo/os/\$arch" >>$File_PacmanMirrorList
+            ;;
+        esac
         ;;
-    "archlinuxcn")
-        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch" >>$File_ArchLinuxMirrorList
-        ;;
-    *)
-        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$repo/os/\$arch" >>$File_ArchLinuxMirrorList
+    "${SYSTEM_MANJARO}")
+        ## 使用官方源
+        [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && SOURCE="mirrors2.manjaro.org"
+        ## 修改源
+        echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/stable/\$repo/\$arch" >>$File_PacmanMirrorList
         ;;
     esac
+    # if [[ "${USE_ARCHLINUXCN_SOURCE}" == "true" ]]; then
+    #     # /etc/pacman.conf
+    #     [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && SOURCE="repo.archlinuxcn.org" ## 使用官方源
+    #     echo -e "[archlinuxcn]\nServer = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$arch" >>/etc/pacman.conf
+    # fi
 }
 
 ## 更换 Alpine Linux 软件源

@@ -39,6 +39,7 @@
 - [ ] `Anolis OS`
 - [ ] `openSUSE`
 - [ ] `Arch Linux`
+- [ ] `Manjaro`
 - [ ] `Alpine Linux`
 - [ ] `Gentoo`
 - [ ] `NixOS`
@@ -48,7 +49,7 @@
 - [ ] `x86_64` `x86_32`
 - [ ] `arm64` `arm/v8` `arm/v7` `arm/v6`
 - [ ] `ppc64le` `s390x`
-- [ ] `Other`
+- [ ] `其它`
 
 ## 3. 系统详细信息
 <!-- 请执行命令 "cat /etc/os-release"，并将输出结果粘贴在下方 -->
@@ -62,7 +63,7 @@
 
 ```
 
-## 5. 详细叙述你的问题
+## 5. 描述遇到的问题
 ### (1) 具体问题
 A：
 

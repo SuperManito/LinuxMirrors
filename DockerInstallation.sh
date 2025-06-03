@@ -29,7 +29,7 @@ mirror_list_registry=(
     "毫秒镜像@docker.1ms.run"
     "轩辕镜像@docker.xuanyuan.me"
     "Docker Proxy@dockerproxy.net"
-    "道客 DaoCloud@docker.m.daocloud.io"
+    "DaoCloud 道客@docker.m.daocloud.io"
     "1Panel 镜像@docker.1panel.live"
     "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
     "阿里云（上海）@registry.cn-shanghai.aliyuncs.com"

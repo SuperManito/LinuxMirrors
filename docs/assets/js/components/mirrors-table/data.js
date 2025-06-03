@@ -22,6 +22,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: false,
         raspberry: true,
+        manjaro: true,
     },
     {
         name: '腾讯云',
@@ -45,6 +46,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: false,
         raspberry: false,
+        manjaro: false,
     },
     {
         name: '华为云',
@@ -68,6 +70,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: false,
         raspberry: false,
+        manjaro: true,
     },
     {
         name: '网易',
@@ -91,6 +94,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: false,
         raspberry: false,
+        manjaro: false,
     },
     {
         name: '火山引擎',
@@ -114,6 +118,7 @@ const mirrorsTableData = [
         gentoo: false,
         nix: false,
         raspberry: false,
+        manjaro: false,
     },
     {
         name: '清华大学',
@@ -137,6 +142,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: true,
         raspberry: true,
+        manjaro: true,
     },
     {
         name: '北京大学',
@@ -160,6 +166,7 @@ const mirrorsTableData = [
         gentoo: false,
         nix: false,
         raspberry: false,
+        manjaro: true,
     },
     {
         name: '浙江大学',
@@ -183,6 +190,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: false,
         raspberry: false,
+        manjaro: true,
     },
     {
         name: '南京大学',
@@ -206,6 +214,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: true,
         raspberry: true,
+        manjaro: true,
     },
     {
         name: '兰州大学',
@@ -229,6 +238,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: false,
         raspberry: false,
+        manjaro: true,
     },
     {
         name: '上海交通大学',
@@ -252,6 +262,7 @@ const mirrorsTableData = [
         gentoo: 'incompatible',
         nix: false,
         raspberry: true,
+        manjaro: true,
     },
     {
         name: '重庆邮电大学',
@@ -275,6 +286,7 @@ const mirrorsTableData = [
         gentoo: false,
         nix: false,
         raspberry: true,
+        manjaro: true,
     },
     {
         name: '中国科学技术大学',
@@ -298,6 +310,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: true,
         raspberry: true,
+        manjaro: true,
     },
     {
         name: '中国科学院软件研究所',
@@ -321,6 +334,7 @@ const mirrorsTableData = [
         gentoo: true,
         nix: true,
         raspberry: true,
+        manjaro: true,
     },
 ]
 
@@ -330,6 +344,7 @@ const mirrorsTableColumns = [
     { colKey: 'ipv6', title: 'IPv6', align: 'center' },
     { colKey: 'epel', title: 'EPEL', align: 'center', tooltip: 'Extra Packages for Enterprise Linux (EPEL) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版。' },
     { colKey: 'archlinux', title: 'Arch Linux', align: 'center' },
+    { colKey: 'manjaro', title: 'Manjaro', align: 'center' },
     { colKey: 'kalilinux', title: 'Kali Linux', align: 'center' },
     { colKey: 'armbian', title: 'Armbian', align: 'center' },
     { colKey: 'deepin', title: 'Deepin', align: 'center' },

@@ -86,7 +86,9 @@ hide:
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
             ```
 
-        集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose/install/linux)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
+        集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支持选择或更换软件源以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
+
+        脚本参考[官方文档](https://docs.docker.com/engine/install)使用系统包管理工具进行安装，不存在兼容性、安全性等问题，可安装的版本由 Docker CE 仓库决定。
 
 === "仅更换镜像加速器"
 
@@ -124,20 +126,33 @@ hide:
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --only-registry
             ```
 
-    脚本参考 [_Docker 官方文档_](https://docs.docker.com/engine/install) 使用系统包管理工具进行安装，不存在兼容性、安全性等问题，可安装的版本由 Docker CE 仓库决定。
-
-!!! tip "关于 Docker Compose"
-
-    Docker Compose 插件自 V2 版本起开始作为 Docker CLI（命令行）的一部分，不再需要单独安装，请使用 `docker compose` 命令替代 `docker-compose`
-
-
 
 !!! node "软件源说明"
 
-    `Docker CE` 软件仓库，全称 Docker Community Edition（Docker 社区版），用于下载并安装 Docker 相关软件包  
-    `Docker Registry` 镜像仓库，用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方的 Docker Hub 仓库
+    <div class="grid cards" markdown>
+
+    -   __Docker CE 软件仓库__
+
+        ---
+
+        Docker CE 全称 Docker Community Edition（Docker 社区版），是 Docker Engine 的别称，该仓库用于下载并安装 Docker 相关软件包
+
+    -   __Docker Registry 镜像仓库__
+
+        ---
+
+        用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方容器镜像仓库 [Docker Hub](https://hub.docker.com) 
+
+    </div>
 
     由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，建议使用下方提到的国内可用镜像仓库源
+
+    注：脚本内的指定 WEB 协议交互仅用于控制 `Docker CE` 软件源，`Docker Registry` 强制使用 `HTTPS` 协议
+
+!!! tip "Docker Compose 不再需要独立安装"
+
+    Docker Compose 自 V2 版本起开始作为 Docker CLI（命令行）的一部分，脚本默认集成安装该[插件](https://docs.docker.com/compose/install/linux)，请使用 `docker compose` 命令替代 `docker-compose`
+
 
 !!! quote "内置的镜像仓库源"
 
@@ -148,8 +163,8 @@ hide:
     | :--: | :--: | :-- |
     | 毫秒镜像 | [docker.1ms.run](https://1ms.run "docker.1ms.run") | 速度快，支持付费定制 |
     | 轩辕镜像 | [docker.xuanyuan.me](https://xuanyuan.me "docker.xuanyuan.me") | 专为科研提供，支持付费定制 |
-    | Docker Proxy | [dockerproxy.net](https://dockerproxy.net "dockerproxy.net") | 由 ghproxy 创建，可用性高但速度很慢，支持企业付费加速 |
-    | 道客 DaoCloud | [docker.m.daocloud.io](https://docker.m.daocloud.io "docker.m.daocloud.io") | 老牌企业镜像，速度较快，白名单模式 |
+    | Docker Proxy | [dockerproxy.net](https://dockerproxy.net "dockerproxy.net") | 由 ghproxy 创建，可用性高但速度很慢，支持企业镜像付费加速 |
+    | DaoCloud 道客 | [docker.m.daocloud.io](https://docker.m.daocloud.io "docker.m.daocloud.io") | 老牌企业镜像，可用性高且速度快，现为白名单模式 |
     | 1Panel 镜像 | [docker.1panel.live](https://1panel.cn "docker.1panel.live") | 企业产品自用镜像 |
 
     <blockquote style="border-left: none !important">本开源项目不适合采集个人自建的镜像加速器，如有需要可搭配命令选项自行使用</blockquote>
