@@ -30,7 +30,7 @@
         <td align="center">8 ~ 13</td>
     </tr>
     <tr>
-        <td><a href="https://cn.ubuntu.com" target="_blank"><sub><img src="docs/assets/images/icon/ubuntu.svg" width="16" height="16"></sub></a>&nbsp;Ubuntu</td>
+        <td><a href="https://ubuntu.com" target="_blank"><sub><img src="docs/assets/images/icon/ubuntu.svg" width="16" height="16"></sub></a>&nbsp;Ubuntu</td>
         <td align="center">14 ~ 25</td>
     </tr>
     <tr>
