@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-05-29
+## Modified: 2025-06-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -863,7 +863,11 @@ function configure_docker_ce_mirror() {
             yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
             ;;
         *)
-            dnf config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
+                dnf-3 config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+            else
+                dnf config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+            fi
             ;;
         esac
         sed -i "s|https://download.docker.com|${WEB_PROTOCOL}://${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
