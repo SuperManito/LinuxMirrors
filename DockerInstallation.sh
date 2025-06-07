@@ -65,7 +65,6 @@ SPONSOR_ADS=(
     "多途云 · 智能化防护，每一次连接皆在安全之下 ➜  \033[3mhttps://www.duotuyun.com\033[0m"
     "速拓云 · 国内高防云28元/月｜香港云100M优化线路9元/月 ➜  \033[3mhttps://www.sutuoyun.com\033[0m"
     "林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  \033[3mhttps://www.dkdun.cn\033[0m"
-    "乔星欢 · 香港4核4G服务器28元起_香港500Mbps大带宽 ➜  \033[3mhttps://www.qiaoxh.com\033[0m"
     "云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  \033[3mhttps://yunyoo.cc\033[0m"
     "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  \033[3mhttps://www.runxinyun.com\033[0m"
     "新鸟云 · 2核2G云主机特价15元/月 ➜  \033[3mhttps://www.xinniaoyun.com\033[0m"

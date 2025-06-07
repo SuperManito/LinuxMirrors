@@ -3,7 +3,7 @@ title: 一键脚本使换源更简单
 description: GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本
 comments: true
 glightbox: false
-comments_description: 该评论区仅用于展示项目使用评价和经验分享，反馈问题或建议请前往<a href="/community">社区</a>或提起<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank">Issues</a>
+comments_description: 该评论区仅用于展示项目使用评价和经验分享，反馈问题或建议请前往<a href="/community">社区</a>或<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank">Issues</a>
 hide:
   - navigation
   - toc
