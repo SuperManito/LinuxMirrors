@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-06-04
+## Modified: 2025-06-10
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -413,13 +413,13 @@ function collect_system_info() {
     elif [ -s "${File_OpenCloudOSRelease}" ]; then
         # 拦截 OpenCloudOS 9 及以上版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 9 ]]; then
-            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+            [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s "${File_AnolisOSRelease}" ]; then
         # 拦截 Anolis OS 8.8 及以上版本，不支持从 Docker 官方仓库安装，23 版本支持
         if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
-            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+            [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
     else
@@ -451,7 +451,7 @@ function collect_system_info() {
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
         # 拦截 Anolis OS 8.8 以下版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_ANOLISOS}" ]]; then
-            output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+            [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         ## 特殊系统判断
         # Red Hat Enterprise Linux
