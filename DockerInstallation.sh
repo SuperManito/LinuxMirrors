@@ -26,8 +26,7 @@ mirror_list_docker_ce=(
 ## Docker Registry 仓库列表
 # 格式："软件源名称@软件源地址"
 mirror_list_registry=(
-    "毫秒镜像@docker.1ms.run"
-    "轩辕镜像@docker.xuanyuan.me"
+    "毫秒镜像（推荐）@docker.1ms.run"
     "Docker Proxy@dockerproxy.net"
     "DaoCloud 道客@docker.m.daocloud.io"
     "1Panel 镜像@docker.1panel.live"
@@ -63,11 +62,10 @@ mirror_list_registry=(
 SPONSOR_ADS=(
     "1Panel · Linux 面板｜极简运维 ➜  \033[3mhttps://1panel.cn\033[0m"
     "多途云 · 智能化防护，每一次连接皆在安全之下 ➜  \033[3mhttps://www.duotuyun.com\033[0m"
+    "毫秒镜像 · 专为中国开发者提供Docker镜像加速下载服务 ➜  \033[3mhttps://1ms.run\033[0m"
     "速拓云 · 国内高防云28元/月｜香港云100M优化线路9元/月 ➜  \033[3mhttps://www.sutuoyun.com\033[0m"
     "林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  \033[3mhttps://www.dkdun.cn\033[0m"
     "云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  \033[3mhttps://yunyoo.cc\033[0m"
-    "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  \033[3mhttps://www.runxinyun.com\033[0m"
-    "新鸟云 · 2核2G云主机特价15元/月 ➜  \033[3mhttps://www.xinniaoyun.com\033[0m"
     "语鹿云盾 · 专业CDN加速、防御，亚太百兆三网优化CDN低至9元起 ➜  \033[3mhttps://www.lucdn.cn\033[0m"
     "不死鸟CDN · 香港日本高防CDN，免实名/免备案，轻松阻断DDOS/CC攻击 ➜  \033[3mhttps://www.bsncdn.org\033[0m"
     "不二云 · 国内外建站快响应服务器的不二之选 ➜  \033[3mhttps://cb2.cn\033[0m"

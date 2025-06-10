@@ -5,7 +5,7 @@ hide:
   - footer
 ---
 
-!!! tip inline end "本项目已被众多流行项目使用，广受社区用户好评"
+!!! tip inline end "已被众多流行项目使用，广受社区用户好评"
 
 ## :simple-docker:{style="color: #1d63ed"} Docker 安装与换源脚本
 
@@ -161,10 +161,9 @@ hide:
 
     | 站点名称 | 地址 | 说明 |
     | :--: | :--: | :-- |
-    | 毫秒镜像 | [docker.1ms.run](https://1ms.run "docker.1ms.run") | 速度快，支持付费定制 |
-    | 轩辕镜像 | [docker.xuanyuan.me](https://xuanyuan.me "docker.xuanyuan.me") | 专为科研提供，支持付费定制 |
+    | 毫秒镜像 | [docker.1ms.run](https://1ms.run "docker.1ms.run") | 企业镜像站，CDN智能分发速度极快，支持付费定制，推荐使用 |
     | Docker Proxy | [dockerproxy.net](https://dockerproxy.net "dockerproxy.net") | 由 ghproxy 创建，可用性高但速度很慢，支持企业镜像付费加速 |
-    | DaoCloud 道客 | [docker.m.daocloud.io](https://docker.m.daocloud.io "docker.m.daocloud.io") | 老牌企业镜像，可用性高且速度快，现为白名单模式 |
+    | DaoCloud 道客 | [docker.m.daocloud.io](https://docker.m.daocloud.io "docker.m.daocloud.io") | 老牌企业镜像站，可用性高且速度快，现为白名单模式 |
     | 1Panel 镜像 | [docker.1panel.live](https://1panel.cn "docker.1panel.live") | 企业产品自用镜像 |
 
     <blockquote style="border-left: none !important">本开源项目不适合采集个人自建的镜像加速器，如有需要可搭配命令选项自行使用</blockquote>
