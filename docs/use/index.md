@@ -147,8 +147,8 @@ hide:
 
 !!! quote "关于软件源的选择（新用户必读）"
 
-    如果你不了解这些镜像站那么建议使用 `阿里云 (兼容性高)` 或 `中国科学技术大学 (速度快)`，请不要陷入测速焦虑，内置的默认软件源一般不会有太大的差异。  
-    本项目脚本是一个自动化运维工具，不会对镜像站进行主观的优劣排序和单独适配，用户的选择应该是自由的，这也是为了开源软件精神能够得到更好的延续。
+    如果你不了解这些镜像站那么建议使用 `阿里云 (兼容性高、可用性强)` 或 `中国科学技术大学 (速度快)`，请不要陷入测速焦虑，内置的软件源一般不会有太大的差异。  
+    本项目脚本是一个自动化运维工具，不会对镜像站进行主观的优劣排序和定制适配，用户的选择应该是自由的，这也是为了开源软件精神能够得到更好的延续。
 
 <div class="grid cards" markdown>
 
@@ -355,6 +355,8 @@ hide:
 
     !!! quote ""
 
+        命令以及配置步骤仅供参考，只适配了部分常见发行版
+
         - 验证是否已安装 `SSH` 服务
 
             ``` bash
@@ -381,8 +383,6 @@ hide:
             ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
             ```
             > 不同系统上的服务名称有所差异，如果不是 `sshd` 那就试试 `ssh`
-
-        > 命令以及配置步骤仅供参考，只适配了部分常见发行版。
 
 - #### 关于未显示方向键交互控制界面
 
@@ -533,7 +533,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         | <a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Zorin OS** | `ubuntu` `ubuntu-ports` |
         | <a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Armbian** | `armbian` |
         | <a href="https://www.proxmox.com" title="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Proxmox VE** | `proxmox` |
-        | <a href="https://www.raspberrypi.com" title="https://www.raspberrypi.com" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
+        | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://fedoraproject.org/zh-Hans" title="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
         | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
@@ -593,13 +593,13 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         <div class="grid cards" markdown>
 
-        -   __国内网络环境__
+        -   __国内环境__
 
             ---
 
             直接正常使用即可，因为国内大部分镜像站都同步了 [`CentOS Vault`](https://vault.centos.org/) 仓库
 
-        -   __境外以及海外网络环境__
+        -   __境外以及海外环境__
 
             ---
 

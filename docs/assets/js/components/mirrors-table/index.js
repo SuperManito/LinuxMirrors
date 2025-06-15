@@ -7,6 +7,7 @@ ComponentSystem.register('mirrors-table', {
                 row-key="name"
                 size="small"
                 verticalAlign="bottom"
+                @data-change="dataChange"
             >
                 <template v-for="col in columns" :key="col.colKey" #[col.title]>
                     <div v-if="col.tooltip" class="t-table__th-cell-inner">
@@ -28,9 +29,11 @@ ComponentSystem.register('mirrors-table', {
                                     <a :href="row.url" target="_blank" style="color: var(--md-typeset-a-color)">{{ row.domain }}</a>
                                 </t-space>
                             </template>
-                            <a :href="row.url" target="_blank" style=>
+                            <a :href="row.url" target="_blank">
                                 <t-space align="center" style="gap: 6px">
-                                    <img v-if="row.icon" :src="\`/assets/images/icon/mirrors/\${row.icon}\`" width="16" height="16" :style="row.iconStyle || {}">
+                                    <span style="display: flex; height: 100%; align-items: center; justify-content: center">
+                                        <img v-if="row.icon" :src="\`/assets/images/icon/mirrors/\${row.icon}\`" width="16" height="16">
+                                    </span>
                                     <span>{{ row.name }}</span>
                                 </t-space>
                              </a>
@@ -39,12 +42,12 @@ ComponentSystem.register('mirrors-table', {
                     <template v-else>
                         <t-tag v-if="typeof row[col.colKey] === 'boolean'" :theme="row[col.colKey] ? 'success' : 'danger'" variant="light" size="small" style="background-color: transparent; height: 100%; vertical-align: -0.35em">
                             <template #icon>
-                                <svg v-if="row[col.colKey]" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z" /></svg>
-                                <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="vertical-align: -0.2em"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"/></svg>
+                                <svg v-if="row[col.colKey]" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z"></svg>
+                                <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="vertical-align: -0.2em"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"></svg>
                             </template>
                         </t-tag>
                         <t-tag v-else theme="warning" variant="light" size="small" style="background-color: transparent; vertical-align: -0.35em">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="vertical-align: -0.1em"><path fill="#F6B604" d="M22.11 21.46L2.39 1.73L1.11 3l2.95 2.95A9.95 9.95 0 0 0 2 12c0 5.5 4.5 10 10 10c2.28 0 4.37-.77 6.05-2.06l2.79 2.79l1.27-1.27M12 20c-4.42 0-8-3.58-8-8c0-1.73.56-3.32 1.5-4.62L16.62 18.5A7.78 7.78 0 0 1 12 20M8.17 4.97L6.72 3.5C8.25 2.56 10.06 2 12 2c5.5 0 10 4.5 10 10c0 1.94-.56 3.75-1.5 5.28l-1.47-1.45c.62-1.14.97-2.44.97-3.83c0-4.42-3.58-8-8-8c-1.39 0-2.69.35-3.83.97Z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="vertical-align: -0.1em"><path fill="#F6B604" d="M22.11 21.46L2.39 1.73L1.11 3l2.95 2.95A9.95 9.95 0 0 0 2 12c0 5.5 4.5 10 10 10c2.28 0 4.37-.77 6.05-2.06l2.79 2.79l1.27-1.27M12 20c-4.42 0-8-3.58-8-8c0-1.73.56-3.32 1.5-4.62L16.62 18.5A7.78 7.78 0 0 1 12 20M8.17 4.97L6.72 3.5C8.25 2.56 10.06 2 12 2c5.5 0 10 4.5 10 10c0 1.94-.56 3.75-1.5 5.28l-1.47-1.45c.62-1.14.97-2.44.97-3.83c0-4.42-3.58-8-8-8c-1.39 0-2.69.35-3.83.97Z"></svg>
                         </t-tag>
                     </template>
                 </template>
@@ -56,5 +59,10 @@ ComponentSystem.register('mirrors-table', {
             columns: mirrorsTableColumns,
             data: mirrorsTableData,
         }
+    },
+    methods: {
+        dataChange(data) {
+            this.data = data
+        },
     },
 })

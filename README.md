@@ -58,7 +58,7 @@
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://www.raspberrypi.com" target="_blank"><sub><img src="docs/assets/images/icon/raspberry-pi.png" width="16" height="16"></sub></a>&nbsp;Raspberry Pi OS</td>
+        <td><a href="https://www.raspberrypi.com/software" target="_blank"><sub><img src="docs/assets/images/icon/raspberry-pi.png" width="16" height="16"></sub></a>&nbsp;Raspberry Pi OS</td>
         <td align="center">all</td>
     </tr>
     <tr>

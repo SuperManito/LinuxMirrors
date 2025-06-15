@@ -382,24 +382,144 @@ const mirrorsTableData = [
 
 // 表格列配置
 const mirrorsTableColumns = [
-    { colKey: 'name', title: '镜像站', align: 'left', width: '180', fixed: 'left' },
-    { colKey: 'ipv6', title: 'IPv6', align: 'center' },
-    { colKey: 'epel', title: 'EPEL', align: 'center', tooltip: 'Extra Packages for Enterprise Linux (EPEL) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版。' },
-    { colKey: 'archlinux', title: 'Arch Linux', align: 'center' },
-    { colKey: 'manjaro', title: 'Manjaro', align: 'center' },
-    { colKey: 'kalilinux', title: 'Kali Linux', align: 'center' },
-    { colKey: 'armbian', title: 'Armbian', align: 'center' },
-    { colKey: 'deepin', title: 'Deepin', align: 'center' },
-    { colKey: 'raspberry', title: 'Raspberry Pi OS', align: 'center', width: '130' },
-    { colKey: 'linuxmint', title: 'Linux Mint', align: 'center' },
-    { colKey: 'proxmox', title: 'Proxmox VE', align: 'center' },
-    { colKey: 'fedora', title: 'Fedora', align: 'center' },
-    { colKey: 'rockylinux', title: 'Rocky Linux', align: 'center' },
-    { colKey: 'almalinux', title: 'AlmaLinux', align: 'center' },
-    { colKey: 'opencloudos', title: 'OpenCloudOS', align: 'center', width: '120' },
-    { colKey: 'anolis', title: 'Anolis OS', align: 'center' },
-    { colKey: 'openkylin', title: 'openKylin', align: 'center' },
-    { colKey: 'alpinelinux', title: 'Alpine Linux', align: 'center' },
-    { colKey: 'gentoo', title: 'Gentoo', align: 'center' },
-    { colKey: 'nix', title: 'NixOS', align: 'center' },
-]
+    {
+        colKey: 'name',
+        title: '镜像站',
+        align: 'left',
+        width: '180',
+        fixed: 'left',
+    },
+    {
+        colKey: 'ipv6',
+        title: 'IPv6',
+        align: 'center',
+        width: '70',
+    },
+    {
+        colKey: 'epel',
+        title: 'EPEL',
+        align: 'center',
+        width: '90',
+        tooltip: 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版。',
+    },
+    {
+        colKey: 'archlinux',
+        title: 'Arch Linux',
+        align: 'center',
+        width: '120',
+    },
+    {
+        colKey: 'manjaro',
+        title: 'Manjaro',
+        align: 'center',
+        width: '100',
+    },
+    {
+        colKey: 'kalilinux',
+        title: 'Kali Linux',
+        align: 'center',
+        width: '110',
+    },
+    {
+        colKey: 'armbian',
+        title: 'Armbian',
+        align: 'center',
+        width: '100',
+    },
+    {
+        colKey: 'deepin',
+        title: 'Deepin',
+        align: 'center',
+        width: '90',
+    },
+    {
+        colKey: 'raspberry',
+        title: 'Raspberry Pi OS',
+        align: 'center',
+        width: '150',
+    },
+    {
+        colKey: 'linuxmint',
+        title: 'Linux Mint',
+        align: 'center',
+        width: '120',
+    },
+    {
+        colKey: 'proxmox',
+        title: 'Proxmox VE',
+        align: 'center',
+        width: '120',
+    },
+    {
+        colKey: 'fedora',
+        title: 'Fedora',
+        align: 'center',
+        width: '90',
+    },
+    {
+        colKey: 'rockylinux',
+        title: 'Rocky Linux',
+        align: 'center',
+        width: '120',
+    },
+    {
+        colKey: 'almalinux',
+        title: 'AlmaLinux',
+        align: 'center',
+        width: '110',
+    },
+    {
+        colKey: 'opencloudos',
+        title: 'OpenCloudOS',
+        align: 'center',
+        width: '140',
+    },
+    {
+        colKey: 'anolis',
+        title: 'Anolis OS',
+        align: 'center',
+        width: '110',
+    },
+    {
+        colKey: 'openkylin',
+        title: 'openKylin',
+        align: 'center',
+        width: '110',
+    },
+    {
+        colKey: 'alpinelinux',
+        title: 'Alpine Linux',
+        align: 'center',
+        width: '130',
+    },
+    {
+        colKey: 'gentoo',
+        title: 'Gentoo',
+        align: 'center',
+        width: '90',
+    },
+    {
+        colKey: 'nix',
+        title: 'NixOS',
+        align: 'center',
+        width: '80',
+    },
+].map((item) => {
+    if (['ipv6', 'epel', 'archlinux', 'manjaro', 'kalilinux', 'armbian', 'deepin', 'raspberry', 'linuxmint', 'proxmox', 'fedora', 'rockylinux', 'almalinux', 'opencloudos', 'anolis', 'openkylin', 'alpinelinux', 'gentoo', 'nix'].includes(item.colKey)) {
+        item.sortType = 'all'
+        item.sorter = (a, b) => {
+            const getValue = (row) => {
+                if (typeof row[item.colKey] === 'boolean') {
+                    return row[item.colKey] ? 0 : 1
+                }
+                return 2
+            }
+            const aValue = getValue(a)
+            const bValue = getValue(b)
+            return aValue - bValue
+        }
+    }
+    return item
+})
+
+console.log(mirrorsTableColumns)

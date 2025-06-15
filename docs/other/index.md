@@ -43,7 +43,7 @@ hide:
     <td><a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS（龙蜥）</td>
 </tr>
 <tr>
-    <td><a href="https://www.raspberrypi.com" title="https://www.raspberrypi.com" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> Raspberry Pi OS</td>
+    <td><a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> Raspberry Pi OS</td>
     <td></td>
 </tr>
 </table>
@@ -186,7 +186,7 @@ hide:
     | 阿里云（香港） | [registry.cn-hongkong.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-hongkong.aliyuncs.com") | 谷歌云（欧洲） | [eu.gcr.io](https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn "https://eu.gcr.io") |
     | 腾讯云 | [mirror.ccs.tencentyun.com](https://cloud.tencent.com/document/product/1207/45596 "https://mirror.ccs.tencentyun.com") | Docker Hub 官方 | [registry.hub.docker.com](https://hub.docker.com/ "registry.hub.docker.com") |
 
-    <blockquote style="border-left: none !important">注：国内云计算企业的镜像仓库仅针对其业务，境内实例仍无法访问 Docker Hub</blockquote>
+    <blockquote style="border-left: none !important">注：国内云计算企业的镜像仓库仅针对其业务，境内实例可能仍无法访问 Docker Hub</blockquote>
 
     </div>
 
