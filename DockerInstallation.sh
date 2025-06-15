@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-06-10
+## Modified: 2025-06-15
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -444,10 +444,6 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_REDHAT}")
-        # 拦截最新的红帽 10 版本
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 10 ]]; then
-            output_error "暂不支持当前操作系统，请等待官方适配 10 版本！"
-        fi
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
         # 拦截 Anolis OS 8.8 以下版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_ANOLISOS}" ]]; then
@@ -532,6 +528,10 @@ function collect_system_info() {
                 ;;
             "${SYSTEM_RHEL}")
                 SOURCE_BRANCH="rhel"
+                # 拦截 RHEL 最新的 10 版本
+                if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 10 ]]; then
+                    output_error "暂不支持当前操作系统，请等待官方适配 10 版本！"
+                fi
                 ;;
             *)
                 SOURCE_BRANCH="centos"

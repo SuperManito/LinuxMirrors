@@ -75,7 +75,7 @@
     </tr>
     <tr>
         <td><a href="https://rockylinux.org" target="_blank"><sub><img src="docs/assets/images/icon/rocky-linux.svg" width="16" height="16"></sub></a>&nbsp;Rocky Linux</td>
-        <td align="center">8 ~ 9</td>
+        <td align="center">8 ~ 10</td>
     </tr>
     <tr>
         <td><a href="https://almalinux.org/zh-hans" target="_blank"><sub><img src="docs/assets/images/icon/almalinux.svg" width="16" height="16"></sub></a>&nbsp;AlmaLinux</td>
