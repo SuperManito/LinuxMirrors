@@ -521,5 +521,3 @@ const mirrorsTableColumns = [
     }
     return item
 })
-
-console.log(mirrorsTableColumns)
