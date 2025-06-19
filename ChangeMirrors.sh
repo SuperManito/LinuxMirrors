@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-06-15
+## Modified: 2025-06-20
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1015,7 +1015,7 @@ function check_command_options() {
             output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
         fi
     fi
-    if [[ "${INSTALL_EPEL}" == "true" || "${ONLY_EPEL}" == "true" ]]; then
+    if [[ "${ONLY_EPEL}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_REDHAT}")
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
