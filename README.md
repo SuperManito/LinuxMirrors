@@ -7,6 +7,7 @@
     </a>
 </p>
 <p align="center">GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</p>
+<p align="center">简体中文 | <a href="README.zh-Hant.md">繁體中文</a></p>
 <p align="center">
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
   <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>
@@ -19,8 +20,6 @@
         </picture>
     </a>
 </p>
-
-<p align="center">简体中文 | <a href="README.zh-Hant.md">繁體中文</a></p>
 
 <table align="center">
     <tr>
@@ -131,6 +130,18 @@
     </strong>
 </p>
 
+<p align="center"><strong>赞助商</strong></p>
+
+<p align="center">
+    <a href="https://linuxmirrors.cn/sponsor">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/sponsor/all-dark.png">
+          <img src="/docs/assets/images/sponsor/all-light.png" alt="Sponsors">
+        </picture>
+    </a>
+</p>
+
+
 ***
 
 ## 快速开始
@@ -154,15 +165,6 @@
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
     ```
-
-## 赞助商
-
-<a href="https://linuxmirrors.cn/sponsor/zh-cn">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/sponsor/all-dark.png">
-      <img src="/docs/assets/images/sponsor/all-light.png" alt="Sponsors">
-    </picture>
-</a>
 
 ## 特别感谢
 
