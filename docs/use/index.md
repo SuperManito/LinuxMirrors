@@ -10,7 +10,7 @@ hide:
 
     !!! quote ""
 
-        === ":linuxmirrors: 官网（推荐）"
+        === ":linuxmirrors: 官网 (推荐)"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh)
@@ -42,11 +42,18 @@ hide:
             bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
             ```
 
+        === ":tencent-cloud: 腾讯云 EO (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
+            ```
+            > 不支持在国内网络环境下使用
+
 === ":material-earth: 境外以及海外地区"
 
     !!! quote ""
 
-        === ":linuxmirrors: 官网（推荐）"
+        === ":linuxmirrors: 官网 (推荐)"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
@@ -90,11 +97,21 @@ hide:
 
             1.  通过 `--abroad` 命令选项来使用海外软件源
 
+        === ":tencent-cloud: 腾讯云 EO (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad # (1)!
+            ```
+
+            1.  通过 `--abroad` 命令选项来使用海外软件源
+
+            > 不支持在国内网络环境下使用
+
 === ":material-library: 中国大陆教育网"
 
     !!! quote ""
 
-        === ":linuxmirrors: 官网（推荐）"
+        === ":linuxmirrors: 官网 (推荐)"
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
@@ -137,6 +154,16 @@ hide:
             ```
 
             1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+
+        === ":tencent-cloud: 腾讯云 EO (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu # (1)!
+            ```
+
+            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
+
+            > 不支持在国内网络环境下使用
 
 
 
@@ -238,14 +265,14 @@ hide:
 
             假如系统原有软件源是无效的导致安装不上 `curl` 软件包，那么对于 Linux 初学者来说可能会比较麻烦，这里提供几个在线获取脚本的应急方法
 
-            === "使用 Python 下载脚本"
+            === "使用 Python 下载"
 
                 适用于大部分操作系统（`Alpine Linux` 除外），`python3` 要是不存在那就再试试 `python` 指令
                 ``` bash
                 python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'main.sh')"
                 ```
 
-            === "使用 wget 下载脚本"
+            === "使用 wget 指令下载"
 
                 一般没有预装 `curl` 软件包的系统也不会预装 `wget` 软件包，所以大概率这个方法应该是不行的
                 ``` bash
@@ -535,10 +562,10 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         | <a href="https://www.proxmox.com" title="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Proxmox VE** | `proxmox` |
         | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
-        | <a href="https://fedoraproject.org/zh-Hans" title="https://fedoraproject.org/zh-Hans" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
+        | <a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
         | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | `rocky` |
-        | <a href="https://almalinux.org/zh-hans" title="https://almalinux.org/zh-hans" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
+        | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
         | <a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **openEuler（开源欧拉）** | `openeuler` |
         | <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS（鸥栖）** | `opencloudos` |
         | <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin（开放麒麟）** | `openkylin` |
@@ -574,7 +601,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
     ```
 
-    对于已经 EOF 的 EPEL 7 注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 仓库，境外以及海外网络环境建议通过命令选项 `--use-official-source-epel true` 使用官方源
+    对于已经 EOL 的 EPEL 7 注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 仓库，境外以及海外网络环境建议通过命令选项 `--use-official-source-epel true` 使用官方源
 
 - ### 恢复使用官方源
 
@@ -589,7 +616,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
     - #### 关于 CentOS 停服问题
 
-        脚本对于已经 EOF 的 CentOS 7/8、CentOS Stream 8 进行了适配
+        脚本对于已经 EOL 的 CentOS 7/8、CentOS Stream 8 进行了适配
 
         <div class="grid cards" markdown>
 
@@ -607,7 +634,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         </div>
 
-        另外 EPEL 7 也进入了 EOF，脚本同样对其进行了适配
+        另外 EPEL 7 也进入了 EOL，脚本同样对其进行了适配
 
     - #### 指定 GNU/Linux Debian 操作系统的 Security 源
 
@@ -641,9 +668,9 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
         ```
 
-    - #### 更换 Ubuntu EOF版本软件源
+    - #### 更换 Ubuntu EOL版本软件源
 
-        !!! info "EOF 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非LTS(长期支持)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 仓库"
+        !!! info "EOL 为生命周期结束的缩写（End Of Life），Ubuntu 迭代速度较快一般非LTS(长期支持)版本的生命周期只有9个月。官方会定期从主仓库移除不在生命周期内的版本仓库目录，届时可能就需要使用镜像站的 `Ubuntu Old Releases` 仓库"
 
         具体版本支持情况详见官方 [Wiki](https://wiki.ubuntu.com/Releases)，关于 `Ubuntu Old Releases` 仓库的支持情况详见各镜像站
 

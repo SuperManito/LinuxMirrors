@@ -1,6 +1,6 @@
 <div class="sponsor">
   <div class="sponsor-label">
-    <strong>赞助商</strong>
+    <strong class="sponsor-text-1"></strong>
   </div>
   <div class="sponsor-wrapper sponsor-flex-wrapper no-select">
     <a class="sponsor-item sponsor-item-flex" target="_blank" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
@@ -47,19 +47,31 @@
 
 <div class="sponsor" style="padding-top: 2rem;">
   <div class="sponsor-label">
-    <strong>特别感谢</strong>
+    <strong class="sponsor-text-2"></strong>
   </div>
   <div class="sponsor-wrapper sponsor-flex-wrapper no-select">
     <a class="sponsor-item sponsor-item-flex" target="_blank" href="https://www.jetbrains.com/zh-cn" title="JetBrains">
-      <img src="/assets/images/support/jetbrains-light.svg#only-light" alt="JetBrains" />
-      <img src="/assets/images/support/jetbrains-dark.svg#only-dark" alt="JetBrains" />
+      <img src="/assets/images/icon/jetbrains-light.svg#only-light" alt="JetBrains" />
+      <img src="/assets/images/icon/jetbrains-dark.svg#only-dark" alt="JetBrains" />
     </a>
     <a class="sponsor-item sponsor-item-flex" target="_blank" href="https://www.netlify.com" title="Netlify">
-      <img src="/assets/images/support/netlify-light.png#only-light" alt="Netlify" style="width: 46% !important" />
-      <img src="/assets/images/support/netlify-dark.png#only-dark" alt="Netlify" style="width: 46% !important" />
+      <img src="/assets/images/icon/netlify-light.png#only-light" alt="Netlify" style="width: 46% !important" />
+      <img src="/assets/images/icon/netlify-dark.png#only-dark" alt="Netlify" style="width: 46% !important" />
     </a>
   </div>
   <div style="text-align: center; padding-top: 1rem; font-size: 0.6rem">
-    <blockquote style="border-left: none !important">本项目已加入 JetBrains & Netlify 开源项目计划</blockquote>
+    <blockquote class="sponsor-text-3" style="border-left: none !important"></blockquote>
   </div>
 </div>
+
+<style>
+  /* 默认中文 */
+  .sponsor-text-1::after { content: "赞助商"; }
+  .sponsor-text-2::after { content: "特别感谢"; }
+  .sponsor-text-3::after { content: "本项目已加入 JetBrains & Netlify 开源项目计划"; }
+
+  /* 繁体中文 */
+  [lang="zh-hant"] .sponsor-text-1::after { content: "贊助商"; }
+  [lang="zh-hant"] .sponsor-text-2::after { content: "特別感謝"; }
+  [lang="zh-hant"] .sponsor-text-3::after { content: "本項目已加入 JetBrains & Netlify 開源項目計劃"; }
+</style>

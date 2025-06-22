@@ -3,7 +3,7 @@ const mirrorsTableData = [
     {
         name: '阿里云',
         officialName: '阿里巴巴开源镜像站',
-        icon: 'aliyun.ico',
+        icon: 'alibabacloud.svg',
         iconStyle: { verticalAlign: '-0.2em' },
         url: 'https://mirrors.aliyun.com',
         domain: 'mirrors.aliyun.com',
@@ -30,7 +30,7 @@ const mirrorsTableData = [
     {
         name: '腾讯云',
         officialName: '腾讯软件源',
-        icon: 'tencent-cloud.ico',
+        icon: 'tencentcloud.ico',
         iconStyle: { verticalAlign: '-0.25em' },
         url: 'https://mirrors.tencent.com',
         domain: 'mirrors.tencent.com',
@@ -111,7 +111,7 @@ const mirrorsTableData = [
     {
         name: '火山引擎',
         officialName: '火山引擎开源软件镜像站',
-        icon: 'volcengine.png',
+        icon: 'volcengine.svg',
         iconStyle: { verticalAlign: '-0.25em' },
         url: 'https://developer.volcengine.com/mirror',
         domain: 'mirrors.volces.com',
@@ -384,7 +384,7 @@ const mirrorsTableData = [
 const mirrorsTableColumns = [
     {
         colKey: 'name',
-        title: '镜像站',
+        title: !window.location.pathname.includes('/zh-hant') ? '镜像站' : '鏡像站',
         align: 'left',
         width: '180',
         fixed: 'left',
@@ -400,7 +400,7 @@ const mirrorsTableColumns = [
         title: 'EPEL',
         align: 'center',
         width: '90',
-        tooltip: 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版。',
+        tooltip: !window.location.pathname.includes('/zh-hant') ? 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版' : 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版',
     },
     {
         colKey: 'archlinux',

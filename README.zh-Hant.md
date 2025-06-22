@@ -1,12 +1,12 @@
 <p align="center">
-    <a href="https://linuxmirrors.cn">
+    <a href="https://linuxmirrors.cn/zh-hant">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/2.png" width="320">
           <img src="/docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
         </picture>
     </a>
 </p>
-<p align="center">GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</p>
+<p align="center">GNU/Linux 更換系統軟體源腳本及 Docker 安裝與換源腳本</p>
 <p align="center">
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
   <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>
@@ -20,12 +20,12 @@
     </a>
 </p>
 
-<p align="center">简体中文 | <a href="README.zh-Hant.md">繁體中文</a></p>
+<p align="center"><a href="README.md">简体中文</a> | 繁體中文</p>
 
 <table align="center">
     <tr>
-        <th align="left">操作系统</th>
-        <th align="center">适配版本</th>
+        <th align="left">作業系統</th>
+        <th align="center">適配版本</th>
     </tr>
     <tr>
         <td><a href="https://www.debian.org" target="_blank"><sub><img src="/docs/assets/images/icon/debian.svg" width="16" height="16"></sub></a>&nbsp;Debian</td>
@@ -44,7 +44,7 @@
         <td align="center">19 ~ 22 / LMDE 6</td>
     </tr>
     <tr>
-        <td><a href="https://www.deepin.org" target="_blank"><sub><img src="/docs/assets/images/icon/deepin.png" width="16" height="16"></sub></a>&nbsp;Deepin（深度）</td>
+        <td><a href="https://www.deepin.org" target="_blank"><sub><img src="/docs/assets/images/icon/deepin.png" width="16" height="16"></sub></a>&nbsp;Deepin</td>
         <td align="center">all</td>
     </tr>
     <tr>
@@ -84,19 +84,19 @@
         <td align="center">8 ~ 10</td>
     </tr>
     <tr>
-        <td><a href="https://www.openeuler.org/zh" target="_blank"><sub><img src="/docs/assets/images/icon/openeuler.ico" width="16" height="16"></sub></a>&nbsp;openEuler（开源欧拉）</td>
+        <td><a href="https://www.openeuler.org/zh" target="_blank"><sub><img src="/docs/assets/images/icon/openeuler.ico" width="16" height="16"></sub></a>&nbsp;openEuler</td>
         <td align="center">21 ~ 25</td>
     </tr>
     <tr>
-        <td><a href="https://www.opencloudos.org" target="_blank"><sub><img src="/docs/assets/images/icon/opencloudos.png" width="16" height="16"></sub></a>&nbsp;OpenCloudOS（鸥栖）</td>
+        <td><a href="https://www.opencloudos.org" target="_blank"><sub><img src="/docs/assets/images/icon/opencloudos.png" width="16" height="16"></sub></a>&nbsp;OpenCloudOS</td>
         <td align="center">8.6 ~ 9 / Stream 23</td>
     </tr>
     <tr>
-        <td><a href="https://www.openkylin.top" target="_blank"><sub><img src="/docs/assets/images/icon/openkylin.ico" width="16" height="16"></sub></a>&nbsp;openKylin（开放麒麟）</td>
+        <td><a href="https://www.openkylin.top" target="_blank"><sub><img src="/docs/assets/images/icon/openkylin.ico" width="16" height="16"></sub></a>&nbsp;openKylin</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://openanolis.cn" target="_blank"><sub><img src="/docs/assets/images/icon/anolis.png" width="16" height="16"></sub></a>&nbsp;Anolis OS（龙蜥）</td>
+        <td><a href="https://openanolis.cn" target="_blank"><sub><img src="/docs/assets/images/icon/anolis.png" width="16" height="16"></sub></a>&nbsp;Anolis OS</td>
         <td align="center">8 / 23</td>
     </tr>
     <tr>
@@ -127,35 +127,35 @@
 
 <p align="center">
     <strong>
-        <a href="https://linuxmirrors.cn" style="text-decoration: none;">官方网站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/community" style="text-decoration: none;">社区</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/sponsor" style="text-decoration: none;">赞助</a>
+        <a href="https://linuxmirrors.cn/zh-hant" style="text-decoration: none;">官方網站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/mirrors" style="text-decoration: none;">軟體源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/other" style="text-decoration: none;">Docker 安裝(額外腳本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/community" style="text-decoration: none;">社群</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/sponsor" style="text-decoration: none;">贊助</a>
     </strong>
 </p>
 
 ***
 
-## 快速开始
+## 快速開始
 
-> 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [**linuxmirrors.cn**](https://linuxmirrors.cn/use)
+> 項目官方網站整合了 AI 聊天與搜索，更多使用方法詳見 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-hant/use)
 
-- ### GNU/Linux 更换系统软件源
+- ### GNU/Linux 更換系統軟體源
 
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh)
     ```
 
-- ### Docker 安装与换源
+- ### Docker 安裝與換源
 
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
     ```
 
-- ### Docker 更换镜像加速器
+- ### Docker 更換鏡像加速器
 
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
     ```
 
-## 赞助商
+## 贊助商
 
 <a href="https://linuxmirrors.cn/sponsor/zh-cn">
     <picture>
@@ -164,17 +164,17 @@
     </picture>
 </a>
 
-## 特别感谢
+## 特別感謝
 
 <a href="https://www.jetbrains.com/zh-cn" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/jetbrains-dark.svg" width="140" height="50"><img src="/docs/assets/images/icon/jetbrains-light.svg" alt="jetbrains" width="140" height="50"></picture></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.netlify.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/netlify-dark.png" width="110"><img src="/docs/assets/images/icon/netlify-light.png" alt="netlify" width="110"></picture></a>
 
-本项目已加入 JetBrains & Netlify 开源项目计划
+本項目已加入 JetBrains & Netlify 開源項目計劃
 
 ## LICENSE
 
 Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
-这是一个完全开源的项目，旨在为从事计算机相关行业的朋友们提供便利，使换源更简单
+這是一個完全開源的項目，旨在為從事電腦相關行業的朋友提供便利，使換源更簡單
 
 <a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
  <picture>
@@ -184,4 +184,4 @@ Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under
  </picture>
 </a>
 
-__如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 ⭐ 并分享给更多的朋友。__
+__如果您覺得這個項目不錯對您有幫助的話，請點擊倉庫右上角的 ⭐ 並分享給更多的朋友。__

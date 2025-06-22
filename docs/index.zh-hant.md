@@ -1,9 +1,9 @@
 ---
-title: 一键脚本使换源更简单
-description: GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本
+title: 一鍵腳本讓換源更簡單
+description: GNU/Linux 更換系統軟體源腳本及 Docker 安裝與換源腳本
 comments: true
 glightbox: false
-comments_description: 该评论区仅用于展示项目使用评价和经验分享，反馈问题或建议请前往<a href="/community">社区</a>或<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank">Issues</a>
+comments_description: 此評論區僅用於展示項目使用評估和經驗分享，回饋問題或建議請前往<a href="/community">社群</a>或<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank">Issues</a>
 hide:
   - navigation
   - toc
@@ -19,8 +19,8 @@ hide:
   </div>
   <img src="/assets/images/brand/light/2.png#only-light" alt="LinuxMirrors" style="width: 300px" />
   <img src="/assets/images/brand/dark/2.png#only-dark" alt="LinuxMirrors" style="width: 300px" />
-  <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</figcaption>
-  <figcaption>一键脚本使换源更简单</figcaption>
+  <figcaption>GNU/Linux 更換系統軟體源腳本及 Docker 安裝與換源腳本</figcaption>
+  <figcaption>一鍵腳本讓換源更簡單</figcaption>
 </figure>
 <figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
 === "GNU/Linux"
@@ -28,14 +28,14 @@ hide:
     <img src="/assets/images/brand/command/linux-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
     <img src="/assets/images/brand/command/linux-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
 
-    <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)" title="复制"></button>
+    <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)" title="複製"></button>
 
 === "Docker"
 
     <img src="/assets/images/brand/command/docker-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
     <img src="/assets/images/brand/command/docker-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
 
-    <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/docker.sh)" title="复制"></button>
+    <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/docker.sh)" title="複製"></button>
 
 </figure>
 </div>
@@ -44,73 +44,73 @@ hide:
 
 <div class="grid cards" style="height: fit-content" markdown>
 
--   :material-thumb-up-outline:{ .lg .middle } __轻松使用__
+-   :material-thumb-up-outline:{ .lg .middle } __輕鬆使用__
 
     ---
 
-    只需要一行命令就能直接运行，零技术门槛，无需安装任何依赖  
-    文档集成了 AI 搜索与聊天，提供各种使用场景的解决方案
+    只需要一行指令就能直接運行，零技術門檻，無需安裝任何依賴  
+    文檔整合了 AI 搜尋與聊天，提供各種使用場景的解決方案
 
--   :material-vector-polyline:{ .lg .middle } __系统支持广泛__
-
-    ---
-
-    已适配高达 `23+` 操作系统，涵盖各类版本，精准识别系统类型  
-    脚本兼容性高，不支持的系统会有相应提示并无操作跳出
-
--   :material-vector-triangle:{ .lg .middle } __多元软件源适配__
+-   :material-vector-polyline:{ .lg .middle } __系統支援廣泛__
 
     ---
 
-    深入考察了国内镜像站的系统适配情况，专为中国宝宝打造  
-    还提供全网搜集的国内教育网和海外镜像站供用户选择
+    已適配高達 `23+` 作業系統，涵蓋各類版本，精準辨識系統類型  
+    腳本相容性高，不支援的系統會有對應提示並無操作跳出
+
+-   :material-vector-triangle:{ .lg .middle } __多元軟體源適配__
+
+    ---
+
+    深入考察了中國大陸鏡像站的系統適配狀況，專為中國寶寶打造  
+    也提供全網蒐集的國內教育網和海外鏡像站供用戶選擇
 
 -   :material-rocket-launch-outline:{ .lg .middle } __快，且高效__
 
     ---
 
-    最快仅需 10 秒即可完成软件源的更换，高效运维，节省大量时间成本  
-    项目经过数年的迭代与优化，脚本性能卓越运行稳定，场景判断完善
+    最快僅需 10 秒即可完成軟體源的更換，高效能運維，節省大量時間成本  
+    項目經過數年的迭代與最佳化，腳本效能卓越運作穩定，場景判斷完善
 
--   :octicons-globe-24:{ .lg .middle } __全球网络，调用无忧__
-
-    ---
-
-    本网站提供全球边缘网络加速，不惧各种网络环境，国内轻松访问  
-    同时提供了多个备用地址以确保项目脚本始终可用，真正做到使用无忧
-
--   :material-arm-flex-outline:{ .lg .middle } __功能强大，无以伦比__
+-   :octicons-globe-24:{ .lg .middle } __全球網絡，執行無憂__
 
     ---
 
-    脚本通过方向键交互逐步引导用户选择软件源配置，使换源更简单  
-    此外脚本提供了丰富的命令选项，支持 CI/CD 集成与自动化运维
+    本網站提供全球邊緣網路加速，不畏各種網路環境，輕鬆訪問  
+    同時提供了多個備用地址以確保項目腳本始終可用，並真正做到使用無憂
 
--   :material-pencil-ruler-outline:{ .lg .middle } __高度可定制__
-
-    ---
-
-    脚本命令选项遵循正式应用程序规范设计，能够满足各种高级需求  
-    代码结构清晰，易于阅读和修改，支持克隆后定制
-
--   :material-scale-balance:{ .lg .middle } __自由，开源__
+-   :material-arm-flex-outline:{ .lg .middle } __功能強大，無與倫比__
 
     ---
 
-    项目已设立 MIT 开源许可协议，脚本代码完全开源且免费使用  
-    请尊重作者的知识成果，传播时请在显著位置标注来源或项目地址
+    腳本透過方向鍵互動逐步引導使用者選擇軟體來源配置，讓換源更簡單  
+    此外腳本提供了豐富的命令選項，支援 CI/CD 整合與自動化維
+
+-   :material-pencil-ruler-outline:{ .lg .middle } __高度可自訂__
+
+    ---
+
+    腳本命令選項遵循正式應用程式規範設計，能夠滿足各種進階需求  
+    程式碼結構清晰，易於閱讀和修改，支援克隆後定制
+
+-   :material-scale-balance:{ .lg .middle } __自由，開源__
+
+    ---
+
+    項目已設立 MIT 開源授權協議，腳本程式碼完全開源且免費使用  
+    請尊重作者的知識成果，傳播時請在顯著位置標註來源或項目地址
 
 </div>
 
 <div style="text-align: center" markdown>
 
-| 操作系统 | 适配版本 |
+| 作業系統 | 適配版本 |
 | --- | :---: |
 | <a href="https://www.debian.org" title="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> **Debian** | _8～13_ |
-| <a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **Ubuntu** :material-information-outline:{ title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>由于迭代速度较快并不直接支持所有非 LTS 的版本，具体详见文档" } | _14～25_ |
+| <a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **Ubuntu** :material-information-outline:{ title="支援烏班圖家族衍生作業系統，例如 <code>優麒麟</code> <code>Kubuntu</code> 等<br/>由於迭代速度較快並不直接支援所有非 LTS 的版本，因此具體詳見文檔" } | _14～25_ |
 | <a href="https://www.kali.org" title="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> **Kali Linux** | _all_ |
 | <a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **Linux Mint** | _19～22 / LMDE 6_ |
-| <a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Deepin（深度）** | _all_ |
+| <a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Deepin** | _all_ |
 | <a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Zorin OS** | _all_ |
 | <a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Armbian** | _all_ |
 | <a href="https://www.proxmox.com" title="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Proxmox VE** | _all_ |
@@ -120,10 +120,10 @@ hide:
 | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **CentOS** | _7～8 / Stream 8～10_ |
 | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | _8～10_ |
 | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | _8～10_ |
-| <a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **openEuler（开源欧拉）** | _21～25_ |
-| <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS（鸥栖）** | _8.6～9 / Stream 23_ |
-| <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin（开放麒麟）** | _all_ |
-| <a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> **Anolis OS（龙蜥）** | _8 / 23_ |
+| <a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **openEuler** | _21～25_ |
+| <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS** | _8.6～9 / Stream 23_ |
+| <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin** | _all_ |
+| <a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> **Anolis OS** | _8 / 23_ |
 | <a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> **openSUSE** | _Leep 15 / Tumbleweed_ |
 | <a href="https://archlinux.org" title="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Arch Linux** | _all_ |
 | <a href="https://manjaro.org" title="https://manjaro.org" target="_blank"><img src="/assets/images/icon/manjaro.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Manjaro** | _all_ |
@@ -135,7 +135,7 @@ hide:
 </div>
 
 <div style="text-align: center; padding: 1rem 0" markdown>
-[开 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [查看软件源列表](mirrors/index.md){ .md-button }
+[開 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [查看軟體源列表](mirrors/index.md){ .md-button }
 </div>
 
 --8<-- "docs/sponsor/main.html"

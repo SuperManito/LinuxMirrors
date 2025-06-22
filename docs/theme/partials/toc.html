@@ -11,7 +11,7 @@
   <div class="md-content" data-md-component="content">
     <div class="sponsor sponsor-toc">
       <div class="sponsor-label">
-        <strong>赞助商</strong>
+        <strong>{{'贊助商' if i18n_page_locale == 'zh-hant' else '赞助商'}}</strong>
       </div>
       <div class="sponsor-wrapper sponsor-flex-wrapper-toc no-select">
         <a class="sponsor-item sponsor-item-toc sponsor-item-toc-full-row" target="_blank" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
@@ -56,9 +56,9 @@
           <img src="/assets/images/sponsor/hkgserver-light.png#only-light" alt="HKGserver" style="filter: grayscale(1) invert(0.5)" />
           <img src="/assets/images/sponsor/hkgserver-dark.png#only-dark" alt="HKGserver" style="filter: grayscale(1) invert(0.4)" />
         </a>
-        <!-- <a class="sponsor-item sponsor-item-toc" target="_blank" title="成为赞助商" href="/sponsor/">
+        <!-- <a class="sponsor-item sponsor-item-toc" target="_blank" title="{{'成為贊助商' if i18n_page_locale == 'zh-hant' else '成为赞助商'}}" href="/sponsor/">
           <span style="font-size: 0.6rem; opacity: 0.5">
-            <strong>成为赞助商</strong>
+            <strong>{{'成為贊助商' if i18n_page_locale == 'zh-hant' else '成为赞助商'}}</strong>
           </span>
         </a> -->
       </div>

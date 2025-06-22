@@ -1,5 +1,6 @@
 // get search box config
 function getOramaSearchBoxConfig() {
+    const isDefaultLang = window.location.pathname.includes('/zh-hant') ? false : true
     return {
         themeConfig: {
             // colors: {
@@ -52,15 +53,18 @@ function getOramaSearchBoxConfig() {
             description: 'content',
             section: 'category',
         },
-        searchPlaceholder: '请输入要搜索的内容...',
-        chatPlaceholder: '有什么可以帮你的吗？',
-        suggestions: ['如何使用', '支持哪些系统'],
+        searchPlaceholder: isDefaultLang ? '请输入要搜索的内容...' : '請輸入要搜尋的內容...',
+        chatPlaceholder: isDefaultLang ? '有什么可以帮你的吗？' : '有什麼可以幫你的嗎？',
+        suggestions: isDefaultLang ? ['如何使用', '支持哪些系统'] : ['如何使用', '支援哪些系統'],
     }
 }
 
 // localization search box component
 function localizationOramaSearchBox(searchBox) {
     if (!searchBox) return
+    const isDefaultLang = window.location.pathname.includes('/zh-hant') ? false : true
+    const askAiText = isDefaultLang ? '询问 AI' : '詢問 AI'
+    const searchText = isDefaultLang ? '搜索' : '搜尋'
     const observer = new MutationObserver((mutations, obs) => {
         const shadowRoot = searchBox.shadowRoot
         if (shadowRoot) {
@@ -68,8 +72,8 @@ function localizationOramaSearchBox(searchBox) {
             const chatButton = shadowRoot.querySelector('.chat-button')
             if (chatButton) {
                 const element = chatButton.querySelector('.button-label')
-                if (element && element.textContent !== '询问 AI') {
-                    element.textContent = '询问 AI'
+                if (element && element.textContent !== askAiText) {
+                    element.textContent = askAiText
                 }
             }
             // Hide "Orama can make mistakes. Please verify the information."
@@ -86,13 +90,13 @@ function localizationOramaSearchBox(searchBox) {
                 const toggler = navigationBar.querySelector('orama-toggler')
                 if (toggler) {
                     const searchSpan = toggler.querySelector('span:nth-child(1)')
-                    if (searchSpan && searchSpan.textContent !== '搜索') {
-                        searchSpan.textContent = '搜索'
+                    if (searchSpan && searchSpan.textContent !== searchText) {
+                        searchSpan.textContent = searchText
                         searchSpan.style = 'max-height: fit-content;'
                     }
                     const askAISpan = toggler.querySelector('span:nth-child(2)')
-                    if (askAISpan && askAISpan.textContent !== '询问 AI') {
-                        askAISpan.textContent = '询问 AI'
+                    if (askAISpan && askAISpan.textContent !== askAiText) {
+                        askAISpan.textContent = askAiText
                         askAISpan.style = 'max-height: fit-content;'
                     }
                 }

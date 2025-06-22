@@ -4,6 +4,15 @@ repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
 copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank">SuperManito</a></br>本网站由 <a href="https://www.netlify.com" target="_blank">Netlify</a> 部署并提供全球 CDN 边缘网络加速 <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
 
+nav:
+  - "介绍": index.md
+  - "使用方法": use/index.md
+  - "软件源列表": mirrors/index.md
+  - "其它工具": other/index.md
+  - "更新日志": changelog/index.md
+  - "社区": community/index.md
+  - "赞助": sponsor/index.md
+
 extra_javascript:
   - assets/js/modules/vue.global.prod.js
   - assets/js/modules/tdesign.min.js
@@ -68,7 +77,7 @@ theme:
     - navigation.top
     - navigation.tabs
     - navigation.path
-    - navigation.instant
+    # - navigation.instant
     - navigation.instant.progress
     - navigation.indexes
     - navigation.footer
@@ -113,7 +122,7 @@ extra:
 markdown_extensions:
   - toc:
       permalink: "#"
-      permalink_title: 永久链接
+      permalink_title: 链接
       toc_depth: 3
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
@@ -142,7 +151,7 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
       options:
         custom_icons:
-          - docs/theme
+          - docs/assets/images/icon/custom
   - pymdownx.highlight:
       anchor_linenums: true
       use_pygments: true
@@ -154,28 +163,51 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
 plugins:
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: zh
+          default: true
+          name: 简体中文
+        - locale: zh-hant
+          name: 繁體中文
+          nav_translations:
+            "介绍": 介紹
+            "使用方法": 使用方法
+            "软件源列表": 軟體源列表
+            "其它工具": 其它工具
+            "更新日志": 更新日誌
+            "社区": 社群
+            "赞助": 贊助
+          build: true
+          copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank">SuperManito</a></br>本網站由 <a href="https://www.netlify.com" target="_blank">Netlify</a> 部署並提供全球 CDN 邊緣網路加速 <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
+          extra:
+            homepage: https://linuxmirrors.cn/zh-hant
+          theme:
+            palette:
+              - media: "(prefers-color-scheme)"
+                toggle:
+                  name: 跟隨系統
+              - media: "(prefers-color-scheme: light)"
+                toggle:
+                  name: 亮色模式
+              - media: "(prefers-color-scheme: dark)"
+                toggle:
+                  name: 暗黑模式
   - search:
       lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - tags
   - termynal
-  - minify:
-      minify_js: true
-      minify_css: true
-      htmlmin_opts:
-          remove_comments: true
-      cache_safe: true
-      js_files:
-        - assets/js/useThemeTransition.js
-        - assets/js/common.js
-        - assets/js/component.js
-        - assets/js/components/mirrors-table/data.js
-        - assets/js/components/mirrors-table/index.js
-nav:
-  - "介绍": index.md
-  - "使用方法": use/index.md
-  - "软件源列表": mirrors/index.md
-  - "其它工具": other/index.md
-  - "更新日志": changelog/index.md
-  - "社区": community/index.md
-  - "赞助": sponsor/index.md
+  # - minify:
+  #     minify_js: true
+  #     minify_css: true
+  #     htmlmin_opts:
+  #         remove_comments: true
+  #     cache_safe: false
+  #     js_files:
+  #       - assets/js/useThemeTransition.js
+  #       - assets/js/common.js
+  #       - assets/js/component.js
+  #       - assets/js/components/mirrors-table/data.js
+  #       - assets/js/components/mirrors-table/index.js

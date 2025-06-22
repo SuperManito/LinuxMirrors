@@ -1,0 +1,734 @@
+---
+hide:
+  - navigation
+  - footer
+---
+
+???+ question "為什麼會看到該提示？"
+
+    本項目腳本目前主要服務於簡體中文用戶，但是從立項之初就定義為了通用換源腳本，提供了諸多命令選項用於自訂使用，這也是本項目為什麼開始面向其它語言用戶使用的原因之一。腳本列印內容目前固定為簡體中文，隨著其它語言使用者的回饋和使用，腳本將來可能會支援繁體中文和英文。
+
+    文檔使用工具進行翻譯，下方內容中的專業術語可能存在不準確的情況，歡迎修正。
+
+## 一鍵執行命令
+
+=== ":material-home-city: 中國大陸"
+
+    !!! quote ""
+
+        === ":linuxmirrors: 官網 (推薦)"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+            ```
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
+            ```
+
+        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            ```
+            > 即時同步、無延遲，中國大陸網路環境建議使用
+
+        === ":gitcode: GitCode (鏡像倉庫)"
+
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            ```
+            > 本項目已加入 GitHub 加速計劃，同步存在1小時延遲
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
+            ```
+
+        === ":tencent-cloud: 騰訊雲 EO (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
+            ```
+            > 不支援在中國大陸網路環境下使用
+
+=== ":material-earth: 境外以及海外地區"
+
+    !!! quote ""
+
+        === ":linuxmirrors: 官網 (推薦)"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
+            ```
+
+            1.  透過 `--abroad` 命令選項來使用海外軟體源
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad # (1)!
+            ```
+
+            1.  透過 `--abroad` 命令選項來使用海外軟體源
+
+        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
+            ```
+
+            1.  透過 `--abroad` 命令選項來使用海外軟體源
+
+            > 即時同步、無延遲，中國大陸網路環境建議使用
+
+        === ":gitcode: GitCode (鏡像倉庫)"
+
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
+            ```
+
+            1.  透過 `--abroad` 命令選項來使用海外軟體源
+
+            > 本項目已加入 GitHub 加速計劃，同步存在1小時延遲
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad # (1)!
+            ```
+
+            1.  透過 `--abroad` 命令選項來使用海外軟體源
+
+        === ":tencent-cloud: 騰訊雲 EO (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad # (1)!
+            ```
+
+            1.  透過 `--abroad` 命令選項來使用海外軟體源
+
+            > 不支援在中國大陸網路環境下使用
+
+=== ":material-library: 中國大陸教育網"
+
+    !!! quote ""
+
+        === ":linuxmirrors: 官網 (推薦)"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
+            ```
+
+            1.  透過 `--edu` 命令選項來使用中國大陸教育單位軟體源
+
+        === ":simple-github: GitHub"
+
+            ``` bash
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            1.  透過 `--edu` 命令選項來使用中國大陸教育單位軟體源
+
+        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+
+            ``` bash
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            1.  透過 `--edu` 命令選項來使用中國大陸教育單位軟體源
+
+            > 即時同步、無延遲，中國大陸網路環境建議使用
+
+        === ":gitcode: GitCode (鏡像倉庫)"
+
+            ``` bash
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            1.  透過 `--edu` 命令選項來使用中國大陸教育單位軟體源
+
+            > 本項目已加入 GitHub 加速計劃，同步存在1小時延遲
+
+        === ":simple-jsdelivr: jsDelivr (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu # (1)!
+            ```
+
+            1.  透過 `--edu` 命令選項來使用中國大陸教育單位軟體源
+
+        === ":tencent-cloud: 騰訊雲 EO (CDN)"
+
+            ``` bash
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu # (1)!
+            ```
+
+            1.  透過 `--edu` 命令選項來使用中國大陸教育單位軟體源
+
+            > 不支援在中國大陸網路環境下使用
+
+
+
+!!! tip "使用幫助"
+
+    選項卡分別代表腳本內建軟體源類型和取得腳本途徑，請在使用前檢查目標鏡像站是否支援您所使用的作業系統，可以在[軟體源列表](../mirrors/index.md)中查看。  
+    預設自動備份原有軟體源內容，如需了解更多請翻閱下方文檔。若使用過程中的某些選項令你疑惑不解，那麼在選擇軟體源後一路回車即是最佳實踐。
+
+!!! quote "關於軟體源的選擇（新用戶必讀）"
+
+    如果你不了解這些鏡像站那麼建議使用 `阿里雲 (相容性高、可用性強)` 或 `中國科學技術大學 (速度快)`，請不要陷入測速焦慮，內建的軟體源一般不會有太大的差異。  
+    本項目腳本是一個自動化維運工具，不會對鏡像站進行主觀的優劣排序和客製化適配，使用者的選擇應該是自由的，這也是為了開源軟體精神能夠得到更好的延續。
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1:{style="color: #3CA7E5" .lg} __需使用 `ROOT` 使用者執行腳本__
+
+    ---
+
+    切換指令為 `sudo -i` 或 `su root`。不同系統使用的命令不同，因為部分系統沒有在初始安裝時為 ROOT 帳戶設定密碼（例如 Ubuntu）或系統預設禁止 ROOT 使用者登入。
+
+-   :material-numeric-2:{style="color: #3CA7E5" .lg} __建議使用現代化的 `SSH` 用戶端應用__
+
+    ---
+
+    如果你係統命令列介面的中文顯示亂碼那麼將導致無法查看互動內容，此外部分系統 GUI 圖形介面的終端應用可能存在一些無法預料的顯示問題。部分系統會自動開啟 SSH 服務，否則請參考[開啟方法](#關於開啟-ssh-遠端登入的方法)。
+
+-   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新裝系統上首次執行腳本__
+
+    ---
+
+    目前依賴 `curl` 指令取得腳本內容，但部分作業系統沒有預先安裝此軟體包，屆時則會報錯 `Command not found`，安裝方法詳見下方 [_關於報錯 Command not found_](#關於報錯-command-not-found)。腳本本身與 `curl` `wget` 指令無關，更不會下載任何內容。
+
+-   :material-numeric-4:{style="color: #3CA7E5" .lg} __腳本運行期間需要互動選擇配置__
+
+    ---
+
+    請透過方向鍵 ++arrow-up++++arrow-down++++arrow-left++++arrow-right++ 或 ++w++++a++++s++++d++ 控制選項並按 ++enter++ 回車鍵確認。如果發現互動異常那麼請改變終端軟體的視窗大小後重試，另外視窗不要鋪滿全螢幕。
+
+</div>
+
+### 常見問題
+
+- #### 關於報錯 Command not found
+
+    !!! quote ""
+
+        此報錯是由於系統沒有安裝 `curl` 軟體包導致，安裝命令如下
+
+        === "Debian 係 / openKylin"
+
+            ``` bash
+            apt-get install -y curl
+            ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+            新裝系統需要先執行一遍更新 `apt-get update`
+
+        === "RedHat 係 / openEuler / OpenCloudOS / Anolis OS"
+
+            ``` bash
+            dnf install -y curl || yum install -y curl
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        === "openSUSE"
+
+            ``` bash
+            zypper install curl
+            ```
+
+        === "Arch Linux / Manjaro"
+
+            ``` bash
+            pacman -S curl
+            ```
+
+        === "Alpine Linux"
+
+            ``` bash
+            apk --no-cache add -f curl bash ncurses
+            ```
+
+        === "Gentoo"
+
+            ``` bash
+            emerge --ask curl
+            ```
+
+        === "NixOS"
+
+            ``` bash
+            nix-env -iA nixos.curl
+            ```
+
+        ??? question "安裝不上？ （點擊展開查看其它解決方法）"
+
+            假如係統原有軟體源是無效的導致安裝不上 `curl` 軟體包，那麼對於 Linux 初學者來說可能會比較麻煩，這裡提供幾個在線獲取腳本的應急方法
+
+            === "使用 Python 下載"
+
+                適用於大部分作業系統（`Alpine Linux` 除外），`python3` 要是不存在那就再試試 `python` 指令
+                ``` bash
+                python3 -c "import urllib.request; urllib.request.urlretrieve('https://linuxmirrors.cn/main.sh', 'main.sh')"
+                ```
+
+            === "使用 wget 指令下載"
+
+                一般沒有預先安裝 `curl` 軟體包的系統也不會預先安裝 `wget` 軟體包，所以大機率這個方法應該是不行的
+                ``` bash
+                wget https://linuxmirrors.cn/main.sh
+                ```
+
+            === "使用瀏覽器下載"
+
+                如果可以存取系統 ​​GUI 映像介面和桌面的話那可以直接在瀏覽器中開啟連結下載腳本，許多系統都會預先安裝 Firefox 火狐瀏覽器
+
+            之後再執行腳本即可
+
+            === ":material-home-city: 中國大陸"
+
+                ``` bash
+                bash main.sh
+                ```
+
+            === ":material-earth: 境外以及海外地區"
+
+                ``` bash
+                bash main.sh --abroad
+                ```
+
+            === ":material-library: 中國大陸教育網"
+
+                ``` bash
+                bash main.sh --edu
+                ```
+
+            如果以上方法試了都不行，那就複製[原始碼](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名稱的 `.sh` 腳本，貼上原始碼內容後透過 `bash` 指令手動執行。
+
+- #### 備份原有軟體源
+
+    !!! quote ""
+
+        腳本會自動備份原有軟體源內容，備份路徑為原始文件或目錄的絕對路徑加上 `.bak` 後綴，例如 `/etc/apt/sources.list => /etc/apt/sources.list.bak`，檢查已存在備份內容時會詢問是否覆蓋備份。
+
+- #### 還原已備份的軟體源
+
+    !!! quote ""
+
+        === "Debian 係 / openKylin"
+
+            === "傳統格式"
+
+                ``` bash
+                cp -rf /etc/apt/sources.list.bak /etc/apt/sources.list
+                apt-get update
+                ```
+
+            === "DEB822 格式"
+
+                ``` bash
+                system_name="$(lsb_release -is | tr '[:upper:]' '[:lower:]')"
+                cp -rf "/etc/apt/sources.list.d/${system_name}.sources.bak" "/etc/apt/sources.list.d/${system_name}.sources"
+                apt-get update
+                ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+        === "RedHat 係 / openEuler / OpenCloudOS / Anolis OS"
+
+            ``` bash
+            cp -rf /etc/yum.repos.d.bak /etc/yum.repos.d
+            yum makecache
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        === "openSUSE"
+
+            ``` bash
+            cp -rf /etc/zypp/repos.d.bak /etc/zypp/repos.d
+            zypper ref
+            ```
+
+        === "Arch Linux / Manjaro"
+
+            ``` bash
+            cp -rf /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
+            pacman -Sy
+            ```
+
+        === "Alpine Linux"
+
+            ``` bash
+            cp -rf /etc/apk/repositories.bak /etc/apk/repositories
+            apk update -f
+            ```
+
+        === "Gentoo"
+
+            ``` bash
+            cp -rf /etc/portage/make.conf.bak /etc/portage/make.conf
+            [ -d /etc/portage/repos.conf ] && cp -rf /etc/portage/repos.conf/gentoo.conf.bak /etc/portage/repos.conf/gentoo.conf
+            emerge --sync --quiet
+            ```
+
+        === "NixOS"
+
+            ``` bash
+            cp -rf /etc/nix/nix.conf.bak /etc/nix/nix.conf
+            ```
+
+- #### 關於開啟 SSH 遠端登入的方法
+
+    !!! quote ""
+
+        命令以及設定步驟僅供參考，只適配了部分常見發行版
+
+        - 驗證是否已安裝 `SSH` 服務
+
+            ``` bash
+            ls /etc | grep ssh
+            ```
+            > 如果沒有這個資料夾說明系統未安裝 `SSH` 服務，你需要透過套件管理工具安裝 `openssh` 軟體包  
+            > 要注意的是不同系統上的軟體包名稱有所差異，可直接使用 `openssh*` 通配符進行安裝
+
+        - 設定允許 Root 使用者登入
+
+            ``` bash
+            cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
+            ```
+
+        - 設定密碼認證
+
+            ``` bash
+            cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
+            ```
+
+        - 啟動/重啟 `SSH` 服務
+
+            ``` bash
+            ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
+            ```
+            > 不同系統上的服務名稱有所差異，如果不是 `sshd` 那就試試 `ssh`
+
+- #### 關於未顯示方向鍵交互控制介面
+
+    !!! quote ""
+
+        如果發現互動介面是輸入而非新式的方向鍵控制，那麼請自行安裝 `ncurses` 或 `nano` 軟體包，新式的按鍵互動依賴 `tput` 指令實作。
+
+- #### 關於呼叫腳本的互聯網位置
+
+    !!! quote ""
+
+        項目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文檔目錄作為網站資源發佈，網站託管於 :netlify: [Netlify](https://www.com)，網站託管於 :netlify: [Netlify](https://www.com)幾乎沒有使用風險。 
+
+        當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和存取。
+
+- #### 關於軟體源下載速度相關問題
+
+    !!! quote ""
+
+        首先，在[軟體源列表](../mirrors/index.md)的使用幫助處有寫使用推薦，這是根據以往經驗總結出來的，但總有用戶在糾結軟體源速度的問題。 
+
+        軟體源（鏡像站）的網路延遲即 `Ping` 與下載速度沒有太大的關聯，雙方地理位置間隔的遠近不代表實際體驗，有些鏡像站下行總頻寬很高但實際測速卻並不理想，因為這與鏡像站的負載策略有關。 
+
+        網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本項目腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其高級語言無法替代的，不過目前 Bash腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。
+
+- #### 關於未啟用的軟體源倉庫
+
+    !!! quote ""
+
+        許多系統的軟體源會啟用多個倉庫，腳本遵循系統預設設置，預設不啟用的軟體源（倉庫）不會在運行完本腳本後被啟用，但是它們也隨腳本更換了目標軟體源位址，具體啟用方法如下：
+
+        === "Debian 係 / openKylin"
+
+            預設禁用了`deb-src`原始碼倉庫和`proposed`預發佈軟體源，若需啟用請將 `/etc/apt/sources.list` 文件中相關內容的所在行取消註釋
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+        === "RedHat 係 / openEuler / OpenCloudOS / Anolis OS"
+
+            部分倉庫預設沒有啟用，若需啟用請將 `/etc/yum.repos.d` 目錄下相關 repo 文件中的 `enabled` 值修改為 `1`
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        === "openSUSE"
+
+            部分倉庫預設沒有啟用，若需啟用請將 `/etc/zypp/repos.d` 目錄下相關 repo 文件中的 `enabled` 值修改為 `1`
+
+
+---
+
+## 命令選項（進階用法）
+
+| 名称 | 含义 | 选项值 |
+| - | - | :-: |
+| `--abroad` | 使用境外以及海外軟體源 | 無 |
+| `--edu` | 使用中國大陸教育網軟體源 | 無 |
+| `--source` | 指定軟體源位址（網域名稱或IP） | `位址` |
+| `--source-epel` | 指定 EPEL 附加軟體包倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `--source-security` | 指定 Debian / Ubuntu 系統 security 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `--source-vault` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `--source-portage` | 指定 Gentoo 系統 portage 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `--source-base-system` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源位址（網域名稱或IP） | `位址` |
+| `--branch` | 指定軟體源倉庫（路徑） | `倉庫名稱` |
+| `--branch-epel` | 指定 EPEL 附加軟體包倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `--branch-security` | 指定 Debian 係統 security 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `--branch-vault` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `--branch-portage` | 指定 Gentoo 系統 portage 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `--branch-base-system` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫（路徑） | `倉庫名稱` |
+| `--codename` | 指定 Debian 係 / openKylin 作業系統的版本代號 | `代號名稱` |
+| `--protocol` | 指定 WEB 協議 | `http` 或 `https` |
+| `--use-intranet-source` | 是否優先使用內部網路軟體源位址 | `true` 或 `false` |
+| `--use-official-source` | 是否使用目標作業系統的官方軟體源 | `true` 或 `false` |
+| `--use-official-source-epel` | 是否使用 EPEL 附加軟體包的官方軟體源 | `true` 或 `false` |
+| `--install-epel` | 是否安裝 EPEL 附加軟體包 | `true` 或 `false` |
+| `--backup` | 是否備份原有軟體源 | `true` 或 `false` |
+| `--upgrade-software` | 是否更新軟體套件 | `true` 或 `false` |
+| `--clean-cache` | 是否在更新軟體包後清理下載快取 | `true` 或 `false` |
+| `--clean-screen` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
+| `--print-diff` | 是否列印原始文件修改前後差異 | `true` 或 `false` |
+| `--only-epel` | 僅更換 EPEL 軟體源模式 | 無 |
+| `--ignore-backup-tips` | 忽略覆蓋備份提示（即不覆蓋備份） | 無 |
+| `--pure-mode` | 純淨模式，精簡列印內容 | 無 |
+| `--help` | 查看幫助選單 | 無 |
+
+> 軟體源完整格式 `<WEB協議>://<軟體源位址(網域名稱或IP)>/<軟體源倉庫(路徑)>`
+
+以下是一些進階用法的舉例
+
+- ### 指定軟體源位址
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --source mirror.example.com
+    ```
+
+- ### 指定軟體源倉庫
+
+    這裡的軟體源倉庫與系統內容軟體源倉庫不同，指的是軟體源位址後面的路徑即鏡像站分支倉庫，雖然名義上都是倉庫但是非常容易混淆
+
+    主要使用情境：目標鏡像站有對應的系統鏡像倉庫但是不符合本項目腳本關於軟體源倉庫設定的預設規則
+
+    ??? note "項目對於各作業系統所使用的預設倉庫名稱（點選展開檢視）"
+
+        項目腳本為了適配大的環境不會針對某一鏡像站獨特的倉庫名稱而單獨適配
+
+        | 系統名稱 | 涉及的名稱 |
+        | --- | :---: |
+        | <a href="https://www.debian.org" title="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> **Debian** | `debian` `debian-archive` |
+        | <a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **Ubuntu** | `ubuntu` `ubuntu-ports` |
+        | <a href="https://www.kali.org" title="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> **Kali Linux** | `kali` |
+        | <a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **Linux Mint** | `linuxmint` `ubuntu` `ubuntu-ports` `debian` |
+        | <a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Deepin** | `deepin` |
+        | <a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Zorin OS** | `ubuntu` `ubuntu-ports` |
+        | <a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Armbian** | `armbian` |
+        | <a href="https://www.proxmox.com" title="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Proxmox VE** | `proxmox` |
+        | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
+        | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
+        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | `rocky` |
+        | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
+        | <a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **openEuler** | `openeuler` |
+        | <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS** | `opencloudos` |
+        | <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin** | `openkylin` |
+        | <a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> **Anolis OS** | `anolis` |
+        | <a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> **openSUSE** | `opensuse` |
+        | <a href="https://archlinux.org" title="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Arch Linux** | `archlinux` `archlinuxarm` |
+        | <a href="https://manjaro.org" title="https://manjaro.org" target="_blank"><img src="/assets/images/icon/manjaro.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Manjaro** | `manjaro` |
+        | <a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Alpine Linux** | `alpine` |
+        | <a href="https://www.gentoo.org" title="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Gentoo** | `gentoo` `gentoo-portage` |
+        | <a href="https://nixos.org" title="https://nixos.org" target="_blank"><img src="/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **NixOS** | `nix-channels` |
+
+    請看下面的例子
+
+    ``` { .bash title="使用阿里雲鏡像站的 Rocky Linux 軟體源" }
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+      --source mirrors.aliyun.com \
+      --branch rockylinux
+    ```
+
+    阿里雲鏡像站的 Rocky Linux 倉庫名稱為 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合預設規則 `rocky`，但是可以透過命令選項繞過腳本預設規則來實現。
+
+    > 部分系統會同時配置多個倉庫的軟體源，具體詳見命令選項
+
+    > 由於軟體源倉庫作用在軟體源位址上因此也可以使用多層路徑，例如 `--branch "linux/debian"` -> `https://mirrors.example.com/linux/debian`
+
+- ### 單獨更換 EPEL 源
+
+    !!! info "EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版，配置 EPEL 倉庫已成為廣大用戶的普遍需求，建議默認安裝它"
+
+    有些時候你會發現想使用的鏡像站沒有 EPEL 倉庫，那麼你可以在第一次運行腳本時不安裝或更換 EPEL 來源然後再單獨執行下面的命令
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
+    ```
+
+    對於已經 EOL 的 EPEL 7 注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 倉庫，境外以及海外網絡環境建議通過命令選項 `--use-official-source-epel true` 使用官方源
+
+- ### 恢復使用官方源
+
+    當你不小心刪除了官方來源的備份時可以使用此命令來恢復，使用此命令選項後將跳過選擇軟體源步驟
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source true
+    ```
+    > 部分系統不存在官方來源例如 `Arch Linux`，屆時會自動更換成相容性較高的阿里雲鏡像站
+
+- ### 特定係統的使用範例
+
+    - #### 關於 CentOS 停服問題
+
+        腳本對於已經 EOL 的 CentOS 7/8、CentOS Stream 8 進行了適配
+
+        <div class="grid cards" markdown>
+
+        -   __中國大陸__
+
+            ---
+
+            直接正常使用即可，因為大部分中國大陸鏡像站都同步了 [`CentOS Vault`](https://vault.centos.org/) 倉庫
+
+        -   __國際地區__
+
+            ---
+
+            建議使用 `騰訊雲` 或 `阿里雲` 鏡像站，或透過 `--use-official-source true` 命令選項使用官方來源
+
+        </div>
+
+        另外 EPEL 7 也進入了 EOL，腳本同樣對其進行了適配
+
+    - #### 指定 GNU/Linux Debian 作業系統的 Security 來源
+
+        如果你想盡可能提高伺服器的安全性建議使用官方來源，因為鏡像同步存在延遲
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+          --source-security security.debian.org \
+          --branch-security debian-security
+        ```
+
+    - #### 指定 Debian 係 Linux 作業系統的版本代號
+
+        大多數情況下自訂版本代號用於更換系統版本，請看下面的例子
+
+        === "升級 GNU/Linux Debian 至 12 版本 Bookworm"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
+            ```
+
+        === "將 GNU/Linux Debian 的版本切換到測試分支"
+
+            ``` bash
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
+            ```
+
+        更換軟體源後還需要執行系統更新命令 `apt-get dist-upgrade`，並且建議在更新完成並重新啟動系統後重新執行本換源腳本，因為僅更換軟體源配置中的系統版本代號可能會在後期使用時產生一些相容性問題
+
+        ``` { .bash title="如果腳本無法實現指定版本代號，你也可以在執行腳本後手動替換" }
+        sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
+        ```
+
+    - #### 更換 Ubuntu EOL版本軟體源
+
+        !!! info "EOL 為生命週期結束的縮寫（End Of Life），Ubuntu 迭代速度較快一般非LTS(長期支持)版本的生命週期只有9個月。官方會定期從主倉庫移除不在生命週期內的版本倉庫目錄，屆時可能就需要使用鏡像站的 `Ubuntu Old Releases` 倉庫"
+
+        具體版本支援情況詳見官方 [Wiki](https://wiki.ubuntu.com/Releases)，關於 `Ubuntu Old Releases` 倉庫的支援情況詳見各鏡像站
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+          --source mirrors.ustc.edu.cn \
+          --branch ubuntu-old-releases
+        ```
+
+    - #### Arch Linux 使用中文社群倉庫
+
+        本項目腳本目前不支援此額外倉庫，因使用人數較少等原因暫不考慮適配，若想使用請參考下方的一鍵設定命令
+
+        ``` bash
+        SOURCE="https://mirrors.aliyun.com/archlinuxcn" # 指定軟體源位址
+        grep -q "\[archlinuxcn\]" /etc/pacman.conf || echo -e "[archlinuxcn]\nServer = ${SOURCE}/\$arch" >>/etc/pacman.conf # 一鍵配置命令
+        ```
+
+- ### 無人值守（自動化）
+
+    不透過交互完成換源操作，至少需要使用以下命令選項來實現，建議熟悉後再使用
+
+    ``` { .bash .no-copy title="参考命令" }
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+      --source mirror.example.com \
+      --protocol http \
+      --use-intranet-source false \
+      --install-epel true \
+      --backup true \
+      --upgrade-software false \
+      --clean-cache false \
+      --ignore-backup-tips
+    ```
+    > 如果報錯 `命令選項無效` 那麼請檢查選項合法性以及空格字元編碼，在範例中一行寫一個選項是為了提高命令的可讀性
+
+- ### 純淨模式
+
+    為了方便開發人員使用所推出的功能，啟用後會精簡腳本內容輸出，建議搭配其它命令選項無互動使用
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode
+    ```
+
+    !!! tip "滾動輸出的命令日誌可能有無法預料的顯示問題，不過目前暫未發現異常"
+
+---
+
+## 客製化腳本
+
+如果你是其它項目的開發者希望透過本項目來製作專屬腳本那麼請參考下面提到的內容，目前已經有中國大陸教育單位鏡像站的維護者這樣做了。
+
+1.  首先不建議修改程式碼的底層邏輯，應盡量與本項目原始碼保持同步，腳本內容執行順序由 `main` 函數控制，程式碼邏輯清晰
+2.  你可以簡單去除一些無關內容，例如將軟體源列表（陣列）`mirror_list_(default|edu|abroad|extranet|intranet)` 中的內容刪除，例如：`mirror_list_default=()`
+3.  如果你想要自訂腳本列印內容可直接修改 `run_start` `run_end` `print_title` 這三個函數中的內容
+4.  如果你想加入自訂 Shell 內容詳見 `main` 函數中腳本執行順序，可以在對應位置直接插入內容也可以封裝函數後調用
+5.  如果你想要縮減腳本體積那麼可以刪除一些不必要的內容，除了上面提到的軟體源列表還有一些涉及腳本工作的部分模組內容，具體如下：
+    1. 首先在刪除內容時應盡可能保留腳本原始結構，直接把涉及函數中的內容刪除即可，使其保留為空函數
+    2. 可以刪除一些不使用（作業系統）的軟體源原始內容 `gen_repo_files_xxx`，這些內容佔據了腳本 `60%` 以上的體積
+    3. 如果你不使用某些功能那麼可以刪除對應功能模組函數中的內容，`命令選項 handle_command_options`、`備份原有軟體源 backup_original_mirrors`、`更新軟體包 upgrade_software`
+6. 腳本主要功能配置是由統一的變量控制的，命令選項亦是如此，這些全局變量由全大寫字母構成並遵循下劃線命名法，具體變量詳見如下表格，你只需要將這些變量聲明在腳本頭部（預留註釋區域）即可快速完成定制
+
+| 變數名 | 意義 | 值型別 |
+| :-: | :-: | :-: |
+| `SOURCE` | 指定軟體源位址（網域名稱或IP） | `位址` |
+| `SOURCE_EPEL` | 指定 EPEL 附加軟體包倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `SOURCE_SECURITY` | 指定 Debian / Ubuntu 系統 security 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `SOURCE_VAULT` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `SOURCE_PORTAGE` | 指定 Gentoo 系統 portage 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+| `SOURCE_BASE_SYSTEM` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源位址（網域名稱或IP） | `位址` |
+| `SOURCE_BRANCH` | 指定軟體源倉庫（路徑） | `倉庫名稱` |
+| `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加軟體套件倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `SOURCE_SECURITY_BRANCH` | 指定 Debian 系統 security 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `SOURCE_VAULT_BRANCH` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系統 portage 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫（路徑） | `倉庫名稱` |
+| `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 作業系統的版本代號 | `代號名稱` |
+| `USE_INTRANET_SOURCE` | 是否優先使用內網軟體源位址 | `true` 或 `false` |
+| `USE_OFFICIAL_SOURCE` | 是否使用目標作業系統的官方軟體源 | `true` 或 `false` |
+| `USE_OFFICIAL_SOURCE_EPEL` | 是否使用 EPEL 附加軟體包的官方軟體源 | `true` 或 `false` |
+| `WEB_PROTOCOL` | 指定 WEB 協議 | `http` 或 `https` |
+| `INSTALL_EPEL` | 是否安裝 EPEL 附加軟體包 | `true` 或 `false` |
+| `ONLY_EPEL` | 僅更換 EPEL 軟體源模式 | `true` 或 `false` |
+| `BACKUP` | 是否備份原有軟體源 | `true` 或 `false` |
+| `IGNORE_BACKUP_TIPS` | 忽略覆蓋備份提示（即不覆蓋備份） | `true` 或 `false` |
+| `UPGRADE_SOFTWARE` | 是否更新軟體包 | `true` 或 `false` |
+| `CLEAN_CACHE` | 是否在更新軟體包後清理下載快取 | `true` 或 `false` |
+| `CLEAN_SCREEN` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
+| `PRINT_DIFF` | 是否列印原始文件修改前後差異 | `true` 或 `false` |
+| `PURE_MODE` | 純淨模式，精簡列印內容 | `true` 或 `false` |
+
+> 部分變數存在預設值，未涉及的變數無需聲明為空值（空字串），另外如果對應功能配置不存在那麼就可能會出現交互
