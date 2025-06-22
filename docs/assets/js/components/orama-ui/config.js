@@ -1,6 +1,6 @@
 // get search box config
 function getOramaSearchBoxConfig() {
-    const isDefaultLang = window.location.pathname.includes('/zh-hant') ? false : true
+    const isDefaultLang = window.location.pathname.includes('/zh-Hant') ? false : true
     return {
         themeConfig: {
             // colors: {
@@ -62,7 +62,7 @@ function getOramaSearchBoxConfig() {
 // localization search box component
 function localizationOramaSearchBox(searchBox) {
     if (!searchBox) return
-    const isDefaultLang = window.location.pathname.includes('/zh-hant') ? false : true
+    const isDefaultLang = window.location.pathname.includes('/zh-Hant') ? false : true
     const askAiText = isDefaultLang ? '询问 AI' : '詢問 AI'
     const searchText = isDefaultLang ? '搜索' : '搜尋'
     const observer = new MutationObserver((mutations, obs) => {

@@ -384,7 +384,7 @@ const mirrorsTableData = [
 const mirrorsTableColumns = [
     {
         colKey: 'name',
-        title: !window.location.pathname.includes('/zh-hant') ? '镜像站' : '鏡像站',
+        title: !window.location.pathname.includes('/zh-Hant') ? '镜像站' : '鏡像站',
         align: 'left',
         width: '180',
         fixed: 'left',
@@ -400,7 +400,7 @@ const mirrorsTableColumns = [
         title: 'EPEL',
         align: 'center',
         width: '90',
-        tooltip: !window.location.pathname.includes('/zh-hant') ? 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版' : 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版',
+        tooltip: !window.location.pathname.includes('/zh-Hant') ? 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版' : 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版',
     },
     {
         colKey: 'archlinux',

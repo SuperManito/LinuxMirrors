@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://linuxmirrors.cn/zh-hant">
+    <a href="https://linuxmirrors.cn/zh-Hant">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/2.png" width="320">
           <img src="/docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
@@ -127,7 +127,7 @@
 
 <p align="center">
     <strong>
-        <a href="https://linuxmirrors.cn/zh-hant" style="text-decoration: none;">官方網站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/mirrors" style="text-decoration: none;">軟體源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/other" style="text-decoration: none;">Docker 安裝(額外腳本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/community" style="text-decoration: none;">社群</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-hant/sponsor" style="text-decoration: none;">贊助</a>
+        <a href="https://linuxmirrors.cn/zh-Hant" style="text-decoration: none;">官方網站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/mirrors" style="text-decoration: none;">軟體源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/other" style="text-decoration: none;">Docker 安裝(額外腳本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/community" style="text-decoration: none;">社群</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/sponsor" style="text-decoration: none;">贊助</a>
     </strong>
 </p>
 
@@ -135,7 +135,7 @@
 
 ## 快速開始
 
-> 項目官方網站整合了 AI 聊天與搜索，更多使用方法詳見 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-hant/use)
+> 項目官方網站整合了 AI 聊天與搜索，更多使用方法詳見 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-Hant/use)
 
 - ### GNU/Linux 更換系統軟體源
 

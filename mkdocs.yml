@@ -169,7 +169,7 @@ plugins:
         - locale: zh
           default: true
           name: 简体中文
-        - locale: zh-hant
+        - locale: zh-Hant
           name: 繁體中文
           nav_translations:
             "介绍": 介紹
@@ -182,7 +182,7 @@ plugins:
           build: true
           copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank">SuperManito</a></br>本網站由 <a href="https://www.netlify.com" target="_blank">Netlify</a> 部署並提供全球 CDN 邊緣網路加速 <a href="https://www.netlify.com" target="_blank"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>'
           extra:
-            homepage: https://linuxmirrors.cn/zh-hant
+            homepage: https://linuxmirrors.cn/zh-Hant
           theme:
             palette:
               - media: "(prefers-color-scheme)"
