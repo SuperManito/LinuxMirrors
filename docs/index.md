@@ -7,7 +7,6 @@ comments_description: 该评论区仅用于展示项目使用评价和经验分�
 hide:
   - navigation
   - toc
-  - feedback
   - footer
 ---
 

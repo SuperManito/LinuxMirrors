@@ -20,7 +20,7 @@ search:
 
 ???+ question "使用幫助"
 
-    :supported: 支援 &nbsp;&nbsp; :unsupport: 不支援 &nbsp;&nbsp; :incompatible: 不相容，表示軟體源分支命名不符合腳本預設規則但可以透過命令選項來使用，關於具體用法範例和各作業系統所使用的預設分支名稱[详见此处](../use/index.md#指定软件源仓库)
+    :supported: 支援 &nbsp;&nbsp; :unsupport: 不支援 &nbsp;&nbsp; :incompatible: 不相容，表示軟體源分支命名不符合腳本預設規則但可以透過命令選項來使用，關於具體用法範例和各作業系統所使用的預設分支名稱[详见此处](../use/index.md#指定軟體源倉庫)
 
     如果這裡沒有想使用的鏡像站那可以看看其它運行模式和命令選項。軟體源的速度區分刷新速度和下行速率，後者才是關鍵，具體請結合實際地理位置選擇嘗試，也可以透過[輔助工具網站](#工具網站)進行一些測試
 
@@ -239,6 +239,6 @@ search:
 <button class="md-button" title="https://tools.ipip.net/traceroute.php" onclick="window.open('https://tools.ipip.net/traceroute.php')">Tracert 路由追蹤測試</button>
 <button class="md-button" title="https://ipw.cn/ipv6webcheck" onclick="window.open('https://ipw.cn/ipv6webcheck')">IPv6 接取測試</button>
 
-!!! tip "該頁面顯示的皆為腳本預設提供可供選擇的軟體源位址，如果沒有找到你想使用的也沒有關係，腳本支援命令選項可自訂使用，詳見[進階用法](../use/index.md#命令选项高级用法)"
+!!! tip "該頁面顯示的皆為腳本預設提供可供選擇的軟體源位址，如果沒有找到你想使用的也沒有關係，腳本支援命令選項可自訂使用，詳見[進階用法](../use/index.md#命令選項進階用法)"
 
 > 本頁面涉及的旗幟圖示僅用於快速區分地理位置，不代表作者任何的政治立場，請不要過度解讀，特此聲明。

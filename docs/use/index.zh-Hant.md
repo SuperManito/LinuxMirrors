@@ -55,7 +55,7 @@ hide:
             ```
             > 不支援在中國大陸網路環境下使用
 
-=== ":material-earth: 境外以及海外地區"
+=== ":material-earth: 國際地區"
 
     !!! quote ""
 
@@ -185,11 +185,11 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-numeric-1:{style="color: #3CA7E5" .lg} __需使用 `ROOT` 使用者執行腳本__
+-   :material-numeric-1:{style="color: #3CA7E5" .lg} __需使用 `ROOT` 執行腳本__
 
     ---
 
-    切換指令為 `sudo -i` 或 `su root`。不同系統使用的命令不同，因為部分系統沒有在初始安裝時為 ROOT 帳戶設定密碼（例如 Ubuntu）或系統預設禁止 ROOT 使用者登入。
+    切換指令為 `sudo -i` 或 `su root`。不同系統使用的命令不同，因為部分系統沒有在初始安裝時為 ROOT 帳戶設定密碼（例如 Ubuntu）或系統預設禁止 ROOT 登入。
 
 -   :material-numeric-2:{style="color: #3CA7E5" .lg} __建議使用現代化的 `SSH` 用戶端應用__
 
@@ -297,7 +297,7 @@ hide:
                 bash main.sh
                 ```
 
-            === ":material-earth: 境外以及海外地區"
+            === ":material-earth: 國際地區"
 
                 ``` bash
                 bash main.sh --abroad
@@ -398,7 +398,7 @@ hide:
             > 如果沒有這個資料夾說明系統未安裝 `SSH` 服務，你需要透過套件管理工具安裝 `openssh` 軟體包  
             > 要注意的是不同系統上的軟體包名稱有所差異，可直接使用 `openssh*` 通配符進行安裝
 
-        - 設定允許 Root 使用者登入
+        - 設定允許 Root 登入
 
             ``` bash
             cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
@@ -594,7 +594,7 @@ hide:
 
             ---
 
-            直接正常使用即可，因為大部分中國大陸鏡像站都同步了 [`CentOS Vault`](https://vault.centos.org/) 倉庫
+            直接正常使用即可，因為大部分中國大陸鏡像站都同步了 [`CentOS Vault`](https://vault.centos.org) 倉庫
 
         -   __國際地區__
 

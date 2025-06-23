@@ -4,6 +4,5 @@ comments_description: 请确保讨论内容与项目的相关性，不得发布�
 hide:
   - navigation
   - toc
-  - feedback
   - footer
 ---

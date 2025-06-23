@@ -7,7 +7,6 @@ comments_description: 此評論區僅用於展示項目使用評估和經驗分�
 hide:
   - navigation
   - toc
-  - feedback
   - footer
 ---
 

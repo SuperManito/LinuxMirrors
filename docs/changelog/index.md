@@ -1,7 +1,6 @@
 ---
 hide:
   - navigation
-  - feedback
   - footer
 search:
   exclude: true

@@ -624,7 +624,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
             ---
 
-            直接正常使用即可，因为国内大部分镜像站都同步了 [`CentOS Vault`](https://vault.centos.org/) 仓库
+            直接正常使用即可，因为国内大部分镜像站都同步了 [`CentOS Vault`](https://vault.centos.org) 仓库
 
         -   __境外以及海外环境__
 

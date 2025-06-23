@@ -106,19 +106,6 @@ extra:
   analytics:
     provider: google
     property: G-WG7T40F7YP
-    feedback:
-      title: 此页面上的内容对你有帮助吗？
-      ratings:
-        - icon: material/thumb-up-outline
-          name: This page was helpful
-          data: 1
-          note: >-
-            感谢反馈！
-        - icon: material/thumb-down-outline
-          name: This page could be improved
-          data: 0
-          note: >-
-            感谢反馈！使用<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank" rel="noopener">反馈表单</a></br>帮助我们改进此页面。
 markdown_extensions:
   - toc:
       permalink: "#"
