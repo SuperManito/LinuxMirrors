@@ -76,6 +76,20 @@ function localizationOramaSearchBox(searchBox) {
                     element.textContent = askAiText
                 }
             }
+            // Keyboard shortcuts localization (Only PC)
+            const toSelectText = isDefaultLang ? '选择' : '選擇'
+            const toNavigateText = isDefaultLang ? '导航' : '導航'
+            const toCloseText = isDefaultLang ? '关闭' : '關閉'
+            const shortcutDescriptions = shadowRoot.querySelectorAll('.shortcut-description')
+            shortcutDescriptions.forEach((element) => {
+                if (element.textContent === 'to select' && element.textContent !== toSelectText) {
+                    element.textContent = toSelectText
+                } else if (element.textContent === 'to navigate' && element.textContent !== toNavigateText) {
+                    element.textContent = toNavigateText
+                } else if (element.textContent === 'to close' && element.textContent !== toCloseText) {
+                    element.textContent = toCloseText
+                }
+            })
             // Hide "Orama can make mistakes. Please verify the information."
             const chatFormWrapper = shadowRoot.querySelector('.chat-form-wrapper')
             if (chatFormWrapper) {
