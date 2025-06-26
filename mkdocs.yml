@@ -180,9 +180,9 @@ plugins:
               - media: "(prefers-color-scheme: dark)"
                 toggle:
                   name: 暗黑模式
-  # - search:
-  #     lang: en
-  #     separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - search:
+      # lang: en
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - tags
   - termynal
   # - minify:
