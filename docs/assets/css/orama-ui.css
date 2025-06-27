@@ -88,8 +88,8 @@
     --text-color-accent: var(--md-accent-fg-color);
     --text-color-inactive: #99989d;
     --text-color-reverse: #000;
-    --background-color-primary: var(--md-default-bg-color--dark);
-    --background-color-secondary: #1a1b20;
+    --background-color-primary: var(--md-default-bg-color);
+    --background-color-secondary: #101010;
     --background-color-tertiary: var(--md-accent-fg-color--transparent);
     --background-color-fourth: #2e2e2e;
     --background-color-reverse: #fff;
@@ -102,7 +102,7 @@
     --icon-color-secondary: #dadada;
     --icon-color-tertiary: #838289;
     --icon-color-inactive: #99989d;
-    --icon-color-reverse: var(--md-default-bg-color--dark);
+    --icon-color-reverse: var(--md-default-bg-color);
     --shadow-color-primary: #000;
     --button-text-color-primary: #fbfbfb;
     --button-text-color-secondary: #99989d;

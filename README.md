@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://linuxmirrors.cn">
+    <a href="https://linuxmirrors.cn/">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/2.png" width="320">
           <img src="/docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
@@ -7,7 +7,7 @@
     </a>
 </p>
 <p align="center">GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</p>
-<p align="center">简体中文 | <a href="README.zh-Hant.md">繁體中文</a></p>
+<p align="center">简体中文 | <a href="README.zh-Hant.md">繁體中文</a> | <a href="README.en-US.md">English</a></p>
 <p align="center">
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
   <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>
@@ -100,7 +100,7 @@
     </tr>
     <tr>
         <td><a href="https://www.opensuse.org" target="_blank"><sub><img src="/docs/assets/images/icon/opensuse.svg" width="16" height="16"></sub></a>&nbsp;openSUSE</td>
-        <td align="center">Leep 15 / Tumbleweed</td>
+        <td align="center">Leap 15 / Tumbleweed</td>
     </tr>
     <tr>
         <td><a href="https://archlinux.org" target="_blank"><sub><img src="/docs/assets/images/icon/arch-linux.ico" width="16" height="16"></sub></a>&nbsp;Arch Linux</td>
@@ -126,14 +126,14 @@
 
 <p align="center">
     <strong>
-        <a href="https://linuxmirrors.cn" style="text-decoration: none;">官方网站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/use" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other" style="text-decoration: none;">Docker 安装(额外脚本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/community" style="text-decoration: none;">社区</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/sponsor" style="text-decoration: none;">赞助</a>
+        <a href="https://linuxmirrors.cn/" style="text-decoration: none;">官方网站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/use/" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors/" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other/" style="text-decoration: none;">Docker 安装(额外脚本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/community/" style="text-decoration: none;">社区</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/sponsor/" style="text-decoration: none;">赞助</a>
     </strong>
 </p>
 
 <p align="center"><strong>赞助商</strong></p>
 
 <p align="center">
-    <a href="https://linuxmirrors.cn/sponsor">
+    <a href="https://linuxmirrors.cn/sponsor/">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/sponsor/all-dark.png">
           <img src="/docs/assets/images/sponsor/all-light.png" alt="Sponsors">
@@ -146,7 +146,7 @@
 
 ## 快速开始
 
-> 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [**linuxmirrors.cn**](https://linuxmirrors.cn/use)
+> 项目官方网站集成了 AI 聊天与搜索，更多使用方法详见 [**linuxmirrors.cn**](https://linuxmirrors.cn/use/)
 
 - ### GNU/Linux 更换系统软件源
 

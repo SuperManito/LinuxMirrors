@@ -3,14 +3,19 @@
     --md-code-font: 'SF Mono';
     --md-primary-fg-color--light: hsl(0, 0%, 100%, 0.33);
     --md-default-bg-color--light: #fff;
-    --md-default-bg-color--dark: hsla(var(--md-hue), 15%, 14%, 1);
     --view-transition-z-index-foreground: 999;
     --view-transition-z-index-background: 1;
     --hero-background-image: linear-gradient(90deg, rgb(104 104 104) 50%, rgb(104 104 104) 50%);
+    --navbar-background: hsla(240, 9%, 75%, 0.33);
+    --compoent-border-radius: 8px;
 }
 
 [data-md-color-scheme='slate'] {
-    --hero-background-image: linear-gradient(90deg, rgb(114 114 114) 50%, rgb(114 114 114) 50%);
+    --md-default-bg-color: rgb(18, 18, 18);
+    --md-code-bg-color: hsla(var(--md-hue), 5%, 12%, 1);
+    --md-footer-bg-color--dark: hsla(var(--md-hue), 5%, 12%, 1);
+    --navbar-background: hsla(var(--md-hue), 5%, 19%, 0.33);
+    --hero-background-image: linear-gradient(90deg, rgb(88 88 88) 50%, rgb(88 88 88) 50%);
 }
 
 [data-md-color-primary=white] {
@@ -37,9 +42,9 @@
 }
 
 /* 告诫 */
-
 .md-typeset .admonition,
 .md-typeset details {
+    border-radius: var(--compoent-border-radius) !important;
     border-width: 0;
     border-left-width: 4px;
 }
@@ -48,6 +53,11 @@
 .md-typeset details.quote {
     border-width: .075rem !important;
     border-color: var(--md-default-fg-color--lightest) !important;
+}
+
+[data-md-color-scheme='slate'] .md-typeset .quote>.admonition-title,
+.md-typeset .quote>summary {
+    background-color: #6f6f6f1a !important;
 }
 
 [data-md-color-scheme='slate'] .md-typeset .admonition,
@@ -108,21 +118,17 @@
 }
 
 .md-header {
-    background-color: hsla(240, 9%, 75%, 0.33);
+    background-color: var(--navbar-background) !important;
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
 }
 
-[data-md-color-scheme='slate'] .md-header {
-    background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
-}
-
 .md-tabs {
-    background-color: hsla(240, 9%, 75%, 0.33);
+    background-color: var(--navbar-background) !important;
 }
 
-[data-md-color-scheme='slate'] .md-tabs {
-    background-color: hsla(var(--md-hue), 15%, 9%, 0.33);
+.tabbed-content .highlight {
+    padding-top: .4rem;
 }
 
 .md-banner {
@@ -134,20 +140,30 @@
     background-color: hsla(var(--md-hue), 15%, 9%, 0.83);
 }
 
-@media screen and (max-width: 768px) {
-    .md-typeset .admonition .tabbed-set {
-        width: calc(100vw - 3rem - 2px);
-    }
+.tabbed-set {
+    overflow: hidden !important;
+}
 
-    .md-typeset .admonition .tabbed-labels {
-        width: calc(100vw - 3rem - 1.2rem);
-        padding-left: .6rem;
-    }
+.highlight code {
+    border-radius: var(--compoent-border-radius) !important;
+}
 
-    [dir=ltr] .md-header__title {
-        margin-left: 6px;
-        margin-right: .4rem;
-    }
+.highlight span.filename+pre>code {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+.highlight span.filename {
+    border-radius: var(--compoent-border-radius) var(--compoent-border-radius) 0 0 !important;
+    background-color: var(--md-default-bg-color) !important;
+    border-top: var(--md-default-fg-color--lightest) 1px solid !important;
+    border-left: var(--md-default-fg-color--lightest) 1px solid !important;
+    border-right: var(--md-default-fg-color--lightest) 1px solid !important;
+    border-bottom: none !important;
+}
+
+.md-typeset .md-button {
+    border-radius: 6px !important;
 }
 
 .md-tabs__link {
@@ -171,22 +187,22 @@
 }
 
 .md-select__inner {
-    border-radius: 8px;
+    border-radius: var(--compoent-border-radius);
 }
 
 .md-select__inner .md-select__list {
-    padding: 8px !important;
+    padding: var(--compoent-border-radius) !important;
     font-size: .75rem !important;
 }
 
 .md-select__inner .md-select__list .md-select__item {
     margin: 1px;
-    border-radius: 8px;
+    border-radius: var(--compoent-border-radius);
     transition: background-color 0.2s;
 }
 
 [dir=ltr] .md-select__inner .md-select__list .md-select__item .md-select__link {
-    border-radius: 8px;
+    border-radius: var(--compoent-border-radius);
     padding-left: 12px !important;
     padding-right: 12px !important;
 }
@@ -297,11 +313,11 @@
 }
 
 .sponsor .sponsor-item:hover {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 [data-md-color-scheme="slate"] .sponsor .sponsor-item:hover {
-    background-color: rgba(240, 241, 244, 0.024);
+    background-color: rgba(240, 241, 244, 0.034);
 }
 
 .sponsor .sponsor-item img {
@@ -313,11 +329,16 @@
 .sponsor-item-toc {
     margin: 0;
     padding: 14px !important;
-    height: 62px !important;
-    border-radius: 4px !important;
+    height: 56px !important;
+    max-height: 56px !important;
+    border-radius: 6px !important;
     box-sizing: border-box;
     flex: 0 0 calc(50% - 2px) !important;
-    background-color: var(--md-code-bg-color);
+    background-color: #f5f5f5;
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc {
+    background-color: rgb(22, 22, 22);
 }
 
 .sponsor-item-toc:hover {
@@ -341,11 +362,13 @@
     object-fit: contain;
     filter: grayscale(1) invert(0.6);
     opacity: 0.7;
+    vertical-align: middle;
 }
 
 [data-md-color-scheme="slate"] .sponsor-item-toc img {
     filter: brightness(1.3) grayscale(1);
     opacity: 0.75;
+    vertical-align: middle;
 }
 
 .sponsor-item-toc:hover img {
@@ -432,8 +455,16 @@
     margin-right: 0 !important;
 }
 
+.t-table {
+    --td-bg-color-container: var(--md-default-bg-color) !important;
+}
+
+.t-table th,
+.t-table thead td {
+    color: var(--md-default-fg-color);
+}
+
 [theme-mode="dark"] .t-table {
-    --td-bg-color-container: hsla(var(--md-hue), 15%, 14%, 1) !important;
     --td-component-border: hsla(225deg, 15%, 95%, 0.12) !important;
 }
 
@@ -460,15 +491,13 @@
 
 [data-termynal] {
     color: #000 !important;
-    background: #f7f7f7 !important;
+    background: var(--md-code-bg-color) !important;
     box-shadow: var(--md-shadow-z2);
     font-size: 14px !important;
 }
 
 [data-md-color-scheme="slate"] [data-termynal] {
     color: #eeeeee !important;
-    background: #21252c !important;
-    box-shadow: var(--md-shadow-z2);
 }
 
 button[data-terminal-control] {

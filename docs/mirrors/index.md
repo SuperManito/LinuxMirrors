@@ -232,7 +232,7 @@ search:
 
     该列表中的软件源参考自 [`Ubuntu 镜像列表`](https://launchpad.net/ubuntu/+cdmirrors "https://launchpad.net/ubuntu/+cdmirrors")、[`Debian 镜像列表`](https://www.debian.org/CD/http-ftp/#mirrors "https://www.debian.org/CD/http-ftp/#mirrors")、[`Fedora Mirror Manager`](https://mirrormanager.fedoraproject.org/mirrors "https://mirrormanager.fedoraproject.org/mirrors") 并且在此之前全部经过了有效性验证，但未作实际测试
 
-    作者没有精力持续维护列表中的这些境外、海外镜像站，如果你想补充更多软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L60 "https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L66") 并按照下面的编辑规范进行修改
+    作者没有精力持续维护列表中的这些境外、海外镜像站，如果你想补充更多软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L66 "https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L66") 并按照下面的编辑规范进行修改
 
     你可以在确认软件源地址无误后前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls "https://github.com/SuperManito/LinuxMirrors/pulls")，也可以 :material-source-fork: Fork 仓库后自行定制使用
 

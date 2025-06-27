@@ -167,8 +167,6 @@ plugins:
             "社区": 社群
             "赞助": 贊助
           build: true
-          extra:
-            homepage: https://linuxmirrors.cn/zh-Hant
           theme:
             palette:
               - media: "(prefers-color-scheme)"
@@ -180,6 +178,28 @@ plugins:
               - media: "(prefers-color-scheme: dark)"
                 toggle:
                   name: 暗黑模式
+        - locale: en
+          name: English
+          nav_translations:
+            "介绍": Introduction
+            "使用方法": Use
+            "软件源列表": Mirrors List
+            "其它工具": Other Tools
+            "更新日志": Changelog
+            "社区": Community
+            "赞助": Sponsor
+          build: true
+          theme:
+            palette:
+              - media: "(prefers-color-scheme)"
+                toggle:
+                  name: Follow System
+              - media: "(prefers-color-scheme: light)"
+                toggle:
+                  name: Light Mode
+              - media: "(prefers-color-scheme: dark)"
+                toggle:
+                  name: Dark Mode
   - search:
       # lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'

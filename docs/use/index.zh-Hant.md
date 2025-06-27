@@ -28,7 +28,7 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
             ```
 
-        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+        === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)

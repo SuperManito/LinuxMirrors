@@ -1,6 +1,39 @@
+const OramaI18nData = {
+    'zh-Hans': {
+        searchPlaceholder: '请输入要搜索的内容...',
+        chatPlaceholder: '有什么可以帮你的吗？',
+        suggestions: ['如何使用', '支持哪些系统'],
+        askAiText: '询问 AI',
+        searchText: '搜索',
+        toSelectText: '选择',
+        toNavigateText: '导航',
+        toCloseText: '关闭',
+    },
+    'zh-Hant': {
+        searchPlaceholder: '請輸入要搜尋的內容...',
+        chatPlaceholder: '有什麼可以幫你的嗎？',
+        suggestions: ['如何使用', '支援哪些系統'],
+        askAiText: '詢問 AI',
+        searchText: '搜尋',
+        toSelectText: '選擇',
+        toNavigateText: '導航',
+        toCloseText: '關閉',
+    },
+    en: {
+        searchPlaceholder: 'Please enter the content to search...',
+        chatPlaceholder: 'How can I help you?',
+        suggestions: ['How to use', 'What systems are supported'],
+        askAiText: 'Ask AI',
+        searchText: 'Search',
+        toSelectText: 'Select',
+        toNavigateText: 'Navigate',
+        toCloseText: 'Close',
+    },
+}
+
 // get search box config
 function getOramaSearchBoxConfig() {
-    const isDefaultLang = window.location.pathname.includes('/zh-Hant') ? false : true
+    const currentLang = window.location.pathname.includes('/zh-Hant') ? 'zh-Hant' : window.location.pathname.includes('/en') ? 'en' : 'zh-Hans'
     return {
         themeConfig: {
             // colors: {
@@ -53,18 +86,18 @@ function getOramaSearchBoxConfig() {
             description: 'content',
             section: 'category',
         },
-        searchPlaceholder: isDefaultLang ? '请输入要搜索的内容...' : '請輸入要搜尋的內容...',
-        chatPlaceholder: isDefaultLang ? '有什么可以帮你的吗？' : '有什麼可以幫你的嗎？',
-        suggestions: isDefaultLang ? ['如何使用', '支持哪些系统'] : ['如何使用', '支援哪些系統'],
+        searchPlaceholder: OramaI18nData[currentLang].searchPlaceholder,
+        chatPlaceholder: OramaI18nData[currentLang].chatPlaceholder,
+        suggestions: OramaI18nData[currentLang].suggestions,
     }
 }
 
 // localization search box component
 function localizationOramaSearchBox(searchBox) {
     if (!searchBox) return
-    const isDefaultLang = window.location.pathname.includes('/zh-Hant') ? false : true
-    const askAiText = isDefaultLang ? '询问 AI' : '詢問 AI'
-    const searchText = isDefaultLang ? '搜索' : '搜尋'
+    const currentLang = window.location.pathname.includes('/zh-Hant') ? 'zh-Hant' : window.location.pathname.includes('/en') ? 'en' : 'zh-Hans'
+    const askAiText = OramaI18nData[currentLang].askAiText
+    const searchText = OramaI18nData[currentLang].searchText
     const observer = new MutationObserver((mutations, obs) => {
         const shadowRoot = searchBox.shadowRoot
         if (shadowRoot) {
@@ -77,9 +110,9 @@ function localizationOramaSearchBox(searchBox) {
                 }
             }
             // Keyboard shortcuts localization (Only PC)
-            const toSelectText = isDefaultLang ? '选择' : '選擇'
-            const toNavigateText = isDefaultLang ? '导航' : '導航'
-            const toCloseText = isDefaultLang ? '关闭' : '關閉'
+            const toSelectText = OramaI18nData[currentLang].toSelectText
+            const toNavigateText = OramaI18nData[currentLang].toNavigateText
+            const toCloseText = OramaI18nData[currentLang].toCloseText
             const shortcutDescriptions = shadowRoot.querySelectorAll('.shortcut-description')
             shortcutDescriptions.forEach((element) => {
                 if (element.textContent === 'to select' && element.textContent !== toSelectText) {

@@ -69,12 +69,14 @@
 </div>
 
 <style>
-  /* 默认中文 */
   .sponsor-text-1::after { content: "赞助商"; }
   .sponsor-text-2::after { content: "特别感谢"; }
   .sponsor-text-3::after { content: "本项目已加入 JetBrains & Netlify 开源项目计划"; }
 
-  /* 繁体中文 */
+  [lang="en"] .sponsor-text-1::after { content: "Sponsors"; }
+  [lang="en"] .sponsor-text-2::after { content: "Special Thanks"; }
+  [lang="en"] .sponsor-text-3::after { content: "This project has joined the JetBrains & Netlify open source program"; }
+
   [lang="zh-Hant"] .sponsor-text-1::after { content: "贊助商"; }
   [lang="zh-Hant"] .sponsor-text-2::after { content: "特別感謝"; }
   [lang="zh-Hant"] .sponsor-text-3::after { content: "本項目已加入 JetBrains & Netlify 開源項目計劃"; }

@@ -1,13 +1,13 @@
 <p align="center">
-    <a href="https://linuxmirrors.cn/zh-Hant/">
+    <a href="https://linuxmirrors.cn/en/">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/2.png" width="320">
           <img src="/docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
         </picture>
     </a>
 </p>
-<p align="center">GNU/Linux 更換系統軟體源腳本及 Docker 安裝與換源腳本</p>
-<p align="center"><a href="README.md">简体中文</a> | 繁體中文 | <a href="README.en-US.md">English</a></p>
+<p align="center">GNU/Linux System Software Mirror Switching Script and Docker Installation & Mirror Switching Script</p>
+<p align="center"><a href="README.md">简体中文</a> | <a href="README.zh-Hant.md">繁體中文</a> | English</p>
 <p align="center">
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
   <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>
@@ -23,8 +23,8 @@
 
 <table align="center">
     <tr>
-        <th align="left">作業系統</th>
-        <th align="center">適配版本</th>
+        <th align="left">Operating System</th>
+        <th align="center">Supported Versions</th>
     </tr>
     <tr>
         <td><a href="https://www.debian.org" target="_blank"><sub><img src="/docs/assets/images/icon/debian.svg" width="16" height="16"></sub></a>&nbsp;Debian</td>
@@ -126,14 +126,14 @@
 
 <p align="center">
     <strong>
-        <a href="https://linuxmirrors.cn/zh-Hant/" style="text-decoration: none;">官方網站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/use/" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/mirrors/" style="text-decoration: none;">軟體源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/other/" style="text-decoration: none;">Docker 安裝(額外腳本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/community/" style="text-decoration: none;">社群</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/sponsor/" style="text-decoration: none;">贊助</a>
+        <a href="https://linuxmirrors.cn/en/" style="text-decoration: none;">Official Website</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/use/" style="text-decoration: none;">Usage</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/mirrors/" style="text-decoration: none;">Mirror List</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/other/" style="text-decoration: none;">Docker Install (Extra Script)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/community/" style="text-decoration: none;">Community</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/sponsor/" style="text-decoration: none;">Sponsor</a>
     </strong>
 </p>
 
-<p align="center"><strong>贊助商</strong></p>
+<p align="center"><strong>Sponsors</strong></p>
 
 <p align="center">
-    <a href="https://linuxmirrors.cn/zh-Hant/sponsor/">
+    <a href="https://linuxmirrors.cn/en/sponsor">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/sponsor/all-dark.png">
           <img src="/docs/assets/images/sponsor/all-light.png" alt="Sponsors">
@@ -144,39 +144,39 @@
 
 ***
 
-## 快速開始
+## Quick Start
 
-> 項目官方網站整合了 AI 聊天與搜索，更多使用方法詳見 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-Hant/use/)
+> The official project website integrates AI chat and search. For more usage, see [**linuxmirrors.cn**](https://linuxmirrors.cn/en/use/)
 
-- ### GNU/Linux 更換系統軟體源
+- ### GNU/Linux System Software Mirror Switching
 
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh)
     ```
 
-- ### Docker 安裝與換源
+- ### Docker Installation & Mirror Switching
 
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
     ```
 
-- ### Docker 更換鏡像加速器
+- ### Docker Switch Registry Mirror
 
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
     ```
 
-## 特別感謝
+## Special Thanks
 
 <a href="https://www.jetbrains.com/zh-cn" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/jetbrains-dark.svg" width="140" height="50"><img src="/docs/assets/images/icon/jetbrains-light.svg" alt="jetbrains" width="140" height="50"></picture></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.netlify.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/netlify-dark.png" width="110"><img src="/docs/assets/images/icon/netlify-light.png" alt="netlify" width="110"></picture></a>
 
-本項目已加入 JetBrains & Netlify 開源項目計劃
+This project has joined the JetBrains & Netlify Open Source Program.
 
 ## LICENSE
 
 Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
-這是一個完全開源的項目，旨在為從事電腦相關行業的朋友提供便利，使換源更簡單
+This is a fully open source project, aiming to provide convenience for friends in the computer-related industry and make mirror switching easier.
 
 <a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
  <picture>
@@ -186,4 +186,4 @@ Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under
  </picture>
 </a>
 
-__如果您覺得這個項目不錯對您有幫助的話，請點擊倉庫右上角的 ⭐ 並分享給更多的朋友。__
+__If you find this project helpful, please click the ⭐ in the upper right corner of the repository and share it with more friends.__
