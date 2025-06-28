@@ -120,7 +120,7 @@
     </tr>
     <tr>
         <td><a href="https://nixos.org" target="_blank"><sub><img src="/docs/assets/images/icon/nixos.svg" width="16" height="16"></sub></a>&nbsp;NixOS</td>
-        <td align="center">19 ~ 24</td>
+        <td align="center">19 ~ 25</td>
     </tr>
 </table>
 

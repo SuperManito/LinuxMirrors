@@ -128,7 +128,7 @@ hide:
 | <a href="https://manjaro.org" title="https://manjaro.org" target="_blank"><img src="/assets/images/icon/manjaro.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Manjaro** | _all_ |
 | <a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Alpine Linux** | _v3 / edge_ |
 | <a href="https://www.gentoo.org" title="https://www.gentoo.org" target="_blank"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Gentoo** | _all_ |
-| <a href="https://nixos.org" title="https://nixos.org" target="_blank"><img src="/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **NixOS** | _19～24_ |
+| <a href="https://nixos.org" title="https://nixos.org" target="_blank"><img src="/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **NixOS** | _19～25_ |
 
 </div>
 </div>
