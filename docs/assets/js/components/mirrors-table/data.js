@@ -7,7 +7,7 @@ const mirrorsTableData = [
         iconStyle: { verticalAlign: '-0.2em' },
         url: 'https://mirrors.aliyun.com',
         domain: 'mirrors.aliyun.com',
-        ipv6: true,
+        ipv6: false,
         archlinux: true,
         kalilinux: true,
         deepin: true,
