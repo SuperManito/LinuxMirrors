@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-06-21
+## Modified: 2025-07-02
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -682,6 +682,11 @@ function output_error() {
     exit 1
 }
 
+## 检查命令是否存在
+function command_exists() {
+    command -v "$@" &>/dev/null
+}
+
 ## 权限判定
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
@@ -731,7 +736,7 @@ function collect_system_info() {
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-        if ! command -v lsb_release &>/dev/null; then
+        if ! command_exists lsb_release; then
             apt-get update
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
@@ -1001,7 +1006,7 @@ function collect_system_info() {
     esac
     ## 判断是否可以使用高级交互式选择器
     CAN_USE_ADVANCED_INTERACTIVE_SELECTION="false"
-    if command -v tput &>/dev/null; then
+    if command_exists tput; then
         CAN_USE_ADVANCED_INTERACTIVE_SELECTION="true"
     fi
 }
@@ -1048,7 +1053,7 @@ function choose_mirrors() {
         for ((a = 0; a < $list_arr_sum; a++)); do
             list_arr[$a]="$(eval echo \${$1[a]})"
         done
-        if command -v printf &>/dev/null; then
+        if command_exists printf; then
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
                 tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
                 # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
@@ -1612,7 +1617,7 @@ function change_mirrors_main() {
             done
         }
 
-        if command -v diff &>/dev/null && [[ "${BACKED_UP}" == "true" ]]; then
+        if command_exists diff && [[ "${BACKED_UP}" == "true" ]]; then
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
                 if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then

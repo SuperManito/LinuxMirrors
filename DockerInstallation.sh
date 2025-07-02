@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-06-15
+## Modified: 2025-07-02
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -385,6 +385,11 @@ function output_error() {
     exit 1
 }
 
+## 检查命令是否存在
+function command_exists() {
+    command -v "$@" &>/dev/null 
+}
+
 ## 权限判定
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
@@ -430,7 +435,7 @@ function collect_system_info() {
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        if ! command -v lsb_release &>/dev/null; then
+        if ! command_exists lsb_release; then
             apt-get update
             apt-get install -y lsb-release
             if [ $? -ne 0 ]; then
@@ -532,7 +537,7 @@ function collect_system_info() {
                 SOURCE_BRANCH="rhel"
                 # 拦截 RHEL 最新的 10 版本
                 if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 10 ]]; then
-                    output_error "暂不支持当前操作系统，请等待官方适配 10 版本！"
+                    output_error "暂不支持当前操作系统（RHEL 10），请等待 Docker 官方适配或使用正版操作系统软件源进行安装。"
                 fi
                 ;;
             *)
@@ -556,7 +561,7 @@ function collect_system_info() {
     esac
     ## 判断是否可以使用高级交互式选择器
     CAN_USE_ADVANCED_INTERACTIVE_SELECTION="false"
-    if command -v tput &>/dev/null; then
+    if command_exists tput; then
         CAN_USE_ADVANCED_INTERACTIVE_SELECTION="true"
     fi
 }
@@ -577,7 +582,7 @@ function choose_mirrors() {
         for ((a = 0; a < $list_arr_sum; a++)); do
             list_arr[$a]="$(eval echo \${$1[a]})"
         done
-        if command -v printf &>/dev/null; then
+        if command_exists printf; then
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
                 tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
                 # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
@@ -721,7 +726,7 @@ function choose_protocol() {
 
 ## 关闭防火墙和SELinux
 function close_firewall_service() {
-    if ! command -v systemctl &>/dev/null; then
+    if ! command_exists systemctl; then
         return
     fi
     if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
@@ -928,7 +933,7 @@ function install_docker_engine() {
 
     ## 卸载 Docker Engine 原有版本软件包
     function uninstall_original_version() {
-        if command -v docker &>/dev/null; then
+        if command_exists docker; then
             # 先停止并禁用 Docker 服务
             systemctl disable --now docker >/dev/null 2>&1
             sleep 2s
@@ -1121,7 +1126,7 @@ function change_docker_registry_mirror() {
             ## 安装 jq
             local package_manager="$(get_package_manager)"
             $package_manager install -y jq
-            if command -v jq &>/dev/null; then
+            if command_exists jq; then
                 jq 'del(.["registry-mirrors"])' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
                 # 重启服务
                 systemctl daemon-reload
@@ -1201,7 +1206,7 @@ function only_change_docker_registry_mirror() {
     [ -d "${Dir_Docker}" ] || mkdir -p "${Dir_Docker}"
     if [ -s "${File_DockerConfig}" ]; then
         ## 安装 jq
-        if ! command -v jq &>/dev/null; then
+        if ! command_exists jq; then
             ## 更新软件源
             local package_manager
             local commands=()
@@ -1237,7 +1242,7 @@ function only_change_docker_registry_mirror() {
                 output_error "${SYNC_MIRROR_TEXT}出错，请先解决系统原有软件源错误以确保 ${BLUE}${package_manager}${PLAIN} 软件包管理工具可用！"
             fi
             $package_manager install -y jq
-            if ! command -v jq &>/dev/null; then
+            if ! command_exists jq; then
                 output_error "软件包 ${BLUE}jq${PLAIN} 安装失败，请自行安装后重新运行脚本！"
             fi
         fi
@@ -1261,7 +1266,7 @@ function only_change_docker_registry_mirror() {
 
 ## 查看版本并验证安装结果
 function check_installed_result() {
-    if command -v docker &>/dev/null; then
+    if command_exists docker; then
         systemctl enable --now docker >/dev/null 2>&1
         echo -en "\n当前安装版本："
         docker -v
