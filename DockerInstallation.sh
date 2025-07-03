@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-02
+## Modified: 2025-07-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -112,8 +112,10 @@ File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
 File_OracleLinuxRelease=/etc/oracle-release
 File_ArchLinuxRelease=/etc/arch-release
+File_ManjaroRelease=/etc/manjaro-release
 File_AlpineRelease=/etc/alpine-release
-File_ProxmoxVersion=/etc/pve/.version
+File_GentooRelease=/etc/gentoo-release
+File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
 
 ## 定义软件源相关文件或目录
 File_AptSourceList=/etc/apt/sources.list
@@ -387,7 +389,7 @@ function output_error() {
 
 ## 检查命令是否存在
 function command_exists() {
-    command -v "$@" &>/dev/null 
+    command -v "$@" &>/dev/null
 }
 
 ## 权限判定
@@ -412,7 +414,7 @@ function collect_system_info() {
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s "${File_OracleLinuxRelease}" ]; then
-        output_error "当前操作系统（Oracle Linux）不在本脚本的支持范围内，请前往官网查看支持列表！"
+        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s "${File_openEulerRelease}" ]; then
@@ -429,8 +431,18 @@ function collect_system_info() {
             [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
+    elif [ -s "${File_openKylinVersion}" ]; then
+        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\napt-get install -y docker\nsystemctl enable --now docker"
+    elif [ -f "${File_ArchLinuxRelease}" ]; then
+        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\npacman -S docker\nsystemctl enable --now docker"
+    elif [ -f "${File_GentooRelease}" ]; then
+        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统（Gentoo）"
+    elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
+        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\nzypper install docker\nsystemctl enable --now docker"
+    elif [[ "${SYSTEM_NAME}" == *"NixOS"* ]]; then
+        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统（NixOS）"
     else
-        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
+        output_error "不支持当前操作系统"
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -528,7 +540,7 @@ function collect_system_info() {
                 ;;
             esac
             ;;
-        "${SYSTEM_REDHAT}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_FEDORA}")
                 SOURCE_BRANCH="fedora"
@@ -537,16 +549,16 @@ function collect_system_info() {
                 SOURCE_BRANCH="rhel"
                 # 拦截 RHEL 最新的 10 版本
                 if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 10 ]]; then
-                    output_error "暂不支持当前操作系统（RHEL 10），请等待 Docker 官方适配或使用正版操作系统软件源进行安装。"
+                    output_error "暂不支持当前操作系统（RHEL 10），请等待 Docker 官方适配或使用正版操作系统软件源进行安装"
                 fi
                 ;;
             *)
                 SOURCE_BRANCH="centos"
                 ;;
             esac
-            ;;
-        "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-            SOURCE_BRANCH="centos"
+            if [[ "${DEVICE_ARCH_RAW}" == "s390x" ]]; then
+                output_error "请查阅 RHEL 发行版声明以了解 s390x 支持"
+            fi
             ;;
         esac
     fi
@@ -965,17 +977,10 @@ function install_docker_engine() {
     ## 安装
     function install_main() {
         local target_docker_version
+        local pkgs=""
         local commands=()
         if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-            case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}")
-                commands+=("apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin")
-                ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-                local package_manager="$(get_package_manager)"
-                commands+=("${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin")
-                ;;
-            esac
+            pkgs="docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
         else
             export_version_list
             if [ ! -s "${File_DockerVersionTmp}" ]; then
@@ -1020,31 +1025,41 @@ function install_docker_engine() {
                 fi
             fi
             rm -rf $File_DockerVersionTmp
+            local major_version="$(echo ${target_docker_version} | cut -d'.' -f1)"
+            local minor_version="$(echo ${target_docker_version} | cut -d'.' -f2)"
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                local major_version="$(echo ${target_docker_version} | cut -c1-2)"
-                local minor_version="$(echo ${target_docker_version} | cut -c4-5)"
-                case "${major_version}" in
-                18)
-                    if [ "${minor_version}" == "09" ]; then
-                        INSTALL_JUDGMENT="5:"
-                    else
-                        INSTALL_JUDGMENT=""
-                    fi
-                    ;;
-                *)
-                    INSTALL_JUDGMENT="5:"
-                    ;;
-                esac
-                commands+=("apt-get install -y docker-ce=${INSTALL_JUDGMENT}${target_docker_version}* docker-ce-cli=5:${target_docker_version}* containerd.io docker-buildx-plugin docker-compose-plugin")
+                if [[ $major_version -gt 18 ]] || [[ $major_version -eq 18 && $minor_version -ge 9 ]]; then
+                    local tmp_version="$(apt-cache madison docker-ce-cli | grep "${target_docker_version}" | head -1 | awk '{print $3}' | awk -F "${target_docker_version}" '{print$1}')"
+                    pkgs="docker-ce=${tmp_version}${target_docker_version}* docker-ce-cli=${tmp_version}${target_docker_version}*"
+                else
+                    pkgs="docker-ce=${target_docker_version}* docker-ce-cli=${target_docker_version}*"
+                fi
                 ;;
+
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-                local package_manager="$(get_package_manager)"
-                commands+=("${package_manager} install -y docker-ce-${target_docker_version} docker-ce-cli-${target_docker_version} containerd.io docker-buildx-plugin docker-compose-plugin")
+                pkgs="docker-ce-${target_docker_version}"
+                if [[ $major_version -gt 18 ]] || [[ $major_version -eq 18 && $minor_version -ge 9 ]]; then
+                    pkgs="${pkgs} docker-ce-cli-${target_docker_version}"
+                fi
                 ;;
             esac
+            pkgs="${pkgs} containerd.io"
+            if [[ $major_version -gt 20 ]] || [[ $major_version -eq 20 && $minor_version -ge 10 ]]; then
+                pkgs="${pkgs} docker-compose-plugin"
+            fi
+            if [[ $major_version -ge 23 ]]; then
+                pkgs="${pkgs} docker-buildx-plugin"
+            fi
         fi
-        echo ''
+        case "${SYSTEM_FACTIONS}" in
+        "${SYSTEM_DEBIAN}")
+            commands+=("apt-get install -y ${pkgs}")
+            ;;
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+            commands+=("$(get_package_manager) install -y ${pkgs}")
+            ;;
+        esac
         if [[ "${PURE_MODE}" == "true" ]]; then
             local exec_cmd=""
             for cmd in "${commands[@]}"; do
