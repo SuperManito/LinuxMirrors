@@ -56,54 +56,42 @@ hide:
         === ":linuxmirrors: 官网 (推荐)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
             ```
-
-            1.  通过 `--abroad` 命令选项来使用海外软件源
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad
             ```
-
-            1.  通过 `--abroad` 命令选项来使用海外软件源
 
         === ":simple-gitee: Gitee 码云 (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
-            1.  通过 `--abroad` 命令选项来使用海外软件源
 
             > 实时同步、无延迟，国内网络环境下推荐使用
 
         === ":gitcode: GitCode (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
-            1.  通过 `--abroad` 命令选项来使用海外软件源
 
             > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad
             ```
-
-            1.  通过 `--abroad` 命令选项来使用海外软件源
 
         === ":tencent-cloud: 腾讯云 EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad # (1)!
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-
-            1.  通过 `--abroad` 命令选项来使用海外软件源
 
             > 不支持在国内网络环境下使用
 
@@ -114,54 +102,42 @@ hide:
         === ":linuxmirrors: 官网 (推荐)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu
             ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu
             ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
         === ":simple-gitee: Gitee 码云 (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
             > 实时同步、无延迟，国内网络环境下推荐使用
 
         === ":gitcode: GitCode (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
             > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu
             ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
         === ":tencent-cloud: 腾讯云 EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu # (1)!
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-
-            1.  通过 `--edu` 命令选项来使用中国大陆教育单位软件源
 
             > 不支持在国内网络环境下使用
 
@@ -708,7 +684,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
 - ### 纯净模式
 
-    为了便于开发人员使用所推出的功能，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+    推出该功能是为了便于开发人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode

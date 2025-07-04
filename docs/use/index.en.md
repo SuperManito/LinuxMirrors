@@ -10,7 +10,7 @@ hide:
 
     The documentation is translated with tools, and some professional terms below may be inaccurate. Corrections are welcome.
 
-## One-Click Execution Command
+## One-Click Command
 
 === ":material-home-city: Mainland China"
 
@@ -28,14 +28,14 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
             ```
 
-        === ":simple-gitee: Gitee (Mirror Repository)"
+        === ":simple-gitee: Gitee"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode (Mirror Repository)"
+        === ":gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh)
@@ -62,54 +62,42 @@ hide:
         === ":linuxmirrors: Official Site (Recommended)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad # (1)!
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
             ```
-
-            1.  Use the `--abroad` command option to use overseas mirrors
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad
             ```
 
-            1.  Use the `--abroad` command option to use overseas mirrors
-
-        === ":simple-gitee: Gitee (Mirror Repository)"
+        === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
-            1.  Use the `--abroad` command option to use overseas mirrors
 
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode (Mirror Repository)"
+        === ":gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
-            1.  Use the `--abroad` command option to use overseas mirrors
 
             > This project has joined the GitHub acceleration plan, with a 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad # (1)!
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad
             ```
-
-            1.  Use the `--abroad` command option to use overseas mirrors
 
         === ":tencent-cloud: Tencent Cloud EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad # (1)!
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-
-            1.  Use the `--abroad` command option to use overseas mirrors
 
             > Not supported in mainland China network environments.
 
@@ -120,54 +108,42 @@ hide:
         === ":linuxmirrors: Official Site (Recommended)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu # (1)!
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu
             ```
-
-            1.  Use the `--edu` command option to use China education network mirrors
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu
             ```
 
-            1.  Use the `--edu` command option to use China education network mirrors
-
-        === ":simple-gitee: Gitee (Mirror Repository)"
+        === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
-            1.  Use the `--edu` command option to use China education network mirrors
 
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode (Mirror Repository)"
+        === ":gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
-            1.  Use the `--edu` command option to use China education network mirrors
 
             > This project has joined the GitHub acceleration plan, with a 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu # (1)!
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu
             ```
-
-            1.  Use the `--edu` command option to use China education network mirrors
 
         === ":tencent-cloud: Tencent Cloud EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu # (1)!
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-
-            1.  Use the `--edu` command option to use China education network mirrors
 
             > Not supported in mainland China network environments.
 
@@ -678,7 +654,7 @@ Below are some advanced usage examples
 
 - ### Pure mode
 
-    For developers: when enabled, script output is minimized. Recommended for use with other options in non-interactive mode.
+    This feature is introduced to facilitate developers. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode

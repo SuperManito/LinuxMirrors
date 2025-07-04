@@ -4,50 +4,13 @@ hide:
   - footer
 ---
 
-!!! tip inline end "Widely used by many popular projects and highly praised by the community"
+???+ question "Why do you see this notice?"
+
+    The script of this project currently mainly serves Simplified Chinese users, but from the very beginning it was defined as a universal mirror switching script, providing many command options for customization, which is also one of the reasons why this project is now available to users of other languages. The script output is currently fixed in Simplified Chinese. With feedback and usage from users of other languages, the script may support Traditional Chinese and English in the future.
+
+    The documentation is translated with tools, and some professional terms below may be inaccurate. Corrections are welcome.
 
 ## :simple-docker:{style="color: #1d63ed"} Docker Installation & Mirror Switching Script
-
-<table>
-<tr>
-    <td><a href="https://www.debian.org" title="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian</td>
-    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux</td>
-</tr>
-<tr>
-    <td><a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> Ubuntu</td>
-    <td><a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora</td>
-</tr>
-<tr>
-    <td><a href="https://www.kali.org" title="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux</td>
-    <td><a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS</td>
-</tr>
-<tr>
-    <td><a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Linux Mint</td>
-    <td><a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Rocky Linux</td>
-</tr>
-<tr>
-    <td><a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> Deepin</td>
-    <td><a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux</td>
-</tr>
-<tr>
-    <td><a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.1em"></a> Zorin OS</td>
-    <td><a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler</td>
-</tr>
-<tr>
-    <td><a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian</td>
-    <td><a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS</td>
-</tr>
-<tr>
-    <td><a href="https://www.proxmox.com" title="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox VE</td>
-    <td><a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS</td>
-</tr>
-<tr>
-    <td><a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> Raspberry Pi OS</td>
-    <td></td>
-</tr>
-</table>
-
-### One-Click Execution Command
 
 === "Install"
 
@@ -65,14 +28,14 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
             ```
 
-        === ":simple-gitee: Gitee (Mirror Repository)"
+        === ":simple-gitee: Gitee"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode (Mirror Repository)"
+        === ":gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh)
@@ -112,14 +75,14 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
             ```
 
-        === ":simple-gitee: Gitee (Mirror Repository)"
+        === ":simple-gitee: Gitee"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode (Mirror Repository)"
+        === ":gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
@@ -139,6 +102,9 @@ hide:
             ```
             > Not supported in mainland China network environments.
 
+!!! tip "Docker Compose no longer needs to be installed separately"
+
+    Starting from V2, Docker Compose is part of the Docker CLI. The script integrates the installation of this [plugin](https://docs.docker.com/compose/install/linux) by default. Please use the `docker compose` command instead of `docker-compose`.
 
 !!! node "About Software Sources"
 
@@ -161,10 +127,6 @@ hide:
     Due to certain uncontrollable factors, Docker Hub is generally inaccessible in mainland China, making it impossible to pull images. It is recommended to use the domestic registry mirrors listed below.
 
     Note: The specified WEB protocol in the script is only for controlling the `Docker CE` software source. `Docker Registry` always uses the `HTTPS` protocol.
-
-!!! tip "Docker Compose no longer needs to be installed separately"
-
-    Starting from V2, Docker Compose is part of the Docker CLI. The script integrates the installation of this [plugin](https://docs.docker.com/compose/install/linux) by default. Please use the `docker compose` command instead of `docker-compose`.
 
 
 !!! quote "Built-in Registry Mirrors"
@@ -348,7 +310,7 @@ hide:
 
     - #### Pure Mode
 
-        This feature is for developers. When enabled, script output is minimized. Recommended for use with other options in non-interactive mode.
+        This feature is introduced to facilitate developers. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
@@ -356,28 +318,36 @@ hide:
 
         !!! tip "Scrolling command logs may have unpredictable display issues, but no problems have been found so far."
 
-- ### About Service Startup Errors
+- ### FAQ
 
-    !!! quote ""
+    - #### About Service Startup Errors
 
-        In non-fresh environments, you may encounter `Docker` service startup failures after running the script. It is recommended to reinstall to resolve this. Uninstalling will not delete local images or container data.
+        !!! quote ""
 
-        Uninstall commands:
+            In non-fresh environments, you may encounter `Docker` service startup failures after running the script. It is recommended to reinstall to resolve this. Uninstalling will not delete local images or container data.
 
-        === "Debian-based"
+            Uninstall commands:
 
-            ``` bash
-            apt-get remove -y docker* containerd.io runc && apt-get autoremove
-            ```
+            === "Debian-based"
 
-            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+                ``` bash
+                apt-get remove -y docker* containerd.io runc && apt-get autoremove
+                ```
 
-        === "RedHat-based / openEuler / OpenCloudOS / Anolis OS"
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
 
-            ``` bash
-            yum remove -y docker* containerd.io podman* runc
-            ```
+            === "RedHat-based / openEuler / OpenCloudOS / Anolis OS"
 
-            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+                ``` bash
+                yum remove -y docker* containerd.io podman* runc
+                ```
 
-        After uninstalling, simply rerun the script to install.
+                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+            After uninstalling, simply rerun the script to install.
+
+    - #### About unsupported operating systems
+
+        If it prompts that it is not supported, please use the system's own package management tool to install it. Because these packages are built and maintained by the Linux distribution's package maintainers and may have differences in configuration or are built from modified source code.
+
+        You can also use [Docker Desktop](https://www.docker.com/products/docker-desktop)

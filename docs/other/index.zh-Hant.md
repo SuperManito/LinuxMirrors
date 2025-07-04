@@ -10,50 +10,7 @@ hide:
 
     文檔使用工具進行翻譯，下方內容中的專業術語可能存在不準確的情況，歡迎修正。
 
-!!! tip inline end "已被眾多熱門項目使用，廣受社群用戶好評"
-
 ## :simple-docker:{style="color: #1d63ed"} Docker 安裝與換源腳本
-
-<table>
-<tr>
-    <td><a href="https://www.debian.org" title="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> Debian</td>
-    <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> Red Hat Enterprise Linux</td>
-</tr>
-<tr>
-    <td><a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> Ubuntu</td>
-    <td><a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Fedora</td>
-</tr>
-<tr>
-    <td><a href="https://www.kali.org" title="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> Kali Linux</td>
-    <td><a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.1em"></a> CentOS</td>
-</tr>
-<tr>
-    <td><a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.15em"></a> Linux Mint</td>
-    <td><a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Rocky Linux</td>
-</tr>
-<tr>
-    <td><a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> Deepin</td>
-    <td><a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> AlmaLinux</td>
-</tr>
-<tr>
-    <td><a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.1em"></a> Zorin OS</td>
-    <td><a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> openEuler</td>
-</tr>
-<tr>
-    <td><a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> Armbian</td>
-    <td><a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> OpenCloudOS</td>
-</tr>
-<tr>
-    <td><a href="https://www.proxmox.com" title="https://www.proxmox.com" target="_blank"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> Proxmox VE</td>
-    <td><a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> Anolis OS</td>
-</tr>
-<tr>
-    <td><a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> Raspberry Pi OS</td>
-    <td></td>
-</tr>
-</table>
-
-### 一鍵執行命令
 
 === "安裝"
 
@@ -100,7 +57,7 @@ hide:
 
         整合安裝 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支援選擇或更換軟體源以及映像倉庫、安裝指定版本、重裝等功能，支援 ARM 架構
 
-        腳本參考[官方文件](https://docs.docker.com/engine/install)使用系統套件管理工具進行安裝，不存在相容性、安全性等問題，可安裝的版本由 Docker CE 倉庫決定。
+        腳本參考[官方文件](https://docs.docker.com/engine/install)使用系統套件管理工具進行安裝，不存在相容性、安全性等問題，可安裝的版本由 Docker CE 倉庫決定
 
 === "僅更換鏡像加速器"
 
@@ -145,6 +102,25 @@ hide:
             ```
             > 不支援在中國大陸網路環境下使用
 
+<div class="grid cards" markdown>
+
+-   :material-star-four-points-outline:{ .lg .middle } __可完全取代官方安裝腳本__
+
+    ---
+
+    與 [get.docker.com](https://get.docker.com) 邏輯一致，融合了本項目換源架構以及特性
+
+-   :material-thumb-up-outline:{ .lg .middle } __已被許多流行項目使用__
+
+    ---
+
+    經過數年的技術沉澱與生產驗證，廣受社區好評，深得開發者喜愛
+
+</div>
+
+!!! tip "Docker Compose 不再需要獨立安裝"
+
+    Docker Compose 自 V2 版本起開始作為 Docker CLI（命令列）的一部分，腳本預設整合安裝該[插件](https://docs.docker.com/compose/install/linux)，請使用 `docker compose` 指令取代 `docker-compose`
 
 !!! node "軟體源說明"
 
@@ -167,10 +143,6 @@ hide:
     由於一些不可抗力的因素，目前中國大陸網路環境一般無法正常造訪 Docker Hub 因此無法拉取鏡像，建議使用下方提到的國內可用鏡像倉庫來源
 
     註：腳本內的指定 WEB 協議互動僅用於控制 `Docker CE` 軟體源，`Docker Registry` 強制使用 `HTTPS` 協議
-
-!!! tip "Docker Compose 不再需要獨立安裝"
-
-    Docker Compose 自 V2 版本起開始作為 Docker CLI（命令列）的一部分，腳本預設整合安裝該[插件](https://docs.docker.com/compose/install/linux)，請使用 `docker compose` 指令取代 `docker-compose`
 
 
 !!! quote "預設的鏡像倉庫源"
@@ -362,28 +334,36 @@ hide:
 
         !!! tip "滾動輸出的命令日誌可能有無法預料的顯示問題，不過目前暫未發現異常"
 
-- ### 關於服務報錯無法啟動
+- ### 常見問題
 
-    !!! quote ""
+    - #### 關於服務報錯無法啟動
 
-        非新裝環境可能會在執行腳本後遇到 `Docker` 服務無法啟動的情況，建議重新安裝來解決，卸載不會刪除本機映像和容器數據
+        !!! quote ""
 
-        卸載指令如下：
+            非新裝環境可能會在執行腳本後遇到 `Docker` 服務無法啟動的情況，建議重新安裝來解決，卸載不會刪除本機映像和容器數據
 
-        === "Debian 系"
+            卸載指令如下：
 
-            ``` bash
-            apt-get remove -y docker* containerd.io runc && apt-get autoremove
-            ```
+            === "Debian 系"
 
-            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+                ``` bash
+                apt-get remove -y docker* containerd.io runc && apt-get autoremove
+                ```
 
-        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
 
-            ``` bash
-            yum remove -y docker* containerd.io podman* runc
-            ```
+            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
-            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+                ``` bash
+                yum remove -y docker* containerd.io podman* runc
+                ```
 
-        卸載完成後重新執行腳本安裝即可
+                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+            卸載完成後重新執行腳本安裝即可
+
+    - #### 關於不支援的作業系統
+
+        如果提示不支援那麼請使用系統自備的套件管理工具進行安裝。因為這些軟體包由 Linux 發行版的軟體包維護者建構和維護，可能存在配置差異或由修改後的原始碼建構。
+
+        也可以使用 [Docker Desktop](https://www.docker.com/products/docker-desktop)
