@@ -309,7 +309,7 @@
     border-radius: 6px;
     height: 80px;
     max-height: 80px;
-    transition: background-color 0.2s, filter 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+    transition: background-color 0.2s;
 }
 
 .sponsor .sponsor-item:hover {
@@ -324,6 +324,7 @@
     max-width: 100%;
     height: auto;
     vertical-align: middle;
+    transition: filter 0.1s ease-in-out;
 }
 
 .sponsor-item-toc {
