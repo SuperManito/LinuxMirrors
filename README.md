@@ -151,13 +151,13 @@
 - ### GNU/Linux 更换系统软件源
 
     ```bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+    wget https://raw.githubusercontent.com/marigold233/Linux-mirrors/refs/heads/main/ChangeMirrors.sh && sudo bash ChangeMirrors.sh; mv ChangeMirrors.sh /tmp
     ```
 
 - ### Docker 安装与换源
 
     ```bash
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+    wget https://raw.githubusercontent.com/marigold233/Linux-mirrors/refs/heads/main/ChangeMirrors.sh && sudo bash ChangeMirrors.sh; mv ChangeMirrors.sh /tmp
     ```
 
 - ### Docker 更换镜像加速器
@@ -166,24 +166,6 @@
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
     ```
 
-## 特别感谢
-
-<a href="https://www.jetbrains.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/jetbrains-dark.svg" width="140" height="50"><img src="/docs/assets/images/icon/jetbrains-light.svg" alt="jetbrains" width="140" height="50"></picture></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.netlify.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/netlify-dark.png" width="110"><img src="/docs/assets/images/icon/netlify-light.png" alt="netlify" width="110"></picture></a>
-
-本项目已加入 JetBrains & Netlify 开源项目计划
-
 ## LICENSE
 
 Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
-
-这是一个完全开源的项目，旨在为从事计算机相关行业的朋友们提供便利，使换源更简单
-
-<a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
- </picture>
-</a>
-
-__如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 ⭐ 并分享给更多的朋友。__

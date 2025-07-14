@@ -1,9 +1,7 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-02
 ## License: MIT
-## GitHub: https://github.com/SuperManito/LinuxMirrors
-## Website: https://linuxmirrors.cn
+## GitHub: https://github.com/marigold233/Linux-mirrors
 
 ## 定制方法
 # 只需要在头部（此处）定义全局变量即可，具体详见官网文档，简单写几个例子
@@ -28,6 +26,7 @@ mirror_list_default=(
     "重庆邮电大学@mirrors.cqupt.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
+    "校园网联合镜像站@mirrors.cernet.edu.cn"
 )
 # 中国大陆教育网格式："软件源名称@软件源地址"
 mirror_list_edu=(
@@ -61,6 +60,7 @@ mirror_list_edu=(
     "西北农林科技大学@mirrors.nwafu.edu.cn"
     "浙江大学@mirrors.zju.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
+    "校园网联合镜像站@mirrors.cernet.edu.cn"
 )
 # 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
@@ -152,19 +152,7 @@ mirror_list_intranet=(
 )
 
 ## 赞助商广告
-SPONSOR_ADS=(
-    "1Panel · Linux 面板｜极简运维 ➜  \033[3mhttps://1panel.cn\033[0m"
-    "多途云 · 智能化防护，每一次连接皆在安全之下 ➜  \033[3mhttps://www.duotuyun.com\033[0m"
-    "毫秒镜像 · 专为中国开发者提供Docker镜像加速下载服务 ➜  \033[3mhttps://1ms.run\033[0m"
-    "速拓云 · 国内高防云28元/月｜香港云100M优化线路9元/月 ➜  \033[3mhttps://www.sutuoyun.com\033[0m"
-    "林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  \033[3mhttps://www.dkdun.cn\033[0m"
-    "云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  \033[3mhttps://yunyoo.cc\033[0m"
-    "语鹿云盾 · 专业CDN加速、防御，亚太百兆三网优化CDN低至9元起 ➜  \033[3mhttps://www.lucdn.cn\033[0m"
-    "不死鸟CDN · 香港日本高防CDN，免实名/免备案，轻松阻断DDOS/CC攻击 ➜  \033[3mhttps://www.bsncdn.org\033[0m"
-    "不二云 · 国内外建站快响应服务器的不二之选 ➜  \033[3mhttps://cb2.cn\033[0m"
-    "HKGserver · 全球家宽｜双ISP｜住宅原生云服务器54元/月起 ➜  \033[3mhttps://www.hkgserver.com\033[0m"
-    "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  \033[3mhttps://www.runxinyun.com\033[0m"
-)
+SPONSOR_ADS=()
 
 ##############################################################################
 
@@ -665,7 +653,7 @@ function run_end() {
         echo ''
         return
     fi
-    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m"
+    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://github.com/marigold233/Linux-mirrors\033[0m"
     if [[ "${#SPONSOR_ADS[@]}" -gt 0 ]]; then
         echo -e "\n\033[2m【赞助商广告】\033[0m"
         for ad in "${SPONSOR_ADS[@]}"; do
@@ -673,7 +661,7 @@ function run_end() {
             echo -e "  \033[2m${ad}\033[0m"
         done
     fi
-    echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
+    echo -e "\n\033[3;1mPowered by \033[34mLinux-mirrors\033[0m\n"
 }
 
 ## 报错退出
@@ -2828,6 +2816,35 @@ function interactive_select_mirror() {
     local selected=0
     local start=0
     local page_size=$(($(tput lines 2>/dev/null) - 3)) # 减去3行用于显示提示信息
+    declare -A network_test_result
+    declare -a network_test_sorted
+
+    function network_delay_test() {
+        declare -n options_nameref="$1"
+        declare -n network_test_result_ref="$2"
+        declare -n network_test_sorted_ref="$3"
+        function start_ping_test() {
+            for m in "${options_nameref[@]}"; do
+                local mirror_url="${m#*@}"
+                {
+                    ping_content=$(ping  -i 0.3 -c5 -W2 "$mirror_url")
+                    ping_avg=$(echo "$ping_content" | grep -oP 'rtt min/avg/max/mdev = \K[^/]+' || printf "Failed\n") 
+                    [[ ! "$ping_avg" =~ "Fail" ]] && printf "%s %.2fms\n" "$m" "${ping_avg}" || printf "%s %s\n" "$m" "$ping_avg"          
+                } &
+            done
+            wait
+        } 
+        while read network_delay murl ; do
+            network_test_result_ref["$murl"]="$network_delay"
+            network_test_sorted_ref+=("$murl")
+        done < <(
+            start_ping_test | while read mirror_url mirror_network_delay; do
+                printf '%s %s\n' "$mirror_network_delay" "$mirror_url"
+                # 1.给行加排序前缀 -> 2.排序 -> 3.移除前缀
+            done | sed -e 's/^[0-9]/1 &/' -e 's/^Fail/2 &/' | sort -k1,1n -k2,2n | cut -d' ' -f2-
+            )
+        options_nameref=("${network_test_sorted_ref[@]}")
+    }
     function clear_menu() {
         tput rc 2>/dev/null
         for ((i = 0; i < ${#options[@]} + 1; i++)); do
@@ -2852,10 +2869,12 @@ function interactive_select_mirror() {
             end=${#options[@]}-1
         fi
         for ((i = start; i <= end; i++)); do
+            local p=${options[$i]}
+            local m=${options[$i]%@*}
             if [ "$i" -eq "$selected" ]; then
-                echo -e "\e[34;4m➤ ${options[$i]%@*}\e[0m"
+                echo -e "\e[34;4m➤ $m\t\t  ${network_test_result[$p]}\e[0m"
             else
-                echo -e "  ${options[$i]%@*}"
+                echo -e "  $m\t\t  ${network_test_result[$p]}"
             fi
         done
     }
@@ -2871,6 +2890,8 @@ function interactive_select_mirror() {
     tput sc 2>/dev/null     # 保存光标位置
     tput civis 2>/dev/null  # 隐藏光标
     trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
+    printf "请稍等，正在测试链接到镜像源延迟中...\n"
+    network_delay_test options network_test_result network_test_sorted
     draw_menu               # 初始化菜单位置
     # 处理选择
     while true; do
