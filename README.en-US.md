@@ -168,7 +168,7 @@
 
 ## Special Thanks
 
-<a href="https://www.jetbrains.com/zh-cn" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/jetbrains-dark.svg" width="140" height="50"><img src="/docs/assets/images/icon/jetbrains-light.svg" alt="jetbrains" width="140" height="50"></picture></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.netlify.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/netlify-dark.png" width="110"><img src="/docs/assets/images/icon/netlify-light.png" alt="netlify" width="110"></picture></a>
+<a href="https://www.jetbrains.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/jetbrains-dark.svg" width="140" height="50"><img src="/docs/assets/images/icon/jetbrains-light.svg" alt="jetbrains" width="140" height="50"></picture></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.netlify.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/netlify-dark.png" width="110"><img src="/docs/assets/images/icon/netlify-light.png" alt="netlify" width="110"></picture></a>
 
 This project has joined the JetBrains & Netlify Open Source Program.
 
