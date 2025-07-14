@@ -152,7 +152,9 @@ hide:
 !!! tip "Usage Help"
 
     The tabs represent the built-in mirror types and script sources. Please check whether your target mirror supports your operating system before use. You can check in the [Mirror List](../mirrors/index.md).  
-    By default, the original mirror configuration will be automatically backed up. For more details, see the documentation below. If you are confused by some options during use, just press Enter all the way after selecting the mirror, which is the best practice.
+    By default, the original mirror configuration will be **automatically backed up**. For more details, see the documentation below. If you are confused by some options during use, just press Enter all the way after selecting the mirror, which is the best practice.
+
+    The script supports use in abnormal environments such as when the system's original software source is **damaged**, **missing**, **invalid**, etc., without the need to install any additional dependencies.
 
 !!! quote "About Mirror Selection (Must Read for New Users)"
 
