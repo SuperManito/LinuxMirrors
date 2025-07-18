@@ -33,6 +33,7 @@
 - [ ] `CentOS`
 - [ ] `Rocky Linux`
 - [ ] `AlmaLinux`
+- [ ] `Oracle Linux`
 - [ ] `openEuler`
 - [ ] `OpenCloudOS`
 - [ ] `openKylin`
