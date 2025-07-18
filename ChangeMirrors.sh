@@ -2794,7 +2794,7 @@ function change_mirrors_or_install_EPEL() {
             fi
             ;;
         esac
-        $package_manager install -y "https://mirrors.cloud.tencent.com/${package_path}.noarch.rpm"
+        eval $package_manager install -y https://mirrors.cloud.tencent.com/${package_path}.noarch.rpm
         rm -rf $Dir_YumRepos/epel*
     fi
     ## 删除原有 repo 源文件
