@@ -1800,6 +1800,12 @@ function change_mirrors_main() {
 
 ## 升级软件包
 function upgrade_software() {
+    ## 跳过特殊的系统
+    case "${SYSTEM_JUDGMENT}" in
+    "${SYSTEM_RHEL}" | "${SYSTEM_ORACLE}")
+        return
+        ;;
+    esac
     local ask_text=""
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
