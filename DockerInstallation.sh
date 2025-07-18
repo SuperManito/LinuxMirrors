@@ -11,13 +11,15 @@ mirror_list_docker_ce=(
     "阿里云@mirrors.aliyun.com/docker-ce"
     "腾讯云@mirrors.tencent.com/docker-ce"
     "华为云@mirrors.huaweicloud.com/docker-ce"
-    "微软 Azure 中国@mirror.azure.cn/docker-ce"
     "网易@mirrors.163.com/docker-ce"
     "火山引擎@mirrors.volces.com/docker"
+    "微软 Azure 中国@mirror.azure.cn/docker-ce"
     "清华大学@mirrors.tuna.tsinghua.edu.cn/docker-ce"
     "北京大学@mirrors.pku.edu.cn/docker-ce"
+    "浙江大学@mirrors.zju.edu.cn/docker-ce"
     "南京大学@mirrors.nju.edu.cn/docker-ce"
     "上海交通大学@mirror.sjtu.edu.cn/docker-ce"
+    "重庆邮电大学@mirrors.cqupt.edu.cn/docker-ce"
     "中国科学技术大学@mirrors.ustc.edu.cn/docker-ce"
     "中国科学院软件研究所@mirror.iscas.ac.cn/docker-ce"
     "官方@download.docker.com"
@@ -56,6 +58,23 @@ mirror_list_registry=(
     "谷歌云（亚洲）@asia.gcr.io"
     "谷歌云（欧洲）@eu.gcr.io"
     "官方 Docker Hub@registry.hub.docker.com"
+)
+
+## 配置需要区分公网地址和内网地址的软件源（不分地域）
+# 需要同时在两个数组变量中分别定义软件源地址，并且保证排列顺序一致
+# 软件源公网地址列表
+mirror_list_extranet=(
+    "mirrors.aliyun.com/docker-ce"
+    "mirrors.tencent.com/docker-ce"
+    "mirrors.huaweicloud.com/docker-ce"
+    "mirrors.volces.com/docker-ce"
+)
+# 软件源内网地址列表
+mirror_list_intranet=(
+    "mirrors.cloud.aliyuncs.com/docker-ce"
+    "mirrors.tencentyun.com/docker-ce"
+    "mirrors.myhuaweicloud.com/docker-ce"
+    "mirrors.ivolces.com/docker-ce"
 )
 
 ## 赞助商广告
@@ -172,18 +191,19 @@ function handle_command_options() {
         echo -e "
 命令选项(名称/含义/值)：
 
-  --source                 指定 Docker CE 源地址(域名或IP)      地址
-  --source-registry        指定镜像仓库地址(域名或IP)           地址
-  --branch                 指定 Docker CE 源仓库(路径)          仓库名
-  --codename               指定 Debian 系操作系统的版本代号     代号名称
-  --designated-version     指定 Docker CE 安装版本              版本号
-  --protocol               指定 Docker CE 源的 WEB 协议         http 或 https
-  --install-latest         是否安装最新版本的 Docker Engine     true 或 false
-  --close-firewall         是否关闭防火墙                       true 或 false
-  --clean-screen           是否在运行前清除屏幕上的所有内容     true 或 false
-  --only-registry          仅更换镜像仓库模式                   无
-  --ignore-backup-tips     忽略覆盖备份提示                     无
-  --pure-mode              纯净模式，精简打印内容               无
+  --source                 指定 Docker CE 源地址(域名或IP)         地址
+  --source-registry        指定镜像仓库地址(域名或IP)              地址
+  --branch                 指定 Docker CE 源仓库(路径)             仓库名
+  --codename               指定 Debian 系操作系统的版本代号        代号名称
+  --designated-version     指定 Docker CE 安装版本                 版本号
+  --protocol               指定 Docker CE 源的 WEB 协议            http 或 https
+  --use-intranet-source    是否优先使用内网 Docker CE 软件源地址   true 或 false
+  --install-latest         是否安装最新版本的 Docker Engine        true 或 false
+  --close-firewall         是否关闭防火墙                          true 或 false
+  --clean-screen           是否在运行前清除屏幕上的所有内容        true 或 false
+  --only-registry          仅更换镜像仓库模式                      无
+  --ignore-backup-tips     忽略覆盖备份提示                        无
+  --pure-mode              纯净模式，精简打印内容                  无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
   "
@@ -266,6 +286,22 @@ function handle_command_options() {
                 esac
             else
                 ocommand_error "$1" " WEB 协议 (http/https) "
+            fi
+            ;;
+        ## 使用内网地址
+        --use-intranet-source)
+            if [ "$2" ]; then
+                case "$2" in
+                [Tt]rue | [Ff]alse)
+                    USE_INTRANET_SOURCE="${2,,}"
+                    shift
+                    ;;
+                *)
+                    command_error "$2" " true 或 false "
+                    ;;
+                esac
+            else
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 安装最新版本
@@ -432,16 +468,8 @@ function collect_system_info() {
     elif [ -s "${File_openEulerRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s "${File_OpenCloudOSRelease}" ]; then
-        # 拦截 OpenCloudOS 9 及以上版本，不支持从 Docker 官方仓库安装
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 9 ]]; then
-            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "OpenCloudOS 9" "dnf install -y docker\nsystemctl enable --now docker"
-        fi
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s "${File_AnolisOSRelease}" ]; then
-        # 拦截 Anolis OS 8.8 及以上版本，不支持从 Docker 官方仓库安装，23 版本支持
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
-            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Anolis OS 8" "dnf install -y docker\nsystemctl enable --now docker"
-        fi
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
     elif [ -s "${File_openKylinVersion}" ]; then
         [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "openKylin" "apt-get install -y docker\nsystemctl enable --now docker"
@@ -476,10 +504,6 @@ function collect_system_info() {
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
-        # 拦截 Anolis OS 8.8 以下版本，不支持从 Docker 官方仓库安装
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_ANOLISOS}" ]]; then
-            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Anolis OS 8" "dnf install -y docker\nsystemctl enable --now docker"
-        fi
         ## 特殊系统判断
         # Red Hat Enterprise Linux
         grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
@@ -640,6 +664,47 @@ function choose_mirrors() {
         fi
     }
 
+    ## 选择使用软件源内网地址
+    function choose_use_intranet_address() {
+        local ask_text="默认使用软件源的公网地址，是否继续?"
+        local intranet_source
+        for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
+            if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
+                intranet_source="${mirror_list_intranet[i]}"
+                ONLY_HTTP="true" # 强制使用 HTTP 协议
+                break
+            else
+                continue
+            fi
+        done
+        if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
+            if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
+                echo ''
+                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
+                if [[ "${_SELECT_RESULT}" == "false" ]]; then
+                    SOURCE="${intranet_source}"
+                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                fi
+            else
+                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
+                read -rp "${CHOICE}" INPUT
+                [[ -z "${INPUT}" ]] && INPUT=Y
+                case "${INPUT}" in
+                [Yy] | [Yy][Ee][Ss]) ;;
+                [Nn] | [Nn][Oo])
+                    SOURCE="${intranet_source}"
+                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                    ;;
+                *)
+                    input_error "默认不使用内网地址"
+                    ;;
+                esac
+            fi
+        elif [[ "${USE_INTRANET_SOURCE}" == "true" ]]; then
+            SOURCE="${intranet_source}"
+        fi
+    }
+
     function print_title() {
         local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_ID}"}"
         local arch="${DEVICE_ARCH}"
@@ -683,6 +748,11 @@ function choose_mirrors() {
                 esac
             done
         fi
+    fi
+
+    ## 选择软件源内网地址
+    if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
+        choose_use_intranet_address
     fi
 
     if [[ -z "${SOURCE_REGISTRY}" ]]; then
@@ -882,7 +952,7 @@ function configure_docker_ce_mirror() {
         apt-key del 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88 >/dev/null 2>&1 # 删除旧的密钥
         [ -f "${file_keyring}" ] && rm -rf $file_keyring
         install -m 0755 -d /etc/apt/keyrings
-        curl -fsSL https://${SOURCE}/linux/${SOURCE_BRANCH}/gpg -o $file_keyring >/dev/null
+        curl -fsSL "${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/gpg" -o $file_keyring >/dev/null
         if [ $? -ne 0 ]; then
             output_error "GPG 密钥下载失败，请检查网络或更换 Docker CE 软件源后重试！"
         fi
@@ -913,8 +983,13 @@ function configure_docker_ce_mirror() {
                 target_version="${SYSTEM_VERSION_ID_MAJOR}"
                 ;;
             *)
-                ## 目前红帽系衍生系统还没有普及 10 版本
-                target_version="9" # 使用较新的版本
+                target_version="8" # 注：部分系统使用9版本分支会有兼容性问题
+                # 适配国产系统
+                if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_OPENEULER}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" == 23 ]]; then
+                    target_version="9"
+                elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_OPENEULER}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 22 ]]; then
+                    target_version="9"
+                fi
                 ;;
             esac
             sed -i "s|\$releasever|${target_version}|g" $Dir_YumRepos/docker-ce.repo

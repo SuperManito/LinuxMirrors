@@ -191,6 +191,7 @@ hide:
     | `--codename` | 指定 Debian 係作業系統的版本代號 | `代號名稱` |
     | `--designated-version` | 指定 `Docker CE` 安裝版本 | `版本號（詳見下方文檔）` |
     | `--protocol` | 指定 `Docker CE` 源的 WEB 協議 | `http` 或 `https` |
+    | `--use-intranet-source` | 是否優先使用內部網路 Docker CE 軟體源位址 | `true` 或 `false` |
     | `--install-latest` | 是否安裝最新版本的 Docker Engine | `true` 或 `false` |
     | `--close-firewall` | 是否關閉防火牆 | `true` 或 `false` |
     | `--clean-screen` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |

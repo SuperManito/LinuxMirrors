@@ -134,8 +134,7 @@ mirror_list_abroad=(
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
-# 配置方法：需要同时在两个数组变量中分别定义软件源地址，并且保证排列顺序一致
-# 工作原理：当检测到用户所选择的软件源地址在 “软件源公网地址列表” 中时就会询问是否切换为内网地址，然后在 “软件源内网地址列表” 从相同的位置提取内网地址
+# 需要同时在两个数组变量中分别定义软件源地址，并且保证排列顺序一致
 # 软件源公网地址列表
 mirror_list_extranet=(
     "mirrors.aliyun.com"
@@ -843,7 +842,7 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 2[1-5] ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 2[0-5] ]]; then
             is_supported="false"
         fi
         ;;
@@ -6138,7 +6137,7 @@ gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
 EOF
     ## 替换版本号
-    local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g; s/[()]/ /g; s/  / /g; s/^ //g; s/ $//g; s/ /-/g; s/_/-/g")"
+    local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed 's/["()]//g; s/[_ ]\+/-/g; s/^-\+\|-\+$//g')"
     sed -e "s|openEuler-version|openEuler-${version_name}|g" \
         -i \
         $Dir_YumRepos/openEuler.repo

@@ -183,18 +183,19 @@ hide:
 
     命令选项(名称/含义/值)：
 
-      --source                 指定 Docker CE 源地址(域名或IP)     地址
-      --source-registry        指定镜像仓库地址(域名或IP)           地址
-      --branch                 指定 Docker CE 源仓库(路径)         仓库名
-      --codename               指定 Debian 系操作系统的版本代号     代号名称
-      --designated-version     指定 Docker CE 安装版本             版本号
-      --protocol               指定 Docker CE 源的 WEB 协议        http 或 https
-      --install-latest         是否安装最新版本的 Docker Engine    true 或 false
-      --close-firewall         是否关闭防火墙                      true 或 false
-      --clean-screen           是否在运行前清除屏幕上的所有内容      true 或 false
-      --only-registry          仅更换镜像仓库模式                   无
-      --ignore-backup-tips     忽略覆盖备份提示                    无
-      --pure-mode              纯净模式，精简打印内容               无
+      --source                 指定 Docker CE 源地址(域名或IP)        地址
+      --source-registry        指定镜像仓库地址(域名或IP)              地址
+      --branch                 指定 Docker CE 源仓库(路径)            仓库名
+      --codename               指定 Debian 系操作系统的版本代号        代号名称
+      --designated-version     指定 Docker CE 安装版本                版本号
+      --protocol               指定 Docker CE 源的 WEB 协议           http 或 https
+      --use-intranet-source    是否优先使用内网 Docker CE 软件源地址   true 或 false
+      --install-latest         是否安装最新版本的 Docker Engine       true 或 false
+      --close-firewall         是否关闭防火墙                         true 或 false
+      --clean-screen           是否在运行前清除屏幕上的所有内容         true 或 false
+      --only-registry          仅更换镜像仓库模式                      无
+      --ignore-backup-tips     忽略覆盖备份提示                       无
+      --pure-mode              纯净模式，精简打印内容                  无
     ```
 
     | 名称 | 含义 | 选项值 |
@@ -205,6 +206,7 @@ hide:
     | `--codename` | 指定 Debian 系操作系统的版本代号 | `代号名称` |
     | `--designated-version` | 指定 `Docker CE` 安装版本 | `版本号（详见下方文档）` |
     | `--protocol` | 指定 `Docker CE` 源的 WEB 协议 | `http` 或 `https` |
+    | `--use-intranet-source` | 是否优先使用内网 Docker CE 软件源地址 | `true` 或 `false` |
     | `--install-latest` | 是否安装最新版本的 Docker Engine | `true` 或 `false` |
     | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
     | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |

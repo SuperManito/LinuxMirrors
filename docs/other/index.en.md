@@ -175,6 +175,7 @@ hide:
     | `--codename` | Specify Debian-based OS codename | `codename` |
     | `--designated-version` | Specify `Docker CE` installation version | `version (see docs below)` |
     | `--protocol` | Specify WEB protocol for `Docker CE` source | `http` or `https` |
+    | `--use-intranet-source` | Prefer intranet Docker CE mirror address | `true` or `false` |
     | `--install-latest` | Whether to install the latest Docker Engine | `true` or `false` |
     | `--close-firewall` | Whether to disable the firewall | `true` or `false` |
     | `--clean-screen` | Whether to clear the screen before running | `true` or `false` |
