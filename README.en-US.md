@@ -83,6 +83,10 @@
         <td align="center">8 ~ 10</td>
     </tr>
     <tr>
+        <td><a href="https://www.oracle.com/linux" target="_blank"><sub><img src="/docs/assets/images/icon/oracle-linux.png" width="16" height="16"></sub></a>&nbsp;Oracle Linux</td>
+        <td align="center">8 ~ 10</td>
+    </tr>
+    <tr>
         <td><a href="https://www.openeuler.org/zh" target="_blank"><sub><img src="/docs/assets/images/icon/openeuler.ico" width="16" height="16"></sub></a>&nbsp;openEuler</td>
         <td align="center">21 ~ 25</td>
     </tr>

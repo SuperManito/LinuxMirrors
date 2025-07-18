@@ -6,9 +6,13 @@ search:
   exclude: true
 ---
 
+### `2025-07-18`
+
+  * 新增适配 Oracle Linux 操作系统 [#76b8b08](https://github.com/SuperManito/LinuxMirrors/commit/76b8b0834ae493ed8731c83440c4a8f4dcad17dc)
+
 ### `2025-06-15`
 
-  * 适配 Rocky Linux 10 [#dafaa13](https://github.com/SuperManito/LinuxMirrors/commit/dafaa13e44209d719b5b6f06f4cc3c4f2ef24d3b)  
+  * 适配 Rocky Linux 10 [#dafaa13](https://github.com/SuperManito/LinuxMirrors/commit/dafaa13e44209d719b5b6f06f4cc3c4f2ef24d3b)
 
 ### `2025-06-03`
 

@@ -54,7 +54,7 @@ hide:
 
     ---
 
-    已适配高达 `24+` 操作系统，涵盖各类版本，精准识别系统类型  
+    已适配高达 `25+` 操作系统，涵盖各类版本，精准识别系统类型  
     脚本兼容性高，不支持的系统会有相应提示并无操作跳出
 
 -   :material-vector-triangle:{ .lg .middle } __多元软件源适配__
@@ -119,6 +119,7 @@ hide:
 | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.125em"></a> **CentOS** | _7～8 / Stream 8～10_ |
 | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | _8～10_ |
 | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | _8～10_ |
+| <a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank"><img src="/assets/images/icon/oracle-linux.png" width="16" height="16" style="vertical-align: -0.25em"></a> **Oracle Linux** :material-information-outline:{ title="使用 <code>CentOS Stream</code> 源" } | _8～10_ |
 | <a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **openEuler（开源欧拉）** | _21～25_ |
 | <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS（鸥栖）** | _8.6～9 / Stream 23_ |
 | <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin（开放麒麟）** | _all_ |
