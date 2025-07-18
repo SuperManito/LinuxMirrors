@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-02
+## Modified: 2025-07-18
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -12,7 +12,7 @@
 # WEB_PROTOCOL="https"      # 指定 WEB 协议
 
 ## 软件源列表
-# 国内格式："软件源名称@软件源地址"
+# 国内格式："名称@地址"
 mirror_list_default=(
     "阿里云@mirrors.aliyun.com"
     "腾讯云@mirrors.tencent.com"
@@ -29,7 +29,7 @@ mirror_list_default=(
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
 )
-# 中国大陆教育网格式："软件源名称@软件源地址"
+# 中国大陆教育网格式："名称@地址"
 mirror_list_edu=(
     "北京大学@mirrors.pku.edu.cn"
     "北京交通大学@mirror.bjtu.edu.cn"
@@ -62,7 +62,7 @@ mirror_list_edu=(
     "浙江大学@mirrors.zju.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
 )
-# 海外格式："洲 · 软件源名称 · 国家/地区@软件源地址"，修改前请先前往官网阅读添加规范
+# 海外格式："洲 · 名称 · 国家/地区@地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
     "亚洲 · xTom · 香港@mirrors.xtom.hk"
     "亚洲 · 01Link · 香港@mirror.01link.hk"
@@ -183,6 +183,7 @@ SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
 SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
+SYSTEM_ORACLE="Oracle Linux"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
 SYSTEM_OPENEULER="openEuler"
@@ -278,9 +279,7 @@ function main() {
     run_end
 }
 
-## 处理命令选项
 function handle_command_options() {
-    ## 命令帮助
     function output_command_help() {
         echo -e "\n命令选项(名称/含义/值)：
 
@@ -316,7 +315,6 @@ function handle_command_options() {
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues\n"
     }
 
-    ## 判断参数
     while [ $# -gt 0 ]; do
         case "$1" in
         ## 海外模式
@@ -332,78 +330,78 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+                command_error "$1" "软件源地址"
             fi
             ;;
         --source-epel)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE_EPEL="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+                command_error "$1" "软件源地址"
             fi
             ;;
         --source-security)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE_SECURITY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+                command_error "$1" "软件源地址"
             fi
             ;;
         --source-vault)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE_VAULT="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+                command_error "$1" "软件源地址"
             fi
             ;;
         --source-portage)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE_PORTAGE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+                command_error "$1" "软件源地址"
             fi
             ;;
         --source-base-system)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE_BASE_SYSTEM="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+                command_error "$1" "软件源地址"
             fi
             ;;
         ## 指定软件源仓库
@@ -412,7 +410,7 @@ function handle_command_options() {
                 SOURCE_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+                command_error "$1" "软件源仓库"
             fi
             ;;
         --branch-epel)
@@ -420,7 +418,7 @@ function handle_command_options() {
                 SOURCE_EPEL_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+                command_error "$1" "软件源仓库"
             fi
             ;;
         --branch-security)
@@ -428,7 +426,7 @@ function handle_command_options() {
                 SOURCE_SECURITY_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+                command_error "$1" "软件源仓库"
             fi
             ;;
         --branch-vault)
@@ -436,7 +434,7 @@ function handle_command_options() {
                 SOURCE_VAULT_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+                command_error "$1" "软件源仓库"
             fi
             ;;
         --branch-portage)
@@ -444,7 +442,7 @@ function handle_command_options() {
                 SOURCE_PORTAGE_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+                command_error "$1" "软件源仓库"
             fi
             ;;
         --branch-base-system)
@@ -452,7 +450,7 @@ function handle_command_options() {
                 SOURCE_BASE_SYSTEM_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+                command_error "$1" "软件源仓库"
             fi
             ;;
         ## 指定 Debian 系操作系统的版本代号
@@ -461,7 +459,7 @@ function handle_command_options() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定版本代号！"
+                command_error "$1" "版本代号"
             fi
             ;;
         ## 使用官方源
@@ -473,11 +471,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## EPEL 使用 官方源
@@ -489,11 +487,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 使用内网地址
@@ -505,11 +503,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## WEB 协议（HTTP/HTTPS）
@@ -521,11 +519,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该选项后指定 http 或 https ！"
+                    command_error "$2" " http 或 https "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 WEB 协议（http/https）！"
+                ocommand_error "$1" " WEB 协议 (http/https) "
             fi
             ;;
         ## 安装 EPEL 附加软件包
@@ -537,11 +535,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         --only-epel)
@@ -557,11 +555,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -577,11 +575,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 在更新软件包后清理下载缓存
@@ -593,11 +591,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 清除屏幕上的所有内容
@@ -609,11 +607,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 打印源文件修改前后差异
@@ -630,7 +628,7 @@ function handle_command_options() {
             exit
             ;;
         *)
-            output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请确认后重新输入！"
+            command_error "$1"
             ;;
         esac
         shift
@@ -676,25 +674,37 @@ function run_end() {
     echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
 }
 
-## 报错退出
 function output_error() {
     [ "$1" ] && echo -e "\n$ERROR $1\n"
     exit 1
 }
 
-## 检查命令是否存在
+function command_error() {
+    local tmp_text="请确认后重新输入"
+    if [[ "${2}" ]]; then
+        tmp_text="请在该选项后指定${2}"
+    fi
+    output_error "命令选项 ${BLUE}$1${PLAIN} 无效，${tmp_text}！"
+}
+
+function unsupport_system_error() {
+    output_error "不支持当前操作系统（$1），请前往官网查看支持列表！"
+}
+
+function input_error() {
+    echo -e "\n$WARN 输入错误，$1！"
+}
+
 function command_exists() {
     command -v "$@" &>/dev/null
 }
 
-## 权限判定
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
         output_error "权限不足，请使用 Root 用户运行本脚本"
     fi
 }
 
-## 收集系统信息
 function collect_system_info() {
     ## 定义系统名称
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
@@ -708,8 +718,6 @@ function collect_system_info() {
     ## 判定当前系统派系
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
-    elif [ -s "${File_OracleLinuxRelease}" ]; then
-        output_error "当前操作系统（Oracle Linux）不在本脚本的支持范围内，请前往官网查看支持列表！"
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s "${File_openEulerRelease}" ]; then
@@ -731,7 +739,7 @@ function collect_system_info() {
     elif [[ "${SYSTEM_NAME}" == *"NixOS"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_NIXOS}"
     else
-        output_error "当前操作系统不在本脚本的支持范围内，请前往官网查看支持列表！"
+        unsupport_system_error "未知系统"
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -777,6 +785,8 @@ function collect_system_info() {
         grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
         # CentOS Stream
         grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
+        # Oracle Linux
+        [ -s "${File_OracleLinuxRelease}" ] && unsupport_system_error "Oracle Linux"
         ;;
     "${SYSTEM_ARCH}")
         if [ -f "${File_ManjaroRelease}" ]; then
@@ -864,11 +874,11 @@ function collect_system_info() {
         # 理论全部支持或不作判断
         ;;
     *)
-        output_error "当前操作系统不在本脚本的支持范围内（系统版本未知），请前往官网查看支持列表！"
+        unsupport_system_error "系统版本未知"
         ;;
     esac
     if [[ "${is_supported}" == "false" ]]; then
-        output_error "当前系统版本不在本脚本的支持范围内，请前往官网查看支持列表！"
+        unsupport_system_error "不支持当前系统版本"
     fi
     ## 判定系统处理器架构
     DEVICE_ARCH_RAW="$(uname -m)"
@@ -1083,15 +1093,14 @@ function choose_mirrors() {
         fi
     }
 
-    ## 选择软件源内网地址
-    # 例如部分云计算厂商的镜像站区分外网（公网）地址和内网地址，内网地址仅面向云计算厂商云服务器用户使用
-    # 内网地址一般不支持使用 HTTPS 协议，所以默认设置为 HTTP 协议
-    function choose_intranet_address() {
+    ## 选择使用软件源内网地址
+    function choose_use_intranet_address() {
+        local ask_text="默认使用软件源的公网地址，是否继续?"
         local intranet_source
         for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
             if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
                 intranet_source="${mirror_list_intranet[i]}"
-                ONLY_HTTP="true" # 内网地址一般不支持 HTTPS 协议
+                ONLY_HTTP="true" # 强制使用 HTTP 协议
                 break
             else
                 continue
@@ -1100,13 +1109,13 @@ function choose_mirrors() {
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}默认使用软件源的公网地址，是否继续?${PLAIN}"
+                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     SOURCE="${intranet_source}"
                     [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
                 fi
             else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")
+                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1116,7 +1125,7 @@ function choose_mirrors() {
                     [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
                     ;;
                 *)
-                    echo -e "\n$WARN 输入错误，默认不使用内网地址！"
+                    input_error "默认不使用内网地址"
                     ;;
                 esac
             fi
@@ -1187,7 +1196,7 @@ function choose_mirrors() {
 
     ## 选择软件源内网地址
     if [[ "${mirror_list_extranet[*]}" =~ (^|[^[:alpha:]])"${SOURCE}"([^[:alpha:]]|$) ]]; then
-        choose_intranet_address
+        choose_use_intranet_address
     fi
 }
 
@@ -1197,16 +1206,17 @@ function choose_protocol() {
         if [[ "${ONLY_HTTP}" == "true" ]]; then
             WEB_PROTOCOL="http"
         else
+            local ask_text="软件源是否使用 HTTP 协议?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}软件源是否使用 HTTP 协议?${PLAIN}"
+                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     WEB_PROTOCOL="http"
                 else
                     WEB_PROTOCOL="https"
                 fi
             else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1217,7 +1227,7 @@ function choose_protocol() {
                     WEB_PROTOCOL="https"
                     ;;
                 *)
-                    echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
+                    input_error "默认使用 HTTPS 协议"
                     WEB_PROTOCOL="https"
                     ;;
                 esac
@@ -1252,24 +1262,22 @@ function choose_install_epel_packages() {
     esac
     ## 选择是否安装 EPEL 附加软件包
     if [[ -z "${INSTALL_EPEL}" ]]; then
+        local ask_text=""
+        if [ $VERIFICATION_EPEL -eq 0 ]; then
+            ask_text="检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源?"
+        else
+            ask_text="是否安装 EPEL 附加软件包?"
+        fi
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
-            if [ $VERIFICATION_EPEL -eq 0 ]; then
-                interactive_select_boolean "${BOLD}检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源?${PLAIN}"
-            else
-                interactive_select_boolean "${BOLD}是否安装 EPEL 附加软件包?${PLAIN}"
-            fi
+            interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
             if [[ "${_SELECT_RESULT}" == "true" ]]; then
                 INSTALL_EPEL="true"
             else
                 INSTALL_EPEL="false"
             fi
         else
-            if [ $VERIFICATION_EPEL -eq 0 ]; then
-                local CHOICE=$(echo -e "\n${BOLD}└─ 检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源? [Y/n] ${PLAIN}")
-            else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否安装 EPEL 附加软件包? [Y/n] ${PLAIN}")
-            fi
+            local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1280,7 +1288,7 @@ function choose_install_epel_packages() {
                 INSTALL_EPEL="false"
                 ;;
             *)
-                echo -e "\n$WARN 输入错误，默认不更换！"
+                input_error "默认不更换"
                 INSTALL_EPEL="false"
                 ;;
             esac
@@ -1304,16 +1312,17 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
+            local ask_text="检测到系统存在已备份的 ${type} 源文件，是否跳过覆盖备份?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}检测到系统存在已备份的 ${type} 源文件，是否跳过覆盖备份?${PLAIN}"
+                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     echo ''
                     cp -rvf "${target_file}" "${backup_file}" 2>&1
                     BACKED_UP="true"
                 fi
             else
-                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 ${type} 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE_BACKUP}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1324,7 +1333,7 @@ function backup_original_mirrors() {
                     BACKED_UP="true"
                     ;;
                 *)
-                    echo -e "\n$WARN 输入错误，默认不覆盖！"
+                    input_error "默认不覆盖"
                     ;;
                 esac
             fi
@@ -1352,16 +1361,17 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
+            local ask_text="检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份?${PLAIN}"
+                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     echo ''
                     cp -rvf $target_dir/* "${backup_dir}" 2>&1
                     BACKED_UP="true"
                 fi
             else
-                local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                local CHOICE_BACKUP="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE_BACKUP}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1372,7 +1382,7 @@ function backup_original_mirrors() {
                     BACKED_UP="true"
                     ;;
                 *)
-                    echo -e "\n$WARN 输入错误，默认不覆盖！"
+                    input_error "默认不覆盖"
                     ;;
                 esac
             fi
@@ -1454,51 +1464,52 @@ function backup_original_mirrors() {
 
 ## 移除原有软件源
 function remove_original_mirrors() {
+    function clear_file() {
+        [ -f "$1" ] && sed -i '1,$d' "$1"
+    }
+
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         # /etc/apt/sources.list
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" && -s "${File_AptSourceList}" ]]; then
-            sed -i '1,$d' $File_AptSourceList
+            clear_file $File_AptSourceList
         fi
         # /etc/apt/sources.list.d
         [ -d "${Dir_AptAdditionalSources}" ] || mkdir -p $Dir_AptAdditionalSources
         # Debian DEB822 格式源文件
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]] && [ -f "${File_DebianSources}" ]; then
-            sed -i '1,$d' $File_DebianSources
+            clear_file $File_DebianSources
             USE_DEB822_FORMAT="true"
         fi
         # Ubuntu DEB822 格式源文件
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]] && [ -f "${File_UbuntuSources}" ]; then
-            sed -i '1,$d' $File_UbuntuSources
+            clear_file $File_UbuntuSources
             USE_DEB822_FORMAT="true"
         fi
         # Armbian
-        if [ -f "${File_ArmbianRelease}" ]; then
-            [ -f "${File_ArmbianSourceList}" ] && sed -i '1,$d' $File_ArmbianSourceList
-        fi
+        [ -f "${File_ArmbianRelease}" ] && clear_file $File_ArmbianSourceList
         # Proxmox VE
-        if [ -f "${File_ProxmoxVersion}" ]; then
-            [ -f "${File_ProxmoxSourceList}" ] && sed -i '1,$d' $File_ProxmoxSourceList
-        fi
+        [ -f "${File_ProxmoxVersion}" ] && clear_file $File_ProxmoxSourceList
         # Linux Mint
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
-            [ -f "${File_LinuxMintSourceList}" ] && sed -i '1,$d' $File_LinuxMintSourceList
-        fi
+        [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]] && clear_file $File_LinuxMintSourceList
         # Raspberry Pi OS
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" ]]; then
-            [ -f "${File_RaspberryPiSourceList}" ] && sed -i '1,$d' $File_RaspberryPiSourceList
-        fi
+        [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_RASPBERRY_PI_OS}" ]] && clear_file $File_RaspberryPiSourceList
         ;;
-    "${SYSTEM_REDHAT}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
         if [ ! -d "${Dir_YumRepos}" ]; then
             mkdir -p "${Dir_YumRepos}"
             return
         fi
+        local repo_patterns=()
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
-            # Fedora 有额外源文件，且随版本变化
-            for repo_file in fedora.repo fedora-updates.repo fedora-updates-testing.repo fedora-modular.repo fedora-updates-modular.repo fedora-updates-testing-modular.repo; do
-                rm -rf $Dir_YumRepos/$repo_file
-            done
+            repo_patterns=(
+                "fedora.repo"
+                "fedora-updates.repo"
+                "fedora-updates-testing.repo"
+                "fedora-modular.repo"
+                "fedora-updates-modular.repo"
+                "fedora-updates-testing-modular.repo"
+            )
         else
             if [[ "${ONLY_EPEL}" != "false" ]]; then
                 return
@@ -1507,97 +1518,91 @@ function remove_original_mirrors() {
             "${SYSTEM_RHEL}")
                 case "${SYSTEM_VERSION_ID_MAJOR}" in
                 7 | 8)
-                    if [ -f "${Dir_YumRepos}/epel.repo" ]; then
-                        ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
-                    else
-                        rm -rf $Dir_YumRepos/*
-                    fi
+                    repo_patterns=("CentOS-*")
                     ;;
                 *)
-                    rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
+                    repo_patterns=(
+                        "centos-stream.repo"
+                        "centos-stream-addons.repo"
+                    )
                     ;;
                 esac
                 ;;
             "${SYSTEM_CENTOS}")
-                if [ -f "${Dir_YumRepos}/epel.repo" ]; then
-                    ls $Dir_YumRepos/ | grep -Ev epel | xargs rm -rf
-                else
-                    rm -rf $Dir_YumRepos/*
-                fi
+                repo_patterns=("CentOS-*")
                 ;;
             "${SYSTEM_CENTOS_STREAM}")
                 case "${SYSTEM_VERSION_ID_MAJOR}" in
                 9 | 10)
-                    rm -rf $Dir_YumRepos/centos.repo $Dir_YumRepos/centos-addons.repo
+                    repo_patterns=(
+                        "centos-stream.repo"
+                        "centos-stream-addons.repo"
+                    )
                     ;;
                 8)
-                    rm -rf $Dir_YumRepos/CentOS-Stream-*
+                    repo_patterns=("CentOS-Stream-*")
                     ;;
                 esac
                 ;;
             "${SYSTEM_ROCKY}")
                 case "${SYSTEM_VERSION_ID_MAJOR}" in
                 9)
-                    rm -rf $Dir_YumRepos/rocky*
+                    repo_patterns=(
+                        "rocky.repo"
+                        "rocky-addons.repo"
+                        "rocky-devel.repo"
+                        "rocky-extras.repo"
+                    )
                     ;;
                 8)
-                    rm -rf $Dir_YumRepos/Rocky-*
+                    repo_patterns=("Rocky-*")
                     ;;
                 esac
                 ;;
             "${SYSTEM_ALMALINUX}")
-                rm -rf $Dir_YumRepos/almalinux*
+                repo_patterns=("almalinux*")
                 ;;
             "${SYSTEM_OPENCLOUDOS}")
-                rm -rf $Dir_YumRepos/OpenCloudOS*
+                repo_patterns=("OpenCloudOS*")
                 ;;
             "${SYSTEM_ANOLISOS}")
-                rm -rf $Dir_YumRepos/AnolisOS*
+                repo_patterns=("AnolisOS*")
+                ;;
+            "${SYSTEM_OPENEULER}")
+                repo_patterns=("openEuler.repo")
                 ;;
             esac
         fi
-        ;;
-    "${SYSTEM_OPENEULER}")
-        if [ ! -d "${Dir_YumRepos}" ]; then
-            mkdir -p $Dir_YumRepos
-            return
-        fi
-        rm -rf $Dir_YumRepos/openEuler.repo
-        ;;
-    "${SYSTEM_OPENCLOUDOS}")
-        if [ ! -d "${Dir_YumRepos}" ]; then
-            mkdir -p $Dir_YumRepos
-            return
-        fi
-        rm -rf $Dir_YumRepos/OpenCloudOS*
-        ;;
-    "${SYSTEM_ANOLISOS}")
-        if [ ! -d "${Dir_YumRepos}" ]; then
-            mkdir -p $Dir_YumRepos
-            return
-        fi
-        rm -rf $Dir_YumRepos/AnolisOS*
+        for pattern in "${repo_patterns[@]}"; do
+            if [[ -n "$pattern" ]]; then
+                eval "rm -rf $Dir_YumRepos/$pattern"
+            fi
+        done
         ;;
     "${SYSTEM_OPENSUSE}")
-        [ -d "${Dir_ZYppRepos}" ] && rm -rf $Dir_ZYppRepos/repo-*
+        if [ ! -d "${Dir_ZYppRepos}" ]; then
+            mkdir -p "${Dir_ZYppRepos}"
+            return
+        fi
+        rm -rf $Dir_ZYppRepos/repo-*
         ;;
     "${SYSTEM_ARCH}")
-        [ -f "${File_PacmanMirrorList}" ] && sed -i '1,$d' $File_PacmanMirrorList
+        clear_file $File_PacmanMirrorList
         ;;
     "${SYSTEM_ALPINE}")
-        [ -f "${File_AlpineRepositories}" ] && sed -i '1,$d' $File_AlpineRepositories
+        clear_file $File_AlpineRepositories
         ;;
     "${SYSTEM_GENTOO}")
-        [ -f "${File_GentooReposConf}" ] && sed -i '1,$d' $File_GentooReposConf
+        clear_file $File_GentooReposConf
         ;;
     esac
 }
 
 ## 换源
 function change_mirrors_main() {
-    ## 打印修改前后差异
+    ## 打印软件源内容修改前后差异
     function print_diff() {
-        ## 单一文件比较模式
+        ## 单一文件
         function diff_file() {
             local diff_file=$1
             local origin_file=$2
@@ -1608,7 +1613,7 @@ function change_mirrors_main() {
                 fi
             fi
         }
-        ## 目录文件比较模式
+        ## 目录文件
         function diff_dir() {
             local diff_dir=$1
             local origin_dir=$2
@@ -1778,17 +1783,19 @@ function change_mirrors_main() {
 
 ## 升级软件包
 function upgrade_software() {
+    local ask_text=""
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
         UPGRADE_SOFTWARE="false"
+        ask_text="是否跳过更新软件包?"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
-            interactive_select_boolean "${BOLD}是否跳过更新软件包?${PLAIN}"
+            interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
             if [[ "${_SELECT_RESULT}" == "false" ]]; then
                 UPGRADE_SOFTWARE="true"
             fi
         else
-            local CHOICE=$(echo -e "\n${BOLD}└─ 是否跳过更新软件包? [Y/n] ${PLAIN}")
+            local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1797,7 +1804,7 @@ function upgrade_software() {
                 UPGRADE_SOFTWARE="true"
                 ;;
             *)
-                echo -e "\n$WARN 输入错误，默认不更新！"
+                input_error "默认不更新"
                 ;;
             esac
         fi
@@ -1807,14 +1814,15 @@ function upgrade_software() {
     fi
     if [[ -z "${CLEAN_CACHE}" ]]; then
         CLEAN_CACHE="false"
+        ask_text="在更新软件包后，是否自动清理下载缓存?"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
-            interactive_select_boolean "${BOLD}在更新软件包后，是否自动清理下载缓存?${PLAIN}"
+            interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
             if [[ "${_SELECT_RESULT}" == "true" ]]; then
                 CLEAN_CACHE="true"
             fi
         else
-            local CHOICE=$(echo -e "\n${BOLD}└─ 在更新软件包后，是否自动清理下载缓存? [Y/n] ${PLAIN}")
+            local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1823,7 +1831,7 @@ function upgrade_software() {
                 ;;
             [Nn] | [Nn][Oo]) ;;
             *)
-                echo -e "\n$WARN 输入错误，默认不清理！"
+                input_error "默认不清理"
                 ;;
             esac
         fi
@@ -2330,10 +2338,10 @@ function change_mirrors_RedHat() {
                 centos-addons.repo
             ;;
         8)
-            sed -i "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-"${SOURCE_BRANCH}"}|g" CentOS-Stream-Sources.repo # 单独处理 CentOS-Stream-Sources.repo
             sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -e "s|mirror.centos.org/\$contentdir|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -e "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-centos-vault}|g" \
                 -i \
                 CentOS-Stream-*
             ;;
@@ -2376,7 +2384,6 @@ function change_mirrors_RedHat() {
                 almalinux-rt.repo \
                 almalinux-saphana.repo \
                 almalinux-sap.repo
-
             ;;
         9)
             sed -e "s|^# baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
@@ -2721,7 +2728,7 @@ function change_mirrors_or_install_EPEL() {
     if [[ "${INSTALL_EPEL}" != "true" ]]; then
         return
     fi
-    ## 确定安装版本（不支持安装的系统直接跳出）
+    ## 确定安装版本（不支持安装的系统直接跳出此方法）
     local epel_version
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_REDHAT}")
@@ -2735,7 +2742,7 @@ function change_mirrors_or_install_EPEL() {
         return
         ;;
     esac
-    ## 跳过较旧的 EOF 版本（epel 7 已被官方移动至 archive 仓库，目前没有多少镜像站同步，暂无适配的必要）
+    ## EPEL 7
     if [[ "${epel_version}" == "7" ]]; then
         [ -z "${SOURCE_EPEL_BRANCH}" ] && SOURCE_EPEL_BRANCH="epel-archive"
         [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN Extra Packages for Enterprise Linux 7 已结束生命周期并被官方移至归档库！"
@@ -2745,19 +2752,19 @@ function change_mirrors_or_install_EPEL() {
     if [ $VERIFICATION_EPEL -ne 0 ]; then
         echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
         local package_manager="$(get_package_manager)"
-        local package_url="https://mirrors.cloud.tencent.com/epel/epel-release-latest-${epel_version}.noarch.rpm"
+        local package_path="epel/epel-release-latest-${epel_version}"
         case "${epel_version}" in
         7)
-            package_url="https://mirrors.cloud.tencent.com/epel-archive/7/${DEVICE_ARCH_RAW}/Packages/e/epel-release-7-14.noarch.rpm"
+            package_path="epel-archive/7/${DEVICE_ARCH_RAW}/Packages/e/epel-release-7-14"
             ;;
         9)
             ## CentOS Stream 9 特殊，有两个不同的发行包 epel-release epel-next-release
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
-                package_url="https://mirrors.cloud.tencent.com/epel/epel{,-next}-release-latest-9.noarch.rpm"
+                package_path="epel/epel{,-next}-release-latest-9"
             fi
             ;;
         esac
-        $package_manager install -y "${package_url}"
+        $package_manager install -y "https://mirrors.cloud.tencent.com/${package_path}.noarch.rpm"
         rm -rf $Dir_YumRepos/epel*
     fi
     ## 删除原有 repo 源文件
@@ -2827,7 +2834,7 @@ function interactive_select_mirror() {
     unset options[${#options[@]}-1]
     local selected=0
     local start=0
-    local page_size=$(($(tput lines 2>/dev/null) - 3)) # 减去3行用于显示提示信息
+    local page_size=$(($(tput lines 2>/dev/null) - 3))
     function clear_menu() {
         tput rc 2>/dev/null
         for ((i = 0; i < ${#options[@]} + 1; i++)); do
@@ -2867,17 +2874,15 @@ function interactive_select_mirror() {
         fi
         echo "$key"
     }
-    tput smcup 2>/dev/null  # 保存当前屏幕并切换到新屏幕
-    tput sc 2>/dev/null     # 保存光标位置
-    tput civis 2>/dev/null  # 隐藏光标
-    trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
-    draw_menu               # 初始化菜单位置
-    # 处理选择
+    tput smcup 2>/dev/null
+    tput sc 2>/dev/null
+    tput civis 2>/dev/null
+    trap "cleanup" INT TERM
+    draw_menu
     while true; do
         key=$(read_key)
         case "$key" in
         "[A" | "w" | "W")
-            # 上箭头 / W
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
                 if [ "$selected" -lt "$start" ]; then
@@ -2886,7 +2891,6 @@ function interactive_select_mirror() {
             fi
             ;;
         "[B" | "s" | "S")
-            # 下箭头 / S
             if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
                 selected=$((selected + 1))
                 if [ "$selected" -ge $((start + page_size)) ]; then
@@ -2895,7 +2899,6 @@ function interactive_select_mirror() {
             fi
             ;;
         "")
-            # Enter 键
             tput rmcup
             break
             ;;
@@ -2903,11 +2906,8 @@ function interactive_select_mirror() {
         esac
         draw_menu
     done
-    # clear_menu # 清除菜单
-    tput cnorm 2>/dev/null # 恢复光标
-    tput rmcup 2>/dev/null # 恢复之前的屏幕
-    # tput rc 2>/dev/null # 恢复光标位置
-    # 处理结果
+    tput cnorm 2>/dev/null
+    tput rmcup 2>/dev/null
     _SELECT_RESULT="${options[$selected]}"
 }
 
@@ -2915,17 +2915,15 @@ function interactive_select_boolean() {
     _SELECT_RESULT=""
     local selected=0
     local message="$1"
-    local menu_height=3 # 菜单总高度(标题行+空行+选项行)
+    local menu_height=3
     local original_line
     function store_position() {
-        # 保存菜单开始前的行位置
         original_line=$(tput lines 2>/dev/null)
     }
     function clear_menu() {
-        # 向上移动到菜单开始位置并清除菜单
         for ((i = 0; i < ${menu_height}; i++)); do
-            tput cuu1 2>/dev/null # 光标上移一行
-            tput el 2>/dev/null   # 清除当前行
+            tput cuu1 2>/dev/null
+            tput el 2>/dev/null
         done
     }
     function cleanup() {
@@ -2935,7 +2933,6 @@ function interactive_select_boolean() {
         exit 130
     }
     function draw_menu() {
-        # 绘制菜单不改变光标位置
         echo -e "╭─ ${message}"
         echo -e "│"
         if [ "$selected" -eq 0 ]; then
@@ -2952,16 +2949,14 @@ function interactive_select_boolean() {
         fi
         echo "$key"
     }
-    tput civis 2>/dev/null # 隐藏光标
-    store_position         # 记录当前位置
+    tput civis 2>/dev/null
+    store_position
     trap "cleanup" INT TERM
-    draw_menu # 初始化菜单位置
-    # 处理选择
+    draw_menu
     while true; do
         key=$(read_key)
         case "$key" in
         "[D" | "a" | "A")
-            # 左箭头 / A
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
                 clear_menu
@@ -2969,7 +2964,6 @@ function interactive_select_boolean() {
             fi
             ;;
         "[C" | "d" | "D")
-            # 右箭头 / D
             if [ "$selected" -lt 1 ]; then
                 selected=$((selected + 1))
                 clear_menu
@@ -2977,8 +2971,7 @@ function interactive_select_boolean() {
             fi
             ;;
         "")
-            # Enter 键
-            clear_menu # 先清除菜单
+            clear_menu
             break
             ;;
         *) ;;
@@ -2993,68 +2986,53 @@ function interactive_select_boolean() {
         echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
         _SELECT_RESULT="false"
     fi
-    tput cnorm 2>/dev/null # 恢复光标
+    tput cnorm 2>/dev/null
 }
 
 function animate_exec() {
     local cmd="$1"
     local title="$2"
-    local max_lines=${3:-5}          # 默认显示5行
-    local spinner_style="${4:-dots}" # 动画样式
-    local refresh_rate="${5:-0.1}"   # 刷新率
-    # 动画样式
+    local max_lines=${3:-5}
+    local spinner_style="${4:-dots}"
+    local refresh_rate="${5:-0.1}"
     local -A spinners=([dots]="⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏" [circle]="◐ ◓ ◑ ◒" [classic]="-\\ |/")
     local -A recommended_rates=([dots]="0.08" [circle]="0.12" [classic]="0.12")
     [[ -z "${spinners[$spinner_style]}" ]] && spinner_style="dots"
     [[ "${refresh_rate}" == "0.1" ]] && refresh_rate="${recommended_rates[$spinner_style]}"
-    # 获取终端宽度
     local term_width=$(tput cols 2>/dev/null || echo 80)
     local display_width=$((term_width - 2))
-    # 截断行
     function simple_truncate() {
         local line="$1"
         local truncate_marker="..."
         local max_length=$((display_width - 3))
-        # 快速判断：如果ASCII行长度在范围内，直接返回
         if [[ "${line}" =~ ^[[:ascii:]]*$ && ${#line} -le $display_width ]]; then
             echo "${line}"
             return
         fi
-        # 1. 计算非ASCII字符数量
         local non_ascii_count=$(echo "${line// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;" | wc -m)
-        # 2. 总字符数
         local total_length=${#line}
-        # 3. 实际显示宽度 = 总字符数 + 非ASCII字符数
-        # 非ASCII字符额外占用1个宽度单位（即总共2个）
         local display_length=$((total_length + non_ascii_count))
-        # 4. 中文引号特殊处理（引号只占1个宽度，需要减去额外计算的部分）
         local quote_count=0
         [[ $(echo "${line}" | grep -c "“") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "“")))
         [[ $(echo "${line}" | grep -c "”") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "”")))
         [[ $(echo "${line}" | grep -c "‘") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "‘")))
         [[ $(echo "${line}" | grep -c "’") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "’")))
-        # 5. 调整宽度（减去引号额外计算的部分）
         display_length=$((display_length - quote_count))
-        # 如果计算宽度在显示范围内，直接显示
         if [[ $display_length -le $display_width ]]; then
             echo "$line"
             return
         fi
-        # 需要截断，逐字符构建
         local result=""
         local current_width=0
         local i=0
         while [ $i -lt ${#line} ]; do
             local char="${line:$i:1}"
             local char_width=1
-            # 是否是中文等宽字符(非ASCII)
             if ! [[ "$char" =~ [0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·] ]]; then
-                # 不是中文引号则算2个宽度
                 if [[ "$char" != "“" && "$char" != "”" && "$char" != "‘" && "$char" != "’" ]]; then
                     char_width=2
                 fi
             fi
-            # 检查添加此字符是否会超出限制
             if [[ $((current_width + char_width)) -gt $max_length ]]; then
                 echo "${result}${truncate_marker}"
                 return
@@ -3063,17 +3041,14 @@ function animate_exec() {
             current_width=$((current_width + char_width))
             ((i++))
         done
-        # 完整遍历未超出限制
         echo "${line}"
     }
-    # 清理函数
     function cleanup() {
         [ -f "${temp_file}" ] && rm -f "${temp_file}"
         tput cnorm 2>/dev/null
         echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
         exit 130
     }
-    # 创建临时文件
     function make_temp_file() {
         local temp_dirs=("." "/tmp")
         local tmp_file=""
@@ -3088,65 +3063,49 @@ function animate_exec() {
         done
         echo "${tmp_file}"
     }
-    # 更新显示
     function update_display() {
         local current_size=$(wc -c <"${temp_file}" 2>/dev/null || echo 0)
-        # 如果文件大小没变，不更新
         if [[ $current_size -le $last_size ]]; then
             return 1
         fi
-        # 只在必要时读取文件
         local -a lines=()
         mapfile -t -n "${max_lines}" lines < <(tail -n "$max_lines" "${temp_file}")
-        # 处理每一行
         local -a processed_lines=()
         for ((i = 0; i < ${#lines[@]}; i++)); do
             processed_lines[i]=$(simple_truncate "${lines[i]}")
         done
-        # 更新显示
-        tput cud1 2>/dev/null # 移动到标题下
-        echo -ne "\r\033[K"   # 清空当前行
-        tput cud1 2>/dev/null # 移动到内容区
-        # 显示处理后的行
+        tput cud1 2>/dev/null
+        echo -ne "\r\033[K"
+        tput cud1 2>/dev/null
         for ((i = 0; i < $max_lines; i++)); do
-            echo -ne "\r\033[K" # 清空当前行
+            echo -ne "\r\033[K"
             [[ $i -lt ${#processed_lines[@]} ]] && echo -ne "\033[2m${processed_lines[$i]}\033[0m"
             [[ $i -lt $((max_lines - 1)) ]] && tput cud1 2>/dev/null
         done
-        # 返回到标题行
         for ((i = 0; i < $max_lines + 1; i++)); do
             tput cuu1 2>/dev/null
         done
-        # 更新文件大小记录
         last_size=$current_size
         return 0
     }
-    # 初始化
     local spinner_frames=(${spinners[$spinner_style]})
     local temp_file="$(make_temp_file)"
     trap "cleanup" INT TERM
-    tput civis 2>/dev/null # 隐藏光标
-    # 预留显示空间
-    echo '' # 标题行
-    echo '' # 空行
+    tput civis 2>/dev/null
+    echo ''
+    echo ''
     for ((i = 0; i < $max_lines; i++)); do
         echo ''
     done
-    # 执行命令
     eval "${cmd}" >"${temp_file}" 2>&1 &
     local cmd_pid=$!
     local last_size=0
     local spin_idx=0
-    # 返回到标题行
     tput cuu $((max_lines + 2)) 2>/dev/null
-    # 添加延迟允许命令开始执行
     sleep 0.05
-    # 显示初始状态
     echo -ne "\r\033[K◉ ${title} [\033[1m\033[34m${spinner_frames[$spin_idx]}\033[0m]"
     spin_idx=$(((spin_idx + 1) % ${#spinner_frames[@]}))
-    # 检查初始输出
     update_display
-    # 监控命令执行 - 增加自适应刷新
     local update_count=0
     local adaptive_rate=$refresh_rate
     while kill -0 $cmd_pid 2>/dev/null; do
@@ -3154,7 +3113,6 @@ function animate_exec() {
         spin_idx=$(((spin_idx + 1) % ${#spinner_frames[@]}))
         if update_display; then
             update_count=$((update_count + 1))
-            # 连续更新太频繁则调整刷新率
             if [[ $update_count -gt 5 ]]; then
                 adaptive_rate=$(awk "BEGIN {print $adaptive_rate * 1.5; exit}")
                 [[ $(awk "BEGIN {print ($adaptive_rate > 0.5); exit}") -eq 1 ]] && adaptive_rate=0.5
@@ -3168,17 +3126,13 @@ function animate_exec() {
     done
     wait $cmd_pid
     local exit_status=$?
-    # 最后一次更新显示
     update_display
-    # 显示完成状态
     if [ $exit_status -eq 0 ]; then
         echo -ne "\r\033[K◉ ${title} [\033[1m\033[32m✓\033[0m]\n"
     else
         echo -ne "\r\033[K◉ ${title} [\033[1m\033[31m✗\033[0m]\n"
     fi
-    # 空行
     echo -ne "\r\033[K\n"
-    # 显示最终输出
     local actual_lines=$(wc -l <"${temp_file}" 2>/dev/null || echo 0)
     [[ $actual_lines -gt $max_lines ]] && actual_lines=$max_lines
     if [[ $actual_lines -gt 0 ]]; then
@@ -3190,7 +3144,6 @@ function animate_exec() {
             echo -ne "\r\033[K\033[2m${line}\033[0m\n"
         done
     fi
-    # 清理并返回
     tput cnorm 2>/dev/null
     rm -f "${temp_file}"
     return $exit_status

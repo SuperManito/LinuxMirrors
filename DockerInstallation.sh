@@ -1,12 +1,12 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-04
+## Modified: 2025-07-18
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
 
 ## Docker CE 软件源列表
-# 格式："软件源名称@软件源地址"
+# 格式："名称@地址"
 mirror_list_docker_ce=(
     "阿里云@mirrors.aliyun.com/docker-ce"
     "腾讯云@mirrors.tencent.com/docker-ce"
@@ -24,7 +24,7 @@ mirror_list_docker_ce=(
 )
 
 ## Docker Registry 仓库列表
-# 格式："软件源名称@软件源地址"
+# 格式："名称@地址"
 mirror_list_registry=(
     "毫秒镜像（推荐）@docker.1ms.run"
     "Docker Proxy@dockerproxy.net"
@@ -90,6 +90,7 @@ SYSTEM_CENTOS_STREAM="CentOS Stream"
 SYSTEM_ROCKY="Rocky"
 SYSTEM_ALMALINUX="AlmaLinux"
 SYSTEM_FEDORA="Fedora"
+SYSTEM_ORACLE="Oracle Linux"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
 SYSTEM_OPENEULER="openEuler"
@@ -166,9 +167,7 @@ function main() {
     run_end
 }
 
-## 处理命令选项
 function handle_command_options() {
-    ## 命令帮助
     function output_command_help() {
         echo -e "
 命令选项(名称/含义/值)：
@@ -198,13 +197,13 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源地址！"
+                command_error "$1" "软件源地址"
             fi
             ;;
         ## 指定 Docker Registry 仓库地址
@@ -212,13 +211,13 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的地址！"
+                    command_error "$2" "有效的地址"
                 else
                     SOURCE_REGISTRY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定镜像仓库地址！"
+                command_error "$1" "镜像仓库地址"
             fi
             ;;
         ## 指定 Docker CE 软件源仓库
@@ -227,7 +226,7 @@ function handle_command_options() {
                 SOURCE_BRANCH="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定软件源仓库！"
+                command_error "$1" "软件源仓库"
             fi
             ;;
         ## 指定 Debian 版本代号
@@ -236,7 +235,7 @@ function handle_command_options() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定版本代号！"
+                command_error "$1" "版本代号"
             fi
             ;;
         ## 指定 Docker Engine 安装版本
@@ -247,10 +246,10 @@ function handle_command_options() {
                     DESIGNATED_DOCKER_VERSION="$2"
                     shift
                 else
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定有效的版本号！"
+                    command_error "$2" "有效的版本号"
                 fi
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定版本号！"
+                command_error "$1" "版本号"
             fi
             ;;
         ## WEB 协议（HTTP/HTTPS）
@@ -262,11 +261,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "检测到 ${BLUE}$2${PLAIN} 为无效参数值，请在该选项后指定 http 或 https ！"
+                    command_error "$2" " http 或 https "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 WEB 协议（http/https）！"
+                ocommand_error "$1" " WEB 协议 (http/https) "
             fi
             ;;
         ## 安装最新版本
@@ -278,11 +277,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -298,11 +297,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 清除屏幕上的所有内容
@@ -314,11 +313,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    output_error "命令选项 ${BLUE}$2${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                    command_error "$2" " true 或 false "
                     ;;
                 esac
             else
-                output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请在该选项后指定 true 或 false ！"
+                command_error "$1" " true 或 false "
             fi
             ;;
         ## 仅更换镜像仓库模式
@@ -335,7 +334,7 @@ function handle_command_options() {
             exit
             ;;
         *)
-            output_error "命令选项 ${BLUE}$1${PLAIN} 无效，请确认后重新输入！"
+            command_error "$1"
             ;;
         esac
         shift
@@ -364,7 +363,6 @@ function run_start() {
     echo -e "欢迎使用 Docker Engine 安装与换源脚本"
 }
 
-## 运行结束
 function run_end() {
     if [[ "${PURE_MODE}" == "true" ]]; then
         echo ''
@@ -381,25 +379,41 @@ function run_end() {
     echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
 }
 
-## 报错退出
 function output_error() {
     [ "$1" ] && echo -e "\n$ERROR $1\n"
     exit 1
 }
 
-## 检查命令是否存在
+function command_error() {
+    local tmp_text="请确认后重新输入"
+    if [[ "${2}" ]]; then
+        tmp_text="请在该选项后指定${2}"
+    fi
+    output_error "命令选项 ${BLUE}$1${PLAIN} 无效，${tmp_text}！"
+}
+
+function unsupport_system_error() {
+    local tmp_text=""
+    if [[ "${2}" ]]; then
+        tmp_text="，请参考如下命令自行安装：\n\n${BLUE}$2${PLAIN}"
+    fi
+    output_error "不支持当前操作系统（$1）${tmp_text}"
+}
+
+function input_error() {
+    echo -e "\n$WARN 输入错误，$1！"
+}
+
 function command_exists() {
     command -v "$@" &>/dev/null
 }
 
-## 权限判定
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
         output_error "权限不足，请使用 Root 用户运行本脚本"
     fi
 }
 
-## 收集系统信息
 function collect_system_info() {
     ## 定义系统名称
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
@@ -413,8 +427,6 @@ function collect_system_info() {
     ## 判定当前系统派系
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
-    elif [ -s "${File_OracleLinuxRelease}" ]; then
-        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s "${File_openEulerRelease}" ]; then
@@ -422,27 +434,27 @@ function collect_system_info() {
     elif [ -s "${File_OpenCloudOSRelease}" ]; then
         # 拦截 OpenCloudOS 9 及以上版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 9 ]]; then
-            [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "OpenCloudOS 9" "dnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s "${File_AnolisOSRelease}" ]; then
         # 拦截 Anolis OS 8.8 及以上版本，不支持从 Docker 官方仓库安装，23 版本支持
         if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
-            [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Anolis OS 8" "dnf install -y docker\nsystemctl enable --now docker"
         fi
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
     elif [ -s "${File_openKylinVersion}" ]; then
-        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\napt-get install -y docker\nsystemctl enable --now docker"
+        [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "openKylin" "apt-get install -y docker\nsystemctl enable --now docker"
     elif [ -f "${File_ArchLinuxRelease}" ]; then
-        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\npacman -S docker\nsystemctl enable --now docker"
+        [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Arch Linux" "pacman -S docker\nsystemctl enable --now docker"
     elif [ -f "${File_GentooRelease}" ]; then
-        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统（Gentoo）"
+        [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Gentoo"
     elif [[ "${SYSTEM_NAME}" == *"openSUSE"* ]]; then
-        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\nzypper install docker\nsystemctl enable --now docker"
+        [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "openSUSE" "zypper install docker\nsystemctl enable --now docker"
     elif [[ "${SYSTEM_NAME}" == *"NixOS"* ]]; then
-        [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统（NixOS）"
+        [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "NixOS"
     else
-        output_error "不支持当前操作系统"
+        unsupport_system_error "未知的系统"
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -466,13 +478,15 @@ function collect_system_info() {
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
         # 拦截 Anolis OS 8.8 以下版本，不支持从 Docker 官方仓库安装
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_ANOLISOS}" ]]; then
-            [[ "${ONLY_REGISTRY}" != "true" ]] && output_error "不支持当前操作系统，请参考如下命令自行安装：\n\ndnf install -y docker\nsystemctl enable --now docker"
+            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Anolis OS 8" "dnf install -y docker\nsystemctl enable --now docker"
         fi
         ## 特殊系统判断
         # Red Hat Enterprise Linux
         grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
         # CentOS Stream
         grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
+        # Oracle Linux
+        [ -s "${File_OracleLinuxRelease}" ] && SYSTEM_JUDGMENT="${SYSTEM_ORACLE}"
         ;;
     *)
         SYSTEM_JUDGMENT="${SYSTEM_FACTIONS}"
@@ -547,9 +561,11 @@ function collect_system_info() {
                 ;;
             "${SYSTEM_RHEL}")
                 SOURCE_BRANCH="rhel"
-                # 拦截 RHEL 最新的 10 版本
+                # RHEL 10
                 if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 10 ]]; then
-                    output_error "暂不支持当前操作系统（RHEL 10），请等待 Docker 官方适配或使用正版操作系统软件源进行安装"
+                    echo -e "\n$WARN 当前采用 centos 分支（红帽衍生操作系统安装方式）进行安装，可能存在某些无法预料的兼容性问题！"
+                    echo -e "\n$TIP Docker 官方尚未支持 RHEL 10 且红帽官方已将 Docker 从注册软件源中移除并默认使用 Podman。"
+                    SOURCE_BRANCH="centos"
                 fi
                 ;;
             *)
@@ -706,16 +722,17 @@ function choose_protocol() {
         if [[ "${ONLY_HTTP}" == "true" ]]; then
             WEB_PROTOCOL="http"
         else
+            local ask_text="软件源是否使用 HTTP 协议?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}软件源是否使用 HTTP 协议?${PLAIN}"
+                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     WEB_PROTOCOL="http"
                 else
                     WEB_PROTOCOL="https"
                 fi
             else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")
+                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -726,7 +743,7 @@ function choose_protocol() {
                     WEB_PROTOCOL="https"
                     ;;
                 *)
-                    echo -e "\n$WARN 输入错误，默认使用 HTTPS 协议！"
+                    input_error "默认使用 HTTPS 协议"
                     WEB_PROTOCOL="https"
                     ;;
                 esac
@@ -743,14 +760,15 @@ function close_firewall_service() {
     fi
     if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
         if [[ -z "${CLOSE_FIREWALL}" ]]; then
+            local ask_text="是否关闭系统防火墙和 SELinux ?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}是否关闭系统防火墙和 SELinux ?${PLAIN}"
+                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     CLOSE_FIREWALL="true"
                 fi
             else
-                local CHOICE=$(echo -e "\n${BOLD}└─ 是否关闭系统防火墙和 SELinux ? [Y/n] ${PLAIN}")
+                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -759,7 +777,7 @@ function close_firewall_service() {
                     ;;
                 [Nn] | [Nn][Oo]) ;;
                 *)
-                    echo -e "\n$WARN 输入错误，默认不关闭！"
+                    input_error "默认不关闭"
                     ;;
                 esac
             fi
@@ -1004,7 +1022,7 @@ function install_docker_engine() {
                     target_docker_version="${_SELECT_RESULT}"
                     echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}指定安装版本：${target_docker_version}${PLAIN}\n"
                 else
-                    echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：27.4.0 ---------- ${PLAIN}\n"
+                    echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：28.3.0 ---------- ${PLAIN}\n"
                     cat $File_DockerVersionTmp
                     while true; do
                         local CHOICE=$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")
@@ -1080,16 +1098,17 @@ function install_docker_engine() {
 
     ## 判断是否手动选择安装版本
     if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
+        local ask_text="是否安装最新版本的 Docker Engine ?"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
-            interactive_select_boolean "${BOLD}是否安装最新版本的 Docker Engine ?${PLAIN}"
+            interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
             if [[ "${_SELECT_RESULT}" == "true" ]]; then
                 INSTALL_LATESTED_DOCKER="true"
             else
                 INSTALL_LATESTED_DOCKER="false"
             fi
         else
-            local CHOICE_A=$(echo -e "\n${BOLD}└─ 是否安装最新版本的 Docker Engine ? [Y/n] ${PLAIN}")
+            local CHOICE_A="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
             read -p "${CHOICE_A}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case $INPUT in
@@ -1101,10 +1120,11 @@ function install_docker_engine() {
                 ;;
             *)
                 INSTALL_LATESTED_DOCKER="true"
-                echo -e "\n$WARN 输入错误，默认安装最新版本！"
+                input_error "默认安装最新版本"
                 ;;
             esac
         fi
+        echo ''
     fi
 
     ## 判定是否已安装
@@ -1158,15 +1178,16 @@ function change_docker_registry_mirror() {
     if [ -d "${Dir_Docker}" ] && [ -e "${File_DockerConfig}" ]; then
         if [ -e "${File_DockerConfigBackup}" ]; then
             if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
+                local ask_text="检测到已备份的 Docker 配置文件，是否跳过覆盖备份?"
                 if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                     echo ''
-                    interactive_select_boolean "${BOLD}检测到已备份的 Docker 配置文件，是否跳过覆盖备份?${PLAIN}"
+                    interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                     if [[ "${_SELECT_RESULT}" == "false" ]]; then
                         echo ''
                         cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
                     fi
                 else
-                    local CHOICE_BACKUP=$(echo -e "\n${BOLD}└─ 检测到已备份的 Docker 配置文件，是否跳过覆盖备份? [Y/n] ${PLAIN}")
+                    local CHOICE_BACKUP="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
                     read -p "${CHOICE_BACKUP}" INPUT
                     [[ -z "${INPUT}" ]] && INPUT=Y
                     case $INPUT in
@@ -1176,7 +1197,7 @@ function change_docker_registry_mirror() {
                         cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
                         ;;
                     *)
-                        echo -e "\n$WARN 输入错误，默认不覆盖！"
+                        input_error "默认不覆盖"
                         ;;
                     esac
                 fi
@@ -1289,18 +1310,20 @@ function check_installed_result() {
             echo -e "              $(docker compose version 2>&1)"
             # echo -e "\n$COMPLETE 安装完成"
         else
-            echo -e "\n$ERROR 安装失败"
+            echo -e "\n$FAIL 安装失败"
+            local source_file package_manager
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                echo -e "\n检查源文件：cat $Dir_AptAdditionalSources/docker.list"
-                echo -e '请尝试手动执行安装命令：apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n'
+                source_file="${Dir_AptAdditionalSources}/docker.list"
+                package_manager="apt-get"
                 ;;
             "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-                local package_manager="$(get_package_manager)"
-                echo -e "\n检查源文件：cat ${Dir_YumRepos}/docker.repo"
-                echo -e "请尝试手动执行安装命令：${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n"
+                source_file="${Dir_YumRepos}/docker.repo"
+                package_manager="$(get_package_manager)"
                 ;;
             esac
+            echo -e "\n检查源文件：cat ${source_file}"
+            echo -e "请尝试手动执行安装命令：${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n"
             exit 1
         fi
         if [[ $(systemctl is-active docker) != "active" ]]; then
@@ -1315,7 +1338,7 @@ function check_installed_result() {
             fi
         fi
     else
-        echo -e "\n$ERROR 安装失败"
+        echo -e "\n$FAIL 安装失败"
     fi
 }
 
@@ -1344,7 +1367,7 @@ function interactive_select_mirror() {
     unset options[${#options[@]}-1]
     local selected=0
     local start=0
-    local page_size=$(($(tput lines 2>/dev/null) - 3)) # 减去3行用于显示提示信息
+    local page_size=$(($(tput lines 2>/dev/null) - 3))
     function clear_menu() {
         tput rc 2>/dev/null
         for ((i = 0; i < ${#options[@]} + 1; i++)); do
@@ -1384,17 +1407,15 @@ function interactive_select_mirror() {
         fi
         echo "$key"
     }
-    tput smcup 2>/dev/null  # 保存当前屏幕并切换到新屏幕
-    tput sc 2>/dev/null     # 保存光标位置
-    tput civis 2>/dev/null  # 隐藏光标
-    trap "cleanup" INT TERM # 捕捉脚本结束时恢复光标
-    draw_menu               # 初始化菜单位置
-    # 处理选择
+    tput smcup 2>/dev/null
+    tput sc 2>/dev/null
+    tput civis 2>/dev/null
+    trap "cleanup" INT TERM
+    draw_menu
     while true; do
         key=$(read_key)
         case "$key" in
         "[A" | "w" | "W")
-            # 上箭头 / W
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
                 if [ "$selected" -lt "$start" ]; then
@@ -1403,7 +1424,6 @@ function interactive_select_mirror() {
             fi
             ;;
         "[B" | "s" | "S")
-            # 下箭头 / S
             if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
                 selected=$((selected + 1))
                 if [ "$selected" -ge $((start + page_size)) ]; then
@@ -1412,7 +1432,6 @@ function interactive_select_mirror() {
             fi
             ;;
         "")
-            # Enter 键
             tput rmcup
             break
             ;;
@@ -1420,11 +1439,8 @@ function interactive_select_mirror() {
         esac
         draw_menu
     done
-    # clear_menu # 清除菜单
-    tput cnorm 2>/dev/null # 恢复光标
-    tput rmcup 2>/dev/null # 恢复之前的屏幕
-    # tput rc 2>/dev/null # 恢复光标位置
-    # 处理结果
+    tput cnorm 2>/dev/null
+    tput rmcup 2>/dev/null
     _SELECT_RESULT="${options[$selected]}"
 }
 
@@ -1432,17 +1448,15 @@ function interactive_select_boolean() {
     _SELECT_RESULT=""
     local selected=0
     local message="$1"
-    local menu_height=3 # 菜单总高度(标题行+空行+选项行)
+    local menu_height=3
     local original_line
     function store_position() {
-        # 保存菜单开始前的行位置
         original_line=$(tput lines 2>/dev/null)
     }
     function clear_menu() {
-        # 向上移动到菜单开始位置并清除菜单
         for ((i = 0; i < ${menu_height}; i++)); do
-            tput cuu1 2>/dev/null # 光标上移一行
-            tput el 2>/dev/null   # 清除当前行
+            tput cuu1 2>/dev/null
+            tput el 2>/dev/null
         done
     }
     function cleanup() {
@@ -1452,7 +1466,6 @@ function interactive_select_boolean() {
         exit 130
     }
     function draw_menu() {
-        # 绘制菜单不改变光标位置
         echo -e "╭─ ${message}"
         echo -e "│"
         if [ "$selected" -eq 0 ]; then
@@ -1469,16 +1482,14 @@ function interactive_select_boolean() {
         fi
         echo "$key"
     }
-    tput civis 2>/dev/null # 隐藏光标
-    store_position         # 记录当前位置
+    tput civis 2>/dev/null
+    store_position
     trap "cleanup" INT TERM
-    draw_menu # 初始化菜单位置
-    # 处理选择
+    draw_menu
     while true; do
         key=$(read_key)
         case "$key" in
         "[D" | "a" | "A")
-            # 左箭头 / A
             if [ "$selected" -gt 0 ]; then
                 selected=$((selected - 1))
                 clear_menu
@@ -1486,7 +1497,6 @@ function interactive_select_boolean() {
             fi
             ;;
         "[C" | "d" | "D")
-            # 右箭头 / D
             if [ "$selected" -lt 1 ]; then
                 selected=$((selected + 1))
                 clear_menu
@@ -1494,8 +1504,7 @@ function interactive_select_boolean() {
             fi
             ;;
         "")
-            # Enter 键
-            clear_menu # 先清除菜单
+            clear_menu
             break
             ;;
         *) ;;
@@ -1510,68 +1519,53 @@ function interactive_select_boolean() {
         echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
         _SELECT_RESULT="false"
     fi
-    tput cnorm 2>/dev/null # 恢复光标
+    tput cnorm 2>/dev/null
 }
 
 function animate_exec() {
     local cmd="$1"
     local title="$2"
-    local max_lines=${3:-5}          # 默认显示5行
-    local spinner_style="${4:-dots}" # 动画样式
-    local refresh_rate="${5:-0.1}"   # 刷新率
-    # 动画样式
+    local max_lines=${3:-5}
+    local spinner_style="${4:-dots}"
+    local refresh_rate="${5:-0.1}"
     local -A spinners=([dots]="⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏" [circle]="◐ ◓ ◑ ◒" [classic]="-\\ |/")
     local -A recommended_rates=([dots]="0.08" [circle]="0.12" [classic]="0.12")
     [[ -z "${spinners[$spinner_style]}" ]] && spinner_style="dots"
     [[ "${refresh_rate}" == "0.1" ]] && refresh_rate="${recommended_rates[$spinner_style]}"
-    # 获取终端宽度
     local term_width=$(tput cols 2>/dev/null || echo 80)
     local display_width=$((term_width - 2))
-    # 截断行
     function simple_truncate() {
         local line="$1"
         local truncate_marker="..."
         local max_length=$((display_width - 3))
-        # 快速判断：如果ASCII行长度在范围内，直接返回
         if [[ "${line}" =~ ^[[:ascii:]]*$ && ${#line} -le $display_width ]]; then
             echo "${line}"
             return
         fi
-        # 1. 计算非ASCII字符数量
         local non_ascii_count=$(echo "${line// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;" | wc -m)
-        # 2. 总字符数
         local total_length=${#line}
-        # 3. 实际显示宽度 = 总字符数 + 非ASCII字符数
-        # 非ASCII字符额外占用1个宽度单位（即总共2个）
         local display_length=$((total_length + non_ascii_count))
-        # 4. 中文引号特殊处理（引号只占1个宽度，需要减去额外计算的部分）
         local quote_count=0
         [[ $(echo "${line}" | grep -c "“") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "“")))
         [[ $(echo "${line}" | grep -c "”") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "”")))
         [[ $(echo "${line}" | grep -c "‘") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "‘")))
         [[ $(echo "${line}" | grep -c "’") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "’")))
-        # 5. 调整宽度（减去引号额外计算的部分）
         display_length=$((display_length - quote_count))
-        # 如果计算宽度在显示范围内，直接显示
         if [[ $display_length -le $display_width ]]; then
             echo "$line"
             return
         fi
-        # 需要截断，逐字符构建
         local result=""
         local current_width=0
         local i=0
         while [ $i -lt ${#line} ]; do
             local char="${line:$i:1}"
             local char_width=1
-            # 是否是中文等宽字符(非ASCII)
             if ! [[ "$char" =~ [0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·] ]]; then
-                # 不是中文引号则算2个宽度
                 if [[ "$char" != "“" && "$char" != "”" && "$char" != "‘" && "$char" != "’" ]]; then
                     char_width=2
                 fi
             fi
-            # 检查添加此字符是否会超出限制
             if [[ $((current_width + char_width)) -gt $max_length ]]; then
                 echo "${result}${truncate_marker}"
                 return
@@ -1580,17 +1574,14 @@ function animate_exec() {
             current_width=$((current_width + char_width))
             ((i++))
         done
-        # 完整遍历未超出限制
         echo "${line}"
     }
-    # 清理函数
     function cleanup() {
         [ -f "${temp_file}" ] && rm -f "${temp_file}"
         tput cnorm 2>/dev/null
         echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
         exit 130
     }
-    # 创建临时文件
     function make_temp_file() {
         local temp_dirs=("." "/tmp")
         local tmp_file=""
@@ -1605,65 +1596,49 @@ function animate_exec() {
         done
         echo "${tmp_file}"
     }
-    # 更新显示
     function update_display() {
         local current_size=$(wc -c <"${temp_file}" 2>/dev/null || echo 0)
-        # 如果文件大小没变，不更新
         if [[ $current_size -le $last_size ]]; then
             return 1
         fi
-        # 只在必要时读取文件
         local -a lines=()
         mapfile -t -n "${max_lines}" lines < <(tail -n "$max_lines" "${temp_file}")
-        # 处理每一行
         local -a processed_lines=()
         for ((i = 0; i < ${#lines[@]}; i++)); do
             processed_lines[i]=$(simple_truncate "${lines[i]}")
         done
-        # 更新显示
-        tput cud1 2>/dev/null # 移动到标题下
-        echo -ne "\r\033[K"   # 清空当前行
-        tput cud1 2>/dev/null # 移动到内容区
-        # 显示处理后的行
+        tput cud1 2>/dev/null
+        echo -ne "\r\033[K"
+        tput cud1 2>/dev/null
         for ((i = 0; i < $max_lines; i++)); do
-            echo -ne "\r\033[K" # 清空当前行
+            echo -ne "\r\033[K"
             [[ $i -lt ${#processed_lines[@]} ]] && echo -ne "\033[2m${processed_lines[$i]}\033[0m"
             [[ $i -lt $((max_lines - 1)) ]] && tput cud1 2>/dev/null
         done
-        # 返回到标题行
         for ((i = 0; i < $max_lines + 1; i++)); do
             tput cuu1 2>/dev/null
         done
-        # 更新文件大小记录
         last_size=$current_size
         return 0
     }
-    # 初始化
     local spinner_frames=(${spinners[$spinner_style]})
     local temp_file="$(make_temp_file)"
     trap "cleanup" INT TERM
-    tput civis 2>/dev/null # 隐藏光标
-    # 预留显示空间
-    echo '' # 标题行
-    echo '' # 空行
+    tput civis 2>/dev/null
+    echo ''
+    echo ''
     for ((i = 0; i < $max_lines; i++)); do
         echo ''
     done
-    # 执行命令
     eval "${cmd}" >"${temp_file}" 2>&1 &
     local cmd_pid=$!
     local last_size=0
     local spin_idx=0
-    # 返回到标题行
     tput cuu $((max_lines + 2)) 2>/dev/null
-    # 添加延迟允许命令开始执行
     sleep 0.05
-    # 显示初始状态
     echo -ne "\r\033[K◉ ${title} [\033[1m\033[34m${spinner_frames[$spin_idx]}\033[0m]"
     spin_idx=$(((spin_idx + 1) % ${#spinner_frames[@]}))
-    # 检查初始输出
     update_display
-    # 监控命令执行 - 增加自适应刷新
     local update_count=0
     local adaptive_rate=$refresh_rate
     while kill -0 $cmd_pid 2>/dev/null; do
@@ -1671,7 +1646,6 @@ function animate_exec() {
         spin_idx=$(((spin_idx + 1) % ${#spinner_frames[@]}))
         if update_display; then
             update_count=$((update_count + 1))
-            # 连续更新太频繁则调整刷新率
             if [[ $update_count -gt 5 ]]; then
                 adaptive_rate=$(awk "BEGIN {print $adaptive_rate * 1.5; exit}")
                 [[ $(awk "BEGIN {print ($adaptive_rate > 0.5); exit}") -eq 1 ]] && adaptive_rate=0.5
@@ -1685,17 +1659,13 @@ function animate_exec() {
     done
     wait $cmd_pid
     local exit_status=$?
-    # 最后一次更新显示
     update_display
-    # 显示完成状态
     if [ $exit_status -eq 0 ]; then
         echo -ne "\r\033[K◉ ${title} [\033[1m\033[32m✓\033[0m]\n"
     else
         echo -ne "\r\033[K◉ ${title} [\033[1m\033[31m✗\033[0m]\n"
     fi
-    # 空行
     echo -ne "\r\033[K\n"
-    # 显示最终输出
     local actual_lines=$(wc -l <"${temp_file}" 2>/dev/null || echo 0)
     [[ $actual_lines -gt $max_lines ]] && actual_lines=$max_lines
     if [[ $actual_lines -gt 0 ]]; then
@@ -1707,7 +1677,6 @@ function animate_exec() {
             echo -ne "\r\033[K\033[2m${line}\033[0m\n"
         done
     fi
-    # 清理并返回
     tput cnorm 2>/dev/null
     rm -f "${temp_file}"
     return $exit_status
