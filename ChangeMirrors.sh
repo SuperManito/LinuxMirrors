@@ -786,7 +786,7 @@ function collect_system_info() {
         # CentOS Stream
         grep -q "${SYSTEM_CENTOS_STREAM}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_CENTOS_STREAM}"
         # Oracle Linux
-        [ -s "${File_OracleLinuxRelease}" ] && unsupport_system_error "Oracle Linux"
+        [ -s "${File_OracleLinuxRelease}" ] && SYSTEM_JUDGMENT="${SYSTEM_ORACLE}"
         ;;
     "${SYSTEM_ARCH}")
         if [ -f "${File_ManjaroRelease}" ]; then
@@ -832,7 +832,7 @@ function collect_system_info() {
             is_supported="false"
         fi
         ;;
-    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}")
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_ORACLE}")
         if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [8-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 10 ]]; then
             is_supported="false"
         fi
@@ -956,7 +956,7 @@ function collect_system_info() {
                 SOURCE_BRANCH="centos-altarch"
             fi
             ;;
-        "${SYSTEM_CENTOS_STREAM}")
+        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}")
             # 自 CentOS Stream 9 开始使用 centos-stream 仓库，旧版本使用 centos 仓库
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             8)
@@ -1561,6 +1561,23 @@ function remove_original_mirrors() {
                 ;;
             "${SYSTEM_ALMALINUX}")
                 repo_patterns=("almalinux*")
+                ;;
+            "${SYSTEM_ORACLE}")
+                case "${SYSTEM_VERSION_ID_MAJOR}" in
+                9 | 10)
+                    repo_patterns=(
+                        "*ol${SYSTEM_VERSION_ID_MAJOR}.repo"
+                        "centos-stream.repo"
+                        "centos-stream-addons.repo"
+                    )
+                    ;;
+                8)
+                    repo_patterns=(
+                        "*ol${SYSTEM_VERSION_ID_MAJOR}.repo"
+                        "CentOS-Stream-*"
+                    )
+                    ;;
+                esac
                 ;;
             "${SYSTEM_OPENCLOUDOS}")
                 repo_patterns=("OpenCloudOS*")
@@ -2207,7 +2224,7 @@ function change_mirrors_RedHat() {
     "${SYSTEM_CENTOS}")
         gen_repo_files_CentOS "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
-    "${SYSTEM_CENTOS_STREAM}")
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}")
         gen_repo_files_CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_ROCKY}")
@@ -2231,7 +2248,7 @@ function change_mirrors_RedHat() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
             SOURCE="vault.centos.org"
             SOURCE_BRANCH="centos"
-        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" && "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
+        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
             SOURCE="vault.centos.org"
             SOURCE_BRANCH="centos"
         else
@@ -2327,7 +2344,7 @@ function change_mirrors_RedHat() {
             -i \
             CentOS-*
         ;;
-    "${SYSTEM_CENTOS_STREAM}")
+    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         9 | 10)
             sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
@@ -2336,6 +2353,13 @@ function change_mirrors_RedHat() {
                 -i \
                 centos.repo \
                 centos-addons.repo
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" ]]; then
+                # 禁用 GPG 签名检查
+                sed -e "s|gpgcheck=1|gpgcheck=0|g" \
+                    -i \
+                    centos.repo \
+                    centos-addons.repo
+            fi
             ;;
         8)
             sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
@@ -2344,6 +2368,12 @@ function change_mirrors_RedHat() {
                 -e "s|vault.centos.org/\$contentdir|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-centos-vault}|g" \
                 -i \
                 CentOS-Stream-*
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" ]]; then
+                # 禁用 GPG 签名检查
+                sed -e "s|gpgcheck=1|gpgcheck=0|g" \
+                    -i \
+                    CentOS-Stream-*
+            fi
             ;;
         esac
         ;;
@@ -2462,7 +2492,7 @@ function change_mirrors_RedHat() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
             SOURCE=""
             SOURCE_BRANCH=""
-        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" && "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
+        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
             SOURCE=""
             SOURCE_BRANCH=""
         fi
@@ -2759,7 +2789,7 @@ function change_mirrors_or_install_EPEL() {
             ;;
         9)
             ## CentOS Stream 9 特殊，有两个不同的发行包 epel-release epel-next-release
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
+            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
                 package_path="epel/epel{,-next}-release-latest-9"
             fi
             ;;
@@ -2778,7 +2808,7 @@ function change_mirrors_or_install_EPEL() {
     fi
     ## 生成 repo 源文件
     gen_repo_files_EPEL "${SYSTEM_VERSION_ID_MAJOR}"
-    if [[ "${epel_version}" == 9 ]] && [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
+    if [[ "${epel_version}" == 9 ]] && [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
         gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_ID_MAJOR}"
     fi
     ## 使用官方源
@@ -2813,7 +2843,7 @@ function change_mirrors_or_install_EPEL() {
 function get_package_manager() {
     local command="yum"
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_ORACLE}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         9 | 10)
             command="dnf"

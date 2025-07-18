@@ -1346,7 +1346,7 @@ function check_installed_result() {
 function get_package_manager() {
     local command="yum"
     case "${SYSTEM_JUDGMENT}" in
-    "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_RHEL}")
+    "${SYSTEM_RHEL}" | "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_ORACLE}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         9 | 10)
             command="dnf"
