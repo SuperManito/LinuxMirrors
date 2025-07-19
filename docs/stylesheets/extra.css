@@ -227,6 +227,10 @@
     }
 }
 
+.md-typeset__table .twemoji svg {
+    fill: var(--md-default-fg-color--light) !important;
+}
+
 /* HERO */
 .hero {
     width: 390px;

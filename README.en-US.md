@@ -55,7 +55,7 @@
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://www.proxmox.com" target="_blank"><sub><img src="/docs/assets/images/icon/proxmox.svg" width="16" height="16"></sub></a>&nbsp;Proxmox VE</td>
+        <td><a href=https://www.proxmox.com/en/products/proxmox-virtual-environment/overview target="_blank"><sub><img src="/docs/assets/images/icon/proxmox.svg" width="16" height="16"></sub></a>&nbsp;Proxmox VE</td>
         <td align="center">all</td>
     </tr>
     <tr>
