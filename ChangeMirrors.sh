@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-18
+## Modified: 2025-07-24
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1945,22 +1945,24 @@ function change_mirrors_Debian() {
         echo "deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}"
     }
     function gen_deb_disabled_source() {
-        echo "# deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}
-# # deb-src ${WEB_PROTOCOL}://${1}/ ${2} ${3}"
+        echo "$(gen_deb_source "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
-    function gen_deb822_source() {
-        echo "Types: deb
-URIs: ${WEB_PROTOCOL}://${1}/
-Suites: ${2}
-Components: ${3}
+    function gen_deb822_source_template() {
+        echo "Types: ${1}
+URIs: ${WEB_PROTOCOL}://${2}/
+Suites: ${3}
+Components: ${4}
 Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
     }
+    function gen_deb822_source() {
+        echo "$(gen_deb822_source_template "deb" "${1}" "${2}" "${3}")
+
+$(gen_deb822_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+    }
     function gen_deb822_disabled_source() {
-        echo "# Types: deb
-# URIs: ${WEB_PROTOCOL}://${1}/
-# Suites: ${2}
-# Components: ${3}
-# Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
+        echo "$(gen_deb822_source_template "deb" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")
+
+$(gen_deb822_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g; s|^|# |g")"
     }
     function gen_deb_source_security() {
         echo "## 安全更新软件源
