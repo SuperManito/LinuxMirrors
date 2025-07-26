@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-24
+## Modified: 2025-07-26
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1767,7 +1767,7 @@ function change_mirrors_main() {
             if [[ -z "${exec_cmd}" ]]; then
                 exec_cmd="${cmd}"
             else
-                exec_cmd="${exec_cmd} && ${cmd}"
+                exec_cmd="${exec_cmd} ; ${cmd}"
             fi
         done
         echo ''
@@ -2024,7 +2024,7 @@ $(gen_deb822_disabled_source "${1}" "${2}-proposed" "${3}")"
         esac
     fi
 
-    local deb_source_title="## 默认禁用源码镜像以提高速度，如需启用请自行取消注释"
+    local deb_source_title="## 默认禁用源码镜像以提高更新速度，如需启用请自行取消注释"
     local repository_sections # 仓库区域
     local source_host="${SOURCE}/${SOURCE_BRANCH}"
     local source_host_security=""
@@ -2561,7 +2561,7 @@ deb ${WEB_PROTOCOL}://${1}/ ${2}-updates ${3}
     fi
     local repository_sections="main cross pty" # 仓库区域
     local source_host="${SOURCE}/${SOURCE_BRANCH}"
-    echo "## 默认禁用源码镜像以提高速度，如需启用请自行取消注释
+    echo "## 默认禁用源码镜像以提高更新速度，如需启用请自行取消注释
 $(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
 }
 

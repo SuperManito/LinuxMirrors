@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-18
+## Modified: 2025-07-26
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -891,7 +891,7 @@ function install_dependency_packages() {
             if [[ -z "${exec_cmd}" ]]; then
                 exec_cmd="${cmd}"
             else
-                exec_cmd="${exec_cmd} && ${cmd}"
+                exec_cmd="${exec_cmd} ; ${cmd}"
             fi
         done
         echo ''
@@ -930,7 +930,7 @@ function install_dependency_packages() {
             if [[ -z "${exec_cmd}" ]]; then
                 exec_cmd="${cmd}"
             else
-                exec_cmd="${exec_cmd} && ${cmd}"
+                exec_cmd="${exec_cmd} ; ${cmd}"
             fi
         done
         echo ''
@@ -1005,7 +1005,7 @@ function configure_docker_ce_mirror() {
             if [[ -z "${exec_cmd}" ]]; then
                 exec_cmd="${cmd}"
             else
-                exec_cmd="${exec_cmd} && ${cmd}"
+                exec_cmd="${exec_cmd} ; ${cmd}"
             fi
         done
         animate_exec "${exec_cmd}" "${SYNC_MIRROR_TEXT}"
@@ -1159,7 +1159,7 @@ function install_docker_engine() {
                 if [[ -z "${exec_cmd}" ]]; then
                     exec_cmd="${cmd}"
                 else
-                    exec_cmd="${exec_cmd} && ${cmd}"
+                    exec_cmd="${exec_cmd} ; ${cmd}"
                 fi
             done
             animate_exec "${exec_cmd}" "安装 Docker Engine"
@@ -1337,7 +1337,7 @@ function only_change_docker_registry_mirror() {
                     if [[ -z "${exec_cmd}" ]]; then
                         exec_cmd="${cmd}"
                     else
-                        exec_cmd="${exec_cmd} && ${cmd}"
+                        exec_cmd="${exec_cmd} ; ${cmd}"
                     fi
                 done
                 echo ''
