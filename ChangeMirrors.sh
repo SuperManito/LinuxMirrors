@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-26
+## Modified: 2025-07-28
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -231,6 +231,7 @@ File_ArmbianSourceList=$Dir_AptAdditionalSources/armbian.list
 File_ArmbianSourceListBackup=$File_ArmbianSourceList.bak
 File_ProxmoxSourceList=$Dir_AptAdditionalSources/pve-no-subscription.list
 File_ProxmoxSourceListBackup=$File_ProxmoxSourceList.bak
+File_ProxmoxAPLInfo=/usr/share/perl5/PVE/APLInfo.pm
 File_LinuxMintSourceList=$Dir_AptAdditionalSources/official-package-repositories.list
 File_LinuxMintSourceListBackup=$File_LinuxMintSourceList.bak
 File_RaspberryPiSourceList=$Dir_AptAdditionalSources/raspi.list
@@ -1937,15 +1938,21 @@ function upgrade_software() {
 ## 更换基于 Debian 系 Linux 发行版的软件源
 function change_mirrors_Debian() {
     ## 通用生成方法
+    function gen_deb_source_template() {
+        echo "${1} ${WEB_PROTOCOL}://${2}/ ${3} ${4}"
+    }
     function gen_deb_source() {
-        echo "deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}
-# deb-src ${WEB_PROTOCOL}://${1}/ ${2} ${3}"
+        echo "$(gen_deb_source_template "deb" "${1}" "${2}" "${3}")
+$(gen_deb_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
     function gen_deb_source_no_src() {
-        echo "deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}"
+        echo "$(gen_deb_source_template "deb" "${1}" "${2}" "${3}")"
     }
-    function gen_deb_disabled_source() {
+    function gen_deb_source_disabled() {
         echo "$(gen_deb_source "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+    }
+    function gen_deb_source_no_src_disabled() {
+        echo "$(gen_deb_source_no_src "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
     function gen_deb822_source_template() {
         echo "Types: ${1}
@@ -1959,10 +1966,10 @@ Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
 
 $(gen_deb822_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
-    function gen_deb822_disabled_source() {
+    function gen_deb822_source_disabled() {
         echo "$(gen_deb822_source_template "deb" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")
 
-$(gen_deb822_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g; s|^|# |g")"
+$(gen_deb822_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
     function gen_deb_source_security() {
         echo "## 安全更新软件源
@@ -1994,13 +2001,13 @@ $(gen_deb_source "${1}" "${2}-updates" "${3}")"
 $(gen_deb_source "${1}" "${2}-updates" "${3}")
 $(gen_deb_source "${1}" "${2}-backports" "${3}")
 ## 预发布软件源（不建议启用）
-$(gen_deb_disabled_source "${1}" "${2}-proposed" "${3}")"
+$(gen_deb_source_disabled "${1}" "${2}-proposed" "${3}")"
     }
     function gen_ubuntu_deb822_source() {
         echo "$(gen_deb822_source "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
 
 ## 预发布软件源（不建议启用）
-$(gen_deb822_disabled_source "${1}" "${2}-proposed" "${3}")"
+$(gen_deb822_source_disabled "${1}" "${2}-proposed" "${3}")"
     }
 
     ## 使用官方源
@@ -2202,10 +2209,16 @@ $(gen_deb_source "${source_host}" "${base_system_codename}" "${repository_sectio
     fi
     # Proxmox VE
     if [ -f "${File_ProxmoxVersion}" ]; then
-        echo "deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pve ${SYSTEM_VERSION_CODENAME} pve-no-subscription
-# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs ${SYSTEM_VERSION_CODENAME} pbs-no-subscription
-# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pbs-client ${SYSTEM_VERSION_CODENAME} pbs-client-no-subscription
-# deb ${WEB_PROTOCOL}://${SOURCE}/proxmox/debian/pmg ${SYSTEM_VERSION_CODENAME} pmg-no-subscription" >>$File_ProxmoxSourceList
+        source_host="${SOURCE}/proxmox/debian"
+        echo "$(gen_deb_source_no_src "${source_host}/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")  
+$(gen_deb_source_no_src_disabled "${source_host}/pbs" "${SYSTEM_VERSION_CODENAME}" "pbs-no-subscription")
+$(gen_deb_source_no_src_disabled "${source_host}/pbs-client" "${SYSTEM_VERSION_CODENAME}" "pbs-client-no-subscription")
+$(gen_deb_source_no_src_disabled "${source_host}/pmg" "${SYSTEM_VERSION_CODENAME}" "pmg-no-subscription")" >>$File_ProxmoxSourceList
+        if [ -s "${File_ProxmoxAPLInfo}" ]; then
+            sed -e "s|url => [\"']https\?://[^/]*/images[\"']|url => \"${WEB_PROTOCOL}://${SOURCE}/images\"|g" \
+                -i \
+                $File_ProxmoxAPLInfo
+        fi
     fi
 }
 
