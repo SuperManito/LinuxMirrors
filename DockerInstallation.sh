@@ -993,9 +993,12 @@ function configure_docker_ce_mirror() {
                         # Huawei Cloud EulerOS
                         case "${SYSTEM_VERSION_ID_MAJOR}" in
                         1)
-                            target_version="8"
+                            target_version="8" # openEuler 20
                             ;;
                         2)
+                            target_version="9" # openEuler 22
+                            ;;
+                        *)
                             target_version="9"
                             ;;
                         esac
