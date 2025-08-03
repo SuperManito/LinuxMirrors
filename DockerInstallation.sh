@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-26
+## Modified: 2025-08-03
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -128,6 +128,7 @@ File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
 File_RaspberryPiOSRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
+File_HuaweiCloudEulerOSRelease=/etc/hce-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
 File_AnolisOSRelease=/etc/anolis-release
 File_OracleLinuxRelease=/etc/oracle-release
@@ -465,7 +466,7 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
-    elif [ -s "${File_openEulerRelease}" ]; then
+    elif [ -s "${File_openEulerRelease}" ] || [ -s "${File_HuaweiCloudEulerOSRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENEULER}"
     elif [ -s "${File_OpenCloudOSRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
@@ -984,11 +985,26 @@ function configure_docker_ce_mirror() {
                 ;;
             *)
                 target_version="8" # 注：部分系统使用9版本分支会有兼容性问题
-                # 适配国产系统
+                ## 适配国产操作系统
                 if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_OPENEULER}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" == 23 ]]; then
                     target_version="9"
-                elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_OPENEULER}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 22 ]]; then
-                    target_version="9"
+                elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_OPENEULER}" ]]; then
+                    if [ -s "${File_HuaweiCloudEulerOSRelease}" ]; then
+                        # Huawei Cloud EulerOS
+                        case "${SYSTEM_VERSION_ID_MAJOR}" in
+                        1)
+                            target_version="8"
+                            ;;
+                        2)
+                            target_version="9"
+                            ;;
+                        esac
+                    else
+                        # openEuler
+                        if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 22 ]]; then
+                            target_version="9"
+                        fi
+                    fi
                 fi
                 ;;
             esac
