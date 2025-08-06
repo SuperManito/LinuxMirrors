@@ -104,13 +104,36 @@ hide:
 
     与 [get.docker.com](https://get.docker.com) 逻辑一致，融合了本项目换源架构以及特性
 
--   :material-thumb-up-outline:{ .lg .middle } __已被众多流行项目使用__
+-   :material-arm-flex-outline:{ .lg .middle } __支持国产衍生操作系统__
 
     ---
 
-    经过数年的技术沉淀与生产验证，广受社区好评，深得开发者喜爱
+    本项目脚本兼容大量不受官方安装脚本支持的衍生操作系统
 
 </div>
+
+<div class="icon-brand-section">
+  <div class="icon-brand-container no-select">
+    <a class="icon-brand-button" target="_blank" href="https://1panel.cn" title="1Panel">
+      <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
+    </a>
+    <a class="icon-brand-button" target="_blank" href="https://www.bt.cn" title="宝塔面板" style="padding: 0 !important">
+      <img src="/assets/images/other/bt.svg" alt="BT" />
+    </a>
+    <a class="icon-brand-button" target="_blank" href="https://1ms.run" title="毫秒镜像">
+      <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="1ms" style="width: 97% !important" />
+      <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="1ms" style="width: 97% !important" />
+    </a>
+    <a class="icon-brand-button" target="_blank" href="https://arcadia.cool" title="一站式代码运维平台" style="padding: 0 2px !important">
+      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="width: 92% !important" />
+      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="width: 92% !important" />
+    </a>
+  </div>
+</div>
+
+> :material-thumb-up-outline: 经过了数年的技术沉淀与生产环境检验，广受社区好评，深得开发者喜爱，大厂都在用
+
+</br>
 
 !!! tip "Docker Compose 不再需要独立安装"
 
@@ -342,7 +365,7 @@ hide:
 
     - #### 纯净模式
 
-        推出该功能是为了便于开发人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+        推出该功能是为了便于开发以及运维人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode

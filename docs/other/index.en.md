@@ -102,7 +102,46 @@ hide:
             ```
             > Not supported in mainland China network environments.
 
-!!! tip "Docker Compose no longer needs to be installed separately"
+<div class="grid cards" markdown>
+
+-   :material-star-four-points-outline:{ .lg .middle } __Can completely replace the official installation script__
+
+    ---
+
+    It is logically consistent with [get.docker.com](https://get.docker.com) and incorporates the repositories and features of this project.
+
+-   :material-arm-flex-outline:{ .lg .middle } __Supports domestic derivative operating systems__
+
+    ---
+    
+    This project's script is compatible with a large number of derivative operating systems not supported by the official installation script.    
+
+</div>
+
+<div class="icon-brand-section">
+  <div class="icon-brand-container no-select">
+    <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
+      <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
+    </a>
+    <a class="icon-brand-button" target="_blank" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
+      <img src="/assets/images/other/aaPanel.png" alt="aapanel" style="width: 76% !important" />
+    </a>
+    <a class="icon-brand-button" target="_blank" href="https://1ms.run" title="毫秒镜像">
+      <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="1ms" style="width: 97% !important" />
+      <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="1ms" style="width: 97% !important" />
+    </a>
+    <a class="icon-brand-button" target="_blank" href="https://arcadia.cool" title="One-stop code operation and maintenance platform" style="padding: 0 2px !important">
+      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="width: 92% !important" />
+      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="width: 92% !important" />
+    </a>
+  </div>
+</div>
+
+> :material-thumb-up-outline: After years of technical accumulation and production environment testing, it has been widely praised by the community and deeply loved by developers. It is used by major companies.
+
+</br>
+
+!!! tip "Docker Compose does not require a separate installation"
 
     Starting from V2, Docker Compose is part of the Docker CLI. The script integrates the installation of this [plugin](https://docs.docker.com/compose/install/linux) by default. Please use the `docker compose` command instead of `docker-compose`.
 
@@ -311,7 +350,7 @@ hide:
 
     - #### Pure Mode
 
-        This feature is introduced to facilitate developers. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
+        This feature is introduced to facilitate the use of developers and operation and maintenance personnel. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode

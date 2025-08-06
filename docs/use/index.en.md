@@ -657,7 +657,7 @@ Below are some advanced usage examples
 
 - ### Pure mode
 
-    This feature is introduced to facilitate developers. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
+    This feature is introduced to facilitate the use of developers and operation and maintenance personnel. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode

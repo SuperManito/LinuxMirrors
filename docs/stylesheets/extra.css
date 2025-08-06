@@ -140,8 +140,13 @@
     background-color: hsla(var(--md-hue), 15%, 9%, 0.83);
 }
 
-.tabbed-set {
+.admonition .tabbed-set {
     overflow: hidden !important;
+    margin: 0 0 1em 0 !important;
+}
+
+.md-typeset details .tabbed-set {
+    margin: 0 0 1em 0 !important;
 }
 
 .highlight code {
@@ -432,6 +437,87 @@
 
     .sponsor-item-flex img {
         transform: scale(1.4);
+    }
+}
+
+.icon-brand-section {
+    margin-top: 0;
+    text-align: center;
+}
+
+.icon-brand-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+    max-width: 100%;
+    width: fit-content;
+    border-radius: 6px;
+    border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.icon-brand-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 4px;
+    background-color: var(--md-default-bg-color);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s ease-in-out;
+    box-sizing: border-box;
+    min-width: 60px;
+}
+
+.icon-brand-button:hover {
+    background-color: var(--md-accent-fg-color--transparent);
+    border-color: var(--md-accent-fg-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-md-color-scheme="slate"] .icon-brand-button:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.icon-brand-button img {
+    max-width: 100%;
+    max-height: 20px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+@media screen and (max-width: 768px) {
+    .icon-brand-container {
+        gap: 0.75rem;
+    }
+
+    .icon-brand-button {
+        padding: 0 8px;
+        min-width: 60px;
+    }
+
+    .icon-brand-button img {
+        max-height: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .icon-brand-container {
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .icon-brand-button {
+        height: 28px;
+        padding: 0 6px;
+        min-width: 50px;
+    }
+
+    .icon-brand-button img {
+        max-height: 14px;
     }
 }
 

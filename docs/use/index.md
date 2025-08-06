@@ -687,7 +687,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
 - ### 纯净模式
 
-    推出该功能是为了便于开发人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+    推出该功能是为了便于开发以及运维人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode
