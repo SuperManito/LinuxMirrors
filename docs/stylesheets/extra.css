@@ -470,6 +470,7 @@
     transition: all 0.15s ease-in-out;
     box-sizing: border-box;
     min-width: 60px;
+    max-width: 80px;
 }
 
 .icon-brand-button:hover {
