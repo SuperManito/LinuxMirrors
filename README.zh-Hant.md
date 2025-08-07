@@ -1,18 +1,17 @@
-<p align="center">
-    <a href="https://linuxmirrors.cn/zh-Hant/">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/2.png" width="320">
-          <img src="/docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
-        </picture>
-    </a>
-</p>
-<p align="center">GNU/Linux 更換系統軟體源腳本及 Docker 安裝與換源腳本</p>
-<p align="center"><a href="README.md">简体中文</a> | 繁體中文 | <a href="README.en-US.md">English</a></p>
-<p align="center">
+<div align="center">
+<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/3.png" width="140">
+    <img src="/docs/assets/images/brand/light/3.png" alt="LinuxMirrors" width="140">
+</picture>
+<h1>LinuxMirrors</h1>
+<p>GNU/Linux 更換系統軟體源腳本及 Docker 安裝與換源腳本</p>
+<p><a href="README.md">简体中文</a> | 繁體中文 | <a href="README.en-US.md">English</a></p>
+<p>
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
-  <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>
+  <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a>
+  <a href="https://deepwiki.com/SuperManito/LinuxMirrors"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a><br>
 </p>
-<p align="center">
+<p>
     <a href="https://hellogithub.com/repository/775d5b3d0aa04e90be9162104e757f2e" target="_blank">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=dark" width="250">
@@ -21,7 +20,7 @@
     </a>
 </p>
 
-<table align="center">
+<table>
     <tr>
         <th align="left">作業系統</th>
         <th align="center">適配版本</th>
@@ -128,15 +127,15 @@
     </tr>
 </table>
 
-<p align="center">
+<p>
     <strong>
         <a href="https://linuxmirrors.cn/zh-Hant/" style="text-decoration: none;">官方網站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/use/" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/mirrors/" style="text-decoration: none;">軟體源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/other/" style="text-decoration: none;">Docker 安裝(額外腳本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/community/" style="text-decoration: none;">社群</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/sponsor/" style="text-decoration: none;">贊助</a>
     </strong>
 </p>
 
-<p align="center"><strong>贊助商</strong></p>
+<p><strong>贊助商</strong></p>
 
-<p align="center">
+<p>
     <a href="https://linuxmirrors.cn/zh-Hant/sponsor/">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/sponsor/all-dark.png">
@@ -144,6 +143,8 @@
         </picture>
     </a>
 </p>
+
+</div>
 
 
 ***

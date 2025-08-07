@@ -32,9 +32,9 @@ hide:
         === ":gitcode: GitCode (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
             ```
-            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+            > 同步存在1小时延迟
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -79,9 +79,9 @@ hide:
         === ":gitcode: GitCode (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
             ```
-            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+            > 同步存在1小时延迟
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 

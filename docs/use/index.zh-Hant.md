@@ -38,9 +38,9 @@ hide:
         === ":gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
-            > 本項目已加入 GitHub 加速計劃，同步存在1小時延遲
+            > 同步存在1小時延遲
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -76,16 +76,15 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
             > 即時同步、無延遲，中國大陸網路環境建議使用
 
         === ":gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
+            > 同步存在1小時延遲
 
-            > 本項目已加入 GitHub 加速計劃，同步存在1小時延遲
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -98,7 +97,6 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-
             > 不支援在中國大陸網路環境下使用
 
 === ":material-library: 中國大陸教育網"
@@ -122,16 +120,15 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
             > 即時同步、無延遲，中國大陸網路環境建議使用
 
         === ":gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
+            > 同步存在1小時延遲
 
-            > 本項目已加入 GitHub 加速計劃，同步存在1小時延遲
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -144,7 +141,6 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-
             > 不支援在中國大陸網路環境下使用
 
 

@@ -1,6 +1,6 @@
 ---
 title: One-Click Script Makes Mirror Switching Easier
-description: GNU/Linux System Software Mirror Switching Script and Docker Installation & Mirror Switching Script
+description: GNU/Linux system software mirror replacement script and Docker installation & mirror replacement script
 comments: true
 glightbox: false
 comments_description: This comment section is only for sharing project usage reviews and experiences. For issues or suggestions, please go to the <a href="/community">Community</a> or <a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank">Issues</a>
@@ -18,7 +18,7 @@ hide:
   </div>
   <img src="/assets/images/brand/light/2.png#only-light" alt="LinuxMirrors" style="width: 300px" />
   <img src="/assets/images/brand/dark/2.png#only-dark" alt="LinuxMirrors" style="width: 300px" />
-  <figcaption>GNU/Linux System Software Mirror Switching Script and Docker Installation & Mirror Switching Script</figcaption>
+  <figcaption>GNU/Linux system software mirror replacement script and Docker installation & mirror replacement script</figcaption>
   <figcaption>One-Click Script Makes Mirror Switching Easier</figcaption>
 </figure>
 <figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>

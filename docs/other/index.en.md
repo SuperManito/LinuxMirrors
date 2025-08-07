@@ -38,9 +38,9 @@ hide:
         === ":gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
             ```
-            > This project has joined the GitHub acceleration plan, with a 1-hour sync delay.
+            > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -85,9 +85,9 @@ hide:
         === ":gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
             ```
-            > This project has joined the GitHub acceleration plan, with a 1-hour sync delay.
+            > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 

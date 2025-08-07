@@ -38,9 +38,9 @@ hide:
         === ":gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
-            > This project has joined the GitHub acceleration plan, with a 1-hour sync delay.
+            > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -76,16 +76,14 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
         === ":gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
-            > This project has joined the GitHub acceleration plan, with a 1-hour sync delay.
+            > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -98,7 +96,6 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-
             > Not supported in mainland China network environments.
 
 === ":material-library: China Education Network"
@@ -122,16 +119,14 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
         === ":gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
-            > This project has joined the GitHub acceleration plan, with a 1-hour sync delay.
+            > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -144,7 +139,6 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-
             > Not supported in mainland China network environments.
 
 

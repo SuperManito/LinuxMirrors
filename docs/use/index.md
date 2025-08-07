@@ -32,9 +32,9 @@ hide:
         === ":gitcode: GitCode (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
-            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
+            > 同步存在1小时延迟
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -70,16 +70,15 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-
             > 实时同步、无延迟，国内网络环境下推荐使用
 
         === ":gitcode: GitCode (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
+            > 同步存在1小时延迟
 
-            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -92,7 +91,6 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-
             > 不支持在国内网络环境下使用
 
 === ":material-library: 中国大陆教育网"
@@ -116,16 +114,15 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-
             > 实时同步、无延迟，国内网络环境下推荐使用
 
         === ":gitcode: GitCode (镜像仓库)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/gh_mirrors/li/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
+            > 同步存在1小时延迟
 
-            > 本项目已加入 GitHub 加速计划，同步存在1小时延迟
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
@@ -138,7 +135,6 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-
             > 不支持在国内网络环境下使用
 
 

@@ -1,18 +1,17 @@
-<p align="center">
-    <a href="https://linuxmirrors.cn/en/">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/2.png" width="320">
-          <img src="/docs/assets/images/brand/light/2.png" alt="LinuxMirrors" width="320">
-        </picture>
-    </a>
-</p>
-<p align="center">GNU/Linux System Software Mirror Switching Script and Docker Installation & Mirror Switching Script</p>
-<p align="center"><a href="README.md">简体中文</a> | <a href="README.zh-Hant.md">繁體中文</a> | English</p>
-<p align="center">
+<div align="center">
+<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/brand/dark/3.png" width="140">
+    <img src="/docs/assets/images/brand/light/3.png" alt="LinuxMirrors" width="140">
+</picture>
+<h1>LinuxMirrors</h1>
+<p>GNU/Linux system software mirror replacement script and Docker installation & mirror replacement script</p>
+<p><a href="README.md">简体中文</a> | <a href="README.zh-Hant.md">繁體中文</a> | English</p>
+<p>
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>
-  <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a><br>
+  <a href="https://github.com/SuperManito/LinuxMirrors"><img src="https://img.shields.io/github/stars/SuperManito/LinuxMirrors?color=%23007bff&style=flat-square" alt="Stars"></a>
+  <a href="https://deepwiki.com/SuperManito/LinuxMirrors"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a><br>
 </p>
-<p align="center">
+<p>
     <a href="https://hellogithub.com/repository/775d5b3d0aa04e90be9162104e757f2e" target="_blank">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=dark" width="250">
@@ -21,7 +20,7 @@
     </a>
 </p>
 
-<table align="center">
+<table>
     <tr>
         <th align="left">Operating System</th>
         <th align="center">Supported Versions</th>
@@ -128,15 +127,15 @@
     </tr>
 </table>
 
-<p align="center">
+<p>
     <strong>
         <a href="https://linuxmirrors.cn/en/" style="text-decoration: none;">Official Website</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/use/" style="text-decoration: none;">Usage</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/mirrors/" style="text-decoration: none;">Mirror List</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/other/" style="text-decoration: none;">Docker Install (Extra Script)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/community/" style="text-decoration: none;">Community</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/sponsor/" style="text-decoration: none;">Sponsor</a>
     </strong>
 </p>
 
-<p align="center"><strong>Sponsors</strong></p>
+<p><strong>Sponsors</strong></p>
 
-<p align="center">
+<p>
     <a href="https://linuxmirrors.cn/en/sponsor">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/sponsor/all-dark.png">
@@ -144,6 +143,8 @@
         </picture>
     </a>
 </p>
+
+</div>
 
 
 ***
