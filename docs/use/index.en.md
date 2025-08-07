@@ -463,7 +463,7 @@ hide:
 | `--branch-portage` | Specify Gentoo portage repo (path) | `repo name` |
 | `--branch-base-system` | Specify Linux Mint/Raspberry Pi OS base system repo (path) | `repo name` |
 | `--codename` | Specify Debian/openKylin codename | `codename` |
-| `--protocol` | Specify WEB protocol | `http` or `https` |
+| `--protocol` | Specify web protocol | `http` or `https` |
 | `--use-intranet-source` | Prefer intranet mirror address | `true` or `false` |
 | `--use-official-source` | Use official mirror of target OS | `true` or `false` |
 | `--use-official-source-epel` | Use official EPEL repo | `true` or `false` |
@@ -478,7 +478,7 @@ hide:
 | `--pure-mode` | Pure mode, minimal output | none |
 | `--help` | Show help menu | none |
 
-> Full mirror format: `<WEB protocol>://<mirror address (domain or IP)>/<repo path>`
+> Full mirror format: `<Web protocol>://<mirror address (domain or IP)>/<repo path>`
 
 Below are some advanced usage examples
 

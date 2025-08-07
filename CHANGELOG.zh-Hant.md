@@ -1,3 +1,11 @@
+2025-08-07
+
+  * Docker 腳本新增適配 TencentOS Server & Alibaba Cloud Linux 作業系統 [#00f3b19](https://github.com/SuperManito/LinuxMirrors/commit/00f3b19edfcb152f22337306e7fc25e135e75c14)
+
+2025-08-03
+
+  * Docker 腳本新增適配 Huawei Cloud EulerOS 作業系統 [#b19f748](https://github.com/SuperManito/LinuxMirrors/commit/b19f748154d66fa6a385726ae899db5740499a7e)
+
 2025-07-18
 
   * 新增適配 Oracle Linux 作業系統 [#76b8b08](https://github.com/SuperManito/LinuxMirrors/commit/76b8b0834ae493ed8731c83440c4a8f4dcad17dc)

@@ -1,3 +1,11 @@
+2025-08-07
+
+  * Adapted for TencentOS Server & Alibaba Cloud Linux to docker script [#00f3b19](https://github.com/SuperManito/LinuxMirrors/commit/00f3b19edfcb152f22337306e7fc25e135e75c14)
+
+2025-08-03
+
+  * Adapted for Huawei Cloud EulerOS to docker script [#b19f748](https://github.com/SuperManito/LinuxMirrors/commit/b19f748154d66fa6a385726ae899db5740499a7e)
+
 2025-07-18
 
   * Added support for Oracle Linux OS [#76b8b08](https://github.com/SuperManito/LinuxMirrors/commit/76b8b0834ae493ed8731c83440c4a8f4dcad17dc)
@@ -20,7 +28,7 @@
 
 2025-05-12
 
-  * Added "Only Replace Mirror Accelerator" command option to Docker script [#3f13f40](https://github.com/SuperManito/LinuxMirrors/commit/3f13f40111fa3631555ca7104cea21b4bb5adefa)
+  * Added "Only Replace Mirror Accelerator" command option to docker script [#3f13f40](https://github.com/SuperManito/LinuxMirrors/commit/3f13f40111fa3631555ca7104cea21b4bb5adefa)
 
 2025-05-11
 

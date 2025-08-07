@@ -6,7 +6,7 @@ hide:
 
 ???+ question "為什麼會看到該提示？"
 
-    本項目腳本目前主要服務於簡體中文用戶，但是從立項之初就定義為了通用換源腳本，提供了諸多命令選項用於自訂使用，這也是本項目為什麼開始面向其它語言用戶使用的原因之一。腳本列印內容目前固定為簡體中文，隨著其它語言使用者的回饋和使用，腳本將來可能會支援繁體中文和英文。
+    本項目腳本目前主要服務於簡體中文用戶，但是從立項之初就定義為了通用換源腳本，提供了諸多命令選項用於自定義使用，這也是本項目為什麼開始面向其它語言用戶使用的原因之一。腳本列印內容目前固定為簡體中文，隨著其它語言使用者的回饋和使用，腳本將來可能會支援繁體中文和英文。
 
     文檔使用工具進行翻譯，下方內容中的專業術語可能存在不準確的情況，歡迎修正。
 
@@ -151,14 +151,14 @@ hide:
 
 !!! tip "使用幫助"
 
-    選項卡分別代表腳本內建軟體源類型和取得腳本途徑，請在使用前檢查目標鏡像站是否支援您所使用的作業系統，可以在[軟體源列表](../mirrors/index.md)中查看。  
+    選項卡分別代表腳本內建軟體源類型和獲取腳本途徑，請在使用前檢查目標鏡像站是否支援您所使用的作業系統，可以在[軟體源列表](../mirrors/index.md)中查看。  
     預設**自動備份**原有軟體源內容，如需了解更多請翻閱下方文檔。若使用過程中的某些選項令你疑惑不解，那麼在選擇軟體源後一路回車即是最佳實踐。
 
     腳本支援在系統原有軟體源**損壞**、**缺失**、**無效**等異常環境下使用，無需額外安裝任何依賴。
 
 !!! quote "關於軟體源的選擇（新用戶必讀）"
 
-    如果你不了解這些鏡像站那麼建議使用 `阿里雲 (相容性高、可用性強)` 或 `中國科學技術大學 (速度快)`，請不要陷入測速焦慮，內建的軟體源一般不會有太大的差異。  
+    如果你不了解這些鏡像站，那麼建議使用 `阿里雲 (相容性高、可用性強)` 或 `中國科學技術大學 (速度快)`，請不要陷入測速焦慮，內建的軟體源一般不會有太大的差異。  
     本項目腳本是一個自動化維運工具，不會對鏡像站進行主觀的優劣排序和客製化適配，使用者的選擇應該是自由的，這也是為了開源軟體精神能夠得到更好的延續。
 
 <div class="grid cards" markdown>
@@ -247,7 +247,7 @@ hide:
 
         ??? question "安裝不上？ （點擊展開查看其它解決方法）"
 
-            假如係統原有軟體源是無效的導致安裝不上 `curl` 軟體包，那麼對於 Linux 初學者來說可能會比較麻煩，這裡提供幾個在線獲取腳本的應急方法
+            假如系統原有軟體源是無效的導致安裝不上 `curl` 軟體包，那麼對於 Linux 初學者來說可能會比較麻煩，這裡提供幾個在線獲取腳本的應急方法
 
             === "使用 Python 下載"
 
@@ -265,7 +265,7 @@ hide:
 
             === "使用瀏覽器下載"
 
-                如果可以存取系統 ​​GUI 映像介面和桌面的話那可以直接在瀏覽器中開啟連結下載腳本，許多系統都會預先安裝 Firefox 火狐瀏覽器
+                如果可以訪問系統 ​​GUI 映像介面和桌面的話那可以直接在瀏覽器中開啟連結下載腳本，許多系統都會預先安裝 Firefox 火狐瀏覽器
 
             之後再執行腳本即可
 
@@ -405,9 +405,9 @@ hide:
 
     !!! quote ""
 
-        項目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文檔目錄作為網站資源發佈，網站託管於 :netlify: [Netlify](https://www.com)，網站託管於 :netlify: [Netlify](https://www.com)幾乎沒有使用風險。 
+        項目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文檔目錄作為網站資源發佈，網站託管於 :netlify: [Netlify](https://www.netlify.com)，幾乎沒有使用風險。 
 
-        當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和存取。
+        當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和訪問。
 
 - #### 關於軟體源下載速度相關問題
 
@@ -417,7 +417,7 @@ hide:
 
         軟體源（鏡像站）的網路延遲即 `Ping` 與下載速度沒有太大的關聯，雙方地理位置間隔的遠近不代表實際體驗，有些鏡像站下行總頻寬很高但實際測速卻並不理想，因為這與鏡像站的負載策略有關。 
 
-        網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本項目腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其高級語言無法替代的，不過目前 Bash腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。
+        網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本項目腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其他高級語言無法替代的，不過目前 Bash 腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。
 
 - #### 關於未啟用的軟體源倉庫
 
@@ -519,7 +519,7 @@ hide:
         | <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS** | `opencloudos` |
         | <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin** | `openkylin` |
         | <a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> **Anolis OS** | `anolis` |
-        | <a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> **openSUSE** | `opensuse` |
+        | <a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank"><img src="/assets/images/icon/opensuse.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **openSUSE** | `opensuse` |
         | <a href="https://archlinux.org" title="https://archlinux.org" target="_blank"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Arch Linux** | `archlinux` `archlinuxarm` |
         | <a href="https://manjaro.org" title="https://manjaro.org" target="_blank"><img src="/assets/images/icon/manjaro.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Manjaro** | `manjaro` |
         | <a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Alpine Linux** | `alpine` |
@@ -542,9 +542,9 @@ hide:
 
 - ### 單獨更換 EPEL 源
 
-    !!! info "EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版，配置 EPEL 倉庫已成為廣大用戶的普遍需求，建議默認安裝它"
+    !!! info "EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版，配置 EPEL 倉庫已成為廣大用戶的普遍需求，建議預設安裝它"
 
-    有些時候你會發現想使用的鏡像站沒有 EPEL 倉庫，那麼你可以在第一次運行腳本時不安裝或更換 EPEL 來源然後再單獨執行下面的命令
+    有些時候你會發現想使用的鏡像站沒有 EPEL 倉庫，那麼你可以在第一次運行腳本時不安裝或更換 EPEL 來源，然後再單獨執行下面的命令
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
@@ -669,45 +669,14 @@ hide:
 
 ## 客製化腳本
 
-如果你是其它項目的開發者希望透過本項目來製作專屬腳本那麼請參考下面提到的內容，目前已經有中國大陸教育單位鏡像站的維護者這樣做了。
+如果你是其它項目的開發者希望透過本項目來製作專屬腳本，那麼請參考下面提到的內容，目前已經有中國大陸教育單位鏡像站的維護者這樣做了。
 
 1.  首先不建議修改程式碼的底層邏輯，應盡量與本項目原始碼保持同步，腳本內容執行順序由 `main` 函數控制，程式碼邏輯清晰
 2.  你可以簡單去除一些無關內容，例如將軟體源列表（陣列）`mirror_list_(default|edu|abroad|extranet|intranet)` 中的內容刪除，例如：`mirror_list_default=()`
-3.  如果你想要自訂腳本列印內容可直接修改 `run_start` `run_end` `print_title` 這三個函數中的內容
-4.  如果你想加入自訂 Shell 內容詳見 `main` 函數中腳本執行順序，可以在對應位置直接插入內容也可以封裝函數後調用
+3.  如果你想要自定義腳本列印內容可直接修改 `run_start` `run_end` `print_title` 這三個函數中的內容
+4.  如果你想加入自定義 Shell 內容請參見 `main` 函數中腳本執行順序，可以在對應位置直接插入內容也可以封裝函數後調用
 5.  如果你想要縮減腳本體積那麼可以刪除一些不必要的內容，除了上面提到的軟體源列表還有一些涉及腳本工作的部分模組內容，具體如下：
     1. 首先在刪除內容時應盡可能保留腳本原始結構，直接把涉及函數中的內容刪除即可，使其保留為空函數
     2. 可以刪除一些不使用（作業系統）的軟體源原始內容 `gen_repo_files_xxx`，這些內容佔據了腳本 `60%` 以上的體積
-    3. 如果你不使用某些功能那麼可以刪除對應功能模組函數中的內容，`命令選項 handle_command_options`、`備份原有軟體源 backup_original_mirrors`、`更新軟體包 upgrade_software`
+    3. 如果你不使用某些功能，那麼可以刪除對應功能模組函數中的內容，`命令選項 handle_command_options`、`備份原有軟體源 backup_original_mirrors`、`更新軟體包 upgrade_software`
 6. 腳本主要功能配置是由統一的變量控制的，命令選項亦是如此，這些全局變量由全大寫字母構成並遵循下劃線命名法，具體變量詳見如下表格，你只需要將這些變量聲明在腳本頭部（預留註釋區域）即可快速完成定制
-
-| 變數名 | 意義 | 值型別 |
-| :-: | :-: | :-: |
-| `SOURCE` | 指定軟體源位址（網域名稱或IP） | `位址` |
-| `SOURCE_EPEL` | 指定 EPEL 附加軟體包倉庫的軟體源位址（網域名稱或IP） | `位址` |
-| `SOURCE_SECURITY` | 指定 Debian / Ubuntu 系統 security 倉庫的軟體源位址（網域名稱或IP） | `位址` |
-| `SOURCE_VAULT` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源位址（網域名稱或IP） | `位址` |
-| `SOURCE_PORTAGE` | 指定 Gentoo 系統 portage 倉庫的軟體源位址（網域名稱或IP） | `位址` |
-| `SOURCE_BASE_SYSTEM` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源位址（網域名稱或IP） | `位址` |
-| `SOURCE_BRANCH` | 指定軟體源倉庫（路徑） | `倉庫名稱` |
-| `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加軟體套件倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
-| `SOURCE_SECURITY_BRANCH` | 指定 Debian 系統 security 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
-| `SOURCE_VAULT_BRANCH` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
-| `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系統 portage 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
-| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫（路徑） | `倉庫名稱` |
-| `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 作業系統的版本代號 | `代號名稱` |
-| `USE_INTRANET_SOURCE` | 是否優先使用內網軟體源位址 | `true` 或 `false` |
-| `USE_OFFICIAL_SOURCE` | 是否使用目標作業系統的官方軟體源 | `true` 或 `false` |
-| `USE_OFFICIAL_SOURCE_EPEL` | 是否使用 EPEL 附加軟體包的官方軟體源 | `true` 或 `false` |
-| `WEB_PROTOCOL` | 指定 WEB 協議 | `http` 或 `https` |
-| `INSTALL_EPEL` | 是否安裝 EPEL 附加軟體包 | `true` 或 `false` |
-| `ONLY_EPEL` | 僅更換 EPEL 軟體源模式 | `true` 或 `false` |
-| `BACKUP` | 是否備份原有軟體源 | `true` 或 `false` |
-| `IGNORE_BACKUP_TIPS` | 忽略覆蓋備份提示（即不覆蓋備份） | `true` 或 `false` |
-| `UPGRADE_SOFTWARE` | 是否更新軟體包 | `true` 或 `false` |
-| `CLEAN_CACHE` | 是否在更新軟體包後清理下載快取 | `true` 或 `false` |
-| `CLEAN_SCREEN` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
-| `PRINT_DIFF` | 是否列印原始文件修改前後差異 | `true` 或 `false` |
-| `PURE_MODE` | 純淨模式，精簡列印內容 | `true` 或 `false` |
-
-> 部分變數存在預設值，未涉及的變數無需聲明為空值（空字串），另外如果對應功能配置不存在那麼就可能會出現交互

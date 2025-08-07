@@ -108,30 +108,23 @@ hide:
 
     ---
 
-    本项目脚本兼容大量不受官方安装脚本支持的衍生操作系统
+    兼容大量不受官方安装脚本支持的衍生操作系统 :material-information-outline:{ title="除官网首页展示的系统外还支持  <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code> 等特制系统" }
 
 </div>
 
-<div class="icon-brand-section">
-  <div class="icon-brand-container no-select">
-    <a class="icon-brand-button" target="_blank" href="https://1panel.cn" title="1Panel">
-      <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://www.bt.cn" title="宝塔面板" style="padding: 0 !important">
-      <img src="/assets/images/other/bt.svg" alt="BT" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://1ms.run" title="毫秒镜像">
-      <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="1ms" style="width: 97% !important" />
-      <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="1ms" style="width: 97% !important" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://arcadia.cool" title="一站式代码运维平台" style="padding: 0 2px !important">
-      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="width: 92% !important" />
-      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="width: 92% !important" />
-    </a>
-  </div>
+<div style="display: flex; align-items: center; gap: 8px;">
+    <p>经过了数年的技术沉淀与生产环境检验，广受社区好评，深得开发者喜爱，大厂都在使用</p>
+    <div class="icon-brand-section">
+      <div class="icon-brand-container no-select">
+        <a class="icon-brand-button" target="_blank" href="https://1panel.cn" title="1Panel">
+          <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
+        </a>
+        <a class="icon-brand-button" target="_blank" href="https://www.bt.cn" title="宝塔面板" style="padding: 0 !important">
+          <img src="/assets/images/other/bt.svg" alt="BT" />
+        </a>
+      </div>
+    </div>
 </div>
-
-> :material-thumb-up-outline: 经过了数年的技术沉淀与生产环境检验，广受社区好评，深得开发者喜爱，大厂都在用
 
 </br>
 
@@ -157,7 +150,7 @@ hide:
 
     </div>
 
-    由于一些不可抗力的因素，目前国内网络环境一般无法正常访问 Docker Hub 因此无法拉取镜像，建议使用下方提到的国内可用镜像仓库源
+    由于一些不可抗力的因素目前国内网络环境无法访问 [Docker Hub](https://hub.docker.com)，因此无法正常拉取镜像，建议使用下方提到的国内可用镜像仓库源
 
     注：脚本内的指定 WEB 协议交互仅用于控制 `Docker CE` 软件源，`Docker Registry` 强制使用 `HTTPS` 协议
 
@@ -263,7 +256,7 @@ hide:
             ```
 
         === "手动替换"
-        
+
             - 安装 `jq` 软件包
 
                 === "Debian 系 / openKylin"

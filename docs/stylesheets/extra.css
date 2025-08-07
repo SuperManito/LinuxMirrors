@@ -454,7 +454,6 @@
     max-width: 100%;
     width: fit-content;
     border-radius: 6px;
-    border: 1px solid var(--md-default-fg-color--lightest);
 }
 
 .icon-brand-button {

@@ -113,31 +113,24 @@ hide:
 -   :material-arm-flex-outline:{ .lg .middle } __Supports domestic derivative operating systems__
 
     ---
-    
-    This project's script is compatible with a large number of derivative operating systems not supported by the official installation script.    
+
+    Compatible with a number of derivative operating systems not supported by the official installation script. :material-information-outline:{ title="In addition to the systems displayed on the official website, it also supports special systems such as <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code>" }
 
 </div>
 
-<div class="icon-brand-section">
-  <div class="icon-brand-container no-select">
-    <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
-      <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
-      <img src="/assets/images/other/aaPanel.png" alt="aapanel" style="width: 76% !important" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://1ms.run" title="毫秒镜像">
-      <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="1ms" style="width: 97% !important" />
-      <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="1ms" style="width: 97% !important" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://arcadia.cool" title="One-stop code operation and maintenance platform" style="padding: 0 2px !important">
-      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="width: 92% !important" />
-      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="width: 92% !important" />
-    </a>
-  </div>
+<div style="display: flex; align-items: center; gap: 8px;">
+    <p>After years of technical accumulation and production environment testing, it has been widely praised by the community and deeply loved by developers. It is used by major companies.</p>
+    <div class="icon-brand-section">
+      <div class="icon-brand-container no-select">
+        <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
+          <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
+        </a>
+        <a class="icon-brand-button" target="_blank" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
+          <img src="/assets/images/other/aaPanel.png" alt="aapanel" style="width: 76% !important" />
+        </a>
+      </div>
+    </div>
 </div>
-
-> :material-thumb-up-outline: After years of technical accumulation and production environment testing, it has been widely praised by the community and deeply loved by developers. It is used by major companies.
 
 </br>
 
@@ -163,9 +156,9 @@ hide:
 
     </div>
 
-    Due to certain uncontrollable factors, Docker Hub is generally inaccessible in mainland China, making it impossible to pull images. It is recommended to use the domestic registry mirrors listed below.
+    Due to some force majeure, the [Docker Hub](https://hub.docker.com) is currently inaccessible in the Chinese mainland network environment, so the image cannot be pulled normally. It is recommended to use the image warehouse source available in Chinese mainland mentioned below.
 
-    Note: The specified WEB protocol in the script is only for controlling the `Docker CE` software source. `Docker Registry` always uses the `HTTPS` protocol.
+    Note: The specified Web protocol in the script is only for controlling the `Docker CE` software source. `Docker Registry` always uses the `HTTPS` protocol.
 
 
 !!! quote "Built-in Registry Mirrors"
@@ -248,7 +241,7 @@ hide:
             ```
 
         === "Manual Replacement"
-        
+
             - Install the `jq` package
 
                 === "Debian-based / openKylin"

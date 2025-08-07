@@ -6,7 +6,7 @@ hide:
 
 ???+ question "為什麼會看到該提示？"
 
-    本項目腳本目前主要服務於簡體中文用戶，但是從立項之初就定義為了通用換源腳本，提供了諸多命令選項用於自訂使用，這也是本項目為什麼開始面向其它語言用戶使用的原因之一。腳本列印內容目前固定為簡體中文，隨著其它語言使用者的回饋和使用，腳本將來可能會支援繁體中文和英文。
+    本項目腳本目前主要服務於簡體中文用戶，但是從立項之初就定義為了通用換源腳本，提供了諸多命令選項用於自定義使用，這也是本項目為什麼開始面向其它語言用戶使用的原因之一。腳本列印內容目前固定為簡體中文，隨著其它語言使用者的回饋和使用，腳本將來可能會支援繁體中文和英文。
 
     文檔使用工具進行翻譯，下方內容中的專業術語可能存在不準確的情況，歡迎修正。
 
@@ -28,7 +28,7 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
             ```
 
-        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+        === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
@@ -75,7 +75,7 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
             ```
 
-        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+        === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
@@ -114,30 +114,23 @@ hide:
 
     ---
 
-    本項目腳本相容於大量不受官方安裝腳本支援的衍生作業系統
+    相容於大量不受官方安裝腳本支援的衍生作業系統 :material-information-outline:{ title="除官網首頁展示的系統外也支援 <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code> 等特製系統" }
 
 </div>
 
-<div class="icon-brand-section">
-  <div class="icon-brand-container no-select">
-    <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
-      <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
-      <img src="/assets/images/other/aaPanel.png" alt="aapanel" style="width: 76% !important" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://1ms.run" title="毫秒镜像">
-      <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="1ms" style="width: 97% !important" />
-      <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="1ms" style="width: 97% !important" />
-    </a>
-    <a class="icon-brand-button" target="_blank" href="https://arcadia.cool" title="一站式程式碼維運平台" style="padding: 0 2px !important">
-      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="width: 92% !important" />
-      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="width: 92% !important" />
-    </a>
-  </div>
+<div style="display: flex; align-items: center; gap: 8px;">
+    <p>經過了數年的技術沉澱與生產環境檢驗，廣受社區好評，深得開發者喜愛，大廠都在使用</p>
+    <div class="icon-brand-section">
+      <div class="icon-brand-container no-select">
+        <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
+          <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
+        </a>
+        <a class="icon-brand-button" target="_blank" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
+          <img src="/assets/images/other/aaPanel.png" alt="aapanel" style="width: 76% !important" />
+        </a>
+      </div>
+    </div>
 </div>
-
-> :material-thumb-up-outline: 經過了數年的技術沉澱與生產環境檢驗，廣受社區好評，深得開發者喜愛，大廠都在用
 
 </br>
 
@@ -163,7 +156,7 @@ hide:
 
     </div>
 
-    由於一些不可抗力的因素，目前中國大陸網路環境一般無法正常造訪 Docker Hub 因此無法拉取鏡像，建議使用下方提到的國內可用鏡像倉庫來源
+    由於一些不可抗力的因素，目前中國大陸網路環境無法訪問 [Docker Hub](https://hub.docker.com)，因此無法正常拉取鏡像，建議使用下方提到的中國大陸可用鏡像倉庫來源
 
     註：腳本內的指定 WEB 協議互動僅用於控制 `Docker CE` 軟體源，`Docker Registry` 強制使用 `HTTPS` 協議
 
@@ -248,7 +241,7 @@ hide:
             ```
 
         === "手動替換"
-        
+
             - 安裝 `jq` 軟體包
 
                 === "Debian 係 / openKylin"
@@ -364,7 +357,7 @@ hide:
 
         !!! quote ""
 
-            非新裝環境可能會在執行腳本後遇到 `Docker` 服務無法啟動的情況，建議重新安裝來解決，卸載不會刪除本機映像和容器數據
+            非新裝環境可能會在執行腳本後遇到 `Docker` 服務無法啟動的情況，建議重新安裝來解決，卸載不會刪除本機映像和容器資料
 
             卸載指令如下：
 

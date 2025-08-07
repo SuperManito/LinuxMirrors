@@ -48,7 +48,7 @@ hide:
     ---
 
     Just one command to run directly, zero technical barrier, no dependencies required  
-    Documentation integrates AI search and chat, providing solutions for various scenarios
+    Documentation integrates AI search and chat, providing solutions for various use cases
 
 -   :material-vector-polyline:{ .lg .middle } __Wide System Support__
 
