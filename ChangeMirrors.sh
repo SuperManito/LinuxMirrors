@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-07-28
+## Modified: 2025-08-07
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -185,6 +185,7 @@ SYSTEM_FEDORA="Fedora"
 SYSTEM_ORACLE="Oracle Linux"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
+SYSTEM_TENCENTOS="TencentOS"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_ANOLISOS="Anolis"
 SYSTEM_OPENKYLIN="openKylin"
@@ -202,8 +203,11 @@ File_DebianVersion=/etc/debian_version
 File_ArmbianRelease=/etc/armbian-release
 File_RaspberryPiOSRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
+File_HuaweiCloudEulerOSRelease=/etc/hce-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
+File_TencentOSServerRelease=/etc/tlinux-release
 File_AnolisOSRelease=/etc/anolis-release
+File_AlibabaCloudLinuxRelease=/etc/alinux-release
 File_OracleLinuxRelease=/etc/oracle-release
 File_ArchLinuxRelease=/etc/arch-release
 File_ManjaroRelease=/etc/manjaro-release

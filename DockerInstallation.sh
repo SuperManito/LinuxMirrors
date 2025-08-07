@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-08-03
+## Modified: 2025-08-07
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -112,6 +112,7 @@ SYSTEM_FEDORA="Fedora"
 SYSTEM_ORACLE="Oracle Linux"
 SYSTEM_OPENCLOUDOS="OpenCloudOS"
 SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
+SYSTEM_TENCENTOS="TencentOS"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_ANOLISOS="Anolis"
 SYSTEM_OPENKYLIN="openKylin"
@@ -130,7 +131,9 @@ File_RaspberryPiOSRelease=/etc/rpi-issue
 File_openEulerRelease=/etc/openEuler-release
 File_HuaweiCloudEulerOSRelease=/etc/hce-release
 File_OpenCloudOSRelease=/etc/opencloudos-release
+File_TencentOSServerRelease=/etc/tlinux-release
 File_AnolisOSRelease=/etc/anolis-release
+File_AlibabaCloudLinuxRelease=/etc/alinux-release
 File_OracleLinuxRelease=/etc/oracle-release
 File_ArchLinuxRelease=/etc/arch-release
 File_ManjaroRelease=/etc/manjaro-release
@@ -150,6 +153,8 @@ File_DockerConfigBackup=$Dir_Docker/daemon.json.bak
 File_DockerVersionTmp=docker-version.txt
 File_DockerCEVersionTmp=docker-ce-version.txt
 File_DockerCECliVersionTmp=docker-ce-cli-version.txt
+File_DockerSourceList=$Dir_AptAdditionalSources/docker.list
+File_DockerRepo=$Dir_YumRepos/docker-ce.repo
 
 ## 定义颜色和样式变量
 RED='\033[31m'
@@ -472,6 +477,8 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s "${File_AnolisOSRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
+    elif [ -s "${File_TencentOSServerRelease}" ]; then
+        SYSTEM_FACTIONS="${SYSTEM_TENCENTOS}" # 自 4 版本起不再基于红帽
     elif [ -s "${File_openKylinVersion}" ]; then
         [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "openKylin" "apt-get install -y docker\nsystemctl enable --now docker"
     elif [ -f "${File_ArchLinuxRelease}" ]; then
@@ -579,7 +586,7 @@ function collect_system_info() {
                 ;;
             esac
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_FEDORA}")
                 SOURCE_BRANCH="fedora"
@@ -608,7 +615,7 @@ function collect_system_info() {
     "${SYSTEM_DEBIAN}")
         SYNC_MIRROR_TEXT="更新软件源"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         SYNC_MIRROR_TEXT="生成软件源缓存"
         ;;
     esac
@@ -868,9 +875,9 @@ function install_dependency_packages() {
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         sed -i '/docker-ce/d' $File_AptSourceList
-        rm -rf $Dir_AptAdditionalSources/docker.list
+        rm -rf $File_DockerSourceList
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         rm -rf $Dir_YumRepos/*docker*.repo
         ;;
     esac
@@ -881,7 +888,7 @@ function install_dependency_packages() {
         package_manager="apt-get"
         commands+=("${package_manager} update")
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         package_manager="$(get_package_manager)"
         commands+=("${package_manager} makecache")
         ;;
@@ -913,14 +920,18 @@ function install_dependency_packages() {
     "${SYSTEM_DEBIAN}")
         commands+=("${package_manager} install -y ca-certificates curl")
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         # 注：红帽 8 版本才发布了 dnf 包管理工具
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         7)
             commands+=("${package_manager} install -y yum-utils device-mapper-persistent-data lvm2")
             ;;
         *)
-            commands+=("${package_manager} install -y dnf-plugins-core")
+            if [[ "${package_manager}" == "dnf" ]]; then
+                commands+=("${package_manager} install -y dnf-plugins-core")
+            else
+                commands+=("${package_manager} install -y yum-utils device-mapper-persistent-data lvm2")
+            fi
             ;;
         esac
         ;;
@@ -959,23 +970,31 @@ function configure_docker_ce_mirror() {
         fi
         chmod a+r $file_keyring
         ## 添加源
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $Dir_AptAdditionalSources/docker.list >/dev/null 2>&1
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $File_DockerSourceList >/dev/null 2>&1
         commands+=("apt-get update")
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+        local repo_file_url="${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo"
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         7)
-            yum-config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+            yum-config-manager -y --add-repo "${repo_file_url}"
             ;;
         *)
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
-                dnf-3 config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+                dnf-3 config-manager -y --add-repo "${repo_file_url}"
             else
-                dnf config-manager -y --add-repo https://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo
+                if [[ "${package_manager}" == "dnf" ]]; then
+                    dnf config-manager -y --add-repo "${repo_file_url}"
+                else
+                    yum-config-manager -y --add-repo "${repo_file_url}"
+                fi
             fi
             ;;
         esac
-        sed -i "s|https://download.docker.com|${WEB_PROTOCOL}://${SOURCE}|g" $Dir_YumRepos/docker-ce.repo
+        sed -e "s|https://download.docker.com|${WEB_PROTOCOL}://${SOURCE}|g" \
+            -e "s|http[s]\?://.*/linux/${SOURCE_BRANCH}/|${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/|g" \
+            -i \
+            $File_DockerRepo
         ## 兼容处理版本号
         if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
             local target_version
@@ -986,9 +1005,13 @@ function configure_docker_ce_mirror() {
             *)
                 target_version="8" # 注：部分系统使用9版本分支会有兼容性问题
                 ## 适配国产操作系统
-                if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_OPENEULER}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" == 23 ]]; then
-                    target_version="9"
-                elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_OPENEULER}" ]]; then
+                # OpenCloudOS、Anolis OS 的 23 版本
+                if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_OPENCLOUDOS}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ANOLISOS}" ]]; then
+                    if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 23 ]]; then
+                        target_version="9"
+                    fi
+                fi
+                if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_OPENEULER}" ]]; then
                     if [ -s "${File_HuaweiCloudEulerOSRelease}" ]; then
                         # Huawei Cloud EulerOS
                         case "${SYSTEM_VERSION_ID_MAJOR}" in
@@ -998,9 +1021,6 @@ function configure_docker_ce_mirror() {
                         2)
                             target_version="9" # openEuler 22
                             ;;
-                        *)
-                            target_version="9"
-                            ;;
                         esac
                     else
                         # openEuler
@@ -1009,9 +1029,34 @@ function configure_docker_ce_mirror() {
                         fi
                     fi
                 fi
+                # TencentOS Server
+                if [ -s "${File_TencentOSServerRelease}" ]; then
+                    case "${SYSTEM_VERSION_ID_MAJOR}" in
+                    4)
+                        target_version="9"
+                        ;;
+                    3)
+                        target_version="8"
+                        ;;
+                    2)
+                        target_version="7"
+                        ;;
+                    esac
+                fi
+                # Alibaba Cloud Linux
+                if [ -s "${File_AnolisOSRelease}" ] && [ -s "${File_AlibabaCloudLinuxRelease}" ]; then
+                    case "${SYSTEM_VERSION_ID_MAJOR}" in
+                    3)
+                        target_version="8"
+                        ;;
+                    2)
+                        target_version="7"
+                        ;;
+                    esac
+                fi
                 ;;
             esac
-            sed -i "s|\$releasever|${target_version}|g" $Dir_YumRepos/docker-ce.repo
+            sed -i "s|\$releasever|${target_version}|g" $File_DockerRepo
             local package_manager="$(get_package_manager)"
             commands+=("${package_manager} makecache")
         fi
@@ -1045,7 +1090,7 @@ function install_docker_engine() {
             apt-cache madison docker-ce-cli | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCECliVersionTmp
             grep -wf $File_DockerCEVersionTmp $File_DockerCECliVersionTmp >$File_DockerVersionTmp
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
             local package_manager="$(get_package_manager)"
             $package_manager list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCEVersionTmp
             $package_manager list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCECliVersionTmp
@@ -1068,7 +1113,7 @@ function install_docker_engine() {
         "${SYSTEM_DEBIAN}")
             package_list='docker* podman podman-docker containerd runc'
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
             package_list='docker* podman podman-docker runc'
             ;;
         esac
@@ -1078,7 +1123,7 @@ function install_docker_engine() {
             apt-get remove -y $package_list >/dev/null 2>&1
             apt-get autoremove -y >/dev/null 2>&1
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
             local package_manager="$(get_package_manager)"
             $package_manager remove -y $package_list >/dev/null 2>&1
             $package_manager autoremove -y >/dev/null 2>&1
@@ -1149,7 +1194,7 @@ function install_docker_engine() {
                 fi
                 ;;
 
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
                 pkgs="docker-ce-${target_docker_version}"
                 if [[ $major_version -gt 18 ]] || [[ $major_version -eq 18 && $minor_version -ge 9 ]]; then
                     pkgs="${pkgs} docker-ce-cli-${target_docker_version}"
@@ -1168,7 +1213,7 @@ function install_docker_engine() {
         "${SYSTEM_DEBIAN}")
             commands+=("apt-get install -y ${pkgs}")
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
             commands+=("$(get_package_manager) install -y ${pkgs}")
             ;;
         esac
@@ -1226,7 +1271,7 @@ function install_docker_engine() {
     "${SYSTEM_DEBIAN}")
         dpkg -l | grep docker-ce-cli -q
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         rpm -qa | grep docker-ce-cli -q
         ;;
     esac
@@ -1259,7 +1304,7 @@ function change_docker_registry_mirror() {
                 jq 'del(.["registry-mirrors"])' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
                 # 重启服务
                 systemctl daemon-reload
-                if [[ $(systemctl is-active docker) == "active" ]]; then
+                if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
                     systemctl restart docker
                 fi
             else
@@ -1310,7 +1355,7 @@ function change_docker_registry_mirror() {
     echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$File_DockerConfig
     ## 重启服务
     systemctl daemon-reload
-    if [[ $(systemctl is-active docker) == "active" ]]; then
+    if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
         systemctl restart docker
     fi
 }
@@ -1322,7 +1367,7 @@ function only_change_docker_registry_mirror() {
     "${SYSTEM_DEBIAN}")
         dpkg -l | grep docker-ce-cli -q
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         rpm -qa | grep docker-ce-cli -q
         ;;
     esac
@@ -1345,7 +1390,7 @@ function only_change_docker_registry_mirror() {
                 package_manager="apt-get"
                 commands+=("${package_manager} update")
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
                 package_manager="$(get_package_manager)"
                 commands+=("${package_manager} makecache")
                 ;;
@@ -1386,7 +1431,7 @@ function only_change_docker_registry_mirror() {
     echo -e "\n${GREEN}➜${PLAIN}  $(docker info --format '{{json .RegistryConfig.Mirrors}}')"
     ## 重启服务
     systemctl daemon-reload
-    if [[ $(systemctl is-active docker) == "active" ]]; then
+    if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
         systemctl restart docker
     fi
     if [[ "${PURE_MODE}" != "true" ]]; then
@@ -1408,11 +1453,11 @@ function check_installed_result() {
             local source_file package_manager
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
-                source_file="${Dir_AptAdditionalSources}/docker.list"
+                source_file="${File_DockerSourceList}"
                 package_manager="apt-get"
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-                source_file="${Dir_YumRepos}/docker.repo"
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+                source_file="${File_DockerRepo}"
                 package_manager="$(get_package_manager)"
                 ;;
             esac
@@ -1420,15 +1465,21 @@ function check_installed_result() {
             echo -e "请尝试手动执行安装命令：${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n"
             exit 1
         fi
-        if [[ $(systemctl is-active docker) != "active" ]]; then
+        if [[ "$(systemctl is-active docker 2>/dev/null)" != "active" ]]; then
             sleep 2
             systemctl disable --now docker >/dev/null 2>&1
             sleep 2
             systemctl enable --now docker >/dev/null 2>&1
             sleep 2
-            if [[ $(systemctl is-active docker) != "active" ]]; then
-                echo -e "\n$ERROR 检测到 Docker 服务启动异常，可能是由于重复安装导致"
-                echo -e "\n${YELLOW} 请执行 "systemctl start docker" 或 "service docker start" 命令尝试启动，如若报错请尝试重新执行本脚本${PLAIN}"
+            if [[ "$(systemctl is-active docker)" != "active" ]]; then
+                echo -e "\n$WARN 检测到 Docker 服务启动${RED}异常${PLAIN}，可尝试再次执行本脚本重试"
+                local start_cmd
+                if command_exists systemctl; then
+                    start_cmd="systemctl start docker"
+                else
+                    start_cmd="service docker start"
+                fi
+                echo -e "\n$TIP 请执行 ${BLUE}${start_cmd}${PLAIN} 命令尝试启动或自行查询错误原因"
             fi
         fi
     else
@@ -1447,7 +1498,7 @@ function get_package_manager() {
             ;;
         esac
         ;;
-    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
+    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         command="dnf"
         ;;
     esac
