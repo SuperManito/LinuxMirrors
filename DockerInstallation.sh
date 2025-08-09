@@ -983,6 +983,7 @@ function configure_docker_ce_mirror() {
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
                 dnf-3 config-manager -y --add-repo "${repo_file_url}"
             else
+                local package_manager="$(get_package_manager)"
                 if [[ "${package_manager}" == "dnf" ]]; then
                     dnf config-manager -y --add-repo "${repo_file_url}"
                 else
