@@ -975,6 +975,7 @@ function configure_docker_ce_mirror() {
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
         local repo_file_url="${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo"
+        local package_manager="$(get_package_manager)"
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         7)
             yum-config-manager -y --add-repo "${repo_file_url}"
@@ -1057,7 +1058,6 @@ function configure_docker_ce_mirror() {
                 ;;
             esac
             sed -i "s|\$releasever|${target_version}|g" $File_DockerRepo
-            local package_manager="$(get_package_manager)"
             commands+=("${package_manager} makecache")
         fi
         ;;
