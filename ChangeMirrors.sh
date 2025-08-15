@@ -1474,10 +1474,6 @@ function remove_original_mirrors() {
 
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-        # /etc/apt/sources.list
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" && -s "${File_AptSourceList}" ]]; then
-            clear_file $File_AptSourceList
-        fi
         # /etc/apt/sources.list.d
         [ -d "${Dir_AptAdditionalSources}" ] || mkdir -p $Dir_AptAdditionalSources
         # Debian DEB822 格式源文件
@@ -1489,6 +1485,10 @@ function remove_original_mirrors() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]] && [ -f "${File_UbuntuSources}" ]; then
             clear_file $File_UbuntuSources
             USE_DEB822_FORMAT="true"
+        fi
+        # /etc/apt/sources.list
+        if [[ "${USE_DEB822_FORMAT}" != "true" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+            [ -s "${File_AptSourceList}" ] && clear_file $File_AptSourceList
         fi
         # Armbian
         [ -f "${File_ArmbianRelease}" ] && clear_file $File_ArmbianSourceList
