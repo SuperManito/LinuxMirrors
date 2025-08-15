@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-08-07
+## Modified: 2025-08-16
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2090,8 +2090,9 @@ $(gen_deb_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}"
         echo "${deb_source_title}
 $(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
         ;;
+
     "${SYSTEM_DEEPIN}")
-        if [[ "${SYSTEM_VERSION_ID}" == "25" ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" == "25" ]]; then
             repository_sections="main commercial community"
         else
             repository_sections="main contrib non-free"
@@ -2110,7 +2111,12 @@ $(gen_deb_source_no_src "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${reposit
         if [[ "${SYSTEM_VERSION_ID}" == 6 ]]; then
             # Debian 版（LMDE）
             base_system_branch="debian"
-            base_system_codename="bookworm"
+            grep -q "DEBIAN_CODENAME" $File_ArchLinuxRelease
+            if [ $? -eq 0 ]; then
+                base_system_codename="$(cat $File_LinuxRelease | grep -E "^DEBIAN_CODENAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+            else
+                base_system_codename="bookworm"
+            fi
             repository_sections="main contrib non-free non-free-firmware"
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             source_host_security="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
