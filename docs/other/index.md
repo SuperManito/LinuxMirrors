@@ -232,13 +232,6 @@ hide:
 
     > 软件源完整格式 `<WEB协议>://<软件源地址(域名或IP)>/<软件源仓库(路径)>`
 
-    - #### 指定 Docker CE 软件源地址
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
-        ```
-        > 注意该地址路径需要包含镜像站的 Docker CE 软件源仓库路径即 `docker-ce`
-
     - #### 指定镜像仓库地址
 
         ``` { .bash .no-copy }
@@ -299,6 +292,13 @@ hide:
                 systemctl daemon-reload
                 [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
                 ```
+
+    - #### 指定 Docker CE 软件源地址
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
+        ```
+        > 注意该地址路径需要包含镜像站的 Docker CE 软件源仓库路径即 `docker-ce`
 
     - #### 指定 Docker CE 软件源仓库
 

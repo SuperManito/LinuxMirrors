@@ -507,7 +507,7 @@ hide:
         | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
-        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.125em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.135em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | `rocky` |
         | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
         | <a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank"><img src="/assets/images/icon/oracle-linux.png" width="16" height="16" style="vertical-align: -0.25em"></a> **Oracle Linux** | `centos-stream` |
@@ -540,22 +540,22 @@ hide:
 
     !!! info "EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版，配置 EPEL 倉庫已成為廣大用戶的普遍需求，建議預設安裝它"
 
-    有些時候你會發現想使用的鏡像站沒有 EPEL 倉庫，那麼你可以在第一次運行腳本時不安裝或更換 EPEL 來源，然後再單獨執行下面的命令
+    有些時候你會發現想使用的鏡像站沒有 EPEL 倉庫，那麼你可以在第一次運行腳本時不安裝或更換 EPEL 軟體源，然後再單獨執行下面的命令
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
     ```
 
-    對於已經 EOL 的 EPEL 7 注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 倉庫，境外以及海外網絡環境建議通過命令選項 `--use-official-source-epel true` 使用官方源
+    對於已經 EOL 的 EPEL 7，注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 倉庫，境外以及海外網絡環境建議通過命令選項 `--use-official-source-epel true` 使用官方源
 
 - ### 恢復使用官方源
 
-    當你不小心刪除了官方來源的備份時可以使用此命令來恢復，使用此命令選項後將跳過選擇軟體源步驟
+    當你不小心刪除了官方軟體源的備份時可以使用此命令來恢復，使用此命令選項後將跳過選擇軟體源步驟
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source true
     ```
-    > 部分系統不存在官方來源例如 `Arch Linux`，屆時會自動更換成相容性較高的阿里雲鏡像站
+    > 部分系統不存在官方軟體源例如 `Arch Linux`，屆時會自動更換成相容性較高的阿里雲鏡像站
 
 - ### 特定係統的使用範例
 
@@ -575,15 +575,15 @@ hide:
 
             ---
 
-            建議使用 `騰訊雲` 或 `阿里雲` 鏡像站，或透過 `--use-official-source true` 命令選項使用官方來源
+            建議使用 `騰訊雲` 或 `阿里雲` 鏡像站，或透過 `--use-official-source true` 命令選項使用官方軟體源
 
         </div>
 
         另外 EPEL 7 也進入了 EOL，腳本同樣對其進行了適配
 
-    - #### 指定 GNU/Linux Debian 作業系統的 Security 來源
+    - #### 指定 GNU/Linux Debian 作業系統的 Security 軟體源
 
-        如果你想盡可能提高伺服器的安全性建議使用官方來源，因為鏡像同步存在延遲
+        如果你想盡可能提高伺服器的安全性建議使用官方軟體源，因為鏡像同步存在延遲
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
@@ -595,22 +595,48 @@ hide:
 
         大多數情況下自訂版本代號用於更換系統版本，請看下面的例子
 
-        === "升級 GNU/Linux Debian 至 12 版本 Bookworm"
+        === "升級 GNU/Linux Debian 至 13 "trixie""
 
-            ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
-            ```
+            - 更換版本代號
+
+                ``` bash
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+                --codename trixie \
+                --upgrade-software false
+                ```
+
+            - 停用 backports 倉庫
+
+                ``` bash
+                sed -i '/backports/s/^/# /' /etc/apt/sources.list
+                ```
+
+            - 升級系統
+
+                ``` bash
+                apt-get update
+                apt-get dist-upgrade
+                ```
+
+            - 升級完成並重新引導系統後執行下列步驟
+
+                ``` bash
+                # 清空原有軟體源（如有非系統軟體源內容請自行備份）
+                sed -i '1,$d' /etc/apt/sources.list
+                # 重新執行換源腳本
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+                ```
 
         === "將 GNU/Linux Debian 的版本切換到測試分支"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+            --codename testing \
+            --upgrade-software false
             ```
 
-        更換軟體源後還需要執行系統更新命令 `apt-get dist-upgrade`，並且建議在更新完成並重新啟動系統後重新執行本換源腳本，因為僅更換軟體源配置中的系統版本代號可能會在後期使用時產生一些相容性問題
-
-        ``` { .bash title="如果腳本無法實現指定版本代號，你也可以在執行腳本後手動替換" }
-        sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
+        ``` { .bash .no-copy title="如果腳本無法實現指定版本代號，你也可以在執行腳本後手動替換" }
+        sed -i "s/$(lsb_release -cs)/指定版本代號/g" /etc/apt/sources.list
         ```
 
     - #### 更換 Ubuntu EOL版本軟體源

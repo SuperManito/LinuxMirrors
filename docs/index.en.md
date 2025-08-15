@@ -135,7 +135,7 @@ hide:
 </div>
 
 <div style="text-align: center; padding: 1rem 0" markdown>
-[Get Started](use/index.md){ .md-button .md-button--primary } &nbsp; [View Mirror List](mirrors/index.md){ .md-button }
+[Get Started](use/index.md){ .md-button .md-button--primary } &nbsp; [Mirror List](mirrors/index.md){ .md-button }
 </div>
 
 --8<-- "docs/sponsor/main.html"

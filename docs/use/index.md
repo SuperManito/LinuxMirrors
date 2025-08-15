@@ -537,7 +537,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
-        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.125em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.135em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | `rocky` |
         | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
         | <a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank"><img src="/assets/images/icon/oracle-linux.png" width="16" height="16" style="vertical-align: -0.25em"></a> **Oracle Linux** | `centos-stream` |
@@ -576,7 +576,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
     ```
 
-    对于已经 EOL 的 EPEL 7 注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 仓库，境外以及海外网络环境建议通过命令选项 `--use-official-source-epel true` 使用官方源
+    对于已经 EOL 的 EPEL 7，注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 仓库，境外以及海外网络环境建议通过命令选项 `--use-official-source-epel true` 使用官方源
 
 - ### 恢复使用官方源
 
@@ -625,21 +625,47 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         大多数情况下自定义版本代号用于更换系统版本，请看下面的例子
 
-        === "升级 GNU/Linux Debian 至 12 版本 Bookworm"
+        === "升级 GNU/Linux Debian 至 13 "trixie""
 
-            ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
-            ```
+            - 更换版本代号
+
+                ``` bash
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+                --codename trixie \
+                --upgrade-software false
+                ```
+
+            - 禁用 backports 仓库
+
+                ``` bash
+                sed -i '/backports/s/^/# /' /etc/apt/sources.list
+                ```
+
+            - 升级系统
+
+                ``` bash
+                apt-get update
+                apt-get dist-upgrade
+                ```
+
+            - 在升级完成并重新引导系统后执行以下步骤
+
+                ``` bash
+                # 清空原有软件源（如有非系统软件源内容请自行备份）
+                sed -i '1,$d' /etc/apt/sources.list
+                # 重新执行换源脚本
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+                ```
 
         === "将 GNU/Linux Debian 的版本切换到测试分支"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+            --codename testing \
+            --upgrade-software false
             ```
 
-        更换软件源后还需要执行系统更新命令 `apt-get dist-upgrade`，并且建议在更新完成并重启系统后重新执行本换源脚本，因为仅更换软件源配置中的系统版本代号可能会在后期使用时产生一些兼容性问题
-
-        ``` { .bash title="若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换" }
+        ``` { .bash .no-copy title="若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换" }
         sed -i "s/$(lsb_release -cs)/指定版本代号/g" /etc/apt/sources.list
         ```
 

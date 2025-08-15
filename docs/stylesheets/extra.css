@@ -127,10 +127,6 @@
     background-color: var(--navbar-background) !important;
 }
 
-.tabbed-content .highlight {
-    padding-top: .4rem;
-}
-
 .md-banner {
     color: var(--md-default-fg-color--light);
     background-color: hsla(240, 9%, 75%, 0.53);

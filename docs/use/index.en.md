@@ -505,7 +505,7 @@ Below are some advanced usage examples
         | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
         | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="Version 9 uses <code>CentOS Stream</code>, 7/8 use <code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
-        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.125em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.135em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
         | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | `rocky` |
         | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
         | <a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank"><img src="/assets/images/icon/oracle-linux.png" width="16" height="16" style="vertical-align: -0.25em"></a> **Oracle Linux** | `centos-stream` |
@@ -593,21 +593,47 @@ Below are some advanced usage examples
 
         Usually for switching system versions. Example:
 
-        === "Upgrade GNU/Linux Debian to 12 Bookworm"
+        === "Upgrade GNU/Linux Debian to 13 "trixie""
 
-            ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename bookworm
-            ```
+            - Change version code
+
+                ``` bash
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+                --codename trixie \
+                --upgrade-software false
+                ```
+
+            - Disable the backports repository
+
+                ``` bash
+                sed -i '/backports/s/^/# /' /etc/apt/sources.list
+                ```
+
+            - Upgrade the system
+
+                ``` bash
+                apt-get update
+                apt-get dist-upgrade
+                ```
+
+            - After the upgrade is complete and the system is rebooted, perform the following steps
+
+                ``` bash
+                # Clear the original software sources (back up any non-system software sources)
+                sed -i '1,$d' /etc/apt/sources.list
+                # Rerun the mirror switching script
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+                ```
 
         === "Switch GNU/Linux Debian to testing branch"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --codename testing
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+            --codename testing \
+            --upgrade-software false
             ```
 
-        After switching, run `apt-get dist-upgrade` and reboot, then rerun the script. Only changing the codename may cause compatibility issues later.
-
-        ``` { .bash title="If the script can't set the codename, you can manually replace it after running" }
+        ``` { .bash .no-copy title="If the script can't set the codename, you can manually replace it after running" }
         sed -i "s/$(lsb_release -cs)/your-codename/g" /etc/apt/sources.list
         ```
 

@@ -82,7 +82,7 @@ hide:
 
     ---
 
-    腳本透過方向鍵互動逐步引導使用者選擇軟體來源配置，讓換源更簡單  
+    腳本透過方向鍵互動逐步引導使用者選擇軟體軟體源配置，讓換源更簡單  
     此外腳本提供了豐富的命令選項，支援 CI/CD 整合與自動化維運
 
 -   :material-pencil-ruler-outline:{ .lg .middle } __高度可自定義__
@@ -97,7 +97,7 @@ hide:
     ---
 
     項目已設立 MIT 開源授權協議，腳本程式碼完全開源且免費使用  
-    請尊重作者的知識成果，傳播時請在顯著位置標註來源或項目地址
+    請尊重作者的知識成果，傳播時請在顯著位置標註軟體源或項目地址
 
 </div>
 
@@ -135,7 +135,7 @@ hide:
 </div>
 
 <div style="text-align: center; padding: 1rem 0" markdown>
-[開 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [查看軟體源列表](mirrors/index.md){ .md-button }
+[開 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [軟體源列表](mirrors/index.md){ .md-button }
 </div>
 
 --8<-- "docs/sponsor/main.html"

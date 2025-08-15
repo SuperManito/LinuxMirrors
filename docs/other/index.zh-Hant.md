@@ -152,11 +152,11 @@ hide:
 
         ---
 
-        用於控制拉取鏡像的預設來源儲存倉庫，又稱為鏡像加速器，預設為官方容器鏡像倉庫 [Docker Hub](https://hub.docker.com) 
+        用於控制拉取鏡像的預設軟體源儲存倉庫，又稱為鏡像加速器，預設為官方容器鏡像倉庫 [Docker Hub](https://hub.docker.com) 
 
     </div>
 
-    由於一些不可抗力的因素，目前中國大陸網路環境無法訪問 [Docker Hub](https://hub.docker.com)，因此無法正常拉取鏡像，建議使用下方提到的中國大陸可用鏡像倉庫來源
+    由於一些不可抗力的因素，目前中國大陸網路環境無法訪問 [Docker Hub](https://hub.docker.com)，因此無法正常拉取鏡像，建議使用下方提到的中國大陸可用鏡像倉庫軟體源
 
     註：腳本內的指定 WEB 協議互動僅用於控制 `Docker CE` 軟體源，`Docker Registry` 強制使用 `HTTPS` 協議
 
@@ -193,7 +193,7 @@ hide:
     | Alibaba Cloud (Hong Kong) | [registry.cn-hongkong.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-hongkong.aliyuncs.com") | Google Cloud（Europe) | [eu.gcr.io](https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn "https://eu.gcr.io") |
     | Tencent Cloud | [mirror.ccs.tencentyun.com](https://cloud.tencent.com/document/product/1207/45596 "https://mirror.ccs.tencentyun.com") | Docker Hub | [registry.hub.docker.com](https://hub.docker.com/ "registry.hub.docker.com") |
 
-    <blockquote style="border-left: none !important">註：中國大陸雲端運算企業的鏡像倉庫來源僅針對其業務，中國大陸境內實例可能仍無法造訪 Docker Hub</blockquote>
+    <blockquote style="border-left: none !important">註：中國大陸雲端運算企業的鏡像倉庫軟體源僅針對其業務，中國大陸境內實例可能仍無法造訪 Docker Hub</blockquote>
 
     </div>
 
@@ -201,7 +201,7 @@ hide:
 
     | 名稱 | 意義 | 選項值 |
     | :-: | :-: | :-: |
-    | `--source` | 指定 `Docker CE` 來源位址(網域名稱或IP) | `位址` |
+    | `--source` | 指定 `Docker CE` 軟體源位址(網域名稱或IP) | `位址` |
     | `--source-registry` | 指定鏡像倉庫位址(網域名稱或IP) | `位址` |
     | `--branch` | 指定 Docker CE 源倉庫 | `倉庫名稱（詳見下方文檔）` |
     | `--codename` | 指定 Debian 係作業系統的版本代號 | `代號名稱` |
@@ -216,13 +216,6 @@ hide:
     | `--pure-mode` | 純淨模式，精簡列印內容 | 無 |
 
     > 軟體源完整格式 `<WEB協議>://<軟體源位址(網域名稱或IP)>/<軟體源倉庫(路徑)>`
-
-    - #### 指定 `Docker CE` 軟體源位址
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
-        ```
-        > 注意該位址路徑需要包含映像站的 Docker CE 軟體源倉庫路徑即 `docker-ce`
 
     - #### 指定鏡像倉庫位址
 
@@ -285,6 +278,13 @@ hide:
                 [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
                 ```
 
+    - #### 指定 `Docker CE` 軟體源位址
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
+        ```
+        > 注意該位址路徑需要包含映像站的 Docker CE 軟體源倉庫路徑即 `docker-ce`
+
     - #### 指定 Docker CE 軟體源倉庫
 
         腳本預設會自動判斷一般無需指定，除非你有特殊需求
@@ -322,7 +322,7 @@ hide:
 
                 > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
-            未出現在該清單中的版本則不支援透過本腳本安裝，如果取得不到版本清單說明你目前的系統環境還沒有正確配置 Docker CE 軟體來源（執行腳本時不存在該問題）
+            未出現在該清單中的版本則不支援透過本腳本安裝，如果取得不到版本清單說明你目前的系統環境還沒有正確配置 Docker CE 軟體軟體源（執行腳本時不存在該問題）
 
 
     - #### 無人值守（自動化）

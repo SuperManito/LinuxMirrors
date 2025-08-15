@@ -217,13 +217,6 @@ hide:
 
     > Full source format: `<WEB protocol>://<source address (domain or IP)>/<repository path>`
 
-    - #### Specify Docker CE Source Address
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
-        ```
-        > Note: The address path must include the Docker CE repository path, i.e., `docker-ce`.
-
     - #### Specify Registry Mirror Address
 
         ``` { .bash .no-copy }
@@ -284,6 +277,13 @@ hide:
                 systemctl daemon-reload
                 [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
                 ```
+
+    - #### Specify Docker CE Source Address
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
+        ```
+        > Note: The address path must include the Docker CE repository path, i.e., `docker-ce`.
 
     - #### Specify Docker CE Repository
 

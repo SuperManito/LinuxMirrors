@@ -135,7 +135,7 @@ hide:
 </div>
 
 <div style="text-align: center; padding: 1rem 0" markdown>
-[开 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [查看软件源列表](mirrors/index.md){ .md-button }
+[开 始 使 用](use/index.md){ .md-button .md-button--primary } &nbsp; [软件源列表](mirrors/index.md){ .md-button }
 </div>
 
 --8<-- "docs/sponsor/main.html"
