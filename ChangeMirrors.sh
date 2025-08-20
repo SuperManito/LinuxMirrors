@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-08-16
+## Modified: 2025-08-21
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -713,7 +713,10 @@ function permission_judgment() {
 function collect_system_info() {
     ## 定义系统名称
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    grep -q "PRETTY_NAME=" $File_LinuxRelease && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    grep -q "PRETTY_NAME=" $File_LinuxRelease
+    if [ $? -eq 0 ]; then
+        SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    fi
     ## 定义系统版本号
     SYSTEM_VERSION_ID="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
@@ -814,7 +817,9 @@ function collect_system_info() {
             fi
         fi
         if [[ "${SYSTEM_VERSION_CODENAME}" == "sid" ]]; then
-            [[ "${PURE_MODE}" != "true" ]] && echo -e "\n${WARN} 检测到当前系统为 ${BLUE}unstable(sid)${PLAIN} 版本，可能会产生一些无法预料的问题。\n"
+            if [[ "${PURE_MODE}" != "true" ]]; then
+                echo -e "\n${WARN} 检测到当前系统为 ${BLUE}unstable(sid)${PLAIN} 版本，可能会产生一些无法预料的问题。\n"
+            fi
         fi
         ;;
     "${SYSTEM_UBUNTU}")
@@ -875,9 +880,9 @@ function collect_system_info() {
             ;;
         esac
         ;;
-    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_RASPBERRY_PI_OS}" | "${SYSTEM_ARCH}" | "${SYSTEM_MANJARO}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_OPENKYLIN}" | "${SYSTEM_NIXOS}")
-        # 理论全部支持或不作判断
-        ;;
+    # 理论全部支持或不作判断
+    "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_RASPBERRY_PI_OS}" | "${SYSTEM_OPENKYLIN}") ;;
+    "${SYSTEM_ARCH}" | "${SYSTEM_MANJARO}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_NIXOS}") ;;
     *)
         unsupport_system_error "系统版本未知"
         ;;
@@ -1054,7 +1059,7 @@ function check_command_options() {
 function choose_mirrors() {
     ## 打印软件源列表
     function print_mirrors_list() {
-        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
+        local tmp_mirror_name tmp_mirror_url arr_num default_length tmp_length tmp_spaces_nums a i j
         ## 计算字符串长度
         function StringLength() {
             local text=$1
@@ -1070,28 +1075,25 @@ function choose_mirrors() {
         done
         if command_exists printf; then
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
-                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')
+                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')
                 arr_num=$((i + 1))
-                default_mirror_name_length=${2:-"30"} # 默认软件源名称打印长度
-                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
-                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
-                # 非一般字符长度
-                tmp_mirror_name_length=$(StringLength "$(echo "${tmp_mirror_name// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;")")
-                ## 填充空格
-                tmp_spaces_nums=$(($((default_mirror_name_length - tmp_mirror_name_length - $(StringLength "${tmp_mirror_name}"))) / 2))
+                default_length=${2:-"30"}
+                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
+                tmp_length=$(StringLength "$(echo "${tmp_mirror_name// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;")")
+                tmp_spaces_nums=$(($((default_length - tmp_length - $(StringLength "${tmp_mirror_name}"))) / 2))
                 for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
                     tmp_mirror_name="${tmp_mirror_name} "
                 done
-                printf "❖  %-$((default_mirror_name_length + tmp_mirror_name_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+                printf "❖  %-$((default_length + tmp_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name="${list_arr[i]%@*}" # 软件源名称
-                tmp_mirror_url="${list_arr[i]#*@}"  # 软件源地址
+                tmp_mirror_name="${list_arr[i]%@*}"
+                tmp_mirror_url="${list_arr[i]#*@}"
                 arr_num=$((i + 1))
                 echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
             done
@@ -1942,77 +1944,98 @@ function upgrade_software() {
 
 ## 更换基于 Debian 系 Linux 发行版的软件源
 function change_mirrors_Debian() {
-    ## 通用生成方法
-    function gen_deb_source_template() {
+    local source_file=$File_AptSourceList
+    local source_content=""
+    local deb_src_disabled_tips="## 默认禁用源码镜像以提高更新速度，如需启用请自行取消注释"
+
+    function write_source_file() {
+        if [[ -n "${source_content}" ]]; then
+            echo "${source_content}" >>$source_file
+        fi
+        source_content=""
+    }
+
+    function _template_deb() {
         echo "${1} ${WEB_PROTOCOL}://${2}/ ${3} ${4}"
     }
-    function gen_deb_source() {
-        echo "$(gen_deb_source_template "deb" "${1}" "${2}" "${3}")
-$(gen_deb_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+    function gen_deb() {
+        echo "$(_template_deb "deb" "${1}" "${2}" "${3}")
+$(_template_deb "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
-    function gen_deb_source_no_src() {
-        echo "$(gen_deb_source_template "deb" "${1}" "${2}" "${3}")"
+    function gen_deb_unsrc() {
+        echo "$(_template_deb "deb" "${1}" "${2}" "${3}")"
     }
-    function gen_deb_source_disabled() {
-        echo "$(gen_deb_source "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+    function gen_deb_disabled() {
+        echo "$(gen_deb "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
-    function gen_deb_source_no_src_disabled() {
-        echo "$(gen_deb_source_no_src "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+    function gen_deb_unsrc_disabled() {
+        echo "$(gen_deb_unsrc "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
-    function gen_deb822_source_template() {
+
+    function _template_deb822() {
         echo "Types: ${1}
 URIs: ${WEB_PROTOCOL}://${2}/
 Suites: ${3}
 Components: ${4}
 Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
     }
-    function gen_deb822_source() {
-        echo "$(gen_deb822_source_template "deb" "${1}" "${2}" "${3}")
+    function gen_deb822() {
+        echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}")
 
-$(gen_deb822_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+${deb_src_disabled_tips}
+$(_template_deb822 "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
-    function gen_deb822_source_disabled() {
-        echo "$(gen_deb822_source_template "deb" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")
+    function gen_deb822_disabled() {
+        echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")
 
-$(gen_deb822_source_template "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+${deb_src_disabled_tips}
+$(_template_deb822 "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
-    function gen_deb_source_security() {
+    function gen_deb_security() {
         echo "## 安全更新软件源
-$(gen_deb_source "${1}" "${2}-security" "${3}")"
+$(gen_deb "${1}" "${2}-security" "${3}")"
     }
-    function gen_deb822_source_security() {
+    function gen_deb822_security() {
         echo "## 安全更新软件源
-$(gen_deb822_source "${1}" "${2}-security" "${3}")"
+$(gen_deb822 "${1}" "${2}-security" "${3}")"
     }
 
     ## 针对特定系统生成软件源
-    function gen_debian_deb_source() {
-        echo "$(gen_deb_source "${1}" "${2}" "${3}")
-$(gen_deb_source "${1}" "${2}-updates" "${3}")
-$(gen_deb_source "${1}" "${2}-backports" "${3}")"
+    function gen_debian_deb() {
+        case "${2}" in
+        forky | trixie | bookworm | stable | oldstable | testing)
+            echo "$(gen_deb "${1}" "${2}" "${3}")
+$(gen_deb "${1}" "${2}-updates" "${3}")
+$(gen_deb "${1}" "${2}-backports" "${3}")"
+            ;;
+        *)
+            echo "$(gen_deb "${1}" "${2}" "${3}")
+$(gen_deb "${1}" "${2}-updates" "${3}")"
+            ;;
+        esac
     }
-    function gen_debian_deb822_source() {
-        echo "$(gen_deb822_source "${1}" "${2} ${2}-updates ${2}-backports" "${3}")"
+    function gen_debian_deb822() {
+        case "${2}" in
+        forky | trixie | bookworm | stable | oldstable | testing)
+            echo "$(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")"
+            ;;
+        *)
+            echo "$(gen_deb822 "${1}" "${2} ${2}-updates" "${3}")"
+            ;;
+        esac
     }
-    function gen_debian_deb_source_no_backports() {
-        echo "$(gen_deb_source "${1}" "${2}" "${3}")
-$(gen_deb_source "${1}" "${2}-updates" "${3}")"
-    }
-    function gen_debian_deb822_source_no_backports() {
-        echo "$(gen_deb822_source "${1}" "${2} ${2}-updates" "${3}")"
-    }
-    function gen_ubuntu_deb_source() {
-        echo "$(gen_deb_source "${1}" "${2}" "${3}")
-$(gen_deb_source "${1}" "${2}-updates" "${3}")
-$(gen_deb_source "${1}" "${2}-backports" "${3}")
+    function gen_ubuntu_deb() {
+        echo "$(gen_deb "${1}" "${2}" "${3}")
+$(gen_deb "${1}" "${2}-updates" "${3}")
+$(gen_deb "${1}" "${2}-backports" "${3}")
 ## 预发布软件源（不建议启用）
-$(gen_deb_source_disabled "${1}" "${2}-proposed" "${3}")"
+$(gen_deb_disabled "${1}" "${2}-proposed" "${3}")"
     }
-    function gen_ubuntu_deb822_source() {
-        echo "$(gen_deb822_source "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
+    function gen_ubuntu_deb822() {
+        echo "$(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
 
 ## 预发布软件源（不建议启用）
-$(gen_deb822_source_disabled "${1}" "${2}-proposed" "${3}")"
+$(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
     }
 
     ## 使用官方源
@@ -2036,10 +2059,9 @@ $(gen_deb822_source_disabled "${1}" "${2}-proposed" "${3}")"
         esac
     fi
 
-    local deb_source_title="## 默认禁用源码镜像以提高更新速度，如需启用请自行取消注释"
     local repository_sections # 仓库区域
     local source_host="${SOURCE}/${SOURCE_BRANCH}"
-    local source_host_security=""
+    local source_security_host=""
 
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
@@ -2051,45 +2073,52 @@ $(gen_deb822_source_disabled "${1}" "${2}-proposed" "${3}")"
             repository_sections="main contrib non-free non-free-firmware"
             ;;
         esac
-        source_host_security="${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}"
+        source_security_host="${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}"
         if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+            source_file="${File_DebianSources}"
             if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
-                echo "$(gen_debian_deb822_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+                source_content="$(gen_debian_deb822 "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
 
-$(gen_deb822_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSources
+$(gen_deb822_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
             else
-                echo "$(gen_debian_deb822_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_DebianSources
+                source_content="$(gen_debian_deb822 "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
             fi
         else
+            source_file="${File_AptSourceList}"
             if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
-                echo "${deb_source_title}
-$(gen_debian_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
-$(gen_deb_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+                source_content="${deb_src_disabled_tips}
+$(gen_debian_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+$(gen_deb_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
             else
-                echo "${deb_source_title}
-$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+                source_content="${deb_src_disabled_tips}
+$(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
             fi
         fi
+        write_source_file
         ;;
 
     "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
         repository_sections="main restricted universe multiverse"
-        source_host_security="${SOURCE_SECURITY:-${SOURCE}}/${SOURCE_BRANCH}"
+        source_security_host="${SOURCE_SECURITY:-${SOURCE}}/${SOURCE_BRANCH}"
         if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
-            echo "$(gen_ubuntu_deb822_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+            source_file="${File_UbuntuSources}"
+            source_content="$(gen_ubuntu_deb822 "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
 
-$(gen_deb822_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_UbuntuSources
+$(gen_deb822_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
         else
-            echo "${deb_source_title}
-$(gen_ubuntu_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
-$(gen_deb_source_security "${source_host_security}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+            source_file="${File_AptSourceList}"
+            source_content="${deb_src_disabled_tips}
+$(gen_ubuntu_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+$(gen_deb_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
         fi
+        write_source_file
         ;;
 
     "${SYSTEM_KALI}")
         repository_sections="main contrib non-free non-free-firmware"
-        echo "${deb_source_title}
-$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+        source_content="${deb_src_disabled_tips}
+$(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
+        write_source_file
         ;;
 
     "${SYSTEM_DEEPIN}")
@@ -2098,21 +2127,25 @@ $(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sec
         else
             repository_sections="main contrib non-free"
         fi
-        echo "${deb_source_title}
-$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+        source_content="${deb_src_disabled_tips}
+$(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
+        write_source_file
         ;;
 
     "${SYSTEM_LINUX_MINT}")
         ## 专用源
         repository_sections="main upstream import backport"
-        echo "${deb_source_title}
-$(gen_deb_source_no_src "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_LinuxMintSourceList
+        source_file="${File_LinuxMintSourceList}"
+        source_content="${deb_src_disabled_tips}
+$(gen_deb_unsrc "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
+"
+        write_source_file
         ## 底层系统软件源
         local base_system_branch base_system_codename
         if [[ "${SYSTEM_VERSION_ID}" == 6 ]]; then
             # Debian 版（LMDE）
             base_system_branch="debian"
-            grep -q "DEBIAN_CODENAME" $File_ArchLinuxRelease
+            grep -q "DEBIAN_CODENAME" $File_LinuxRelease
             if [ $? -eq 0 ]; then
                 base_system_codename="$(cat $File_LinuxRelease | grep -E "^DEBIAN_CODENAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
             else
@@ -2120,9 +2153,11 @@ $(gen_deb_source_no_src "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${reposit
             fi
             repository_sections="main contrib non-free non-free-firmware"
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
-            source_host_security="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
-            echo "$(gen_debian_deb_source "${source_host}" "${base_system_codename}" "${repository_sections}")
-$(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            source_file="${File_LinuxMintSourceList}"
+            source_content="$(gen_debian_deb "${source_host}" "${base_system_codename}" "${repository_sections}")
+$(gen_deb_security "${source_security_host}" "${base_system_codename}" "${repository_sections}")"
+            write_source_file
         else
             # Ubuntu 版
             if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
@@ -2146,9 +2181,11 @@ $(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "$
             esac
             repository_sections="main restricted universe multiverse"
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
-            source_host_security="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
-            echo "$(gen_ubuntu_deb_source "${source_host}" "${base_system_codename}" "${repository_sections}")
-$(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "${repository_sections}")" >>$File_LinuxMintSourceList
+            source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
+            source_file="${File_LinuxMintSourceList}"
+            source_content="$(gen_ubuntu_deb "${source_host}" "${base_system_codename}" "${repository_sections}")
+$(gen_deb_security "${source_security_host}" "${base_system_codename}" "${repository_sections}")"
+            write_source_file
         fi
         ;;
 
@@ -2160,8 +2197,10 @@ $(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "$
             SOURCE_BRANCH="debian"
             source_host="${SOURCE}/${SOURCE_BRANCH}"
         fi
-        echo "${deb_source_title}
-$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_RaspberryPiSourceList
+        source_file="${File_RaspberryPiSourceList}"
+        source_content="${deb_src_disabled_tips}
+$(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
+        write_source_file
         ## 底层系统软件源（64位系统为 Debian 官方仓库，32位为 Raspbian 仓库）
         local base_system_branch base_system_codename
         case "${DEVICE_ARCH_RAW}" in
@@ -2187,10 +2226,12 @@ $(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sec
                 SOURCE="deb.debian.org"
             fi
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
-            source_host_security="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
-            echo "${deb_source_title}
-$(gen_debian_deb_source_no_backports "${source_host}" "${base_system_codename}" "${repository_sections}")
-$(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "${repository_sections}")" >>$File_AptSourceList
+            source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            source_file="${File_AptSourceList}"
+            source_content="${deb_src_disabled_tips}
+$(gen_debian_deb "${source_host}" "${base_system_codename}" "${repository_sections}")
+$(gen_deb_security "${source_security_host}" "${base_system_codename}" "${repository_sections}")"
+            write_source_file
             ;;
         *)
             base_system_branch="raspbian"
@@ -2202,13 +2243,17 @@ $(gen_deb_source_security "${source_host_security}" "${base_system_codename}" "$
             else
                 source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}/raspbian"
             fi
-            echo "${deb_source_title}
-$(gen_deb_source "${source_host}" "${base_system_codename}" "${repository_sections}")" >>$File_AptSourceList
+            source_file="${File_AptSourceList}"
+            source_content="${deb_src_disabled_tips}
+$(gen_deb "${source_host}" "${base_system_codename}" "${repository_sections}")"
             ## multiarch 源
             if [[ "${DEVICE_ARCH_RAW}" == "armv7l" && "${USE_OFFICIAL_SOURCE}" != "true" ]]; then
                 source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
-                echo "# deb [arch=arm64] ${WEB_PROTOCOL}://${source_host}/multiarch/ ${base_system_codename} ${repository_sections}" >>$File_AptSourceList
+                source_content="${source_content}
+
+# deb [arch=arm64] ${WEB_PROTOCOL}://${source_host}/multiarch/ ${base_system_codename} ${repository_sections}"
             fi
+            write_source_file
             ;;
         esac
         ;;
@@ -2216,15 +2261,19 @@ $(gen_deb_source "${source_host}" "${base_system_codename}" "${repository_sectio
     ## 处理其它衍生操作系统的专用源
     # Armbian
     if [ -f "${File_ArmbianRelease}" ]; then
-        echo "deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop" >>$File_ArmbianSourceList
+        source_file="${File_ArmbianSourceList}"
+        source_content="deb [signed-by=/usr/share/keyrings/armbian.gpg] ${WEB_PROTOCOL}://${SOURCE}/armbian ${SYSTEM_VERSION_CODENAME} main ${SYSTEM_VERSION_CODENAME}-utils ${SYSTEM_VERSION_CODENAME}-desktop"
+        write_source_file
     fi
     # Proxmox VE
     if [ -f "${File_ProxmoxVersion}" ]; then
         source_host="${SOURCE}/proxmox/debian"
-        echo "$(gen_deb_source_no_src "${source_host}/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")  
-$(gen_deb_source_no_src_disabled "${source_host}/pbs" "${SYSTEM_VERSION_CODENAME}" "pbs-no-subscription")
-$(gen_deb_source_no_src_disabled "${source_host}/pbs-client" "${SYSTEM_VERSION_CODENAME}" "pbs-client-no-subscription")
-$(gen_deb_source_no_src_disabled "${source_host}/pmg" "${SYSTEM_VERSION_CODENAME}" "pmg-no-subscription")" >>$File_ProxmoxSourceList
+        source_file="${File_ProxmoxSourceList}"
+        source_content="$(gen_deb_unsrc "${source_host}/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")  
+$(gen_deb_unsrc_disabled "${source_host}/pbs" "${SYSTEM_VERSION_CODENAME}" "pbs-no-subscription")
+$(gen_deb_unsrc_disabled "${source_host}/pbs-client" "${SYSTEM_VERSION_CODENAME}" "pbs-client-no-subscription")
+$(gen_deb_unsrc_disabled "${source_host}/pmg" "${SYSTEM_VERSION_CODENAME}" "pmg-no-subscription")"
+        write_source_file
         if [ -s "${File_ProxmoxAPLInfo}" ]; then
             sed -e "s|url => [\"']https\?://[^/]*/images[\"']|url => \"${WEB_PROTOCOL}://${SOURCE}/images\"|g" \
                 -i \
@@ -2279,12 +2328,22 @@ function change_mirrors_RedHat() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
             SOURCE="vault.centos.org"
             SOURCE_BRANCH="centos"
-        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
-            SOURCE="vault.centos.org"
-            SOURCE_BRANCH="centos"
         else
-            change_mirrors_or_install_EPEL # EPEL 附加软件包
-            return
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}")
+                if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
+                    SOURCE="vault.centos.org"
+                    SOURCE_BRANCH="centos"
+                else
+                    change_mirrors_or_install_EPEL # EPEL 附加软件包
+                    return
+                fi
+                ;;
+            *)
+                change_mirrors_or_install_EPEL # EPEL 附加软件包
+                return
+                ;;
+            esac
         fi
     fi
 
@@ -2523,11 +2582,18 @@ function change_mirrors_RedHat() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
             SOURCE=""
             SOURCE_BRANCH=""
-        elif [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" ]] && [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
-            SOURCE=""
-            SOURCE_BRANCH=""
+        else
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}")
+                if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
+                    SOURCE=""
+                    SOURCE_BRANCH=""
+                fi
+                ;;
+            esac
         fi
     fi
+
     change_mirrors_or_install_EPEL # EPEL 附加软件包
 }
 
@@ -2570,7 +2636,7 @@ function change_mirrors_OpenCloudOS() {
 
 ## 更换 openKylin 软件源
 function change_mirrors_openKylin() {
-    function gen_deb_source() {
+    function gen_deb() {
         echo "deb ${WEB_PROTOCOL}://${1}/ ${2} ${3}
 # deb-src ${WEB_PROTOCOL}://${1}/ ${2} ${3}
 deb ${WEB_PROTOCOL}://${1}/ ${2}-security ${3}
@@ -2586,7 +2652,7 @@ deb ${WEB_PROTOCOL}://${1}/ ${2}-updates ${3}
     local repository_sections="main cross pty" # 仓库区域
     local source_host="${SOURCE}/${SOURCE_BRANCH}"
     echo "## 默认禁用源码镜像以提高更新速度，如需启用请自行取消注释
-$(gen_deb_source "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
+$(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
 }
 
 ## 更换 Anolis OS 软件源
@@ -2820,9 +2886,11 @@ function change_mirrors_or_install_EPEL() {
             ;;
         9)
             ## CentOS Stream 9 特殊，有两个不同的发行包 epel-release epel-next-release
-            if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
+            case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}" | "${SYSTEM_RHEL}")
                 package_path="epel/epel{,-next}-release-latest-9"
-            fi
+                ;;
+            esac
             ;;
         esac
         eval $package_manager install -y https://mirrors.cloud.tencent.com/${package_path}.noarch.rpm
@@ -2839,8 +2907,12 @@ function change_mirrors_or_install_EPEL() {
     fi
     ## 生成 repo 源文件
     gen_repo_files_EPEL "${SYSTEM_VERSION_ID_MAJOR}"
-    if [[ "${epel_version}" == 9 ]] && [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS_STREAM}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ORACLE}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_RHEL}" ]]; then
-        gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_ID_MAJOR}"
+    if [[ "${epel_version}" == 9 ]]; then
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}" | "${SYSTEM_RHEL}")
+            gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_ID_MAJOR}"
+            ;;
+        esac
     fi
     ## 使用官方源
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" || "${USE_OFFICIAL_SOURCE_EPEL}" == "true" ]]; then

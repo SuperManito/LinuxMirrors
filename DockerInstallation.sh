@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-08-09
+## Modified: 2025-08-21
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -460,7 +460,10 @@ function permission_judgment() {
 function collect_system_info() {
     ## 定义系统名称
     SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    grep -q "PRETTY_NAME=" $File_LinuxRelease && SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    grep -q "PRETTY_NAME=" $File_LinuxRelease
+    if [ $? -eq 0 ]; then
+        SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    fi
     ## 定义系统版本号
     SYSTEM_VERSION_ID="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
     SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
@@ -630,7 +633,7 @@ function collect_system_info() {
 function choose_mirrors() {
     ## 打印软件源列表
     function print_mirrors_list() {
-        local tmp_mirror_name tmp_mirror_url arr_num default_mirror_name_length tmp_mirror_name_length tmp_spaces_nums a i j
+        local tmp_mirror_name tmp_mirror_url arr_num default_length tmp_length tmp_spaces_nums a i j
         ## 计算字符串长度
         function StringLength() {
             local text=$1
@@ -645,28 +648,25 @@ function choose_mirrors() {
         done
         if command_exists printf; then
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}') # 软件源名称
-                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}') # 软件源地址
+                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')
+                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')
                 arr_num=$((i + 1))
-                default_mirror_name_length=${2:-"30"} # 默认软件源名称打印长度
-                ## 补齐长度差异（中文的引号在等宽字体中占1格而非2格）
-                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_mirror_name_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
-                # 非一般字符长度
-                tmp_mirror_name_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;"))
-                ## 填充空格
-                tmp_spaces_nums=$(($(($default_mirror_name_length - ${tmp_mirror_name_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
+                default_length=${2:-"30"}
+                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
+                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
+                tmp_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;"))
+                tmp_spaces_nums=$(($(($default_length - ${tmp_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
                 for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
                     tmp_mirror_name="${tmp_mirror_name} "
                 done
-                printf "❖  %-$(($default_mirror_name_length + ${tmp_mirror_name_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+                printf "❖  %-$(($default_length + ${tmp_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name="${list_arr[i]%@*}" # 软件源名称
-                tmp_mirror_url="${list_arr[i]#*@}"  # 软件源地址
+                tmp_mirror_name="${list_arr[i]%@*}"
+                tmp_mirror_url="${list_arr[i]#*@}"
                 arr_num=$((i + 1))
                 echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
             done
@@ -971,7 +971,8 @@ function configure_docker_ce_mirror() {
         fi
         chmod a+r $file_keyring
         ## 添加源
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable" | tee $File_DockerSourceList >/dev/null 2>&1
+        local source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable"
+        echo "${source_content}" | tee $File_DockerSourceList >/dev/null 2>&1
         commands+=("apt-get update")
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
