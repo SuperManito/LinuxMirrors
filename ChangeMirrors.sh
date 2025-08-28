@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-08-21
+## Modified: 2025-08-28
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -28,6 +28,7 @@ mirror_list_default=(
     "重庆邮电大学@mirrors.cqupt.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
     "中国科学院软件研究所@mirror.iscas.ac.cn"
+    "官方源@__OFFICIAL_SOURCE_TAG__"
 )
 # 中国大陆教育网格式："名称@地址"
 mirror_list_edu=(
@@ -131,6 +132,7 @@ mirror_list_abroad=(
     "大洋 · Free Software Mirror Group · 新西兰@mirror.fsmg.org.nz"
     "非洲 · Liquid Telecom · 肯尼亚@mirror.liquidtelecom.com"
     "非洲 · Dimension Data · 南非@mirror.dimensiondata.com"
+    "官方源@__OFFICIAL_SOURCE_TAG__"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
@@ -1198,6 +1200,13 @@ function choose_mirrors() {
                     ;;
                 esac
             done
+        fi
+
+        ## 使用官方源
+        if [[ "${SOURCE}" == "__OFFICIAL_SOURCE_TAG__" ]]; then
+            USE_OFFICIAL_SOURCE="true"
+            SOURCE=""
+            return
         fi
     fi
 
