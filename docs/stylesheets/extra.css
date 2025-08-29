@@ -340,7 +340,7 @@
     border-radius: 6px !important;
     box-sizing: border-box;
     flex: 0 0 calc(50% - 2px) !important;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
 }
 
 [data-md-color-scheme="slate"] .sponsor-item-toc {
@@ -456,7 +456,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 28px;
+    height: 24px;
     padding: 0 4px;
     background-color: var(--md-default-bg-color);
     border: 1px solid transparent;
@@ -480,7 +480,7 @@
 
 .icon-brand-button img {
     max-width: 100%;
-    max-height: 20px;
+    max-height: 18px;
     object-fit: contain;
     vertical-align: middle;
 }
