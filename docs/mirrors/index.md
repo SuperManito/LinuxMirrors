@@ -10,15 +10,15 @@ search:
 
 ## 中国大陆 :flag-CN:
 
-> 下方列表中的镜像站均支持 `Debian` `Ubuntu` `CentOS` `openSUSE` `openEuler` 软件源，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
+> 下方列表中的镜像站均同步了 `Debian` `Ubuntu` `CentOS` `openSUSE` `openEuler` 软件仓库，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
 
 <div id="mirrors-table"><p>正在加载表格 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: -0.15rem"><g stroke="currentColor"><circle cx="12" cy="12" r="9.5" fill="none" stroke-linecap="round" stroke-width="3"><animate attributeName="stroke-dasharray" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0 150;42 150;42 150;42 150"/><animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0;-16;-59;-59"/></circle><animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></g></svg></p></div>
 
 ???+ question "使用帮助"
 
-    :supported: 支持 &nbsp;&nbsp; :unsupport: 不支持 &nbsp;&nbsp; :incompatible: 不兼容，表示软件源分支命名不符合脚本默认规则但可以通过命令选项来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/index.md#指定软件源仓库)
+    :supported: 支持 &nbsp;&nbsp; :unsupport: 不支持 &nbsp;&nbsp; :incompatible: 不兼容，表示镜像站上的仓库目录命名不符合脚本默认规则但可以通过命令选项来使用，关于具体用法示例和各操作系统所使用的默认分支名称[详见此处](../use/index.md#指定软件源仓库)
 
-    如果这里没有想使用的镜像站那可以看看其它运行模式和命令选项。软件源的速度区分刷新速度和下行速率，后者才是关键，具体请结合实际地理位置选择尝试，还可以通过[辅助工具网站](#工具网站)进行一些测试
+    如果这里没有想使用的镜像站那可以看看其它运行模式和命令选项。镜像站的速度分为同步刷新速度和用户下载速度，后者才是关键，具体请结合实际地理位置选择尝试，还可以通过[辅助工具网站](#工具网站)进行一些测试
 
     :material-thumb-up-outline: 使用建议：速度上推荐 `中科大`、`字节(火山引擎)`，地域兼容性上推荐 `阿里云`、`腾讯云`，软件源种类上推荐 `南京大学`、`中科院`，境外、海外或复杂网络环境下不建议使用 `清华(TUNA)` 等容易阻断的镜像站
 
@@ -234,9 +234,9 @@ search:
 
     作者没有精力持续维护列表中的这些境外、海外镜像站，如果你想补充更多软件源或更正当前已有，请修改脚本内的 [`mirror_list_abroad 数组变量`](https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L66 "https://github.com/SuperManito/LinuxMirrors/blame/main/ChangeMirrors.sh#L66") 并按照下面的编辑规范进行修改
 
-    你可以在确认软件源地址无误后前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls "https://github.com/SuperManito/LinuxMirrors/pulls")，也可以 :material-source-fork: Fork 仓库后自行定制使用
+    你可以在确认镜像站地址无误后前往 GitHub 仓库提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls "https://github.com/SuperManito/LinuxMirrors/pulls")，也可以 :material-source-fork: Fork 仓库后自行定制使用
 
-    - 境外以及海外软件源编辑规范：
+    - 境外以及海外软件源（镜像站）编辑规范：
 
         完整格式：`洲 · 软件源名称 · 国家/地区@软件源地址(域名)`
 
