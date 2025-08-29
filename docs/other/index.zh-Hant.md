@@ -55,7 +55,7 @@ hide:
             ```
             > 不支援在中國大陸網路環境下使用
 
-        整合安裝 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支援選擇或更換軟體源以及映像倉庫、安裝指定版本、重裝等功能，支援 ARM 架構
+        整合安裝 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支援選擇或更換軟體源（Docker 軟體倉庫）以及鏡像倉庫、安裝指定版本、重裝等功能，支援 ARM 架構
 
         腳本參考[官方文件](https://docs.docker.com/engine/install)使用系統套件管理工具進行安裝，不存在相容性、安全性等問題，可安裝的版本由 Docker CE 倉庫決定
 
@@ -202,13 +202,13 @@ hide:
     | 名稱 | 意義 | 選項值 |
     | :-: | :-: | :-: |
     | `--source` | 指定 `Docker CE` 軟體源位址(網域名稱或IP) | `位址` |
-    | `--source-registry` | 指定鏡像倉庫位址(網域名稱或IP) | `位址` |
-    | `--branch` | 指定 Docker CE 源倉庫 | `倉庫名稱（詳見下方文檔）` |
-    | `--codename` | 指定 Debian 係作業系統的版本代號 | `代號名稱` |
+    | `--source-registry` | 指定 `Docker` 鏡像倉庫位址(網域名稱或IP) | `位址` |
+    | `--branch` | 指定 `Docker CE` 源倉庫 | `倉庫名稱（詳見下方文檔）` |
+    | `--codename` | 指定 `Debian` 係作業系統的版本代號 | `代號名稱` |
     | `--designated-version` | 指定 `Docker CE` 安裝版本 | `版本號（詳見下方文檔）` |
     | `--protocol` | 指定 `Docker CE` 源的 WEB 協議 | `http` 或 `https` |
-    | `--use-intranet-source` | 是否優先使用內部網路 Docker CE 軟體源位址 | `true` 或 `false` |
-    | `--install-latest` | 是否安裝最新版本的 Docker Engine | `true` 或 `false` |
+    | `--use-intranet-source` | 是否優先使用內部網路 `Docker CE` 軟體源位址 | `true` 或 `false` |
+    | `--install-latest` | 是否安裝最新版本的 `Docker Engine` | `true` 或 `false` |
     | `--close-firewall` | 是否關閉防火牆 | `true` 或 `false` |
     | `--clean-screen` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
     | `--only-registry` | 僅更換鏡像倉庫模式 | 無 |

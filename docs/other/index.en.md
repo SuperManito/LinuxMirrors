@@ -55,7 +55,7 @@ hide:
             ```
             > Not supported in mainland China network environments.
 
-        Integrates installation of [`Docker Engine`](https://docs.docker.com/engine) and [`Docker Compose`](https://docs.docker.com/compose), supports selecting or switching software sources and registry mirrors, installing specific versions, reinstalling, and supports ARM architecture.
+        Integrates installation of [`Docker Engine`](https://docs.docker.com/engine) and [`Docker Compose`](https://docs.docker.com/compose), supports selecting or switching software repositories (Docker repositories) and registry mirrors, installing specific versions, reinstalling, and supports ARM architecture.
 
         The script refers to the [official documentation](https://docs.docker.com/engine/install) and uses the system package manager for installation. There are no compatibility or security issues. The available versions are determined by the Docker CE repository.
 
@@ -202,13 +202,13 @@ hide:
     | Name | Meaning | Value |
     | :-: | :-: | :-: |
     | `--source` | Specify `Docker CE` source address (domain or IP) | `address` |
-    | `--source-registry` | Specify registry mirror address (domain or IP) | `address` |
-    | `--branch` | Specify Docker CE repository | `repo name (see docs below)` |
-    | `--codename` | Specify Debian-based OS codename | `codename` |
+    | `--source-registry` | Specify `Docker` registry mirror address (domain or IP) | `address` |
+    | `--branch` | Specify `Docker CE` repository | `repo name (see docs below)` |
+    | `--codename` | Specify `Debian-based` OS codename | `codename` |
     | `--designated-version` | Specify `Docker CE` installation version | `version (see docs below)` |
     | `--protocol` | Specify WEB protocol for `Docker CE` source | `http` or `https` |
-    | `--use-intranet-source` | Prefer intranet Docker CE mirror address | `true` or `false` |
-    | `--install-latest` | Whether to install the latest Docker Engine | `true` or `false` |
+    | `--use-intranet-source` | Prefer intranet `Docker CE` mirror address | `true` or `false` |
+    | `--install-latest` | Whether to install the latest `Docker Engine` | `true` or `false` |
     | `--close-firewall` | Whether to disable the firewall | `true` or `false` |
     | `--clean-screen` | Whether to clear the screen before running | `true` or `false` |
     | `--only-registry` | Only switch registry mirror mode | none |

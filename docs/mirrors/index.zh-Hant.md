@@ -10,21 +10,21 @@ search:
 
 ???+ question "友情提示"
 
-    本項目預設提供的軟體源列表主要服務位於中國大陸的用戶，因此對您來說該頁面上可能存在許多無用的資訊。作者沒有精力去採集和維護全世界的可用軟體源，所以可能需要透過命令選項自定義使用才能滿足您的實際需求，具體預設的國際軟體源詳見下方。
+    本項目預設提供的軟體源列表主要服務位於中國大陸的用戶，因此對您來說該頁面上可能存在許多無用的資訊。作者沒有精力去採集和維護全世界的可用軟體源，因此可能需要透過命令選項自定義使用才能滿足您的實際需求，具體預設的國際軟體源詳見下方。
 
 ## 中國大陸 :flag-CN:
 
-> 下方列表中的鏡像站均支援 `Debian` `Ubuntu` `CentOS` `openSUSE` `openEuler` 軟體源，列表根據單位性質、地理位置、名稱長度排序，與實際速度無關
+> 下方列表中的鏡像站均同步了 `Debian`、`Ubuntu`、`CentOS`、`openSUSE`、`openEuler` 軟體倉庫，列表根據單位性質、地理位置、名稱長度排序，與實際下載速度無關。
 
 <div id="mirrors-table"><p>正在載入表格 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: -0.15rem"><g stroke="currentColor"><circle cx="12" cy="12" r="9.5" fill="none" stroke-linecap="round" stroke-width="3"><animate attributeName="stroke-dasharray" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0 150;42 150;42 150;42 150"/><animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0;-16;-59;-59"/></circle><animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></g></svg></p></div>
 
 ???+ question "使用幫助"
 
-    :supported: 支援 &nbsp;&nbsp; :unsupport: 不支援 &nbsp;&nbsp; :incompatible: 不相容，表示軟體源分支命名不符合腳本預設規則但可以透過命令選項來使用，關於具體用法範例和各作業系統所使用的預設分支名稱[請參見此處](../use/index.md#指定軟體源倉庫)
+    :supported: 支援 &nbsp;&nbsp; :unsupport: 不支援 &nbsp;&nbsp; :incompatible: 不相容，表示鏡像站上的倉庫目錄命名不符合腳本預設規則但可以透過命令選項來使用，關於具體用法範例和各作業系統所使用的預設分支名稱[請參見此處](../use/index.md#指定軟體源倉庫)。
 
-    如果這裡沒有想使用的鏡像站，那可以看看其它運行模式和命令選項。軟體源的速度區分刷新速度和下行速率，後者才是關鍵，具體請結合實際地理位置選擇嘗試，也可以透過[輔助工具網站](#工具網站)進行一些測試
+    如果這裡沒有想使用的鏡像站，那可以看看其它運行模式和命令選項。鏡像站的速度分為同步刷新速度和用戶下載速度，後者才是關鍵，具體請結合實際地理位置選擇嘗試，也可以透過[輔助工具網站](#工具網站)進行一些測試。
 
-    :material-thumb-up-outline: 使用建議：速度上推薦 `中科大`、`字節(火山引擎)`，地域相容性上推薦 `阿里雲`、`騰訊雲`，軟體源種類上推薦 `南京大學`、`中科院`，境外、海外或複雜網路環境下不建議使用 `清華(TUNA)` 等容易阻斷的鏡像站
+    :material-thumb-up-outline: 使用建議：速度上推薦 `中科大`、`字節(火山引擎)`，地域相容性上推薦 `阿里雲`、`騰訊雲`，軟體源種類上推薦 `南京大學`、`中科院`，境外、海外或複雜網路環境下不建議使用 `清華(TUNA)` 等容易阻斷的鏡像站。
 
 ??? note "中國大陸教育網（點擊展開查看）"
 

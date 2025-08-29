@@ -10,17 +10,17 @@ search:
 
 ## Mainland China :flag-CN:
 
-> All mirror sites in the list below support `Debian`, `Ubuntu`, `CentOS`, `openSUSE`, and `openEuler` repositories. The list is sorted by institution type, geographic location, and name length, and is not related to actual speed.
+> All mirror sites in the list below synchronize the `Debian`, `Ubuntu`, `CentOS`, `openSUSE`, and `openEuler` software repositories. The list is sorted by institution type, geographic location, and name length, and is not related to actual download speed.
 
 <div id="mirrors-table"><p>Loading table <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: -0.15rem"><g stroke="currentColor"><circle cx="12" cy="12" r="9.5" fill="none" stroke-linecap="round" stroke-width="3"><animate attributeName="stroke-dasharray" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0 150;42 150;42 150;42 150"/><animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0;-16;-59;-59"/></circle><animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></g></svg></p></div>
 
 ???+ question "Usage Help"
 
-    :supported: Supported &nbsp;&nbsp; :unsupport: Not Supported &nbsp;&nbsp; :incompatible: Incompatible, meaning the repository branch naming does not conform to the script's default rules but can be used via command options. For specific usage examples and the default branch names for each OS, [see here](../use/index.md#specify-mirror-repository).
+    :supported: Supported &nbsp;&nbsp; :unsupport: Not Supported &nbsp;&nbsp; :incompatible: Incompatible, meaning the mirror site's repository directory naming does not conform to the script's default rules but can still be used via command options. For specific usage examples and the default branch names for each operating system, [see here](../use/index.md#specify-mirror-repository).
 
-    If you can't find the mirror you want to use here, you can check other running modes and command options. The speed of a repository is divided into refresh speed and download rate, the latter being the key. Please choose and try according to your actual geographic location, and you can also use [auxiliary tool websites](#tool-websites) for some tests.
+    If you can't find the mirror site you want to use here, you can check other modes and command options. The speed of a mirror site is divided into synchronization speed and user download speed, with the latter being the key. Please choose and try according to your actual geographic location. You can also use [auxiliary tool websites](#tool-websites) for testing.
 
-    :material-thumb-up-outline: Usage suggestions: For speed, we recommend `USTC` and `ByteDance (Volcengine)`; for regional compatibility, `Aliyun` and `Tencent Cloud`; for repository variety, `Nanjing University` and `CAS`. For overseas or complex network environments, it is not recommended to use mirrors like `Tsinghua (TUNA)` that are easily blocked.
+    :material-thumb-up-outline: Usage suggestions: For speed, we recommend `USTC` and `ByteDance (Volcengine)`; for regional compatibility, `Aliyun` and `Tencent Cloud`; for repository variety, `Nanjing University` and `CAS`. For overseas or complex network environments, it is not recommended to use mirrors like `Tsinghua (TUNA)` that are prone to blocking.
 
 ??? note "China Education Network (Click to expand)"
 

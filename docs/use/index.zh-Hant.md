@@ -33,7 +33,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
-            > 即時同步、無延遲，中國大陸網路環境建議使用
+            > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
         === ":gitcode: GitCode (鏡像倉庫)"
 
@@ -71,12 +71,12 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad
             ```
 
-        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+        === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-            > 即時同步、無延遲，中國大陸網路環境建議使用
+            > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
         === ":gitcode: GitCode (鏡像倉庫)"
 
@@ -115,12 +115,12 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu
             ```
 
-        === ":simple-gitee: Gitee 码云 (鏡像倉庫)"
+        === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-            > 即時同步、無延遲，中國大陸網路環境建議使用
+            > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
         === ":gitcode: GitCode (鏡像倉庫)"
 
@@ -147,7 +147,7 @@ hide:
 
 !!! tip "使用幫助"
 
-    選項卡分別代表腳本內建軟體源類型和獲取腳本途徑，請在使用前檢查目標鏡像站是否支援您所使用的作業系統，可以在[軟體源列表](../mirrors/index.md)中查看。  
+    選項卡分別代表腳本內建軟體源（鏡像站）類型和獲取腳本途徑，請在使用前檢查目標鏡像站是否支援您所使用的作業系統，可以在[軟體源列表](../mirrors/index.md)中查看。  
     預設**自動備份**原有軟體源內容，如需了解更多請翻閱下方文檔。若使用過程中的某些選項令你疑惑不解，那麼在選擇軟體源後一路回車即是最佳實踐。
 
     腳本支援在系統原有軟體源**損壞**、**缺失**、**無效**等異常環境下使用，無需額外安裝任何依賴。
@@ -169,7 +169,7 @@ hide:
 
     ---
 
-    如果你係統命令列介面的中文顯示亂碼那麼將導致無法查看互動內容，此外部分系統 GUI 圖形介面的終端應用可能存在一些無法預料的顯示問題。部分系統會自動開啟 SSH 服務，否則請參考[開啟方法](#關於開啟-ssh-遠端登入的方法)。
+    如果你系統命令列介面的中文顯示亂碼那麼將導致無法查看互動內容，此外部分系統 GUI 圖形介面的終端應用可能存在一些無法預料的顯示問題。部分系統會自動開啟 SSH 服務，否則請參考[開啟方法](#關於開啟-ssh-遠端登入的方法)。
 
 -   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新裝系統上首次執行腳本__
 
@@ -486,7 +486,7 @@ hide:
 
 - ### 指定軟體源倉庫
 
-    這裡的軟體源倉庫與系統內容軟體源倉庫不同，指的是軟體源位址後面的路徑即鏡像站分支倉庫，雖然名義上都是倉庫但是非常容易混淆
+    這裡描述的軟體源倉庫與系統軟體倉庫不同，指的是軟體源（鏡像站）位址後面的路徑即鏡像站的倉庫目錄，雖然名義上都是倉庫但是非常容易混淆
 
     主要使用情境：目標鏡像站有對應的系統鏡像倉庫但是不符合本項目腳本關於軟體源倉庫設定的預設規則
 
@@ -530,7 +530,7 @@ hide:
       --branch rockylinux
     ```
 
-    阿里雲鏡像站的 Rocky Linux 倉庫名稱為 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合預設規則 `rocky`，但是可以透過命令選項繞過腳本預設規則來實現。
+    阿里雲鏡像站的 Rocky Linux 倉庫目錄名稱為 [`rockylinux`](https://mirrors.aliyun.com/rockylinux)，不符合預設規則 `rocky`，但是可以透過命令選項繞過腳本預設規則來實現。
 
     > 部分系統會同時配置多個倉庫的軟體源，具體詳見命令選項
 
@@ -679,7 +679,7 @@ hide:
 
 - ### 純淨模式
 
-    推出此功能是為了方便開發以及运维人員使用，啟用後會精簡腳本內容輸出，建議搭配其它指令選項無互動使用
+    推出此功能是為了方便開發以及运維人員使用，啟用後會精簡腳本內容輸出，建議搭配其它指令選項無互動使用
 
     ``` bash
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode

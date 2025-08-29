@@ -145,7 +145,7 @@ hide:
 
 !!! tip "Usage Help"
 
-    The tabs represent the built-in mirror types and script sources. Please check whether your target mirror supports your operating system before use. You can check in the [Mirror List](../mirrors/index.md).  
+    The tabs represent the built-in mirror site types and script sources. Please check whether your target mirror site supports your operating system before use. You can check in the [Mirror List](../mirrors/index.md).  
     By default, the original mirror configuration will be **automatically backed up**. For more details, see the documentation below. If you are confused by some options during use, just press Enter all the way after selecting the mirror, which is the best practice.
 
     The script supports use in abnormal environments such as when the system's original software source is **damaged**, **missing**, **invalid**, etc., without the need to install any additional dependencies.
@@ -484,9 +484,9 @@ Below are some advanced usage examples
 
 - ### Specify mirror repository
 
-    The repository here refers to the path after the mirror address, i.e., the branch on the mirror site. Although all are called repositories, it is easy to confuse.
+    The repository here refers to the directory after the mirror site address, i.e., the repository directory on the mirror site. Although all are called repositories, it is easy to confuse.
 
-    Main scenario: The target mirror site has a corresponding system repo but does not match the default rule in this script.
+    Main scenario: The target mirror site has a corresponding system repository but does not match the default rule in this script.
 
     ??? note "Default repo names for each OS (click to expand)"
 
@@ -528,7 +528,7 @@ Below are some advanced usage examples
       --branch rockylinux
     ```
 
-    The repo name for Rocky Linux on Aliyun is [`rockylinux`](https://mirrors.aliyun.com/rockylinux), not the default `rocky`, but you can override the default rule with the command option.
+    The repository directory name for Rocky Linux on Aliyun is [`rockylinux`](https://mirrors.aliyun.com/rockylinux), not the default `rocky`, but you can override the default rule with the command option.
 
     > Some systems configure multiple repos at once. See command options for details.
 
