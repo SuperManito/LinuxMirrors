@@ -484,7 +484,7 @@ hide:
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --source mirror.example.com
     ```
 
-- ### 指定軟體源倉庫
+- ### 指定軟體源倉庫目錄
 
     這裡描述的軟體源倉庫與系統軟體倉庫不同，指的是軟體源（鏡像站）位址後面的路徑即鏡像站的倉庫目錄，雖然名義上都是倉庫但是非常容易混淆
 

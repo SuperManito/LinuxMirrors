@@ -16,7 +16,7 @@ search:
 
 ???+ question "Usage Help"
 
-    :supported: Supported &nbsp;&nbsp; :unsupport: Not Supported &nbsp;&nbsp; :incompatible: Incompatible, meaning the mirror site's repository directory naming does not conform to the script's default rules but can still be used via command options. For specific usage examples and the default branch names for each operating system, [see here](../use/index.md#specify-mirror-repository).
+    :supported: Supported &nbsp;&nbsp; :unsupport: Not Supported &nbsp;&nbsp; :incompatible: Incompatible, meaning the mirror site's repository directory naming does not conform to the script's default rules but can still be used via command options. For specific usage examples and the default branch names for each operating system, [see here](../use/index.md#specify-mirror-repository-directory).
 
     If you can't find the mirror site you want to use here, you can check other modes and command options. The speed of a mirror site is divided into synchronization speed and user download speed, with the latter being the key. Please choose and try according to your actual geographic location. You can also use [auxiliary tool websites](#tool-websites) for testing.
 

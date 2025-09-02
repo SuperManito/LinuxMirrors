@@ -482,7 +482,7 @@ Below are some advanced usage examples
     bash <(curl -sSL https://linuxmirrors.cn/main.sh) --source mirror.example.com
     ```
 
-- ### Specify mirror repository
+- ### Specify mirror repository directory
 
     The repository here refers to the directory after the mirror site address, i.e., the repository directory on the mirror site. Although all are called repositories, it is easy to confuse.
 
