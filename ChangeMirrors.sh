@@ -755,15 +755,8 @@ function collect_system_info() {
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-        if ! command_exists lsb_release; then
-            apt-get update
-            apt-get install -y lsb-release
-            if [ $? -ne 0 ]; then
-                output_error "lsb-release 软件包安装失败\n\n本脚本依赖 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
-            fi
-        fi
-        SYSTEM_JUDGMENT="$(lsb_release -is)"
-        SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
+        SYSTEM_JUDGMENT="$(cat /etc/os-release | grep ^NAME | cut -d= -f2 | tr -d '"' | cut -d' ' -f1)"
+        SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(cat /etc/os-release | grep ^VERSION_CODENAME | cut -d= -f2)"}"
         ## Raspberry Pi OS 判定
         if [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_DEBIAN}" ]] && [ -s "${File_RaspberryPiOSRelease}" ]; then
             SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
