@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-08-28
+## Modified: 2025-09-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -713,19 +713,20 @@ function permission_judgment() {
     fi
 }
 
+function get_os_release_value() {
+    grep -E "^${1}=" $File_LinuxRelease | cut -d= -f2- | sed "s/[\'\"]//g"
+}
+
 function collect_system_info() {
     ## 定义系统名称
-    SYSTEM_NAME="$(cat $File_LinuxRelease | grep -E "^NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    grep -q "PRETTY_NAME=" $File_LinuxRelease
-    if [ $? -eq 0 ]; then
-        SYSTEM_PRETTY_NAME="$(cat $File_LinuxRelease | grep -E "^PRETTY_NAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
-    fi
+    SYSTEM_NAME="$(get_os_release_value NAME)"
+    SYSTEM_PRETTY_NAME="$(get_os_release_value PRETTY_NAME)"
     ## 定义系统版本号
-    SYSTEM_VERSION_ID="$(cat $File_LinuxRelease | grep -E "^VERSION_ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    SYSTEM_VERSION_ID="$(get_os_release_value VERSION_ID)"
     SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
     SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
     ## 定义系统ID
-    SYSTEM_ID="$(cat $File_LinuxRelease | grep -E "^ID=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+    SYSTEM_ID="$(get_os_release_value ID)"
     ## 判定当前系统派系
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
@@ -755,15 +756,19 @@ function collect_system_info() {
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-        if ! command_exists lsb_release; then
-            apt-get update
-            apt-get install -y lsb-release
-            if [ $? -ne 0 ]; then
-                output_error "lsb-release 软件包安装失败\n\n本脚本依赖 lsb_release 指令判断系统具体类型和版本，当前系统可能为精简安装，请自行安装后重新执行脚本！"
+        if command_exists lsb_release; then
+            SYSTEM_JUDGMENT="$(lsb_release -is)"
+            SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
+        else
+            ## https://codeberg.org/gioele/lsb-release-minimal
+            SYSTEM_JUDGMENT="${SYSTEM_ID^}"
+            if [ "${SYSTEM_NAME}" ]; then
+                if [[ "${SYSTEM_ID,,}" == "${SYSTEM_NAME,,}" ]]; then
+                    SYSTEM_JUDGMENT="${SYSTEM_NAME}"
+                fi
             fi
+            SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(get_os_release_value VERSION_CODENAME)"}"
         fi
-        SYSTEM_JUDGMENT="$(lsb_release -is)"
-        SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
         ## Raspberry Pi OS 判定
         if [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_DEBIAN}" ]] && [ -s "${File_RaspberryPiOSRelease}" ]; then
             SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
@@ -2157,7 +2162,7 @@ $(gen_deb_unsrc "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sect
             base_system_branch="debian"
             grep -q "DEBIAN_CODENAME" $File_LinuxRelease
             if [ $? -eq 0 ]; then
-                base_system_codename="$(cat $File_LinuxRelease | grep -E "^DEBIAN_CODENAME=" | awk -F '=' '{print$2}' | sed "s/[\'\"]//g")"
+                base_system_codename="$(get_os_release_value DEBIAN_CODENAME)"
             else
                 base_system_codename="bookworm"
             fi
@@ -6245,7 +6250,7 @@ gpgcheck=1
 gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
 EOF
     ## 替换版本号
-    local version_name="$(cat $File_LinuxRelease | grep -E "^VERSION=" | awk -F '=' '{print$2}' | sed 's/["()]//g; s/[_ ]\+/-/g; s/^-\+\|-\+$//g')"
+    local version_name="$(get_os_release_value VERSION | sed 's/["()]//g; s/[_ ]\+/-/g; s/^-\+\|-\+$//g')"
     sed -e "s|openEuler-version|openEuler-${version_name}|g" \
         -i \
         $Dir_YumRepos/openEuler.repo
