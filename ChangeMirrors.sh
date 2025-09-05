@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-04
+## Modified: 2025-09-06
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1505,8 +1505,18 @@ function remove_original_mirrors() {
             USE_DEB822_FORMAT="true"
         fi
         # /etc/apt/sources.list
-        if [[ "${USE_DEB822_FORMAT}" != "true" && "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
+        if [[ "${USE_DEB822_FORMAT}" != "true" ]] && [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_LINUX_MINT}" ]]; then
             [ -s "${File_AptSourceList}" ] && clear_file $File_AptSourceList
+        fi
+        ## 解决软件源冲突
+        if [[ "${USE_DEB822_FORMAT}" == "true" ]] && [ -s "${File_AptSourceList}" ]; then
+            if [[ "${SOURCE_BRANCH}" ]]; then
+                sed -e "/^deb\(-src\)\? http.*\/${SOURCE_BRANCH}/d" \
+                    -e "/^#[[:space:]]*deb\(-src\)\? http.*\/${SOURCE_BRANCH}/d" \
+                    -e "/^#.*\(默认禁用源码镜像以提高更新速度\|安全更新软件源\|预发布软件源\).*/d" \
+                    -i \
+                    $File_AptSourceList
+            fi
         fi
         # Armbian
         [ -f "${File_ArmbianRelease}" ] && clear_file $File_ArmbianSourceList
