@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-04
+## Modified: 2025-09-12
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -978,6 +978,7 @@ function configure_docker_ce_mirror() {
         fi
         chmod a+r $file_keyring
         ## 添加源
+        [ -d "${Dir_AptAdditionalSources}" ] || mkdir -p $Dir_AptAdditionalSources
         local source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable"
         echo "${source_content}" | tee $File_DockerSourceList >/dev/null 2>&1
         commands+=("apt-get update")
