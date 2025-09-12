@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-06
+## Modified: 2025-09-13
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -719,6 +719,9 @@ function get_os_release_value() {
 }
 
 function collect_system_info() {
+    if [ ! -s "${File_LinuxRelease}" ]; then
+        unsupport_system_error "未知系统"
+    fi
     ## 定义系统名称
     SYSTEM_NAME="$(get_os_release_value NAME)"
     SYSTEM_PRETTY_NAME="$(get_os_release_value PRETTY_NAME)"
