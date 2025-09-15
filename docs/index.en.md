@@ -22,14 +22,14 @@ hide:
   <figcaption>One-Click Script Makes Mirror Switching Easier</figcaption>
 </figure>
 <figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
-=== "GNU/Linux"
+=== ":material-linux: GNU/Linux"
 
     <img src="/assets/images/brand/command/linux-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
     <img src="/assets/images/brand/command/linux-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
 
     <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)" title="Copy"></button>
 
-=== "Docker"
+=== ":simple-docker:{style="color: #1d63ed"} Docker"
 
     <img src="/assets/images/brand/command/docker-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
     <img src="/assets/images/brand/command/docker-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
@@ -61,7 +61,7 @@ hide:
 
     ---
 
-    In-depth research on domestic mirror site compatibility, tailored for users in China  
+    In-depth research on domestic mirror site compatibility 
     Also provides a collection of domestic education network and overseas mirrors for users to choose
 
 -   :material-rocket-launch-outline:{ .lg .middle } __Fast and Efficient__

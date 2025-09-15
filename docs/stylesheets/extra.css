@@ -110,6 +110,29 @@
     }
 }
 
+.home-table {
+    .md-typeset__scrollwrap {
+        margin: 0 !important;
+    }
+
+    .md-typeset__table {
+        padding: 0 !important;
+        margin-bottom: 0 !important;
+
+        table:not([class]) td {
+            padding: .8375em 1.25em !important;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .home-table {
+        .md-typeset__scrollwrap {
+            margin: 1em 0 !important;
+        }
+    }
+}
+
 /* 主题覆盖 */
 .no-select img {
     user-select: none;
@@ -409,8 +432,12 @@
 }
 
 @media screen and (max-width: 480px) {
+    .sponsor .sponsor-label {
+        font-size: 1rem;
+    }
+
     .sponsor-flex-wrapper {
-        gap: 24px;
+        gap: 28px;
     }
 
     .sponsor-title {

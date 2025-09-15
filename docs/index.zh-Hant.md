@@ -22,14 +22,14 @@ hide:
   <figcaption>一鍵腳本讓換源更簡單</figcaption>
 </figure>
 <figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
-=== "GNU/Linux"
+=== ":material-linux: GNU/Linux"
 
     <img src="/assets/images/brand/command/linux-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
     <img src="/assets/images/brand/command/linux-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
 
     <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)" title="複製"></button>
 
-=== "Docker"
+=== ":simple-docker:{style="color: #1d63ed"} Docker"
 
     <img src="/assets/images/brand/command/docker-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
     <img src="/assets/images/brand/command/docker-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
@@ -61,7 +61,7 @@ hide:
 
     ---
 
-    深入考察了中國大陸鏡像站的系統適配狀況，專為中國寶寶打造  
+    深入考察了中國大陸鏡像站的系統適配狀況，專為國人打造  
     也提供全網蒐集的國內教育網和海外鏡像站供用戶選擇
 
 -   :material-rocket-launch-outline:{ .lg .middle } __快，且高效__
