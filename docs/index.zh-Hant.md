@@ -22,17 +22,17 @@ hide:
   <figcaption>一鍵腳本讓換源更簡單</figcaption>
 </figure>
 <figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
-=== ":material-linux: GNU/Linux"
+=== ":material-linux:{ .lg .middle } GNU/Linux"
 
-    <img src="/assets/images/brand/command/linux-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
-    <img src="/assets/images/brand/command/linux-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-linux" />
+    <img src="/assets/images/brand/command/linux-light.png#only-light" alt="command-linux" />
+    <img src="/assets/images/brand/command/linux-dark.png#only-dark" alt="command-linux" />
 
     <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)" title="複製"></button>
 
-=== ":simple-docker:{style="color: #1d63ed"} Docker"
+=== ":simple-docker:{ .lg .middle style="color: #1d63ed"} Docker"
 
-    <img src="/assets/images/brand/command/docker-light.png#only-light" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
-    <img src="/assets/images/brand/command/docker-dark.png#only-dark" style="width: 560px; box-shadow: var(--md-shadow-z2)" alt="command-docker" />
+    <img src="/assets/images/brand/command/docker-light.png#only-light" alt="command-docker" />
+    <img src="/assets/images/brand/command/docker-dark.png#only-dark" alt="command-docker" />
 
     <button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/docker.sh)" title="複製"></button>
 

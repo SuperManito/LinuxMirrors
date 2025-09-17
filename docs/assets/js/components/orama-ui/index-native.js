@@ -4,11 +4,11 @@ function loadOramaWebComponent() {
         Object.assign(searchBox, getOramaSearchBoxConfig())
     }
 
-    // custom button style and localization
+    // custom entrance button style
     const searchButton = document.querySelector('orama-search-button')
     if (searchButton) {
         searchButton.textContent = '搜索'
-        const observer = new MutationObserver((mutations, obs) => {
+        const observer = new MutationObserver((_mutations, obs) => {
             if (searchButton.shadowRoot) {
                 const button = searchButton.shadowRoot.querySelector('button')
                 if (button) {

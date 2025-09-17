@@ -1239,6 +1239,7 @@ function install_docker_engine() {
                     exec_cmd="${exec_cmd} ; ${cmd}"
                 fi
             done
+            echo ''
             animate_exec "${exec_cmd}" "安装 Docker Engine"
         else
             for cmd in "${commands[@]}"; do

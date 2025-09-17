@@ -621,7 +621,7 @@ hide:
             - 升級完成並重新引導系統後執行下列步驟
 
                 ``` bash
-                # 清空原有軟體源（如有非系統軟體源內容請自行備份）
+                # 清空原有軟體源（如有非系統軟體源內容請先自行手動備份）
                 sed -i '1,$d' /etc/apt/sources.list
                 # 重新執行換源腳本
                 bash <(curl -sSL https://linuxmirrors.cn/main.sh)

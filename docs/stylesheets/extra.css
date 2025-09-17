@@ -104,6 +104,12 @@
     top: calc(100% - 60px);
 }
 
+.home-cmd img {
+    width: 560px;
+    box-shadow: var(--md-shadow-z2);
+    border-radius: 8px;
+}
+
 @media screen and (max-width: 768px) {
     .home-cmd .md-clipboard {
         top: calc(100% - 50px);
@@ -489,10 +495,10 @@
     border: 1px solid transparent;
     border-radius: 6px;
     text-decoration: none;
-    transition: all 0.15s ease-in-out;
     box-sizing: border-box;
     min-width: 60px;
     max-width: 80px;
+    transition: all 0.15s ease !important;
 }
 
 .icon-brand-button:hover {

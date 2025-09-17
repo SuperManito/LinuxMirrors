@@ -619,7 +619,7 @@ Below are some advanced usage examples
             - After the upgrade is complete and the system is rebooted, perform the following steps
 
                 ``` bash
-                # Clear the original software sources (back up any non-system software sources)
+                # Clear the original software sources (If there is any non-system software source content, please back it up manually first)
                 sed -i '1,$d' /etc/apt/sources.list
                 # Rerun the mirror switching script
                 bash <(curl -sSL https://linuxmirrors.cn/main.sh)

@@ -651,7 +651,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
             - 在升级完成并重新引导系统后执行以下步骤
 
                 ``` bash
-                # 清空原有软件源（如有非系统软件源内容请自行备份）
+                # 清空原有软件源（如有非系统软件源内容请先自行手动备份）
                 sed -i '1,$d' /etc/apt/sources.list
                 # 重新执行换源脚本
                 bash <(curl -sSL https://linuxmirrors.cn/main.sh)

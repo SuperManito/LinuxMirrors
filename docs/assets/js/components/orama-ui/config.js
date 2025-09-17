@@ -109,20 +109,37 @@ function localizationOramaSearchBox(searchBox) {
                     element.textContent = askAiText
                 }
             }
-            // Keyboard shortcuts localization (Only PC)
-            const toSelectText = OramaI18nData[currentLang].toSelectText
-            const toNavigateText = OramaI18nData[currentLang].toNavigateText
-            const toCloseText = OramaI18nData[currentLang].toCloseText
-            const shortcutDescriptions = shadowRoot.querySelectorAll('.shortcut-description')
-            shortcutDescriptions.forEach((element) => {
-                if (element.textContent === 'to select' && element.textContent !== toSelectText) {
-                    element.textContent = toSelectText
-                } else if (element.textContent === 'to navigate' && element.textContent !== toNavigateText) {
-                    element.textContent = toNavigateText
-                } else if (element.textContent === 'to close' && element.textContent !== toCloseText) {
-                    element.textContent = toCloseText
+
+            const footer = shadowRoot.querySelector('orama-footer')
+            if (footer) {
+                // Keyboard shortcuts localization (Only PC)
+                const toSelectText = OramaI18nData[currentLang].toSelectText
+                const toNavigateText = OramaI18nData[currentLang].toNavigateText
+                const toCloseText = OramaI18nData[currentLang].toCloseText
+                const shortcutDescriptions = footer.querySelectorAll('.shortcut-description')
+                shortcutDescriptions.forEach((element) => {
+                    if (element.textContent === 'to select' && element.textContent !== toSelectText) {
+                        element.textContent = toSelectText
+                    } else if (element.textContent === 'to navigate' && element.textContent !== toNavigateText) {
+                        element.textContent = toNavigateText
+                    } else if (element.textContent === 'to close' && element.textContent !== toCloseText) {
+                        element.textContent = toCloseText
+                    }
+                })
+                // Change logo image
+                const logoImg = footer.querySelector('.logo-link .logo')
+                if (logoImg) {
+                    let theme = 'light'
+                    try {
+                        const palette = __md_get('__palette')
+                        if (palette && typeof palette.color === 'object') {
+                            theme = palette.color.scheme === 'slate' ? 'dark' : 'light'
+                        }
+                    } catch {}
+                    logoImg.src = `/assets/images/icon/orama/orama-when-${theme}.svg`
                 }
-            })
+            }
+
             // Hide "Orama can make mistakes. Please verify the information."
             const chatFormWrapper = shadowRoot.querySelector('.chat-form-wrapper')
             if (chatFormWrapper) {
@@ -131,6 +148,7 @@ function localizationOramaSearchBox(searchBox) {
                     element.style = 'display: none;'
                 }
             }
+
             // Navigation bar (Only Mobile)
             const navigationBar = shadowRoot.querySelector('orama-navigation-bar')
             if (navigationBar) {
