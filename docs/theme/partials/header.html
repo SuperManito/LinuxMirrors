@@ -61,14 +61,11 @@
 
     {% if "material/search" in config.plugins %}
       {% set search = config.plugins["material/search"] | attr("config") %}
-
       {% if search.enabled %}
-
-        <label class="md-header__button md-icon" for="__search" style="transform: scale(1.2);">
+        <label class="md-header__button md-icon" for="__search">
           {% set icon = config.theme.icon.search or "material/magnify" %}
           {% include ".icons/" ~ icon ~ ".svg" %}
         </label>
-
         {% include "partials/search.html" %}
       {% endif %}
     {% endif %}
