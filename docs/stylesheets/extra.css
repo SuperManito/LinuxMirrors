@@ -8,7 +8,7 @@
     --hero-background-image: linear-gradient(90deg, rgb(104 104 104) 50%, rgb(104 104 104) 50%);
     --navbar-background: hsla(240, 9%, 75%, 0.33);
     --component-border-radius: 8px;
-    --component-hover-color: rgba(0, 0, 0, 0.08);
+    --component-hover-color: rgba(0, 0, 0, 0.05);
 }
 
 [data-md-color-scheme='slate'] {
@@ -17,7 +17,7 @@
     --md-footer-bg-color--dark: hsla(var(--md-hue), 5%, 12%, 1);
     --navbar-background: hsla(var(--md-hue), 5%, 19%, 0.33);
     --hero-background-image: linear-gradient(90deg, rgb(88 88 88) 50%, rgb(88 88 88) 50%);
-    --component-hover-color: rgba(240, 241, 244, 0.1);
+    --component-hover-color: rgba(240, 241, 244, 0.034);
 }
 
 [data-md-color-primary=white] {
@@ -300,11 +300,11 @@
     background-color: var(--component-hover-color);
     border-radius: 5px;
     transform: translate(-50%, -50%);
-    z-index: 998;
+    z-index: 1;
 }
 
 .tabbed-button {
-    z-index: 999;
+    z-index: 2;
 }
 
 .tabbed-labels a:hover::before {
@@ -406,11 +406,7 @@
 }
 
 .sponsor .sponsor-item:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-[data-md-color-scheme="slate"] .sponsor .sponsor-item:hover {
-    background-color: rgba(240, 241, 244, 0.034);
+    background-color: var(--component-hover-color);
 }
 
 .sponsor .sponsor-item img {
@@ -436,7 +432,11 @@
 }
 
 .sponsor-item-toc:hover {
-    background-color: var(--component-hover-color) !important;
+    background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-md-color-scheme="slate"] .sponsor-item-toc:hover {
+    background-color: rgba(240, 241, 244, 0.1) !important;
 }
 
 .sponsor-item-toc-full-row {
