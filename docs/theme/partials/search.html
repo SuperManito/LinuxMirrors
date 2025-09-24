@@ -8,8 +8,8 @@
 
 <div class="md-search__inner" role="search">
   <form class="md-search__form" name="search" onsubmit="return false;">
-    <input type="text" class="md-search__input" style="cursor: pointer !important;" name="query" aria-label="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" placeholder="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" readonly required onclick="window.openOramaSearch()" />
-    <label class="md-search__icon md-icon" for="__search" onclick="window.openOramaSearch()"> {% set icon = config.theme.icon.search or "material/magnify" %} {% include ".icons/" ~ icon ~ ".svg" %} {% set icon = config.theme.icon.previous or "material/arrow-left" %} {% include ".icons/" ~ icon ~ ".svg" %} </label>
+    <input type="text" class="md-search__input" style="cursor: pointer !important;" name="query" aria-label="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" placeholder="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" readonly required onclick="OpenOramaSearchComponent()" />
+    <label class="md-search__icon md-icon" for="__search" onclick="OpenOramaSearchComponent()"> {% set icon = config.theme.icon.search or "material/magnify" %} {% include ".icons/" ~ icon ~ ".svg" %} {% set icon = config.theme.icon.previous or "material/arrow-left" %} {% include ".icons/" ~ icon ~ ".svg" %} </label>
   </form>
   <div class="md-search__output">
     <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -22,13 +22,34 @@
 </div>
 
 <script>
+  const __lang = "{{ i18n_page_locale }}";
+  let __notReadyMsg = '';
+  switch (__lang) {
+    case 'en':
+      __notReadyMsg = "The search component has not yet been loaded. Please try again later.";
+      break;
+    case 'zh-Hant':
+      __notReadyMsg = "搜尋元件尚未載入完畢，請稍後再試。";
+      break;
+    default:
+      __notReadyMsg = "搜索组件尚未加载完毕，请稍后再试。";
+  }
+
+  function OpenOramaSearchComponent() {
+    if (window.openOramaSearch) {
+      window.openOramaSearch();
+    } else {
+      alert$.next(__notReadyMsg);
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     const searchToggle = document.getElementById('__search');
     if (searchToggle) {
       searchToggle.addEventListener('change', function() {
         if (this.checked) {
           this.checked = false;
-          window.openOramaSearch();
+          OpenOramaSearchComponent();
         }
       });
     }

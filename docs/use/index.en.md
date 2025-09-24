@@ -567,7 +567,7 @@ Below are some advanced usage examples
 
             ---
 
-            Use as normal; most Chinese mirrors sync [`CentOS Vault`](https://vault.centos.org).
+            Use the script as usual, no additional steps are required. As most mirror sites in mainland China have already synchronized the [`CentOS Vault`](https://vault.centos.org) repository.
 
         -   __International__
 

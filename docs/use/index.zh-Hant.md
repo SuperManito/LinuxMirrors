@@ -569,7 +569,7 @@ hide:
 
             ---
 
-            直接正常使用即可，因為大部分中國大陸鏡像站都同步了 [`CentOS Vault`](https://vault.centos.org) 倉庫
+            正常使用腳本，沒有額外操作，因為大部分中國大陸鏡像站都已同步 [`CentOS Vault`](https://vault.centos.org) 倉庫
 
         -   __國際地區__
 

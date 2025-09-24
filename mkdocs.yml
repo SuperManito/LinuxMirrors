@@ -14,8 +14,8 @@ nav:
   - "赞助": sponsor/index.md
 
 extra_javascript:
-  - assets/js/modules/vue.global.prod.js
-  - assets/js/modules/tdesign.min.js
+  - https://unpkg.com/vue/dist/vue.global.prod.js
+  - https://unpkg.com/tdesign-vue-next/dist/tdesign.min.js
   - assets/js/modules/tdesign-theme.js
   - assets/js/components/orama-ui/config.js
   - assets/js/components/orama-ui/index.js
@@ -25,7 +25,7 @@ extra_javascript:
   - assets/js/components/mirrors-table/data.js
   - assets/js/components/mirrors-table/index.js
 extra_css:
-  - assets/css/tdesign.min.css
+  - https://unpkg.com/tdesign-vue-next/dist/tdesign.min.css
   - assets/css/orama-ui.css
   - stylesheets/extra.css
 
