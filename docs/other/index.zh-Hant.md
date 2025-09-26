@@ -57,7 +57,7 @@ hide:
 
         整合安裝 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支援選擇或更換軟體源（Docker 軟體倉庫）以及鏡像倉庫、安裝指定版本、重裝等功能，支援 ARM 架構
 
-        腳本參考[官方文件](https://docs.docker.com/engine/install)使用系統套件管理工具進行安裝，不存在相容性、安全性等問題，可安裝的版本由 Docker CE 倉庫決定
+        腳本參考[官方文檔](https://docs.docker.com/engine/install)使用系統套件管理工具進行安裝，不存在相容性、安全性等問題，可安裝的版本由 Docker CE 倉庫決定
 
 === "僅更換鏡像加速器"
 
@@ -203,9 +203,10 @@ hide:
     | :-: | :-: | :-: |
     | `--source` | 指定 `Docker CE` 軟體源位址(網域名稱或IP) | `位址` |
     | `--source-registry` | 指定 `Docker` 鏡像倉庫位址(網域名稱或IP) | `位址` |
-    | `--branch` | 指定 `Docker CE` 源倉庫 | `倉庫名稱（詳見下方文檔）` |
+    | `--branch` | 指定 `Docker CE` 軟體源倉庫(路徑) | `倉庫名稱（詳見下方文檔）` |
+    | `--branch-version` | 指定 `Docker CE` 軟體源倉庫版本 | `版本號（詳見下方文檔）` |
+    | `--designated-version` | 指定 `Docker Engine` 安裝版本 | `版本號（詳見下方文檔）` |
     | `--codename` | 指定 `Debian` 係作業系統的版本代號 | `代號名稱` |
-    | `--designated-version` | 指定 `Docker CE` 安裝版本 | `版本號（詳見下方文檔）` |
     | `--protocol` | 指定 `Docker CE` 源的 WEB 協議 | `http` 或 `https` |
     | `--use-intranet-source` | 是否優先使用內部網路 `Docker CE` 軟體源位址 | `true` 或 `false` |
     | `--install-latest` | 是否安裝最新版本的 `Docker Engine` | `true` 或 `false` |
@@ -293,9 +294,9 @@ hide:
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
         ```
         > 倉庫名稱是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 這幾個  
-        > 詳情請見 [官方安裝文件](https://docs.docker.com/engine/install) 及 [Docker CE 官方倉庫](https://download.docker.com/linux)
+        > 詳情請見 [官方安裝文檔](https://docs.docker.com/engine/install) 及 [Docker CE 官方倉庫](https://download.docker.com/linux)
 
-    - #### 指定 Docker CE 安裝版本
+    - #### 指定 Docker Engine 安裝版本
 
         指定安裝版本時會忽略 `是否安裝最新版本` 的命令選項，格式為 `主版.次版本.補丁版本`，例如 `27.4.1`。
 

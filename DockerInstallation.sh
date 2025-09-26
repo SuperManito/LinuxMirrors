@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-13
+## Modified: 2025-09-26
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -200,19 +200,20 @@ function handle_command_options() {
         echo -e "
 命令选项(名称/含义/值)：
 
-  --source                 指定 Docker CE 软件源地址(域名或IP)         地址
-  --source-registry        指定 Docker 镜像仓库地址(域名或IP)          地址
-  --branch                 指定 Docker CE 软件源仓库(路径)             仓库名
-  --codename               指定 Debian 系操作系统的版本代号            代号名称
-  --designated-version     指定 Docker CE 安装版本                     版本号
-  --protocol               指定 Docker CE 软件源的 WEB 协议            http 或 https
-  --use-intranet-source    是否优先使用内网 Docker CE 软件源地址       true 或 false
-  --install-latest         是否安装最新版本的 Docker Engine            true 或 false
-  --close-firewall         是否关闭防火墙                              true 或 false
-  --clean-screen           是否在运行前清除屏幕上的所有内容            true 或 false
-  --only-registry          仅更换镜像仓库模式                          无
-  --ignore-backup-tips     忽略覆盖备份提示                            无
-  --pure-mode              纯净模式，精简打印内容                      无
+  --source                  指定 Docker CE 软件源地址(域名或IP)         地址
+  --source-registry         指定 Docker 镜像仓库地址(域名或IP)          地址
+  --branch                  指定 Docker CE 软件源仓库(路径)             仓库名
+  --branch-version          指定 Docker CE 软件源仓库版本               版本号
+  --designated-version      指定 Docker Engine 安装版本                 版本号
+  --codename                指定 Debian 系操作系统的版本代号            代号名称
+  --protocol                指定 Docker CE 软件源的 WEB 协议            http 或 https
+  --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false
+  --install-latest          是否安装最新版本的 Docker Engine            true 或 false
+  --close-firewall          是否关闭防火墙                              true 或 false
+  --clean-screen            是否在运行前清除屏幕上的所有内容            true 或 false
+  --only-registry           仅更换镜像仓库模式                          无
+  --ignore-backup-tips      忽略覆盖备份提示                            无
+  --pure-mode               纯净模式，精简打印内容                      无
 
 问题报告 https://github.com/SuperManito/LinuxMirrors/issues
   "
@@ -258,13 +259,18 @@ function handle_command_options() {
                 command_error "$1" "软件源仓库"
             fi
             ;;
-        ## 指定 Debian 版本代号
-        --codename)
+        ## 指定 Docker CE 软件源仓库版本
+        --branch-version)
             if [ "$2" ]; then
-                DEBIAN_CODENAME="$2"
-                shift
+                echo "$2" | grep -Eq "^[0-9]{1,2}$"
+                if [ $? -eq 0 ]; then
+                    SOURCE_BRANCH_VERSION="$2"
+                    shift
+                else
+                    command_error "$2" "有效的版本号"
+                fi
             else
-                command_error "$1" "版本代号"
+                command_error "$1" "Docker CE 软件源仓库的版本号"
             fi
             ;;
         ## 指定 Docker Engine 安装版本
@@ -279,6 +285,15 @@ function handle_command_options() {
                 fi
             else
                 command_error "$1" "版本号"
+            fi
+            ;;
+        ## 指定 Debian 版本代号
+        --codename)
+            if [ "$2" ]; then
+                DEBIAN_CODENAME="$2"
+                shift
+            else
+                command_error "$1" "版本代号"
             fi
             ;;
         ## WEB 协议（HTTP/HTTPS）
@@ -1009,8 +1024,15 @@ function configure_docker_ce_mirror() {
             -e "s|http[s]\?://.*/linux/${SOURCE_BRANCH}/|${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/|g" \
             -i \
             $File_DockerRepo
-        ## 兼容处理版本号
-        if [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
+        ## 处理版本号
+        if [[ "${SOURCE_BRANCH_VERSION}" ]]; then
+            # 指定版本
+            sed -e "s|\$releasever|${SOURCE_BRANCH_VERSION}|g" \
+                -i \
+                $File_DockerRepo
+            commands+=("${package_manager} makecache")
+        elif [[ "${SYSTEM_JUDGMENT}" != "${SYSTEM_FEDORA}" ]]; then
+            # 兼容处理
             local target_version
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             7 | 8 | 9 | 10)
@@ -1070,7 +1092,9 @@ function configure_docker_ce_mirror() {
                 fi
                 ;;
             esac
-            sed -i "s|\$releasever|${target_version}|g" $File_DockerRepo
+            sed -e "s|\$releasever|${target_version}|g" \
+                -i \
+                $File_DockerRepo
             commands+=("${package_manager} makecache")
         fi
         ;;
@@ -1230,6 +1254,7 @@ function install_docker_engine() {
             commands+=("$(get_package_manager) install -y ${pkgs}")
             ;;
         esac
+        echo ''
         if [[ "${PURE_MODE}" == "true" ]]; then
             local exec_cmd=""
             for cmd in "${commands[@]}"; do
@@ -1239,7 +1264,6 @@ function install_docker_engine() {
                     exec_cmd="${exec_cmd} ; ${cmd}"
                 fi
             done
-            echo ''
             animate_exec "${exec_cmd}" "安装 Docker Engine"
         else
             for cmd in "${commands[@]}"; do
@@ -1277,7 +1301,6 @@ function install_docker_engine() {
                 ;;
             esac
         fi
-        echo ''
     fi
 
     ## 判定是否已安装

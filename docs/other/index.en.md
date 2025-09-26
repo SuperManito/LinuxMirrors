@@ -203,11 +203,12 @@ hide:
     | :-: | :-: | :-: |
     | `--source` | Specify `Docker CE` source address (domain or IP) | `address` |
     | `--source-registry` | Specify `Docker` registry mirror address (domain or IP) | `address` |
-    | `--branch` | Specify `Docker CE` repository | `repo name (see docs below)` |
+    | `--branch` | Specify `Docker CE` source repository (path) | `repo name (see docs below)` |
+    | `--branch-version` | Specify `Docker CE` source repository version | `version (see docs below)` |
+    | `--designated-version` | Specify `Docker Engine` installation version | `version (see docs below)` |
     | `--codename` | Specify `Debian-based` OS codename | `codename` |
-    | `--designated-version` | Specify `Docker CE` installation version | `version (see docs below)` |
     | `--protocol` | Specify WEB protocol for `Docker CE` source | `http` or `https` |
-    | `--use-intranet-source` | Prefer intranet `Docker CE` mirror address | `true` or `false` |
+    | `--use-intranet-source` | Prefer intranet `Docker CE` source address | `true` or `false` |
     | `--install-latest` | Whether to install the latest `Docker Engine` | `true` or `false` |
     | `--close-firewall` | Whether to disable the firewall | `true` or `false` |
     | `--clean-screen` | Whether to clear the screen before running | `true` or `false` |
@@ -283,9 +284,9 @@ hide:
         ``` { .bash .no-copy }
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
         ```
-        > Note: The address path must include the Docker CE repository path, i.e., `docker-ce`.
+        > Note: The address path must include the Docker CE source repository path, i.e., `docker-ce`.
 
-    - #### Specify Docker CE Repository
+    - #### Specify Docker CE Source Repository
 
         The script will automatically detect this in most cases. Specify only if you have special requirements.
 
@@ -295,7 +296,7 @@ hide:
         > Repository names are fixed: `centos`, `debian`, `fedora`, `raspbian`, `rhel`, `sles`, `static`, `ubuntu`  
         > See [official installation docs](https://docs.docker.com/engine/install) and [Docker CE official repo](https://download.docker.com/linux) for details.
 
-    - #### Specify Docker CE Installation Version
+    - #### Specify Docker Engine Installation Version
 
         When specifying a version, the "install latest" option is ignored. Format: `major.minor.patch`, e.g., `27.4.1`.
 

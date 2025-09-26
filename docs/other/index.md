@@ -199,28 +199,30 @@ hide:
 
     命令选项(名称/含义/值)：
 
-      --source                 指定 Docker CE 软件源地址(域名或IP)        地址
-      --source-registry        指定 Docker 镜像仓库地址(域名或IP)         地址
-      --branch                 指定 Docker CE 软件源仓库(路径)            仓库名
-      --codename               指定 Debian 系操作系统的版本代号            代号名称
-      --designated-version     指定 Docker CE 安装版本                    版本号
-      --protocol               指定 Docker CE 软件源的 WEB 协议           http 或 https
-      --use-intranet-source    是否优先使用内网 Docker CE 软件源地址       true 或 false
-      --install-latest         是否安装最新版本的 Docker Engine           true 或 false
-      --close-firewall         是否关闭防火墙                             true 或 false
-      --clean-screen           是否在运行前清除屏幕上的所有内容             true 或 false
-      --only-registry          仅更换镜像仓库模式                          无
-      --ignore-backup-tips     忽略覆盖备份提示                           无
-      --pure-mode              纯净模式，精简打印内容                      无
+      --source                  指定 Docker CE 软件源地址(域名或IP)        地址
+      --source-registry         指定 Docker 镜像仓库地址(域名或IP)         地址
+      --branch                  指定 Docker CE 软件源仓库(路径)            仓库名
+      --branch-version          指定 Docker CE 软件源仓库版本              版本号
+      --designated-version      指定 Docker Engine 安装版本                版本号
+      --codename                指定 Debian 系操作系统的版本代号            代号名称
+      --protocol                指定 Docker CE 软件源的 WEB 协议           http 或 https
+      --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false
+      --install-latest          是否安装最新版本的 Docker Engine           true 或 false
+      --close-firewall          是否关闭防火墙                             true 或 false
+      --clean-screen            是否在运行前清除屏幕上的所有内容             true 或 false
+      --only-registry           仅更换镜像仓库模式                          无
+      --ignore-backup-tips      忽略覆盖备份提示                           无
+      --pure-mode               纯净模式，精简打印内容                      无
     ```
 
     | 名称 | 含义 | 选项值 |
     | :-: | :-: | :-: |
     | `--source` | 指定 `Docker CE` 源地址(域名或IP) | `地址` |
     | `--source-registry` | 指定 `Docker` 镜像仓库地址(域名或IP) | `地址` |
-    | `--branch` | 指定 `Docker CE` 软件源仓库 | `仓库名（详见下方文档）` |
+    | `--branch` | 指定 `Docker CE` 软件源仓库(路径) | `仓库名（详见下方文档）` |
+    | `--branch-version` | 指定 `Docker CE` 软件源仓库版本 | `版本号（详见下方文档）` |
+    | `--designated-version` | 指定 `Docker Engine` 安装版本 | `版本号（详见下方文档）` |
     | `--codename` | 指定 `Debian` 系操作系统的版本代号 | `代号名称` |
-    | `--designated-version` | 指定 `Docker CE` 安装版本 | `版本号（详见下方文档）` |
     | `--protocol` | 指定 `Docker CE` 源的 WEB 协议 | `http` 或 `https` |
     | `--use-intranet-source` | 是否优先使用内网 `Docker CE` 软件源地址 | `true` 或 `false` |
     | `--install-latest` | 是否安装最新版本的 `Docker Engine` | `true` 或 `false` |
@@ -310,7 +312,7 @@ hide:
         > 仓库名是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 这几个  
         > 具体详见 [官方安装文档](https://docs.docker.com/engine/install) 和 [Docker CE 官方仓库](https://download.docker.com/linux)
 
-    - #### 指定 Docker CE 安装版本
+    - #### 指定 Docker Engine 安装版本
 
         指定安装版本时会忽略 `是否安装最新版本` 的命令选项，格式为 `主版本.次版本.补丁版本`，例如 `27.4.1`。
 
