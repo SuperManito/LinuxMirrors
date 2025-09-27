@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-13
+## Modified: 2025-09-27
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1119,7 +1119,6 @@ function choose_mirrors() {
         for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
             if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
                 intranet_source="${mirror_list_intranet[i]}"
-                ONLY_HTTP="true" # 强制使用 HTTP 协议
                 break
             else
                 continue
@@ -1131,6 +1130,7 @@ function choose_mirrors() {
                 interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     SOURCE="${intranet_source}"
+                    ONLY_HTTP="true" # 强制使用 HTTP 协议
                     [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
                 fi
             else
@@ -1141,6 +1141,7 @@ function choose_mirrors() {
                 [Yy] | [Yy][Ee][Ss]) ;;
                 [Nn] | [Nn][Oo])
                     SOURCE="${intranet_source}"
+                    ONLY_HTTP="true" # 强制使用 HTTP 协议
                     [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
                     ;;
                 *)
