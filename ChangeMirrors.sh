@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-27
+## Modified: 2025-09-28
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -882,7 +882,7 @@ function collect_system_info() {
     "${SYSTEM_OPENSUSE}")
         case "${SYSTEM_ID}" in
         "opensuse-leap")
-            if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 15 ]]; then
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 1[5-6] ]]; then
                 is_supported="false"
             fi
             ;;
@@ -1639,6 +1639,7 @@ function remove_original_mirrors() {
             return
         fi
         rm -rf $Dir_ZYppRepos/repo-*
+        rm -rf $Dir_ZYppRepos/openSUSE:repo-*
         ;;
     "${SYSTEM_ARCH}")
         clear_file $File_PacmanMirrorList
@@ -2727,58 +2728,71 @@ function change_mirrors_openSUSE() {
 
     ## 修改源
     cd $Dir_ZYppRepos
-    # 更换软件源
-    sed -e "s|^#baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
-        -i \
-        repo-*
+    local opensuse_repo_files=()
     case "${SYSTEM_ID}" in
     opensuse-leap)
-        case "${SYSTEM_VERSION_ID}" in
-        15.[0-2])
-            sed -e "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                repo-debug-non-oss.repo \
-                repo-debug.repo \
-                repo-debug-update-non-oss.repo \
-                repo-debug-update.repo \
-                repo-non-oss.repo \
-                repo-oss.repo \
-                repo-source-non-oss.repo \
-                repo-source.repo \
-                repo-update-non-oss.repo \
-                repo-update.repo
+        case "${SYSTEM_VERSION_ID_MAJOR}" in
+        16)
+            opensuse_repo_files=(
+                "openSUSE:repo-non-oss-debug.repo"
+                "openSUSE:repo-non-oss.repo"
+                "openSUSE:repo-oss-debug.repo"
+                "openSUSE:repo-oss.repo"
+                "openSUSE:repo-oss-source.repo"
+            )
             ;;
-        *)
-            sed -e "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-                -i \
-                repo-backports-debug-update.repo \
-                repo-backports-update.repo \
-                repo-debug-non-oss.repo \
-                repo-debug.repo \
-                repo-debug-update-non-oss.repo \
-                repo-debug-update.repo \
-                repo-non-oss.repo \
-                repo-openh264.repo \
-                repo-oss.repo \
-                repo-sle-debug-update.repo \
-                repo-sle-update.repo \
-                repo-source.repo \
-                repo-update-non-oss.repo \
-                repo-update.repo
+        15)
+            case "${SYSTEM_VERSION_ID_MINOR}" in
+            [0-2])
+                opensuse_repo_files=(
+                    "repo-debug-non-oss.repo"
+                    "repo-debug.repo"
+                    "repo-debug-update-non-oss.repo"
+                    "repo-debug-update.repo"
+                    "repo-non-oss.repo"
+                    "repo-oss.repo"
+                    "repo-source-non-oss.repo"
+                    "repo-source.repo"
+                    "repo-update-non-oss.repo"
+                    "repo-update.repo"
+                )
+                ;;
+            *)
+                opensuse_repo_files=(
+                    "repo-backports-debug-update.repo"
+                    "repo-backports-update.repo"
+                    "repo-debug-non-oss.repo"
+                    "repo-debug.repo"
+                    "repo-debug-update-non-oss.repo"
+                    "repo-debug-update.repo"
+                    "repo-non-oss.repo"
+                    "repo-openh264.repo"
+                    "repo-oss.repo"
+                    "repo-sle-debug-update.repo"
+                    "repo-sle-update.repo"
+                    "repo-source.repo"
+                    "repo-update-non-oss.repo"
+                    "repo-update.repo"
+                )
+                ;;
+            esac
             ;;
         esac
         ;;
     opensuse-tumbleweed)
-        sed -e "s|download.opensuse.org|${SOURCE}/${SOURCE_BRANCH}|g" \
-            -i \
-            repo-debug.repo \
-            repo-non-oss.repo \
-            repo-openh264.repo \
-            repo-oss.repo \
-            repo-source.repo \
-            repo-update.repo
+        opensuse_repo_files=(
+            "repo-debug.repo"
+            "repo-non-oss.repo"
+            "repo-openh264.repo"
+            "repo-oss.repo"
+            "repo-source.repo"
+            "repo-update.repo"
+        )
         ;;
     esac
+    sed -e "s#\(baseurl\|gpgkey\)=http://\(cdn\|download\)\.opensuse\.org/\(distribution\|update\|tumbleweed\|factory\|slowroll\|history\)/#\1=${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\3/#g" \
+        -i \
+        "${opensuse_repo_files[@]}"
 }
 
 ## 更换 Arch Linux 系 Linux 发行版的软件源
@@ -6866,9 +6880,67 @@ EOF
 function gen_repo_files_openSUSE() {
     case "$1" in
     "leap")
-        case "$2" in
-        15.[0-2])
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
+        case "${2%.*}" in
+        16)
+            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-non-oss-debug.repo
+[openSUSE:repo-non-oss-debug]
+name=repo-non-oss-debug (${releasever})
+enabled=0
+autorefresh=1
+baseurl=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/non-oss/$basearch
+gpgkey=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/non-oss/$basearch/repodata/repomd.xml.key
+service=openSUSE
+EOF
+            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-non-oss.repo
+[openSUSE:repo-non-oss]
+name=repo-non-oss (${releasever})
+enabled=0
+autorefresh=1
+baseurl=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/non-oss/$basearch
+gpgkey=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/non-oss/$basearch/repodata/repomd.xml.key
+service=openSUSE
+EOF
+            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-openh264.repo
+[openSUSE:repo-openh264]
+name=repo-openh264 (${releasever})
+enabled=1
+autorefresh=1
+baseurl=http://codecs.opensuse.org/openh264/openSUSE_Leap_16
+gpgkey=https://codecs.opensuse.org/openh264/openSUSE_Leap_16/repodata/repomd.xml.key
+service=openSUSE
+EOF
+            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss-debug.repo
+[openSUSE:repo-oss-debug]
+name=repo-oss-debug (${releasever})
+enabled=0
+autorefresh=1
+baseurl=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/oss/$basearch
+gpgkey=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/oss/$basearch/repodata/repomd.xml.key
+service=openSUSE
+EOF
+            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss.repo
+[openSUSE:repo-oss]
+name=repo-oss (${releasever})
+enabled=1
+autorefresh=1
+baseurl=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/oss/$basearch
+gpgkey=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/oss/$basearch/repodata/repomd.xml.key
+service=openSUSE
+EOF
+            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss-source.repo
+[openSUSE:repo-oss-source]
+name=repo-oss-source (${releasever})
+enabled=0
+autorefresh=1
+baseurl=http://cdn.opensuse.org/source/distribution/leap/${releasever}/repo/oss
+gpgkey=http://cdn.opensuse.org/source/distribution/leap/${releasever}/repo/oss/repodata/repomd.xml.key
+service=openSUSE
+EOF
+            ;;
+        15)
+            case "${2#*.}" in
+            [0-2])
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
 [repo-debug-non-oss]
 name=Debug Repository (Non-OSS)
 enabled=0
@@ -6877,7 +6949,7 @@ baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/no
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
 [repo-debug]
 name=Debug Repository
 enabled=0
@@ -6886,7 +6958,7 @@ baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/os
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
 [repo-debug-update-non-oss]
 name=Update Repository (Debug, Non-OSS)
 enabled=0
@@ -6895,7 +6967,7 @@ baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
 [repo-debug-update]
 name=Update Repository (Debug)
 enabled=0
@@ -6904,7 +6976,7 @@ baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
 [repo-non-oss]
 name=Non-OSS Repository
 enabled=1
@@ -6913,7 +6985,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
 [repo-oss]
 name=Main Repository
 enabled=1
@@ -6922,7 +6994,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-source-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-source-non-oss.repo
 [repo-source-non-oss]
 name=Source Repository (Non-OSS)
 enabled=0
@@ -6931,7 +7003,7 @@ baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/n
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
 [repo-source]
 name=Source Repository
 enabled=0
@@ -6940,7 +7012,7 @@ baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/o
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
 [repo-update-non-oss]
 name=Update Repository (Non-Oss)
 enabled=1
@@ -6949,7 +7021,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
 [repo-update]
 name=Main Update Repository
 enabled=1
@@ -6958,9 +7030,9 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/oss/
 type=rpm-md
 keeppackages=0
 EOF
-            ;;
-        *)
-            cat <<'EOF' >$Dir_ZYppRepos/repo-backports-debug-update.repo
+                ;;
+            *)
+                cat <<'EOF' >$Dir_ZYppRepos/repo-backports-debug-update.repo
 [repo-backports-debug-update]
 name=Update repository with updates for openSUSE Leap debuginfo packages from openSUSE Backports
 enabled=0
@@ -6969,7 +7041,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/backports_debug/
 type=NONE
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-backports-update.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-backports-update.repo
 [repo-backports-update]
 name=Update repository of openSUSE Backports
 enabled=1
@@ -6979,7 +7051,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
 [repo-debug-non-oss]
 name=Debug Repository (Non-OSS)
 enabled=0
@@ -6987,7 +7059,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/non-oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
 [repo-debug]
 name=Debug Repository
 enabled=0
@@ -6995,7 +7067,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
 [repo-debug-update-non-oss]
 name=Update Repository (Debug, Non-OSS)
 enabled=0
@@ -7003,7 +7075,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
 [repo-debug-update]
 name=Update Repository (Debug)
 enabled=0
@@ -7011,7 +7083,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
 [repo-non-oss]
 name=Non-OSS Repository
 enabled=1
@@ -7020,7 +7092,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-openh264.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-openh264.repo
 [repo-openh264]
 name=Open H.264 Codec (openSUSE Leap)
 enabled=1
@@ -7029,7 +7101,7 @@ baseurl=http://codecs.opensuse.org/openh264/openSUSE_Leap/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
 [repo-oss]
 name=Main Repository
 enabled=1
@@ -7038,7 +7110,7 @@ baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-sle-debug-update.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-sle-debug-update.repo
 [repo-sle-debug-update]
 name=Update repository with debuginfo for updates from SUSE Linux Enterprise 15
 enabled=0
@@ -7048,7 +7120,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-sle-update.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-sle-update.repo
 [repo-sle-update]
 name=Update repository with updates from SUSE Linux Enterprise 15
 enabled=1
@@ -7058,7 +7130,7 @@ path=/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
 [repo-source]
 name=Source Repository
 enabled=0
@@ -7066,7 +7138,7 @@ autorefresh=1
 baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/oss/
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
 [repo-update-non-oss]
 name=Update Repository (Non-Oss)
 enabled=1
@@ -7075,7 +7147,7 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
 type=rpm-md
 keeppackages=0
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
+                cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
 [repo-update]
 name=Main Update Repository
 enabled=1
@@ -7084,6 +7156,8 @@ baseurl=http://download.opensuse.org/update/leap/$releasever/oss/
 type=rpm-md
 keeppackages=0
 EOF
+                ;;
+            esac
             ;;
         esac
         ;;

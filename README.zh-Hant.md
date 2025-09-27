@@ -103,7 +103,7 @@
     </tr>
     <tr>
         <td><a href="https://www.opensuse.org" target="_blank"><sub><img src="/docs/assets/images/icon/opensuse.svg" width="16" height="16"></sub></a>&nbsp;openSUSE</td>
-        <td align="center">Leap 15 / Tumbleweed</td>
+        <td align="center">Leap 15 ~ 16 / Tumbleweed</td>
     </tr>
     <tr>
         <td><a href="https://archlinux.org" target="_blank"><sub><img src="/docs/assets/images/icon/arch-linux.ico" width="16" height="16"></sub></a>&nbsp;Arch Linux</td>
