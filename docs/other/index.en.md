@@ -301,14 +301,14 @@ hide:
           --branch centos \
           --branch-version 9
         ```
-        > This option can be used to control the compatibility of the installed software packages (applicable only to Red Hat-based operating systems). For details, refer to the integer representing the version number in the subdirectory of the corresponding repository.
+        > This option can be used to control the compatibility of the installed software package (only applicable to Red Hat operating systems). For details, see the path name (positive integer) representing the version number in the corresponding warehouse directory.
 
     - #### Specify Docker Engine Installation Version
 
-        When specifying a version, the "install latest" option is ignored. Format: `major.minor.patch`, e.g., `27.4.1`.
+        When specifying a version, the "install latest" option is ignored. Format: `major.minor.patch`, e.g., `28.4.1`.
 
         ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 27.0.0
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
         ```
         > If the specified version does not exist or is not supported on your system, the script will report an error and exit.
 

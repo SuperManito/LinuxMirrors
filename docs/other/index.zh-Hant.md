@@ -301,14 +301,14 @@ hide:
           --branch centos \
           --branch-version 9
         ```
-        > 可以使用此選項來控制安裝軟體套件的兼容性（僅適用於紅帽係作業系統），具體詳見對應倉庫下級目錄的代表版本號的正整數。
+        > 可以使用此選項來控制安裝軟體套件的相容性（僅適用於紅帽係作業系統），具體詳見對應倉庫目錄中代表版本號的路徑名稱（正整數）。
 
     - #### 指定 Docker Engine 安裝版本
 
-        指定安裝版本時會忽略 `是否安裝最新版本` 的命令選項，格式為 `主版.次版本.補丁版本`，例如 `27.4.1`。
+        指定安裝版本時會忽略 `是否安裝最新版本` 的命令選項，格式為 `主版.次版本.補丁版本`，例如 `28.4.1`。
 
         ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 27.0.0
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
         ```
         > 如果指定的版本不存在或不支援目前系統，屆時腳本會報錯跳出
 

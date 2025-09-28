@@ -317,14 +317,14 @@ hide:
           --branch centos \
           --branch-version 9
         ```
-        > 可以使用该选项来控制安装软件包的兼容性（仅适用于红帽系操作系统），具体详见对应仓库下级目录的代表版本号的正整数。
+        > 可以使用该选项来控制安装软件包的兼容性（仅适用于红帽系操作系统），具体详见对应仓库目录中代表版本号的路径名称（正整数）。
 
     - #### 指定 Docker Engine 安装版本
 
-        指定安装版本时会忽略 `是否安装最新版本` 的命令选项，格式为 `主版本.次版本.补丁版本`，例如 `27.4.1`。
+        指定安装版本时会忽略 `是否安装最新版本` 的命令选项，格式为 `主版本.次版本.补丁版本`，例如 `28.4.1`。
 
         ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 27.0.0
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
         ```
         > 如果指定的版本不存在或者不支持当前系统，届时脚本会报错跳出
 
