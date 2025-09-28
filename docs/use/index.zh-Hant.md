@@ -159,25 +159,25 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-numeric-1:{style="color: #3CA7E5" .lg} __需使用 `ROOT` 執行腳本__
+-   :material-numeric-1:{style="color: #5b84f5" .lg} __需使用 `ROOT` 執行腳本__
 
     ---
 
     切換指令為 `sudo -i` 或 `su root`。不同系統使用的命令不同，因為部分系統沒有在初始安裝時為 ROOT 帳戶設定密碼（例如 Ubuntu）或系統預設禁止 ROOT 登入。
 
--   :material-numeric-2:{style="color: #3CA7E5" .lg} __建議使用現代化的 `SSH` 用戶端應用__
+-   :material-numeric-2:{style="color: #5b84f5" .lg} __建議使用現代化的 `SSH` 用戶端應用__
 
     ---
 
     如果你系統命令列介面的中文顯示亂碼那麼將導致無法查看互動內容，此外部分系統 GUI 圖形介面的終端應用可能存在一些無法預料的顯示問題。部分系統會自動開啟 SSH 服務，否則請參考[開啟方法](#關於開啟-ssh-遠端登入的方法)。
 
--   :material-numeric-3:{style="color: #3CA7E5" .lg} __如果是在新裝系統上首次執行腳本__
+-   :material-numeric-3:{style="color: #5b84f5" .lg} __如果是在新裝系統上首次執行腳本__
 
     ---
 
     目前依賴 `curl` 指令取得腳本內容，但部分作業系統沒有預先安裝此軟體包，屆時則會報錯 `Command not found`，安裝方法詳見下方 [_關於報錯 Command not found_](#關於報錯-command-not-found)。腳本本身與 `curl` `wget` 指令無關，更不會下載任何內容。
 
--   :material-numeric-4:{style="color: #3CA7E5" .lg} __腳本運行期間需要互動選擇配置__
+-   :material-numeric-4:{style="color: #5b84f5" .lg} __腳本運行期間需要互動選擇配置__
 
     ---
 

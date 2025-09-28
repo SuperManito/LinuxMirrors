@@ -1,3 +1,11 @@
+2025-09-28
+
+  * Adapted for openSUSE 16 [#a934676](https://github.com/SuperManito/LinuxMirrors/commit/a934676aeb4dfc1d008b2b46ecea5811d7382317)
+
+2025-09-26
+
+  * Added `Specify Docker CE source repository version` command option to docker script [#4c7860d](https://github.com/SuperManito/LinuxMirrors/commit/4c7860d48cfefded15c32f1baa0f544fde18e8ce)
+
 2025-08-07
 
   * Adapted for TencentOS Server & Alibaba Cloud Linux to docker script [#00f3b19](https://github.com/SuperManito/LinuxMirrors/commit/00f3b19edfcb152f22337306e7fc25e135e75c14)
@@ -28,7 +36,7 @@
 
 2025-05-12
 
-  * Added "Only Replace Mirror Accelerator" command option to docker script [#3f13f40](https://github.com/SuperManito/LinuxMirrors/commit/3f13f40111fa3631555ca7104cea21b4bb5adefa)
+  * Added `Only Replace Mirror Accelerator` command option to docker script [#3f13f40](https://github.com/SuperManito/LinuxMirrors/commit/3f13f40111fa3631555ca7104cea21b4bb5adefa)
 
 2025-05-11
 
@@ -36,7 +44,7 @@
 
 2025-04-05
 
-  * Added "Clean Mode" command option [#e63dea7](https://github.com/SuperManito/LinuxMirrors/commit/e63dea7e64fa6c31ecee3c02b143924ab12917b4)
+  * Added `Clean Mode` command option [#e63dea7](https://github.com/SuperManito/LinuxMirrors/commit/e63dea7e64fa6c31ecee3c02b143924ab12917b4)
 
 2025-03-16
 

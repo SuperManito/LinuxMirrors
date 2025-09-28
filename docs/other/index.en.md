@@ -296,6 +296,13 @@ hide:
         > Repository names are fixed: `centos`, `debian`, `fedora`, `raspbian`, `rhel`, `sles`, `static`, `ubuntu`  
         > See [official installation docs](https://docs.docker.com/engine/install) and [Docker CE official repo](https://download.docker.com/linux) for details.
 
+        ``` { .bash .no-copy title="Can also specify the repository version number." }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+          --branch centos \
+          --branch-version 9
+        ```
+        > This option can be used to control the compatibility of the installed software packages (applicable only to Red Hat-based operating systems). For details, refer to the integer representing the version number in the subdirectory of the corresponding repository.
+
     - #### Specify Docker Engine Installation Version
 
         When specifying a version, the "install latest" option is ignored. Format: `major.minor.patch`, e.g., `27.4.1`.

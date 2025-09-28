@@ -6,6 +6,14 @@ search:
   exclude: true
 ---
 
+### `2025-09-28`
+
+  * 适配 openSUSE 16 [#a934676](https://github.com/SuperManito/LinuxMirrors/commit/a934676aeb4dfc1d008b2b46ecea5811d7382317)
+
+### `2025-09-26`
+
+  * Docker 脚本新增 `指定 Docker CE 软件源仓库版本` 命令选项 [#4c7860d](https://github.com/SuperManito/LinuxMirrors/commit/4c7860d48cfefded15c32f1baa0f544fde18e8ce)
+
 ### `2025-08-07`
 
   * Docker 脚本新增适配 TencentOS Server & Alibaba Cloud Linux 操作系统 [#00f3b19](https://github.com/SuperManito/LinuxMirrors/commit/00f3b19edfcb152f22337306e7fc25e135e75c14)
@@ -44,7 +52,7 @@ search:
 
 ### `2025-04-05`
 
-  * 命令选项新增纯净模式 [#e63dea7](https://github.com/SuperManito/LinuxMirrors/commit/e63dea7e64fa6c31ecee3c02b143924ab12917b4)
+  * 命令选项新增 `纯净模式` [#e63dea7](https://github.com/SuperManito/LinuxMirrors/commit/e63dea7e64fa6c31ecee3c02b143924ab12917b4)
 
 ### `2025-03-16`
 

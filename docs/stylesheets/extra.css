@@ -22,12 +22,14 @@
 
 [data-md-color-primary=white] {
     --md-typeset-a-color: #2080f0;
-    --md-accent-fg-color: #2080f0;
+    --md-accent-fg-color: #52a1fc;
+    --md-accent-fg-color--transparent: #52a1fc1a;
 }
 
 [data-md-color-scheme='slate'][data-md-color-primary=black] {
-    --md-typeset-a-color: #33add3;
-    --md-accent-fg-color: #33add3;
+    --md-typeset-a-color: #5b84f5;
+    --md-accent-fg-color: #4172f7;
+    --md-accent-fg-color--transparent: #4172f71a;
 }
 
 /* logo */

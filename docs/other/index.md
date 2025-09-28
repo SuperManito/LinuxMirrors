@@ -312,6 +312,13 @@ hide:
         > 仓库名是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 这几个  
         > 具体详见 [官方安装文档](https://docs.docker.com/engine/install) 和 [Docker CE 官方仓库](https://download.docker.com/linux)
 
+        ``` { .bash .no-copy title="还可以指定仓库版本号" }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+          --branch centos \
+          --branch-version 9
+        ```
+        > 可以使用该选项来控制安装软件包的兼容性（仅适用于红帽系操作系统），具体详见对应仓库下级目录的代表版本号的正整数。
+
     - #### 指定 Docker Engine 安装版本
 
         指定安装版本时会忽略 `是否安装最新版本` 的命令选项，格式为 `主版本.次版本.补丁版本`，例如 `27.4.1`。

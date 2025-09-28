@@ -157,25 +157,25 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-numeric-1:{style="color: #3CA7E5" .lg} __Run the script as `ROOT` user__
+-   :material-numeric-1:{style="color: #5b84f5" .lg} __Run the script as `ROOT` user__
 
     ---
 
     Switch command: `sudo -i` or `su root`. Different systems use different commands because some systems do not set a password for the ROOT account during initial installation (such as Ubuntu) or the system disables ROOT login by default.
 
--   :material-numeric-2:{style="color: #3CA7E5" .lg} __It is recommended to use a modern `SSH` client__
+-   :material-numeric-2:{style="color: #5b84f5" .lg} __It is recommended to use a modern `SSH` client__
 
     ---
 
     If your terminal displays garbled Chinese, you will not be able to see the interactive content. Some GUI terminal apps may have unpredictable display issues. Some systems automatically enable SSH service; otherwise, see [how to enable SSH](#how-to-enable-ssh-remote-login).
 
--   :material-numeric-3:{style="color: #3CA7E5" .lg} __If running the script for the first time on a new system__
+-   :material-numeric-3:{style="color: #5b84f5" .lg} __If running the script for the first time on a new system__
 
     ---
 
     The script relies on `curl` to fetch content, but some systems do not preinstall this package, resulting in `Command not found` errors. See [_About Command not found_](#about-command-not-found-error) below for installation. The script itself is unrelated to `curl` or `wget` and does not download any content.
 
--   :material-numeric-4:{style="color: #3CA7E5" .lg} __Interactive configuration is required during script execution__
+-   :material-numeric-4:{style="color: #5b84f5" .lg} __Interactive configuration is required during script execution__
 
     ---
 
