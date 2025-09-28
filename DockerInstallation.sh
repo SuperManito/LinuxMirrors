@@ -700,7 +700,6 @@ function choose_mirrors() {
 
     ## 选择使用软件源内网地址
     function choose_use_intranet_address() {
-        local ask_text="默认使用软件源的公网地址，是否继续?"
         local intranet_source
         for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
             if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
@@ -713,14 +712,14 @@ function choose_mirrors() {
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
+                interactive_select_boolean "${BOLD}请选择软件源的网络地址(访问方式)：${PLAIN}" "公网" "内网"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     SOURCE="${intranet_source}"
                     ONLY_HTTP="true" # 强制使用 HTTP 协议
                     [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -827,17 +826,16 @@ function choose_protocol() {
         if [[ "${ONLY_HTTP}" == "true" ]]; then
             WEB_PROTOCOL="http"
         else
-            local ask_text="软件源是否使用 HTTP 协议?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
+                interactive_select_boolean "${BOLD}请选择 Docker CE 软件源协议：${PLAIN}" "HTTP" "HTTPS"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     WEB_PROTOCOL="http"
                 else
                     WEB_PROTOCOL="https"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -932,11 +930,10 @@ function install_dependency_packages() {
         echo ''
         animate_exec "${exec_cmd}" "${SYNC_MIRROR_TEXT}"
     else
-        echo -e "\n$WORKING ${SYNC_MIRROR_TEXT}...\n"
+        echo ''
         for cmd in "${commands[@]}"; do
             eval "${cmd}"
         done
-        echo -e "\n$COMPLETE ${SYNC_MIRROR_TEXT}结束\n"
     fi
     if [ $? -ne 0 ]; then
         output_error "${SYNC_MIRROR_TEXT}出错，请先解决系统原有软件源错误以确保 ${BLUE}${package_manager}${PLAIN} 软件包管理工具可用！"
@@ -1100,7 +1097,6 @@ function configure_docker_ce_mirror() {
         fi
         ;;
     esac
-    echo ''
     if [[ "${PURE_MODE}" == "true" ]]; then
         local exec_cmd=""
         for cmd in "${commands[@]}"; do
@@ -1110,6 +1106,7 @@ function configure_docker_ce_mirror() {
                 exec_cmd="${exec_cmd} ; ${cmd}"
             fi
         done
+        echo ''
         animate_exec "${exec_cmd}" "${SYNC_MIRROR_TEXT}"
     else
         for cmd in "${commands[@]}"; do
@@ -1276,7 +1273,7 @@ function install_docker_engine() {
 
     ## 判断是否手动选择安装版本
     if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
-        local ask_text="是否安装最新版本的 Docker Engine ?"
+        local ask_text="Docker Engine 是否安装最新版本?"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
             interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -1445,11 +1442,10 @@ function only_change_docker_registry_mirror() {
                 echo ''
                 animate_exec "${exec_cmd}" "${SYNC_MIRROR_TEXT}"
             else
-                echo -e "\n$WORKING ${SYNC_MIRROR_TEXT}...\n"
+                echo ''
                 for cmd in "${commands[@]}"; do
                     eval "${cmd}"
                 done
-                echo -e "\n$COMPLETE ${SYNC_MIRROR_TEXT}结束\n"
             fi
             if [ $? -ne 0 ]; then
                 output_error "${SYNC_MIRROR_TEXT}出错，请先解决系统原有软件源错误以确保 ${BLUE}${package_manager}${PLAIN} 软件包管理工具可用！"
@@ -1481,10 +1477,10 @@ function only_change_docker_registry_mirror() {
 function check_installed_result() {
     if command_exists docker; then
         systemctl enable --now docker >/dev/null 2>&1
-        echo -en "\n当前安装版本："
+        echo -en "\n$COMPLETE "
         docker -v
         if [ $? -eq 0 ]; then
-            echo -e "              $(docker compose version 2>&1)"
+            echo -e "  $(docker compose version 2>&1)"
             # echo -e "\n$COMPLETE 安装完成"
         else
             echo -e "\n$FAIL 安装失败"
@@ -1631,13 +1627,15 @@ function interactive_select_boolean() {
     _SELECT_RESULT=""
     local selected=0
     local message="$1"
+    local positive_title="${2:-是}"
+    local negative_title="${3:-否}"
     local menu_height=3
     local original_line
     function store_position() {
         original_line=$(tput lines 2>/dev/null)
     }
     function clear_menu() {
-        for ((i = 0; i < ${menu_height}; i++)); do
+        for ((i = 0; i < $menu_height; i++)); do
             tput cuu1 2>/dev/null
             tput el 2>/dev/null
         done
@@ -1652,9 +1650,9 @@ function interactive_select_boolean() {
         echo -e "╭─ ${message}"
         echo -e "│"
         if [ "$selected" -eq 0 ]; then
-            echo -e "╰─ \033[34m●\033[0m 是\033[2m / ○ 否\033[0m"
+            echo -e "╰─ \033[34m●\033[0m ${positive_title}\033[2m / ○ ${negative_title}\033[0m"
         else
-            echo -e "╰─ \033[2m○ 是 / \033[0m\033[34m●\033[0m 否"
+            echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[34m●\033[0m ${negative_title}"
         fi
     }
     function read_key() {
@@ -1696,10 +1694,10 @@ function interactive_select_boolean() {
     echo -e "╭─ ${message}"
     echo -e "│"
     if [ "$selected" -eq 0 ]; then
-        echo -e "╰─ \033[32m●\033[0m \033[1m是\033[0m\033[2m / ○ 否\033[0m"
+        echo -e "╰─ \033[32m●\033[0m \033[1m${positive_title}\033[0m\033[2m / ○ ${negative_title}\033[0m"
         _SELECT_RESULT="true"
     else
-        echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
+        echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[32m●\033[0m \033[1m${negative_title}\033[0m"
         _SELECT_RESULT="false"
     fi
     tput cnorm 2>/dev/null

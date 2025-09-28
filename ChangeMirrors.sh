@@ -1114,7 +1114,6 @@ function choose_mirrors() {
 
     ## 选择使用软件源内网地址
     function choose_use_intranet_address() {
-        local ask_text="默认使用软件源的公网地址，是否继续?"
         local intranet_source
         for ((i = 0; i < ${#mirror_list_extranet[@]}; i++)); do
             if [[ "${SOURCE}" == "${mirror_list_extranet[i]}" ]]; then
@@ -1127,14 +1126,14 @@ function choose_mirrors() {
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
+                interactive_select_boolean "${BOLD}请选择软件源的网络地址(访问方式)：${PLAIN}" "公网" "内网"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     SOURCE="${intranet_source}"
                     ONLY_HTTP="true" # 强制使用 HTTP 协议
                     [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1233,17 +1232,16 @@ function choose_protocol() {
         if [[ "${ONLY_HTTP}" == "true" ]]; then
             WEB_PROTOCOL="http"
         else
-            local ask_text="软件源是否使用 HTTP 协议?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
+                interactive_select_boolean "${BOLD}请选择软件源协议：${PLAIN}" "HTTP" "HTTPS"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     WEB_PROTOCOL="http"
                 else
                     WEB_PROTOCOL="https"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1823,13 +1821,13 @@ function change_mirrors_main() {
         if [ $? -eq 0 ]; then
             echo -e "\n$SUCCESS 软件源更换完毕"
         else
-            echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败\n"
-            echo -e "请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致：\n"
-            echo -e "1. 网络连通性问题：例如连接异常、由地区影响的网络间歇式中断、禁止外部访问、软件源网站防火墙阻断等\n"
-            echo -e "2. 目标软件源异常：请手动前往软件源（镜像站）地址进行验证：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}\n"
+            echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败"
+            echo -e "\n$TIP 请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致："
+            echo -e "\n1. 网络连通性问题：例如连接异常、由地区影响的网络间歇式中断、禁止外部访问、软件源网站防火墙阻断等"
+            echo -e "2. 目标软件源异常：请手动前往软件源（镜像站）地址进行验证：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
             echo -e "      若报错内容是提示某个文件不存在那么有可能是软件源的问题，多常见于正在同步中的软件源仓库"
             echo -e "      若报错内容是目录（path）不存在也有可能是目标软件源不存在当前系统镜像仓库，即不支持当前系统"
-            echo -e "      建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题\n"
+            echo -e "      建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题"
             echo -e "3. 原有软件源报错：请先排除系统原有的其它软件源报错，因为脚本不会干预这些无关的软件源配置，解决后重新运行脚本即可\n"
             exit 1
         fi
@@ -3092,13 +3090,15 @@ function interactive_select_boolean() {
     _SELECT_RESULT=""
     local selected=0
     local message="$1"
+    local positive_title="${2:-是}"
+    local negative_title="${3:-否}"
     local menu_height=3
     local original_line
     function store_position() {
         original_line=$(tput lines 2>/dev/null)
     }
     function clear_menu() {
-        for ((i = 0; i < ${menu_height}; i++)); do
+        for ((i = 0; i < $menu_height; i++)); do
             tput cuu1 2>/dev/null
             tput el 2>/dev/null
         done
@@ -3113,9 +3113,9 @@ function interactive_select_boolean() {
         echo -e "╭─ ${message}"
         echo -e "│"
         if [ "$selected" -eq 0 ]; then
-            echo -e "╰─ \033[34m●\033[0m 是\033[2m / ○ 否\033[0m"
+            echo -e "╰─ \033[34m●\033[0m ${positive_title}\033[2m / ○ ${negative_title}\033[0m"
         else
-            echo -e "╰─ \033[2m○ 是 / \033[0m\033[34m●\033[0m 否"
+            echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[34m●\033[0m ${negative_title}"
         fi
     }
     function read_key() {
@@ -3157,10 +3157,10 @@ function interactive_select_boolean() {
     echo -e "╭─ ${message}"
     echo -e "│"
     if [ "$selected" -eq 0 ]; then
-        echo -e "╰─ \033[32m●\033[0m \033[1m是\033[0m\033[2m / ○ 否\033[0m"
+        echo -e "╰─ \033[32m●\033[0m \033[1m${positive_title}\033[0m\033[2m / ○ ${negative_title}\033[0m"
         _SELECT_RESULT="true"
     else
-        echo -e "╰─ \033[2m○ 是 / \033[0m\033[32m●\033[0m \033[1m否\033[0m"
+        echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[32m●\033[0m \033[1m${negative_title}\033[0m"
         _SELECT_RESULT="false"
     fi
     tput cnorm 2>/dev/null
