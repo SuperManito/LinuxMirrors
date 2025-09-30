@@ -104,22 +104,34 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-star-four-points-outline:{ .lg .middle } __Can completely replace the official installation script__
+-   :material-shimmer:{ .lg .middle } __Completely replace the official installation script__
 
     ---
 
     It is logically consistent with [get.docker.com](https://get.docker.com) and incorporates the repositories and features of this project.
 
--   :material-arm-flex-outline:{ .lg .middle } __Supports domestic derivative operating systems__
+-   :material-graph:{ .lg .middle } __Supports domestic derivative operating systems__
 
     ---
 
     Compatible with a number of derivative operating systems not supported by the official installation script. :material-information-outline:{ title="In addition to the systems displayed on the official website, it also supports special systems such as <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code>" }
 
+-   :material-weight-lifter:{ .lg .middle } __Powerful and unparalleled__
+
+    ---
+
+    One of the most practical open source operation and maintenance scripts on the entire network, with excellent performance
+
+-   :material-compass-rose:{ .lg .middle } __Exquisite interactive design__
+
+    ---
+
+    An interactive command line interface that is easy to understand and use, way ahead of the competition
+
 </div>
 
 <div style="display: flex; align-items: center; gap: 8px;">
-    <p>After years of technical accumulation and production environment testing, it has been widely praised by the community and deeply loved by developers. It is used by major companies.</p>
+    <p>✨ After years of technical accumulation and production environment testing, it has been widely praised by the community and deeply loved by developers. It is used by major companies.</p>
     <div class="icon-brand-section">
       <div class="icon-brand-container no-select">
         <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
@@ -392,3 +404,10 @@ hide:
         If it prompts that it is not supported, please use the system's own package management tool to install it. Because these packages are built and maintained by the Linux distribution's package maintainers and may have differences in configuration or are built from modified source code.
 
         You can also use [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+- ### Best Practices
+
+    <details>
+    <summary>Code examples for enterprise product deployment and automated operations such as CI/CD (expand to view)</summary>
+    --8<-- "docs/other/example.md"
+    </details>

@@ -104,22 +104,34 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-star-four-points-outline:{ .lg .middle } __可完全取代官方安裝腳本__
+-   :material-shimmer:{ .lg .middle } __完全取代官方安裝腳本__
 
     ---
 
     與 [get.docker.com](https://get.docker.com) 邏輯一致，融合了本項目換源架構以及特性
 
--   :material-arm-flex-outline:{ .lg .middle } __支援衍生作業系統__
+-   :material-graph:{ .lg .middle } __支援衍生作業系統__
 
     ---
 
     相容於大量不受官方安裝腳本支援的衍生作業系統 :material-information-outline:{ title="除官網首頁展示的系統外也支援 <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code> 等特製系統" }
 
+-   :material-weight-lifter:{ .lg .middle } __功能強大、無與倫比__
+
+    ---
+
+    全網最實用的開源運維腳本之一，效能卓越
+
+-   :material-compass-rose:{ .lg .middle } __精妙絕倫的互動設計__
+
+    ---
+
+    易於理解和使用的互動式命令列介面，遙遙領先
+
 </div>
 
 <div style="display: flex; align-items: center; gap: 8px;">
-    <p>經過了數年的技術沉澱與生產環境檢驗，廣受社區好評，深得開發者喜愛，大廠都在使用</p>
+    <p>✨ 經過了數年的技術沉澱與生產環境檢驗，廣受社區好評，深得開發者喜愛，大廠都在使用</p>
     <div class="icon-brand-section">
       <div class="icon-brand-container no-select">
         <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
@@ -392,3 +404,10 @@ hide:
         如果提示不支援那麼請使用系統自備的套件管理工具進行安裝。因為這些軟體包由 Linux 發行版的軟體包維護者建構和維護，可能存在配置差異或由修改後的原始碼建構。
 
         也可以使用 [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+- ### 最佳實踐
+
+    <details>
+    <summary>適用於企業產品部署以及 CI/CD 等自動化維運場景的程式碼範例（展開檢視）</summary>
+    --8<-- "docs/other/example.md"
+    </details>

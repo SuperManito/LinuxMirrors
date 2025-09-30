@@ -8,7 +8,7 @@ nav:
   - "介绍": index.md
   - "使用方法": use/index.md
   - "软件源列表": mirrors/index.md
-  - "其它工具": other/index.md
+  - "容器工具": other/index.md
   - "更新日志": changelog/index.md
   - "社区": community/index.md
   - "赞助": sponsor/index.md
@@ -162,7 +162,7 @@ plugins:
             "介绍": 介紹
             "使用方法": 使用方法
             "软件源列表": 軟體源列表
-            "其它工具": 其它工具
+            "容器工具": 容器工具
             "更新日志": 更新日誌
             "社区": 社群
             "赞助": 贊助
@@ -184,7 +184,7 @@ plugins:
             "介绍": Introduction
             "使用方法": Use
             "软件源列表": Mirrors List
-            "其它工具": Other Tools
+            "容器工具": Container Tools
             "更新日志": Changelog
             "社区": Community
             "赞助": Sponsor
