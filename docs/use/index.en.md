@@ -35,7 +35,7 @@ hide:
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode"
+        === ":simple-gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
@@ -53,7 +53,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
             ```
-            > Not supported in mainland China network environments.
+            > Not recommended in mainland China network environments.
 
 === ":material-earth: International Regions"
 
@@ -78,7 +78,7 @@ hide:
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode"
+        === ":simple-gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
@@ -96,7 +96,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-            > Not supported in mainland China network environments.
+            > Not recommended in mainland China network environments.
 
 === ":material-library: China Education Network"
 
@@ -121,7 +121,7 @@ hide:
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode"
+        === ":simple-gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
@@ -139,7 +139,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-            > Not supported in mainland China network environments.
+            > Not recommended in mainland China network environments.
 
 
 
@@ -399,7 +399,7 @@ hide:
 
     !!! quote ""
 
-        The project uses [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) to automatically copy the source code to the docs directory after each commit for website publishing. The site is hosted on :netlify: [Netlify](https://www.netlify.com), with almost no risk of hijacking.
+        The project uses [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) to automatically copy the source code to the docs directory after each commit for website publishing. The site is hosted on [:netlify: Netlify](https://www.netlify.com), with almost no risk of hijacking.
 
         You can also use the raw address from the code repository. This is just to explain why there are several different addresses; the default official site address is easier to remember and access.
 

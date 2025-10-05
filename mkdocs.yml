@@ -81,6 +81,7 @@ theme:
     - navigation.instant.progress
     - navigation.indexes
     - navigation.footer
+    - navigation.prune
     - navigation.tracking
     - navigation.sections
     - content.tooltips
@@ -94,15 +95,15 @@ extra:
   generator: false
   homepage: https://linuxmirrors.cn
   social:
-    - icon: simple/google
-      link: https://gitcode.com/SuperManito/LinuxMirrors
-      name: GitCode
-    - icon: simple/gitee
-      link: https://gitee.com/SuperManito/LinuxMirrors
-      name: Gitee
     - icon: simple/github
       link: https://github.com/SuperManito/LinuxMirrors
       name: GitHub
+    - icon: simple/gitee
+      link: https://gitee.com/SuperManito/LinuxMirrors
+      name: Gitee
+    - icon: simple/gitcode
+      link: https://gitcode.com/SuperManito/LinuxMirrors
+      name: GitCode
   analytics:
     provider: google
     property: G-WG7T40F7YP

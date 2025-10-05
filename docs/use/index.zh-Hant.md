@@ -35,7 +35,7 @@ hide:
             ```
             > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
-        === ":gitcode: GitCode (鏡像倉庫)"
+        === ":simple-gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
@@ -53,7 +53,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
             ```
-            > 不支援在中國大陸網路環境下使用
+            > 不建議在中國大陸網路環境下使用
 
 === ":material-earth: 國際地區"
 
@@ -78,7 +78,7 @@ hide:
             ```
             > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
-        === ":gitcode: GitCode (鏡像倉庫)"
+        === ":simple-gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
@@ -97,7 +97,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-            > 不支援在中國大陸網路環境下使用
+            > 不建議在中國大陸網路環境下使用
 
 === ":material-library: 中國大陸教育網"
 
@@ -122,7 +122,7 @@ hide:
             ```
             > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
-        === ":gitcode: GitCode (鏡像倉庫)"
+        === ":simple-gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
@@ -141,7 +141,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-            > 不支援在中國大陸網路環境下使用
+            > 不建議在中國大陸網路環境下使用
 
 
 
@@ -401,7 +401,7 @@ hide:
 
     !!! quote ""
 
-        項目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文檔目錄作為網站資源發佈，網站託管於 :netlify: [Netlify](https://www.netlify.com)，幾乎沒有使用風險。 
+        項目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文檔目錄作為網站資源發佈，網站託管於 [:netlify: Netlify](https://www.netlify.com)，幾乎沒有使用風險。 
 
         當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和訪問。
 

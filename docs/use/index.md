@@ -29,7 +29,7 @@ hide:
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":gitcode: GitCode (镜像仓库)"
+        === ":simple-gitcode: GitCode (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
@@ -47,7 +47,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
             ```
-            > 不支持在国内网络环境下使用
+            > 不建议在国内网络环境下使用
 
 === ":material-earth: 境外以及海外地区"
 
@@ -72,7 +72,7 @@ hide:
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":gitcode: GitCode (镜像仓库)"
+        === ":simple-gitcode: GitCode (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
@@ -91,7 +91,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-            > 不支持在国内网络环境下使用
+            > 不建议在国内网络环境下使用
 
 === ":material-library: 中国大陆教育网"
 
@@ -116,7 +116,7 @@ hide:
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":gitcode: GitCode (镜像仓库)"
+        === ":simple-gitcode: GitCode (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
@@ -135,7 +135,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-            > 不支持在国内网络环境下使用
+            > 不建议在国内网络环境下使用
 
 
 
@@ -395,7 +395,7 @@ hide:
 
     !!! quote ""
 
-        项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 :netlify: [Netlify](https://www.netlify.com)，几乎没有被劫持的风险请放心使用。
+        项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 [:netlify: Netlify](https://www.netlify.com)，几乎没有被劫持的风险请放心使用。
 
         当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
 

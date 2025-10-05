@@ -4,13 +4,15 @@ hide:
   - footer
 ---
 
+# :simple-docker:{style="color: #1d63ed"} Docker Installation & Mirror Switching Script
+
 ???+ question "Why do you see this notice?"
 
     The script of this project currently mainly serves Simplified Chinese users, but from the very beginning it was defined as a universal mirror switching script, providing many command options for customization, which is also one of the reasons why this project is now available to users of other languages. The script output is currently fixed in Simplified Chinese. With feedback and usage from users of other languages, the script may support Traditional Chinese and English in the future.
 
     The documentation is translated with tools, and some professional terms below may be inaccurate. Corrections are welcome.
 
-## :simple-docker:{style="color: #1d63ed"} Docker Installation & Mirror Switching Script
+## One-Click Command
 
 === "Install"
 
@@ -35,7 +37,7 @@ hide:
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode"
+        === ":simple-gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
@@ -53,7 +55,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh)
             ```
-            > Not supported in mainland China network environments.
+            > Not recommended in mainland China network environments.
 
         Integrates installation of [`Docker Engine`](https://docs.docker.com/engine) and [`Docker Compose`](https://docs.docker.com/compose), supports selecting or switching software repositories (Docker repositories) and registry mirrors, installing specific versions, reinstalling, and supports ARM architecture.
 
@@ -82,7 +84,7 @@ hide:
             ```
             > Real-time sync, no delay. Recommended for use in mainland China network environments.
 
-        === ":gitcode: GitCode"
+        === ":simple-gitcode: GitCode"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
@@ -100,7 +102,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --only-registry
             ```
-            > Not supported in mainland China network environments.
+            > Not recommended in mainland China network environments.
 
 <div class="grid cards" markdown>
 
@@ -209,205 +211,213 @@ hide:
 
     </div>
 
-- ### Command Options (Advanced Usage)
+## Command Options (Advanced Usage)
 
-    | Name | Meaning | Value |
-    | :-: | :-: | :-: |
-    | `--source` | Specify `Docker CE` source address (domain or IP) | `address` |
-    | `--source-registry` | Specify `Docker` registry mirror address (domain or IP) | `address` |
-    | `--branch` | Specify `Docker CE` source repository (path) | `repo name (see docs below)` |
-    | `--branch-version` | Specify `Docker CE` source repository version | `version (see docs below)` |
-    | `--designated-version` | Specify `Docker Engine` installation version | `version (see docs below)` |
-    | `--codename` | Specify `Debian-based` OS codename | `codename` |
-    | `--protocol` | Specify WEB protocol for `Docker CE` source | `http` or `https` |
-    | `--use-intranet-source` | Prefer intranet `Docker CE` source address | `true` or `false` |
-    | `--install-latest` | Whether to install the latest `Docker Engine` | `true` or `false` |
-    | `--close-firewall` | Whether to disable the firewall | `true` or `false` |
-    | `--clean-screen` | Whether to clear the screen before running | `true` or `false` |
-    | `--only-registry` | Only switch registry mirror mode | none |
-    | `--ignore-backup-tips` | Ignore backup overwrite prompt (do not backup) | none |
-    | `--pure-mode` | Pure mode, minimal output | none |
+| Name | Meaning | Value |
+| :-: | :-: | :-: |
+| `--source` | Specify `Docker CE` source address (domain or IP) | `address` |
+| `--source-registry` | Specify `Docker` registry mirror address (domain or IP) | `address` |
+| `--branch` | Specify `Docker CE` source repository (path) | `repo name (see docs below)` |
+| `--branch-version` | Specify `Docker CE` source repository version | `version (see docs below)` |
+| `--designated-version` | Specify `Docker Engine` installation version | `version (see docs below)` |
+| `--codename` | Specify `Debian-based` OS codename | `codename` |
+| `--protocol` | Specify WEB protocol for `Docker CE` source | `http` or `https` |
+| `--use-intranet-source` | Prefer intranet `Docker CE` source address | `true` or `false` |
+| `--install-latest` | Whether to install the latest `Docker Engine` | `true` or `false` |
+| `--close-firewall` | Whether to disable the firewall | `true` or `false` |
+| `--clean-screen` | Whether to clear the screen before running | `true` or `false` |
+| `--only-registry` | Only switch registry mirror mode | none |
+| `--ignore-backup-tips` | Ignore backup overwrite prompt (do not backup) | none |
+| `--pure-mode` | Pure mode, minimal output | none |
 
-    > Full source format: `<WEB protocol>://<source address (domain or IP)>/<repository path>`
+> Full source format: `<WEB protocol>://<source address (domain or IP)>/<repository path>`
 
-    - #### Specify Registry Mirror Address
+- ### Specify Registry Mirror Address
 
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
-        ```
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
+    ```
 
-    - #### Only Switch Registry Mirror
+- ### Only Switch Registry Mirror
 
-        === "Use Script for One-Click Replacement"
+    === "Use Script for One-Click Replacement"
 
-            Only switches the registry accelerator. If Docker is not installed, an error will be reported and exit.
-
-            ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
-            ```
-
-        === "Manual Replacement"
-
-            - Install the `jq` package
-
-                === "Debian-based / openKylin"
-
-                    ``` bash
-                    apt-get install -y jq
-                    ```
-
-                    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
-
-                    For new systems, run `apt-get update` first.
-
-                === "RedHat-based / openEuler / OpenCloudOS / Anolis OS"
-
-                    ``` bash
-                    dnf install -y jq || yum install -y jq
-                    ```
-
-                    > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
-
-            - Specify registry mirror address
-
-                > Manually replace `<example.registry.com>` with the registry address. See the address column in the "Built-in Registry Mirrors" table above.
-
-                ``` bash
-                SOURCE_REGISTRY='"https://<example.registry.com>"'
-                ```
-                You can also specify multiple registry mirrors, e.g., `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`, separated by commas.
-
-            - Replace registry mirror address
-
-                ``` bash
-                [ -s "/etc/docker/daemon.json" ] || echo "{}" >/etc/docker/daemon.json
-                jq '.["registry-mirrors"] = ['"${SOURCE_REGISTRY}"']' /etc/docker/daemon.json >/etc/docker/daemon.json.tmp && mv /etc/docker/daemon.json.tmp
-                ```
-
-            - Restart Docker service
-
-                ``` bash
-                systemctl daemon-reload
-                [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
-                ```
-
-    - #### Specify Docker CE Source Address
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
-        ```
-        > Note: The address path must include the Docker CE source repository path, i.e., `docker-ce`.
-
-    - #### Specify Docker CE Source Repository
-
-        The script will automatically detect this in most cases. Specify only if you have special requirements.
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
-        ```
-        > Repository names are fixed: `centos`, `debian`, `fedora`, `raspbian`, `rhel`, `sles`, `static`, `ubuntu`  
-        > See [official installation docs](https://docs.docker.com/engine/install) and [Docker CE official repo](https://download.docker.com/linux) for details.
-
-        ``` { .bash .no-copy title="Can also specify the repository version number." }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
-          --branch centos \
-          --branch-version 9
-        ```
-        > This option can be used to control the compatibility of the installed software package (only applicable to Red Hat operating systems). For details, see the path name (positive integer) representing the version number in the corresponding warehouse directory.
-
-    - #### Specify Docker Engine Installation Version
-
-        When specifying a version, the "install latest" option is ignored. Format: `major.minor.patch`, e.g., `28.4.1`.
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
-        ```
-        > If the specified version does not exist or is not supported on your system, the script will report an error and exit.
-
-        ??? quote "How to view available versions"
-
-            === "Debian-based"
-
-                ``` bash
-                apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
-                ```
-
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
-
-            === "RedHat-based / openEuler / OpenCloudOS / Anolis OS"
-
-                ``` bash
-                dnf list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
-                ```
-
-                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
-
-            Versions not listed are not supported by this script. If you cannot get the version list, your system environment has not been properly configured for the Docker CE repository (this will not happen when running the script).
-
-
-    - #### Unattended (Automation)
-
-        To perform installation without interaction, use at least the following options. Recommended for experienced users.
-
-        ``` { .bash .no-copy title="Example Command" }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
-          --source mirror.example.com/docker-ce \
-          --source-registry registry.hub.docker.com \
-          --protocol http \
-          --use-intranet-source false \
-          --install-latest true \
-          --close-firewall true \
-          --ignore-backup-tips
-        ```
-        > If you get an "invalid option" error, check the option validity and whitespace encoding. Each option is written on a separate line for readability.
-
-    - #### Pure Mode
-
-        This feature is introduced to facilitate the use of developers and operation and maintenance personnel. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
+        Only switches the registry accelerator. If Docker is not installed, an error will be reported and exit.
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
         ```
 
-        !!! tip "Scrolling command logs may have unpredictable display issues, but no problems have been found so far."
+    === "Manual Replacement"
 
-- ### FAQ
+        - Install the `jq` package
 
-    - #### About Service Startup Errors
-
-        !!! quote ""
-
-            In non-fresh environments, you may encounter `Docker` service startup failures after running the script. It is recommended to reinstall to resolve this. Uninstalling will not delete local images or container data.
-
-            Uninstall commands:
-
-            === "Debian-based"
+            === "Debian-based / openKylin"
 
                 ``` bash
-                apt-get remove -y docker* containerd.io runc && apt-get autoremove
+                apt-get install -y jq
                 ```
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+                For new systems, run `apt-get update` first.
 
             === "RedHat-based / openEuler / OpenCloudOS / Anolis OS"
 
                 ``` bash
-                yum remove -y docker* containerd.io podman* runc
+                dnf install -y jq || yum install -y jq
                 ```
 
                 > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
-            After uninstalling, simply rerun the script to install.
+        - Specify registry mirror address
 
-    - #### About unsupported operating systems
+            > Manually replace `<example.registry.com>` with the registry address. See the address column in the "Built-in Registry Mirrors" table above.
 
-        If it prompts that it is not supported, please use the system's own package management tool to install it. Because these packages are built and maintained by the Linux distribution's package maintainers and may have differences in configuration or are built from modified source code.
+            ``` bash
+            SOURCE_REGISTRY='"https://<example.registry.com>"'
+            ```
+            You can also specify multiple registry mirrors, e.g., `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`, separated by commas.
 
-        You can also use [Docker Desktop](https://www.docker.com/products/docker-desktop)
+        - Replace registry mirror address
 
-- ### Best Practices
+            ``` bash
+            [ -s "/etc/docker/daemon.json" ] || echo "{}" >/etc/docker/daemon.json
+            jq '.["registry-mirrors"] = ['"${SOURCE_REGISTRY}"']' /etc/docker/daemon.json >/etc/docker/daemon.json.tmp && mv /etc/docker/daemon.json.tmp
+            ```
 
-    <details>
-    <summary>Code examples for enterprise product deployment and automated operations such as CI/CD (expand to view)</summary>
-    --8<-- "docs/other/example.md"
-    </details>
+        - Restart Docker service
+
+            ``` bash
+            systemctl daemon-reload
+            [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
+            ```
+
+- ### Specify Docker CE Source Address
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
+    ```
+    > Note: The address path must include the Docker CE source repository path, i.e., `docker-ce`.
+
+- ### Specify Docker CE Source Repository
+
+    The script will automatically detect this in most cases. Specify only if you have special requirements.
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
+    ```
+    > Repository names are fixed: `centos`, `debian`, `fedora`, `raspbian`, `rhel`, `sles`, `static`, `ubuntu`  
+    > See [official installation docs](https://docs.docker.com/engine/install) and [Docker CE official repo](https://download.docker.com/linux) for details.
+
+    ``` { .bash .no-copy title="Can also specify the repository version number." }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+      --branch centos \
+      --branch-version 9
+    ```
+    > This option can be used to control the compatibility of the installed software package (only applicable to Red Hat operating systems). For details, see the path name (positive integer) representing the version number in the corresponding warehouse directory.
+
+- ### Specify Docker Engine Installation Version
+
+    When specifying a version, the "install latest" option is ignored. Format: `major.minor.patch`, e.g., `28.4.1`.
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
+    ```
+    > If the specified version does not exist or is not supported on your system, the script will report an error and exit.
+
+    ??? quote "How to view available versions"
+
+        === "Debian-based"
+
+            ``` bash
+            apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
+            ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+
+        === "RedHat-based / openEuler / OpenCloudOS / Anolis OS"
+
+            ``` bash
+            dnf list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        Versions not listed are not supported by this script. If you cannot get the version list, your system environment has not been properly configured for the Docker CE repository (this will not happen when running the script).
+
+
+- ### Unattended (Automation)
+
+    To perform installation without interaction, use at least the following options. Recommended for experienced users.
+
+    ``` { .bash .no-copy title="Example Command" }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+      --source mirror.example.com/docker-ce \
+      --source-registry registry.hub.docker.com \
+      --protocol http \
+      --use-intranet-source false \
+      --install-latest true \
+      --close-firewall true \
+      --ignore-backup-tips
+    ```
+    > If you get an "invalid option" error, check the option validity and whitespace encoding. Each option is written on a separate line for readability.
+
+- ### Pure Mode
+
+    This feature is introduced to facilitate the use of developers and operation and maintenance personnel. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
+    ```
+
+    !!! tip "Scrolling command logs may have unpredictable display issues, but no problems have been found so far."
+
+## FAQ
+
+- ### About Service Startup Errors
+
+    !!! quote ""
+
+        In non-fresh environments, you may encounter `Docker` service startup failures after running the script. It is recommended to reinstall to resolve this. Uninstalling will not delete local images or container data.
+
+        Uninstall commands:
+
+        === "Debian-based"
+
+            ``` bash
+            apt-get remove -y docker* containerd.io runc && apt-get autoremove
+            ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+
+        === "RedHat-based / openEuler / OpenCloudOS / Anolis OS"
+
+            ``` bash
+            yum remove -y docker* containerd.io podman* runc
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        After uninstalling, simply rerun the script to install.
+
+- ### About unsupported operating systems
+
+    If it prompts that it is not supported, please use the system's own package management tool to install it. Because these packages are built and maintained by the Linux distribution's package maintainers and may have differences in configuration or are built from modified source code.
+
+    You can also use &nbsp; [![Docker Desktop](/assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
+
+## Best Practices
+
+??? note "Code examples for enterprise product deployment and automated operations such as CI/CD (expand to view)"
+
+    If you don't want any user interaction, use the `fully automated` example.
+
+    - #### Fully automated (recommended)
+
+        --8<-- "docs/other/example1.md"
+
+    - #### Simple method
+
+        --8<-- "docs/other/example2.md"
+        > Note: If you don't specify `Docker CE source` and `Image repository source`, the script will be interactively selected by the user. The screen will be automatically cleared (`$ clear`) at this point, which will cause your script's log to be cleared.

@@ -4,7 +4,9 @@ hide:
   - footer
 ---
 
-## :simple-docker:{style="color: #1d63ed"} Docker 安装与换源脚本
+# :simple-docker:{style="color: #1d63ed"} Docker 安装与换源脚本
+
+## 一键执行命令
 
 === "安装"
 
@@ -29,7 +31,7 @@ hide:
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":gitcode: GitCode (镜像仓库)"
+        === ":simple-gitcode: GitCode (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
@@ -47,7 +49,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh)
             ```
-            > 不支持在国内网络环境下使用
+            > 不建议在国内网络环境下使用
 
         集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支持选择或更换软件源（Docker 软件仓库）以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
 
@@ -76,7 +78,7 @@ hide:
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":gitcode: GitCode (镜像仓库)"
+        === ":simple-gitcode: GitCode (镜像仓库)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
@@ -94,7 +96,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --only-registry
             ```
-            > 不支持在国内网络环境下使用
+            > 不建议在国内网络环境下使用
 
 <div class="grid cards" markdown>
 
@@ -203,227 +205,235 @@ hide:
 
     </div>
 
-- ### 命令选项（高级用法）
+## 命令选项（高级用法）
 
-    <!-- termynal -->
+<!-- termynal -->
+```
+$ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help 
+
+命令选项(名称/含义/值)：
+
+  --source                  指定 Docker CE 软件源地址(域名或IP)        地址
+  --source-registry         指定 Docker 镜像仓库地址(域名或IP)         地址
+  --branch                  指定 Docker CE 软件源仓库(路径)            仓库名
+  --branch-version          指定 Docker CE 软件源仓库版本              版本号
+  --designated-version      指定 Docker Engine 安装版本                版本号
+  --codename                指定 Debian 系操作系统的版本代号            代号名称
+  --protocol                指定 Docker CE 软件源的 WEB 协议           http 或 https
+  --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false
+  --install-latest          是否安装最新版本的 Docker Engine           true 或 false
+  --close-firewall          是否关闭防火墙                             true 或 false
+  --clean-screen            是否在运行前清除屏幕上的所有内容             true 或 false
+  --only-registry           仅更换镜像仓库模式                          无
+  --ignore-backup-tips      忽略覆盖备份提示                           无
+  --pure-mode               纯净模式，精简打印内容                      无
+```
+
+| 名称 | 含义 | 选项值 |
+| :-: | :-: | :-: |
+| `--source` | 指定 `Docker CE` 源地址(域名或IP) | `地址` |
+| `--source-registry` | 指定 `Docker` 镜像仓库地址(域名或IP) | `地址` |
+| `--branch` | 指定 `Docker CE` 软件源仓库(路径) | `仓库名（详见下方文档）` |
+| `--branch-version` | 指定 `Docker CE` 软件源仓库版本 | `版本号（详见下方文档）` |
+| `--designated-version` | 指定 `Docker Engine` 安装版本 | `版本号（详见下方文档）` |
+| `--codename` | 指定 `Debian` 系操作系统的版本代号 | `代号名称` |
+| `--protocol` | 指定 `Docker CE` 源的 WEB 协议 | `http` 或 `https` |
+| `--use-intranet-source` | 是否优先使用内网 `Docker CE` 软件源地址 | `true` 或 `false` |
+| `--install-latest` | 是否安装最新版本的 `Docker Engine` | `true` 或 `false` |
+| `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
+| `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
+| `--only-registry` | 仅更换镜像仓库模式 | 无 |
+| `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
+| `--pure-mode` | 纯净模式，精简打印内容 | 无 |
+
+> 软件源完整格式 `<WEB协议>://<软件源地址(域名或IP)>/<软件源仓库(路径)>`
+
+- ### 指定镜像仓库地址
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
     ```
-    $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help 
 
-    命令选项(名称/含义/值)：
+- ### 仅更换镜像仓库
 
-      --source                  指定 Docker CE 软件源地址(域名或IP)        地址
-      --source-registry         指定 Docker 镜像仓库地址(域名或IP)         地址
-      --branch                  指定 Docker CE 软件源仓库(路径)            仓库名
-      --branch-version          指定 Docker CE 软件源仓库版本              版本号
-      --designated-version      指定 Docker Engine 安装版本                版本号
-      --codename                指定 Debian 系操作系统的版本代号            代号名称
-      --protocol                指定 Docker CE 软件源的 WEB 协议           http 或 https
-      --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false
-      --install-latest          是否安装最新版本的 Docker Engine           true 或 false
-      --close-firewall          是否关闭防火墙                             true 或 false
-      --clean-screen            是否在运行前清除屏幕上的所有内容             true 或 false
-      --only-registry           仅更换镜像仓库模式                          无
-      --ignore-backup-tips      忽略覆盖备份提示                           无
-      --pure-mode               纯净模式，精简打印内容                      无
-    ```
+    === "使用脚本一键替换"
 
-    | 名称 | 含义 | 选项值 |
-    | :-: | :-: | :-: |
-    | `--source` | 指定 `Docker CE` 源地址(域名或IP) | `地址` |
-    | `--source-registry` | 指定 `Docker` 镜像仓库地址(域名或IP) | `地址` |
-    | `--branch` | 指定 `Docker CE` 软件源仓库(路径) | `仓库名（详见下方文档）` |
-    | `--branch-version` | 指定 `Docker CE` 软件源仓库版本 | `版本号（详见下方文档）` |
-    | `--designated-version` | 指定 `Docker Engine` 安装版本 | `版本号（详见下方文档）` |
-    | `--codename` | 指定 `Debian` 系操作系统的版本代号 | `代号名称` |
-    | `--protocol` | 指定 `Docker CE` 源的 WEB 协议 | `http` 或 `https` |
-    | `--use-intranet-source` | 是否优先使用内网 `Docker CE` 软件源地址 | `true` 或 `false` |
-    | `--install-latest` | 是否安装最新版本的 `Docker Engine` | `true` 或 `false` |
-    | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
-    | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
-    | `--only-registry` | 仅更换镜像仓库模式 | 无 |
-    | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
-    | `--pure-mode` | 纯净模式，精简打印内容 | 无 |
-
-    > 软件源完整格式 `<WEB协议>://<软件源地址(域名或IP)>/<软件源仓库(路径)>`
-
-    - #### 指定镜像仓库地址
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
-        ```
-
-    - #### 仅更换镜像仓库
-
-        === "使用脚本一键替换"
-
-            仅更换镜像加速器，当检测到未安装 Docker 时会报错跳出
-
-            ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
-            ```
-
-        === "手动替换"
-
-            - 安装 `jq` 软件包
-
-                === "Debian 系 / openKylin"
-
-                    ``` bash
-                    apt-get install -y jq
-                    ```
-
-                    > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
-
-                    新装系统需要先执行一遍更新 `apt-get update`
-
-                === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
-
-                    ``` bash
-                    dnf install -y jq || yum install -y jq
-                    ```
-
-                    > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
-
-            - 指定镜像仓库地址
-
-                > 请手动替换 `<example.registry.com>` 为镜像仓库地址后在执行，详见上方 “项目内置的镜像仓库源” 表格中的地址列
-
-                ``` bash
-                SOURCE_REGISTRY='"https://<example.registry.com>"'
-                ```
-                还可以指定多个镜像仓库，如 `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`，注意用英文逗号分割
-
-            - 替换镜像仓库地址
-
-                ``` bash
-                [ -s "/etc/docker/daemon.json" ] || echo "{}" >/etc/docker/daemon.json
-                jq '.["registry-mirrors"] = ['"${SOURCE_REGISTRY}"']' /etc/docker/daemon.json >/etc/docker/daemon.json.tmp && mv /etc/docker/daemon.json.tmp
-                ```
-
-            - 重启 Docker 服务
-
-                ``` bash
-                systemctl daemon-reload
-                [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
-                ```
-
-    - #### 指定 Docker CE 软件源地址
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
-        ```
-        > 注意该地址路径需要包含镜像站的 Docker CE 软件源仓库路径即 `docker-ce`
-
-    - #### 指定 Docker CE 软件源仓库
-
-        脚本默认会自动判断一般无需指定，除非你有特殊需求
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
-        ```
-        > 仓库名是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 这几个  
-        > 具体详见 [官方安装文档](https://docs.docker.com/engine/install) 和 [Docker CE 官方仓库](https://download.docker.com/linux)
-
-        ``` { .bash .no-copy title="还可以指定仓库版本号" }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
-          --branch centos \
-          --branch-version 9
-        ```
-        > 可以使用该选项来控制安装软件包的兼容性（仅适用于红帽系操作系统），具体详见对应仓库目录中代表版本号的路径名称（正整数）。
-
-    - #### 指定 Docker Engine 安装版本
-
-        指定安装版本时会忽略 `是否安装最新版本` 的命令选项，格式为 `主版本.次版本.补丁版本`，例如 `28.4.1`。
-
-        ``` { .bash .no-copy }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
-        ```
-        > 如果指定的版本不存在或者不支持当前系统，届时脚本会报错跳出
-
-        ??? quote "查看版本列表的方法"
-
-            === "Debian 系"
-
-                ``` bash
-                apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
-                ```
-
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
-
-            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
-
-                ``` bash
-                dnf list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
-                ```
-
-                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
-
-            未出现在该列表中的版本则不支持通过本脚本安装，如果获取不到版本列表说明你当前的系统环境还没有正确配置 Docker CE 软件源（运行脚本时不存在该问题）
-
-
-    - #### 无人值守（自动化）
-
-        不通过交互完成安装操作，至少需要使用如下命令选项来实现，建议熟悉后再使用
-
-        ``` { .bash .no-copy title="参考命令" }
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
-          --source mirror.example.com/docker-ce \
-          --source-registry registry.hub.docker.com \
-          --protocol http \
-          --use-intranet-source false \
-          --install-latest true \
-          --close-firewall true \
-          --ignore-backup-tips
-        ```
-        > 如果报错 `命令选项无效` 那么请检查选项合法性以及空格字符编码，在示例中一行写一个选项是为了提高命令的可读性
-
-    - #### 纯净模式
-
-        推出该功能是为了便于开发以及运维人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+        仅更换镜像加速器，当检测到未安装 Docker 时会报错跳出
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
         ```
 
-        !!! tip "滚动输出的命令日志可能存在无法预料的显示问题，不过目前暂未发现异常"
+    === "手动替换"
 
-- ### 常见问题
+        - 安装 `jq` 软件包
 
-    - #### 关于服务报错无法启动
-
-        !!! quote ""
-
-            非新装环境可能会在运行脚本后遇到 `Docker` 服务无法启动的情况，建议重新安装来解决，卸载不会删除本地镜像和容器数据
-
-            卸载命令如下：
-
-            === "Debian 系"
+            === "Debian 系 / openKylin"
 
                 ``` bash
-                apt-get remove -y docker* containerd.io runc && apt-get autoremove
+                apt-get install -y jq
                 ```
 
-                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+                新装系统需要先执行一遍更新 `apt-get update`
 
             === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
                 ``` bash
-                yum remove -y docker* containerd.io podman* runc
+                dnf install -y jq || yum install -y jq
                 ```
 
                 > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
-            卸载完成后重新执行脚本安装即可
+        - 指定镜像仓库地址
 
-    - #### 关于不支持的操作系统
+            > 请手动替换 `<example.registry.com>` 为镜像仓库地址后在执行，详见上方 “项目内置的镜像仓库源” 表格中的地址列
 
-        如果提示不支持那么请使用系统自带的包管理工具进行安装。因为这些软件包由 Linux 发行版的软件包维护者构建和维护，可能存在配置差异或由修改后的源代码构建。
+            ``` bash
+            SOURCE_REGISTRY='"https://<example.registry.com>"'
+            ```
+            还可以指定多个镜像仓库，如 `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`，注意用英文逗号分割
 
-        也可以使用 [Docker Desktop](https://www.docker.com/products/docker-desktop)
+        - 替换镜像仓库地址
 
-- ### 最佳实践
+            ``` bash
+            [ -s "/etc/docker/daemon.json" ] || echo "{}" >/etc/docker/daemon.json
+            jq '.["registry-mirrors"] = ['"${SOURCE_REGISTRY}"']' /etc/docker/daemon.json >/etc/docker/daemon.json.tmp && mv /etc/docker/daemon.json.tmp
+            ```
 
-    <details>
-    <summary>适用于企业产品部署以及 CI/CD 等自动化运维场景的代码示例（展开查看）</summary>
-    --8<-- "docs/other/example.md"
-    </details>
+        - 重启 Docker 服务
+
+            ``` bash
+            systemctl daemon-reload
+            [[ $(systemctl is-active docker) == "active" ]] && systemctl restart docker || systemctl enable --now docker
+            ```
+
+- ### 指定 Docker CE 软件源地址
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
+    ```
+    > 注意该地址路径需要包含镜像站的 Docker CE 软件源仓库路径即 `docker-ce`
+
+- ### 指定 Docker CE 软件源仓库
+
+    脚本默认会自动判断一般无需指定，除非你有特殊需求
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
+    ```
+    > 仓库名是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 这几个  
+    > 具体详见 [官方安装文档](https://docs.docker.com/engine/install) 和 [Docker CE 官方仓库](https://download.docker.com/linux)
+
+    ``` { .bash .no-copy title="还可以指定仓库版本号" }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+      --branch centos \
+      --branch-version 9
+    ```
+    > 可以使用该选项来控制安装软件包的兼容性（仅适用于红帽系操作系统），具体详见对应仓库目录中代表版本号的路径名称（正整数）。
+
+- ### 指定 Docker Engine 安装版本
+
+    指定安装版本时会忽略 `是否安装最新版本` 的命令选项，格式为 `主版本.次版本.补丁版本`，例如 `28.4.1`。
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
+    ```
+    > 如果指定的版本不存在或者不支持当前系统，届时脚本会报错跳出
+
+    ??? quote "查看版本列表的方法"
+
+        === "Debian 系"
+
+            ``` bash
+            apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
+            ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+
+            ``` bash
+            dnf list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" | sort -t '.' -k1,1nr -k2,2nr -k3,3nr
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        未出现在该列表中的版本则不支持通过本脚本安装，如果获取不到版本列表说明你当前的系统环境还没有正确配置 Docker CE 软件源（运行脚本时不存在该问题）
+
+
+- ### 无人值守（自动化）
+
+    不通过交互完成安装操作，至少需要使用如下命令选项来实现，建议熟悉后再使用
+
+    ``` { .bash .no-copy title="参考命令" }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+      --source mirror.example.com/docker-ce \
+      --source-registry registry.hub.docker.com \
+      --protocol http \
+      --use-intranet-source false \
+      --install-latest true \
+      --close-firewall true \
+      --ignore-backup-tips
+    ```
+    > 如果报错 `命令选项无效` 那么请检查选项合法性以及空格字符编码，在示例中一行写一个选项是为了提高命令的可读性
+
+- ### 纯净模式
+
+    推出该功能是为了便于开发以及运维人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用
+
+    ``` bash
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
+    ```
+
+    !!! tip "滚动输出的命令日志可能存在无法预料的显示问题，不过目前暂未发现异常"
+
+## 常见问题
+
+- ### 关于服务报错无法启动
+
+    !!! quote ""
+
+        非新装环境可能会在运行脚本后遇到 `Docker` 服务无法启动的情况，建议重新安装来解决，卸载不会删除本地镜像和容器数据
+
+        卸载命令如下：
+
+        === "Debian 系"
+
+            ``` bash
+            apt-get remove -y docker* containerd.io runc && apt-get autoremove
+            ```
+
+            > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS`
+
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+
+            ``` bash
+            yum remove -y docker* containerd.io podman* runc
+            ```
+
+            > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+        卸载完成后重新执行脚本安装即可
+
+- ### 关于不支持的操作系统
+
+    如果提示不支持那么请使用系统自带的包管理工具进行安装。因为这些软件包由 Linux 发行版的软件包维护者构建和维护，可能存在配置差异或由修改后的源代码构建。
+
+    也可以使用 &nbsp; [![Docker Desktop](/assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
+
+## 最佳实践
+
+??? note "适用于企业产品部署以及 CI/CD 等自动化运维场景的代码示例（展开查看）"
+
+    如果你不想让用户进行任何交互，请使用 `完全自动化` 示例
+
+    - #### 完全自动化（推荐）
+
+        --8<-- "docs/other/example1.md"
+
+    - #### 简易方式
+
+        --8<-- "docs/other/example2.md"
+        > 注：不指定 `Docker CE 源` 以及 `镜像仓库源` 则会交由用户进行交互选择，届时会自动清屏 `$ clear`，从而导致你脚本的运行日志被清除

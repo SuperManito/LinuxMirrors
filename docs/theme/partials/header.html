@@ -22,7 +22,7 @@
     </a>
 
     <label class="md-header__button md-icon" for="__drawer">
-      {% set icon = config.theme.icon.menu or "material/menu" %}
+      {% set icon = config.theme.icon.menu or "octicons/list-unordered-16" %}
       {% include ".icons/" ~ icon ~ ".svg" %}
     </label>
 
@@ -63,7 +63,7 @@
       {% set search = config.plugins["material/search"] | attr("config") %}
       {% if search.enabled %}
         <label class="md-header__button md-icon" for="__search">
-          {% set icon = config.theme.icon.search or "material/magnify" %}
+          {% set icon = config.theme.icon.search or "octicons/search-16" %}
           {% include ".icons/" ~ icon ~ ".svg" %}
         </label>
         {% include "partials/search.html" %}

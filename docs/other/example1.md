@@ -1,14 +1,20 @@
 ``` bash
 # !/bin/bash
-
 function install_docker() {
-    local region_code="$(curl -s ipinfo.io/country)"
-    local close_firewall="true" # close firewalld service and selinux (redhat systems need)
+    if command -v docker &>/dev/null; then
+        return
+    fi
+
+    # script options
+    local script_host="linuxmirrors.cn" # official host (CDN), more host see official site
+    local close_firewall="true"         # close firewalld service and selinux (redhat systems need)
+    # mirrors options
     local source_docker_ce_address="mirrors.tencent.com/docker-ce" # global high availability address
-    local source_docker_ce_protocol="https"
-    local source_docker_registry_address=""
+    local source_docker_ce_protocol="https"                        # https or http
+    local source_docker_registry_address="registry.hub.docker.com"
 
     # judge network environment
+    local region_code="$(curl -s ipinfo.io/country)"
     if [[ "${region_code}" == "CN" ]]; then
         local source_intranet_address=""
         # use intranet source if possible
@@ -36,14 +42,16 @@ function install_docker() {
                 source_docker_ce_protocol="http"
             fi
         fi
+        # registry mirror (best choice for mainland China)
         source_docker_registry_address="docker.1ms.run"
     else
+        # use official source
         source_docker_ce_address="download.docker.com"
         source_docker_registry_address="registry.hub.docker.com"
     fi
 
-    # run
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+    # install docker engine
+    bash <(curl -sSL https://${script_host}/docker.sh) \
         --source "${source_docker_ce_address}" \
         --source-registry "${source_docker_registry_address}" \
         --protocol "${source_docker_ce_protocol}" \
