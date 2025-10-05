@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-28
+## Modified: 2025-10-05
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1638,6 +1638,7 @@ function remove_original_mirrors() {
         fi
         rm -rf $Dir_ZYppRepos/repo-*
         rm -rf $Dir_ZYppRepos/openSUSE:repo-*
+        rm -rf $Dir_ZYppRepos/download.opensuse.org-*
         ;;
     "${SYSTEM_ARCH}")
         clear_file $File_PacmanMirrorList
@@ -2712,6 +2713,8 @@ function change_mirrors_AnolisOS() {
 
 ## 更换 openSUSE 软件源
 function change_mirrors_openSUSE() {
+    ## 禁用 RIS
+    zypper remove -y openSUSE-repos-* >/dev/null 2>&1
     ## 生成 repo 源文件
     case "${SYSTEM_ID}" in
     "opensuse-leap")
@@ -6889,7 +6892,6 @@ enabled=0
 autorefresh=1
 baseurl=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/non-oss/$basearch
 gpgkey=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/non-oss/$basearch/repodata/repomd.xml.key
-service=openSUSE
 EOF
             cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-non-oss.repo
 [openSUSE:repo-non-oss]
@@ -6898,7 +6900,6 @@ enabled=0
 autorefresh=1
 baseurl=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/non-oss/$basearch
 gpgkey=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/non-oss/$basearch/repodata/repomd.xml.key
-service=openSUSE
 EOF
             cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-openh264.repo
 [openSUSE:repo-openh264]
@@ -6907,7 +6908,6 @@ enabled=1
 autorefresh=1
 baseurl=http://codecs.opensuse.org/openh264/openSUSE_Leap_16
 gpgkey=https://codecs.opensuse.org/openh264/openSUSE_Leap_16/repodata/repomd.xml.key
-service=openSUSE
 EOF
             cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss-debug.repo
 [openSUSE:repo-oss-debug]
@@ -6916,7 +6916,6 @@ enabled=0
 autorefresh=1
 baseurl=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/oss/$basearch
 gpgkey=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/oss/$basearch/repodata/repomd.xml.key
-service=openSUSE
 EOF
             cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss.repo
 [openSUSE:repo-oss]
@@ -6925,7 +6924,6 @@ enabled=1
 autorefresh=1
 baseurl=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/oss/$basearch
 gpgkey=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/oss/$basearch/repodata/repomd.xml.key
-service=openSUSE
 EOF
             cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss-source.repo
 [openSUSE:repo-oss-source]
@@ -6934,7 +6932,6 @@ enabled=0
 autorefresh=1
 baseurl=http://cdn.opensuse.org/source/distribution/leap/${releasever}/repo/oss
 gpgkey=http://cdn.opensuse.org/source/distribution/leap/${releasever}/repo/oss/repodata/repomd.xml.key
-service=openSUSE
 EOF
             ;;
         15)
