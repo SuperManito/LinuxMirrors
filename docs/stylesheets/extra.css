@@ -470,7 +470,7 @@
     width: 100%;
     text-align: center;
     padding: .75rem;
-    border-radius: 6px;
+    border-radius: var(--component-border-radius);
     height: 80px;
     max-height: 80px;
     transition: background-color 0.2s;

@@ -35,7 +35,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
             ```
-            > Real-time sync, no delay. Recommended for use in mainland China network environments.
+            > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
@@ -55,7 +55,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh)
             ```
-            > Not recommended in mainland China network environments.
+            > Not recommended in Chinese mainland network environments.
 
         Integrates installation of [`Docker Engine`](https://docs.docker.com/engine) and [`Docker Compose`](https://docs.docker.com/compose), supports selecting or switching software repositories (Docker repositories) and registry mirrors, installing specific versions, reinstalling, and supports ARM architecture.
 
@@ -82,7 +82,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
             ```
-            > Real-time sync, no delay. Recommended for use in mainland China network environments.
+            > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
@@ -102,7 +102,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --only-registry
             ```
-            > Not recommended in mainland China network environments.
+            > Not recommended in Chinese mainland network environments.
 
 <div class="grid cards" markdown>
 
@@ -170,7 +170,7 @@ hide:
 
     </div>
 
-    Due to some force majeure, the [Docker Hub](https://hub.docker.com) is currently inaccessible in the Chinese mainland network environment, so the image cannot be pulled normally. It is recommended to use the image warehouse source available in Chinese mainland mentioned below.
+    Due to some force majeure, [Docker Hub](https://hub.docker.com) is currently inaccessible in the Chinese mainland network environment, so the image cannot be pulled normally. It is recommended to use the image warehouse source available in Chinese mainland mentioned below.
 
     Note: The specified Web protocol in the script is only for controlling the `Docker CE` software source. `Docker Registry` always uses the `HTTPS` protocol.
 
@@ -178,7 +178,7 @@ hide:
 !!! quote "Built-in Registry Mirrors"
 
     <div style="text-align: center" markdown>
-    <div style="font-size: 0.8rem"><strong>Available in Mainland China</strong></div>
+    <div style="font-size: 0.8rem"><strong>Available in Chinese mainland</strong></div>
 
     | Site Name | Address | Description |
     | :--: | :--: | :-- |
@@ -207,7 +207,7 @@ hide:
     | Alibaba Cloud (Hong Kong) | [registry.cn-hongkong.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-hongkong.aliyuncs.com") | Google Cloud (Europe) | [eu.gcr.io](https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn "https://eu.gcr.io") |
     | Tencent Cloud | [mirror.ccs.tencentyun.com](https://cloud.tencent.com/document/product/1207/45596 "https://mirror.ccs.tencentyun.com") | Docker Hub | [registry.hub.docker.com](https://hub.docker.com/ "registry.hub.docker.com") |
 
-    <blockquote style="border-left: none !important">Note: Registry mirrors from domestic cloud computing companies are only for their own business. Instances in mainland China may still not be able to access Docker Hub.</blockquote>
+    <blockquote style="border-left: none !important">Note: Registry mirrors from domestic cloud computing companies are only for their own business. Instances in Chinese mainland may still not be able to access Docker Hub.</blockquote>
 
     </div>
 

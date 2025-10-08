@@ -12,7 +12,7 @@ hide:
 
 ## One-Click Command
 
-=== ":material-home-city: Mainland China"
+=== ":material-home-city: Chinese mainland"
 
     !!! quote ""
 
@@ -33,7 +33,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
             ```
-            > Real-time sync, no delay. Recommended for use in mainland China network environments.
+            > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
@@ -53,7 +53,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
             ```
-            > Not recommended in mainland China network environments.
+            > Not recommended in Chinese mainland network environments.
 
 === ":material-earth: International Regions"
 
@@ -76,7 +76,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
             ```
-            > Real-time sync, no delay. Recommended for use in mainland China network environments.
+            > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
@@ -96,7 +96,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-            > Not recommended in mainland China network environments.
+            > Not recommended in Chinese mainland network environments.
 
 === ":material-library: China Education Network"
 
@@ -119,7 +119,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
-            > Real-time sync, no delay. Recommended for use in mainland China network environments.
+            > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
@@ -139,7 +139,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
             ```
-            > Not recommended in mainland China network environments.
+            > Not recommended in Chinese mainland network environments.
 
 
 
@@ -263,7 +263,7 @@ hide:
 
             Then run the script:
 
-            === ":material-home-city: Mainland China"
+            === ":material-home-city: Chinese mainland"
 
                 ``` bash
                 bash main.sh
@@ -563,11 +563,11 @@ Below are some advanced usage examples
 
         <div class="grid cards" markdown>
 
-        -   __Mainland China__
+        -   __Chinese mainland__
 
             ---
 
-            Use the script as usual, no additional steps are required. As most mirror sites in mainland China have already synchronized the [`CentOS Vault`](https://vault.centos.org) repository.
+            Use the script as usual, no additional steps are required. As most mirror sites in Chinese mainland have already synchronized the [`CentOS Vault`](https://vault.centos.org) repository.
 
         -   __International__
 

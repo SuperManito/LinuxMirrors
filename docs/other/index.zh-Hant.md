@@ -170,7 +170,7 @@ hide:
 
     </div>
 
-    由於一些不可抗力的因素，目前中國大陸網路環境無法訪問 [Docker Hub](https://hub.docker.com)，因此無法正常拉取鏡像，建議使用下方提到的中國大陸可用鏡像倉庫軟體源
+    由於一些不可抗力的因素，中國大陸網路環境下目前無法訪問 [Docker Hub](https://hub.docker.com) 因此無法正常拉取鏡像，建議使用下方提到的中國大陸可用鏡像倉庫軟體源
 
     註：腳本內的指定 WEB 協議互動僅用於控制 `Docker CE` 軟體源，`Docker Registry` 強制使用 `HTTPS` 協議
 

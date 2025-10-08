@@ -164,7 +164,7 @@ hide:
 
     </div>
 
-    由于一些不可抗力的因素目前国内网络环境无法访问 [Docker Hub](https://hub.docker.com)，因此无法正常拉取镜像，建议使用下方提到的国内可用镜像仓库源
+    由于一些不可抗力的因素，国内网络环境下目前无法访问 [Docker Hub](https://hub.docker.com) 因此不能正常拉取镜像，建议使用下方提到的国内可用镜像仓库源
 
     注：脚本内的指定 WEB 协议交互仅用于控制 `Docker CE` 软件源，`Docker Registry` 强制使用 `HTTPS` 协议
 

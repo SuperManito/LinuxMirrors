@@ -42,7 +42,7 @@ function install_docker() {
                 source_docker_ce_protocol="http"
             fi
         fi
-        # registry mirror (best choice for mainland China)
+        # registry mirror (best choice for Chinese mainland)
         source_docker_registry_address="docker.1ms.run"
     else
         # use official source

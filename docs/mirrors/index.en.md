@@ -8,7 +8,7 @@ search:
   exclude: true
 ---
 
-## Mainland China :flag-CN:
+## Chinese Mainland :flag-CN:
 
 > All mirror sites in the list below synchronize the `Debian`, `Ubuntu`, `CentOS`, `openSUSE`, and `openEuler` software repositories. The list is sorted by institution type, geographic location, and name length, and is not related to actual download speed.
 
@@ -57,7 +57,7 @@ search:
     | Zhejiang University | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn "https://mirrors.zju.edu.cn") |
     | University of Science and Technology of China | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn "https://mirrors.ustc.edu.cn") |
 
-## Overseas and International Regions :flag-world-map:
+## Overseas And International Regions :flag-world-map:
 
 === ":fontawesome-solid-earth-asia: Asia"
 
