@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-09-28
+## Modified: 2025-10-09
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -22,7 +22,7 @@ mirror_list_docker_ce=(
     "重庆邮电大学@mirrors.cqupt.edu.cn/docker-ce"
     "中国科学技术大学@mirrors.ustc.edu.cn/docker-ce"
     "中国科学院软件研究所@mirror.iscas.ac.cn/docker-ce"
-    "官方@download.docker.com"
+    "官方源@download.docker.com"
 )
 
 ## Docker Registry 仓库列表
@@ -657,42 +657,46 @@ function collect_system_info() {
 function choose_mirrors() {
     ## 打印软件源列表
     function print_mirrors_list() {
-        local tmp_mirror_name tmp_mirror_url arr_num default_length tmp_length tmp_spaces_nums a i j
-        ## 计算字符串长度
+        local tmp_name tmp_index i j
         function StringLength() {
             local text=$1
             echo "${#text}"
         }
-        echo -e ''
 
         local list_arr=()
         local list_arr_sum="$(eval echo \${#$1[@]})"
-        for ((a = 0; a < $list_arr_sum; a++)); do
-            list_arr[$a]="$(eval echo \${$1[a]})"
+        for ((i = 0; i < $list_arr_sum; i++)); do
+            list_arr[$i]="$(eval echo \${$1[i]})"
         done
+        local name_width=${2:-"30"}
         if command_exists printf; then
+            local tmp_uchar_1 tmp_uchar_2 tmp_uchar_3 tmp_uchar_4 tmp_default_length tmp_length tmp_unicode_length tmp_spaces_nums tmp_max_length
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')
-                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')
-                arr_num=$((i + 1))
-                default_length=${2:-"30"}
-                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
-                tmp_length=$(StringLength $(echo "${tmp_mirror_name}" | sed "s| ||g" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;"))
-                tmp_spaces_nums=$(($(($default_length - ${tmp_length} - $(StringLength "${tmp_mirror_name}"))) / 2))
-                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
-                    tmp_mirror_name="${tmp_mirror_name} "
-                done
-                printf "❖  %-$(($default_length + ${tmp_length}))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+                tmp_name="$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')"
+                tmp_index=$((i + 1))
+                tmp_default_length="${name_width}"
+                tmp_uchar_1=$(echo "${tmp_name}" | grep -c "“")
+                tmp_uchar_2=$(echo "${tmp_name}" | grep -c "”")
+                tmp_uchar_3=$(echo "${tmp_name}" | grep -c "‘")
+                tmp_uchar_4=$(echo "${tmp_name}" | grep -c "’")
+                [[ "${tmp_uchar_1}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_1))
+                [[ "${tmp_uchar_2}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_2))
+                [[ "${tmp_uchar_3}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_3))
+                [[ "${tmp_uchar_4}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_4))
+                tmp_length=$(StringLength "${tmp_name}")
+                tmp_unicode_length=$(StringLength "$(echo "${tmp_name}" | sed "s|[0-9a-zA-Z -~]||g; s| ||g")")
+                tmp_max_length=$((tmp_default_length + tmp_unicode_length))
+                tmp_spaces_nums=$((((tmp_default_length - tmp_unicode_length - tmp_length)) / 2))
+                if [[ $tmp_spaces_nums -gt 0 ]]; then
+                    tmp_name="${tmp_name}$(printf '%*s' ${tmp_spaces_nums} '')"
+                fi
+                printf "❖  %-${tmp_max_length}s %4s\n" "${tmp_name}" "${tmp_index})"
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name="${list_arr[i]%@*}"
-                tmp_mirror_url="${list_arr[i]#*@}"
-                arr_num=$((i + 1))
-                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
+                tmp_name="${list_arr[i]%@*}"
+                tmp_index=$((i + 1))
+                echo -e " ❖  $tmp_index. ${tmp_name}"
             done
         fi
     }
@@ -743,11 +747,11 @@ function choose_mirrors() {
         local arch="${DEVICE_ARCH}"
         local date_time time_zone
         date_time="$(date "+%Y-%m-%d %H:%M")"
-        timezone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
+        time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
 
         echo -e ''
         echo -e "运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e "系统时间 ${BLUE}${date_time} ${timezone}${PLAIN}"
+        echo -e "系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
     }
 
     [[ "${PURE_MODE}" != "true" ]] && print_title
@@ -761,10 +765,11 @@ function choose_mirrors() {
             SOURCE="${_SELECT_RESULT#*@}"
             echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker CE: ${_SELECT_RESULT%@*}${PLAIN}"
         else
-            print_mirrors_list "${mirror_list_name}" 38
-            local CHOICE_B=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+            echo ''
+            print_mirrors_list "${mirror_list_name}" 39
+            local CHOICE_B="$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
             while true; do
-                read -p "${CHOICE_B}" INPUT
+                read -rp "${CHOICE_B}" INPUT
                 case "${INPUT}" in
                 [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
                     local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
@@ -796,10 +801,11 @@ function choose_mirrors() {
             SOURCE_REGISTRY="${_SELECT_RESULT#*@}"
             echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker Registry: $(echo "${_SELECT_RESULT%@*}" | sed 's|（推荐）||g')${PLAIN}"
         else
-            print_mirrors_list "${mirror_list_name}" 44
-            local CHOICE_C=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+            echo ''
+            print_mirrors_list "${mirror_list_name}" 45
+            local CHOICE_C="$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
             while true; do
-                read -p "${CHOICE_C}" INPUT
+                read -rp "${CHOICE_C}" INPUT
                 case "${INPUT}" in
                 [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
                     local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
@@ -1198,8 +1204,8 @@ function install_docker_engine() {
                     echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：28.3.0 ---------- ${PLAIN}\n"
                     cat $File_DockerVersionTmp
                     while true; do
-                        local CHOICE=$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")
-                        read -p "${CHOICE}" target_docker_version
+                        local CHOICE="$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")"
+                        read -rp "${CHOICE}" target_docker_version
                         echo ''
                         cat $File_DockerVersionTmp | grep -Eqw "${target_docker_version}"
                         if [ $? -eq 0 ]; then
@@ -1283,7 +1289,7 @@ function install_docker_engine() {
             fi
         else
             local CHOICE_A="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
-            read -p "${CHOICE_A}" INPUT
+            read -rp "${CHOICE_A}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case $INPUT in
             [Yy] | [Yy][Ee][Ss])
@@ -1361,7 +1367,7 @@ function change_docker_registry_mirror() {
                     fi
                 else
                     local CHOICE_BACKUP="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
-                    read -p "${CHOICE_BACKUP}" INPUT
+                    read -rp "${CHOICE_BACKUP}" INPUT
                     [[ -z "${INPUT}" ]] && INPUT=Y
                     case $INPUT in
                     [Yy] | [Yy][Ee][Ss]) ;;
@@ -1722,14 +1728,14 @@ function animate_exec() {
             echo "${line}"
             return
         fi
-        local non_ascii_count=$(echo "${line// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;" | wc -m)
+        local non_ascii_count=$(echo "${line}" | sed "s|[0-9a-zA-Z -~]||g; s| ||g" | wc -m)
         local total_length=${#line}
         local display_length=$((total_length + non_ascii_count))
         local quote_count=0
-        [[ $(echo "${line}" | grep -c "“") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "“")))
-        [[ $(echo "${line}" | grep -c "”") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "”")))
-        [[ $(echo "${line}" | grep -c "‘") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "‘")))
-        [[ $(echo "${line}" | grep -c "’") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "’")))
+        [[ $(echo "${line}" | grep -c "“") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "“")"))
+        [[ $(echo "${line}" | grep -c "”") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "”")"))
+        [[ $(echo "${line}" | grep -c "‘") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "‘")"))
+        [[ $(echo "${line}" | grep -c "’") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "’")"))
         display_length=$((display_length - quote_count))
         if [[ $display_length -le $display_width ]]; then
             echo "$line"
@@ -1741,7 +1747,7 @@ function animate_exec() {
         while [ $i -lt ${#line} ]; do
             local char="${line:$i:1}"
             local char_width=1
-            if ! [[ "$char" =~ [0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·] ]]; then
+            if ! [[ "$char" =~ [0-9a-zA-Z\.\=\:\_\(\)\'\"\-\/\!\·] ]]; then
                 if [[ "$char" != "“" && "$char" != "”" && "$char" != "‘" && "$char" != "’" ]]; then
                     char_width=2
                 fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-05
+## Modified: 2025-10-09
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -62,6 +62,7 @@ mirror_list_edu=(
     "西北农林科技大学@mirrors.nwafu.edu.cn"
     "浙江大学@mirrors.zju.edu.cn"
     "中国科学技术大学@mirrors.ustc.edu.cn"
+    "官方源@__OFFICIAL_SOURCE_TAG__"
 )
 # 海外格式："洲 · 名称 · 国家/地区@地址"，修改前请先前往官网阅读添加规范
 mirror_list_abroad=(
@@ -1070,43 +1071,46 @@ function check_command_options() {
 function choose_mirrors() {
     ## 打印软件源列表
     function print_mirrors_list() {
-        local tmp_mirror_name tmp_mirror_url arr_num default_length tmp_length tmp_spaces_nums a i j
-        ## 计算字符串长度
+        local tmp_name tmp_index i j
         function StringLength() {
             local text=$1
             echo "${#text}"
         }
-        echo -e ''
 
         local list_arr=()
-        local list_arr_sum
-        list_arr_sum="$(eval echo \${#$1[@]})"
-        for ((a = 0; a < $list_arr_sum; a++)); do
-            list_arr[$a]="$(eval echo \${$1[a]})"
+        local list_arr_sum="$(eval echo \${#$1[@]})"
+        for ((i = 0; i < $list_arr_sum; i++)); do
+            list_arr[$i]="$(eval echo \${$1[i]})"
         done
+        local name_width=${2:-"30"}
         if command_exists printf; then
+            local tmp_uchar_1 tmp_uchar_2 tmp_uchar_3 tmp_uchar_4 tmp_default_length tmp_length tmp_unicode_length tmp_spaces_nums tmp_max_length
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name=$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')
-                # tmp_mirror_url=$(echo "${list_arr[i]}" | awk -F '@' '{print$2}')
-                arr_num=$((i + 1))
-                default_length=${2:-"30"}
-                [[ $(echo "${tmp_mirror_name}" | grep -c "“") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "“")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "”") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "”")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "‘") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "‘")
-                [[ $(echo "${tmp_mirror_name}" | grep -c "’") -gt 0 ]] && let default_length+=$(echo "${tmp_mirror_name}" | grep -c "’")
-                tmp_length=$(StringLength "$(echo "${tmp_mirror_name// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;")")
-                tmp_spaces_nums=$(($((default_length - tmp_length - $(StringLength "${tmp_mirror_name}"))) / 2))
-                for ((j = 1; j <= ${tmp_spaces_nums}; j++)); do
-                    tmp_mirror_name="${tmp_mirror_name} "
-                done
-                printf "❖  %-$((default_length + tmp_length))s %4s\n" "${tmp_mirror_name}" "$arr_num)"
+                tmp_name="$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')"
+                tmp_index=$((i + 1))
+                tmp_default_length="${name_width}"
+                tmp_uchar_1=$(echo "${tmp_name}" | grep -c "“")
+                tmp_uchar_2=$(echo "${tmp_name}" | grep -c "”")
+                tmp_uchar_3=$(echo "${tmp_name}" | grep -c "‘")
+                tmp_uchar_4=$(echo "${tmp_name}" | grep -c "’")
+                [[ "${tmp_uchar_1}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_1))
+                [[ "${tmp_uchar_2}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_2))
+                [[ "${tmp_uchar_3}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_3))
+                [[ "${tmp_uchar_4}" -gt 0 ]] && ((tmp_default_length += tmp_uchar_4))
+                tmp_length=$(StringLength "${tmp_name}")
+                tmp_unicode_length=$(StringLength "$(echo "${tmp_name}" | sed "s|[0-9a-zA-Z -~]||g; s| ||g")")
+                tmp_max_length=$((tmp_default_length + tmp_unicode_length))
+                tmp_spaces_nums=$((((tmp_default_length - tmp_unicode_length - tmp_length)) / 2))
+                if [[ $tmp_spaces_nums -gt 0 ]]; then
+                    tmp_name="${tmp_name}$(printf '%*s' ${tmp_spaces_nums} '')"
+                fi
+                printf "❖  %-${tmp_max_length}s %4s\n" "${tmp_name}" "${tmp_index})"
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_mirror_name="${list_arr[i]%@*}"
-                tmp_mirror_url="${list_arr[i]#*@}"
-                arr_num=$((i + 1))
-                echo -e " ❖  $arr_num. ${tmp_mirror_url} | ${tmp_mirror_name}"
+                tmp_name="${list_arr[i]%@*}"
+                tmp_index=$((i + 1))
+                echo -e " ❖  $tmp_index. ${tmp_name}"
             done
         fi
     }
@@ -1174,13 +1178,13 @@ function choose_mirrors() {
         local mirror_list_name mirror_list_print_length
         if [[ "${USE_ABROAD_SOURCE}" = "true" ]]; then
             mirror_list_name="mirror_list_abroad"
-            mirror_list_print_length=60
+            mirror_list_print_length=56
         elif [[ "${USE_EDU_SOURCE}" = "true" ]]; then
             mirror_list_name="mirror_list_edu"
-            mirror_list_print_length=31
+            mirror_list_print_length=32
         else
             mirror_list_name="mirror_list_default"
-            mirror_list_print_length=31
+            mirror_list_print_length=32
         fi
 
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
@@ -1189,8 +1193,9 @@ function choose_mirrors() {
             SOURCE="${_SELECT_RESULT#*@}"
             echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}" | sed "s| · | |g"
         else
-            print_mirrors_list "${mirror_list_name}" $mirror_list_print_length
-            local CHOICE=$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#$mirror_list_name[@]}) ]：${PLAIN}")
+            echo ''
+            print_mirrors_list "${mirror_list_name}" "${mirror_list_print_length}"
+            local CHOICE="$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
             while true; do
                 read -rp "${CHOICE}" INPUT
                 case "${INPUT}" in
@@ -3188,14 +3193,14 @@ function animate_exec() {
             echo "${line}"
             return
         fi
-        local non_ascii_count=$(echo "${line// /}" | sed "s|[0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·]||g;" | wc -m)
+        local non_ascii_count=$(echo "${line}" | sed "s|[0-9a-zA-Z -~]||g; s| ||g" | wc -m)
         local total_length=${#line}
         local display_length=$((total_length + non_ascii_count))
         local quote_count=0
-        [[ $(echo "${line}" | grep -c "“") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "“")))
-        [[ $(echo "${line}" | grep -c "”") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "”")))
-        [[ $(echo "${line}" | grep -c "‘") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "‘")))
-        [[ $(echo "${line}" | grep -c "’") -gt 0 ]] && quote_count=$((quote_count + $(echo "${line}" | grep -c "’")))
+        [[ $(echo "${line}" | grep -c "“") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "“")"))
+        [[ $(echo "${line}" | grep -c "”") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "”")"))
+        [[ $(echo "${line}" | grep -c "‘") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "‘")"))
+        [[ $(echo "${line}" | grep -c "’") -gt 0 ]] && ((quote_count += "$(echo "${line}" | grep -c "’")"))
         display_length=$((display_length - quote_count))
         if [[ $display_length -le $display_width ]]; then
             echo "$line"
@@ -3207,7 +3212,7 @@ function animate_exec() {
         while [ $i -lt ${#line} ]; do
             local char="${line:$i:1}"
             local char_width=1
-            if ! [[ "$char" =~ [0-9a-zA-Z\.\=\:\_\(\)\'\"-\/\!·] ]]; then
+            if ! [[ "$char" =~ [0-9a-zA-Z\.\=\:\_\(\)\'\"\-\/\!\·] ]]; then
                 if [[ "$char" != "“" && "$char" != "”" && "$char" != "‘" && "$char" != "’" ]]; then
                     char_width=2
                 fi
