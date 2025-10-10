@@ -4,12 +4,6 @@ hide:
   - footer
 ---
 
-???+ question "Why do you see this notice?"
-
-    The script of this project currently mainly serves Simplified Chinese users, but from the very beginning it was defined as a universal mirror switching script, providing many command options for customization, which is also one of the reasons why this project is now available to users of other languages. The script output is currently fixed in Simplified Chinese. With feedback and usage from users of other languages, the script may support Traditional Chinese and English in the future.
-
-    The documentation is translated with tools, and some professional terms below may be inaccurate. Corrections are welcome.
-
 ## One-Click Command
 
 === ":material-home-city: Chinese mainland"
@@ -440,6 +434,43 @@ hide:
 
 ## Command Options (Advanced Usage)
 
+<!-- termynal -->
+```
+$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help 
+
+Command options(name/meaning/value):
+
+  --abroad                     Use overseas mirrors	                                                         none
+  --edu                        Use China education network mirrors                                            none
+  --source                     Specify mirror address (domain or IP)                                          address
+  --source-epel                Specify EPEL repository address (domain or IP)                                 address
+  --source-security            Specify Debian/Ubuntu security repo address (domain or IP)                     address
+  --source-vault               Specify CentOS/AlmaLinux vault repo address (domain or IP)                     address
+  --source-portage             Specify Gentoo portage repo address (domain or IP)                             address
+  --source-base-system         Specify Linux Mint/Raspberry Pi OS base system repo address (domain or IP)     address
+  --branch                     Specify mirror repository (repo name)                                          repo name
+  --branch-epel                Specify EPEL repository (path)                                                 repo name
+  --branch-security            Specify Debian security repo (path)                                            repo name
+  --branch-vault               Specify CentOS/AlmaLinux vault repo (path)                                     repo name
+  --branch-portage             Specify Gentoo portage repo (path)                                             repo name
+  --branch-base-system	       Specify Linux Mint/Raspberry Pi OS base system repo (path)                     repo name
+  --codename                   Specify Debian/openKylin codename                                              codename
+  --protocol                   Specify web protocol                                                           http or https
+  --use-intranet-source        Prefer intranet mirror address                                                 true or false
+  --use-official-source        Use official mirror of target OS                                               true or false
+  --use-official-source-epel   Use official EPEL repo                                                         true or false
+  --install-epel               Install EPEL repository                                                        true or false
+  --backup                     Backup original mirrors                                                        true or false
+  --upgrade-software           Upgrade packages                                                               true or false
+  --clean-cache                Clean cache after upgrade                                                      true or false
+  --clean-screen               Clear screen before running                                                    true or false
+  --only-epel                  Only switch EPEL repo                                                          none
+  --ignore-backup-tips         Ignore backup overwrite prompt                                                 none
+  --print-diff                 Print diff before and after modification                                       none
+  --pure-mode                  Pure mode, minimal output                                                      none
+  --help                       Show help menu                                                                 none
+```
+
 | Name | Meaning | Value |
 | - | - | :-: |
 | `--abroad` | Use overseas mirrors | none |
@@ -466,9 +497,9 @@ hide:
 | `--upgrade-software` | Upgrade packages | `true` or `false` |
 | `--clean-cache` | Clean cache after upgrade | `true` or `false` |
 | `--clean-screen` | Clear screen before running | `true` or `false` |
-| `--print-diff` | Print diff before and after modification | `true` or `false` |
 | `--only-epel` | Only switch EPEL repo | none |
 | `--ignore-backup-tips` | Ignore backup overwrite prompt | none |
+| `--print-diff` | Print diff before and after modification | none |
 | `--pure-mode` | Pure mode, minimal output | none |
 | `--help` | Show help menu | none |
 
@@ -719,7 +750,7 @@ If you are a developer of another project and want to create a custom script bas
 | `USE_INTRANET_SOURCE` | Prefer intranet mirror address | `true` or `false` |
 | `USE_OFFICIAL_SOURCE` | Use official mirror of target OS | `true` or `false` |
 | `USE_OFFICIAL_SOURCE_EPEL` | Use official EPEL repo | `true` or `false` |
-| `WEB_PROTOCOL` | Specify WEB protocol | `http` or `https` |
+| `WEB_PROTOCOL` | Specify Web protocol | `http` or `https` |
 | `INSTALL_EPEL` | Install EPEL repository | `true` or `false` |
 | `ONLY_EPEL` | Only switch EPEL repo | `true` or `false` |
 | `BACKUP` | Backup original mirrors | `true` or `false` |

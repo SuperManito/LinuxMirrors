@@ -4,7 +4,7 @@
     <img src="/docs/assets/images/brand/light/3.png" alt="LinuxMirrors" width="140">
 </picture>
 <h1>LinuxMirrors</h1>
-<p>GNU/Linux system software mirror replacement script and Docker installation & mirror replacement script</p>
+<p>GNU/Linux mirror switching script & docker installation and registry mirror switching script</p>
 <p><a href="README.md">简体中文</a> | <a href="README.zh-Hant.md">繁體中文</a> | English</p>
 <p>
   <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE"><img src="https://shields.io/github/license/SuperManito/LinuxMirrors?color=%23007bff" alt="License: MIT"></a>

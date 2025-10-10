@@ -6,12 +6,6 @@ hide:
 
 # :simple-docker:{style="color: #1d63ed"} Docker 安裝與換源腳本
 
-???+ question "為什麼會看到該提示？"
-
-    本項目腳本目前主要服務於簡體中文用戶，但是從立項之初就定義為了通用換源腳本，提供了諸多命令選項用於自定義使用，這也是本項目為什麼開始面向其它語言用戶使用的原因之一。腳本列印內容目前固定為簡體中文，隨著其它語言使用者的回饋和使用，腳本將來可能會支援繁體中文和英文。
-
-    文檔使用工具進行翻譯，下方內容中的專業術語可能存在不準確的情況，歡迎修正。
-
 ## 一鍵執行命令
 
 === "安裝"
@@ -57,9 +51,9 @@ hide:
             ```
             > 不建議在中國大陸網路環境下使用
 
-        整合安裝 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支援選擇或更換軟體源（Docker 軟體倉庫）以及鏡像倉庫、安裝指定版本、重裝等功能，支援 ARM 架構
+        整合安裝 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支援選擇或更換軟體源（Docker 軟體倉庫）以及映像倉庫、安裝指定版本、重裝等功能，支援 ARM 架構
 
-        腳本參考[官方文檔](https://docs.docker.com/engine/install)使用系統套件管理工具進行安裝，不存在相容性、安全性等問題，可安裝的版本由 Docker CE 倉庫決定
+        腳本參考[官方文件](https://docs.docker.com/engine/install)使用系統套件管理工具進行安裝，不存在相容性、安全性等問題，可安裝的版本由 Docker CE 倉庫決定
 
 === "僅更換鏡像加速器"
 
@@ -77,14 +71,14 @@ hide:
             bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
             ```
 
-        === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
+        === ":simple-gitee: Gitee 碼雲 (映像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
             ```
             > 即時同步、無延遲，中國大陸網路環境建議使用
 
-        === ":simple-gitcode: GitCode (鏡像倉庫)"
+        === ":simple-gitcode: GitCode (映像倉庫)"
 
             ``` bash
             bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
@@ -110,7 +104,7 @@ hide:
 
     ---
 
-    與 [get.docker.com](https://get.docker.com) 邏輯一致，融合了本項目換源架構以及特性
+    與 [get.docker.com](https://get.docker.com) 邏輯一致，融合了本專案換源架構以及特性
 
 -   :material-graph:{ .lg .middle } __支援衍生作業系統__
 
@@ -162,20 +156,20 @@ hide:
 
         Docker CE 全稱 Docker Community Edition（Docker 社群版），是 Docker Engine 的別稱，該倉庫用於下載並安裝 Docker 相關軟體包
 
-    -   __Docker Registry 鏡像倉庫__
+    -   __Docker Registry 映像倉庫__
 
         ---
 
-        用於控制拉取鏡像的預設軟體源儲存倉庫，又稱為鏡像加速器，預設為官方容器鏡像倉庫 [Docker Hub](https://hub.docker.com) 
+        用於控制拉取鏡像的預設軟體源儲存倉庫，又稱為鏡像加速器，預設為官方容器映像倉庫 [Docker Hub](https://hub.docker.com) 
 
     </div>
 
-    由於一些不可抗力的因素，中國大陸網路環境下目前無法訪問 [Docker Hub](https://hub.docker.com) 因此無法正常拉取鏡像，建議使用下方提到的中國大陸可用鏡像倉庫軟體源
+    由於一些不可抗力的因素，中國大陸網路環境下目前無法訪問 [Docker Hub](https://hub.docker.com) 因此無法正常拉取鏡像，建議使用下方提到的中國大陸可用映像倉庫源
 
-    註：腳本內的指定 WEB 協議互動僅用於控制 `Docker CE` 軟體源，`Docker Registry` 強制使用 `HTTPS` 協議
+    註：腳本內的指定 Web 協定互動僅用於控制 `Docker CE` 軟體源，`Docker Registry` 強制使用 `HTTPS` 協定
 
 
-!!! quote "預設的鏡像倉庫源"
+!!! quote "預設的映像倉庫源"
 
     <div style="text-align: center" markdown>
     <div style="font-size: 0.8rem"><strong>中國大陸可用</strong></div>
@@ -187,7 +181,7 @@ hide:
     | DaoCloud | [docker.m.daocloud.io](https://docker.m.daocloud.io "docker.m.daocloud.io") | 老牌企業鏡像站，可用性高且速度快，現為白名單模式 |
     | 1Panel 鏡像 | [docker.1panel.live](https://1panel.cn "docker.1panel.live") | 企業產品自用鏡像 |
 
-    <blockquote style="border-left: none !important">本開源項目不適合採集個人自建的鏡像加速器，如有需要可搭配命令選項自行使用</blockquote>
+    <blockquote style="border-left: none !important">本開源專案不適合採集個人自建的鏡像加速器，如有需要可搭配命令選項自行使用</blockquote>
 
     <div style="font-size: 0.8rem; margin-top: 1rem"><strong>其它</strong></div>
 
@@ -207,38 +201,62 @@ hide:
     | Alibaba Cloud (Hong Kong) | [registry.cn-hongkong.aliyuncs.com](https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images "https://registry.cn-hongkong.aliyuncs.com") | Google Cloud（Europe) | [eu.gcr.io](https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn "https://eu.gcr.io") |
     | Tencent Cloud | [mirror.ccs.tencentyun.com](https://cloud.tencent.com/document/product/1207/45596 "https://mirror.ccs.tencentyun.com") | Docker Hub | [registry.hub.docker.com](https://hub.docker.com/ "registry.hub.docker.com") |
 
-    <blockquote style="border-left: none !important">註：中國大陸雲端運算企業的鏡像倉庫軟體源僅針對其業務，中國大陸境內實例可能仍無法造訪 Docker Hub</blockquote>
+    <blockquote style="border-left: none !important">註：中國大陸雲端運算企業的映像倉庫軟體源僅針對其業務，中國大陸境內實例可能仍無法造訪 Docker Hub</blockquote>
 
     </div>
 
 ## 命令選項（進階用法）
 
+<!-- termynal -->
+```
+$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help 
+
+命令選項(名稱/含義/值)：
+
+  --source                  指定 Docker CE 軟體源位址(網域名稱或IP)      位址
+  --source-registry         指定 Docker 映像倉庫位址 (網域名稱或IP)      位址
+  --branch                  指定 Docker CE 軟體源倉庫 (路徑)             倉庫名稱
+  --branch-version          指定 Docker CE 軟體源倉庫版本                版本號
+  --designated-version      指定 Docker Engine 安裝版本                  版本號
+  --codename                指定 Debian 係作業系統的版本代號              代號名稱
+  --protocol                指定 Docker CE 源的 Web 協定                 http 或 https
+  --use-intranet-source     是否優先使用內部網路 Docker CE 軟體源位址     true 或 false
+  --install-latest          是否安裝最新版本的 Docker Engine             true 或 false
+  --close-firewall          是否關閉防火牆                               true 或 false
+  --clean-screen            是否在運行前清除螢幕上的所有內容              true 或 false
+  --only-registry           僅更換映像倉庫模式                           無
+  --ignore-backup-tips      忽略覆蓋備份提示                             無
+  --pure-mode               純淨模式，精簡列印內容                        無
+  --help                    查看幫助選單                                 無
+```
+
 | 名稱 | 意義 | 選項值 |
 | :-: | :-: | :-: |
 | `--source` | 指定 `Docker CE` 軟體源位址(網域名稱或IP) | `位址` |
-| `--source-registry` | 指定 `Docker` 鏡像倉庫位址(網域名稱或IP) | `位址` |
-| `--branch` | 指定 `Docker CE` 軟體源倉庫(路徑) | `倉庫名稱（詳見下方文檔）` |
-| `--branch-version` | 指定 `Docker CE` 軟體源倉庫版本 | `版本號（詳見下方文檔）` |
-| `--designated-version` | 指定 `Docker Engine` 安裝版本 | `版本號（詳見下方文檔）` |
+| `--source-registry` | 指定 `Docker` 映像倉庫位址(網域名稱或IP) | `位址` |
+| `--branch` | 指定 `Docker CE` 軟體源倉庫(路徑) | `倉庫名稱（詳見下方文件）` |
+| `--branch-version` | 指定 `Docker CE` 軟體源倉庫版本 | `版本號（詳見下方文件）` |
+| `--designated-version` | 指定 `Docker Engine` 安裝版本 | `版本號（詳見下方文件）` |
 | `--codename` | 指定 `Debian` 係作業系統的版本代號 | `代號名稱` |
-| `--protocol` | 指定 `Docker CE` 源的 WEB 協議 | `http` 或 `https` |
+| `--protocol` | 指定 `Docker CE` 源的 Web 協定 | `http` 或 `https` |
 | `--use-intranet-source` | 是否優先使用內部網路 `Docker CE` 軟體源位址 | `true` 或 `false` |
 | `--install-latest` | 是否安裝最新版本的 `Docker Engine` | `true` 或 `false` |
 | `--close-firewall` | 是否關閉防火牆 | `true` 或 `false` |
 | `--clean-screen` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
-| `--only-registry` | 僅更換鏡像倉庫模式 | 無 |
-| `--ignore-backup-tips` | 忽略覆蓋備份提示（即不覆蓋備份) |
+| `--only-registry` | 僅更換映像倉庫模式 | 無 |
+| `--ignore-backup-tips` | 忽略覆蓋備份提示（即不覆蓋備份) | 無 |
 | `--pure-mode` | 純淨模式，精簡列印內容 | 無 |
+| `--help` | 查看幫助選單 | 無 |
 
-> 軟體源完整格式 `<WEB協議>://<軟體源位址(網域名稱或IP)>/<軟體源倉庫(路徑)>`
+> 軟體源完整格式 `<WEB協定>://<軟體源位址(網域名稱或IP)>/<軟體源倉庫(路徑)>`
 
-- ### 指定鏡像倉庫位址
+- ### 指定映像倉庫位址
 
     ``` { .bash .no-copy }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
     ```
 
-- ### 僅更換鏡像倉庫
+- ### 僅更換映像倉庫
 
     === "使用腳本一鍵替換"
 
@@ -252,7 +270,7 @@ hide:
 
         - 安裝 `jq` 軟體包
 
-            === "Debian 係 / openKylin"
+            === "Debian 系 / openKylin"
 
                 ``` bash
                 apt-get install -y jq
@@ -262,7 +280,7 @@ hide:
 
                 新裝系統需要先執行一次更新 `apt-get update`
 
-            === "RedHat 係 / openEuler / OpenCloudOS / Anolis OS"
+            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
                 ``` bash
                 dnf install -y jq || yum install -y jq
@@ -270,16 +288,16 @@ hide:
 
                 > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
 
-        - 指定鏡像倉庫位址
+        - 指定映像倉庫位址
 
-            > 請手動替換 `<example.registry.com>` 為鏡像倉庫位址後在執行，詳見上方 “項目內置的鏡像倉庫源” 表格中的位址列
+            > 請手動替換 `<example.registry.com>` 為映像倉庫位址後在執行，詳見上方 “專案內置的映像倉庫源” 表格中的位址列
 
             ``` bash
             SOURCE_REGISTRY='"https://<example.registry.com>"'
             ```
-            也可以指定多個鏡像倉庫，如 `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`，注意用英文逗號分割
+            也可以指定多個映像倉庫，如 `SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'`，注意用英文逗號分割
 
-        - 替換鏡像倉庫位址
+        - 替換映像倉庫位址
 
             ``` bash
             [ -s "/etc/docker/daemon.json" ] || echo "{}" >/etc/docker/daemon.json
@@ -308,7 +326,7 @@ hide:
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
     ```
     > 倉庫名稱是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 這幾個  
-    > 詳情請見 [官方安裝文檔](https://docs.docker.com/engine/install) 及 [Docker CE 官方倉庫](https://download.docker.com/linux)
+    > 詳情請見 [官方安裝文件](https://docs.docker.com/engine/install) 及 [Docker CE 官方倉庫](https://download.docker.com/linux)
 
     ``` { .bash .no-copy title="还可以指定倉庫版本號" }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
@@ -405,7 +423,7 @@ hide:
 
     如果提示不支援那麼請使用系統自備的套件管理工具進行安裝。因為這些軟體包由 Linux 發行版的軟體包維護者建構和維護，可能存在配置差異或由修改後的原始碼建構。
 
-    也可以使用 &nbsp; [![Docker Desktop](/assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
+    也可以使用 &nbsp; [![Docker Desktop](../assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
 
 - ## 最佳實踐
 
@@ -420,4 +438,4 @@ hide:
     - #### 簡易方式
 
         --8<-- "docs/other/example2.md"
-        > 註：不指定 `Docker CE 源` 以及 `鏡像倉庫源` 則會交由使用者進行互動選擇，屆時會自動清屏 `$ clear`，從而導致你腳本的運行日誌被清除
+        > 註：不指定 `Docker CE 源` 以及 `映像倉庫源` 則會交由使用者進行互動選擇，屆時會自動清屏 `$ clear`，從而導致你腳本的運行日誌被清除

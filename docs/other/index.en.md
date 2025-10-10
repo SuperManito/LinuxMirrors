@@ -4,13 +4,7 @@ hide:
   - footer
 ---
 
-# :simple-docker:{style="color: #1d63ed"} Docker Installation & Mirror Switching Script
-
-???+ question "Why do you see this notice?"
-
-    The script of this project currently mainly serves Simplified Chinese users, but from the very beginning it was defined as a universal mirror switching script, providing many command options for customization, which is also one of the reasons why this project is now available to users of other languages. The script output is currently fixed in Simplified Chinese. With feedback and usage from users of other languages, the script may support Traditional Chinese and English in the future.
-
-    The documentation is translated with tools, and some professional terms below may be inaccurate. Corrections are welcome.
+# :simple-docker:{style="color: #1d63ed"} Docker Installation & Registry Mirror Switcher
 
 ## One-Click Command
 
@@ -213,6 +207,29 @@ hide:
 
 ## Command Options (Advanced Usage)
 
+<!-- termynal -->
+```
+$ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help 
+
+Command options(name/meaning/value):
+
+  --source                  Specify Docker CE source address (domain or IP)            address
+  --source-registry         Specify Docker registry mirror address (domain or IP)      address
+  --branch                  Specify Docker CE source repository (path)                 repo name
+  --branch-version          Specify Docker CE source repository version                version
+  --designated-version      Specify Docker Engine installation version                 version
+  --codename                Specify Debian-based OS codename                           codename
+  --protocol                Specify Web protocol for Docker CE source                  http or https
+  --use-intranet-source     Prefer intranet Docker CE source address                   true or false
+  --install-latest          Whether to install the latest Docker Engine                true or false
+  --close-firewall          Whether to disable the firewall                            true or false
+  --clean-screen            Whether to clear the screen before running                 true or false
+  --only-registry           Only switch registry mirror mode	                       none
+  --ignore-backup-tips      Ignore backup overwrite prompt (do not backup)	          none
+  --pure-mode               Pure mode, minimal output                                  none
+  --help                    Show help menu                                             none
+```
+
 | Name | Meaning | Value |
 | :-: | :-: | :-: |
 | `--source` | Specify `Docker CE` source address (domain or IP) | `address` |
@@ -221,7 +238,7 @@ hide:
 | `--branch-version` | Specify `Docker CE` source repository version | `version (see docs below)` |
 | `--designated-version` | Specify `Docker Engine` installation version | `version (see docs below)` |
 | `--codename` | Specify `Debian-based` OS codename | `codename` |
-| `--protocol` | Specify WEB protocol for `Docker CE` source | `http` or `https` |
+| `--protocol` | Specify Web protocol for `Docker CE` source | `http` or `https` |
 | `--use-intranet-source` | Prefer intranet `Docker CE` source address | `true` or `false` |
 | `--install-latest` | Whether to install the latest `Docker Engine` | `true` or `false` |
 | `--close-firewall` | Whether to disable the firewall | `true` or `false` |
@@ -229,8 +246,9 @@ hide:
 | `--only-registry` | Only switch registry mirror mode | none |
 | `--ignore-backup-tips` | Ignore backup overwrite prompt (do not backup) | none |
 | `--pure-mode` | Pure mode, minimal output | none |
+| `--help` | Show help menu | none |
 
-> Full source format: `<WEB protocol>://<source address (domain or IP)>/<repository path>`
+> Full source format: `< Web  protocol>://<source address (domain or IP)>/<repository path>`
 
 - ### Specify Registry Mirror Address
 
@@ -405,7 +423,7 @@ hide:
 
     If it prompts that it is not supported, please use the system's own package management tool to install it. Because these packages are built and maintained by the Linux distribution's package maintainers and may have differences in configuration or are built from modified source code.
 
-    You can also use &nbsp; [![Docker Desktop](/assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
+    You can also use &nbsp; [![Docker Desktop](../assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
 
 ## Best Practices
 

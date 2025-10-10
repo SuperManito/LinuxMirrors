@@ -166,7 +166,7 @@ hide:
 
     由于一些不可抗力的因素，国内网络环境下目前无法访问 [Docker Hub](https://hub.docker.com) 因此不能正常拉取镜像，建议使用下方提到的国内可用镜像仓库源
 
-    注：脚本内的指定 WEB 协议交互仅用于控制 `Docker CE` 软件源，`Docker Registry` 强制使用 `HTTPS` 协议
+    注：脚本内的指定 Web 协议交互仅用于控制 `Docker CE` 软件源，`Docker Registry` 强制使用 `HTTPS` 协议
 
 
 !!! quote "内置的镜像仓库源"
@@ -219,14 +219,15 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
   --branch-version          指定 Docker CE 软件源仓库版本              版本号
   --designated-version      指定 Docker Engine 安装版本                版本号
   --codename                指定 Debian 系操作系统的版本代号            代号名称
-  --protocol                指定 Docker CE 软件源的 WEB 协议           http 或 https
+  --protocol                指定 Docker CE 软件源的 Web 协议           http 或 https
   --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false
   --install-latest          是否安装最新版本的 Docker Engine           true 或 false
   --close-firewall          是否关闭防火墙                             true 或 false
   --clean-screen            是否在运行前清除屏幕上的所有内容             true 或 false
   --only-registry           仅更换镜像仓库模式                          无
-  --ignore-backup-tips      忽略覆盖备份提示                           无
+  --ignore-backup-tips      忽略覆盖备份提示                            无
   --pure-mode               纯净模式，精简打印内容                      无
+  --help                    查看帮助菜单                               无
 ```
 
 | 名称 | 含义 | 选项值 |
@@ -237,7 +238,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 | `--branch-version` | 指定 `Docker CE` 软件源仓库版本 | `版本号（详见下方文档）` |
 | `--designated-version` | 指定 `Docker Engine` 安装版本 | `版本号（详见下方文档）` |
 | `--codename` | 指定 `Debian` 系操作系统的版本代号 | `代号名称` |
-| `--protocol` | 指定 `Docker CE` 源的 WEB 协议 | `http` 或 `https` |
+| `--protocol` | 指定 `Docker CE` 源的 Web 协议 | `http` 或 `https` |
 | `--use-intranet-source` | 是否优先使用内网 `Docker CE` 软件源地址 | `true` 或 `false` |
 | `--install-latest` | 是否安装最新版本的 `Docker Engine` | `true` 或 `false` |
 | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
@@ -245,6 +246,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 | `--only-registry` | 仅更换镜像仓库模式 | 无 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 | `--pure-mode` | 纯净模式，精简打印内容 | 无 |
+| `--help` | 查看帮助菜单 | 无 |
 
 > 软件源完整格式 `<WEB协议>://<软件源地址(域名或IP)>/<软件源仓库(路径)>`
 
@@ -421,7 +423,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 
     如果提示不支持那么请使用系统自带的包管理工具进行安装。因为这些软件包由 Linux 发行版的软件包维护者构建和维护，可能存在配置差异或由修改后的源代码构建。
 
-    也可以使用 &nbsp; [![Docker Desktop](/assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
+    也可以使用 &nbsp; [![Docker Desktop](../assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
 
 ## 最佳实践
 

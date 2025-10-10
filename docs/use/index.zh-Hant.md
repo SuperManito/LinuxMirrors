@@ -4,12 +4,6 @@ hide:
   - footer
 ---
 
-???+ question "為什麼會看到該提示？"
-
-    本項目腳本目前主要服務於簡體中文用戶，但是從立項之初就定義為了通用換源腳本，提供了諸多命令選項用於自定義使用，這也是本項目為什麼開始面向其它語言用戶使用的原因之一。腳本列印內容目前固定為簡體中文，隨著其它語言使用者的回饋和使用，腳本將來可能會支援繁體中文和英文。
-
-    文檔使用工具進行翻譯，下方內容中的專業術語可能存在不準確的情況，歡迎修正。
-
 ## 一鍵執行命令
 
 === ":material-home-city: 中國大陸"
@@ -148,14 +142,14 @@ hide:
 !!! tip "使用幫助"
 
     選項卡分別代表腳本內建軟體源（鏡像站）類型和獲取腳本途徑，請在使用前檢查目標鏡像站是否支援你所使用的作業系統，可以在[軟體源列表](../mirrors/index.md)中查看。  
-    預設自動備份原有軟體源內容，如需了解更多請翻閱下方文檔。若使用過程中的某些選項令你疑惑不解，那麼在選擇軟體源後一路回車即是最佳實踐。
+    預設自動備份原有軟體源內容，如需了解更多請翻閱下方文件。若使用過程中的某些選項令你疑惑不解，那麼在選擇軟體源後一路回車即是最佳實踐。
 
     _支援在系統原有軟體源損壞、缺失、無效等異常環境下使用，無需額外安裝任何依賴。_
 
 !!! quote "關於軟體源的選擇（新用戶必讀）"
 
     如果你不了解這些鏡像站，那麼建議使用 `阿里雲 (相容性高、可用性強)` 或 `中國科學技術大學 (速度快)`，請不要陷入測速焦慮，內建的軟體源一般不會有太大的差異。  
-    本項目腳本是一個自動化維運工具，不會對鏡像站進行主觀的優劣排序和客製化適配，使用者的選擇應該是自由的，這也是為了開源軟體精神能夠得到更好的延續。
+    本專案腳本是一個自動化維運工具，不會對鏡像站進行主觀的優劣排序和客製化適配，使用者的選擇應該是自由的，這也是為了開源軟體精神能夠得到更好的延續。
 
 <div class="grid cards" markdown>
 
@@ -193,7 +187,7 @@ hide:
 
         此報錯是由於系統沒有安裝 `curl` 軟體包導致，安裝命令如下
 
-        === "Debian 係 / openKylin"
+        === "Debian 系 / openKylin"
 
             ``` bash
             apt-get install -y curl
@@ -203,7 +197,7 @@ hide:
 
             新裝系統需要先執行一遍更新 `apt-get update`
 
-        === "RedHat 係 / openEuler / OpenCloudOS / Anolis OS"
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
             ``` bash
             dnf install -y curl || yum install -y curl
@@ -295,7 +289,7 @@ hide:
 
     !!! quote ""
 
-        === "Debian 係 / openKylin"
+        === "Debian 系 / openKylin"
 
             === "傳統格式"
 
@@ -314,7 +308,7 @@ hide:
 
             > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
-        === "RedHat 係 / openEuler / OpenCloudOS / Anolis OS"
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
             ``` bash
             cp -rf /etc/yum.repos.d.bak /etc/yum.repos.d
@@ -401,7 +395,7 @@ hide:
 
     !!! quote ""
 
-        項目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文檔目錄作為網站資源發佈，網站託管於 [:netlify: Netlify](https://www.netlify.com)，幾乎沒有使用風險。 
+        專案利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文件目錄作為網站資源發佈，網站託管於 [:netlify: Netlify](https://www.netlify.com)，幾乎沒有使用風險。 
 
         當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和訪問。
 
@@ -413,7 +407,7 @@ hide:
 
         軟體源（鏡像站）的網路延遲即 `Ping` 與下載速度沒有太大的關聯，雙方地理位置間隔的遠近不代表實際體驗，有些鏡像站下行總頻寬很高但實際測速卻並不理想，因為這與鏡像站的負載策略有關。 
 
-        網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本項目腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其他高級語言無法替代的，不過目前 Bash 腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。
+        網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本專案腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其他高級語言無法替代的，不過目前 Bash 腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。
 
 - #### 關於未啟用的軟體源倉庫
 
@@ -421,13 +415,13 @@ hide:
 
         許多系統的軟體源會啟用多個倉庫，腳本遵循系統預設設置，預設不啟用的軟體源（倉庫）不會在運行完本腳本後被啟用，但是它們也隨腳本更換了目標軟體源位址，具體啟用方法如下：
 
-        === "Debian 係 / openKylin"
+        === "Debian 系 / openKylin"
 
             預設禁用了`deb-src`原始碼倉庫和`proposed`預發佈軟體源，若需啟用請將 `/etc/apt/sources.list` 文件中相關內容的所在行取消註釋
 
             > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
 
-        === "RedHat 係 / openEuler / OpenCloudOS / Anolis OS"
+        === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
 
             部分倉庫預設沒有啟用，若需啟用請將 `/etc/yum.repos.d` 目錄下相關 repo 文件中的 `enabled` 值修改為 `1`
 
@@ -442,7 +436,44 @@ hide:
 
 ## 命令選項（進階用法）
 
-| 名称 | 含义 | 选项值 |
+<!-- termynal -->
+```
+$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help 
+
+命令選項(名稱/含義/值)：
+
+  --abroad                     使用境外以及海外軟體源                                                 無
+  --edu                        使用中國大陸教育網軟體源                                               無
+  --source                     指定軟體源地址(網域名稱或IP)                                           位址
+  --source-epel                指定 EPEL 附加軟體包倉庫的軟體源地址(網域名稱或IP)                       位址
+  --source-security            指定 Debian / Ubuntu 系統 security 倉庫的軟體源地址(網域名稱或IP)       位址
+  --source-vault               指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源地址(網域名稱或IP)       位址
+  --source-portage             指定 Gentoo 系統 portage 倉庫的軟體源地址(網域名稱或IP)                 位址
+  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源地址(網域名稱或IP)    位址
+  --branch                     指定軟體源倉庫(路徑)                                                   倉庫名稱
+  --branch-epel                指定 EPEL 附加軟體包倉庫的軟體源倉庫(路徑)                               倉庫名稱
+  --branch-security            指定 Debian 系統 security 倉庫的軟體源倉庫(路徑)                        倉庫名稱
+  --branch-vault               指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫(路徑)               倉庫名稱
+  --branch-portage             指定 Gentoo 系統 portage 倉庫的軟體源倉庫(路徑)                         倉庫名稱
+  --branch-base-system         指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫(路徑)            倉庫名稱
+  --codename                   指定 Debian 系 / openKylin 系統的版本代號                              代號名稱
+  --protocol                   指定 Web 協定                                                         http 或 https
+  --use-intranet-source        是否優先使用內部網路軟體源位址                                          true 或 false
+  --use-official-source        是否使用目標系統的官方軟體源                                            true 或 false
+  --use-official-source-epel   是否使用 EPEL 附加軟體包的官方軟體源                                    true 或 false
+  --install-epel               是否安裝 EPEL 附加軟體包                                               true 或 false
+  --backup                     是否備份原有軟體源                                                     true 或 false
+  --upgrade-software           是否更新軟體包                                                         true 或 false
+  --clean-cache                是否在更新軟體包後清理下載快取                                           true 或 false
+  --clean-screen               是否在運行前清除螢幕上的所有內容                                         true 或 false
+  --only-epel                  僅更換 EPEL 軟體源模式                                                  無
+  --ignore-backup-tips         忽略覆蓋備份提示                                                        無
+  --print-diff                 是否列印原始文件修改前後差異                                             無
+  --pure-mode                  純淨模式，精簡列印內容                                                   無
+  --help                       查看幫助選單                                                            無
+```
+
+| 名稱 | 含義 | 选项值 |
 | - | - | :-: |
 | `--abroad` | 使用境外以及海外軟體源 | 無 |
 | `--edu` | 使用中國大陸教育網軟體源 | 無 |
@@ -458,8 +489,8 @@ hide:
 | `--branch-vault` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
 | `--branch-portage` | 指定 Gentoo 系統 portage 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
 | `--branch-base-system` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫（路徑） | `倉庫名稱` |
-| `--codename` | 指定 Debian 係 / openKylin 作業系統的版本代號 | `代號名稱` |
-| `--protocol` | 指定 WEB 協議 | `http` 或 `https` |
+| `--codename` | 指定 Debian 系 / openKylin 作業系統的版本代號 | `代號名稱` |
+| `--protocol` | 指定 Web 協定 | `http` 或 `https` |
 | `--use-intranet-source` | 是否優先使用內部網路軟體源位址 | `true` 或 `false` |
 | `--use-official-source` | 是否使用目標作業系統的官方軟體源 | `true` 或 `false` |
 | `--use-official-source-epel` | 是否使用 EPEL 附加軟體包的官方軟體源 | `true` 或 `false` |
@@ -468,13 +499,13 @@ hide:
 | `--upgrade-software` | 是否更新軟體套件 | `true` 或 `false` |
 | `--clean-cache` | 是否在更新軟體包後清理下載快取 | `true` 或 `false` |
 | `--clean-screen` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
-| `--print-diff` | 是否列印原始文件修改前後差異 | `true` 或 `false` |
 | `--only-epel` | 僅更換 EPEL 軟體源模式 | 無 |
 | `--ignore-backup-tips` | 忽略覆蓋備份提示（即不覆蓋備份） | 無 |
+| `--print-diff` | 是否列印原始文件修改前後差異 | 無 |
 | `--pure-mode` | 純淨模式，精簡列印內容 | 無 |
 | `--help` | 查看幫助選單 | 無 |
 
-> 軟體源完整格式 `<WEB協議>://<軟體源位址(網域名稱或IP)>/<軟體源倉庫(路徑)>`
+> 軟體源完整格式 `<WEB協定>://<軟體源位址(網域名稱或IP)>/<軟體源倉庫(路徑)>`
 
 以下是一些進階用法的舉例
 
@@ -488,11 +519,11 @@ hide:
 
     這裡描述的軟體源倉庫與系統軟體倉庫不同，指的是軟體源（鏡像站）位址後面的路徑即鏡像站的倉庫目錄，雖然名義上都是倉庫但是非常容易混淆
 
-    主要使用情境：目標鏡像站有對應的系統鏡像倉庫但是不符合本項目腳本關於軟體源倉庫設定的預設規則
+    主要使用情境：目標鏡像站有對應的系統鏡像倉庫但是不符合本專案腳本關於軟體源倉庫設定的預設規則
 
-    ??? note "項目對於各作業系統所使用的預設倉庫名稱（點選展開檢視）"
+    ??? note "專案對於各作業系統所使用的預設倉庫名稱（點選展開檢視）"
 
-        項目腳本為了適配大的環境不會針對某一鏡像站獨特的倉庫名稱而單獨適配
+        專案腳本為了適配大的環境不會針對某一鏡像站獨特的倉庫名稱而單獨適配
 
         | 系統名稱 | 涉及的名稱 |
         | --- | :---: |
@@ -591,7 +622,7 @@ hide:
           --branch-security debian-security
         ```
 
-    - #### 指定 Debian 係 Linux 作業系統的版本代號
+    - #### 指定 Debian 系 Linux 作業系統的版本代號
 
         大多數情況下自訂版本代號用於更換系統版本，請看下面的例子
 
@@ -653,7 +684,7 @@ hide:
 
     - #### Arch Linux 使用中文社群倉庫
 
-        本項目腳本目前不支援此額外倉庫，因使用人數較少等原因暫不考慮適配，若想使用請參考下方的一鍵設定命令
+        本專案腳本目前不支援此額外倉庫，因使用人數較少等原因暫不考慮適配，若想使用請參考下方的一鍵設定命令
 
         ``` bash
         SOURCE="https://mirrors.aliyun.com/archlinuxcn" # 指定軟體源位址
@@ -691,9 +722,9 @@ hide:
 
 ## 客製化腳本
 
-如果你是其它項目的開發者希望透過本項目來製作專屬腳本，那麼請參考下面提到的內容，目前已經有中國大陸教育單位鏡像站的維護者這樣做了。
+如果你是其它專案的開發者希望透過本專案來製作專屬腳本，那麼請參考下面提到的內容，目前已經有中國大陸教育單位鏡像站的維護者這樣做了。
 
-1.  首先不建議修改程式碼的底層邏輯，應盡量與本項目原始碼保持同步，腳本內容執行順序由 `main` 函數控制，程式碼邏輯清晰
+1.  首先不建議修改程式碼的底層邏輯，應盡量與本專案原始碼保持同步，腳本內容執行順序由 `main` 函數控制，程式碼邏輯清晰
 2.  你可以簡單去除一些無關內容，例如將軟體源列表（陣列）`mirror_list_(default|edu|abroad|extranet|intranet)` 中的內容刪除，例如：`mirror_list_default=()`
 3.  如果你想要自定義腳本列印內容可直接修改 `run_start` `run_end` `print_title` 這三個函數中的內容
 4.  如果你想加入自定義 Shell 內容請參見 `main` 函數中腳本執行順序，可以在對應位置直接插入內容也可以封裝函數後調用

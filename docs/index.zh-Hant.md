@@ -3,7 +3,7 @@ title: 一鍵腳本讓換源更簡單
 description: GNU/Linux 更換系統軟體源腳本及 Docker 安裝與換源腳本
 comments: true
 glightbox: false
-comments_description: 此評論區僅用於展示項目使用評估和經驗分享，回饋問題或建議請前往<a href="/community">社群</a>或<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank">Issues</a>
+comments_description: 此評論區僅用於展示專案使用評估和經驗分享，回饋問題或建議請前往<a href="/community">社群</a>或<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank">Issues</a>
 hide:
   - navigation
   - toc
@@ -48,7 +48,7 @@ hide:
     ---
 
     只需要一行指令就能直接運行，零技術門檻，無需安裝任何依賴  
-    文檔整合了 AI 搜尋與聊天，提供各種使用場景的解決方案
+    文件整合了 AI 搜尋與聊天，提供各種使用場景的解決方案
 
 -   :material-vector-polyline:{ .lg .middle } __系統支援廣泛__
 
@@ -69,14 +69,14 @@ hide:
     ---
 
     最快僅需 10 秒即可完成軟體源的更換，高效能維運，節省大量時間成本  
-    項目經過數年的迭代與最佳化，腳本效能卓越運作穩定，場景判斷完善
+    專案經過數年的迭代與最佳化，腳本效能卓越運作穩定，場景判斷完善
 
 -   :octicons-globe-24:{ .lg .middle } __全球網絡，執行無憂__
 
     ---
 
     本網站提供全球邊緣網路加速，不畏各種網路環境，輕鬆訪問  
-    同時提供了多個備用地址以確保項目腳本始終可用，並真正做到使用無憂
+    同時提供了多個備用地址以確保專案腳本始終可用，並真正做到使用無憂
 
 -   :material-arm-flex-outline:{ .lg .middle } __功能強大，無與倫比__
 
@@ -96,8 +96,8 @@ hide:
 
     ---
 
-    項目已設立 MIT 開源授權協議，腳本程式碼完全開源且免費使用  
-    請尊重作者的知識成果，傳播時請在顯著位置標註軟體源或項目地址
+    專案已設立 MIT 開源授權協定，腳本程式碼完全開源且免費使用  
+    請尊重作者的知識成果，傳播時請在顯著位置標註軟體源或專案地址
 
 </div>
 
@@ -106,7 +106,7 @@ hide:
 | 作業系統 | 適配版本 |
 | --- | :---: |
 | <a href="https://www.debian.org" title="https://www.debian.org" target="_blank"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> **Debian** | _8～13_ |
-| <a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **Ubuntu** :material-information-outline:{ title="支援烏班圖家族衍生作業系統，例如 <code>優麒麟</code> <code>Kubuntu</code> 等<br/>由於迭代速度較快並不直接支援所有非 LTS 的版本，因此具體詳見文檔" } | _14～25_ |
+| <a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **Ubuntu** :material-information-outline:{ title="支援烏班圖家族衍生作業系統，例如 <code>優麒麟</code> <code>Kubuntu</code> 等<br/>由於迭代速度較快並不直接支援所有非 LTS 的版本，因此具體詳見文件" } | _14～25_ |
 | <a href="https://www.kali.org" title="https://www.kali.org" target="_blank"><img src="/assets/images/icon/kali-linux.svg" width="16" height="16"></a> **Kali Linux** | _all_ |
 | <a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **Linux Mint** | _19～22 / LMDE 6_ |
 | <a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Deepin** | _all_ |

@@ -457,7 +457,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
   --branch-portage              指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                     仓库名
   --branch-base-system          指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)        仓库名
   --codename                    指定 Debian 系 / openKylin 操作系统的版本代号                       代号名称
-  --protocol                    指定 WEB 协议                                                      http 或 https
+  --protocol                    指定 Web 协议                                                      http 或 https
   --use-intranet-source         是否优先使用内网软件源地址                                          true 或 false
   --use-official-source         是否使用目标操作系统的官方软件源                                     true 或 false
   --use-official-source-epel    是否使用 EPEL 附加软件包的官方软件源                                 true 或 false
@@ -468,8 +468,9 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
   --clean-screen                是否在运行前清除屏幕上的所有内容                                     true 或 false
   --only-epel                   仅更换 EPEL 软件源模式                                              无
   --ignore-backup-tips          忽略覆盖备份提示                                                    无
-  --print-diff                  打印源文件修改前后差异                                              无
-  --pure-mode                   纯净模式，精简打印内容                                              无
+  --print-diff                  打印源文件修改前后差异                                               无
+  --pure-mode                   纯净模式，精简打印内容                                               无
+  --help                        查看帮助菜单                                                        无
 ```
 
 | 名称 | 含义 | 选项值 |
@@ -489,7 +490,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `--branch-portage` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
 | `--branch-base-system` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库（路径） | `仓库名` |
 | `--codename` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
-| `--protocol` | 指定 WEB 协议 | `http` 或 `https` |
+| `--protocol` | 指定 Web 协议 | `http` 或 `https` |
 | `--use-intranet-source` | 是否优先使用内网软件源地址 | `true` 或 `false` |
 | `--use-official-source` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `--use-official-source-epel` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
@@ -498,9 +499,9 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 是否在更新软件包后清理下载缓存 | `true` 或 `false` |
 | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
-| `--print-diff` | 是否打印源文件修改前后差异 | `true` 或 `false` |
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
+| `--print-diff` | 是否打印源文件修改前后差异 | 无 |
 | `--pure-mode` | 纯净模式，精简打印内容 | 无 |
 | `--help` | 查看帮助菜单 | 无 |
 
@@ -751,7 +752,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |
 | `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
 | `USE_OFFICIAL_SOURCE_EPEL` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
-| `WEB_PROTOCOL` | 指定 WEB 协议 | `http` 或 `https` |
+| `WEB_PROTOCOL` | 指定 Web 协议 | `http` 或 `https` |
 | `INSTALL_EPEL` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
 | `ONLY_EPEL` | 仅更换 EPEL 软件源模式 | `true` 或 `false` |
 | `BACKUP` | 是否备份原有软件源 | `true` 或 `false` |
