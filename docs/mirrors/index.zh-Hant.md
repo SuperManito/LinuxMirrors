@@ -30,36 +30,36 @@ search:
 
     | 鏡像站名稱 | 鏡像站位址 |
     | :- | :-: |
-    | 北京大学 | [mirrors.pku.edu.cn](https://mirrors.pku.edu.cn "https://mirrors.pku.edu.cn") |
-    | 北京交通大学 | [mirror.bjtu.edu.cn](https://mirror.bjtu.edu.cn "https://mirror.bjtu.edu.cn") |
-    | 北京外国语大学 | [mirrors.bfsu.edu.cn](https://mirrors.bfsu.edu.cn "https://mirrors.bfsu.edu.cn") |
-    | 北京邮电大学 | [mirror.bupt.edu.cn](https://mirror.bupt.edu.cn "https://mirror.bupt.edu.cn") |
-    | 重庆大学 | [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn "https://mirrors.cqu.edu.cn") |
-    | 重庆邮电大学 | [mirrors.cqupt.edu.cn](https://mirrors.cqupt.edu.cn "https://mirrors.cqupt.edu.cn") |
-    | 大连东软信息学院 | [mirrors.neusoft.edu.cn](https://mirrors.neusoft.edu.cn "https://mirrors.neusoft.edu.cn") |
-    | 电子科技大学 | [mirrors.uestc.cn](https://mirrors.uestc.cn "https://mirrors.uestc.cn") |
-    | 华南农业大学 | [mirrors.scau.edu.cn](https://mirrors.scau.edu.cn "https://mirrors.scau.edu.cn") |
-    | 华中科技大学 | [mirrors.hust.edu.cn](https://mirrors.hust.edu.cn "https://mirrors.hust.edu.cn") |
-    | 吉林大学 | [mirrors.jlu.edu.cn](https://mirrors.jlu.edu.cn "https://mirrors.jlu.edu.cn") |
-    | 荆楚理工学院 | [mirrors.jcut.edu.cn](https://mirrors.jcut.edu.cn "https://mirrors.jcut.edu.cn") |
-    | 江西理工大学 | [mirrors.jxust.edu.cn](https://mirrors.jxust.edu.cn "https://mirrors.jxust.edu.cn") |
-    | 兰州大学 | [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn "https://mirror.lzu.edu.cn") |
-    | 南京大学 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn "https://mirrors.nju.edu.cn") |
-    | 南京工业大学 | [mirrors.njtech.edu.cn](https://mirrors.njtech.edu.cn "https://mirrors.njtech.edu.cn") |
-    | 南京邮电大学 | [mirrors.njupt.edu.cn](https://mirrors.njupt.edu.cn "https://mirrors.njupt.edu.cn") |
-    | 南方科技大学 | [mirrors.sustech.edu.cn](https://mirrors.sustech.edu.cn "https://mirrors.sustech.edu.cn") |
-    | 南阳理工学院 | [mirror.nyist.edu.cn](https://mirror.nyist.edu.cn "https://mirror.nyist.edu.cn") |
-    | 齐鲁工业大学 | [mirrors.qlu.edu.cn](https://mirrors.qlu.edu.cn "https://mirrors.qlu.edu.cn") |
-    | 清华大学 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn "https://mirrors.tuna.tsinghua.edu.cn") |
-    | 山东大学 | [mirrors.sdu.edu.cn](https://mirrors.sdu.edu.cn "https://mirrors.sdu.edu.cn") |
-    | 上海科技大学 | [mirrors.shanghaitech.edu.cn](https://mirrors.shanghaitech.edu.cn "https://mirrors.shanghaitech.edu.cn") |
-    | 上海交通大学（思源） | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn "https://mirror.sjtu.edu.cn") |
-    | 上海交通大学（致远） | [mirrors.sjtug.sjtu.edu.cn](https://mirrors.sjtug.sjtu.edu.cn "https://mirrors.sjtug.sjtu.edu.cn") |
-    | 武昌首义学院 | [mirrors.wsyu.edu.cn](https://mirrors.wsyu.edu.cn "https://mirrors.wsyu.edu.cn") |
-    | 西安交通大学 | [mirrors.xjtu.edu.cn](https://mirrors.xjtu.edu.cn "https://mirrors.xjtu.edu.cn") |
-    | 西北农林科技大学 | [mirrors.nwafu.edu.cn](https://mirrors.nwafu.edu.cn "https://mirrors.nwafu.edu.cn") |
-    | 浙江大学 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn "https://mirrors.zju.edu.cn") |
-    | 中国科学技术大学 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn "https://mirrors.ustc.edu.cn") |
+    | 北京大學 | [mirrors.pku.edu.cn](https://mirrors.pku.edu.cn "https://mirrors.pku.edu.cn") |
+    | 北京交通大學 | [mirror.bjtu.edu.cn](https://mirror.bjtu.edu.cn "https://mirror.bjtu.edu.cn") |
+    | 北京外國語大學 | [mirrors.bfsu.edu.cn](https://mirrors.bfsu.edu.cn "https://mirrors.bfsu.edu.cn") |
+    | 北京郵電大學 | [mirror.bupt.edu.cn](https://mirror.bupt.edu.cn "https://mirror.bupt.edu.cn") |
+    | 重慶大學 | [mirrors.cqu.edu.cn](https://mirrors.cqu.edu.cn "https://mirrors.cqu.edu.cn") |
+    | 重慶郵電大學 | [mirrors.cqupt.edu.cn](https://mirrors.cqupt.edu.cn "https://mirrors.cqupt.edu.cn") |
+    | 大連東軟信息學院 | [mirrors.neusoft.edu.cn](https://mirrors.neusoft.edu.cn "https://mirrors.neusoft.edu.cn") |
+    | 電子科技大學 | [mirrors.uestc.cn](https://mirrors.uestc.cn "https://mirrors.uestc.cn") |
+    | 華南農業大學 | [mirrors.scau.edu.cn](https://mirrors.scau.edu.cn "https://mirrors.scau.edu.cn") |
+    | 華中科技大學 | [mirrors.hust.edu.cn](https://mirrors.hust.edu.cn "https://mirrors.hust.edu.cn") |
+    | 吉林大學 | [mirrors.jlu.edu.cn](https://mirrors.jlu.edu.cn "https://mirrors.jlu.edu.cn") |
+    | 荊楚理工學院 | [mirrors.jcut.edu.cn](https://mirrors.jcut.edu.cn "https://mirrors.jcut.edu.cn") |
+    | 江西理工大學 | [mirrors.jxust.edu.cn](https://mirrors.jxust.edu.cn "https://mirrors.jxust.edu.cn") |
+    | 蘭州大學 | [mirror.lzu.edu.cn](https://mirror.lzu.edu.cn "https://mirror.lzu.edu.cn") |
+    | 南京大學 | [mirrors.nju.edu.cn](https://mirrors.nju.edu.cn "https://mirrors.nju.edu.cn") |
+    | 南京工業大學 | [mirrors.njtech.edu.cn](https://mirrors.njtech.edu.cn "https://mirrors.njtech.edu.cn") |
+    | 南京郵電大學 | [mirrors.njupt.edu.cn](https://mirrors.njupt.edu.cn "https://mirrors.njupt.edu.cn") |
+    | 南方科技大學 | [mirrors.sustech.edu.cn](https://mirrors.sustech.edu.cn "https://mirrors.sustech.edu.cn") |
+    | 南陽理工學院 | [mirror.nyist.edu.cn](https://mirror.nyist.edu.cn "https://mirror.nyist.edu.cn") |
+    | 齊魯工業大學 | [mirrors.qlu.edu.cn](https://mirrors.qlu.edu.cn "https://mirrors.qlu.edu.cn") |
+    | 清華大學 | [mirrors.tuna.tsinghua.edu.cn](https://mirrors.tuna.tsinghua.edu.cn "https://mirrors.tuna.tsinghua.edu.cn") |
+    | 山東大學 | [mirrors.sdu.edu.cn](https://mirrors.sdu.edu.cn "https://mirrors.sdu.edu.cn") |
+    | 上海科技大學 | [mirrors.shanghaitech.edu.cn](https://mirrors.shanghaitech.edu.cn "https://mirrors.shanghaitech.edu.cn") |
+    | 上海交通大學（思源） | [mirror.sjtu.edu.cn](https://mirror.sjtu.edu.cn "https://mirror.sjtu.edu.cn") |
+    | 上海交通大學（致遠） | [mirrors.sjtug.sjtu.edu.cn](https://mirrors.sjtug.sjtu.edu.cn "https://mirrors.sjtug.sjtu.edu.cn") |
+    | 武昌首義學院 | [mirrors.wsyu.edu.cn](https://mirrors.wsyu.edu.cn "https://mirrors.wsyu.edu.cn") |
+    | 西安交通大學 | [mirrors.xjtu.edu.cn](https://mirrors.xjtu.edu.cn "https://mirrors.xjtu.edu.cn") |
+    | 西北農林科技大學 | [mirrors.nwafu.edu.cn](https://mirrors.nwafu.edu.cn "https://mirrors.nwafu.edu.cn") |
+    | 浙江大學 | [mirrors.zju.edu.cn](https://mirrors.zju.edu.cn "https://mirrors.zju.edu.cn") |
+    | 中國科學技術大學 | [mirrors.ustc.edu.cn](https://mirrors.ustc.edu.cn "https://mirrors.ustc.edu.cn") |
 
 ## 國際地區 :flag-world-map:
 

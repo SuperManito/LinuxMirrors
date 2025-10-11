@@ -59,174 +59,174 @@ search:
 
 ## Overseas And International Regions :flag-world-map:
 
-=== ":fontawesome-solid-earth-asia: Asia"
+=== ":fontawesome-solid-earth-asia: AS"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | Asia · xTom · Hong Kong :flag-HK: | [mirrors.xtom.hk](https://mirrors.xtom.hk "https://mirrors.xtom.hk") |
-    | Asia · 01Link · Hong Kong :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
-    | Asia · National University of Singapore (NUS) · Singapore :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
-    | Asia · SG.GS · Singapore :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
-    | Asia · xTom · Singapore :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
-    | Asia · NCHC Free Software Lab · Taiwan :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
-    | Asia · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
-    | Asia · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
-    | Asia · Tamkang University · Taiwan :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
-    | Asia · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
-    | Asia · ICSCoE (Industrial Cyber Security Center of Excellence) · Japan :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
-    | Asia · JAIST (Japan Advanced Institute of Science and Technology) · Japan :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
-    | Asia · Yamagata University · Japan :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
-    | Asia · xTom · Japan :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
-    | Asia · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
-    | Asia · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
+    | AS · xTom · Hong Kong :flag-HK: | [mirrors.xtom.hk](https://mirrors.xtom.hk "https://mirrors.xtom.hk") |
+    | AS · 01Link · Hong Kong :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
+    | AS · National University of Singapore (NUS) · Singapore :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
+    | AS · SG.GS · Singapore :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
+    | AS · xTom · Singapore :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
+    | AS · NCHC Free Software Lab · Taiwan :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
+    | AS · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
+    | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
+    | AS · Tamkang University · Taiwan :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
+    | AS · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
+    | AS · ICSCoE (Industrial Cyber Security Center of Excellence) · Japan :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
+    | AS · JAIST (Japan Advanced Institute of Science and Technology) · Japan :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
+    | AS · Yamagata University · Japan :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
+    | AS · xTom · Japan :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
+    | AS · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
+    | AS · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
 
 === ":fontawesome-solid-earth-europe: Europe"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | Europe · Vorboss Ltd · UK :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
-    | Europe · QuickHost · UK :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
-    | Europe · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
-    | Europe · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
-    | Europe · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |
-    | Europe · Dresden University (AG DSN) · Germany :flag-DE: | [ftp.agdsn.de](https://ftp.agdsn.de "https://ftp.agdsn.de") |
-    | Europe · CCIN2P3 · France :flag-FR: | [mirror.in2p3.fr/pub/linux](https://mirror.in2p3.fr/pub/linux "https://mirror.in2p3.fr/pub/linux") |
-    | Europe · Ircam · France :flag-FR: | [mirrors.ircam.fr/pub](https://mirrors.ircam.fr/pub "https://mirrors.ircam.fr/pub") |
-    | Europe · Crans · France :flag-FR: | [eclats.crans.org](https://eclats.crans.org "https://eclats.crans.org") |
-    | Europe · CRIHAN · France :flag-FR: | [ftp.crihan.fr](https://ftp.crihan.fr "https://ftp.crihan.fr") |
-    | Europe · xTom · Netherlands :flag-NL: | [mirrors.xtom.nl](https://mirrors.xtom.nl "https://mirrors.xtom.nl") |
-    | Europe · DataPacket · Netherlands :flag-NL: | [mirror.datapacket.com](https://mirror.datapacket.com "https://mirror.datapacket.com") |
-    | Europe · Linux Kernel · Netherlands :flag-NL: | [eu.edge.kernel.org](https://eu.edge.kernel.org "https://eu.edge.kernel.org") |
-    | Europe · xTom · Estonia :flag-EE: | [mirrors.xtom.ee](https://mirrors.xtom.ee "https://mirrors.xtom.ee") |
-    | Europe · netsite · Denmark :flag-DK: | [mirror.netsite.dk](https://mirror.netsite.dk "https://mirror.netsite.dk") |
-    | Europe · Dotsrc · Denmark :flag-DK: | [mirrors.dotsrc.org](https://mirrors.dotsrc.org "https://mirrors.dotsrc.org") |
-    | Europe · Academic Computer Club · Sweden :flag-SE: | [mirror.accum.se](https://mirror.accum.se "https://mirror.accum.se") |
-    | Europe · Lysator · Sweden :flag-SE: | [ftp.lysator.liu.se](https://ftp.lysator.liu.se "https://ftp.lysator.liu.se") |
-    | Europe · Yandex · Russia :flag-RU: | [mirror.yandex.ru](https://mirror.yandex.ru "https://mirror.yandex.ru") |
-    | Europe · ia64 · Russia :flag-RU: | [mirror.linux-ia64.org](https://mirror.linux-ia64.org "https://mirror.linux-ia64.org") |
-    | Europe · Truenetwork · Russia :flag-RU: | [mirror.truenetwork.ru](https://mirror.truenetwork.ru "https://mirror.truenetwork.ru") |
-    | Europe · Belgian Research Network · Belgium :flag-BE: | [ftp.belnet.be/mirror](https://ftp.belnet.be/mirror "https://ftp.belnet.be/mirror") |
-    | Europe · University of Crete Computer Center · Greece :flag-GR: | [ftp.cc.uoc.gr/mirrors/linux](https://ftp.cc.uoc.gr/mirrors/linux "https://ftp.cc.uoc.gr/mirrors/linux") |
-    | Europe · Masaryk University Faculty of Informatics · Czech Republic :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
-    | Europe · Czech Technical University Student Club (Silicon Hill) · Czech Republic :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
-    | Europe · Vodafone · Czech Republic :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
-    | Europe · CZ.NIC · Czech Republic :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
-    | Europe · ETH Zurich · Switzerland :flag-CH: | [mirror.ethz.ch](https://mirror.ethz.ch "https://mirror.ethz.ch") |
+    | EU · Vorboss Ltd · UK :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
+    | EU · QuickHost · UK :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
+    | EU · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
+    | EU · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
+    | EU · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |
+    | EU · Dresden University (AG DSN) · Germany :flag-DE: | [ftp.agdsn.de](https://ftp.agdsn.de "https://ftp.agdsn.de") |
+    | EU · CCIN2P3 · France :flag-FR: | [mirror.in2p3.fr/pub/linux](https://mirror.in2p3.fr/pub/linux "https://mirror.in2p3.fr/pub/linux") |
+    | EU · Ircam · France :flag-FR: | [mirrors.ircam.fr/pub](https://mirrors.ircam.fr/pub "https://mirrors.ircam.fr/pub") |
+    | EU · Crans · France :flag-FR: | [eclats.crans.org](https://eclats.crans.org "https://eclats.crans.org") |
+    | EU · CRIHAN · France :flag-FR: | [ftp.crihan.fr](https://ftp.crihan.fr "https://ftp.crihan.fr") |
+    | EU · xTom · Netherlands :flag-NL: | [mirrors.xtom.nl](https://mirrors.xtom.nl "https://mirrors.xtom.nl") |
+    | EU · DataPacket · Netherlands :flag-NL: | [mirror.datapacket.com](https://mirror.datapacket.com "https://mirror.datapacket.com") |
+    | EU · Linux Kernel · Netherlands :flag-NL: | [eu.edge.kernel.org](https://eu.edge.kernel.org "https://eu.edge.kernel.org") |
+    | EU · xTom · Estonia :flag-EE: | [mirrors.xtom.ee](https://mirrors.xtom.ee "https://mirrors.xtom.ee") |
+    | EU · netsite · Denmark :flag-DK: | [mirror.netsite.dk](https://mirror.netsite.dk "https://mirror.netsite.dk") |
+    | EU · Dotsrc · Denmark :flag-DK: | [mirrors.dotsrc.org](https://mirrors.dotsrc.org "https://mirrors.dotsrc.org") |
+    | EU · Academic Computer Club · Sweden :flag-SE: | [mirror.accum.se](https://mirror.accum.se "https://mirror.accum.se") |
+    | EU · Lysator · Sweden :flag-SE: | [ftp.lysator.liu.se](https://ftp.lysator.liu.se "https://ftp.lysator.liu.se") |
+    | EU · Yandex · Russia :flag-RU: | [mirror.yandex.ru](https://mirror.yandex.ru "https://mirror.yandex.ru") |
+    | EU · ia64 · Russia :flag-RU: | [mirror.linux-ia64.org](https://mirror.linux-ia64.org "https://mirror.linux-ia64.org") |
+    | EU · Truenetwork · Russia :flag-RU: | [mirror.truenetwork.ru](https://mirror.truenetwork.ru "https://mirror.truenetwork.ru") |
+    | EU · Belgian Research Network · Belgium :flag-BE: | [ftp.belnet.be/mirror](https://ftp.belnet.be/mirror "https://ftp.belnet.be/mirror") |
+    | EU · University of Crete Computer Center · Greece :flag-GR: | [ftp.cc.uoc.gr/mirrors/linux](https://ftp.cc.uoc.gr/mirrors/linux "https://ftp.cc.uoc.gr/mirrors/linux") |
+    | EU · Masaryk University Faculty of Informatics · Czech Republic :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
+    | EU · Czech Technical University Student Club (Silicon Hill) · Czech Republic :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
+    | EU · Vodafone · Czech Republic :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
+    | EU · CZ.NIC · Czech Republic :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
+    | EU · ETH Zurich · Switzerland :flag-CH: | [mirror.ethz.ch](https://mirror.ethz.ch "https://mirror.ethz.ch") |
 
 === ":fontawesome-solid-earth-americas: North America"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | North America · Linux Kernel · USA :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
-    | North America · MIT · USA :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
-    | North America · Princeton University Department of Mathematics · USA :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
-    | North America · Oregon State University Open Source Lab · USA :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
-    | North America · Fremont Cabal Internet Exchange (FCIX) · USA :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
-    | North America · xTom · USA :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
-    | North America · Steadfast · USA :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
-    | North America · University of British Columbia · Canada :flag-CA: | [mirror.it.ubc.ca](https://mirror.it.ubc.ca "https://mirror.it.ubc.ca") |
-    | North America · GoCodeIT · Canada :flag-CA: | [mirror.xenyth.net](https://mirror.xenyth.net "https://mirror.xenyth.net") |
-    | North America · Switch · Canada :flag-CA: | [mirrors.switch.ca](https://mirrors.switch.ca "https://mirrors.switch.ca") |
+    | NA · Linux Kernel · USA :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
+    | NA · MIT · USA :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
+    | NA · Princeton University Department of Mathematics · USA :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
+    | NA · Oregon State University Open Source Lab · USA :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
+    | NA · Fremont Cabal Internet Exchange (FCIX) · USA :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
+    | NA · xTom · USA :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
+    | NA · Steadfast · USA :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
+    | NA · University of British Columbia · Canada :flag-CA: | [mirror.it.ubc.ca](https://mirror.it.ubc.ca "https://mirror.it.ubc.ca") |
+    | NA · GoCodeIT · Canada :flag-CA: | [mirror.xenyth.net](https://mirror.xenyth.net "https://mirror.xenyth.net") |
+    | NA · Switch · Canada :flag-CA: | [mirrors.switch.ca](https://mirrors.switch.ca "https://mirrors.switch.ca") |
 
 === ":fontawesome-solid-earth-americas: South America"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | South America · PoP-SC · Brazil :flag-BR: | [mirror.pop-sc.rnp.br/mirror](https://mirror.pop-sc.rnp.br/mirror "https://mirror.pop-sc.rnp.br/mirror") |
-    | South America · State University of Ponta Grossa · Brazil :flag-BR: | [mirror.uepg.br](https://mirror.uepg.br "https://mirror.uepg.br") |
-    | South America · UFSCar · Brazil :flag-BR: | [mirror.ufscar.br](https://mirror.ufscar.br "https://mirror.ufscar.br") |
-    | South America · Sysarmy Community · Argentina :flag-AR: | [mirrors.eze.sysarmy.com](https://mirrors.eze.sysarmy.com "https://mirrors.eze.sysarmy.com") |
+    | SA · PoP-SC · Brazil :flag-BR: | [mirror.pop-sc.rnp.br/mirror](https://mirror.pop-sc.rnp.br/mirror "https://mirror.pop-sc.rnp.br/mirror") |
+    | SA · State University of Ponta Grossa · Brazil :flag-BR: | [mirror.uepg.br](https://mirror.uepg.br "https://mirror.uepg.br") |
+    | SA · UFSCar · Brazil :flag-BR: | [mirror.ufscar.br](https://mirror.ufscar.br "https://mirror.ufscar.br") |
+    | SA · Sysarmy Community · Argentina :flag-AR: | [mirrors.eze.sysarmy.com](https://mirrors.eze.sysarmy.com "https://mirrors.eze.sysarmy.com") |
 
 === ":fontawesome-solid-earth-oceania: Oceania"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | Oceania · Fremont Cabal Internet Exchange (FCIX) · Australia :flag-AU: | [gsl-syd.mm.fcix.net](https://gsl-syd.mm.fcix.net "https://gsl-syd.mm.fcix.net") |
-    | Oceania · AARNet · Australia :flag-AU: | [mirror.aarnet.edu.au/pub](https://mirror.aarnet.edu.au/pub "https://mirror.aarnet.edu.au/pub") |
-    | Oceania · DataMossa · Australia :flag-AU: | [mirror.datamossa.io](https://mirror.datamossa.io "https://mirror.datamossa.io") |
-    | Oceania · Amaze · Australia :flag-AU: | [mirror.amaze.com.au](https://mirror.amaze.com.au "https://mirror.amaze.com.au") |
-    | Oceania · xTom · Australia :flag-AU: | [mirrors.xtom.au](https://mirrors.xtom.au "https://mirrors.xtom.au") |
-    | Oceania · Over the Wire · Australia :flag-AU: | [mirror.overthewire.com.au](https://mirror.overthewire.com.au "https://mirror.overthewire.com.au") |
-    | Oceania · Free Software Mirror Group · New Zealand :flag-NZ: | [mirror.fsmg.org.nz](https://mirror.fsmg.org.nz "https://mirror.fsmg.org.nz") |
+    | OC · Fremont Cabal Internet Exchange (FCIX) · Australia :flag-AU: | [gsl-syd.mm.fcix.net](https://gsl-syd.mm.fcix.net "https://gsl-syd.mm.fcix.net") |
+    | OC · AARNet · Australia :flag-AU: | [mirror.aarnet.edu.au/pub](https://mirror.aarnet.edu.au/pub "https://mirror.aarnet.edu.au/pub") |
+    | OC · DataMossa · Australia :flag-AU: | [mirror.datamossa.io](https://mirror.datamossa.io "https://mirror.datamossa.io") |
+    | OC · Amaze · Australia :flag-AU: | [mirror.amaze.com.au](https://mirror.amaze.com.au "https://mirror.amaze.com.au") |
+    | OC · xTom · Australia :flag-AU: | [mirrors.xtom.au](https://mirrors.xtom.au "https://mirrors.xtom.au") |
+    | OC · Over the Wire · Australia :flag-AU: | [mirror.overthewire.com.au](https://mirror.overthewire.com.au "https://mirror.overthewire.com.au") |
+    | OC · Free Software Mirror Group · New Zealand :flag-NZ: | [mirror.fsmg.org.nz](https://mirror.fsmg.org.nz "https://mirror.fsmg.org.nz") |
 
 === ":fontawesome-solid-earth-africa: Africa"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | Africa · Liquid Telecom · Kenya :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com "https://mirror.liquidtelecom.com") |
-    | Africa · Dimension Data · South Africa :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com "https://mirror.dimensiondata.com") |
+    | AF · Liquid Telecom · Kenya :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com "https://mirror.liquidtelecom.com") |
+    | AF · Dimension Data · South Africa :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com "https://mirror.dimensiondata.com") |
 
 === ":octicons-globe-16: All"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | Asia · xTom · Hong Kong :flag-HK: | [mirrors.xtom.hk](https://mirrors.xtom.hk "https://mirrors.xtom.hk") |
-    | Asia · 01Link · Hong Kong :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
-    | Asia · National University of Singapore (NUS) · Singapore :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
-    | Asia · SG.GS · Singapore :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
-    | Asia · xTom · Singapore :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
-    | Asia · NCHC Free Software Lab · Taiwan :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
-    | Asia · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
-    | Asia · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
-    | Asia · Tamkang University · Taiwan :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
-    | Asia · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
-    | Asia · ICSCoE (Industrial Cyber Security Center of Excellence) · Japan :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
-    | Asia · JAIST (Japan Advanced Institute of Science and Technology) · Japan :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
-    | Asia · Yamagata University · Japan :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
-    | Asia · xTom · Japan :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
-    | Asia · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
-    | Asia · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
-    | Europe · Vorboss Ltd · UK :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
-    | Europe · QuickHost · UK :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
-    | Europe · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
-    | Europe · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
-    | Europe · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |
-    | Europe · Dresden University (AG DSN) · Germany :flag-DE: | [ftp.agdsn.de](https://ftp.agdsn.de "https://ftp.agdsn.de") |
-    | Europe · CCIN2P3 · France :flag-FR: | [mirror.in2p3.fr/pub/linux](https://mirror.in2p3.fr/pub/linux "https://mirror.in2p3.fr/pub/linux") |
-    | Europe · Ircam · France :flag-FR: | [mirrors.ircam.fr/pub](https://mirrors.ircam.fr/pub "https://mirrors.ircam.fr/pub") |
-    | Europe · Crans · France :flag-FR: | [eclats.crans.org](https://eclats.crans.org "https://eclats.crans.org") |
-    | Europe · CRIHAN · France :flag-FR: | [ftp.crihan.fr](https://ftp.crihan.fr "https://ftp.crihan.fr") |
-    | Europe · xTom · Netherlands :flag-NL: | [mirrors.xtom.nl](https://mirrors.xtom.nl "https://mirrors.xtom.nl") |
-    | Europe · DataPacket · Netherlands :flag-NL: | [mirror.datapacket.com](https://mirror.datapacket.com "https://mirror.datapacket.com") |
-    | Europe · Linux Kernel · Netherlands :flag-NL: | [eu.edge.kernel.org](https://eu.edge.kernel.org "https://eu.edge.kernel.org") |
-    | Europe · xTom · Estonia :flag-EE: | [mirrors.xtom.ee](https://mirrors.xtom.ee "https://mirrors.xtom.ee") |
-    | Europe · netsite · Denmark :flag-DK: | [mirror.netsite.dk](https://mirror.netsite.dk "https://mirror.netsite.dk") |
-    | Europe · Dotsrc · Denmark :flag-DK: | [mirrors.dotsrc.org](https://mirrors.dotsrc.org "https://mirrors.dotsrc.org") |
-    | Europe · Academic Computer Club · Sweden :flag-SE: | [mirror.accum.se](https://mirror.accum.se "https://mirror.accum.se") |
-    | Europe · Lysator · Sweden :flag-SE: | [ftp.lysator.liu.se](https://ftp.lysator.liu.se "https://ftp.lysator.liu.se") |
-    | Europe · Yandex · Russia :flag-RU: | [mirror.yandex.ru](https://mirror.yandex.ru "https://mirror.yandex.ru") |
-    | Europe · ia64 · Russia :flag-RU: | [mirror.linux-ia64.org](https://mirror.linux-ia64.org "https://mirror.linux-ia64.org") |
-    | Europe · Truenetwork · Russia :flag-RU: | [mirror.truenetwork.ru](https://mirror.truenetwork.ru "https://mirror.truenetwork.ru") |
-    | Europe · Belgian Research Network · Belgium :flag-BE: | [ftp.belnet.be/mirror](https://ftp.belnet.be/mirror "https://ftp.belnet.be/mirror") |
-    | Europe · University of Crete Computer Center · Greece :flag-GR: | [ftp.cc.uoc.gr/mirrors/linux](https://ftp.cc.uoc.gr/mirrors/linux "https://ftp.cc.uoc.gr/mirrors/linux") |
-    | Europe · Masaryk University Faculty of Informatics · Czech Republic :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
-    | Europe · Czech Technical University Student Club (Silicon Hill) · Czech Republic :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
-    | Europe · Vodafone · Czech Republic :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
-    | Europe · CZ.NIC · Czech Republic :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
-    | Europe · ETH Zurich · Switzerland :flag-CH: | [mirror.ethz.ch](https://mirror.ethz.ch "https://mirror.ethz.ch") |
-    | North America · Linux Kernel · USA :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
-    | North America · MIT · USA :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
-    | North America · Princeton University Department of Mathematics · USA :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
-    | North America · Oregon State University Open Source Lab · USA :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
-    | North America · Fremont Cabal Internet Exchange (FCIX) · USA :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
-    | North America · xTom · USA :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
-    | North America · Steadfast · USA :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
-    | North America · University of British Columbia · Canada :flag-CA: | [mirror.it.ubc.ca](https://mirror.it.ubc.ca "https://mirror.it.ubc.ca") |
-    | North America · GoCodeIT · Canada :flag-CA: | [mirror.xenyth.net](https://mirror.xenyth.net "https://mirror.xenyth.net") |
-    | North America · Switch · Canada :flag-CA: | [mirrors.switch.ca](https://mirrors.switch.ca "https://mirrors.switch.ca") |
-    | South America · PoP-SC · Brazil :flag-BR: | [mirror.pop-sc.rnp.br/mirror](https://mirror.pop-sc.rnp.br/mirror "https://mirror.pop-sc.rnp.br/mirror") |
-    | South America · State University of Ponta Grossa · Brazil :flag-BR: | [mirror.uepg.br](https://mirror.uepg.br "https://mirror.uepg.br") |
-    | South America · UFSCar · Brazil :flag-BR: | [mirror.ufscar.br](https://mirror.ufscar.br "https://mirror.ufscar.br") |
-    | South America · Sysarmy Community · Argentina :flag-AR: | [mirrors.eze.sysarmy.com](https://mirrors.eze.sysarmy.com "https://mirrors.eze.sysarmy.com") |
-    | Oceania · Fremont Cabal Internet Exchange (FCIX) · Australia :flag-AU: | [gsl-syd.mm.fcix.net](https://gsl-syd.mm.fcix.net "https://gsl-syd.mm.fcix.net") |
-    | Oceania · AARNet · Australia :flag-AU: | [mirror.aarnet.edu.au/pub](https://mirror.aarnet.edu.au/pub "https://mirror.aarnet.edu.au/pub") |
-    | Oceania · DataMossa · Australia :flag-AU: | [mirror.datamossa.io](https://mirror.datamossa.io "https://mirror.datamossa.io") |
-    | Oceania · Amaze · Australia :flag-AU: | [mirror.amaze.com.au](https://mirror.amaze.com.au "https://mirror.amaze.com.au") |
-    | Oceania · xTom · Australia :flag-AU: | [mirrors.xtom.au](https://mirrors.xtom.au "https://mirrors.xtom.au") |
-    | Oceania · Over the Wire · Australia :flag-AU: | [mirror.overthewire.com.au](https://mirror.overthewire.com.au "https://mirror.overthewire.com.au") |
-    | Oceania · Free Software Mirror Group · New Zealand :flag-NZ: | [mirror.fsmg.org.nz](https://mirror.fsmg.org.nz "https://mirror.fsmg.org.nz") |
-    | Africa · Liquid Telecom · Kenya :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com "https://mirror.liquidtelecom.com") |
-    | Africa · Dimension Data · South Africa :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com "https://mirror.dimensiondata.com") |
+    | AS · xTom · Hong Kong :flag-HK: | [mirrors.xtom.hk](https://mirrors.xtom.hk "https://mirrors.xtom.hk") |
+    | AS · 01Link · Hong Kong :flag-HK: | [mirror.01link.hk](https://mirror.01link.hk "https://mirror.01link.hk") |
+    | AS · National University of Singapore (NUS) · Singapore :flag-SG: | [download.nus.edu.sg/mirror](https://download.nus.edu.sg "https://download.nus.edu.sg") |
+    | AS · SG.GS · Singapore :flag-SG: | [mirror.sg.gs](https://mirror.sg.gs "https://mirror.sg.gs") |
+    | AS · xTom · Singapore :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
+    | AS · NCHC Free Software Lab · Taiwan :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
+    | AS · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
+    | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
+    | AS · Tamkang University · Taiwan :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
+    | AS · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
+    | AS · ICSCoE (Industrial Cyber Security Center of Excellence) · Japan :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
+    | AS · JAIST (Japan Advanced Institute of Science and Technology) · Japan :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
+    | AS · Yamagata University · Japan :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
+    | AS · xTom · Japan :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
+    | AS · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
+    | AS · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
+    | EU · Vorboss Ltd · UK :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
+    | EU · QuickHost · UK :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
+    | EU · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
+    | EU · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
+    | EU · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |
+    | EU · Dresden University (AG DSN) · Germany :flag-DE: | [ftp.agdsn.de](https://ftp.agdsn.de "https://ftp.agdsn.de") |
+    | EU · CCIN2P3 · France :flag-FR: | [mirror.in2p3.fr/pub/linux](https://mirror.in2p3.fr/pub/linux "https://mirror.in2p3.fr/pub/linux") |
+    | EU · Ircam · France :flag-FR: | [mirrors.ircam.fr/pub](https://mirrors.ircam.fr/pub "https://mirrors.ircam.fr/pub") |
+    | EU · Crans · France :flag-FR: | [eclats.crans.org](https://eclats.crans.org "https://eclats.crans.org") |
+    | EU · CRIHAN · France :flag-FR: | [ftp.crihan.fr](https://ftp.crihan.fr "https://ftp.crihan.fr") |
+    | EU · xTom · Netherlands :flag-NL: | [mirrors.xtom.nl](https://mirrors.xtom.nl "https://mirrors.xtom.nl") |
+    | EU · DataPacket · Netherlands :flag-NL: | [mirror.datapacket.com](https://mirror.datapacket.com "https://mirror.datapacket.com") |
+    | EU · Linux Kernel · Netherlands :flag-NL: | [eu.edge.kernel.org](https://eu.edge.kernel.org "https://eu.edge.kernel.org") |
+    | EU · xTom · Estonia :flag-EE: | [mirrors.xtom.ee](https://mirrors.xtom.ee "https://mirrors.xtom.ee") |
+    | EU · netsite · Denmark :flag-DK: | [mirror.netsite.dk](https://mirror.netsite.dk "https://mirror.netsite.dk") |
+    | EU · Dotsrc · Denmark :flag-DK: | [mirrors.dotsrc.org](https://mirrors.dotsrc.org "https://mirrors.dotsrc.org") |
+    | EU · Academic Computer Club · Sweden :flag-SE: | [mirror.accum.se](https://mirror.accum.se "https://mirror.accum.se") |
+    | EU · Lysator · Sweden :flag-SE: | [ftp.lysator.liu.se](https://ftp.lysator.liu.se "https://ftp.lysator.liu.se") |
+    | EU · Yandex · Russia :flag-RU: | [mirror.yandex.ru](https://mirror.yandex.ru "https://mirror.yandex.ru") |
+    | EU · ia64 · Russia :flag-RU: | [mirror.linux-ia64.org](https://mirror.linux-ia64.org "https://mirror.linux-ia64.org") |
+    | EU · Truenetwork · Russia :flag-RU: | [mirror.truenetwork.ru](https://mirror.truenetwork.ru "https://mirror.truenetwork.ru") |
+    | EU · Belgian Research Network · Belgium :flag-BE: | [ftp.belnet.be/mirror](https://ftp.belnet.be/mirror "https://ftp.belnet.be/mirror") |
+    | EU · University of Crete Computer Center · Greece :flag-GR: | [ftp.cc.uoc.gr/mirrors/linux](https://ftp.cc.uoc.gr/mirrors/linux "https://ftp.cc.uoc.gr/mirrors/linux") |
+    | EU · Masaryk University Faculty of Informatics · Czech Republic :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
+    | EU · Czech Technical University Student Club (Silicon Hill) · Czech Republic :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
+    | EU · Vodafone · Czech Republic :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
+    | EU · CZ.NIC · Czech Republic :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
+    | EU · ETH Zurich · Switzerland :flag-CH: | [mirror.ethz.ch](https://mirror.ethz.ch "https://mirror.ethz.ch") |
+    | NA · Linux Kernel · USA :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
+    | NA · MIT · USA :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
+    | NA · Princeton University Department of Mathematics · USA :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
+    | NA · Oregon State University Open Source Lab · USA :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
+    | NA · Fremont Cabal Internet Exchange (FCIX) · USA :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
+    | NA · xTom · USA :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
+    | NA · Steadfast · USA :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
+    | NA · University of British Columbia · Canada :flag-CA: | [mirror.it.ubc.ca](https://mirror.it.ubc.ca "https://mirror.it.ubc.ca") |
+    | NA · GoCodeIT · Canada :flag-CA: | [mirror.xenyth.net](https://mirror.xenyth.net "https://mirror.xenyth.net") |
+    | NA · Switch · Canada :flag-CA: | [mirrors.switch.ca](https://mirrors.switch.ca "https://mirrors.switch.ca") |
+    | SA · PoP-SC · Brazil :flag-BR: | [mirror.pop-sc.rnp.br/mirror](https://mirror.pop-sc.rnp.br/mirror "https://mirror.pop-sc.rnp.br/mirror") |
+    | SA · State University of Ponta Grossa · Brazil :flag-BR: | [mirror.uepg.br](https://mirror.uepg.br "https://mirror.uepg.br") |
+    | SA · UFSCar · Brazil :flag-BR: | [mirror.ufscar.br](https://mirror.ufscar.br "https://mirror.ufscar.br") |
+    | SA · Sysarmy Community · Argentina :flag-AR: | [mirrors.eze.sysarmy.com](https://mirrors.eze.sysarmy.com "https://mirrors.eze.sysarmy.com") |
+    | OC · Fremont Cabal Internet Exchange (FCIX) · Australia :flag-AU: | [gsl-syd.mm.fcix.net](https://gsl-syd.mm.fcix.net "https://gsl-syd.mm.fcix.net") |
+    | OC · AARNet · Australia :flag-AU: | [mirror.aarnet.edu.au/pub](https://mirror.aarnet.edu.au/pub "https://mirror.aarnet.edu.au/pub") |
+    | OC · DataMossa · Australia :flag-AU: | [mirror.datamossa.io](https://mirror.datamossa.io "https://mirror.datamossa.io") |
+    | OC · Amaze · Australia :flag-AU: | [mirror.amaze.com.au](https://mirror.amaze.com.au "https://mirror.amaze.com.au") |
+    | OC · xTom · Australia :flag-AU: | [mirrors.xtom.au](https://mirrors.xtom.au "https://mirrors.xtom.au") |
+    | OC · Over the Wire · Australia :flag-AU: | [mirror.overthewire.com.au](https://mirror.overthewire.com.au "https://mirror.overthewire.com.au") |
+    | OC · Free Software Mirror Group · New Zealand :flag-NZ: | [mirror.fsmg.org.nz](https://mirror.fsmg.org.nz "https://mirror.fsmg.org.nz") |
+    | AF · Liquid Telecom · Kenya :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com "https://mirror.liquidtelecom.com") |
+    | AF · Dimension Data · South Africa :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com "https://mirror.dimensiondata.com") |
 
 ## Tool Websites
 

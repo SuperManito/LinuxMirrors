@@ -213,33 +213,33 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 
 Command options(name/meaning/value):
 
-  --source                  Specify Docker CE source address (domain or IP)            address
-  --source-registry         Specify Docker registry mirror address (domain or IP)      address
-  --branch                  Specify Docker CE source repository (path)                 repo name
-  --branch-version          Specify Docker CE source repository version                version
+  --source                  Specify Docker CE mirror address (domain or IP)            address
+  --source-registry         Specify Docker Registry mirror address (domain or IP)      address
+  --branch                  Specify Docker CE mirror repository (path)                 repo name
+  --branch-version          Specify Docker CE mirror repository version                version
   --designated-version      Specify Docker Engine installation version                 version
   --codename                Specify Debian-based OS codename                           codename
-  --protocol                Specify Web protocol for Docker CE source                  http or https
-  --use-intranet-source     Prefer intranet Docker CE source address                   true or false
+  --protocol                Specify Web protocol for Docker CE mirror                  http or https
+  --use-intranet-source     Prefer intranet Docker CE mirror address                   true or false
   --install-latest          Whether to install the latest Docker Engine                true or false
   --close-firewall          Whether to disable the firewall                            true or false
   --clean-screen            Whether to clear the screen before running                 true or false
-  --only-registry           Only switch registry mirror mode	                       none
-  --ignore-backup-tips      Ignore backup overwrite prompt (do not backup)	          none
+  --only-registry           Only switch registry mirror mode                           none
+  --ignore-backup-tips      Ignore backup overwrite prompt (do not backup)             none
   --pure-mode               Pure mode, minimal output                                  none
   --help                    Show help menu                                             none
 ```
 
 | Name | Meaning | Value |
 | :-: | :-: | :-: |
-| `--source` | Specify `Docker CE` source address (domain or IP) | `address` |
-| `--source-registry` | Specify `Docker` registry mirror address (domain or IP) | `address` |
-| `--branch` | Specify `Docker CE` source repository (path) | `repo name (see docs below)` |
-| `--branch-version` | Specify `Docker CE` source repository version | `version (see docs below)` |
+| `--source` | Specify `Docker CE` mirror address (domain or IP) | `address` |
+| `--source-registry` | Specify `Docker Registry` mirror address (domain or IP) | `address` |
+| `--branch` | Specify `Docker CE` mirror repository (path) | `repo name (see docs below)` |
+| `--branch-version` | Specify `Docker CE` mirror repository version | `version (see docs below)` |
 | `--designated-version` | Specify `Docker Engine` installation version | `version (see docs below)` |
 | `--codename` | Specify `Debian-based` OS codename | `codename` |
-| `--protocol` | Specify Web protocol for `Docker CE` source | `http` or `https` |
-| `--use-intranet-source` | Prefer intranet `Docker CE` source address | `true` or `false` |
+| `--protocol` | Specify Web protocol for `Docker CE` mirror | `http` or `https` |
+| `--use-intranet-source` | Prefer intranet `Docker CE` mirror address | `true` or `false` |
 | `--install-latest` | Whether to install the latest `Docker Engine` | `true` or `false` |
 | `--close-firewall` | Whether to disable the firewall | `true` or `false` |
 | `--clean-screen` | Whether to clear the screen before running | `true` or `false` |
@@ -316,7 +316,7 @@ Command options(name/meaning/value):
     ``` { .bash .no-copy }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
     ```
-    > Note: The address path must include the Docker CE source repository path, i.e., `docker-ce`.
+    > Note: The address path must include the Docker CE mirror repository path, i.e., `docker-ce`.
 
 - ### Specify Docker CE Source Repository
 
@@ -438,4 +438,4 @@ Command options(name/meaning/value):
     - #### Simple method
 
         --8<-- "docs/other/example2.md"
-        > Note: If you don't specify `Docker CE source` and `Image repository source`, the script will be interactively selected by the user. The screen will be automatically cleared (`$ clear`) at this point, which will cause your script's log to be cleared.
+        > Note: If you don't specify `Docker CE` and `Docker Registry` mirrors, the script will be interactively selected by the user. The screen will be automatically cleared (`$ clear`) at this point, which will cause your script's log to be cleared.

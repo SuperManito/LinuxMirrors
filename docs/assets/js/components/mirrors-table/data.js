@@ -1,8 +1,8 @@
 // 表格数据
 const mirrorsTableData = [
     {
-        name: '阿里云',
-        officialName: '阿里巴巴开源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '阿里雲' : window.location.pathname.includes('/en') ? 'Alibaba Cloud' : '阿里云',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '阿里巴巴開源鏡像站' : window.location.pathname.includes('/en') ? 'Alibaba Cloud Open Source Mirror' : '阿里巴巴开源镜像站',
         icon: 'alibabacloud.svg',
         iconStyle: { verticalAlign: '-0.2em' },
         url: 'https://mirrors.aliyun.com',
@@ -28,8 +28,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '腾讯云',
-        officialName: '腾讯软件源',
+        name: window.location.pathname.includes('/zh-Hant') ? '騰訊雲' : window.location.pathname.includes('/en') ? 'Tencent Cloud' : '腾讯云',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '騰訊軟體源' : window.location.pathname.includes('/en') ? 'Tencent Software Repository' : '腾讯软件源',
         icon: 'tencentcloud.ico',
         iconStyle: { verticalAlign: '-0.25em' },
         url: 'https://mirrors.tencent.com',
@@ -55,8 +55,8 @@ const mirrorsTableData = [
         manjaro: false,
     },
     {
-        name: '华为云',
-        officialName: '华为开源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '華為雲' : window.location.pathname.includes('/en') ? 'Huawei Cloud' : '华为云',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '華為開源鏡像站' : window.location.pathname.includes('/en') ? 'Huawei Open Source Mirror' : '华为开源镜像站',
         icon: 'huaweicloud.ico',
         iconStyle: { verticalAlign: '-0.15em' },
         url: 'https://mirrors.huaweicloud.com',
@@ -82,8 +82,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '网易',
-        officialName: '网易开源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '網易' : window.location.pathname.includes('/en') ? 'NetEase' : '网易',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '網易開源鏡像站' : window.location.pathname.includes('/en') ? 'NetEase Open Source Mirror' : '网易开源镜像站',
         icon: '163.ico',
         iconStyle: { verticalAlign: '-0.15em' },
         url: 'https://mirrors.163.com',
@@ -109,8 +109,8 @@ const mirrorsTableData = [
         manjaro: false,
     },
     {
-        name: '火山引擎',
-        officialName: '火山引擎开源软件镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '火山引擎' : window.location.pathname.includes('/en') ? 'Volcengine' : '火山引擎',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '火山引擎開源軟體鏡像站' : window.location.pathname.includes('/en') ? 'Volcengine Open Source Software Mirror' : '火山引擎开源软件镜像站',
         icon: 'volcengine.svg',
         iconStyle: { verticalAlign: '-0.25em' },
         url: 'https://developer.volcengine.com/mirror',
@@ -136,8 +136,8 @@ const mirrorsTableData = [
         manjaro: false,
     },
     {
-        name: '清华大学',
-        officialName: '清华大学开源软件镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '清華大學' : window.location.pathname.includes('/en') ? 'Tsinghua University' : '清华大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '清華大學開源軟體鏡像站' : window.location.pathname.includes('/en') ? 'Tsinghua University Open Source Mirror' : '清华大学开源软件镜像站',
         icon: 'tsinghua.png',
         iconStyle: { verticalAlign: '-0.3em' },
         url: 'https://mirrors.tuna.tsinghua.edu.cn',
@@ -163,8 +163,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '北京大学',
-        officialName: '北京大学开源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '北京大學' : window.location.pathname.includes('/en') ? 'Peking University' : '北京大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '北京大學開源鏡像站' : window.location.pathname.includes('/en') ? 'Peking University Open Source Mirror' : '北京大学开源镜像站',
         icon: 'pku.ico',
         iconStyle: { verticalAlign: '-0.2em' },
         url: 'https://mirrors.pku.edu.cn/Mirrors',
@@ -190,8 +190,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '浙江大学',
-        officialName: '浙江大学镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '浙江大學' : window.location.pathname.includes('/en') ? 'Zhejiang University' : '浙江大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '浙江大學鏡像站' : window.location.pathname.includes('/en') ? 'Zhejiang University Mirror Site' : '浙江大学镜像站',
         icon: 'zju.ico',
         iconStyle: { verticalAlign: '-0.15em' },
         url: 'https://mirrors.zju.edu.cn',
@@ -217,8 +217,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '南京大学',
-        officialName: '南京大学开源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '南京大學' : window.location.pathname.includes('/en') ? 'Nanjing University' : '南京大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '南京大學開源鏡像站' : window.location.pathname.includes('/en') ? 'Nanjing University Open Source Mirror' : '南京大学开源镜像站',
         icon: 'nju.ico',
         iconStyle: { verticalAlign: '-0.3em' },
         url: 'https://mirrors.nju.edu.cn',
@@ -244,8 +244,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '兰州大学',
-        officialName: '兰州大学开源软件镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '蘭州大學' : window.location.pathname.includes('/en') ? 'Lanzhou University' : '兰州大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '蘭州大學開源軟體鏡像站' : window.location.pathname.includes('/en') ? 'Lanzhou University Open Source Software Mirror' : '兰州大学开源软件镜像站',
         icon: 'lzu.png',
         iconStyle: { verticalAlign: '-0.25em' },
         url: 'https://mirror.lzu.edu.cn',
@@ -271,8 +271,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '上海交通大学',
-        officialName: '上海交通大学思源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '上海交通大學' : window.location.pathname.includes('/en') ? 'Shanghai Jiao Tong University' : '上海交通大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '上海交通大學思源鏡像站' : window.location.pathname.includes('/en') ? 'Shanghai Jiao Tong University Siyuan Mirror' : '上海交通大学思源镜像站',
         icon: 'sjtu.ico',
         iconStyle: { verticalAlign: '-0.15em' },
         url: 'https://mirror.sjtu.edu.cn',
@@ -298,8 +298,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '重庆邮电大学',
-        officialName: '重庆邮电大学开源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '重慶郵電大學' : window.location.pathname.includes('/en') ? 'Chongqing University of Posts and Telecommunications' : '重庆邮电大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '重慶郵電大學開源鏡像站' : window.location.pathname.includes('/en') ? 'Chongqing University of Posts and Telecommunications Open Source Mirror' : '重庆邮电大学开源镜像站',
         icon: 'cqupt.ico',
         iconStyle: {},
         url: 'https://mirrors.cqupt.edu.cn',
@@ -325,8 +325,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '中国科学技术大学',
-        officialName: '中国科学技术大学开源软件镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '中國科學技術大學' : window.location.pathname.includes('/en') ? 'University of Science and Technology of China' : '中国科学技术大学',
+        officialName: window.location.pathname.includes('/zh-Hant') ? '中國科學技術大學開源軟體鏡像站' : window.location.pathname.includes('/en') ? 'USTC Open Source Software Mirror' : '中国科学技术大学开源软件镜像站',
         icon: 'ustc.png',
         iconStyle: { verticalAlign: '-0.2em' },
         url: 'https://mirrors.ustc.edu.cn',
@@ -352,8 +352,8 @@ const mirrorsTableData = [
         manjaro: true,
     },
     {
-        name: '中国科学院软件研究所',
-        officialName: 'ISCAS 开源镜像站',
+        name: window.location.pathname.includes('/zh-Hant') ? '中國科學院軟體研究所' : window.location.pathname.includes('/en') ? 'Institute of Software, Chinese Academy of Sciences (ISCAS)' : '中国科学院软件研究所',
+        officialName: window.location.pathname.includes('/zh-Hant') ? 'ISCAS 開源鏡像站' : window.location.pathname.includes('/en') ? 'ISCAS Open Source Mirror' : 'ISCAS 开源镜像站',
         icon: 'iscas.png',
         iconStyle: { verticalAlign: '-0.25em' },
         url: 'https://mirror.iscas.ac.cn',
@@ -384,7 +384,7 @@ const mirrorsTableData = [
 const mirrorsTableColumns = [
     {
         colKey: 'name',
-        title: !window.location.pathname.includes('/zh-Hant') ? '镜像站' : '鏡像站',
+        title: window.location.pathname.includes('/zh-Hant') ? '鏡像站' : window.location.pathname.includes('/en') ? 'Mirror Site' : '镜像站',
         align: 'left',
         width: '180',
         fixed: 'left',
@@ -400,7 +400,7 @@ const mirrorsTableColumns = [
         title: 'EPEL',
         align: 'center',
         width: '90',
-        tooltip: !window.location.pathname.includes('/zh-Hant') ? 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版' : 'EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版',
+        tooltip: 'EPEL (Extra Packages for Enterprise Linux) ' + (window.location.pathname.includes('/zh-Hant') ? '是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版' : window.location.pathname.includes('/en') ? 'is an additional package repository maintained by the Fedora organization. It is mainly applicable to Red Hat Linux distributions other than the Fedora operating system.' : '是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版'),
     },
     {
         colKey: 'archlinux',
@@ -521,3 +521,9 @@ const mirrorsTableColumns = [
     }
     return item
 })
+
+const mirrorsTableConfig = {
+    sortAscendingOperationText: window.location.pathname.includes('/zh-Hant') ? '点击升序' : window.location.pathname.includes('/en') ? 'click to sort ascending' : '点击升序',
+    sortCancelOperationText: window.location.pathname.includes('/zh-Hant') ? '点击取消排序' : window.location.pathname.includes('/en') ? 'click to cancel sorting' : '点击取消排序',
+    sortDescendingOperationText: window.location.pathname.includes('/zh-Hant') ? '点击降序' : window.location.pathname.includes('/en') ? 'click to sort descending' : '点击降序',
+}
