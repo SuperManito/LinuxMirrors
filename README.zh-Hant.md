@@ -156,19 +156,19 @@
 - ### GNU/Linux 更換系統軟體源
 
     ```bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant
     ```
 
 - ### Docker 安裝與換源
 
     ```bash
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant
     ```
 
 - ### Docker 更換鏡像加速器
 
     ```bash
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --only-registry
     ```
 
 ## 特別感謝

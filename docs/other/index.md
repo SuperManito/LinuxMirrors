@@ -224,6 +224,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
   --install-latest          是否安装最新版本的 Docker Engine           true 或 false
   --close-firewall          是否关闭防火墙                             true 或 false
   --clean-screen            是否在运行前清除屏幕上的所有内容             true 或 false
+  --lang                    指定脚本输出的语言                          语言
   --only-registry           仅更换镜像仓库模式                          无
   --ignore-backup-tips      忽略覆盖备份提示                            无
   --pure-mode               纯净模式，精简打印内容                      无
@@ -243,6 +244,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 | `--install-latest` | 是否安装最新版本的 `Docker Engine` | `true` 或 `false` |
 | `--close-firewall` | 是否关闭防火墙 | `true` 或 `false` |
 | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
+| `--lang` | 指定脚本输出的语言 | `语言ID（详见下方文档）` |
 | `--only-registry` | 仅更换镜像仓库模式 | 无 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 | `--pure-mode` | 纯净模式，精简打印内容 | 无 |
@@ -364,6 +366,34 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 
         未出现在该列表中的版本则不支持通过本脚本安装，如果获取不到版本列表说明你当前的系统环境还没有正确配置 Docker CE 软件源（运行脚本时不存在该问题）
 
+- ### 国际化（I18n）
+
+    脚本提供多语言支持，当前内置 `简体中文`、`繁體中文`、`English` 共三种显示语言，默认为 `简体中文`
+
+    - #### 指定语言
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --lang xxx
+        ```
+
+        | 类型 | 值 |
+        | :-: | :-: |
+        | 简体中文 | `zh-hans` `zh-cn` `zh` |
+        | 繁體中文 | `zh-hant` `zh-tw` `zh-hk` |
+        | English | `en` `en-us` |
+
+        也可以直接作为命令选项使用
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en
+        ```
+        > `--en` `--en-us` `--zh` `--zh-cn` `--zh-hans` `--zh-hant`
+
+    - #### 通过交互进行选择
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --lang auto
+        ```
 
 - ### 无人值守（自动化）
 
@@ -393,7 +423,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 
 ## 常见问题
 
-- ### 关于服务报错无法启动
+- #### 关于服务报错无法启动
 
     !!! quote ""
 
@@ -419,7 +449,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 
         卸载完成后重新执行脚本安装即可
 
-- ### 关于不支持的操作系统
+- #### 关于不支持的操作系统
 
     如果提示不支持那么请使用系统自带的包管理工具进行安装。因为这些软件包由 Linux 发行版的软件包维护者构建和维护，可能存在配置差异或由修改后的源代码构建。
 

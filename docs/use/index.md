@@ -466,6 +466,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
   --upgrade-software            是否更新软件包                                                      true 或 false
   --clean-cache                 是否在更新软件包后清理下载缓存                                       true 或 false
   --clean-screen                是否在运行前清除屏幕上的所有内容                                     true 或 false
+  --lang                        指定脚本输出的语言                                                  语言
   --only-epel                   仅更换 EPEL 软件源模式                                              无
   --ignore-backup-tips          忽略覆盖备份提示                                                    无
   --print-diff                  打印源文件修改前后差异                                               无
@@ -499,6 +500,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `--upgrade-software` | 是否更新软件包 | `true` 或 `false` |
 | `--clean-cache` | 是否在更新软件包后清理下载缓存 | `true` 或 `false` |
 | `--clean-screen` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
+| `--lang` | 指定脚本输出的语言 | `语言ID（详见下方文档）` |
 | `--only-epel` | 仅更换 EPEL 软件源模式 | 无 |
 | `--ignore-backup-tips` | 忽略覆盖备份提示（即不覆盖备份） | 无 |
 | `--print-diff` | 是否打印源文件修改前后差异 | 无 |
@@ -691,6 +693,35 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         grep -q "\[archlinuxcn\]" /etc/pacman.conf || echo -e "[archlinuxcn]\nServer = ${SOURCE}/\$arch" >>/etc/pacman.conf # 一键配置命令
         ```
 
+- ### 国际化（I18n）
+
+    脚本提供多语言支持，当前内置 `简体中文`、`繁體中文`、`English` 共三种显示语言，默认为 `简体中文`
+
+    - #### 指定语言
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --lang xxx
+        ```
+
+        | 类型 | 值 |
+        | :-: | :-: |
+        | 简体中文 | `zh-hans` `zh-cn` `zh` |
+        | 繁體中文 | `zh-hant` `zh-tw` `zh-hk` |
+        | English | `en` `en-us` |
+
+        也可以直接作为命令选项使用
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en
+        ```
+        > `--en` `--en-us` `--zh` `--zh-cn` `--zh-hans` `--zh-hant`
+
+    - #### 通过交互进行选择
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --lang auto
+        ```
+
 - ### 无人值守（自动化）
 
     不通过交互完成换源操作，至少需要使用如下命令选项来实现，建议熟悉后再使用
@@ -732,6 +763,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     1. 首先在删除内容时应尽可能保留脚本原始结构，直接把涉及函数中的内容删除即可，使其保留为空函数
     2. 可以删除一些不使用（操作系统）的软件源原始内容 `gen_repo_files_xxx`，这些内容占据了脚本 `60%` 以上的体积
     3. 如果你不使用某些功能那么可以删除对应功能模块函数中的内容，`命令选项 handle_command_options`、`备份原有软件源 backup_original_mirrors`、`更新软件包 upgrade_software`
+    4. 移除不需要的语言包，例：`function msg_pack_en() {}`
 6.  脚本主要功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，具体变量详见如下表格，你只需要将这些变量声明在脚本头部（预留注释区域）即可快速完成定制
 
 | 变量名 | 含义 | 值类型 |

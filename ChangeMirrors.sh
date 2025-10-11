@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-09
+## Modified: 2025-10-12
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -9,131 +9,131 @@
 # 只需要在头部（此处）定义全局变量即可，具体详见官网文档，简单写几个例子
 # SOURCE="www.example.com"  # 指定软件源地址
 # BRANCH="branch"           # 指定软件源仓库
-# WEB_PROTOCOL="https"      # 指定 WEB 协议
+# WEB_PROTOCOL="https"      # 指定 Web 协议
 
 ## 软件源列表
-# 国内格式："名称@地址"
+# 中国大陆默认
 mirror_list_default=(
-    "阿里云@mirrors.aliyun.com"
-    "腾讯云@mirrors.tencent.com"
-    "华为云@mirrors.huaweicloud.com"
-    "网易@mirrors.163.com"
-    "火山引擎@mirrors.volces.com"
-    "清华大学@mirrors.tuna.tsinghua.edu.cn"
-    "北京大学@mirrors.pku.edu.cn"
-    "浙江大学@mirrors.zju.edu.cn"
-    "南京大学@mirrors.nju.edu.cn"
-    "兰州大学@mirror.lzu.edu.cn"
-    "上海交通大学@mirror.sjtu.edu.cn"
-    "重庆邮电大学@mirrors.cqupt.edu.cn"
-    "中国科学技术大学@mirrors.ustc.edu.cn"
-    "中国科学院软件研究所@mirror.iscas.ac.cn"
-    "官方源@__OFFICIAL_SOURCE_TAG__"
+    "mirrors.aliyun.com"
+    "mirrors.tencent.com"
+    "mirrors.huaweicloud.com"
+    "mirrors.163.com"
+    "mirrors.volces.com"
+    "mirrors.tuna.tsinghua.edu.cn"
+    "mirrors.pku.edu.cn"
+    "mirrors.zju.edu.cn"
+    "mirrors.nju.edu.cn"
+    "mirror.lzu.edu.cn"
+    "mirror.sjtu.edu.cn"
+    "mirrors.cqupt.edu.cn"
+    "mirrors.ustc.edu.cn"
+    "mirror.iscas.ac.cn"
+    "__OFFICIAL_SOURCE_TAG__"
 )
-# 中国大陆教育网格式："名称@地址"
+# 中国大陆教育网
 mirror_list_edu=(
-    "北京大学@mirrors.pku.edu.cn"
-    "北京交通大学@mirror.bjtu.edu.cn"
-    "北京外国语大学@mirrors.bfsu.edu.cn"
-    "北京邮电大学@mirrors.bupt.edu.cn"
-    "重庆大学@mirrors.cqu.edu.cn"
-    "重庆邮电大学@mirrors.cqupt.edu.cn"
-    "大连东软信息学院@mirrors.neusoft.edu.cn"
-    "电子科技大学@mirrors.uestc.cn"
-    "华南农业大学@mirrors.scau.edu.cn"
-    "华中科技大学@mirrors.hust.edu.cn"
-    "吉林大学@mirrors.jlu.edu.cn"
-    "荆楚理工学院@mirrors.jcut.edu.cn"
-    "江西理工大学@mirrors.jxust.edu.cn"
-    "兰州大学@mirror.lzu.edu.cn"
-    "南京大学@mirrors.nju.edu.cn"
-    "南京工业大学@mirrors.njtech.edu.cn"
-    "南京邮电大学@mirrors.njupt.edu.cn"
-    "南方科技大学@mirrors.sustech.edu.cn"
-    "南阳理工学院@mirror.nyist.edu.cn"
-    "齐鲁工业大学@mirrors.qlu.edu.cn"
-    "清华大学@mirrors.tuna.tsinghua.edu.cn"
-    "山东大学@mirrors.sdu.edu.cn"
-    "上海科技大学@mirrors.shanghaitech.edu.cn"
-    "上海交通大学（思源）@mirror.sjtu.edu.cn"
-    "上海交通大学（致远）@mirrors.sjtug.sjtu.edu.cn"
-    "武昌首义学院@mirrors.wsyu.edu.cn"
-    "西安交通大学@mirrors.xjtu.edu.cn"
-    "西北农林科技大学@mirrors.nwafu.edu.cn"
-    "浙江大学@mirrors.zju.edu.cn"
-    "中国科学技术大学@mirrors.ustc.edu.cn"
-    "官方源@__OFFICIAL_SOURCE_TAG__"
+    "mirrors.pku.edu.cn"
+    "mirror.bjtu.edu.cn"
+    "mirrors.bfsu.edu.cn"
+    "mirrors.bupt.edu.cn"
+    "mirrors.cqu.edu.cn"
+    "mirrors.cqupt.edu.cn"
+    "mirrors.neusoft.edu.cn"
+    "mirrors.uestc.cn"
+    "mirrors.scau.edu.cn"
+    "mirrors.hust.edu.cn"
+    "mirrors.jlu.edu.cn"
+    "mirrors.jcut.edu.cn"
+    "mirrors.jxust.edu.cn"
+    "mirror.lzu.edu.cn"
+    "mirrors.nju.edu.cn"
+    "mirrors.njtech.edu.cn"
+    "mirrors.njupt.edu.cn"
+    "mirrors.sustech.edu.cn"
+    "mirror.nyist.edu.cn"
+    "mirrors.qlu.edu.cn"
+    "mirrors.tuna.tsinghua.edu.cn"
+    "mirrors.sdu.edu.cn"
+    "mirrors.shanghaitech.edu.cn"
+    "mirror.sjtu.edu.cn"
+    "mirrors.sjtug.sjtu.edu.cn"
+    "mirrors.wsyu.edu.cn"
+    "mirrors.xjtu.edu.cn"
+    "mirrors.nwafu.edu.cn"
+    "mirrors.zju.edu.cn"
+    "mirrors.ustc.edu.cn"
+    "__OFFICIAL_SOURCE_TAG__"
 )
-# 海外格式："洲 · 名称 · 国家/地区@地址"，修改前请先前往官网阅读添加规范
+# 境外以及海外地区
 mirror_list_abroad=(
-    "亚洲 · xTom · 香港@mirrors.xtom.hk"
-    "亚洲 · 01Link · 香港@mirror.01link.hk"
-    "亚洲 · 新加坡国立大学(NUS) · 新加坡@download.nus.edu.sg/mirror"
-    "亚洲 · SG.GS · 新加坡@mirror.sg.gs"
-    "亚洲 · xTom · 新加坡@mirrors.xtom.sg"
-    "亚洲 · 自由软件实验室(NCHC) · 台湾@free.nchc.org.tw"
-    "亚洲 · OSS Planet · 台湾@mirror.ossplanet.net"
-    "亚洲 · 国立阳明交通大学 · 台湾@linux.cs.nctu.edu.tw"
-    "亚洲 · 淡江大学 · 台湾@ftp.tku.edu.tw"
-    "亚洲 · AniGil Linux Archive · 韩国@mirror.anigil.com"
-    "亚洲 · 工业网络安全中心(ICSCoE) · 日本@ftp.udx.icscoe.jp/Linux"
-    "亚洲 · 北陆先端科学技术大学院大学(JAIST) · 日本@ftp.jaist.ac.jp/pub/Linux"
-    "亚洲 · 山形大学 · 日本@linux2.yz.yamagata-u.ac.jp/pub/Linux"
-    "亚洲 · xTom · 日本@mirrors.xtom.jp"
-    "亚洲 · GB Network Solutions · 马来西亚@mirrors.gbnetwork.com"
-    "亚洲 · 孔敬大学 · 泰国@mirror.kku.ac.th"
-    "欧洲 · Vorboss Ltd · 英国@mirror.vorboss.net"
-    "欧洲 · QuickHost · 英国@mirror.quickhost.uk"
-    "欧洲 · dogado · 德国@mirror.dogado.de"
-    "欧洲 · xTom · 德国@mirrors.xtom.de"
-    "欧洲 · 亚琛工业大学(RWTH Aachen) · 德国@ftp.halifax.rwth-aachen.de"
-    "欧洲 · 德累斯顿大学(AG DSN) · 德国@ftp.agdsn.de"
-    "欧洲 · CCIN2P3 · 法国@mirror.in2p3.fr/pub/linux"
-    "欧洲 · Ircam · 法国@mirrors.ircam.fr/pub"
-    "欧洲 · Crans · 法国@eclats.crans.org"
-    "欧洲 · CRIHAN · 法国@ftp.crihan.fr"
-    "欧洲 · xTom · 荷兰@mirrors.xtom.nl"
-    "欧洲 · DataPacket · 荷兰@mirror.datapacket.com"
-    "欧洲 · Linux Kernel · 荷兰@eu.edge.kernel.org"
-    "欧洲 · xTom · 爱沙尼亚@mirrors.xtom.ee"
-    "欧洲 · netsite · 丹麦@mirror.netsite.dk"
-    "欧洲 · Dotsrc · 丹麦@mirrors.dotsrc.org"
-    "欧洲 · Academic Computer Club · 瑞典@mirror.accum.se"
-    "欧洲 · Lysator · 瑞典@ftp.lysator.liu.se"
-    "欧洲 · Yandex · 俄罗斯@mirror.yandex.ru"
-    "欧洲 · ia64 · 俄罗斯@mirror.linux-ia64.org"
-    "欧洲 · Truenetwork · 俄罗斯@mirror.truenetwork.ru"
-    "欧洲 · Belgian Research Network · 比利时@ftp.belnet.be/mirror"
-    "欧洲 · 克里特大学计算机中心 · 希腊@ftp.cc.uoc.gr/mirrors/linux"
-    "欧洲 · 马萨里克大学信息学院 · 捷克@ftp.fi.muni.cz/pub/linux"
-    "欧洲 · 捷克理工大学学生会俱乐部(Silicon Hill) · 捷克@ftp.sh.cvut.cz"
-    "欧洲 · Vodafone · 捷克@mirror.karneval.cz/pub/linux"
-    "欧洲 · CZ.NIC · 捷克@mirrors.nic.cz"
-    "欧洲 · 苏黎世联邦理工学院 · 瑞士@mirror.ethz.ch"
-    "北美 · Linux Kernel · 美国@mirrors.kernel.org"
-    "北美 · 麻省理工学院(MIT) · 美国@mirrors.mit.edu"
-    "北美 · 普林斯顿大学数学系 · 美国@mirror.math.princeton.edu/pub"
-    "北美 · 俄勒冈州立大学开源实验室 · 美国@ftp-chi.osuosl.org/pub"
-    "北美 · Fremont Cabal Internet Exchange(FCIX) · 美国@mirror.fcix.net"
-    "北美 · xTom · 美国@mirrors.xtom.com"
-    "北美 · Steadfast · 美国@mirror.steadfast.net"
-    "北美 · 不列颠哥伦比亚大学 · 加拿大@mirror.it.ubc.ca"
-    "北美 · GoCodeIT · 加拿大@mirror.xenyth.net"
-    "北美 · Switch · 加拿大@mirrors.switch.ca"
-    "南美 · PoP-SC · 巴西@mirror.pop-sc.rnp.br/mirror"
-    "南美 · 蓬塔格罗萨州立大学 · 巴西@mirror.uepg.br"
-    "南美 · UFSCar · 巴西@mirror.ufscar.br"
-    "南美 · Sysarmy Community · 阿根廷@mirrors.eze.sysarmy.com"
-    "大洋 · Fremont Cabal Internet Exchange(FCIX) · 澳大利亚@gsl-syd.mm.fcix.net"
-    "大洋 · AARNet · 澳大利亚@mirror.aarnet.edu.au/pub"
-    "大洋 · DataMossa · 澳大利亚@mirror.datamossa.io"
-    "大洋 · Amaze · 澳大利亚@mirror.amaze.com.au"
-    "大洋 · xTom · 澳大利亚@mirrors.xtom.au"
-    "大洋 · Over the Wire · 澳大利亚@mirror.overthewire.com.au"
-    "大洋 · Free Software Mirror Group · 新西兰@mirror.fsmg.org.nz"
-    "非洲 · Liquid Telecom · 肯尼亚@mirror.liquidtelecom.com"
-    "非洲 · Dimension Data · 南非@mirror.dimensiondata.com"
-    "官方源@__OFFICIAL_SOURCE_TAG__"
+    "mirrors.xtom.hk"
+    "mirror.01link.hk"
+    "download.nus.edu.sg/mirror"
+    "mirror.sg.gs"
+    "mirrors.xtom.sg"
+    "free.nchc.org.tw"
+    "mirror.ossplanet.net"
+    "linux.cs.nctu.edu.tw"
+    "ftp.tku.edu.tw"
+    "mirror.anigil.com"
+    "ftp.udx.icscoe.jp/Linux"
+    "ftp.jaist.ac.jp/pub/Linux"
+    "linux2.yz.yamagata-u.ac.jp/pub/Linux"
+    "mirrors.xtom.jp"
+    "mirrors.gbnetwork.com"
+    "mirror.kku.ac.th"
+    "mirror.vorboss.net"
+    "mirror.quickhost.uk"
+    "mirror.dogado.de"
+    "mirrors.xtom.de"
+    "ftp.halifax.rwth-aachen.de"
+    "ftp.agdsn.de"
+    "mirror.in2p3.fr/pub/linux"
+    "mirrors.ircam.fr/pub"
+    "eclats.crans.org"
+    "ftp.crihan.fr"
+    "mirrors.xtom.nl"
+    "mirror.datapacket.com"
+    "eu.edge.kernel.org"
+    "mirrors.xtom.ee"
+    "mirror.netsite.dk"
+    "mirrors.dotsrc.org"
+    "mirror.accum.se"
+    "ftp.lysator.liu.se"
+    "mirror.yandex.ru"
+    "mirror.linux-ia64.org"
+    "mirror.truenetwork.ru"
+    "ftp.belnet.be/mirror"
+    "ftp.cc.uoc.gr/mirrors/linux"
+    "ftp.fi.muni.cz/pub/linux"
+    "ftp.sh.cvut.cz"
+    "mirror.karneval.cz/pub/linux"
+    "mirrors.nic.cz"
+    "mirror.ethz.ch"
+    "mirrors.kernel.org"
+    "mirrors.mit.edu"
+    "mirror.math.princeton.edu/pub"
+    "ftp-chi.osuosl.org/pub"
+    "mirror.fcix.net"
+    "mirrors.xtom.com"
+    "mirror.steadfast.net"
+    "mirror.it.ubc.ca"
+    "mirror.xenyth.net"
+    "mirrors.switch.ca"
+    "mirror.pop-sc.rnp.br/mirror"
+    "mirror.uepg.br"
+    "mirror.ufscar.br"
+    "mirrors.eze.sysarmy.com"
+    "gsl-syd.mm.fcix.net"
+    "mirror.aarnet.edu.au/pub"
+    "mirror.datamossa.io"
+    "mirror.amaze.com.au"
+    "mirrors.xtom.au"
+    "mirror.overthewire.com.au"
+    "mirror.fsmg.org.nz"
+    "mirror.liquidtelecom.com"
+    "mirror.dimensiondata.com"
+    "__OFFICIAL_SOURCE_TAG__"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
@@ -289,41 +289,6 @@ function main() {
 }
 
 function handle_command_options() {
-    function output_command_help() {
-        echo -e "\n命令选项(名称/含义/值)：
-
-  --abroad                     使用境外以及海外软件源                                             无
-  --edu                        使用中国大陆教育网软件源                                           无
-  --source                     指定软件源地址(域名或IP)                                           地址
-  --source-epel                指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                     地址
-  --source-security            指定 Debian / Ubuntu 系统 security 仓库的软件源地址(域名或IP)      地址
-  --source-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)      地址
-  --source-portage             指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)                地址
-  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)   地址
-  --branch                     指定软件源仓库(路径)                                               仓库名
-  --branch-epel                指定 EPEL 附加软件包仓库的软件源仓库(路径)                         仓库名
-  --branch-security            指定 Debian 系统 security 仓库的软件源仓库(路径)                   仓库名
-  --branch-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)          仓库名
-  --branch-portage             指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                    仓库名
-  --branch-base-system	       指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)       仓库名
-  --codename                   指定 Debian 系 / openKylin 操作系统的版本代号                      代号名称
-  --protocol                   指定 WEB 协议                                                      http 或 https
-  --use-intranet-source        是否优先使用内网软件源地址                                         true 或 false
-  --use-official-source        是否使用目标操作系统的官方软件源                                   true 或 false
-  --use-official-source-epel   是否使用 EPEL 附加软件包的官方软件源                               true 或 false
-  --install-epel               是否安装 EPEL 附加软件包                                           true 或 false
-  --backup                     是否备份原有软件源                                                 true 或 false
-  --upgrade-software           是否更新软件包                                                     true 或 false
-  --clean-cache                是否在更新软件包后清理下载缓存                                     true 或 false
-  --clean-screen               是否在运行前清除屏幕上的所有内容                                   true 或 false
-  --only-epel                  仅更换 EPEL 软件源模式                                             无
-  --ignore-backup-tips         忽略覆盖备份提示                                                   无
-  --print-diff                 打印源文件修改前后差异                                             无
-  --pure-mode                  纯净模式，精简打印内容                                             无
-
-问题报告 https://github.com/SuperManito/LinuxMirrors/issues\n"
-    }
-
     while [ $# -gt 0 ]; do
         case "$1" in
         ## 海外模式
@@ -339,78 +304,78 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "软件源地址"
+                command_error "$1" "$(msg "error.cmd.options.sourceAddress")"
             fi
             ;;
         --source-epel)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE_EPEL="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "软件源地址"
+                command_error "$1" "$(msg "error.cmd.options.sourceAddress")"
             fi
             ;;
         --source-security)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE_SECURITY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "软件源地址"
+                command_error "$1" "$(msg "error.cmd.options.sourceAddress")"
             fi
             ;;
         --source-vault)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE_VAULT="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "软件源地址"
+                command_error "$1" "$(msg "error.cmd.options.sourceAddress")"
             fi
             ;;
         --source-portage)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE_PORTAGE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "软件源地址"
+                command_error "$1" "$(msg "error.cmd.options.sourceAddress")"
             fi
             ;;
         --source-base-system)
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE_BASE_SYSTEM="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "软件源地址"
+                command_error "$1" "$(msg "error.cmd.options.sourceAddress")"
             fi
             ;;
         ## 指定软件源仓库
@@ -419,7 +384,7 @@ function handle_command_options() {
                 SOURCE_BRANCH="$2"
                 shift
             else
-                command_error "$1" "软件源仓库"
+                command_error "$1" "$(msg "error.cmd.options.sourceRepository")"
             fi
             ;;
         --branch-epel)
@@ -427,7 +392,7 @@ function handle_command_options() {
                 SOURCE_EPEL_BRANCH="$2"
                 shift
             else
-                command_error "$1" "软件源仓库"
+                command_error "$1" "$(msg "error.cmd.options.sourceRepository")"
             fi
             ;;
         --branch-security)
@@ -435,7 +400,7 @@ function handle_command_options() {
                 SOURCE_SECURITY_BRANCH="$2"
                 shift
             else
-                command_error "$1" "软件源仓库"
+                command_error "$1" "$(msg "error.cmd.options.sourceRepository")"
             fi
             ;;
         --branch-vault)
@@ -443,7 +408,7 @@ function handle_command_options() {
                 SOURCE_VAULT_BRANCH="$2"
                 shift
             else
-                command_error "$1" "软件源仓库"
+                command_error "$1" "$(msg "error.cmd.options.sourceRepository")"
             fi
             ;;
         --branch-portage)
@@ -451,7 +416,7 @@ function handle_command_options() {
                 SOURCE_PORTAGE_BRANCH="$2"
                 shift
             else
-                command_error "$1" "软件源仓库"
+                command_error "$1" "$(msg "error.cmd.options.sourceRepository")"
             fi
             ;;
         --branch-base-system)
@@ -459,7 +424,7 @@ function handle_command_options() {
                 SOURCE_BASE_SYSTEM_BRANCH="$2"
                 shift
             else
-                command_error "$1" "软件源仓库"
+                command_error "$1" "$(msg "error.cmd.options.sourceRepository")"
             fi
             ;;
         ## 指定 Debian 系操作系统的版本代号
@@ -468,7 +433,7 @@ function handle_command_options() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                command_error "$1" "版本代号"
+                command_error "$1" "$(msg "error.cmd.options.codename")"
             fi
             ;;
         ## 使用官方源
@@ -480,11 +445,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
             ;;
         ## EPEL 使用 官方源
@@ -496,11 +461,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
             ;;
         ## 使用内网地址
@@ -512,14 +477,14 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
             ;;
-        ## WEB 协议（HTTP/HTTPS）
+        ## Web 协议（HTTP/HTTPS）
         --protocol | --web-protocol)
             if [ "$2" ]; then
                 case "$2" in
@@ -528,11 +493,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " http 或 https "
+                    command_error "$2" "$(msg "error.cmd.options.protocol")"
                     ;;
                 esac
             else
-                ocommand_error "$1" " WEB 协议 (http/https) "
+                ocommand_error "$1" "$(msg "error.cmd.options.needProtocol")"
             fi
             ;;
         ## 安装 EPEL 附加软件包
@@ -544,11 +509,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
             ;;
         --only-epel)
@@ -564,11 +529,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -584,11 +549,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
             ;;
         ## 在更新软件包后清理下载缓存
@@ -600,12 +565,51 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
+            ;;
+        ## Locale
+        --lang)
+            if [ "$2" ]; then
+                local lang_norm="${2//_/-}"
+                lang_norm="${lang_norm,,}"
+                case "$lang_norm" in
+                zh | zh-cn | zh-hans | zh-hans-*)
+                    init_msg_pack "zh-hans"
+                    shift
+                    ;;
+                zh-hant | zh-hant-* | zh-tw | zh-hk)
+                    init_msg_pack "zh-hant"
+                    shift
+                    ;;
+                en | en-us | en-*)
+                    init_msg_pack "en"
+                    shift
+                    ;;
+                auto)
+                    choose_display_language
+                    shift
+                    ;;
+                *)
+                    command_error "$2" "$(msg "error.cmd.options.validLangKey")"
+                    ;;
+                esac
+            else
+                command_error "$1" "$(msg "error.cmd.options.langKey")"
+            fi
+            ;;
+        --zh | --zh-[Cc][Nn])
+            init_msg_pack "zh-hans"
+            ;;
+        --en | --en-[Uu][Ss])
+            init_msg_pack "en"
+            ;;
+        --zh-[Hh]an[st])
+            init_msg_pack "$1"
             ;;
         ## 清除屏幕上的所有内容
         --clean-screen)
@@ -616,11 +620,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.boolean")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.boolean")"
             fi
             ;;
         ## 打印源文件修改前后差异
@@ -633,7 +637,7 @@ function handle_command_options() {
             ;;
         ## 命令帮助
         --help)
-            output_command_help
+            echo -e "\n$(msg "commands.help" "https://github.com/SuperManito/LinuxMirrors/issues")\n"
             exit
             ;;
         *)
@@ -660,11 +664,19 @@ function run_start() {
     if [[ "${PURE_MODE}" == "true" ]]; then
         return
     fi
+    local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_ID}"}"
+    local arch="${DEVICE_ARCH}"
+    local date_time="$(date "+%Y-%m-%d %H:%M")"
+    local time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
     echo -e "+-----------------------------------+"
     echo -e "| \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
     echo -e "| \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
     echo -e "+-----------------------------------+"
-    echo -e "欢迎使用 GNU/Linux 更换系统软件源脚本"
+    echo -e "$(msg "start.welcome")"
+    echo -e ''
+    echo -e "$(msg "start.runtimeEnv") ${BLUE}${system_name} ${arch}${PLAIN}"
+    echo -e "$(msg "start.dateTime") ${BLUE}${date_time} ${time_zone}${PLAIN}"
+    sleep 1 >/dev/null 2>&1
 }
 
 function run_end() {
@@ -672,9 +684,9 @@ function run_end() {
         echo ''
         return
     fi
-    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m"
+    echo -e "\n✨ $(msg "end.moreInfo") 👉 \033[3mhttps://linuxmirrors.cn\033[0m"
     if [[ "${#SPONSOR_ADS[@]}" -gt 0 ]]; then
-        echo -e "\n\033[2m【赞助商广告】\033[0m"
+        echo -e "\n\033[2m$(msg "end.sponsorAds")\033[0m"
         for ad in "${SPONSOR_ADS[@]}"; do
             sleep 0.1
             echo -e "  \033[2m${ad}\033[0m"
@@ -689,19 +701,19 @@ function output_error() {
 }
 
 function command_error() {
-    local tmp_text="请确认后重新输入"
+    local tmp_text="$(msg "error.cmd.options.needConfirm")"
     if [[ "${2}" ]]; then
-        tmp_text="请在该选项后指定${2}"
+        tmp_text="$(msg "error.cmd.options.needSpecify" "${2}")"
     fi
-    output_error "命令选项 ${BLUE}$1${PLAIN} 无效，${tmp_text}！"
+    output_error "$(msg "error.cmd.options.invalid" "${BLUE}$1${PLAIN}" "${tmp_text}")"
 }
 
 function unsupport_system_error() {
-    output_error "不支持当前操作系统（$1），请前往官网查看支持列表！"
+    output_error "$(msg "error.unsupportSystem" "${1}")"
 }
 
 function input_error() {
-    echo -e "\n$WARN 输入错误，$1！"
+    echo -e "\n$WARN $(msg "error.input" "${1}")"
 }
 
 function command_exists() {
@@ -710,7 +722,7 @@ function command_exists() {
 
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
-        output_error "权限不足，请使用 Root 用户运行本脚本"
+        output_error "$(msg "error.needRoot")"
     fi
 }
 
@@ -720,7 +732,7 @@ function get_os_release_value() {
 
 function collect_system_info() {
     if [ ! -s "${File_LinuxRelease}" ]; then
-        unsupport_system_error "未知系统"
+        unsupport_system_error "$(msg "error.unknownSystem")"
     fi
     ## 定义系统名称
     SYSTEM_NAME="$(get_os_release_value NAME)"
@@ -755,7 +767,7 @@ function collect_system_info() {
     elif [[ "${SYSTEM_NAME}" == *"NixOS"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_NIXOS}"
     else
-        unsupport_system_error "未知系统"
+        unsupport_system_error "$(msg "error.unknownSystem")"
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -830,7 +842,7 @@ function collect_system_info() {
         fi
         if [[ "${SYSTEM_VERSION_CODENAME}" == "sid" ]]; then
             if [[ "${PURE_MODE}" != "true" ]]; then
-                echo -e "\n${WARN} 检测到当前系统为 ${BLUE}unstable(sid)${PLAIN} 版本，可能会产生一些无法预料的问题。\n"
+                echo -e "\n${WARN} $(msg "warn.unstableDebian" "${BLUE}unstable(sid)${PLAIN}")\n"
             fi
         fi
         ;;
@@ -896,11 +908,11 @@ function collect_system_info() {
     "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_RASPBERRY_PI_OS}" | "${SYSTEM_OPENKYLIN}") ;;
     "${SYSTEM_ARCH}" | "${SYSTEM_MANJARO}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_NIXOS}") ;;
     *)
-        unsupport_system_error "系统版本未知"
+        unsupport_system_error "$(msg "error.unknownVersion")"
         ;;
     esac
     if [[ "${is_supported}" == "false" ]]; then
-        unsupport_system_error "不支持当前系统版本"
+        unsupport_system_error "$(msg "error.unsupportVersion")"
     fi
     ## 判定系统处理器架构
     DEVICE_ARCH_RAW="$(uname -m)"
@@ -1021,19 +1033,19 @@ function collect_system_info() {
     ## 定义软件源更新文字
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_ALPINE}" | "${SYSTEM_OPENKYLIN}")
-        SYNC_MIRROR_TEXT="更新软件源"
+        SYNC_MIRROR_TEXT="$(msg "source.sync.text1")"
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}")
-        SYNC_MIRROR_TEXT="生成软件源缓存"
+        SYNC_MIRROR_TEXT="$(msg "source.sync.text2")"
         ;;
     "${SYSTEM_OPENSUSE}")
-        SYNC_MIRROR_TEXT="刷新软件源"
+        SYNC_MIRROR_TEXT="$(msg "source.sync.text3")"
         ;;
     "${SYSTEM_ARCH}" | "${SYSTEM_GENTOO}")
-        SYNC_MIRROR_TEXT="同步软件源"
+        SYNC_MIRROR_TEXT="$(msg "source.sync.text4")"
         ;;
     "${SYSTEM_NIXOS}")
-        SYNC_MIRROR_TEXT="更新二进制缓存与频道源"
+        SYNC_MIRROR_TEXT="$(msg "source.sync.text5")"
         ;;
     esac
     ## 判断是否可以使用高级交互式选择器
@@ -1046,25 +1058,68 @@ function collect_system_info() {
 ## 命令选项兼容性判断
 function check_command_options() {
     if [[ "${USE_ABROAD_SOURCE}" == "true" && "${USE_EDU_SOURCE}" == "true" ]]; then
-        output_error "不可同时使用两种软件源模式，请确认后重试！"
+        output_error "$(msg "error.cmd.options.unsupportTwoSourceMode")"
     fi
     if [[ "${DEBIAN_CODENAME}" ]]; then
         if [[ "${SYSTEM_FACTIONS}" != "${SYSTEM_DEBIAN}" && "${SYSTEM_FACTIONS}" != "${SYSTEM_OPENKYLIN}" ]]; then
-            output_error "当前系统不支持使用指定版本代号命令选项，请确认后重试！"
+            output_error "$(msg "error.cmd.options.unsupportCodename")"
         fi
     fi
     if [[ "${ONLY_EPEL}" == "true" ]]; then
         case "${SYSTEM_FACTIONS}" in
         "${SYSTEM_REDHAT}")
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
-                output_error "当前系统不支持安装 EPEL 附件软件包，请确认后重试！"
+                output_error "$(msg "error.cmd.options.unsupportEPEL")"
             fi
             ;;
         *)
-            output_error "当前系统不支持安装 EPEL 附件软件包，请确认后重试！"
+            output_error "$(msg "error.cmd.options.unsupportEPEL")"
             ;;
         esac
     fi
+}
+
+## 选择显示语言
+function choose_display_language() {
+    local result
+    if command_exists tput; then
+        local lang_key_labels=()
+        local language_text
+        for ((i = 0; i < ${#MESSAGE_LANG_KEYS[@]}; i++)); do
+            language_text="${MESSAGE_LANG_DISPLAY[${MESSAGE_LANG_KEYS[$i]}]}"
+            if [[ "${language_text}" ]]; then
+                lang_key_labels+=("${language_text}")
+            else
+                lang_key_labels+=("")
+            fi
+        done
+        interactive_select_list "MESSAGE_LANG_KEYS" "\n ${BOLD}Please select the display language:${PLAIN}\n" "lang_key_labels"
+        result="${_SELECT_RESULT%%@@*}"
+    else
+        echo ''
+        for ((i = 0; i < ${#MESSAGE_LANG_KEYS[@]}; i++)); do
+            echo -e " $((i + 1)). ${MESSAGE_LANG_DISPLAY[${MESSAGE_LANG_KEYS[$i]}]}"
+        done
+        local CHOICE="$(echo -e "\n${BOLD}└─ Please select and enter the display language [ 1-${#MESSAGE_LANG_KEYS[@]} ]：${PLAIN}")"
+        while true; do
+            read -rp "${CHOICE}" INPUT
+            case "${INPUT}" in
+            [1-9] | [1-9][0-9])
+                local tmp_result="${MESSAGE_LANG_KEYS[$((INPUT - 1))]}"
+                if [[ -z "${tmp_result}" ]]; then
+                    echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
+                else
+                    result="${tmp_result}"
+                    break
+                fi
+                ;;
+            *)
+                echo -e "\n$WARN $(msg "warn.needInputNumberIndex")"
+                ;;
+            esac
+        done
+    fi
+    init_msg_pack "${result}"
 }
 
 ## 选择软件源
@@ -1083,10 +1138,18 @@ function choose_mirrors() {
             list_arr[$i]="$(eval echo \${$1[i]})"
         done
         local name_width=${2:-"30"}
+        local __labels=()
+        if [[ "${3}" ]]; then
+            eval "__labels=(\"\${${3}[@]}\")"
+        fi
         if command_exists printf; then
             local tmp_uchar_1 tmp_uchar_2 tmp_uchar_3 tmp_uchar_4 tmp_default_length tmp_length tmp_unicode_length tmp_spaces_nums tmp_max_length
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_name="$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')"
+                if [[ "${__labels[$i]}" ]]; then
+                    tmp_name="${__labels[$i]}"
+                else
+                    tmp_name="${list_arr[i]}"
+                fi
                 tmp_index=$((i + 1))
                 tmp_default_length="${name_width}"
                 tmp_uchar_1=$(echo "${tmp_name}" | grep -c "“")
@@ -1108,7 +1171,11 @@ function choose_mirrors() {
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_name="${list_arr[i]%@*}"
+                if [[ "${__labels[$i]}" ]]; then
+                    tmp_name="${__labels[$i]}"
+                else
+                    tmp_name="${list_arr[i]}"
+                fi
                 tmp_index=$((i + 1))
                 echo -e " ❖  $tmp_index. ${tmp_name}"
             done
@@ -1129,14 +1196,14 @@ function choose_mirrors() {
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}请选择软件源的网络地址(访问方式)：${PLAIN}" "公网" "内网"
+                interactive_select_boolean "${BOLD}$(msg "interaction.source.type.select")${PLAIN}" "$(msg "interaction.source.type.public")" "$(msg "interaction.source.type.intranet")"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     SOURCE="${intranet_source}"
                     ONLY_HTTP="true" # 强制使用 HTTP 协议
-                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN $(msg "warn.usedIntranetSource")"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ $(msg "interaction.source.type.usePublicAddress")? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1144,10 +1211,10 @@ function choose_mirrors() {
                 [Nn] | [Nn][Oo])
                     SOURCE="${intranet_source}"
                     ONLY_HTTP="true" # 强制使用 HTTP 协议
-                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN $(msg "warn.usedIntranetSource")"
                     ;;
                 *)
-                    input_error "默认不使用内网地址"
+                    input_error "$(msg "error.defaultBehavior.noUseIntranetSource")"
                     ;;
                 esac
             fi
@@ -1156,61 +1223,61 @@ function choose_mirrors() {
         fi
     }
 
-    function print_title() {
-        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_ID}"}"
-        local arch="${DEVICE_ARCH}"
-        local date_time time_zone
-        date_time="$(date "+%Y-%m-%d %H:%M")"
-        time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
-
-        echo -e ''
-        echo -e "运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e "系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
-    }
-
-    [[ "${PURE_MODE}" != "true" ]] && print_title
-
     if [[ -z "${SOURCE}" ]]; then
         ## 使用官方源
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
             return
         fi
-        local mirror_list_name mirror_list_print_length
+
+        local mirror_list_name mirror_list_label_msg_prefix mirror_list_print_length
         if [[ "${USE_ABROAD_SOURCE}" = "true" ]]; then
             mirror_list_name="mirror_list_abroad"
+            mirror_list_label_msg_prefix="mirrors.abroad"
             mirror_list_print_length=56
         elif [[ "${USE_EDU_SOURCE}" = "true" ]]; then
             mirror_list_name="mirror_list_edu"
+            mirror_list_label_msg_prefix="mirrors.edu"
             mirror_list_print_length=32
         else
             mirror_list_name="mirror_list_default"
+            mirror_list_label_msg_prefix="mirrors.default"
             mirror_list_print_length=32
         fi
+        local mirror_list_labels=()
+        local mirror_list_length=$(eval "echo \${#${mirror_list_name}[@]}")
+        local label_msg_index label_msg_content
+        for ((i = 0; i < ${mirror_list_length}; i++)); do
+            label_msg_index="${mirror_list_label_msg_prefix}.${i}"
+            label_msg_content="$(msg "${label_msg_index}")"
+            if [[ "${label_msg_content}" == "${label_msg_index}" ]]; then
+                mirror_list_labels+=("")
+            else
+                mirror_list_labels+=("${label_msg_content}")
+            fi
+        done
 
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-            sleep 1 >/dev/null 2>&1
-            eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的软件源：\${PLAIN}\\n\""
-            SOURCE="${_SELECT_RESULT#*@}"
-            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT%@*}${PLAIN}" | sed "s| · | |g"
+            interactive_select_list "${mirror_list_name}" "\n ${BOLD}$(msg "interaction.source.select")${PLAIN}\n" "mirror_list_labels"
+            SOURCE="${_SELECT_RESULT%%@@*}"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}${_SELECT_RESULT#*@@}${PLAIN}" | sed "s| · |-|g"
         else
             echo ''
-            print_mirrors_list "${mirror_list_name}" "${mirror_list_print_length}"
-            local CHOICE="$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的软件源 [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
+            print_mirrors_list "${mirror_list_name}" "${mirror_list_print_length}" "mirror_list_labels"
+            local CHOICE="$(echo -e "\n${BOLD}└─ $(msg "interaction.source.selectAndInput") [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
             while true; do
                 read -rp "${CHOICE}" INPUT
                 case "${INPUT}" in
                 [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                    local tmp_source
-                    tmp_source="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
-                    if [[ -z "${tmp_source}" ]]; then
-                        echo -e "\n$WARN 请输入有效的数字序号！"
+                    local tmp_result="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
+                    if [[ -z "${tmp_result}" ]]; then
+                        echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
                     else
-                        SOURCE="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]} | awk -F '@' '{print$2}')"
+                        SOURCE="$(echo "${tmp_result}" | awk -F '@' '{print$2}')"
                         break
                     fi
                     ;;
                 *)
-                    echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                    echo -e "\n$WARN $(msg "warn.needInputNumberIndex")"
                     ;;
                 esac
             done
@@ -1230,7 +1297,7 @@ function choose_mirrors() {
     fi
 }
 
-## 选择同步或更新软件源所使用的 WEB 协议（ HTTP/HTTPS）
+## 选择同步或更新软件源所使用的 Web 协议（ HTTP/HTTPS）
 function choose_protocol() {
     if [[ -z "${WEB_PROTOCOL}" ]]; then
         if [[ "${ONLY_HTTP}" == "true" ]]; then
@@ -1238,14 +1305,14 @@ function choose_protocol() {
         else
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}请选择软件源协议：${PLAIN}" "HTTP" "HTTPS"
+                interactive_select_boolean "${BOLD}$(msg "interaction.protocol.select")${PLAIN}" "HTTP" "HTTPS"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     WEB_PROTOCOL="http"
                 else
                     WEB_PROTOCOL="https"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ $(msg "interaction.protocol.useHttp")? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -1256,7 +1323,7 @@ function choose_protocol() {
                     WEB_PROTOCOL="https"
                     ;;
                 *)
-                    input_error "默认使用 HTTPS 协议"
+                    input_error "$(msg "error.defaultBehavior.https")"
                     WEB_PROTOCOL="https"
                     ;;
                 esac
@@ -1291,22 +1358,22 @@ function choose_install_epel_packages() {
     esac
     ## 选择是否安装 EPEL 附加软件包
     if [[ -z "${INSTALL_EPEL}" ]]; then
-        local ask_text=""
+        local ask_text
         if [ $VERIFICATION_EPEL -eq 0 ]; then
-            ask_text="检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源?"
+            ask_text="$(msg "interaction.epel.skipReplace")"
         else
-            ask_text="是否安装 EPEL 附加软件包?"
+            ask_text="$(msg "interaction.epel.install")"
         fi
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
-            interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
+            interactive_select_boolean "${BOLD}${ask_text}?${PLAIN}"
             if [[ "${_SELECT_RESULT}" == "true" ]]; then
                 INSTALL_EPEL="true"
             else
                 INSTALL_EPEL="false"
             fi
         else
-            local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
+            local CHOICE="$(echo -e "\n${BOLD}└─ ${ask_text}? [Y/n] ${PLAIN}")"
             read -rp "${CHOICE}" INPUT
             [[ -z "${INPUT}" ]] && INPUT=Y
             case "${INPUT}" in
@@ -1317,7 +1384,7 @@ function choose_install_epel_packages() {
                 INSTALL_EPEL="false"
                 ;;
             *)
-                input_error "默认不更换"
+                input_error "$(msg "error.defaultBehavior.noReplace")"
                 INSTALL_EPEL="false"
                 ;;
             esac
@@ -1341,7 +1408,7 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
-            local ask_text="检测到系统存在已备份的 ${type} 源文件，是否跳过覆盖备份?"
+            local ask_text="$(msg "interaction.backup.skipOverwrite.sourceFile" "${type}")?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
                 interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -1362,7 +1429,7 @@ function backup_original_mirrors() {
                     BACKED_UP="true"
                     ;;
                 *)
-                    input_error "默认不覆盖"
+                    input_error "$(msg "error.defaultBehavior.noOverwrite")"
                     ;;
                 esac
             fi
@@ -1370,7 +1437,7 @@ function backup_original_mirrors() {
             echo ''
             cp -rvf "${target_file}" "${backup_file}" 2>&1
             BACKED_UP="true"
-            echo -e "\n$COMPLETE 已备份原有 ${type} 源文件"
+            echo -e "\n$COMPLETE $(msg "info.backuped.sourceFile" "${type}")"
             sleep 1s
         fi
     }
@@ -1390,7 +1457,7 @@ function backup_original_mirrors() {
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
-            local ask_text="检测到系统存在已备份的 repo 源文件，是否跳过覆盖备份?"
+            local ask_text="$(msg "interaction.backup.skipOverwrite.sourceFile" "repo")?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
                 interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -1411,7 +1478,7 @@ function backup_original_mirrors() {
                     BACKED_UP="true"
                     ;;
                 *)
-                    input_error "默认不覆盖"
+                    input_error "$(msg "error.defaultBehavior.noOverwrite")"
                     ;;
                 esac
             fi
@@ -1419,7 +1486,7 @@ function backup_original_mirrors() {
             echo ''
             cp -rvf $target_dir/* "${backup_dir}" 2>&1
             BACKED_UP="true"
-            echo -e "\n$COMPLETE 已备份原有 repo 源文件"
+            echo -e "\n$COMPLETE $(msg "info.backuped.sourceFile" "repo")"
             sleep 1s
         fi
     }
@@ -1824,16 +1891,16 @@ function change_mirrors_main() {
             eval "${cmd}"
         done
         if [ $? -eq 0 ]; then
-            echo -e "\n$SUCCESS 软件源更换完毕"
+            echo -e "\n$SUCCESS $(msg "source.changeResult.success")"
         else
-            echo -e "\n$FAIL 软件源更换完毕，但${SYNC_MIRROR_TEXT}失败"
-            echo -e "\n$TIP 请再次执行脚本并更换相同软件源后进行尝试，若仍然${SYNC_MIRROR_TEXT}失败那么可能由以下原因导致："
-            echo -e "\n1. 网络连通性问题：例如连接异常、由地区影响的网络间歇式中断、禁止外部访问、软件源网站防火墙阻断等"
-            echo -e "2. 目标软件源异常：请手动前往软件源（镜像站）地址进行验证：${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}"
-            echo -e "      若报错内容是提示某个文件不存在那么有可能是软件源的问题，多常见于正在同步中的软件源仓库"
-            echo -e "      若报错内容是目录（path）不存在也有可能是目标软件源不存在当前系统镜像仓库，即不支持当前系统"
-            echo -e "      建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题"
-            echo -e "3. 原有软件源报错：请先排除系统原有的其它软件源报错，因为脚本不会干预这些无关的软件源配置，解决后重新运行脚本即可\n"
+            echo -e "\n$FAIL $(msg "source.changeResult.fail" "${SYNC_MIRROR_TEXT}")"
+            echo -e "\n$TIP $(msg "source.changeResult.tipTitle" "${SYNC_MIRROR_TEXT}")"
+            echo -e "\n1. $(msg "source.changeResult.tip1")"
+            echo -e "2. $(msg "source.changeResult.tip2" "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}")"
+            echo -e "      $(msg "source.changeResult.tip2.1")"
+            echo -e "      $(msg "source.changeResult.tip2.2")"
+            echo -e "      $(msg "source.changeResult.tip2.3")"
+            echo -e "3. $(msg "source.changeResult.tip3")\n"
             exit 1
         fi
     fi
@@ -1851,7 +1918,7 @@ function upgrade_software() {
     ## 交互确认
     if [[ -z "${UPGRADE_SOFTWARE}" ]]; then
         UPGRADE_SOFTWARE="false"
-        ask_text="是否跳过更新软件包?"
+        ask_text="$(msg "interaction.upgrade.skip")?"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
             interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -1868,7 +1935,7 @@ function upgrade_software() {
                 UPGRADE_SOFTWARE="true"
                 ;;
             *)
-                input_error "默认不更新"
+                input_error "$(msg "error.defaultBehavior.noUpdate")"
                 ;;
             esac
         fi
@@ -1878,7 +1945,7 @@ function upgrade_software() {
     fi
     if [[ -z "${CLEAN_CACHE}" ]]; then
         CLEAN_CACHE="false"
-        ask_text="在更新软件包后，是否自动清理下载缓存?"
+        ask_text="$(msg "interaction.cache.autoClean")?"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
             interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -1895,7 +1962,7 @@ function upgrade_software() {
                 ;;
             [Nn] | [Nn][Oo]) ;;
             *)
-                input_error "默认不清理"
+                input_error "$(msg "error.defaultBehavior.noClean")"
                 ;;
             esac
         fi
@@ -1935,7 +2002,7 @@ function upgrade_software() {
             fi
         done
         echo ''
-        animate_exec "${exec_cmd}" "更新软件包"
+        animate_exec "${exec_cmd}" "$(msg "work.upgradeSoftware")"
     else
         echo ''
         for cmd in "${commands[@]}"; do
@@ -1980,7 +2047,7 @@ function upgrade_software() {
 function change_mirrors_Debian() {
     local source_file=$File_AptSourceList
     local source_content=""
-    local deb_src_disabled_tips="## 默认禁用源码镜像以提高更新速度，如需启用请自行取消注释"
+    local deb_src_disabled_tips="## $(msg "source.comment.disabledSourceCode")"
 
     function write_source_file() {
         if [[ -n "${source_content}" ]]; then
@@ -2026,11 +2093,11 @@ ${deb_src_disabled_tips}
 $(_template_deb822 "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
     function gen_deb_security() {
-        echo "## 安全更新软件源
+        echo "## $(msg "source.comment.securitySource")
 $(gen_deb "${1}" "${2}-security" "${3}")"
     }
     function gen_deb822_security() {
-        echo "## 安全更新软件源
+        echo "## $(msg "source.comment.securitySource")
 $(gen_deb822 "${1}" "${2}-security" "${3}")"
     }
 
@@ -2062,13 +2129,13 @@ $(gen_deb "${1}" "${2}-updates" "${3}")"
         echo "$(gen_deb "${1}" "${2}" "${3}")
 $(gen_deb "${1}" "${2}-updates" "${3}")
 $(gen_deb "${1}" "${2}-backports" "${3}")
-## 预发布软件源（不建议启用）
+## $(msg "source.comment.proposedSource")
 $(gen_deb_disabled "${1}" "${2}-proposed" "${3}")"
     }
     function gen_ubuntu_deb822() {
         echo "$(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
 
-## 预发布软件源（不建议启用）
+## $(msg "source.comment.proposedSource")
 $(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
     }
 
@@ -2685,7 +2752,7 @@ deb ${WEB_PROTOCOL}://${1}/ ${2}-updates ${3}
     fi
     local repository_sections="main cross pty" # 仓库区域
     local source_host="${SOURCE}/${SOURCE_BRANCH}"
-    echo "## 默认禁用源码镜像以提高更新速度，如需启用请自行取消注释
+    echo "## $(msg "source.comment.disabledSourceCode")
 $(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")" >>$File_AptSourceList
 }
 
@@ -2921,12 +2988,12 @@ function change_mirrors_or_install_EPEL() {
     ## EPEL 7
     if [[ "${epel_version}" == "7" ]]; then
         [ -z "${SOURCE_EPEL_BRANCH}" ] && SOURCE_EPEL_BRANCH="epel-archive"
-        [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN Extra Packages for Enterprise Linux 7 已结束生命周期并被官方移至归档库！"
-        [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$TIP 目前部分镜像站没有同步该归档仓库，若换源后出现错误那么请先检查目标镜像站是否支持该仓库。\n\n${GREEN}➜${PLAIN}  ${WEB_PROTOCOL}://${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-epel}"
+        [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN $(msg "warn.EPEL7")"
+        [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$TIP $(msg "tip.EPEL7")\n\n${GREEN}➜${PLAIN}  ${WEB_PROTOCOL}://${SOURCE_EPEL:-"${SOURCE}"}/${SOURCE_EPEL_BRANCH:-epel}"
     fi
     ## 安装 EPEL 软件包
     if [ $VERIFICATION_EPEL -ne 0 ]; then
-        echo -e "\n${WORKING} 安装 epel-release 软件包...\n"
+        echo -e "\n${WORKING} $(msg "work.installEPELPackage")\n"
         local package_manager="$(get_package_manager)"
         local package_path="epel/epel-release-latest-${epel_version}"
         case "${epel_version}" in
@@ -3009,17 +3076,20 @@ function get_package_manager() {
     echo "${command}"
 }
 
-function interactive_select_mirror() {
+function interactive_select_list() {
     _SELECT_RESULT=""
-    local options=("$@")
-    local message="${options[${#options[@]} - 1]}"
-    unset options[${#options[@]}-1]
+    eval "local __values=(\"\${${1}[@]}\")"
+    local __labels=()
+    local message="${2}"
     local selected=0
     local start=0
     local page_size=$(($(tput lines 2>/dev/null) - 3))
+    if [[ "${3}" ]]; then
+        eval "__labels=(\"\${${3}[@]}\")"
+    fi
     function clear_menu() {
         tput rc 2>/dev/null
-        for ((i = 0; i < ${#options[@]} + 1; i++)); do
+        for ((i = 0; i < ${#__values[@]} + 1; i++)); do
             echo -e "\r\033[K"
         done
         tput rc 2>/dev/null
@@ -3029,7 +3099,7 @@ function interactive_select_mirror() {
         tput rc 2>/dev/null
         tput cnorm 2>/dev/null
         tput rmcup 2>/dev/null
-        echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
+        echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
         exit 130
     }
     function draw_menu() {
@@ -3037,14 +3107,20 @@ function interactive_select_mirror() {
         tput cup 0 0 2>/dev/null
         echo -e "${message}"
         local end=$((start + page_size - 1))
-        if [ $end -ge ${#options[@]} ]; then
-            end=${#options[@]}-1
+        local label
+        if [ $end -ge ${#__values[@]} ]; then
+            end=${#__values[@]}-1
         fi
         for ((i = start; i <= end; i++)); do
-            if [ "$i" -eq "$selected" ]; then
-                echo -e "\e[34;4m➤ ${options[$i]%@*}\e[0m"
+            if [[ "${__labels[$i]}" ]]; then
+                label="${__labels[$i]}"
             else
-                echo -e "  ${options[$i]%@*}"
+                label="${__values[$i]}"
+            fi
+            if [ "$i" -eq "${selected}" ]; then
+                echo -e "\e[34;4m➤ ${label}\e[0m"
+            else
+                echo -e "  ${label}"
             fi
         done
     }
@@ -3065,17 +3141,17 @@ function interactive_select_mirror() {
         key=$(read_key)
         case "$key" in
         "[A" | "w" | "W")
-            if [ "$selected" -gt 0 ]; then
+            if [ "${selected}" -gt 0 ]; then
                 selected=$((selected - 1))
-                if [ "$selected" -lt "$start" ]; then
+                if [ "${selected}" -lt "$start" ]; then
                     start=$((start - 1))
                 fi
             fi
             ;;
         "[B" | "s" | "S")
-            if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
+            if [ "${selected}" -lt $((${#__values[@]} - 1)) ]; then
                 selected=$((selected + 1))
-                if [ "$selected" -ge $((start + page_size)) ]; then
+                if [ "${selected}" -ge $((start + page_size)) ]; then
                     start=$((start + 1))
                 fi
             fi
@@ -3090,15 +3166,18 @@ function interactive_select_mirror() {
     done
     tput cnorm 2>/dev/null
     tput rmcup 2>/dev/null
-    _SELECT_RESULT="${options[$selected]}"
+    _SELECT_RESULT="${__values[${selected}]}"
+    if [ "${__labels[${selected}]}" ]; then
+        _SELECT_RESULT="${_SELECT_RESULT}@@${__labels[${selected}]}"
+    fi
 }
 
 function interactive_select_boolean() {
     _SELECT_RESULT=""
     local selected=0
     local message="$1"
-    local positive_title="${2:-是}"
-    local negative_title="${3:-否}"
+    local positive_title="${2:-"$(msg "interaction.common.yes")"}"
+    local negative_title="${3:-"$(msg "interaction.common.no")"}"
     local menu_height=3
     local original_line
     function store_position() {
@@ -3113,13 +3192,13 @@ function interactive_select_boolean() {
     function cleanup() {
         clear_menu
         tput cnorm 2>/dev/null
-        echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
+        echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
         exit 130
     }
     function draw_menu() {
         echo -e "╭─ ${message}"
         echo -e "│"
-        if [ "$selected" -eq 0 ]; then
+        if [ "${selected}" -eq 0 ]; then
             echo -e "╰─ \033[34m●\033[0m ${positive_title}\033[2m / ○ ${negative_title}\033[0m"
         else
             echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[34m●\033[0m ${negative_title}"
@@ -3141,14 +3220,14 @@ function interactive_select_boolean() {
         key=$(read_key)
         case "$key" in
         "[D" | "a" | "A")
-            if [ "$selected" -gt 0 ]; then
+            if [ "${selected}" -gt 0 ]; then
                 selected=$((selected - 1))
                 clear_menu
                 draw_menu
             fi
             ;;
         "[C" | "d" | "D")
-            if [ "$selected" -lt 1 ]; then
+            if [ "${selected}" -lt 1 ]; then
                 selected=$((selected + 1))
                 clear_menu
                 draw_menu
@@ -3163,7 +3242,7 @@ function interactive_select_boolean() {
     done
     echo -e "╭─ ${message}"
     echo -e "│"
-    if [ "$selected" -eq 0 ]; then
+    if [ "${selected}" -eq 0 ]; then
         echo -e "╰─ \033[32m●\033[0m \033[1m${positive_title}\033[0m\033[2m / ○ ${negative_title}\033[0m"
         _SELECT_RESULT="true"
     else
@@ -3230,7 +3309,7 @@ function animate_exec() {
     function cleanup() {
         [ -f "${temp_file}" ] && rm -f "${temp_file}"
         tput cnorm 2>/dev/null
-        echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
+        echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
         exit 130
     }
     function make_temp_file() {
@@ -7612,5 +7691,745 @@ EOF
 
 ##############################################################################
 
+MESSAGE_LANG_DEFAULT='zh-hans'
+MESSAGE_LANG_KEYS=(
+    "zh-hans"
+    "zh-hant"
+    "en"
+)
+declare -A MESSAGE_LANG_DISPLAY=(
+    ['zh-hans']='简体中文'
+    ['zh-hant']='繁體中文'
+    ['en']='English'
+)
+declare -A MESSAGE_CONTENTS
+
+function msg() {
+    local key="$1"
+    shift
+    local text="${MESSAGE_CONTENTS[${key}]}"
+    if [[ -z "${text}" ]]; then
+        echo "${key}"
+        return
+    fi
+    while [[ $# -gt 0 ]]; do
+        if [[ "${text}" == *"{}"* ]]; then
+            text="${text/\{\}/$1}"
+        else
+            break
+        fi
+        shift
+    done
+    echo "${text}"
+}
+
+function init_msg_pack() {
+    function load_pack() {
+        local func_name="${1}"
+        if declare -f "${func_name}" >/dev/null 2>&1; then
+            eval "${func_name}"
+        fi
+    }
+    local current_lang="${1:-"${MESSAGE_LANG_DEFAULT}"}"
+    current_lang="$(echo "${current_lang}" | sed 's/^-*//')"
+    current_lang="${current_lang,,}"
+    if [[ "${MESSAGE_LANG_DISPLAY[${current_lang}]}" ]]; then
+        current_lang="${current_lang//-/_}"
+        load_pack "msg_pack_${current_lang}"
+    fi
+}
+
+function msg_pack_zh_hans() {
+    MESSAGE_CONTENTS=(
+        ['start.welcome']='欢迎使用 GNU/Linux 更换系统软件源脚本'
+        ['start.runtimeEnv']='运行环境'
+        ['start.dateTime']='系统时间'
+        ['end.moreInfo']='脚本运行完毕，更多使用教程详见官网'
+        ['end.sponsorAds']='【赞助商广告】'
+        ['error.cmd.options.needConfirm']='请确认后重新输入'
+        ['error.cmd.options.needSpecify']='请在该选项后指定{}'
+        ['error.cmd.options.invalid']='命令选项 {} 无效，{}！'
+        ['error.cmd.options.validAddress']='有效的地址'
+        ['error.cmd.options.sourceAddress']='软件源地址'
+        ['error.cmd.options.sourceRepository']='软件源仓库'
+        ['error.cmd.options.codename']='版本代号'
+        ['error.cmd.options.boolean']=' true 或 false '
+        ['error.cmd.options.protocol']=' http 或 https '
+        ['error.cmd.options.needProtocol']=' Web 协议(http/https)'
+        ['error.cmd.options.validLangKey']='有效的语言 ID '
+        ['error.cmd.options.langKey']='语言 '
+        ['error.cmd.options.unsupportTwoSourceMode']='不可同时使用两种软件源模式，请确认后重试！'
+        ['error.cmd.options.unsupportCodename']='当前系统不支持使用指定版本代号命令选项，请确认后重试！'
+        ['error.cmd.options.unsupportEPEL']='当前系统不支持安装 EPEL 附加软件包，请确认后重试！'
+        ['error.unsupportSystem']='不支持当前操作系统（{}），请前往官网查看支持列表！'
+        ['error.unsupportVersion']='不支持当前系统版本'
+        ['error.unknownSystem']='未知系统'
+        ['error.unknownVersion']='系统版本未知'
+        ['error.input']='输入错误，{}！'
+        ['error.needRoot']='权限不足，请使用 Root 用户运行本脚本'
+        ['error.defaultBehavior.https']='默认使用 HTTPS 协议'
+        ['error.defaultBehavior.noReplace']='默认不更换'
+        ['error.defaultBehavior.noOverwrite']='默认不覆盖'
+        ['error.defaultBehavior.noUpdate']='默认不更新'
+        ['error.defaultBehavior.noClean']='默认不清理'
+        ['error.defaultBehavior.noUseIntranetSource']='默认不使用内网地址'
+        ['warn.usedIntranetSource']='已切换至内网专用地址，仅限在特定环境下使用！'
+        ['warn.unstableDebian']='检测到当前系统为 {} 版本，可能会产生一些无法预料的问题。'
+        ['warn.EPEL7']='Extra Packages for Enterprise Linux 7 已结束生命周期并被官方移至归档库！'
+        ['warn.needValidNumberIndex']='请输入有效的数字序号！'
+        ['warn.needInputNumberIndex']='请输入数字序号！'
+        ['info.backuped.sourceFile']='已备份原有 {} 源文件'
+        ['tip.EPEL7']='目前部分镜像站没有同步该归档仓库，若换源后出现错误那么请先检查目标镜像站是否支持该仓库。'
+        ['interaction.source.type.public']='公网'
+        ['interaction.source.type.intranet']='内网'
+        ['interaction.source.type.select']='请选择软件源的网络地址(访问方式)：'
+        ['interaction.source.type.usePublicAddress']='默认使用软件源的公网地址，是否继续'
+        ['interaction.source.select']='请选择你想使用的软件源：'
+        ['interaction.source.selectAndInput']='请选择并输入你想使用的软件源'
+        ['interaction.protocol.select']='请选择软件源网络协议：'
+        ['interaction.protocol.useHttp']='软件源是否使用 HTTP 协议'
+        ['interaction.epel.skipReplace']='检测到系统已安装 EPEL 附加软件包，是否替换/覆盖软件源'
+        ['interaction.epel.install']='是否安装 EPEL 附加软件包'
+        ['interaction.backup.skipOverwrite.sourceFile']='检测到系统存在已备份的 {} 源文件，是否跳过覆盖备份'
+        ['interaction.upgrade.skip']='是否跳过更新软件包'
+        ['interaction.cache.autoClean']='在更新软件包后，是否自动清理下载缓存'
+        ['interaction.common.tip']='提示'
+        ['interaction.common.operationCanceled']='操作已取消'
+        ['interaction.common.yes']='是'
+        ['interaction.common.no']='否'
+        ['work.upgradeSoftware']='更新软件包'
+        ['work.installEPELPackage']='安装 epel-release 软件包...'
+        ['source.sync.text1']='更新软件源'
+        ['source.sync.text2']='生成软件源缓存'
+        ['source.sync.text3']='刷新软件源'
+        ['source.sync.text4']='同步软件源'
+        ['source.sync.text5']='更新二进制缓存与频道源'
+        ['source.comment.disabledSourceCode']='默认禁用源码镜像以提高更新速度，如需启用请自行取消注释'
+        ['source.comment.securitySource']='安全更新软件源'
+        ['source.comment.proposedSource']='预发布软件源（不建议启用）'
+        ['source.changeResult.success']='软件源更换完毕'
+        ['source.changeResult.fail']='软件源更换完毕，但{}失败'
+        ['source.changeResult.tipTitle']='请再次执行脚本并更换相同软件源后进行尝试，若仍然{}失败那么可能由以下原因导致：'
+        ['source.changeResult.tip1']='网络连通性问题：例如连接异常、由地区影响的网络间歇式中断、禁止外部访问、软件源网站防火墙阻断等'
+        ['source.changeResult.tip2']='目标软件源异常：请手动前往软件源（镜像站）地址进行验证：{}'
+        ['source.changeResult.tip2.1']='若报错内容是提示某个文件不存在那么有可能是软件源的问题，多常见于正在同步中的软件源仓库'
+        ['source.changeResult.tip2.2']='若报错内容是目录（path）不存在也有可能是目标软件源不存在当前系统镜像仓库，即不支持当前系统'
+        ['source.changeResult.tip2.3']='建议更换其它镜像站进行尝试，少数情况下软件源若处于同步中状态则可能会出现文件同步错误问题'
+        ['source.changeResult.tip3']='原有软件源报错：请先排除系统原有的其它软件源报错，因为脚本不会干预这些无关的软件源配置，解决后重新运行脚本即可'
+        ['commands.help']='命令选项(名称/含义/值)：
+
+  --abroad                     使用境外以及海外软件源                                             无
+  --edu                        使用中国大陆教育网软件源                                           无
+  --source                     指定软件源地址(域名或IP)                                           地址
+  --source-epel                指定 EPEL 附加软件包仓库的软件源地址(域名或IP)                     地址
+  --source-security            指定 Debian / Ubuntu 系统 security 仓库的软件源地址(域名或IP)      地址
+  --source-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址(域名或IP)      地址
+  --source-portage             指定 Gentoo 系统 portage 仓库的软件源地址(域名或IP)                地址
+  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址(域名或IP)   地址
+  --branch                     指定软件源仓库(路径)                                               仓库名
+  --branch-epel                指定 EPEL 附加软件包仓库的软件源仓库(路径)                         仓库名
+  --branch-security            指定 Debian 系统 security 仓库的软件源仓库(路径)                   仓库名
+  --branch-vault               指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库(路径)          仓库名
+  --branch-portage             指定 Gentoo 系统 portage 仓库的软件源仓库(路径)                    仓库名
+  --branch-base-system         指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库(路径)       仓库名
+  --codename                   指定 Debian 系 / openKylin 操作系统的版本代号                      代号名称
+  --protocol                   指定 Web 协议                                                      http 或 https
+  --use-intranet-source        是否优先使用内网软件源地址                                         true 或 false
+  --use-official-source        是否使用目标操作系统的官方软件源                                   true 或 false
+  --use-official-source-epel   是否使用 EPEL 附加软件包的官方软件源                               true 或 false
+  --install-epel               是否安装 EPEL 附加软件包                                           true 或 false
+  --backup                     是否备份原有软件源                                                 true 或 false
+  --upgrade-software           是否更新软件包                                                     true 或 false
+  --clean-cache                是否在更新软件包后清理下载缓存                                     true 或 false
+  --clean-screen               是否在运行前清除屏幕上的所有内容                                   true 或 false
+  --lang                       指定脚本输出的语言                                                 语言
+  --only-epel                  仅更换 EPEL 软件源模式                                             无
+  --ignore-backup-tips         忽略覆盖备份提示                                                   无
+  --print-diff                 打印源文件修改前后差异                                             无
+  --pure-mode                  纯净模式，精简打印内容                                             无
+  --help                       查看帮助菜单                                                       无
+
+问题报告 {}'
+        ['mirrors.default.0']='阿里云'
+        ['mirrors.default.1']='腾讯云'
+        ['mirrors.default.2']='华为云'
+        ['mirrors.default.3']='网易'
+        ['mirrors.default.4']='火山引擎'
+        ['mirrors.default.5']='清华大学'
+        ['mirrors.default.6']='北京大学'
+        ['mirrors.default.7']='浙江大学'
+        ['mirrors.default.8']='南京大学'
+        ['mirrors.default.9']='兰州大学'
+        ['mirrors.default.10']='上海交通大学'
+        ['mirrors.default.11']='重庆邮电大学'
+        ['mirrors.default.12']='中国科学技术大学'
+        ['mirrors.default.13']='中国科学院软件研究所'
+        ['mirrors.default.14']='官方源'
+        ['mirrors.edu.0']='北京大学'
+        ['mirrors.edu.1']='北京交通大学'
+        ['mirrors.edu.2']='北京外国语大学'
+        ['mirrors.edu.3']='北京邮电大学'
+        ['mirrors.edu.4']='重庆大学'
+        ['mirrors.edu.5']='重庆邮电大学'
+        ['mirrors.edu.6']='大连东软信息学院'
+        ['mirrors.edu.7']='电子科技大学'
+        ['mirrors.edu.8']='华南农业大学'
+        ['mirrors.edu.9']='华中科技大学'
+        ['mirrors.edu.10']='吉林大学'
+        ['mirrors.edu.11']='荆楚理工学院'
+        ['mirrors.edu.12']='江西理工大学'
+        ['mirrors.edu.13']='兰州大学'
+        ['mirrors.edu.14']='南京大学'
+        ['mirrors.edu.15']='南京工业大学'
+        ['mirrors.edu.16']='南京邮电大学'
+        ['mirrors.edu.17']='南方科技大学'
+        ['mirrors.edu.18']='南阳理工学院'
+        ['mirrors.edu.19']='齐鲁工业大学'
+        ['mirrors.edu.20']='清华大学'
+        ['mirrors.edu.21']='山东大学'
+        ['mirrors.edu.22']='上海科技大学'
+        ['mirrors.edu.23']='上海交通大学（思源）'
+        ['mirrors.edu.24']='上海交通大学（致远）'
+        ['mirrors.edu.25']='武昌首义学院'
+        ['mirrors.edu.26']='西安交通大学'
+        ['mirrors.edu.27']='西北农林科技大学'
+        ['mirrors.edu.28']='浙江大学'
+        ['mirrors.edu.29']='中国科学技术大学'
+        ['mirrors.edu.30']='官方源'
+        ['mirrors.abroad.0']='亚洲 · xTom · 香港'
+        ['mirrors.abroad.1']='亚洲 · 01Link · 香港'
+        ['mirrors.abroad.2']='亚洲 · 新加坡国立大学(NUS) · 新加坡'
+        ['mirrors.abroad.3']='亚洲 · SG.GS · 新加坡'
+        ['mirrors.abroad.4']='亚洲 · xTom · 新加坡'
+        ['mirrors.abroad.5']='亚洲 · 自由软件实验室(NCHC) · 台湾'
+        ['mirrors.abroad.6']='亚洲 · OSS Planet · 台湾'
+        ['mirrors.abroad.7']='亚洲 · 国立阳明交通大学 · 台湾'
+        ['mirrors.abroad.8']='亚洲 · 淡江大学 · 台湾'
+        ['mirrors.abroad.9']='亚洲 · AniGil Linux Archive · 韩国'
+        ['mirrors.abroad.10']='亚洲 · 工业网络安全中心(ICSCoE) · 日本'
+        ['mirrors.abroad.11']='亚洲 · 北陆先端科学技术大学院大学(JAIST) · 日本'
+        ['mirrors.abroad.12']='亚洲 · 山形大学 · 日本'
+        ['mirrors.abroad.13']='亚洲 · xTom · 日本'
+        ['mirrors.abroad.14']='亚洲 · GB Network Solutions · 马来西亚'
+        ['mirrors.abroad.15']='亚洲 · 孔敬大学 · 泰国'
+        ['mirrors.abroad.16']='欧洲 · Vorboss Ltd · 英国'
+        ['mirrors.abroad.17']='欧洲 · QuickHost · 英国'
+        ['mirrors.abroad.18']='欧洲 · dogado · 德国'
+        ['mirrors.abroad.19']='欧洲 · xTom · 德国'
+        ['mirrors.abroad.20']='欧洲 · 亚琛工业大学(RWTH Aachen) · 德国'
+        ['mirrors.abroad.21']='欧洲 · 德累斯顿大学(AG DSN) · 德国'
+        ['mirrors.abroad.22']='欧洲 · CCIN2P3 · 法国'
+        ['mirrors.abroad.23']='欧洲 · Ircam · 法国'
+        ['mirrors.abroad.24']='欧洲 · Crans · 法国'
+        ['mirrors.abroad.25']='欧洲 · CRIHAN · 法国'
+        ['mirrors.abroad.26']='欧洲 · xTom · 荷兰'
+        ['mirrors.abroad.27']='欧洲 · DataPacket · 荷兰'
+        ['mirrors.abroad.28']='欧洲 · Linux Kernel · 荷兰'
+        ['mirrors.abroad.29']='欧洲 · xTom · 爱沙尼亚'
+        ['mirrors.abroad.30']='欧洲 · netsite · 丹麦'
+        ['mirrors.abroad.31']='欧洲 · Dotsrc · 丹麦'
+        ['mirrors.abroad.32']='欧洲 · Academic Computer Club · 瑞典'
+        ['mirrors.abroad.33']='欧洲 · Lysator · 瑞典'
+        ['mirrors.abroad.34']='欧洲 · Yandex · 俄罗斯'
+        ['mirrors.abroad.35']='欧洲 · ia64 · 俄罗斯'
+        ['mirrors.abroad.36']='欧洲 · Truenetwork · 俄罗斯'
+        ['mirrors.abroad.37']='欧洲 · Belgian Research Network · 比利时'
+        ['mirrors.abroad.38']='欧洲 · 克里特大学计算机中心 · 希腊'
+        ['mirrors.abroad.39']='欧洲 · 马萨里克大学信息学院 · 捷克'
+        ['mirrors.abroad.40']='欧洲 · 捷克理工大学学生会俱乐部(Silicon Hill) · 捷克'
+        ['mirrors.abroad.41']='欧洲 · Vodafone · 捷克'
+        ['mirrors.abroad.42']='欧洲 · CZ.NIC · 捷克'
+        ['mirrors.abroad.43']='欧洲 · 苏黎世联邦理工学院 · 瑞士'
+        ['mirrors.abroad.44']='北美 · Linux Kernel · 美国'
+        ['mirrors.abroad.45']='北美 · 麻省理工学院(MIT) · 美国'
+        ['mirrors.abroad.46']='北美 · 普林斯顿大学数学系 · 美国'
+        ['mirrors.abroad.47']='北美 · 俄勒冈州立大学开源实验室 · 美国'
+        ['mirrors.abroad.48']='北美 · Fremont Cabal Internet Exchange(FCIX) · 美国'
+        ['mirrors.abroad.49']='北美 · xTom · 美国'
+        ['mirrors.abroad.50']='北美 · Steadfast · 美国'
+        ['mirrors.abroad.51']='北美 · 不列颠哥伦比亚大学 · 加拿大'
+        ['mirrors.abroad.52']='北美 · GoCodeIT · 加拿大'
+        ['mirrors.abroad.53']='北美 · Switch · 加拿大'
+        ['mirrors.abroad.54']='南美 · PoP-SC · 巴西'
+        ['mirrors.abroad.55']='南美 · 蓬塔格罗萨州立大学 · 巴西'
+        ['mirrors.abroad.56']='南美 · UFSCar · 巴西'
+        ['mirrors.abroad.57']='南美 · Sysarmy Community · 阿根廷'
+        ['mirrors.abroad.58']='大洋 · Fremont Cabal Internet Exchange(FCIX) · 澳大利亚'
+        ['mirrors.abroad.59']='大洋 · AARNet · 澳大利亚'
+        ['mirrors.abroad.60']='大洋 · DataMossa · 澳大利亚'
+        ['mirrors.abroad.61']='大洋 · Amaze · 澳大利亚'
+        ['mirrors.abroad.62']='大洋 · xTom · 澳大利亚'
+        ['mirrors.abroad.63']='大洋 · Over the Wire · 澳大利亚'
+        ['mirrors.abroad.64']='大洋 · Free Software Mirror Group · 新西兰'
+        ['mirrors.abroad.65']='非洲 · Liquid Telecom · 肯尼亚'
+        ['mirrors.abroad.66']='非洲 · Dimension Data · 南非'
+        ['mirrors.abroad.67']='官方源'
+    )
+}
+
+function msg_pack_zh_hant() {
+    MESSAGE_CONTENTS=(
+        ['start.welcome']='歡迎使用 GNU/Linux 更換系統軟體源腳本'
+        ['start.runtimeEnv']='執行環境'
+        ['start.dateTime']='系統時間'
+        ['end.moreInfo']='腳本執行完畢，更多使用教學詳見官網'
+        ['end.sponsorAds']='【贊助商廣告】'
+        ['error.cmd.options.needConfirm']='請確認後重新輸入'
+        ['error.cmd.options.needSpecify']='請在該選項後指定{}'
+        ['error.cmd.options.invalid']='命令選項 {} 無效，{}！'
+        ['error.cmd.options.invalid']='命令選項 {} 無效，{}！'
+        ['error.cmd.options.validAddress']='有效的地址'
+        ['error.cmd.options.sourceAddress']='軟體源地址'
+        ['error.cmd.options.sourceRepository']='軟體源倉庫'
+        ['error.cmd.options.codename']='版本代號'
+        ['error.cmd.options.boolean']=' true 或 false '
+        ['error.cmd.options.protocol']=' http 或 https '
+        ['error.cmd.options.needProtocol']=' Web 協定(http/https)'
+        ['error.cmd.options.validLangKey']='有效的語言 ID '
+        ['error.cmd.options.langKey']='語言 ID '
+        ['error.cmd.options.unsupportTwoSourceMode']='不可同時使用兩種軟體源模式，請確認後重試！'
+        ['error.cmd.options.unsupportCodename']='當前系統不支援使用指定版本代號命令選項，請確認後重試！'
+        ['error.cmd.options.unsupportEPEL']='當前系統不支援安裝 EPEL 附加軟體包，請確認後重試！'
+        ['error.unsupportSystem']='不支援當前系統（{}），請前往官網查看支援清單！'
+        ['error.unsupportVersion']='不支援當前系統版本'
+        ['error.unknownSystem']='未知系統'
+        ['error.unknownVersion']='系統版本未知'
+        ['error.input']='輸入錯誤，{}！'
+        ['error.needRoot']='權限不足，請使用 Root 使用者執行本腳本'
+        ['error.defaultBehavior.https']='預設使用 HTTPS 協定'
+        ['error.defaultBehavior.noReplace']='預設不更換'
+        ['error.defaultBehavior.noOverwrite']='預設不覆蓋'
+        ['error.defaultBehavior.noUpdate']='預設不更新'
+        ['error.defaultBehavior.noClean']='預設不清理'
+        ['error.defaultBehavior.noUseIntranetSource']='預設不使用內網地址'
+        ['warn.usedIntranetSource']='已切換至內網專用地址，僅限在特定環境下使用！'
+        ['warn.unstableDebian']='偵測到當前系統為 {} 版本，可能會產生一些無法預料的問題。'
+        ['warn.EPEL7']='Extra Packages for Enterprise Linux 7 已結束生命週期並被官方移至封存庫！'
+        ['warn.needValidNumberIndex']='請輸入有效的數字序號！'
+        ['warn.needInputNumberIndex']='請輸入數字序號！'
+        ['info.backuped.sourceFile']='已備份原有 {} 源檔案'
+        ['tip.EPEL7']='目前部分鏡像站尚未同步該封存倉庫，若換源後出現錯誤請先檢查目標鏡像站是否支援該倉庫。'
+        ['interaction.source.type.public']='外網'
+        ['interaction.source.type.intranet']='內網'
+        ['interaction.source.type.select']='請選擇軟體源的網路地址（存取方式）：'
+        ['interaction.source.type.usePublicAddress']='預設使用軟體源的外網地址，是否繼續'
+        ['interaction.source.select']='請選擇你想使用的軟體源：'
+        ['interaction.source.selectAndInput']='請選擇並輸入你想使用的軟體源'
+        ['interaction.protocol.select']='請選擇軟體源網路協定：'
+        ['interaction.protocol.useHttp']='軟體源是否使用 HTTP 协议'
+        ['interaction.epel.skipReplace']='偵測到系統已安裝 EPEL 附加軟體包，是否替換/覆蓋軟體源'
+        ['interaction.epel.install']='是否安裝 EPEL 附加軟體包'
+        ['interaction.backup.skipOverwrite.sourceFile']='偵測到系統存在已備份的 {} 源檔案，是否跳過覆蓋備份'
+        ['interaction.upgrade.skip']='是否跳過更新軟體包'
+        ['interaction.cache.autoClean']='在更新軟體包後，是否自動清理下載快取'
+        ['interaction.common.tip']='提示'
+        ['interaction.common.operationCanceled']='操作已取消'
+        ['interaction.common.yes']='是'
+        ['interaction.common.no']='否'
+        ['work.upgradeSoftware']='更新軟體包'
+        ['work.installEPELPackage']='正在安裝 epel-release 套件...'
+        ['source.sync.text1']='更新軟體源'
+        ['source.sync.text2']='產生軟體源快取'
+        ['source.sync.text3']='重新整理軟體源'
+        ['source.sync.text4']='同步軟體源'
+        ['source.sync.text5']='更新二進位快取與頻道來源'
+        ['source.comment.disabledSourceCode']='預設停用原始碼鏡像以提升更新速度，如需啟用請自行取消註解'
+        ['source.comment.securitySource']='安全更新軟體源'
+        ['source.comment.proposedSource']='預發布軟體源（不建議啟用）'
+        ['source.changeResult.success']='軟體源更換完畢'
+        ['source.changeResult.fail']='軟體源更換完畢，但{}失敗'
+        ['source.changeResult.tipTitle']='請再次執行腳本並更換相同軟體源後重試，若仍然{}失敗則可能由下列原因造成：'
+        ['source.changeResult.tip1']='網路連通性問題：例如連線異常、地域因素造成的網路間歇中斷、禁止外部存取、軟體源站台防火牆阻斷等'
+        ['source.changeResult.tip2']='目標軟體源異常：請手動前往軟體源（鏡像站）地址進行驗證：{}'
+        ['source.changeResult.tip2.1']='若錯誤內容是提示某個檔案不存在，可能是軟體源的問題，常見於鏡像站同步期間'
+        ['source.changeResult.tip2.2']='若錯誤內容是目錄不存在，也可能代表目標軟體源不含當前系統的鏡像倉庫，即不支援當前系統'
+        ['source.changeResult.tip2.3']='建議更換其他鏡像站再試，少數情況下軟體源若處於同步中狀態則可能會出現檔案同步錯誤'
+        ['source.changeResult.tip3']='原有軟體源報錯：請先排除系統其他軟體源的錯誤，因為腳本不會處理無關的軟體源配置，解決後重新執行腳本即可'
+        ['commands.help']='命令選項(名稱/含義/值)：
+
+  --abroad                     使用境外以及海外軟體源                                                 無
+  --edu                        使用中國大陸教育網軟體源                                               無
+  --source                     指定軟體源地址(網域名稱或IP)                                           位址
+  --source-epel                指定 EPEL 附加軟體包倉庫的軟體源地址(網域名稱或IP)                     位址
+  --source-security            指定 Debian / Ubuntu 系統 security 倉庫的軟體源地址(網域名稱或IP)      位址
+  --source-vault               指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源地址(網域名稱或IP)      位址
+  --source-portage             指定 Gentoo 系統 portage 倉庫的軟體源地址(網域名稱或IP)                位址
+  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源地址(網域名稱或IP)   位址
+  --branch                     指定軟體源倉庫(路徑)                                                   倉庫名稱
+  --branch-epel                指定 EPEL 附加軟體包倉庫的軟體源倉庫(路徑)                             倉庫名稱
+  --branch-security            指定 Debian 系統 security 倉庫的軟體源倉庫(路徑)                       倉庫名稱
+  --branch-vault               指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫(路徑)              倉庫名稱
+  --branch-portage             指定 Gentoo 系統 portage 倉庫的軟體源倉庫(路徑)                        倉庫名稱
+  --branch-base-system         指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫(路徑)           倉庫名稱
+  --codename                   指定 Debian 系 / openKylin 系統的版本代號                              代號名稱
+  --protocol                   指定 Web 協定                                                          http 或 https
+  --use-intranet-source        是否優先使用內部網路軟體源位址                                         true 或 false
+  --use-official-source        是否使用目標系統的官方軟體源                                           true 或 false
+  --use-official-source-epel   是否使用 EPEL 附加軟體包的官方軟體源                                   true 或 false
+  --install-epel               是否安裝 EPEL 附加軟體包                                               true 或 false
+  --backup                     是否備份原有軟體源                                                     true 或 false
+  --upgrade-software           是否更新軟體包                                                         true 或 false
+  --clean-cache                是否在更新軟體包後清理下載快取                                         true 或 false
+  --clean-screen               是否在運行前清除螢幕上的所有內容                                       true 或 false
+  --lang                       指定腳本輸出的語言                                                     语言
+  --only-epel                  僅更換 EPEL 軟體源模式                                                 無
+  --ignore-backup-tips         忽略覆蓋備份提示                                                       無
+  --print-diff                 是否列印原始文件修改前後差異                                           無
+  --pure-mode                  純淨模式，精簡列印內容                                                 無
+  --help                       查看幫助選單                                                           無
+
+問題報告 {}'
+        ['mirrors.default.0']='阿里雲'
+        ['mirrors.default.1']='騰訊雲'
+        ['mirrors.default.2']='華為雲'
+        ['mirrors.default.3']='網易'
+        ['mirrors.default.4']='火山引擎'
+        ['mirrors.default.5']='清華大學'
+        ['mirrors.default.6']='北京大學'
+        ['mirrors.default.7']='浙江大學'
+        ['mirrors.default.8']='南京大學'
+        ['mirrors.default.9']='蘭州大學'
+        ['mirrors.default.10']='上海交通大學'
+        ['mirrors.default.11']='重慶郵電大學'
+        ['mirrors.default.12']='中國科學技術大學'
+        ['mirrors.default.13']='中國科學院軟件研究所'
+        ['mirrors.default.14']='官方源'
+        ['mirrors.edu.0']='北京大學'
+        ['mirrors.edu.1']='北京交通大學'
+        ['mirrors.edu.2']='北京外國語大學'
+        ['mirrors.edu.3']='北京郵電大學'
+        ['mirrors.edu.4']='重慶大學'
+        ['mirrors.edu.5']='重慶郵電大學'
+        ['mirrors.edu.6']='大連東軟信息學院'
+        ['mirrors.edu.7']='電子科技大學'
+        ['mirrors.edu.8']='華南農業大學'
+        ['mirrors.edu.9']='華中科技大學'
+        ['mirrors.edu.10']='吉林大學'
+        ['mirrors.edu.11']='荊楚理工學院'
+        ['mirrors.edu.12']='江西理工大學'
+        ['mirrors.edu.13']='蘭州大學'
+        ['mirrors.edu.14']='南京大學'
+        ['mirrors.edu.15']='南京工業大學'
+        ['mirrors.edu.16']='南京郵電大學'
+        ['mirrors.edu.17']='南方科技大學'
+        ['mirrors.edu.18']='南陽理工學院'
+        ['mirrors.edu.19']='齊魯工業大學'
+        ['mirrors.edu.20']='清華大學'
+        ['mirrors.edu.21']='山東大學'
+        ['mirrors.edu.22']='上海科技大學'
+        ['mirrors.edu.23']='上海交通大學（思源）'
+        ['mirrors.edu.24']='上海交通大學（致遠）'
+        ['mirrors.edu.25']='武昌首義學院'
+        ['mirrors.edu.26']='西安交通大學'
+        ['mirrors.edu.27']='西北農林科技大學'
+        ['mirrors.edu.28']='浙江大學'
+        ['mirrors.edu.29']='中國科學技術大學'
+        ['mirrors.edu.30']='官方源'
+        ['mirrors.abroad.0']='亞洲 · xTom · 香港'
+        ['mirrors.abroad.1']='亞洲 · 01Link · 香港'
+        ['mirrors.abroad.2']='亞洲 · 新加坡國立大學(NUS) · 新加坡'
+        ['mirrors.abroad.3']='亞洲 · SG.GS · 新加坡'
+        ['mirrors.abroad.4']='亞洲 · xTom · 新加坡'
+        ['mirrors.abroad.5']='亞洲 · 自由軟體實驗室(NCHC) · 臺灣'
+        ['mirrors.abroad.6']='亞洲 · OSS Planet · 臺灣'
+        ['mirrors.abroad.7']='亞洲 · 國立陽明交通大學 · 臺灣'
+        ['mirrors.abroad.8']='亞洲 · 淡江大學 · 臺灣'
+        ['mirrors.abroad.9']='亞洲 · AniGil Linux Archive · 韓國'
+        ['mirrors.abroad.10']='亞洲 · 工業網路安全中心(ICSCoE) · 日本'
+        ['mirrors.abroad.11']='亞洲 · 北陸先端科學技術大學院大學(JAIST) · 日本'
+        ['mirrors.abroad.12']='亞洲 · 山形大學 · 日本'
+        ['mirrors.abroad.13']='亞洲 · xTom · 日本'
+        ['mirrors.abroad.14']='亞洲 · GB Network Solutions · 馬來西亞'
+        ['mirrors.abroad.15']='亞洲 · 孔敬大學 · 泰國'
+        ['mirrors.abroad.16']='歐洲 · Vorboss Ltd · 英國'
+        ['mirrors.abroad.17']='歐洲 · QuickHost · 英國'
+        ['mirrors.abroad.18']='歐洲 · dogado · 德國'
+        ['mirrors.abroad.19']='歐洲 · xTom · 德國'
+        ['mirrors.abroad.20']='歐洲 · 亞琛工業大學(RWTH Aachen) · 德國'
+        ['mirrors.abroad.21']='歐洲 · 德勒斯登大學(AG DSN) · 德國'
+        ['mirrors.abroad.22']='歐洲 · CCIN2P3 · 法國'
+        ['mirrors.abroad.23']='歐洲 · Ircam · 法國'
+        ['mirrors.abroad.24']='歐洲 · Crans · 法國'
+        ['mirrors.abroad.25']='歐洲 · CRIHAN · 法國'
+        ['mirrors.abroad.26']='歐洲 · xTom · 荷蘭'
+        ['mirrors.abroad.27']='歐洲 · DataPacket · 荷蘭'
+        ['mirrors.abroad.28']='歐洲 · Linux Kernel · 荷蘭'
+        ['mirrors.abroad.29']='歐洲 · xTom · 愛沙尼亞'
+        ['mirrors.abroad.30']='歐洲 · netsite · 丹麥'
+        ['mirrors.abroad.31']='歐洲 · Dotsrc · 丹麥'
+        ['mirrors.abroad.32']='歐洲 · Academic Computer Club · 瑞典'
+        ['mirrors.abroad.33']='歐洲 · Lysator · 瑞典'
+        ['mirrors.abroad.34']='歐洲 · Yandex · 俄羅斯'
+        ['mirrors.abroad.35']='歐洲 · ia64 · 俄羅斯'
+        ['mirrors.abroad.36']='歐洲 · Truenetwork · 俄羅斯'
+        ['mirrors.abroad.37']='歐洲 · Belgian Research Network · 比利時'
+        ['mirrors.abroad.38']='歐洲 · 克里特大學計算機中心 · 希臘'
+        ['mirrors.abroad.39']='歐洲 · 馬薩里克大學信息學院 · 捷克'
+        ['mirrors.abroad.40']='歐洲 · 捷克理工大學學生會俱樂部(Silicon Hill) · 捷克'
+        ['mirrors.abroad.41']='歐洲 · Vodafone · 捷克'
+        ['mirrors.abroad.42']='歐洲 · CZ.NIC · 捷克'
+        ['mirrors.abroad.43']='歐洲 · 蘇黎世聯邦理工學院 · 瑞士'
+        ['mirrors.abroad.44']='北美 · Linux Kernel · 美國'
+        ['mirrors.abroad.45']='北美 · 麻省理工學院(MIT) · 美國'
+        ['mirrors.abroad.46']='北美 · 普林斯頓大學數學系 · 美國'
+        ['mirrors.abroad.47']='北美 · 俄勒岡州立大學開源實驗室 · 美國'
+        ['mirrors.abroad.48']='北美 · Fremont Cabal Internet Exchange(FCIX) · 美國'
+        ['mirrors.abroad.49']='北美 · xTom · 美國'
+        ['mirrors.abroad.50']='北美 · Steadfast · 美國'
+        ['mirrors.abroad.51']='北美 · 不列顛哥倫比亞大學 · 加拿大'
+        ['mirrors.abroad.52']='北美 · GoCodeIT · 加拿大'
+        ['mirrors.abroad.53']='北美 · Switch · 加拿大'
+        ['mirrors.abroad.54']='南美 · PoP-SC · 巴西'
+        ['mirrors.abroad.55']='南美 · 蓬塔格羅薩州立大學 · 巴西'
+        ['mirrors.abroad.56']='南美 · UFSCar · 巴西'
+        ['mirrors.abroad.57']='南美 · Sysarmy Community · 阿根廷'
+        ['mirrors.abroad.58']='大洋 · Fremont Cabal Internet Exchange(FCIX) · 澳大利亞'
+        ['mirrors.abroad.59']='大洋 · AARNet · 澳大利亞'
+        ['mirrors.abroad.60']='大洋 · DataMossa · 澳大利亞'
+        ['mirrors.abroad.61']='大洋 · Amaze · 澳大利亞'
+        ['mirrors.abroad.62']='大洋 · xTom · 澳大利亞'
+        ['mirrors.abroad.63']='大洋 · Over the Wire · 澳大利亞'
+        ['mirrors.abroad.64']='大洋 · Free Software Mirror Group · 紐西蘭'
+        ['mirrors.abroad.65']='非洲 · Liquid Telecom · 肯亞'
+        ['mirrors.abroad.66']='非洲 · Dimension Data · 南非'
+        ['mirrors.abroad.67']='官方源'
+    )
+    SPONSOR_ADS[0]="1Panel · 新一代的 Linux 伺服器維運管理面板 ➜  \033[3mhttps://1panel.cn\033[0m"
+}
+
+function msg_pack_en() {
+    MESSAGE_CONTENTS=(
+        ['start.welcome']='  GNU/Linux mirror switching script'
+        ['start.runtimeEnv']='Runtime Env'
+        ['start.dateTime']='System Time'
+        ['end.moreInfo']='Script execution completed, visit our website for more tutorials'
+        ['end.sponsorAds']='[Sponsor Ads]'
+        ['error.cmd.options.needConfirm']='Please confirm and re-enter'
+        ['error.cmd.options.needSpecify']='Please specify {} after this option'
+        ['error.cmd.options.invalid']='Command option {} is invalid, {}!'
+        ['error.cmd.options.validAddress']='a valid address'
+        ['error.cmd.options.sourceAddress']='mirror address'
+        ['error.cmd.options.sourceRepository']='mirror repository'
+        ['error.cmd.options.codename']='version codename'
+        ['error.cmd.options.boolean']=' true or false '
+        ['error.cmd.options.protocol']=' http or https '
+        ['error.cmd.options.needProtocol']=' Web protocol(http/https)'
+        ['error.cmd.options.validLangKey']='A valid language ID '
+        ['error.cmd.options.langKey']='language ID '
+        ['error.cmd.options.unsupportTwoSourceMode']='Two mirror modes cannot be used at the same time. Please retry!'
+        ['error.cmd.options.unsupportCodename']='The current system does not support specifying a codename. Please retry!'
+        ['error.cmd.options.unsupportEPEL']='The current system cannot install the EPEL add-on package. Please retry!'
+        ['error.unsupportSystem']='The operating system ({}) is not supported. Check the supported list on the website!'
+        ['error.unsupportVersion']='The current system version is not supported'
+        ['error.unknownSystem']='Unknown system'
+        ['error.unknownVersion']='System version unknown'
+        ['error.input']='Input error, {}!'
+        ['error.needRoot']='Insufficient permissions, please run this script as Root user'
+        ['error.defaultBehavior.https']='HTTPS is used by default'
+        ['error.defaultBehavior.noReplace']='No replacement by default'
+        ['error.defaultBehavior.noOverwrite']='No overwrite by default'
+        ['error.defaultBehavior.noUpdate']='No update by default'
+        ['error.defaultBehavior.noClean']='No cleanup by default'
+        ['error.defaultBehavior.noUseIntranetSource']='Intranet mirrors are disabled by default'
+        ['warn.usedIntranetSource']='Switched to an intranet-only mirror. Use only in the intended environment!'
+        ['warn.unstableDebian']='Detected system version {} which may cause unpredictable issues.'
+        ['warn.EPEL7']='Extra Packages for Enterprise Linux 7 reached end-of-life and was moved to the archive!'
+        ['warn.needValidNumberIndex']='Please enter a valid number index!'
+        ['warn.needInputNumberIndex']='Please enter a number index!'
+        ['info.backuped.sourceFile']='Backed up existing {} source file'
+        ['tip.EPEL7']="Some mirrors don't sync that archive. If errors occur, verify the target mirror provides it."
+        ['interaction.source.type.public']='Public'
+        ['interaction.source.type.intranet']='Intranet'
+        ['interaction.source.type.select']='Please select network address (access method) for mirror:'
+        ['interaction.source.type.usePublicAddress']='Use public network address for mirror by default, continue'
+        ['interaction.source.select']='Please select the mirror you want to use:'
+        ['interaction.source.selectAndInput']='Please select and enter the mirror you want to use'
+        ['interaction.protocol.select']='Please select network protocol for mirror:'
+        ['interaction.protocol.useHttp']='Use HTTP protocol for mirror'
+        ['interaction.epel.skipReplace']='EPEL already installed. Replace/overwrite mirror'
+        ['interaction.epel.install']='Install EPEL add-on package'
+        ['interaction.backup.skipOverwrite.sourceFile']='A backup of {} already exists. Skip overwriting'
+        ['interaction.upgrade.skip']='Skip upgrading packages'
+        ['interaction.cache.autoClean']='Clean download cache after upgrading packages'
+        ['interaction.common.tip']='Tip'
+        ['interaction.common.operationCanceled']='Operation canceled'
+        ['interaction.common.yes']='Yes'
+        ['interaction.common.no']='No'
+        ['work.upgradeSoftware']='Upgrading packages'
+        ['work.installEPELPackage']='Installing epel-release package...'
+        ['source.sync.text1']='Update APT package index'
+        ['source.sync.text2']='Generate mirror cache'
+        ['source.sync.text3']='Refreshing mirrors'
+        ['source.sync.text4']='Synchronizing mirrors'
+        ['source.sync.text5']='Updating binary cache and channels'
+        ['source.comment.disabledSourceCode']='Source code mirrors are disabled by default for speed. Uncomment to enable'
+        ['source.comment.securitySource']='Security updates'
+        ['source.comment.proposedSource']='Proposed repository (not recommended)'
+        ['source.changeResult.success']='Mirror switching complete'
+        ['source.changeResult.fail']='Mirror switching complete, but {} failed'
+        ['source.changeResult.tipTitle']='Run the script again with the same mirror. If {} still fails, consider:'
+        ['source.changeResult.tip1']='Connectivity issues: unstable network, blocked access, or mirror-side firewall rules'
+        ['source.changeResult.tip2']='Mirror issues: test the mirror manually at {}'
+        ['source.changeResult.tip2.1']='If a file is missing, the mirror might still be syncing'
+        ['source.changeResult.tip2.2']='If a path is missing, the mirror may not provide this system repository'
+        ['source.changeResult.tip2.3']='Try another mirror. Syncing mirrors may temporarily serve broken content'
+        ['source.changeResult.tip3']='Original mirrors failing: fix unrelated mirror errors and rerun the script'
+        ['commands.help']='Command options(name/meaning/value):
+
+  --abroad                     Use overseas mirrors                                                         none
+  --edu                        Use China education network mirrors                                          none
+  --source                     Specify mirror address (domain or IP)                                        address
+  --source-epel                Specify EPEL repository address (domain or IP)                               address
+  --source-security            Specify Debian/Ubuntu security repo address (domain or IP)                   address
+  --source-vault               Specify CentOS/AlmaLinux vault repo address (domain or IP)                   address
+  --source-portage             Specify Gentoo portage repo address (domain or IP)                           address
+  --source-base-system         Specify Linux Mint/Raspberry Pi OS base system repo address (domain or IP)   address
+  --branch                     Specify mirror repository (repo name)                                        repo name
+  --branch-epel                Specify EPEL repository (path)                                               repo name
+  --branch-security            Specify Debian security repo (path)                                          repo name
+  --branch-vault               Specify CentOS/AlmaLinux vault repo (path)                                   repo name
+  --branch-portage             Specify Gentoo portage repo (path)                                           repo name
+  --branch-base-system         Specify Linux Mint/Raspberry Pi OS base system repo (path)                   repo name
+  --codename                   Specify Debian/openKylin codename                                            codename
+  --protocol                   Specify web protocol                                                         http or https
+  --use-intranet-source        Prefer intranet mirror address                                               true or false
+  --use-official-source        Use official mirror of target OS                                             true or false
+  --use-official-source-epel   Use official EPEL repo                                                       true or false
+  --install-epel               Install EPEL repository                                                      true or false
+  --backup                     Backup original mirrors                                                      true or false
+  --upgrade-software           Upgrade packages                                                             true or false
+  --clean-cache                Clean cache after upgrade                                                    true or false
+  --clean-screen               Clear screen before running                                                  true or false
+  --lang                       Specify the language of the script output                                    language
+  --only-epel                  Only switch EPEL repo                                                        none
+  --ignore-backup-tips         Ignore backup overwrite prompt                                               none
+  --print-diff                 Print diff before and after modification                                     none
+  --pure-mode                  Pure mode, minimal output                                                    none
+  --help                       Show help menu                                                               none
+
+Issue Report {}'
+        ['mirrors.default.0']='Alibaba Cloud'
+        ['mirrors.default.1']='Tencent Cloud'
+        ['mirrors.default.2']='Huawei Cloud'
+        ['mirrors.default.3']='NetEase'
+        ['mirrors.default.4']='Volcengine'
+        ['mirrors.default.5']='Tsinghua University'
+        ['mirrors.default.6']='Peking University'
+        ['mirrors.default.7']='Zhejiang University'
+        ['mirrors.default.8']='Nanjing University'
+        ['mirrors.default.9']='Lanzhou University'
+        ['mirrors.default.10']='Shanghai Jiao Tong University'
+        ['mirrors.default.11']='CQUPT'
+        ['mirrors.default.12']='USTC'
+        ['mirrors.default.13']='ISCAS'
+        ['mirrors.default.14']='Official Source'
+        ['mirrors.edu.0']='Peking University'
+        ['mirrors.edu.1']='Beijing Jiaotong University'
+        ['mirrors.edu.2']='Beijing Foreign Studies University'
+        ['mirrors.edu.3']='Beijing University of Posts and Telecommunications'
+        ['mirrors.edu.4']='Chongqing University'
+        ['mirrors.edu.5']='Chongqing University of Posts and Telecommunications'
+        ['mirrors.edu.6']='Dalian Neusoft University of Information'
+        ['mirrors.edu.7']='University of Electronic Science and Technology of China'
+        ['mirrors.edu.8']='South China Agricultural University'
+        ['mirrors.edu.9']='Huazhong University of Science and Technology'
+        ['mirrors.edu.10']='Jilin University'
+        ['mirrors.edu.11']='Jingchu University of Technology'
+        ['mirrors.edu.12']='Jiangxi University of Science and Technology'
+        ['mirrors.edu.13']='Lanzhou University'
+        ['mirrors.edu.14']='Nanjing University'
+        ['mirrors.edu.15']='Nanjing Tech University'
+        ['mirrors.edu.16']='Nanjing University of Posts and Telecommunications'
+        ['mirrors.edu.17']='Southern University of Science and Technology'
+        ['mirrors.edu.18']='Nanyang Institute of Technology'
+        ['mirrors.edu.19']='Qilu University of Technology'
+        ['mirrors.edu.20']='Tsinghua University'
+        ['mirrors.edu.21']='Shandong University'
+        ['mirrors.edu.22']='ShanghaiTech University'
+        ['mirrors.edu.23']='Shanghai Jiao Tong University (Siyuan)'
+        ['mirrors.edu.24']='Shanghai Jiao Tong University (Zhiyuan)'
+        ['mirrors.edu.25']='Wuchang Shouyi University'
+        ['mirrors.edu.26']="Xi'an Jiaotong University"
+        ['mirrors.edu.27']='Northwest A&F University'
+        ['mirrors.edu.28']='Zhejiang University'
+        ['mirrors.edu.29']='University of Science and Technology of China'
+        ['mirrors.edu.30']='Official Source'
+        ['mirrors.abroad.0']='AS · xTom · Hong Kong'
+        ['mirrors.abroad.1']='AS · 01Link · Hong Kong'
+        ['mirrors.abroad.2']='AS · National University of Singapore (NUS) · Singapore'
+        ['mirrors.abroad.3']='AS · SG.GS · Singapore'
+        ['mirrors.abroad.4']='AS · xTom · Singapore'
+        ['mirrors.abroad.5']='AS · NCHC Free Software Lab · Taiwan'
+        ['mirrors.abroad.6']='AS · OSS Planet · Taiwan'
+        ['mirrors.abroad.7']='AS · National Yang Ming Chiao Tung University · Taiwan'
+        ['mirrors.abroad.8']='AS · Tamkang University · Taiwan'
+        ['mirrors.abroad.9']='AS · AniGil Linux Archive · Korea'
+        ['mirrors.abroad.10']='AS · ICSCoE (Industrial Cyber Security Center of Excellence) · Japan'
+        ['mirrors.abroad.11']='AS · JAIST (Japan Advanced Institute of Science and Technology) · Japan'
+        ['mirrors.abroad.12']='AS · Yamagata University · Japan'
+        ['mirrors.abroad.13']='AS · xTom · Japan'
+        ['mirrors.abroad.14']='AS · GB Network Solutions · Malaysia'
+        ['mirrors.abroad.15']='AS · Khon Kaen University · Thailand'
+        ['mirrors.abroad.16']='EU · Vorboss Ltd · UK'
+        ['mirrors.abroad.17']='EU · QuickHost · UK'
+        ['mirrors.abroad.18']='EU · dogado · Germany'
+        ['mirrors.abroad.19']='EU · xTom · Germany'
+        ['mirrors.abroad.20']='EU · RWTH Aachen University · Germany'
+        ['mirrors.abroad.21']='EU · Dresden University (AG DSN) · Germany'
+        ['mirrors.abroad.22']='EU · CCIN2P3 · France'
+        ['mirrors.abroad.23']='EU · Ircam · France'
+        ['mirrors.abroad.24']='EU · Crans · France'
+        ['mirrors.abroad.25']='EU · CRIHAN · France'
+        ['mirrors.abroad.26']='EU · xTom · Netherlands'
+        ['mirrors.abroad.27']='EU · DataPacket · Netherlands'
+        ['mirrors.abroad.28']='EU · Linux Kernel · Netherlands'
+        ['mirrors.abroad.29']='EU · xTom · Estonia'
+        ['mirrors.abroad.30']='EU · netsite · Denmark'
+        ['mirrors.abroad.31']='EU · Dotsrc · Denmark'
+        ['mirrors.abroad.32']='EU · Academic Computer Club · Sweden'
+        ['mirrors.abroad.33']='EU · Lysator · Sweden'
+        ['mirrors.abroad.34']='EU · Yandex · Russia'
+        ['mirrors.abroad.35']='EU · ia64 · Russia'
+        ['mirrors.abroad.36']='EU · Truenetwork · Russia'
+        ['mirrors.abroad.37']='EU · Belgian Research Network · Belgium'
+        ['mirrors.abroad.38']='EU · University of Crete Computer Center · Greece'
+        ['mirrors.abroad.39']='EU · Masaryk University Faculty of Informatics · Czech Republic'
+        ['mirrors.abroad.40']='EU · Czech Technical University Student Club (Silicon Hill) · Czech Republic'
+        ['mirrors.abroad.41']='EU · Vodafone · Czech Republic'
+        ['mirrors.abroad.42']='EU · CZ.NIC · Czech Republic'
+        ['mirrors.abroad.43']='EU · ETH Zurich · Switzerland'
+        ['mirrors.abroad.44']='NA · Linux Kernel · USA'
+        ['mirrors.abroad.45']='NA · MIT · USA'
+        ['mirrors.abroad.46']='NA · Princeton University Department of Mathematics · USA'
+        ['mirrors.abroad.47']='NA · Oregon State University Open Source Lab · USA'
+        ['mirrors.abroad.48']='NA · Fremont Cabal Internet Exchange(FCIX) · USA'
+        ['mirrors.abroad.49']='NA · xTom · USA'
+        ['mirrors.abroad.50']='NA · Steadfast · USA'
+        ['mirrors.abroad.51']='NA · University of British Columbia · Canada'
+        ['mirrors.abroad.52']='NA · GoCodeIT · Canada'
+        ['mirrors.abroad.53']='NA · Switch · Canada'
+        ['mirrors.abroad.54']='SA · PoP-SC · Brazil'
+        ['mirrors.abroad.55']='SA · State University of Ponta Grossa · Brazil'
+        ['mirrors.abroad.56']='SA · UFSCar · Brazil'
+        ['mirrors.abroad.57']='SA · Sysarmy Community · Argentina'
+        ['mirrors.abroad.58']='OC · Fremont Cabal Internet Exchange(FCIX) · Australia'
+        ['mirrors.abroad.59']='OC · AARNet · Australia'
+        ['mirrors.abroad.60']='OC · DataMossa · Australia'
+        ['mirrors.abroad.61']='OC · Amaze · Australia'
+        ['mirrors.abroad.62']='OC · xTom · Australia'
+        ['mirrors.abroad.63']='OC · Over the Wire · Australia'
+        ['mirrors.abroad.64']='OC · Free Software Mirror Group · New Zealand'
+        ['mirrors.abroad.65']='AF · Liquid Telecom · Kenya'
+        ['mirrors.abroad.66']='AF · Dimension Data · South Africa'
+        ['mirrors.abroad.67']='Official Source'
+    )
+    SPONSOR_ADS=(
+        "1Panel · Top-Rated Web-based Linux Server Management Tool ➜  \033[3mhttps://1panel.cn\033[0m"
+    )
+}
+
+##############################################################################
+
+init_msg_pack
 handle_command_options "$@"
 main

@@ -13,39 +13,39 @@ hide:
         === ":linuxmirrors: Official Site (Recommended)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --en
             ```
 
         === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --en
             ```
             > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --en
             ```
             > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --en
             ```
 
         === ":tencent-cloud: Tencent Cloud EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --en
             ```
             > Not recommended in Chinese mainland network environments.
 
@@ -56,33 +56,33 @@ hide:
         === ":linuxmirrors: Official Site (Recommended)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en --abroad
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --en --abroad
             ```
 
         === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --en --abroad
             ```
             > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --en --abroad
             ```
             > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --en --abroad
             ```
 
         === ":tencent-cloud: Tencent Cloud EO (CDN)"
@@ -99,39 +99,39 @@ hide:
         === ":linuxmirrors: Official Site (Recommended)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en --edu
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --en --edu
             ```
 
         === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --en --edu
             ```
             > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --en --edu
             ```
             > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --en --edu
             ```
 
         === ":tencent-cloud: Tencent Cloud EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --en --edu
             ```
             > Not recommended in Chinese mainland network environments.
 
@@ -436,7 +436,7 @@ hide:
 
 <!-- termynal -->
 ```
-$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help 
+$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en --help 
 
 Command options(name/meaning/value):
 
@@ -464,6 +464,7 @@ Command options(name/meaning/value):
   --upgrade-software           Upgrade packages                                                               true or false
   --clean-cache                Clean cache after upgrade                                                      true or false
   --clean-screen               Clear screen before running                                                    true or false
+  --lang                       Specify the language of the script output                                      language
   --only-epel                  Only switch EPEL repo                                                          none
   --ignore-backup-tips         Ignore backup overwrite prompt                                                 none
   --print-diff                 Print diff before and after modification                                       none
@@ -497,6 +498,7 @@ Command options(name/meaning/value):
 | `--upgrade-software` | Upgrade packages | `true` or `false` |
 | `--clean-cache` | Clean cache after upgrade | `true` or `false` |
 | `--clean-screen` | Clear screen before running | `true` or `false` |
+| `--lang` | Specify the language of the script output | `language id (see docs below)` |
 | `--only-epel` | Only switch EPEL repo | none |
 | `--ignore-backup-tips` | Ignore backup overwrite prompt | none |
 | `--print-diff` | Print diff before and after modification | none |
@@ -510,7 +512,7 @@ Below are some advanced usage examples
 - ### Specify mirror address
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --source mirror.example.com
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en --source mirror.example.com
     ```
 
 - ### Specify mirror repository directory
@@ -554,7 +556,7 @@ Below are some advanced usage examples
     Example:
 
     ``` { .bash title="Use Aliyun mirror for Rocky Linux" }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
       --source mirrors.aliyun.com \
       --branch rockylinux
     ```
@@ -572,7 +574,7 @@ Below are some advanced usage examples
     Sometimes your desired mirror does not have EPEL. You can skip EPEL during the first run and then run:
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en --only-epel
     ```
 
     For EPEL 7 (EOL), use the [`archive`](https://dl.fedoraproject.org/pub/archive/epel) repo. For overseas networks, use `--use-official-source-epel true` to use the official repo.
@@ -582,7 +584,7 @@ Below are some advanced usage examples
     If you accidentally deleted the backup of the official mirror, use this command to restore. This skips mirror selection.
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source true
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en --use-official-source true
     ```
     > Some systems (e.g., `Arch Linux`) have no official mirror, so Aliyun will be used as a fallback.
 
@@ -615,7 +617,7 @@ Below are some advanced usage examples
         For maximum security, use the official repo due to mirror sync delays.
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
           --source-security security.debian.org \
           --branch-security debian-security
         ```
@@ -629,7 +631,7 @@ Below are some advanced usage examples
             - Change version code
 
                 ``` bash
-                bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
                 --codename trixie \
                 --upgrade-software false
                 ```
@@ -653,13 +655,13 @@ Below are some advanced usage examples
                 # Clear the original software sources (If there is any non-system software source content, please back it up manually first)
                 sed -i '1,$d' /etc/apt/sources.list
                 # Rerun the mirror switching script
-                bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en
                 ```
 
         === "Switch GNU/Linux Debian to testing branch"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
             --codename testing \
             --upgrade-software false
             ```
@@ -675,7 +677,7 @@ Below are some advanced usage examples
         See the official [Wiki](https://wiki.ubuntu.com/Releases) for version support and check each mirror for `Ubuntu Old Releases` support.
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
           --source mirrors.ustc.edu.cn \
           --branch ubuntu-old-releases
         ```
@@ -689,12 +691,41 @@ Below are some advanced usage examples
         grep -q "\[archlinuxcn\]" /etc/pacman.conf || echo -e "[archlinuxcn]\nServer = ${SOURCE}/\$arch" >>/etc/pacman.conf
         ```
 
-- ### Unattended (automation)
+- ### I18n (Internationalization)
+
+    The script provides multi-language support. Currently, there are three built-in display languages: `简体中文`、`繁體中文`、`English`. The default is `简体中文`.
+
+    - #### Specify Language
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --lang xxx
+        ```
+
+        | Type | Value |
+        | :-: | :-: |
+        | 简体中文 | `zh-hans` `zh-cn` `zh` |
+        | 繁體中文 | `zh-hant` `zh-tw` `zh-hk` |
+        | English | `en` `en-us` |
+
+        It can also be used directly as a command option
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant
+        ```
+        > `--en` `--en-us` `--zh` `--zh-cn` `--zh-hans` `--zh-hant`
+
+    - #### Select through interaction
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --lang auto
+        ```
+
+- ### Unattended (Automation)
 
     To run without interaction, use at least the following options. Recommended for experienced users.
 
     ``` { .bash .no-copy title="Example Command" }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
       --source mirror.example.com \
       --protocol http \
       --use-intranet-source false \
@@ -711,7 +742,7 @@ Below are some advanced usage examples
     This feature is introduced to facilitate the use of developers and operation and maintenance personnel. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en --pure-mode
     ```
 
     !!! tip "Scrolling command logs may have unpredictable display issues, but no problems have been found so far."
@@ -730,6 +761,7 @@ If you are a developer of another project and want to create a custom script bas
     1. Keep the original structure; empty out the function bodies if not needed.
     2. Remove unused OS repo content `gen_repo_files_xxx`, which takes up over 60% of the script.
     3. Remove unused feature modules, e.g., `handle_command_options`, `backup_original_mirrors`, `upgrade_software`.
+    4. Remove unnecessary language packs, for example: `function msg_pack_en() {}`
 6.  Main configuration is controlled by unified variables, as are command options. These global variables are all uppercase and use underscores. See the table below. Declare them at the top of the script (reserved comment area) for quick customization.
 
 | Variable | Meaning | Value Type |

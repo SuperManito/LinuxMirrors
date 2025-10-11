@@ -13,39 +13,39 @@ hide:
         === ":linuxmirrors: 官網 (推薦)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --zh-hant
             ```
 
         === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --zh-hant
             ```
             > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
         === ":simple-gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --zh-hant
             ```
             > 同步存在1小時延遲
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh)
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --zh-hant
             ```
 
         === ":tencent-cloud: 騰訊雲 EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh)
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --zh-hant
             ```
             > 不建議在中國大陸網路環境下使用
 
@@ -56,26 +56,26 @@ hide:
         === ":linuxmirrors: 官網 (推薦)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --abroad
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --zh-hant --abroad
             ```
 
         === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --zh-hant --abroad
             ```
             > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
         === ":simple-gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --zh-hant --abroad
             ```
             > 同步存在1小時延遲
 
@@ -83,13 +83,13 @@ hide:
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --abroad
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --zh-hant --abroad
             ```
 
         === ":tencent-cloud: 騰訊雲 EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --zh-hant --abroad
             ```
             > 不建議在中國大陸網路環境下使用
 
@@ -100,26 +100,26 @@ hide:
         === ":linuxmirrors: 官網 (推薦)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --edu
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh) --zh-hant --edu
             ```
 
         === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --zh-hant --edu
             ```
             > 即時同步、無延遲，中國大陸網路環境下推薦使用
 
         === ":simple-gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --zh-hant --edu
             ```
             > 同步存在1小時延遲
 
@@ -127,13 +127,13 @@ hide:
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --edu
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh) --zh-hant --edu
             ```
 
         === ":tencent-cloud: 騰訊雲 EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --edu
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --zh-hant --edu
             ```
             > 不建議在中國大陸網路環境下使用
 
@@ -438,7 +438,7 @@ hide:
 
 <!-- termynal -->
 ```
-$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help 
+$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --help 
 
 命令選項(名稱/含義/值)：
 
@@ -466,6 +466,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
   --upgrade-software           是否更新軟體包                                                         true 或 false
   --clean-cache                是否在更新軟體包後清理下載快取                                           true 或 false
   --clean-screen               是否在運行前清除螢幕上的所有內容                                         true 或 false
+  --lang                       指定腳本輸出的語言                                                      语言
   --only-epel                  僅更換 EPEL 軟體源模式                                                  無
   --ignore-backup-tips         忽略覆蓋備份提示                                                        無
   --print-diff                 是否列印原始文件修改前後差異                                             無
@@ -499,6 +500,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `--upgrade-software` | 是否更新軟體套件 | `true` 或 `false` |
 | `--clean-cache` | 是否在更新軟體包後清理下載快取 | `true` 或 `false` |
 | `--clean-screen` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
+| `--lang` | 指定腳本輸出的語言 | `語言ID（詳見下方文件）` |
 | `--only-epel` | 僅更換 EPEL 軟體源模式 | 無 |
 | `--ignore-backup-tips` | 忽略覆蓋備份提示（即不覆蓋備份） | 無 |
 | `--print-diff` | 是否列印原始文件修改前後差異 | 無 |
@@ -512,7 +514,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 - ### 指定軟體源位址
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --source mirror.example.com
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --source mirror.example.com
     ```
 
 - ### 指定軟體源倉庫目錄
@@ -556,7 +558,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     請看下面的例子
 
     ``` { .bash title="使用阿里雲鏡像站的 Rocky Linux 軟體源" }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant \
       --source mirrors.aliyun.com \
       --branch rockylinux
     ```
@@ -574,7 +576,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     有些時候你會發現想使用的鏡像站沒有 EPEL 倉庫，那麼你可以在第一次運行腳本時不安裝或更換 EPEL 軟體源，然後再單獨執行下面的命令
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --only-epel
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --only-epel
     ```
 
     對於已經 EOL 的 EPEL 7，注意需要使用 [`archive`](https://dl.fedoraproject.org/pub/archive/epel) 倉庫，境外以及海外網絡環境建議通過命令選項 `--use-official-source-epel true` 使用官方源
@@ -584,7 +586,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     當你不小心刪除了官方軟體源的備份時可以使用此命令來恢復，使用此命令選項後將跳過選擇軟體源步驟
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --use-official-source true
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --use-official-source true
     ```
     > 部分系統不存在官方軟體源例如 `Arch Linux`，屆時會自動更換成相容性較高的阿里雲鏡像站
 
@@ -617,7 +619,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         如果你想盡可能提高伺服器的安全性建議使用官方軟體源，因為鏡像同步存在延遲
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant \
           --source-security security.debian.org \
           --branch-security debian-security
         ```
@@ -631,7 +633,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
             - 更換版本代號
 
                 ``` bash
-                bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant \
                 --codename trixie \
                 --upgrade-software false
                 ```
@@ -655,13 +657,13 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
                 # 清空原有軟體源（如有非系統軟體源內容請先自行手動備份）
                 sed -i '1,$d' /etc/apt/sources.list
                 # 重新執行換源腳本
-                bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+                bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant
                 ```
 
         === "將 GNU/Linux Debian 的版本切換到測試分支"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+            bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant \
             --codename testing \
             --upgrade-software false
             ```
@@ -677,7 +679,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         具體版本支援情況詳見官方 [Wiki](https://wiki.ubuntu.com/Releases)，關於 `Ubuntu Old Releases` 倉庫的支援情況詳見各鏡像站
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant \
           --source mirrors.ustc.edu.cn \
           --branch ubuntu-old-releases
         ```
@@ -691,12 +693,41 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         grep -q "\[archlinuxcn\]" /etc/pacman.conf || echo -e "[archlinuxcn]\nServer = ${SOURCE}/\$arch" >>/etc/pacman.conf # 一鍵配置命令
         ```
 
+- ### 國際化（I18n）
+
+    腳本提供多語言支持，目前內建 `簡體中文`、`繁體中文`、`English` 共三種顯示語言，預設為 `簡體中文`
+
+    - #### 指定語言
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --lang xxx
+        ```
+
+        | 類型 | 值 |
+        | :-: | :-: |
+        | 简体中文 | `zh-hans` `zh-cn` `zh` |
+        | 繁體中文 | `zh-hant` `zh-tw` `zh-hk` |
+        | English | `en` `en-us` |
+
+        也可以直接作為指令選項使用
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en
+        ```
+        > `--en` `--en-us` `--zh` `--zh-cn` `--zh-hans` `--zh-hant`
+
+    - #### 透過互動進行選擇
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/main.sh) --lang auto
+        ```
+
 - ### 無人值守（自動化）
 
     不透過交互完成換源操作，至少需要使用以下命令選項來實現，建議熟悉後再使用
 
     ``` { .bash .no-copy title="参考命令" }
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant \
       --source mirror.example.com \
       --protocol http \
       --use-intranet-source false \
@@ -713,7 +744,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     推出此功能是為了方便開發以及运維人員使用，啟用後會精簡腳本內容輸出，建議搭配其它指令選項無互動使用
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --pure-mode
+    bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --pure-mode
     ```
 
     !!! tip "滾動輸出的命令日誌可能有無法預料的顯示問題，不過目前暫未發現異常"
@@ -732,4 +763,5 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     1. 首先在刪除內容時應盡可能保留腳本原始結構，直接把涉及函數中的內容刪除即可，使其保留為空函數
     2. 可以刪除一些不使用（作業系統）的軟體源原始內容 `gen_repo_files_xxx`，這些內容佔據了腳本 `60%` 以上的體積
     3. 如果你不使用某些功能，那麼可以刪除對應功能模組函數中的內容，`命令選項 handle_command_options`、`備份原有軟體源 backup_original_mirrors`、`更新軟體包 upgrade_software`
+    4. 移除不需要的語言包，例：`function msg_pack_en() {}`
 6. 腳本主要功能配置是由統一的變量控制的，命令選項亦是如此，這些全局變量由全大寫字母構成並遵循下劃線命名法，具體變量詳見如下表格，你只需要將這些變量聲明在腳本頭部（預留註釋區域）即可快速完成定制

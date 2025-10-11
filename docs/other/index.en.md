@@ -15,39 +15,39 @@ hide:
         === ":linuxmirrors: Official Site (Recommended)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --en
             ```
 
         === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --en
             ```
             > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --en
             ```
             > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --en
             ```
 
         === ":tencent-cloud: Tencent Cloud EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh)
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --en
             ```
             > Not recommended in Chinese mainland network environments.
 
@@ -62,39 +62,39 @@ hide:
         === ":linuxmirrors: Official Site (Recommended)"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --only-registry
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --en --only-registry
             ```
 
         === ":simple-gitee: Gitee"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --en --only-registry
             ```
             > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
         === ":simple-gitcode: GitCode"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --en --only-registry
             ```
             > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --en --only-registry
             ```
 
         === ":tencent-cloud: Tencent Cloud EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --only-registry
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --en --only-registry
             ```
             > Not recommended in Chinese mainland network environments.
 
@@ -209,7 +209,7 @@ hide:
 
 <!-- termynal -->
 ```
-$ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help 
+$ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --help 
 
 Command options(name/meaning/value):
 
@@ -224,6 +224,7 @@ Command options(name/meaning/value):
   --install-latest          Whether to install the latest Docker Engine                true or false
   --close-firewall          Whether to disable the firewall                            true or false
   --clean-screen            Whether to clear the screen before running                 true or false
+  --lang                    Specify the language of the script output                  language
   --only-registry           Only switch registry mirror mode                           none
   --ignore-backup-tips      Ignore backup overwrite prompt (do not backup)             none
   --pure-mode               Pure mode, minimal output                                  none
@@ -243,6 +244,7 @@ Command options(name/meaning/value):
 | `--install-latest` | Whether to install the latest `Docker Engine` | `true` or `false` |
 | `--close-firewall` | Whether to disable the firewall | `true` or `false` |
 | `--clean-screen` | Whether to clear the screen before running | `true` or `false` |
+| `--lang` | Specify the language of the script output | `language id (see docs below)` |
 | `--only-registry` | Only switch registry mirror mode | none |
 | `--ignore-backup-tips` | Ignore backup overwrite prompt (do not backup) | none |
 | `--pure-mode` | Pure mode, minimal output | none |
@@ -253,7 +255,7 @@ Command options(name/meaning/value):
 - ### Specify Registry Mirror Address
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --source-registry registry.example.com
     ```
 
 - ### Only Switch Registry Mirror
@@ -263,7 +265,7 @@ Command options(name/meaning/value):
         Only switches the registry accelerator. If Docker is not installed, an error will be reported and exit.
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --only-registry
         ```
 
     === "Manual Replacement"
@@ -314,7 +316,7 @@ Command options(name/meaning/value):
 - ### Specify Docker CE Source Address
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --source mirror.example.com/docker-ce
     ```
     > Note: The address path must include the Docker CE mirror repository path, i.e., `docker-ce`.
 
@@ -323,13 +325,13 @@ Command options(name/meaning/value):
     The script will automatically detect this in most cases. Specify only if you have special requirements.
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --branch centos
     ```
     > Repository names are fixed: `centos`, `debian`, `fedora`, `raspbian`, `rhel`, `sles`, `static`, `ubuntu`  
     > See [official installation docs](https://docs.docker.com/engine/install) and [Docker CE official repo](https://download.docker.com/linux) for details.
 
     ``` { .bash .no-copy title="Can also specify the repository version number." }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en \
       --branch centos \
       --branch-version 9
     ```
@@ -340,7 +342,7 @@ Command options(name/meaning/value):
     When specifying a version, the "install latest" option is ignored. Format: `major.minor.patch`, e.g., `28.4.1`.
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --designated-version 28.0.0
     ```
     > If the specified version does not exist or is not supported on your system, the script will report an error and exit.
 
@@ -364,13 +366,41 @@ Command options(name/meaning/value):
 
         Versions not listed are not supported by this script. If you cannot get the version list, your system environment has not been properly configured for the Docker CE repository (this will not happen when running the script).
 
+- ### I18n (Internationalization)
+
+    The script provides multi-language support. Currently, there are three built-in display languages: `简体中文`、`繁體中文`、`English`. The default is `简体中文`.
+
+    - #### Specify Language
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --lang xxx
+        ```
+
+        | Type | Value |
+        | :-: | :-: |
+        | 简体中文 | `zh-hans` `zh-cn` `zh` |
+        | 繁體中文 | `zh-hant` `zh-tw` `zh-hk` |
+        | English | `en` `en-us` |
+
+        It can also be used directly as a command option
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant
+        ```
+        > `--en` `--en-us` `--zh` `--zh-cn` `--zh-hans` `--zh-hant`
+
+    - #### Select through interaction
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --lang auto
+        ```
 
 - ### Unattended (Automation)
 
     To perform installation without interaction, use at least the following options. Recommended for experienced users.
 
     ``` { .bash .no-copy title="Example Command" }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en \
       --source mirror.example.com/docker-ce \
       --source-registry registry.hub.docker.com \
       --protocol http \
@@ -386,14 +416,14 @@ Command options(name/meaning/value):
     This feature is introduced to facilitate the use of developers and operation and maintenance personnel. After it is enabled, the script content output will be simplified. It is recommended to use it with other command options without interaction.
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --pure-mode
     ```
 
     !!! tip "Scrolling command logs may have unpredictable display issues, but no problems have been found so far."
 
 ## FAQ
 
-- ### About Service Startup Errors
+- #### About Service Startup Errors
 
     !!! quote ""
 
@@ -419,7 +449,7 @@ Command options(name/meaning/value):
 
         After uninstalling, simply rerun the script to install.
 
-- ### About unsupported operating systems
+- #### About unsupported operating systems
 
     If it prompts that it is not supported, please use the system's own package management tool to install it. Because these packages are built and maintained by the Linux distribution's package maintainers and may have differences in configuration or are built from modified source code.
 

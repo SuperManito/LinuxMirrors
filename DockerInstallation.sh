@@ -1,63 +1,61 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-09
+## Modified: 2025-10-12
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
 
 ## Docker CE 软件源列表
-# 格式："名称@地址"
 mirror_list_docker_ce=(
-    "阿里云@mirrors.aliyun.com/docker-ce"
-    "腾讯云@mirrors.tencent.com/docker-ce"
-    "华为云@mirrors.huaweicloud.com/docker-ce"
-    "网易@mirrors.163.com/docker-ce"
-    "火山引擎@mirrors.volces.com/docker"
-    "微软 Azure 中国@mirror.azure.cn/docker-ce"
-    "清华大学@mirrors.tuna.tsinghua.edu.cn/docker-ce"
-    "北京大学@mirrors.pku.edu.cn/docker-ce"
-    "浙江大学@mirrors.zju.edu.cn/docker-ce"
-    "南京大学@mirrors.nju.edu.cn/docker-ce"
-    "上海交通大学@mirror.sjtu.edu.cn/docker-ce"
-    "重庆邮电大学@mirrors.cqupt.edu.cn/docker-ce"
-    "中国科学技术大学@mirrors.ustc.edu.cn/docker-ce"
-    "中国科学院软件研究所@mirror.iscas.ac.cn/docker-ce"
-    "官方源@download.docker.com"
+    "mirrors.aliyun.com/docker-ce"
+    "mirrors.tencent.com/docker-ce"
+    "mirrors.huaweicloud.com/docker-ce"
+    "mirrors.163.com/docker-ce"
+    "mirrors.volces.com/docker"
+    "mirror.azure.cn/docker-ce"
+    "mirrors.tuna.tsinghua.edu.cn/docker-ce"
+    "mirrors.pku.edu.cn/docker-ce"
+    "mirrors.zju.edu.cn/docker-ce"
+    "mirrors.nju.edu.cn/docker-ce"
+    "mirror.sjtu.edu.cn/docker-ce"
+    "mirrors.cqupt.edu.cn/docker-ce"
+    "mirrors.ustc.edu.cn/docker-ce"
+    "mirror.iscas.ac.cn/docker-ce"
+    "download.docker.com"
 )
 
 ## Docker Registry 仓库列表
-# 格式："名称@地址"
 mirror_list_registry=(
-    "毫秒镜像（推荐）@docker.1ms.run"
-    "Docker Proxy@dockerproxy.net"
-    "DaoCloud 道客@docker.m.daocloud.io"
-    "1Panel 镜像@docker.1panel.live"
-    "阿里云（杭州）@registry.cn-hangzhou.aliyuncs.com"
-    "阿里云（上海）@registry.cn-shanghai.aliyuncs.com"
-    "阿里云（青岛）@registry.cn-qingdao.aliyuncs.com"
-    "阿里云（北京）@registry.cn-beijing.aliyuncs.com"
-    "阿里云（张家口）@registry.cn-zhangjiakou.aliyuncs.com"
-    "阿里云（呼和浩特）@registry.cn-huhehaote.aliyuncs.com"
-    "阿里云（乌兰察布）@registry.cn-wulanchabu.aliyuncs.com"
-    "阿里云（深圳）@registry.cn-shenzhen.aliyuncs.com"
-    "阿里云（河源）@registry.cn-heyuan.aliyuncs.com"
-    "阿里云（广州）@registry.cn-guangzhou.aliyuncs.com"
-    "阿里云（成都）@registry.cn-chengdu.aliyuncs.com"
-    "阿里云（香港）@registry.cn-hongkong.aliyuncs.com"
-    "阿里云（日本-东京）@registry.ap-northeast-1.aliyuncs.com"
-    "阿里云（新加坡）@registry.ap-southeast-1.aliyuncs.com"
-    "阿里云（马来西亚-吉隆坡）@registry.ap-southeast-3.aliyuncs.com"
-    "阿里云（印度尼西亚-雅加达）@registry.ap-southeast-5.aliyuncs.com"
-    "阿里云（德国-法兰克福）@registry.eu-central-1.aliyuncs.com"
-    "阿里云（英国-伦敦）@registry.eu-west-1.aliyuncs.com"
-    "阿里云（美国西部-硅谷）@registry.us-west-1.aliyuncs.com"
-    "阿里云（美国东部-弗吉尼亚）@registry.us-east-1.aliyuncs.com"
-    "阿里云（阿联酋-迪拜）@registry.me-east-1.aliyuncs.com"
-    "腾讯云@mirror.ccs.tencentyun.com"
-    "谷歌云（北美）@gcr.io"
-    "谷歌云（亚洲）@asia.gcr.io"
-    "谷歌云（欧洲）@eu.gcr.io"
-    "官方 Docker Hub@registry.hub.docker.com"
+    "docker.1ms.run"
+    "dockerproxy.net"
+    "docker.m.daocloud.io"
+    "docker.1panel.live"
+    "registry.cn-hangzhou.aliyuncs.com"
+    "registry.cn-shanghai.aliyuncs.com"
+    "registry.cn-qingdao.aliyuncs.com"
+    "registry.cn-beijing.aliyuncs.com"
+    "registry.cn-zhangjiakou.aliyuncs.com"
+    "registry.cn-huhehaote.aliyuncs.com"
+    "registry.cn-wulanchabu.aliyuncs.com"
+    "registry.cn-shenzhen.aliyuncs.com"
+    "registry.cn-heyuan.aliyuncs.com"
+    "registry.cn-guangzhou.aliyuncs.com"
+    "registry.cn-chengdu.aliyuncs.com"
+    "registry.cn-hongkong.aliyuncs.com"
+    "registry.ap-northeast-1.aliyuncs.com"
+    "registry.ap-southeast-1.aliyuncs.com"
+    "registry.ap-southeast-3.aliyuncs.com"
+    "registry.ap-southeast-5.aliyuncs.com"
+    "registry.eu-central-1.aliyuncs.com"
+    "registry.eu-west-1.aliyuncs.com"
+    "registry.us-west-1.aliyuncs.com"
+    "registry.us-east-1.aliyuncs.com"
+    "registry.me-east-1.aliyuncs.com"
+    "mirror.ccs.tencentyun.com"
+    "gcr.io"
+    "asia.gcr.io"
+    "eu.gcr.io"
+    "registry.hub.docker.com"
 )
 
 ## 配置需要区分公网地址和内网地址的软件源（不分地域）
@@ -195,29 +193,6 @@ function main() {
 }
 
 function handle_command_options() {
-    function output_command_help() {
-        echo -e "
-命令选项(名称/含义/值)：
-
-  --source                  指定 Docker CE 软件源地址(域名或IP)         地址
-  --source-registry         指定 Docker 镜像仓库地址(域名或IP)          地址
-  --branch                  指定 Docker CE 软件源仓库(路径)             仓库名
-  --branch-version          指定 Docker CE 软件源仓库版本               版本号
-  --designated-version      指定 Docker Engine 安装版本                 版本号
-  --codename                指定 Debian 系操作系统的版本代号            代号名称
-  --protocol                指定 Docker CE 软件源的 WEB 协议            http 或 https
-  --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false
-  --install-latest          是否安装最新版本的 Docker Engine            true 或 false
-  --close-firewall          是否关闭防火墙                              true 或 false
-  --clean-screen            是否在运行前清除屏幕上的所有内容            true 或 false
-  --only-registry           仅更换镜像仓库模式                          无
-  --ignore-backup-tips      忽略覆盖备份提示                            无
-  --pure-mode               纯净模式，精简打印内容                      无
-
-问题报告 https://github.com/SuperManito/LinuxMirrors/issues
-  "
-    }
-
     ## 判断参数
     while [ $# -gt 0 ]; do
         case "$1" in
@@ -226,13 +201,13 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "软件源地址"
+                command_error "$1" "$(msg "error.cmd.options.sourceAddress")"
             fi
             ;;
         ## 指定 Docker Registry 仓库地址
@@ -240,13 +215,13 @@ function handle_command_options() {
             if [ "$2" ]; then
                 echo "$2" | grep -Eq "\(|\)|\[|\]|\{|\}"
                 if [ $? -eq 0 ]; then
-                    command_error "$2" "有效的地址"
+                    command_error "$2" "$(msg "error.cmd.options.validAddress")"
                 else
                     SOURCE_REGISTRY="$(echo "$2" | sed -e 's,^http[s]\?://,,g' -e 's,/$,,')"
                     shift
                 fi
             else
-                command_error "$1" "镜像仓库地址"
+                command_error "$1" "$(msg "error.cmd.options.registryAddress")"
             fi
             ;;
         ## 指定 Docker CE 软件源仓库
@@ -255,7 +230,7 @@ function handle_command_options() {
                 SOURCE_BRANCH="$2"
                 shift
             else
-                command_error "$1" "软件源仓库"
+                command_error "$1" "$(msg "error.cmd.options.sourceRepository")"
             fi
             ;;
         ## 指定 Docker CE 软件源仓库版本
@@ -266,10 +241,10 @@ function handle_command_options() {
                     SOURCE_BRANCH_VERSION="$2"
                     shift
                 else
-                    command_error "$2" "有效的版本号"
+                    command_error "$2" "$(msg "error.cmd.options.validVersion")"
                 fi
             else
-                command_error "$1" "Docker CE 软件源仓库的版本号"
+                command_error "$1" "$(msg "error.cmd.options.ceRepositoryVersion")"
             fi
             ;;
         ## 指定 Docker Engine 安装版本
@@ -280,10 +255,10 @@ function handle_command_options() {
                     DESIGNATED_DOCKER_VERSION="$2"
                     shift
                 else
-                    command_error "$2" "有效的版本号"
+                    command_error "$2" "$(msg "error.cmd.options.validVersion")"
                 fi
             else
-                command_error "$1" "版本号"
+                command_error "$1" "$(msg "error.cmd.options.version")"
             fi
             ;;
         ## 指定 Debian 版本代号
@@ -292,10 +267,10 @@ function handle_command_options() {
                 DEBIAN_CODENAME="$2"
                 shift
             else
-                command_error "$1" "版本代号"
+                command_error "$1" "$(msg "error.cmd.options.codename")"
             fi
             ;;
-        ## WEB 协议（HTTP/HTTPS）
+        ## Web 协议（HTTP/HTTPS）
         --protocol)
             if [ "$2" ]; then
                 case "$2" in
@@ -304,11 +279,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " http 或 https "
+                    command_error "$2" "$(msg "error.cmd.options.protocol")"
                     ;;
                 esac
             else
-                ocommand_error "$1" " WEB 协议 (http/https) "
+                command_error "$1" "$(msg "error.cmd.options.needProtocol")"
             fi
             ;;
         ## 使用内网地址
@@ -320,11 +295,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.needIntranetSource")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.needIntranetSource")"
             fi
             ;;
         ## 安装最新版本
@@ -336,11 +311,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.needIntranetSource")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.needIntranetSource")"
             fi
             ;;
         ## 忽略覆盖备份提示
@@ -356,11 +331,11 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.needIntranetSource")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.needIntranetSource")"
             fi
             ;;
         ## 清除屏幕上的所有内容
@@ -372,12 +347,51 @@ function handle_command_options() {
                     shift
                     ;;
                 *)
-                    command_error "$2" " true 或 false "
+                    command_error "$2" "$(msg "error.cmd.options.needIntranetSource")"
                     ;;
                 esac
             else
-                command_error "$1" " true 或 false "
+                command_error "$1" "$(msg "error.cmd.options.needIntranetSource")"
             fi
+            ;;
+        ## Locale
+        --lang)
+            if [ "$2" ]; then
+                local lang_norm="${2//_/-}"
+                lang_norm="${lang_norm,,}"
+                case "$lang_norm" in
+                zh | zh-cn | zh-hans | zh-hans-*)
+                    init_msg_pack "zh-hans"
+                    shift
+                    ;;
+                zh-hant | zh-hant-* | zh-tw | zh-hk)
+                    init_msg_pack "zh-hant"
+                    shift
+                    ;;
+                en | en-us | en-*)
+                    init_msg_pack "en"
+                    shift
+                    ;;
+                auto)
+                    choose_display_language
+                    shift
+                    ;;
+                *)
+                    command_error "$2" "$(msg "error.cmd.options.validLangKey")"
+                    ;;
+                esac
+            else
+                command_error "$1" "$(msg "error.cmd.options.langKey")"
+            fi
+            ;;
+        --zh | --zh-[Cc][Nn])
+            init_msg_pack "zh-hans"
+            ;;
+        --en | --en-[Uu][Ss])
+            init_msg_pack "en"
+            ;;
+        --zh-[Hh]an[st])
+            init_msg_pack "$1"
             ;;
         ## 仅更换镜像仓库模式
         --only-registry)
@@ -389,7 +403,7 @@ function handle_command_options() {
             ;;
         ## 命令帮助
         --help)
-            output_command_help
+            echo -e "\n$(msg "commands.help" "https://github.com/SuperManito/LinuxMirrors/issues")\n"
             exit
             ;;
         *)
@@ -415,11 +429,19 @@ function run_start() {
     if [[ "${PURE_MODE}" == "true" ]]; then
         return
     fi
+    local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_ID}"}"
+    local arch="${DEVICE_ARCH}"
+    local date_time="$(date "+%Y-%m-%d %H:%M")"
+    local time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
     echo -e "+-----------------------------------+"
     echo -e "| \033[0;1;35;95m⡇\033[0m  \033[0;1;33;93m⠄\033[0m \033[0;1;32;92m⣀⡀\033[0m \033[0;1;36;96m⡀\033[0;1;34;94m⢀\033[0m \033[0;1;35;95m⡀⢀\033[0m \033[0;1;31;91m⡷\033[0;1;33;93m⢾\033[0m \033[0;1;32;92m⠄\033[0m \033[0;1;36;96m⡀⣀\033[0m \033[0;1;34;94m⡀\033[0;1;35;95m⣀\033[0m \033[0;1;31;91m⢀⡀\033[0m \033[0;1;33;93m⡀\033[0;1;32;92m⣀\033[0m \033[0;1;36;96m⢀⣀\033[0m |"
     echo -e "| \033[0;1;31;91m⠧\033[0;1;33;93m⠤\033[0m \033[0;1;32;92m⠇\033[0m \033[0;1;36;96m⠇⠸\033[0m \033[0;1;34;94m⠣\033[0;1;35;95m⠼\033[0m \033[0;1;31;91m⠜⠣\033[0m \033[0;1;33;93m⠇\033[0;1;32;92m⠸\033[0m \033[0;1;36;96m⠇\033[0m \033[0;1;34;94m⠏\033[0m  \033[0;1;35;95m⠏\033[0m  \033[0;1;33;93m⠣⠜\033[0m \033[0;1;32;92m⠏\033[0m  \033[0;1;34;94m⠭⠕\033[0m |"
     echo -e "+-----------------------------------+"
-    echo -e "欢迎使用 Docker Engine 安装与换源脚本"
+    echo -e "$(msg "start.welcome")"
+    echo -e ''
+    echo -e "$(msg "start.runtimeEnv") ${BLUE}${system_name} ${arch}${PLAIN}"
+    echo -e "$(msg "start.dateTime") ${BLUE}${date_time} ${time_zone}${PLAIN}"
+    sleep 1 >/dev/null 2>&1
 }
 
 function run_end() {
@@ -427,9 +449,9 @@ function run_end() {
         echo ''
         return
     fi
-    echo -e "\n✨ 脚本运行完毕，更多使用教程详见官网 👉 \033[3mhttps://linuxmirrors.cn\033[0m"
+    echo -e "\n✨ $(msg "end.moreInfo") 👉 \033[3mhttps://linuxmirrors.cn\033[0m"
     if [[ "${#SPONSOR_ADS[@]}" -gt 0 ]]; then
-        echo -e "\n\033[2m【赞助商广告】\033[0m"
+        echo -e "\n\033[2m$(msg "end.sponsorAds")\033[0m"
         for ad in "${SPONSOR_ADS[@]}"; do
             sleep 0.1
             echo -e "  \033[2m${ad}\033[0m"
@@ -444,23 +466,23 @@ function output_error() {
 }
 
 function command_error() {
-    local tmp_text="请确认后重新输入"
+    local tmp_text="$(msg "error.cmd.options.needConfirm")"
     if [[ "${2}" ]]; then
-        tmp_text="请在该选项后指定${2}"
+        tmp_text="$(msg "error.cmd.options.needSpecify" "${2}")"
     fi
-    output_error "命令选项 ${BLUE}$1${PLAIN} 无效，${tmp_text}！"
+    output_error "$(msg "error.cmd.options.invalid" "${BLUE}$1${PLAIN}" "${tmp_text}")"
 }
 
 function unsupport_system_error() {
-    local tmp_text=""
     if [[ "${2}" ]]; then
-        tmp_text="，请参考如下命令自行安装：\n\n${BLUE}$2${PLAIN}"
+        output_error "$(msg "error.unsupportSystem2" "${1}")\n\n${BLUE}$2${PLAIN}"
+    else
+        output_error "$(msg "error.unsupportSystem1" "${1}")"
     fi
-    output_error "不支持当前操作系统（$1）${tmp_text}"
 }
 
 function input_error() {
-    echo -e "\n$WARN 输入错误，$1！"
+    echo -e "\n$WARN $(msg "error.input" "${1}")"
 }
 
 function command_exists() {
@@ -469,7 +491,7 @@ function command_exists() {
 
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
-        output_error "权限不足，请使用 Root 用户运行本脚本"
+        output_error "$(msg "error.needRoot")"
     fi
 }
 
@@ -479,7 +501,7 @@ function get_os_release_value() {
 
 function collect_system_info() {
     if [ ! -s "${File_LinuxRelease}" ]; then
-        unsupport_system_error "未知系统"
+        unsupport_system_error "$(msg "error.unknownSystem")"
     fi
     ## 定义系统名称
     SYSTEM_NAME="$(get_os_release_value NAME)"
@@ -514,7 +536,7 @@ function collect_system_info() {
     elif [[ "${SYSTEM_NAME}" == *"NixOS"* ]]; then
         [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "NixOS"
     else
-        unsupport_system_error "未知的系统"
+        unsupport_system_error "$(msg "error.unknownSystem")"
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
@@ -580,10 +602,10 @@ function collect_system_info() {
         DEVICE_ARCH="s390x"
         ;;
     i386 | i686)
-        output_error "Docker Engine 不支持安装在 x86_32 架构的环境上！"
+        output_error "$(msg "error.unsupportX86_32")"
         ;;
     *)
-        output_error "未知的系统架构：${DEVICE_ARCH_RAW}"
+        output_error "$(msg "error.unknownArch" "${DEVICE_ARCH_RAW}")"
         ;;
     esac
     ## 定义软件源仓库名称
@@ -623,8 +645,8 @@ function collect_system_info() {
                 SOURCE_BRANCH="rhel"
                 # RHEL 10
                 if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 10 ]]; then
-                    echo -e "\n$WARN 当前采用 centos 分支（红帽衍生操作系统安装方式）进行安装，可能存在某些无法预料的兼容性问题！"
-                    echo -e "\n$TIP Docker 官方尚未支持 RHEL 10 且红帽官方已将 Docker 从注册软件源中移除并默认使用 Podman。"
+                    echo -e "\n$WARN $(msg "warn.usedCentosBranch")"
+                    echo -e "\n$TIP $(msg "tip.unsupportRHEL10")"
                     SOURCE_BRANCH="centos"
                 fi
                 ;;
@@ -633,7 +655,7 @@ function collect_system_info() {
                 ;;
             esac
             if [[ "${DEVICE_ARCH_RAW}" == "s390x" ]]; then
-                output_error "请查阅 RHEL 发行版声明以了解 s390x 支持"
+                output_error "$(msg "error.unsupportS390x")"
             fi
             ;;
         esac
@@ -641,10 +663,10 @@ function collect_system_info() {
     ## 定义软件源更新文字
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
-        SYNC_MIRROR_TEXT="更新软件源"
+        SYNC_MIRROR_TEXT="$(msg "source.sync.text1")"
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
-        SYNC_MIRROR_TEXT="生成软件源缓存"
+        SYNC_MIRROR_TEXT="$(msg "source.sync.text2")"
         ;;
     esac
     ## 判断是否可以使用高级交互式选择器
@@ -652,6 +674,49 @@ function collect_system_info() {
     if command_exists tput; then
         CAN_USE_ADVANCED_INTERACTIVE_SELECTION="true"
     fi
+}
+
+## 选择显示语言
+function choose_display_language() {
+    local result
+    if command_exists tput; then
+        local lang_key_labels=()
+        local language_text
+        for ((i = 0; i < ${#MESSAGE_LANG_KEYS[@]}; i++)); do
+            language_text="${MESSAGE_LANG_DISPLAY[${MESSAGE_LANG_KEYS[$i]}]}"
+            if [[ "${language_text}" ]]; then
+                lang_key_labels+=("${language_text}")
+            else
+                lang_key_labels+=("")
+            fi
+        done
+        interactive_select_list "MESSAGE_LANG_KEYS" "\n ${BOLD}Please select the display language:${PLAIN}\n" "lang_key_labels"
+        result="${_SELECT_RESULT%%@@*}"
+    else
+        echo ''
+        for ((i = 0; i < ${#MESSAGE_LANG_KEYS[@]}; i++)); do
+            echo -e " $((i + 1)). ${MESSAGE_LANG_DISPLAY[${MESSAGE_LANG_KEYS[$i]}]}"
+        done
+        local CHOICE="$(echo -e "\n${BOLD}└─ Please select and enter the display language [ 1-${#MESSAGE_LANG_KEYS[@]} ]：${PLAIN}")"
+        while true; do
+            read -rp "${CHOICE}" INPUT
+            case "${INPUT}" in
+            [1-9] | [1-9][0-9])
+                local tmp_result="${MESSAGE_LANG_KEYS[$((INPUT - 1))]}"
+                if [[ -z "${tmp_result}" ]]; then
+                    echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
+                else
+                    result="${tmp_result}"
+                    break
+                fi
+                ;;
+            *)
+                echo -e "\n$WARN $(msg "warn.needInputNumberIndex")"
+                ;;
+            esac
+        done
+    fi
+    init_msg_pack "${result}"
 }
 
 function choose_mirrors() {
@@ -669,10 +734,18 @@ function choose_mirrors() {
             list_arr[$i]="$(eval echo \${$1[i]})"
         done
         local name_width=${2:-"30"}
+        local list_labels=()
+        if [[ "${3}" ]]; then
+            eval "list_labels=(\"\${${3}[@]}\")"
+        fi
         if command_exists printf; then
             local tmp_uchar_1 tmp_uchar_2 tmp_uchar_3 tmp_uchar_4 tmp_default_length tmp_length tmp_unicode_length tmp_spaces_nums tmp_max_length
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_name="$(echo "${list_arr[i]}" | awk -F '@' '{print$1}')"
+                if [[ "${list_labels[$i]}" ]]; then
+                    tmp_name="${list_labels[$i]}"
+                else
+                    tmp_name="${list_arr[i]}"
+                fi
                 tmp_index=$((i + 1))
                 tmp_default_length="${name_width}"
                 tmp_uchar_1=$(echo "${tmp_name}" | grep -c "“")
@@ -694,7 +767,11 @@ function choose_mirrors() {
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                tmp_name="${list_arr[i]%@*}"
+                if [[ "${list_labels[$i]}" ]]; then
+                    tmp_name="${list_labels[$i]}"
+                else
+                    tmp_name="${list_arr[i]}"
+                fi
                 tmp_index=$((i + 1))
                 echo -e " ❖  $tmp_index. ${tmp_name}"
             done
@@ -715,14 +792,14 @@ function choose_mirrors() {
         if [[ -z "${USE_INTRANET_SOURCE}" ]]; then
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}请选择软件源的网络地址(访问方式)：${PLAIN}" "公网" "内网"
+                interactive_select_boolean "${BOLD}$(msg "interaction.source.type.select")${PLAIN}" "$(msg "interaction.source.type.public")" "$(msg "interaction.source.type.intranet")"
                 if [[ "${_SELECT_RESULT}" == "false" ]]; then
                     SOURCE="${intranet_source}"
                     ONLY_HTTP="true" # 强制使用 HTTP 协议
-                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN $(msg "warn.usedIntranetSource")"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ 默认使用软件源的公网地址，是否继续? [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ $(msg "interaction.source.type.usePublicAddress")? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -730,10 +807,10 @@ function choose_mirrors() {
                 [Nn] | [Nn][Oo])
                     SOURCE="${intranet_source}"
                     ONLY_HTTP="true" # 强制使用 HTTP 协议
-                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN 已切换至内网专用地址，仅限在特定环境下使用！"
+                    [[ "${PURE_MODE}" != "true" ]] && echo -e "\n$WARN $(msg "warn.usedIntranetSource")"
                     ;;
                 *)
-                    input_error "默认不使用内网地址"
+                    input_error "$(msg "error.defaultBehavior.noUseIntranetSource")"
                     ;;
                 esac
             fi
@@ -742,46 +819,43 @@ function choose_mirrors() {
         fi
     }
 
-    function print_title() {
-        local system_name="${SYSTEM_PRETTY_NAME:-"${SYSTEM_NAME} ${SYSTEM_VERSION_ID}"}"
-        local arch="${DEVICE_ARCH}"
-        local date_time time_zone
-        date_time="$(date "+%Y-%m-%d %H:%M")"
-        time_zone="$(timedatectl status 2>/dev/null | grep "Time zone" | awk -F ':' '{print$2}' | awk -F ' ' '{print$1}')"
-
-        echo -e ''
-        echo -e "运行环境 ${BLUE}${system_name} ${arch}${PLAIN}"
-        echo -e "系统时间 ${BLUE}${date_time} ${time_zone}${PLAIN}"
-    }
-
-    [[ "${PURE_MODE}" != "true" ]] && print_title
-
-    local mirror_list_name
+    local mirror_list_name mirror_list_length
+    local mirror_list_labels=()
+    local label_msg_index label_msg_content
     if [[ -z "${SOURCE}" ]] && [[ "${ONLY_REGISTRY}" != "true" ]]; then
         mirror_list_name="mirror_list_docker_ce"
+        mirror_list_length=$(eval "echo \${#${mirror_list_name}[@]}")
+        for ((i = 0; i < ${mirror_list_length}; i++)); do
+            label_msg_index="mirrors.dockerCE.${i}"
+            label_msg_content="$(msg "${label_msg_index}")"
+            if [[ "${label_msg_content}" == "${label_msg_index}" ]]; then
+                mirror_list_labels+=("")
+            else
+                mirror_list_labels+=("${label_msg_content}")
+            fi
+        done
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-            sleep 1 >/dev/null 2>&1
-            eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker CE 源：\${PLAIN}\\n\""
-            SOURCE="${_SELECT_RESULT#*@}"
-            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker CE: ${_SELECT_RESULT%@*}${PLAIN}"
+            interactive_select_list "${mirror_list_name}" "\n ${BOLD}$(msg "interaction.source.dockerCE.select")${PLAIN}\n" "mirror_list_labels"
+            SOURCE="${_SELECT_RESULT%%@@*}"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker CE: ${_SELECT_RESULT#*@@}${PLAIN}"
         else
             echo ''
-            print_mirrors_list "${mirror_list_name}" 39
-            local CHOICE_B="$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker CE 源 [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
+            print_mirrors_list "${mirror_list_name}" 39 "mirror_list_labels"
+            local CHOICE_B="$(echo -e "\n${BOLD}└─ $(msg "interaction.source.dockerCE.selectAndInput") [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
             while true; do
                 read -rp "${CHOICE_B}" INPUT
                 case "${INPUT}" in
                 [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                    local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
-                    if [[ -z "${tmp_source}" ]]; then
-                        echo -e "\n$WARN 请输入有效的数字序号！"
+                    local tmp_result="$(eval echo \${${mirror_list_name}[$((INPUT - 1))]})"
+                    if [[ -z "${tmp_result}" ]]; then
+                        echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
                     else
-                        SOURCE="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                        SOURCE="$(echo "${tmp_result}" | awk -F '@' '{print$2}')"
                         break
                     fi
                     ;;
                 *)
-                    echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                    echo -e "\n$WARN $(msg "warn.needInputNumberIndex")"
                     ;;
                 esac
             done
@@ -795,29 +869,40 @@ function choose_mirrors() {
 
     if [[ -z "${SOURCE_REGISTRY}" ]]; then
         mirror_list_name="mirror_list_registry"
+        mirror_list_labels=()
+        mirror_list_length=$(eval "echo \${#${mirror_list_name}[@]}")
+        for ((i = 0; i < ${mirror_list_length}; i++)); do
+            label_msg_index="mirrors.registry.${i}"
+            label_msg_content="$(msg "${label_msg_index}")"
+            if [[ "${label_msg_content}" == "${label_msg_index}" ]]; then
+                mirror_list_labels+=("")
+            else
+                mirror_list_labels+=("${label_msg_content}")
+            fi
+        done
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             sleep 1 >/dev/null 2>&1
-            eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想使用的 Docker Registry 源：\${PLAIN}\\n\""
-            SOURCE_REGISTRY="${_SELECT_RESULT#*@}"
-            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker Registry: $(echo "${_SELECT_RESULT%@*}" | sed 's|（推荐）||g')${PLAIN}"
+            interactive_select_list "${mirror_list_name}" "\n ${BOLD}$(msg "interaction.source.dockerRegistry.select")${PLAIN}\n" "mirror_list_labels"
+            SOURCE_REGISTRY="${_SELECT_RESULT%%@@*}"
+            echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker Registry: $(echo "${_SELECT_RESULT#*@@}" | sed 's|（推荐）||g; s|（推薦）||g')${PLAIN}"
         else
             echo ''
-            print_mirrors_list "${mirror_list_name}" 45
-            local CHOICE_C="$(echo -e "\n${BOLD}└─ 请选择并输入你想使用的 Docker Registry 源 [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
+            print_mirrors_list "${mirror_list_name}" 45 "mirror_list_labels"
+            local CHOICE_C="$(echo -e "\n${BOLD}└─ $(msg "interaction.source.dockerRegistry.selectAndInput") [ 1-$(eval echo \${#${mirror_list_name}[@]}) ]：${PLAIN}")"
             while true; do
                 read -rp "${CHOICE_C}" INPUT
                 case "${INPUT}" in
                 [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
                     local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
                     if [[ -z "${tmp_source}" ]]; then
-                        echo -e "\n$WARN 请输入有效的数字序号！"
+                        echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
                     else
                         SOURCE_REGISTRY="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
                         break
                     fi
                     ;;
                 *)
-                    echo -e "\n$WARN 请输入数字序号以选择你想使用的软件源！"
+                    echo -e "\n$WARN $(msg "warn.needInputNumberIndex")"
                     ;;
                 esac
             done
@@ -825,7 +910,7 @@ function choose_mirrors() {
     fi
 }
 
-## 选择同步或更新软件源所使用的 WEB 协议（ HTTP/HTTPS）
+## 选择同步或更新软件源所使用的 Web 协议（ HTTP/HTTPS）
 function choose_protocol() {
     if [[ -z "${WEB_PROTOCOL}" ]]; then
         if [[ "${ONLY_HTTP}" == "true" ]]; then
@@ -833,14 +918,14 @@ function choose_protocol() {
         else
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
-                interactive_select_boolean "${BOLD}请选择 Docker CE 软件源协议：${PLAIN}" "HTTP" "HTTPS"
+                interactive_select_boolean "${BOLD}$(msg "interaction.protocol.select")${PLAIN}" "HTTP" "HTTPS"
                 if [[ "${_SELECT_RESULT}" == "true" ]]; then
                     WEB_PROTOCOL="http"
                 else
                     WEB_PROTOCOL="https"
                 fi
             else
-                local CHOICE="$(echo -e "\n${BOLD}└─ 软件源是否使用 HTTP 协议? [Y/n] ${PLAIN}")"
+                local CHOICE="$(echo -e "\n${BOLD}└─ $(msg "interaction.protocol.useHttp")? [Y/n] ${PLAIN}")"
                 read -rp "${CHOICE}" INPUT
                 [[ -z "${INPUT}" ]] && INPUT=Y
                 case "${INPUT}" in
@@ -851,7 +936,7 @@ function choose_protocol() {
                     WEB_PROTOCOL="https"
                     ;;
                 *)
-                    input_error "默认使用 HTTPS 协议"
+                    input_error "$(msg "error.defaultBehavior.https")"
                     WEB_PROTOCOL="https"
                     ;;
                 esac
@@ -868,7 +953,7 @@ function close_firewall_service() {
     fi
     if [[ "$(systemctl is-active firewalld)" == "active" ]]; then
         if [[ -z "${CLOSE_FIREWALL}" ]]; then
-            local ask_text="是否关闭系统防火墙和 SELinux ?"
+            local ask_text="$(msg "interaction.firewall.close")?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
                 interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -885,7 +970,7 @@ function close_firewall_service() {
                     ;;
                 [Nn] | [Nn][Oo]) ;;
                 *)
-                    input_error "默认不关闭"
+                    input_error "$(msg "error.defaultBehavior.noClose")"
                     ;;
                 esac
             fi
@@ -941,7 +1026,7 @@ function install_dependency_packages() {
         done
     fi
     if [ $? -ne 0 ]; then
-        output_error "${SYNC_MIRROR_TEXT}出错，请先解决系统原有软件源错误以确保 ${BLUE}${package_manager}${PLAIN} 软件包管理工具可用！"
+        output_error "$(msg "error.sync" "${SYNC_MIRROR_TEXT}" "${BLUE}${package_manager}${PLAIN}")"
     fi
 
     commands=()
@@ -975,7 +1060,7 @@ function install_dependency_packages() {
             fi
         done
         echo ''
-        animate_exec "${exec_cmd}" "安装环境软件包"
+        animate_exec "${exec_cmd}" "$(msg "work.installDependents")"
     else
         for cmd in "${commands[@]}"; do
             eval "${cmd}"
@@ -995,7 +1080,7 @@ function configure_docker_ce_mirror() {
         install -m 0755 -d /etc/apt/keyrings
         curl -fsSL "${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/gpg" -o $file_keyring >/dev/null
         if [ $? -ne 0 ]; then
-            output_error "GPG 密钥下载失败，请检查网络或更换 Docker CE 软件源后重试！"
+            output_error "$(msg "error.downloadGPG")"
         fi
         chmod a+r $file_keyring
         ## 添加源
@@ -1182,13 +1267,13 @@ function install_docker_engine() {
             export_version_list
             if [ ! -s "${File_DockerVersionTmp}" ]; then
                 rm -rf $File_DockerVersionTmp
-                output_error "查询 Docker Engine 版本列表失败！"
+                output_error "$(msg "error.queryVersionFailed")"
             fi
             if [[ "${DESIGNATED_DOCKER_VERSION}" ]]; then
                 cat $File_DockerVersionTmp | grep -Eq "^${DESIGNATED_DOCKER_VERSION}$"
                 if [ $? -ne 0 ]; then
                     rm -rf $File_DockerVersionTmp
-                    output_error "指定的 Docker Engine 版本不存在或不支持安装！"
+                    output_error "$(msg "error.designatedVersion")"
                 fi
                 target_docker_version="${DESIGNATED_DOCKER_VERSION}"
             else
@@ -1197,14 +1282,14 @@ function install_docker_engine() {
                         $(cat $File_DockerVersionTmp | sort -t '.' -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ' | sed 's/ $//')
                     )
                     local mirror_list_name="version_list"
-                    eval "interactive_select_mirror \"\${${mirror_list_name}[@]}\" \"\\n \${BOLD}请选择你想安装的版本：\${PLAIN}\\n\""
+                    interactive_select_list "${mirror_list_name}" "\n ${BOLD}$(msg "interaction.install.selectVersion")${PLAIN}\n"
                     target_docker_version="${_SELECT_RESULT}"
-                    echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}指定安装版本：${target_docker_version}${PLAIN}\n"
+                    echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}$(msg "interaction.install.selectedVersion")${target_docker_version}${PLAIN}\n"
                 else
-                    echo -e "\n${GREEN} --------- 请选择你要安装的版本，如：28.3.0 ---------- ${PLAIN}\n"
+                    echo -e "\n${GREEN} --------- $(msg "interaction.install.selectedTitle" "28.3.0") ---------- ${PLAIN}\n"
                     cat $File_DockerVersionTmp
                     while true; do
-                        local CHOICE="$(echo -e "\n${BOLD}└─ 请根据上面的列表，选择并输入你想要安装的具体版本号：${PLAIN}\n")"
+                        local CHOICE="$(echo -e "\n${BOLD}└─ $(msg "interaction.install.inputVersion")${PLAIN}\n")"
                         read -rp "${CHOICE}" target_docker_version
                         echo ''
                         cat $File_DockerVersionTmp | grep -Eqw "${target_docker_version}"
@@ -1213,10 +1298,10 @@ function install_docker_engine() {
                             if [ $? -eq 0 ]; then
                                 break
                             else
-                                echo -e "$ERROR 请输入正确的版本号！"
+                                echo -e "$ERROR $(msg "error.invalidVersion")"
                             fi
                         else
-                            echo -e "$ERROR 输入错误请重新输入！"
+                            echo -e "$ERROR $(msg "error.reEnter")"
                         fi
                     done
                 fi
@@ -1267,18 +1352,18 @@ function install_docker_engine() {
                     exec_cmd="${exec_cmd} ; ${cmd}"
                 fi
             done
-            animate_exec "${exec_cmd}" "安装 Docker Engine"
+            animate_exec "${exec_cmd}" "$(msg "work.installDockerEngine")"
         else
             for cmd in "${commands[@]}"; do
                 eval "${cmd}"
             done
         fi
-        [ $? -ne 0 ] && output_error "安装 Docker Engine 失败！"
+        [ $? -ne 0 ] && output_error "$(msg "error.installDockerEngineFailed")"
     }
 
     ## 判断是否手动选择安装版本
     if [[ -z "${INSTALL_LATESTED_DOCKER}" ]]; then
-        local ask_text="Docker Engine 是否安装最新版本?"
+        local ask_text="$(msg "interaction.install.latestVersion")?"
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
             echo ''
             interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -1300,7 +1385,7 @@ function install_docker_engine() {
                 ;;
             *)
                 INSTALL_LATESTED_DOCKER="true"
-                input_error "默认安装最新版本"
+                input_error "$(msg "error.defaultBehavior.installLatest")"
                 ;;
             esac
         fi
@@ -1321,7 +1406,7 @@ function install_docker_engine() {
         local latest_docker_version="$(cat $File_DockerVersionTmp | head -n 1)"
         rm -rf $File_DockerVersionTmp
         if [[ "${current_docker_version}" == "${latest_docker_version}" ]] && [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
-            echo -e "\n$TIP 检测到系统已安装 Docker Engine 且是最新版本，跳过安装"
+            echo -e "\n$TIP $(msg "tip.skipInstallDockerEngine")"
         else
             uninstall_original_version
             install_main
@@ -1348,7 +1433,7 @@ function change_docker_registry_mirror() {
                     systemctl restart docker
                 fi
             else
-                echo -e "\n${WARN} 请自行删除 $File_DockerConfig 中的 ${BLUE}registry-mirrors${PLAIN} 配置并重启服务 ${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}\n"
+                echo -e "\n${WARN} $(msg "warn.needManuallyDeleteConfig" "${File_DockerConfig}" "${BLUE}registry-mirrors${PLAIN}" "${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}")\n"
             fi
         fi
         return
@@ -1357,7 +1442,7 @@ function change_docker_registry_mirror() {
     if [ -d "${Dir_Docker}" ] && [ -e "${File_DockerConfig}" ]; then
         if [ -e "${File_DockerConfigBackup}" ]; then
             if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
-                local ask_text="检测到已备份的 Docker 配置文件，是否跳过覆盖备份?"
+                local ask_text="$(msg "interaction.backup.skipOverwrite")?"
                 if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                     echo ''
                     interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -1376,7 +1461,7 @@ function change_docker_registry_mirror() {
                         cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
                         ;;
                     *)
-                        input_error "默认不覆盖"
+                        input_error "$(msg "error.defaultBehavior.noOverwrite")"
                         ;;
                     esac
                 fi
@@ -1384,7 +1469,7 @@ function change_docker_registry_mirror() {
         else
             echo ''
             cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
-            echo -e "\n$COMPLETE 已备份原有 Docker 配置文件"
+            echo -e "\n$COMPLETE $(msg "info.backuped.dockerConfig")"
         fi
         sleep 2s
     else
@@ -1414,7 +1499,7 @@ function only_change_docker_registry_mirror() {
     if [ $? -ne 0 ]; then
         ## 仅镜像仓库换源模式
         if [[ "${ONLY_REGISTRY}" == "true" ]]; then
-            output_error "当前尚未安装 Docker Engine，请取消设置 ${BLUE}--only-registry${PLAIN} 命令选项后重新执行脚本！"
+            output_error "$(msg "result.registry.dockerEngineNotExsit" "${BLUE}--only-registry${PLAIN}")"
         fi
     fi
 
@@ -1453,11 +1538,11 @@ function only_change_docker_registry_mirror() {
                 done
             fi
             if [ $? -ne 0 ]; then
-                output_error "${SYNC_MIRROR_TEXT}出错，请先解决系统原有软件源错误以确保 ${BLUE}${package_manager}${PLAIN} 软件包管理工具可用！"
+                output_error "$(msg "error.sync" "${SYNC_MIRROR_TEXT}" "${BLUE}${package_manager}${PLAIN}")"
             fi
             $package_manager install -y jq
             if ! command_exists jq; then
-                output_error "软件包 ${BLUE}jq${PLAIN} 安装失败，请自行安装后重新运行脚本！"
+                output_error "$(msg "error.installPackageFailed" "${BLUE}jq${PLAIN}")"
             fi
         fi
         [ -s "${File_DockerConfig}" ] || echo "{}" >$File_DockerConfig
@@ -1474,7 +1559,7 @@ function only_change_docker_registry_mirror() {
         systemctl restart docker
     fi
     if [[ "${PURE_MODE}" != "true" ]]; then
-        echo -e "\n$COMPLETE 已更换镜像仓库"
+        echo -e "\n$COMPLETE $(msg "result.registry.success")"
     fi
 }
 
@@ -1488,7 +1573,7 @@ function check_installed_result() {
             echo -e "  $(docker compose version 2>&1)"
             # echo -e "\n$COMPLETE 安装完成"
         else
-            echo -e "\n$FAIL 安装失败"
+            echo -e "\n$FAIL $(msg "result.install.failed")"
             local source_file package_manager
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
@@ -1500,8 +1585,8 @@ function check_installed_result() {
                 package_manager="$(get_package_manager)"
                 ;;
             esac
-            echo -e "\n检查源文件：cat ${source_file}"
-            echo -e "请尝试手动执行安装命令：${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n"
+            echo -e "\n$(msg "result.install.checkSourceFile" "cat ${source_file}")"
+            echo -e "$(msg "result.install.manuallyExecCmd" "${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin")\n"
             exit 1
         fi
         if [[ "$(systemctl is-active docker 2>/dev/null)" != "active" ]]; then
@@ -1511,18 +1596,18 @@ function check_installed_result() {
             systemctl enable --now docker >/dev/null 2>&1
             sleep 2
             if [[ "$(systemctl is-active docker)" != "active" ]]; then
-                echo -e "\n$WARN 检测到 Docker 服务启动${RED}异常${PLAIN}，可尝试再次执行本脚本重试"
+                echo -e "\n$WARN $(msg "result.install.notRunning")"
                 local start_cmd
                 if command_exists systemctl; then
                     start_cmd="systemctl start docker"
                 else
                     start_cmd="service docker start"
                 fi
-                echo -e "\n$TIP 请执行 ${BLUE}${start_cmd}${PLAIN} 命令尝试启动或自行查询错误原因"
+                echo -e "\n$TIP $(msg "result.install.manuallyRun" "${BLUE}${start_cmd}${PLAIN}")"
             fi
         fi
     else
-        echo -e "\n$FAIL 安装失败"
+        echo -e "\n$FAIL $(msg "result.install.failed")"
     fi
 }
 
@@ -1544,17 +1629,20 @@ function get_package_manager() {
     echo "${command}"
 }
 
-function interactive_select_mirror() {
+function interactive_select_list() {
     _SELECT_RESULT=""
-    local options=("$@")
-    local message="${options[${#options[@]} - 1]}"
-    unset options[${#options[@]}-1]
+    eval "local __values=(\"\${${1}[@]}\")"
+    local __labels=()
+    local message="${2}"
     local selected=0
     local start=0
     local page_size=$(($(tput lines 2>/dev/null) - 3))
+    if [[ "${3}" ]]; then
+        eval "__labels=(\"\${${3}[@]}\")"
+    fi
     function clear_menu() {
         tput rc 2>/dev/null
-        for ((i = 0; i < ${#options[@]} + 1; i++)); do
+        for ((i = 0; i < ${#__values[@]} + 1; i++)); do
             echo -e "\r\033[K"
         done
         tput rc 2>/dev/null
@@ -1564,7 +1652,7 @@ function interactive_select_mirror() {
         tput rc 2>/dev/null
         tput cnorm 2>/dev/null
         tput rmcup 2>/dev/null
-        echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
+        echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
         exit 130
     }
     function draw_menu() {
@@ -1572,14 +1660,20 @@ function interactive_select_mirror() {
         tput cup 0 0 2>/dev/null
         echo -e "${message}"
         local end=$((start + page_size - 1))
-        if [ $end -ge ${#options[@]} ]; then
-            end=${#options[@]}-1
+        local label
+        if [ $end -ge ${#__values[@]} ]; then
+            end=${#__values[@]}-1
         fi
         for ((i = start; i <= end; i++)); do
-            if [ "$i" -eq "$selected" ]; then
-                echo -e "\e[34;4m➤ ${options[$i]%@*}\e[0m"
+            if [[ "${__labels[$i]}" ]]; then
+                label="${__labels[$i]}"
             else
-                echo -e "  ${options[$i]%@*}"
+                label="${__values[$i]}"
+            fi
+            if [ "$i" -eq "${selected}" ]; then
+                echo -e "\e[34;4m➤ ${label}\e[0m"
+            else
+                echo -e "  ${label}"
             fi
         done
     }
@@ -1600,17 +1694,17 @@ function interactive_select_mirror() {
         key=$(read_key)
         case "$key" in
         "[A" | "w" | "W")
-            if [ "$selected" -gt 0 ]; then
+            if [ "${selected}" -gt 0 ]; then
                 selected=$((selected - 1))
-                if [ "$selected" -lt "$start" ]; then
+                if [ "${selected}" -lt "$start" ]; then
                     start=$((start - 1))
                 fi
             fi
             ;;
         "[B" | "s" | "S")
-            if [ "$selected" -lt $((${#options[@]} - 1)) ]; then
+            if [ "${selected}" -lt $((${#__values[@]} - 1)) ]; then
                 selected=$((selected + 1))
-                if [ "$selected" -ge $((start + page_size)) ]; then
+                if [ "${selected}" -ge $((start + page_size)) ]; then
                     start=$((start + 1))
                 fi
             fi
@@ -1625,15 +1719,18 @@ function interactive_select_mirror() {
     done
     tput cnorm 2>/dev/null
     tput rmcup 2>/dev/null
-    _SELECT_RESULT="${options[$selected]}"
+    _SELECT_RESULT="${__values[${selected}]}"
+    if [ "${__labels[${selected}]}" ]; then
+        _SELECT_RESULT="${_SELECT_RESULT}@@${__labels[${selected}]}"
+    fi
 }
 
 function interactive_select_boolean() {
     _SELECT_RESULT=""
     local selected=0
     local message="$1"
-    local positive_title="${2:-是}"
-    local negative_title="${3:-否}"
+    local positive_title="${2:-"$(msg "interaction.common.yes")"}"
+    local negative_title="${3:-"$(msg "interaction.common.no")"}"
     local menu_height=3
     local original_line
     function store_position() {
@@ -1648,13 +1745,13 @@ function interactive_select_boolean() {
     function cleanup() {
         clear_menu
         tput cnorm 2>/dev/null
-        echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
+        echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
         exit 130
     }
     function draw_menu() {
         echo -e "╭─ ${message}"
         echo -e "│"
-        if [ "$selected" -eq 0 ]; then
+        if [ "${selected}" -eq 0 ]; then
             echo -e "╰─ \033[34m●\033[0m ${positive_title}\033[2m / ○ ${negative_title}\033[0m"
         else
             echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[34m●\033[0m ${negative_title}"
@@ -1676,14 +1773,14 @@ function interactive_select_boolean() {
         key=$(read_key)
         case "$key" in
         "[D" | "a" | "A")
-            if [ "$selected" -gt 0 ]; then
+            if [ "${selected}" -gt 0 ]; then
                 selected=$((selected - 1))
                 clear_menu
                 draw_menu
             fi
             ;;
         "[C" | "d" | "D")
-            if [ "$selected" -lt 1 ]; then
+            if [ "${selected}" -lt 1 ]; then
                 selected=$((selected + 1))
                 clear_menu
                 draw_menu
@@ -1698,7 +1795,7 @@ function interactive_select_boolean() {
     done
     echo -e "╭─ ${message}"
     echo -e "│"
-    if [ "$selected" -eq 0 ]; then
+    if [ "${selected}" -eq 0 ]; then
         echo -e "╰─ \033[32m●\033[0m \033[1m${positive_title}\033[0m\033[2m / ○ ${negative_title}\033[0m"
         _SELECT_RESULT="true"
     else
@@ -1765,7 +1862,7 @@ function animate_exec() {
     function cleanup() {
         [ -f "${temp_file}" ] && rm -f "${temp_file}"
         tput cnorm 2>/dev/null
-        echo -e "\n\033[1;44m 提示 \033[0m \033[31m操作已取消\033[0m\n"
+        echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
         exit 130
     }
     function make_temp_file() {
@@ -1868,5 +1965,516 @@ function animate_exec() {
     return $exit_status
 }
 
+##############################################################################
+
+MESSAGE_LANG_DEFAULT='zh-hans'
+MESSAGE_LANG_KEYS=(
+    "zh-hans"
+    "zh-hant"
+    "en"
+)
+declare -A MESSAGE_LANG_DISPLAY=(
+    ['zh-hans']='简体中文'
+    ['zh-hant']='繁體中文'
+    ['en']='English'
+)
+declare -A MESSAGE_CONTENTS
+
+function msg() {
+    local key="$1"
+    shift
+    local text="${MESSAGE_CONTENTS[${key}]}"
+    if [[ -z "${text}" ]]; then
+        echo "${key}"
+        return
+    fi
+    while [[ $# -gt 0 ]]; do
+        if [[ "${text}" == *"{}"* ]]; then
+            text="${text/\{\}/$1}"
+        else
+            break
+        fi
+        shift
+    done
+    echo "${text}"
+}
+
+function init_msg_pack() {
+    function load_pack() {
+        local func_name="${1}"
+        if declare -f "${func_name}" >/dev/null 2>&1; then
+            eval "${func_name}"
+        fi
+    }
+    local current_lang="${1:-"${MESSAGE_LANG_DEFAULT}"}"
+    current_lang="$(echo "${current_lang}" | sed 's/^-*//')"
+    current_lang="${current_lang,,}"
+    if [[ "${MESSAGE_LANG_DISPLAY[${current_lang}]}" ]]; then
+        current_lang="${current_lang//-/_}"
+        load_pack "msg_pack_${current_lang}"
+    fi
+}
+
+function msg_pack_zh_hans() {
+    MESSAGE_CONTENTS=(
+        ['start.welcome']='欢迎使用 Docker Engine 安装与换源脚本'
+        ['start.runtimeEnv']='运行环境'
+        ['start.dateTime']='系统时间'
+        ['end.moreInfo']='脚本运行完毕，更多使用教程详见官网'
+        ['end.sponsorAds']='【赞助商广告】'
+        ['error.cmd.options.needConfirm']='请确认后重新输入'
+        ['error.cmd.options.needSpecify']='请在该选项后指定{}'
+        ['error.cmd.options.invalid']='命令选项 {} 无效，{}！'
+        ['error.cmd.options.validAddress']='有效的地址'
+        ['error.cmd.options.sourceAddress']='软件源地址'
+        ['error.cmd.options.registryAddress']='镜像仓库地址'
+        ['error.cmd.options.sourceRepository']='软件源仓库'
+        ['error.cmd.options.validVersion']='有效的版本号'
+        ['error.cmd.options.ceRepositoryVersion']='Docker CE 软件源仓库的版本号'
+        ['error.cmd.options.version']='版本号'
+        ['error.cmd.options.codename']='版本代号'
+        ['error.cmd.options.boolean']=' true 或 false '
+        ['error.cmd.options.protocol']=' http 或 https '
+        ['error.cmd.options.needProtocol']=' Web 协议(http/https)'
+        ['error.cmd.options.validLangKey']='有效的语言 ID '
+        ['error.cmd.options.langKey']='语言 '
+        ['error.unsupportSystem1']='不支持当前操作系统（{}）'
+        ['error.unsupportSystem2']='不支持当前操作系统（{}），请参考如下命令自行安装：'
+        ['error.unknownSystem']='未知系统'
+        ['error.unsupportX86_32']='Docker Engine 不支持安装在 x86_32 架构的环境上！'
+        ['error.unknownArch']='未知的系统架构：{}'
+        ['error.unsupportS390x']='请查阅 RHEL 发行版声明以了解 s390x 支持'
+        ['error.input']='输入错误，{}！'
+        ['error.needRoot']='权限不足，请使用 Root 用户运行本脚本'
+        ['error.sync']='{}出错，请先解决系统原有软件源错误以确保 {} 软件包管理工具可用！'
+        ['error.downloadGPG']='GPG 密钥下载失败，请检查网络或更换 Docker CE 软件源后重试！'
+        ['error.queryVersionFailed']='查询 Docker Engine 版本列表失败！'
+        ['error.designatedVersion']='指定的 Docker Engine 版本不存在或不支持安装！'
+        ['error.invalidVersion']='请输入正确的版本号！'
+        ['error.reEnter']='输入错误请重新输入！'
+        ['error.installDockerEngineFailed']='安装 Docker Engine 失败！'
+        ['error.installPackageFailed']='软件包 {} 安装失败，请自行安装后重新运行脚本！'
+        ['error.defaultBehavior.https']='默认使用 HTTPS 协议'
+        ['error.defaultBehavior.noClose']='默认不关闭'
+        ['error.defaultBehavior.installLatest']='默认安装最新版本'
+        ['error.defaultBehavior.noOverwrite']='默认不覆盖'
+        ['error.defaultBehavior.noUseIntranetSource']='默认不使用内网地址'
+        ['warn.usedCentosBranch']='当前采用 centos 分支（红帽衍生操作系统安装方式）进行安装，可能存在某些无法预料的兼容性问题！'
+        ['warn.usedIntranetSource']='已切换至内网专用地址，仅限在特定环境下使用！'
+        ['warn.needValidNumberIndex']='请输入有效的数字序号！'
+        ['warn.needInputNumberIndex']='请输入数字序号！'
+        ['warn.needManuallyDeleteConfig']='请自行删除 {} 中的 {} 配置并重启服务 {}'
+        ['tip.unsupportRHEL10']='Docker 官方尚未支持 RHEL 10 且红帽官方已将 Docker 从注册软件源中移除并默认使用 Podman。'
+        ['tip.skipInstallDockerEngine']='检测到系统已安装 Docker Engine 且是最新版本，跳过安装'
+        ['info.backuped.dockerConfig']='已备份原有 Docker 配置文件'
+        ['interaction.source.type.public']='公网'
+        ['interaction.source.type.intranet']='内网'
+        ['interaction.source.type.select']='请选择 Docker CE 源的网络地址(访问方式)：'
+        ['interaction.source.type.usePublicAddress']='默认使用 Docker CE 源的公网地址，是否继续'
+        ['interaction.source.dockerCE.select']='请选择你想使用的 Docker CE 源：'
+        ['interaction.source.dockerCE.selectAndInput']='请选择并输入你想使用的 Docker CE 源'
+        ['interaction.source.dockerRegistry.select']='请选择你想使用的 Docker Registry 源：'
+        ['interaction.source.dockerRegistry.selectAndInput']='请选择并输入你想使用的 Docker Registry 源'
+        ['interaction.protocol.select']='请选择 Docker CE 软件源的网络协议：'
+        ['interaction.protocol.useHttp']='Docker CE 软件源是否使用 HTTP 协议'
+        ['interaction.firewall.close']='是否关闭系统防火墙和 SELinux '
+        ['interaction.install.selectVersion']='请选择你想安装的版本：'
+        ['interaction.install.selectedVersion']='指定安装版本：'
+        ['interaction.install.selectedTitle']='请选择你要安装的版本，如：{}'
+        ['interaction.install.inputVersion']='请根据上面的列表，选择并输入你想要安装的具体版本号：'
+        ['interaction.install.latestVersion']='Docker Engine 是否安装最新版本'
+        ['interaction.backup.skipOverwrite']='检测到已备份的 Docker 配置文件，是否跳过覆盖备份'
+        ['interaction.common.tip']='提示'
+        ['interaction.common.operationCanceled']='操作已取消'
+        ['interaction.common.yes']='是'
+        ['interaction.common.no']='否'
+        ['work.installDependents']='安装环境软件包'
+        ['work.installDockerEngine']='安装 Docker Engine'
+        ['source.sync.text1']='更新软件源'
+        ['source.sync.text2']='生成软件源缓存'
+        ['result.install.failed']='安装失败'
+        ['result.install.checkSourceFile']='检查源文件：'
+        ['result.install.manuallyExecCmd']='请尝试手动执行安装命令：{}'
+        ['result.install.notRunning']='检测到 Docker 服务启动异常，可尝试再次执行本脚本重试'
+        ['result.install.manuallyRun']='请执行 {} 命令尝试启动或自行查询错误原因'
+        ['result.registry.success']='已更换镜像仓库'
+        ['result.registry.dockerEngineNotExsit']='当前尚未安装 Docker Engine，请取消设置 {} 命令选项后重新执行脚本！'
+        ['commands.help']='命令选项(名称/含义/值)：
+
+  --source                  指定 Docker CE 软件源地址(域名或IP)         地址
+  --source-registry         指定 Docker 镜像仓库地址(域名或IP)          地址
+  --branch                  指定 Docker CE 软件源仓库(路径)             仓库名
+  --branch-version          指定 Docker CE 软件源仓库版本               版本号
+  --designated-version      指定 Docker Engine 安装版本                 版本号
+  --codename                指定 Debian 系操作系统的版本代号            代号名称
+  --protocol                指定 Docker CE 软件源的 Web 协议            http 或 https
+  --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false
+  --install-latest          是否安装最新版本的 Docker Engine            true 或 false
+  --close-firewall          是否关闭防火墙                              true 或 false
+  --clean-screen            是否在运行前清除屏幕上的所有内容            true 或 false
+  --lang                    指定脚本使用的语言 ID                       语言
+  --only-registry           仅更换镜像仓库模式                          无
+  --ignore-backup-tips      忽略覆盖备份提示                            无
+  --pure-mode               纯净模式，精简打印内容                      无
+  --help                    查看帮助菜单                                无
+
+问题报告 {}'
+        ['mirrors.dockerCE.0']='阿里云'
+        ['mirrors.dockerCE.1']='腾讯云'
+        ['mirrors.dockerCE.2']='华为云'
+        ['mirrors.dockerCE.3']='网易'
+        ['mirrors.dockerCE.4']='火山引擎'
+        ['mirrors.dockerCE.5']='微软 Azure 中国'
+        ['mirrors.dockerCE.6']='清华大学'
+        ['mirrors.dockerCE.7']='北京大学'
+        ['mirrors.dockerCE.8']='浙江大学'
+        ['mirrors.dockerCE.9']='南京大学'
+        ['mirrors.dockerCE.10']='上海交通大学'
+        ['mirrors.dockerCE.11']='重庆邮电大学'
+        ['mirrors.dockerCE.12']='中国科学技术大学'
+        ['mirrors.dockerCE.13']='中国科学院软件研究所'
+        ['mirrors.dockerCE.14']='官方源'
+        ['mirrors.registry.0']='毫秒镜像（推荐）'
+        ['mirrors.registry.1']='Docker Proxy'
+        ['mirrors.registry.2']='DaoCloud 道客'
+        ['mirrors.registry.3']='1Panel 镜像'
+        ['mirrors.registry.4']='阿里云（杭州）'
+        ['mirrors.registry.5']='阿里云（上海）'
+        ['mirrors.registry.6']='阿里云（青岛）'
+        ['mirrors.registry.7']='阿里云（北京）'
+        ['mirrors.registry.8']='阿里云（张家口）'
+        ['mirrors.registry.9']='阿里云（呼和浩特）'
+        ['mirrors.registry.10']='阿里云（乌兰察布）'
+        ['mirrors.registry.11']='阿里云（深圳）'
+        ['mirrors.registry.12']='阿里云（河源）'
+        ['mirrors.registry.13']='阿里云（广州）'
+        ['mirrors.registry.14']='阿里云（成都）'
+        ['mirrors.registry.15']='阿里云（香港）'
+        ['mirrors.registry.16']='阿里云（日本-东京）'
+        ['mirrors.registry.17']='阿里云（新加坡）'
+        ['mirrors.registry.18']='阿里云（马来西亚-吉隆坡）'
+        ['mirrors.registry.19']='阿里云（印度尼西亚-雅加达）'
+        ['mirrors.registry.20']='阿里云（德国-法兰克福）'
+        ['mirrors.registry.21']='阿里云（英国-伦敦）'
+        ['mirrors.registry.22']='阿里云（美国西部-硅谷）'
+        ['mirrors.registry.23']='阿里云（美国东部-弗吉尼亚）'
+        ['mirrors.registry.24']='阿里云（阿联酋-迪拜）'
+        ['mirrors.registry.25']='腾讯云'
+        ['mirrors.registry.26']='谷歌云（北美）'
+        ['mirrors.registry.27']='谷歌云（亚洲）'
+        ['mirrors.registry.28']='谷歌云（欧洲）'
+        ['mirrors.registry.29']='官方 Docker Hub'
+    )
+}
+
+function msg_pack_zh_hant() {
+    MESSAGE_CONTENTS=(
+        ['start.welcome']='歡迎使用 Docker Engine 安裝與換源腳本'
+        ['start.runtimeEnv']='執行環境'
+        ['start.dateTime']='系統時間'
+        ['end.moreInfo']='腳本執行完畢，更多使用教學詳見官網'
+        ['end.sponsorAds']='【贊助商廣告】'
+        ['error.cmd.options.needConfirm']='請確認後重新輸入'
+        ['error.cmd.options.needSpecify']='請在該選項後指定{}'
+        ['error.cmd.options.invalid']='命令選項 {} 無效，{}！'
+        ['error.cmd.options.validAddress']='有效的位址'
+        ['error.cmd.options.sourceAddress']='軟體源位址'
+        ['error.cmd.options.registryAddress']='映象倉庫位址'
+        ['error.cmd.options.sourceRepository']='軟體源倉庫'
+        ['error.cmd.options.validVersion']='有效的版本號'
+        ['error.cmd.options.ceRepositoryVersion']='Docker CE 軟體源倉庫的版本號'
+        ['error.cmd.options.version']='版本號'
+        ['error.cmd.options.codename']='版本代號'
+        ['error.cmd.options.boolean']=' true 或 false '
+        ['error.cmd.options.protocol']=' http 或 https '
+        ['error.cmd.options.needProtocol']=' Web 協定(http/https)'
+        ['error.cmd.options.validLangKey']='有效的語言 ID '
+        ['error.cmd.options.langKey']='語言 ID '
+        ['error.unsupportSystem1']='不支援當前作業系統（{}）'
+        ['error.unsupportSystem2']='不支援當前作業系統（{}），請參考如下命令自行安裝：\n\n{}'
+        ['error.unknownSystem']='未知系統'
+        ['error.unsupportX86_32']='Docker Engine 不支援安裝在 x86_32 架構的環境上！'
+        ['error.unknownArch']='未知的系統架構：{}'
+        ['error.unsupportS390x']='請查閱 RHEL 發行版宣告以瞭解 s390x 支援'
+        ['error.input']='輸入錯誤，{}！'
+        ['error.needRoot']='權限不足，請使用 Root 使用者執行本腳本'
+        ['error.sync']='{}出錯，請先解決系統原有軟體源錯誤以確保 {} 軟體包管理工具可用！'
+        ['error.downloadGPG']='GPG 金鑰下載失敗，請檢查網路或更換 Docker CE 軟體源後重試！'
+        ['error.queryVersionFailed']='查詢 Docker Engine 版本清單失敗！'
+        ['error.designatedVersion']='指定的 Docker Engine 版本不存在或不支援安裝！'
+        ['error.invalidVersion']='請輸入正確的版本號！'
+        ['error.reEnter']='輸入錯誤請重新輸入！'
+        ['error.installDockerEngineFailed']='安裝 Docker Engine 失敗！'
+        ['error.installPackageFailed']='軟體包 {} 安裝失敗，請自行安裝後重新執行腳本！'
+        ['error.defaultBehavior.https']='預設使用 HTTPS 協定'
+        ['error.defaultBehavior.noClose']='預設不關閉'
+        ['error.defaultBehavior.installLatest']='預設安裝最新版本'
+        ['error.defaultBehavior.noOverwrite']='預設不覆寫'
+        ['error.defaultBehavior.noUseIntranetSource']='預設不使用內網位址'
+        ['warn.usedCentosBranch']='目前採用 centos 分支（紅帽衍生系統安裝方式）進行安裝，可能存在某些無法預料的相容性問題！'
+        ['warn.usedIntranetSource']='已切換至內網專用位址，僅限在特定環境下使用！'
+        ['warn.needValidNumberIndex']='請輸入有效的數字序號！'
+        ['warn.needInputNumberIndex']='請輸入數字序號！'
+        ['warn.needManuallyDeleteConfig']='請自行刪除 {} 中的 {} 設定並重新啟動服務 {}'
+        ['tip.unsupportRHEL10']='Docker 官方尚未支援 RHEL 10 且紅帽官方已將 Docker 從註冊軟體源中移除並預設使用 Podman。'
+        ['tip.skipInstallDockerEngine']='偵測到系統已安裝 Docker Engine 且是最新版本，跳過安裝'
+        ['info.backuped.dockerConfig']='已備份原有 Docker 設定檔'
+        ['interaction.source.type.public']='公網'
+        ['interaction.source.type.intranet']='內網'
+        ['interaction.source.type.select']='請選擇 Docker CE 源的網路位址(存取方式)：'
+        ['interaction.source.type.usePublicAddress']='預設使用 Docker CE 源的公網位址，是否繼續'
+        ['interaction.source.dockerCE.select']='請選擇你想使用的 Docker CE 源：'
+        ['interaction.source.dockerCE.selectAndInput']='請選擇並輸入你想使用的 Docker CE 源'
+        ['interaction.source.dockerRegistry.select']='請選擇你想使用的 Docker Registry 源：'
+        ['interaction.source.dockerRegistry.selectAndInput']='請選擇並輸入你想使用的 Docker Registry 源'
+        ['interaction.protocol.select']='請選擇 Docker CE 軟體源的網路協定：'
+        ['interaction.protocol.useHttp']='Docker CE 軟體源是否使用 HTTP 協定'
+        ['interaction.firewall.close']='是否關閉系統防火牆和 SELinux '
+        ['interaction.install.selectVersion']='請選擇你想安裝的版本：'
+        ['interaction.install.selectedVersion']='指定安裝版本：'
+        ['interaction.install.selectedTitle']='請選擇你要安裝的版本，如：{}'
+        ['interaction.install.inputVersion']='請根據上面的清單，選擇並輸入你想要安裝的具體版本號：'
+        ['interaction.install.latestVersion']='Docker Engine 是否安裝最新版本'
+        ['interaction.backup.skipOverwrite']='偵測到已備份的 Docker 設定檔，是否跳過覆寫備份'
+        ['interaction.common.tip']='提示'
+        ['interaction.common.operationCanceled']='操作已取消'
+        ['interaction.common.yes']='是'
+        ['interaction.common.no']='否'
+        ['work.installDependents']='安裝環境軟體包'
+        ['work.installDockerEngine']='安裝 Docker Engine'
+        ['source.sync.text1']='更新軟體源'
+        ['source.sync.text2']='產生軟體源快取'
+        ['result.install.failed']='安裝失敗'
+        ['result.install.checkSourceFile']='檢查源檔案：'
+        ['result.install.manuallyExecCmd']='請嘗試手動執行安裝命令：{}'
+        ['result.install.notRunning']='偵測到 Docker 服務啟動異常，可嘗試再次執行本腳本重試'
+        ['result.install.manuallyRun']='請執行 {} 命令嘗試啟動或自行查詢錯誤原因'
+        ['result.registry.success']='已更換映象倉庫'
+        ['result.registry.dockerEngineNotExsit']='目前尚未安裝 Docker Engine，請取消設定 {} 命令選項後重新執行腳本！'
+        ['commands.help']='命令選項(名稱/含義/值)：
+
+  --source                  指定 Docker CE 軟體源位址(網域名稱或IP)      位址
+  --source-registry         指定 Docker 映像倉庫位址 (網域名稱或IP)      位址
+  --branch                  指定 Docker CE 軟體源倉庫 (路徑)             倉庫名稱
+  --branch-version          指定 Docker CE 軟體源倉庫版本                版本號
+  --designated-version      指定 Docker Engine 安裝版本                  版本號
+  --codename                指定 Debian 係作業系統的版本代號             代號名稱
+  --protocol                指定 Docker CE 源的 Web 協定                 http 或 https
+  --use-intranet-source     是否優先使用內部網路 Docker CE 軟體源位址    true 或 false
+  --install-latest          是否安裝最新版本的 Docker Engine             true 或 false
+  --close-firewall          是否關閉防火牆                               true 或 false
+  --clean-screen            是否在運行前清除螢幕上的所有內容             true 或 false
+  --lang                    指定腳本輸出的語言                           语言
+  --only-registry           僅更換映像倉庫模式                           無
+  --ignore-backup-tips      忽略覆蓋備份提示                             無
+  --pure-mode               純淨模式，精簡列印內容                       無
+  --help                    查看幫助選單                                 無
+
+問題報告 {}'
+        ['mirrors.dockerCE.0']='阿里雲'
+        ['mirrors.dockerCE.1']='騰訊雲'
+        ['mirrors.dockerCE.2']='華為雲'
+        ['mirrors.dockerCE.3']='網易'
+        ['mirrors.dockerCE.4']='火山引擎'
+        ['mirrors.dockerCE.5']='微軟 Azure 中國'
+        ['mirrors.dockerCE.6']='清華大學'
+        ['mirrors.dockerCE.7']='北京大學'
+        ['mirrors.dockerCE.8']='浙江大學'
+        ['mirrors.dockerCE.9']='南京大學'
+        ['mirrors.dockerCE.10']='上海交通大學'
+        ['mirrors.dockerCE.11']='重慶郵電大學'
+        ['mirrors.dockerCE.12']='中國科學技術大學'
+        ['mirrors.dockerCE.13']='中國科學院軟體研究所'
+        ['mirrors.dockerCE.14']='官方源'
+        ['mirrors.registry.0']='毫秒鏡像（推薦）'
+        ['mirrors.registry.1']='Docker Proxy'
+        ['mirrors.registry.2']='DaoCloud 道客'
+        ['mirrors.registry.3']='1Panel 鏡像'
+        ['mirrors.registry.4']='阿里雲（杭州）'
+        ['mirrors.registry.5']='阿里雲（上海）'
+        ['mirrors.registry.6']='阿里雲（青島）'
+        ['mirrors.registry.7']='阿里雲（北京）'
+        ['mirrors.registry.8']='阿里雲（張家口）'
+        ['mirrors.registry.9']='阿里雲（呼和浩特）'
+        ['mirrors.registry.10']='阿里雲（烏蘭察布）'
+        ['mirrors.registry.11']='阿里雲（深圳）'
+        ['mirrors.registry.12']='阿里雲（河源）'
+        ['mirrors.registry.13']='阿里雲（廣州）'
+        ['mirrors.registry.14']='阿里雲（成都）'
+        ['mirrors.registry.15']='阿里雲（香港）'
+        ['mirrors.registry.16']='阿里雲（日本-東京）'
+        ['mirrors.registry.17']='阿里雲（新加坡）'
+        ['mirrors.registry.18']='阿里雲（馬來西亞-吉隆坡）'
+        ['mirrors.registry.19']='阿里雲（印度尼西亞-雅加達）'
+        ['mirrors.registry.20']='阿里雲（德國-法蘭克福）'
+        ['mirrors.registry.21']='阿里雲（英國-倫敦）'
+        ['mirrors.registry.22']='阿里雲（美國西部-矽谷）'
+        ['mirrors.registry.23']='阿里雲（美國東部-弗吉尼亞）'
+        ['mirrors.registry.24']='阿里雲（阿聯酋-迪拜）'
+        ['mirrors.registry.25']='騰訊雲'
+        ['mirrors.registry.26']='谷歌雲（北美）'
+        ['mirrors.registry.27']='谷歌雲（亞洲）'
+        ['mirrors.registry.28']='谷歌雲（歐洲）'
+        ['mirrors.registry.29']='官方 Docker Hub'
+    )
+    SPONSOR_ADS[0]="1Panel · 新一代的 Linux 伺服器維運管理面板 ➜  \033[3mhttps://1panel.cn\033[0m"
+}
+
+function msg_pack_en() {
+    MESSAGE_CONTENTS=(
+        ['start.welcome']='Docker installation & mirror switcher'
+        ['start.runtimeEnv']='Runtime Env'
+        ['start.dateTime']='System Time'
+        ['end.moreInfo']='Script execution completed, visit our website for more tutorials'
+        ['end.sponsorAds']='[Sponsor Ads]'
+        ['error.cmd.options.needConfirm']='Please confirm and re-enter'
+        ['error.cmd.options.needSpecify']='Please specify {} after this option'
+        ['error.cmd.options.invalid']='Command option {} is invalid, {}!'
+        ['error.cmd.options.validAddress']='a valid address'
+        ['error.cmd.options.sourceAddress']='mirror address'
+        ['error.cmd.options.registryAddress']='registry mirror address'
+        ['error.cmd.options.sourceRepository']='mirror repository'
+        ['error.cmd.options.validVersion']='a valid version number'
+        ['error.cmd.options.ceRepositoryVersion']='Docker CE mirror repository version'
+        ['error.cmd.options.version']='version number'
+        ['error.cmd.options.codename']='version codename'
+        ['error.cmd.options.boolean']=' true or false '
+        ['error.cmd.options.protocol']=' http or https '
+        ['error.cmd.options.needProtocol']=' Web protocol(http/https)'
+        ['error.cmd.options.validLangKey']='A valid language ID '
+        ['error.cmd.options.langKey']='language ID '
+        ['error.unsupportSystem1']='Unsupported operating system ({})'
+        ['error.unsupportSystem2']='Unsupported operating system ({}), please install manually with commands:'
+        ['error.unknownSystem']='Unknown system'
+        ['error.unsupportX86_32']='Docker Engine does not support installation on x86_32 architecture!'
+        ['error.unknownArch']='Unknown system architecture: {}'
+        ['error.unsupportS390x']='Please refer to RHEL distribution announcement for s390x support'
+        ['error.input']='Input error, {}!'
+        ['error.needRoot']='Insufficient permissions, please run this script as Root user'
+        ['error.sync']='{} failed. Please fix system software sources (package repositories) so the {} package manager is available!'
+        ['error.downloadGPG']='GPG key download failed, please check network or switch Docker CE mirror and retry!'
+        ['error.queryVersionFailed']='Failed to query Docker Engine version list!'
+        ['error.designatedVersion']='Specified Docker Engine version does not exist or is not supported for installation!'
+        ['error.invalidVersion']='Please enter a valid version number!'
+        ['error.reEnter']='Input error, please re-enter!'
+        ['error.installDockerEngineFailed']='Docker Engine installation failed!'
+        ['error.installPackageFailed']='Package {} installation failed, please install manually and rerun script!'
+        ['error.defaultBehavior.https']='Using HTTPS protocol by default'
+        ['error.defaultBehavior.noClose']='Not closing by default'
+        ['error.defaultBehavior.installLatest']='Installing latest version by default'
+        ['error.defaultBehavior.noOverwrite']='Not overwriting by default'
+        ['error.defaultBehavior.noUseIntranetSource']='Not using intranet address by default'
+        ['warn.usedCentosBranch']='Currently using centos branch (Red Hat derivative OS installation method), may have unpredictable compatibility issues!'
+        ['warn.usedIntranetSource']='Switched to intranet-only address, use only in specific environments!'
+        ['warn.needValidNumberIndex']='Please enter a valid number index!'
+        ['warn.needInputNumberIndex']='Please enter a number index!'
+        ['warn.needManuallyDeleteConfig']='Please manually delete {} configuration in {} and restart service {}'
+        ['tip.unsupportRHEL10']='Docker official has not yet supported RHEL 10 and Red Hat has removed Docker from registered repositories, using Podman by default.'
+        ['tip.skipInstallDockerEngine']='Detected Docker Engine is already installed with latest version, skipping installation'
+        ['info.backuped.dockerConfig']='Original Docker config file has been backed up'
+        ['interaction.source.type.public']='Public'
+        ['interaction.source.type.intranet']='Intranet'
+        ['interaction.source.type.select']='Please select network address (access method) for Docker CE mirror:'
+        ['interaction.source.type.usePublicAddress']='Use public network address for Docker CE mirror by default, continue'
+        ['interaction.source.dockerCE.select']='Please select the Docker CE mirror you want to use:'
+        ['interaction.source.dockerCE.selectAndInput']='Please select and enter the Docker CE mirror you want to use'
+        ['interaction.source.dockerRegistry.select']='Please select the Docker Registry mirror you want to use:'
+        ['interaction.source.dockerRegistry.selectAndInput']='Please select and enter the Docker Registry mirror you want to use'
+        ['interaction.protocol.select']='Please select network protocol for Docker CE mirror:'
+        ['interaction.protocol.useHttp']='Use HTTP protocol for Docker CE mirror'
+        ['interaction.firewall.close']='Close system firewall and SELinux'
+        ['interaction.install.selectVersion']='Please select the version you want to install:'
+        ['interaction.install.selectedVersion']='Specified installation version:'
+        ['interaction.install.selectedTitle']='Please select the version to install, e.g.: {}'
+        ['interaction.install.inputVersion']='Based on the list above, please select and enter the specific version you want to install:'
+        ['interaction.install.latestVersion']='Install latest version of Docker Engine'
+        ['interaction.backup.skipOverwrite']='Detected existing backup of Docker config file, skip overwriting backup'
+        ['interaction.common.tip']='Tip'
+        ['interaction.common.operationCanceled']='Operation canceled'
+        ['interaction.common.yes']='Yes'
+        ['interaction.common.no']='No'
+        ['work.installDependents']='Install environment packages'
+        ['work.installDockerEngine']='Install Docker Engine'
+        ['source.sync.text1']='Update APT package index'
+        ['source.sync.text2']='Generate mirror cache'
+        ['result.install.failed']='Installation failed'
+        ['result.install.checkSourceFile']='Check source file:'
+        ['result.install.manuallyExecCmd']='Please try manually executing installation command: {}'
+        ['result.install.notRunning']='Detected Docker service startup error, try running this script again'
+        ['result.install.manuallyRun']='Please execute {} command to try starting or investigate error cause'
+        ['result.registry.success']='Registry mirror replaced successfully'
+        ['result.registry.dockerEngineNotExsit']='Docker Engine is not installed yet, please remove {} command option and rerun script!'
+        ['commands.help']='Command options(name/meaning/value):
+
+  --source                  Specify Docker CE mirror address (domain or IP)           address
+  --source-registry         Specify Docker Registry mirror address (domain or IP)     address
+  --branch                  Specify Docker CE mirror repository (path)                repo name
+  --branch-version          Specify Docker CE mirror repository version               version
+  --designated-version      Specify Docker Engine installation version                version
+  --codename                Specify Debian-based OS codename                          codename
+  --protocol                Specify Web protocol for Docker CE mirror                 http or https
+  --use-intranet-source     Prefer intranet Docker CE mirror address                  true or false
+  --install-latest          Whether to install the latest Docker Engine               true or false
+  --close-firewall          Whether to disable the firewall                           true or false
+  --clean-screen            Whether to clear the screen before running                true or false
+  --lang                    Specify the language of the script output                 language
+  --only-registry           Only switch registry mirror mode                          none
+  --ignore-backup-tips      Ignore backup overwrite prompt (do not backup)            none
+  --pure-mode               Pure mode, minimal output                                 none
+  --help                    Show help menu                                            none
+
+Issue Report {}'
+        ['mirrors.dockerCE.0']='Alibaba Cloud'
+        ['mirrors.dockerCE.1']='Tencent Cloud'
+        ['mirrors.dockerCE.2']='Huawei Cloud'
+        ['mirrors.dockerCE.3']='NetEase'
+        ['mirrors.dockerCE.4']='Volcengine'
+        ['mirrors.dockerCE.5']='Microsoft Azure China'
+        ['mirrors.dockerCE.6']='Tsinghua University'
+        ['mirrors.dockerCE.7']='Peking University'
+        ['mirrors.dockerCE.8']='Zhejiang University'
+        ['mirrors.dockerCE.9']='Nanjing University'
+        ['mirrors.dockerCE.10']='Shanghai Jiao Tong University'
+        ['mirrors.dockerCE.11']='Chongqing University of Posts and Telecommunications'
+        ['mirrors.dockerCE.12']='University of Science and Technology of China'
+        ['mirrors.dockerCE.13']='Institute of Software, Chinese Academy of Sciences'
+        ['mirrors.dockerCE.14']='Official Source'
+        ['mirrors.registry.0']='Millisecond Mirror (recommended)'
+        ['mirrors.registry.1']='Docker Proxy'
+        ['mirrors.registry.2']='DaoCloud'
+        ['mirrors.registry.3']='1Panel Mirror'
+        ['mirrors.registry.4']='Alibaba Cloud (Hangzhou)'
+        ['mirrors.registry.5']='Alibaba Cloud (Shanghai)'
+        ['mirrors.registry.6']='Alibaba Cloud (Qingdao)'
+        ['mirrors.registry.7']='Alibaba Cloud (Beijing)'
+        ['mirrors.registry.8']='Alibaba Cloud (Zhangjiakou)'
+        ['mirrors.registry.9']='Alibaba Cloud (Hohhot)'
+        ['mirrors.registry.10']='Alibaba Cloud (Ulanqab)'
+        ['mirrors.registry.11']='Alibaba Cloud (Shenzhen)'
+        ['mirrors.registry.12']='Alibaba Cloud (Heyuan)'
+        ['mirrors.registry.13']='Alibaba Cloud (Guangzhou)'
+        ['mirrors.registry.14']='Alibaba Cloud (Chengdu)'
+        ['mirrors.registry.15']='Alibaba Cloud (Hong Kong)'
+        ['mirrors.registry.16']='Alibaba Cloud (Japan - Tokyo)'
+        ['mirrors.registry.17']='Alibaba Cloud (Singapore)'
+        ['mirrors.registry.18']='Alibaba Cloud (Malaysia - Kuala Lumpur)'
+        ['mirrors.registry.19']='Alibaba Cloud (Indonesia - Jakarta)'
+        ['mirrors.registry.20']='Alibaba Cloud (Germany - Frankfurt)'
+        ['mirrors.registry.21']='Alibaba Cloud (UK - London)'
+        ['mirrors.registry.22']='Alibaba Cloud (US West - Silicon Valley)'
+        ['mirrors.registry.23']='Alibaba Cloud (US East - Virginia)'
+        ['mirrors.registry.24']='Alibaba Cloud (UAE - Dubai)'
+        ['mirrors.registry.25']='Tencent Cloud'
+        ['mirrors.registry.26']='Google Cloud (North America)'
+        ['mirrors.registry.27']='Google Cloud (Asia)'
+        ['mirrors.registry.28']='Google Cloud (Europe)'
+        ['mirrors.registry.29']='Official Docker Hub'
+    )
+    SPONSOR_ADS=(
+        "1Panel · Top-Rated Web-based Linux Server Management Tool ➜  \033[3mhttps://1panel.cn\033[0m"
+    )
+}
+
+init_msg_pack
 handle_command_options "$@"
 main

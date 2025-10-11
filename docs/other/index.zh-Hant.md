@@ -15,39 +15,39 @@ hide:
         === ":linuxmirrors: 官網（推薦）"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh)
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --zh-hant
             ```
 
         === ":simple-gitee: Gitee 碼雲 (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --zh-hant
             ```
             > 即時同步、無延遲，中國大陸網路環境建議使用
 
         === ":simple-gitcode: GitCode (鏡像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh)
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --zh-hant
             ```
             > 同步存在1小時延遲
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh)
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --zh-hant
             ```
 
         === ":tencent-cloud: 騰訊雲 EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh)
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --zh-hant
             ```
             > 不建議在中國大陸網路環境下使用
 
@@ -62,39 +62,39 @@ hide:
         === ":linuxmirrors: 官網（推薦）"
 
             ``` bash
-            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+            bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --only-registry
             ```
 
         === ":simple-github: GitHub"
 
             ``` bash
-            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh) --zh-hant --only-registry
             ```
 
         === ":simple-gitee: Gitee 碼雲 (映像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --zh-hant --only-registry
             ```
             > 即時同步、無延遲，中國大陸網路環境建議使用
 
         === ":simple-gitcode: GitCode (映像倉庫)"
 
             ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --zh-hant --only-registry
             ```
             > 同步存在1小時延遲
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --only-registry
+            bash <(curl -sSL https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh) --zh-hant --only-registry
             ```
 
         === ":tencent-cloud: 騰訊雲 EO (CDN)"
 
             ``` bash
-            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --only-registry
+            bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --zh-hant --only-registry
             ```
             > 不建議在中國大陸網路環境下使用
 
@@ -224,6 +224,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
   --install-latest          是否安裝最新版本的 Docker Engine             true 或 false
   --close-firewall          是否關閉防火牆                               true 或 false
   --clean-screen            是否在運行前清除螢幕上的所有內容              true 或 false
+  --lang                    指定腳本輸出的語言                           语言
   --only-registry           僅更換映像倉庫模式                           無
   --ignore-backup-tips      忽略覆蓋備份提示                             無
   --pure-mode               純淨模式，精簡列印內容                        無
@@ -243,6 +244,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 | `--install-latest` | 是否安裝最新版本的 `Docker Engine` | `true` 或 `false` |
 | `--close-firewall` | 是否關閉防火牆 | `true` 或 `false` |
 | `--clean-screen` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
+| `--lang` | 指定腳本輸出的語言 | `語言ID（詳見下方文件）` |
 | `--only-registry` | 僅更換映像倉庫模式 | 無 |
 | `--ignore-backup-tips` | 忽略覆蓋備份提示（即不覆蓋備份) | 無 |
 | `--pure-mode` | 純淨模式，精簡列印內容 | 無 |
@@ -253,7 +255,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 - ### 指定映像倉庫位址
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --source-registry registry.example.com
     ```
 
 - ### 僅更換映像倉庫
@@ -263,7 +265,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
         僅更換鏡像加速器，當偵測到未安裝 Docker 時會報錯跳出
 
         ``` bash
-        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --only-registry
         ```
 
     === "手動替換"
@@ -314,7 +316,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 - ### 指定 `Docker CE` 軟體源位址
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source mirror.example.com/docker-ce
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --source mirror.example.com/docker-ce
     ```
     > 注意該位址路徑需要包含映像站的 Docker CE 軟體源倉庫路徑即 `docker-ce`
 
@@ -323,13 +325,13 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     腳本預設會自動判斷一般無需指定，除非你有特殊需求
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --branch centos
     ```
     > 倉庫名稱是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 這幾個  
     > 詳情請見 [官方安裝文件](https://docs.docker.com/engine/install) 及 [Docker CE 官方倉庫](https://download.docker.com/linux)
 
     ``` { .bash .no-copy title="还可以指定倉庫版本號" }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant \
       --branch centos \
       --branch-version 9
     ```
@@ -340,9 +342,9 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     指定安裝版本時會忽略 `是否安裝最新版本` 的命令選項，格式為 `主版.次版本.補丁版本`，例如 `28.4.1`。
 
     ``` { .bash .no-copy }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --designated-version 28.0.0
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --designated-version 28.0.0
     ```
-    > 如果指定的版本不存在或不支援目前系統，屆時腳本會報錯跳出
+    > 如果指定的版本不存在或不支援當前作業系統，屆時腳本會報錯跳出
 
     ??? quote "查看版本清單的方法"
 
@@ -364,13 +366,41 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         未出現在該清單中的版本則不支援透過本腳本安裝，如果取得不到版本清單說明你目前的系統環境還沒有正確配置 Docker CE 軟體軟體源（執行腳本時不存在該問題）
 
+- ### 國際化（I18n）
+
+    腳本提供多語言支持，目前內建 `簡體中文`、`繁體中文`、`English` 共三種顯示語言，預設為 `簡體中文`
+
+    - #### 指定語言
+
+        ``` { .bash .no-copy }
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --lang xxx
+        ```
+
+        | 類型 | 值 |
+        | :-: | :-: |
+        | 简体中文 | `zh-hans` `zh-cn` `zh` |
+        | 繁體中文 | `zh-hant` `zh-tw` `zh-hk` |
+        | English | `en` `en-us` |
+
+        也可以直接作為指令選項使用
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en
+        ```
+        > `--en` `--en-us` `--zh` `--zh-cn` `--zh-hans` `--zh-hant`
+
+    - #### 透過互動進行選擇
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --lang auto
+        ```
 
 - ### 無人值守（自動化）
 
     不透過交互完成安裝操作，至少需要使用以下命令選項來實現，建議熟悉後再使用
 
     ``` { .bash .no-copy title="参考命令" }
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant \
       --source mirror.example.com/docker-ce \
       --source-registry registry.hub.docker.com \
       --protocol http \
@@ -386,14 +416,14 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     推出此功能是為了方便開發以及运维人員使用，啟用後會精簡腳本內容輸出，建議搭配其它指令選項無互動使用
 
     ``` bash
-    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --pure-mode
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --pure-mode
     ```
 
     !!! tip "滾動輸出的命令日誌可能有無法預料的顯示問題，不過目前暫未發現異常"
 
 ## 常見問題
 
-- ### 關於服務報錯無法啟動
+- #### 關於服務報錯無法啟動
 
     !!! quote ""
 
@@ -419,7 +449,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         卸載完成後重新執行腳本安裝即可
 
-- ### 關於不支援的作業系統
+- #### 關於不支援的作業系統
 
     如果提示不支援那麼請使用系統自備的套件管理工具進行安裝。因為這些軟體包由 Linux 發行版的軟體包維護者建構和維護，可能存在配置差異或由修改後的原始碼建構。
 
