@@ -1,3 +1,7 @@
+2025-10-12
+
+  * Added support for I18n [#bf2adc1](https://github.com/SuperManito/LinuxMirrors/commit/bf2adc1adf4f2de4820f617a23aabf247a47281c)
+
 2025-09-28
 
   * Adapted for openSUSE 16 [#a934676](https://github.com/SuperManito/LinuxMirrors/commit/a934676aeb4dfc1d008b2b46ecea5811d7382317)

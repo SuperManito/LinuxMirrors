@@ -151,7 +151,7 @@
 
 ## 快速開始
 
-> 項目官方網站整合了 AI 聊天與搜索，更多使用方法詳見 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-Hant/use/)
+> 專案官方網站整合了 AI 聊天與搜索，更多使用方法詳見 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-Hant/use/)
 
 - ### GNU/Linux 更換系統軟體源
 
@@ -175,13 +175,13 @@
 
 <a href="https://www.jetbrains.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/jetbrains-dark.svg" width="140" height="50"><img src="/docs/assets/images/icon/jetbrains-light.svg" alt="jetbrains" width="140" height="50"></picture></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.netlify.com" style="text-decoration: none;"><picture><source media="(prefers-color-scheme: dark)" srcset="/docs/assets/images/icon/netlify-dark.png" width="110"><img src="/docs/assets/images/icon/netlify-light.png" alt="netlify" width="110"></picture></a>
 
-本項目已加入 JetBrains & Netlify 開源項目計劃
+本專案已加入 JetBrains & Netlify 開源專案計劃
 
 ## LICENSE
 
 Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
-這是一個完全開源的項目，旨在為從事電腦相關行業的朋友提供便利，使換源更簡單
+這是一個完全開源的專案，旨在為從事電腦相關行業的朋友提供便利，使換源更簡單
 
 <a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
  <picture>
@@ -191,4 +191,4 @@ Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under
  </picture>
 </a>
 
-__如果您覺得這個項目不錯對您有幫助的話，請點擊倉庫右上角的 ⭐ 並分享給更多的朋友。__
+__如果您覺得這個專案不錯對您有幫助的話，請點擊倉庫右上角的 ⭐ 並分享給更多的朋友。__

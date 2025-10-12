@@ -90,7 +90,7 @@ hide:
     ---
 
     Script command options are designed according to formal application standards, meeting various advanced needs  
-    Code structure is clear, easy to read and modify, and supports customization after cloning
+    Code structure is clear, easy to read and modify, and supports customization after cloning, supports multi-language printing
 
 -   :material-scale-balance:{ .lg .middle } __Free and Open Source__
 

@@ -260,19 +260,19 @@ hide:
             === ":material-home-city: Chinese mainland"
 
                 ``` bash
-                bash main.sh
+                bash main.sh --en
                 ```
 
             === ":material-earth: International Regions"
 
                 ``` bash
-                bash main.sh --abroad
+                bash main.sh --en --abroad
                 ```
 
             === ":material-library: China Education Network"
 
                 ``` bash
-                bash main.sh --edu
+                bash main.sh --en --edu
                 ```
 
             If none of these work, copy the [source code](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) to a new `.sh` file and run it with `bash`.

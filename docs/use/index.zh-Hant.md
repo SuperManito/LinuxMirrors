@@ -262,19 +262,19 @@ hide:
             === ":material-home-city: 中國大陸"
 
                 ``` bash
-                bash main.sh
+                bash main.sh --zh-hant
                 ```
 
             === ":material-earth: 國際地區"
 
                 ``` bash
-                bash main.sh --abroad
+                bash main.sh --zh-hant --abroad
                 ```
 
             === ":material-library: 中國大陸教育網"
 
                 ``` bash
-                bash main.sh --edu
+                bash main.sh --zh-hant --edu
                 ```
 
             如果以上方法試了都不行，那就複製[原始碼](https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)至本地新建任意名稱的 `.sh` 腳本，貼上原始碼內容後透過 `bash` 指令手動執行。
