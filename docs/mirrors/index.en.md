@@ -84,8 +84,8 @@ search:
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | EU · Vorboss Ltd · UK :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
-    | EU · QuickHost · UK :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
+    | EU · Vorboss Ltd · United Kiongdom :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
+    | EU · QuickHost · United Kiongdom :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
     | EU · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
     | EU · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
     | EU · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |
@@ -107,23 +107,23 @@ search:
     | EU · Truenetwork · Russia :flag-RU: | [mirror.truenetwork.ru](https://mirror.truenetwork.ru "https://mirror.truenetwork.ru") |
     | EU · Belgian Research Network · Belgium :flag-BE: | [ftp.belnet.be/mirror](https://ftp.belnet.be/mirror "https://ftp.belnet.be/mirror") |
     | EU · University of Crete Computer Center · Greece :flag-GR: | [ftp.cc.uoc.gr/mirrors/linux](https://ftp.cc.uoc.gr/mirrors/linux "https://ftp.cc.uoc.gr/mirrors/linux") |
-    | EU · Masaryk University Faculty of Informatics · Czech Republic :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
-    | EU · Czech Technical University Student Club (Silicon Hill) · Czech Republic :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
-    | EU · Vodafone · Czech Republic :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
-    | EU · CZ.NIC · Czech Republic :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
+    | EU · Masaryk University Faculty of Informatics · Czech :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
+    | EU · Czech Technical University Student Club (Silicon Hill) · Czech :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
+    | EU · Vodafone · Czech :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
+    | EU · CZ.NIC · Czech :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
     | EU · ETH Zurich · Switzerland :flag-CH: | [mirror.ethz.ch](https://mirror.ethz.ch "https://mirror.ethz.ch") |
 
 === ":fontawesome-solid-earth-americas: North America"
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | NA · Linux Kernel · USA :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
-    | NA · MIT · USA :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
-    | NA · Princeton University Department of Mathematics · USA :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
-    | NA · Oregon State University Open Source Lab · USA :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
-    | NA · Fremont Cabal Internet Exchange (FCIX) · USA :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
-    | NA · xTom · USA :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
-    | NA · Steadfast · USA :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
+    | NA · Linux Kernel · United States :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
+    | NA · MIT · United States :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
+    | NA · Princeton University Department of Mathematics · United States :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
+    | NA · Oregon State University Open Source Lab · United States :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
+    | NA · Fremont Cabal Internet Exchange (FCIX) · United States :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
+    | NA · xTom · United States :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
+    | NA · Steadfast · United States :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
     | NA · University of British Columbia · Canada :flag-CA: | [mirror.it.ubc.ca](https://mirror.it.ubc.ca "https://mirror.it.ubc.ca") |
     | NA · GoCodeIT · Canada :flag-CA: | [mirror.xenyth.net](https://mirror.xenyth.net "https://mirror.xenyth.net") |
     | NA · Switch · Canada :flag-CA: | [mirrors.switch.ca](https://mirrors.switch.ca "https://mirrors.switch.ca") |
@@ -176,8 +176,8 @@ search:
     | AS · xTom · Japan :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
     | AS · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
     | AS · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
-    | EU · Vorboss Ltd · UK :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
-    | EU · QuickHost · UK :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
+    | EU · Vorboss Ltd · United Kiongdom :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
+    | EU · QuickHost · United Kiongdom :flag-GB: | [mirror.quickhost.uk](https://mirror.quickhost.uk "https://mirror.quickhost.uk") |
     | EU · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
     | EU · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
     | EU · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |
@@ -199,18 +199,18 @@ search:
     | EU · Truenetwork · Russia :flag-RU: | [mirror.truenetwork.ru](https://mirror.truenetwork.ru "https://mirror.truenetwork.ru") |
     | EU · Belgian Research Network · Belgium :flag-BE: | [ftp.belnet.be/mirror](https://ftp.belnet.be/mirror "https://ftp.belnet.be/mirror") |
     | EU · University of Crete Computer Center · Greece :flag-GR: | [ftp.cc.uoc.gr/mirrors/linux](https://ftp.cc.uoc.gr/mirrors/linux "https://ftp.cc.uoc.gr/mirrors/linux") |
-    | EU · Masaryk University Faculty of Informatics · Czech Republic :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
-    | EU · Czech Technical University Student Club (Silicon Hill) · Czech Republic :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
-    | EU · Vodafone · Czech Republic :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
-    | EU · CZ.NIC · Czech Republic :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
+    | EU · Masaryk University Faculty of Informatics · Czech :flag-CZ: | [ftp.fi.muni.cz/pub/linux](https://ftp.fi.muni.cz/pub/linux "https://ftp.fi.muni.cz/pub/linux") |
+    | EU · Czech Technical University Student Club (Silicon Hill) · Czech :flag-CZ: | [ftp.sh.cvut.cz](https://ftp.sh.cvut.cz "https://ftp.sh.cvut.cz") |
+    | EU · Vodafone · Czech :flag-CZ: | [mirror.karneval.cz/pub/linux](https://mirror.karneval.cz/pub/linux "https://mirror.karneval.cz/pub/linux") |
+    | EU · CZ.NIC · Czech :flag-CZ: | [mirrors.nic.cz](https://mirrors.nic.cz "https://mirrors.nic.cz") |
     | EU · ETH Zurich · Switzerland :flag-CH: | [mirror.ethz.ch](https://mirror.ethz.ch "https://mirror.ethz.ch") |
-    | NA · Linux Kernel · USA :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
-    | NA · MIT · USA :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
-    | NA · Princeton University Department of Mathematics · USA :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
-    | NA · Oregon State University Open Source Lab · USA :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
-    | NA · Fremont Cabal Internet Exchange (FCIX) · USA :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
-    | NA · xTom · USA :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
-    | NA · Steadfast · USA :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
+    | NA · Linux Kernel · United States :flag-US: | [mirrors.kernel.org](https://mirrors.kernel.org "https://mirrors.kernel.org") |
+    | NA · MIT · United States :flag-US: | [mirrors.mit.edu](https://mirrors.mit.edu "https://mirrors.mit.edu") |
+    | NA · Princeton University Department of Mathematics · United States :flag-US: | [mirror.math.princeton.edu/pub](https://mirror.math.princeton.edu/pub "https://mirror.math.princeton.edu/pub") |
+    | NA · Oregon State University Open Source Lab · United States :flag-US: | [ftp-chi.osuosl.org/pub](https://ftp-chi.osuosl.org/pub "https://ftp-chi.osuosl.org/pub") |
+    | NA · Fremont Cabal Internet Exchange (FCIX) · United States :flag-US: | [mirror.fcix.net](https://mirror.fcix.net "https://mirror.fcix.net") |
+    | NA · xTom · United States :flag-US: | [mirrors.xtom.com](https://mirrors.xtom.com "https://mirrors.xtom.com") |
+    | NA · Steadfast · United States :flag-US: | [mirror.steadfast.net](https://mirror.steadfast.net "https://mirror.steadfast.net") |
     | NA · University of British Columbia · Canada :flag-CA: | [mirror.it.ubc.ca](https://mirror.it.ubc.ca "https://mirror.it.ubc.ca") |
     | NA · GoCodeIT · Canada :flag-CA: | [mirror.xenyth.net](https://mirror.xenyth.net "https://mirror.xenyth.net") |
     | NA · Switch · Canada :flag-CA: | [mirrors.switch.ca](https://mirrors.switch.ca "https://mirrors.switch.ca") |

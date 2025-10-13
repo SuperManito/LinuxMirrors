@@ -391,24 +391,6 @@ hide:
 
         如果發現互動介面是輸入而非新式的方向鍵控制，那麼請自行安裝 `ncurses` 或 `nano` 軟體包，新式的按鍵互動依賴 `tput` 指令實作。
 
-- #### 關於呼叫腳本的互聯網位置
-
-    !!! quote ""
-
-        專案利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文件目錄作為網站資源發佈，網站託管於 [:netlify: Netlify](https://www.netlify.com)，幾乎沒有使用風險。 
-
-        當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和訪問。
-
-- #### 關於軟體源下載速度相關問題
-
-    !!! quote ""
-
-        首先，在[軟體源列表](../mirrors/index.md)的使用幫助處有寫使用推薦，這是根據以往經驗總結出來的，但總有用戶在糾結軟體源速度的問題。 
-
-        軟體源（鏡像站）的網路延遲即 `Ping` 與下載速度沒有太大的關聯，雙方地理位置間隔的遠近不代表實際體驗，有些鏡像站下行總頻寬很高但實際測速卻並不理想，因為這與鏡像站的負載策略有關。 
-
-        網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本專案腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其他高級語言無法替代的，不過目前 Bash 腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。
-
 - #### 關於未啟用的軟體源倉庫
 
     !!! quote ""
@@ -431,6 +413,40 @@ hide:
 
             部分倉庫預設沒有啟用，若需啟用請將 `/etc/zypp/repos.d` 目錄下相關 repo 文件中的 `enabled` 值修改為 `1`
 
+- #### 其它
+
+    ??? quote "關於呼叫腳本的互聯網位置"
+
+        專案利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交後自動拷貝原始碼到文件目錄作為網站資源發佈，網站託管於 [:netlify: Netlify](https://www.netlify.com)，幾乎沒有使用風險。 
+
+        當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和訪問。
+
+    ??? quote "關於軟體源下載速度問題"
+
+        首先，在[軟體源列表](../mirrors/index.md)的使用幫助處有寫使用推薦，這是根據以往經驗總結出來的，但總有用戶在糾結軟體源速度的問題。 
+
+        軟體源（鏡像站）的網路延遲即 `Ping` 與下載速度沒有太大的關聯，雙方地理位置間隔的遠近不代表實際體驗，有些鏡像站下行總頻寬很高但實際測速卻並不理想，因為這與鏡像站的負載策略有關。 
+
+        網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本專案腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其他高級語言無法替代的，不過目前 Bash 腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。
+
+    ??? quote "關於軟體源選優"
+
+        很多朋友可能都會有一個疑問：“既然腳本已經如此便捷且實現了高度自動化，為什麼不能實現軟體源自動選優呢？”，不是做不到而是不能。
+
+        「軟體源選優」 在這裡指的是腳本根據客戶端的網路環境、地理位置自動選擇一個體驗最佳的軟體源，這個問題要從多個角度來論證：
+
+        - 速度方面
+
+            其實上面已經解釋過了，總結來說就是追求速度不是普遍需求，對大多數人來說是無感的、能用即可，況且現在很多 Linux 發行版不需要換源就有不錯的速度。
+
+        - 對於鏡像站本身
+
+            舉個最簡單的例子，以前阿里雲鏡像站因為速度快、可用性高幾乎被當成首選，但是隨著用戶越來越多導致速度變的原來越慢甚至可能不足 10 Mbps。  
+            長此以往，那些用戶多的鏡像站可能無法承受過高的流量而導致體驗下降，用戶少的鏡像站可能會最終走向關閉，這不利於整個生態的發展。
+
+        - 開發者角度
+
+            本專案站在維運工具的角度致力於開發一個通用的換源腳本，而不是一個解決軟體源需求的具體化工具，要使腳本的預設行為適用於大多數使用者群體。作為維運工具要有明確的功能定位，作為腳本要從擴展性、實用性、可移植性等多個方面去衡量利弊，軟體源的選擇權應該完全交給使用者。
 
 ---
 
@@ -474,7 +490,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --help
   --help                       查看幫助選單                                                            無
 ```
 
-| 名稱 | 含義 | 选项值 |
+| 名稱 | 含義 | 選項值 |
 | - | - | :-: |
 | `--abroad` | 使用境外以及海外軟體源 | 無 |
 | `--edu` | 使用中國大陸教育網軟體源 | 無 |
@@ -695,7 +711,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --help
 
 - ### 國際化（I18n）
 
-    腳本提供多語言支持，目前內建 `簡體中文`、`繁體中文`、`English` 共三種顯示語言，預設為 `簡體中文`
+    腳本提供多語言支持，目前內建 `简体中文`、`繁體中文`、`English` 共三種顯示語言，預設為 `简体中文`
 
     - #### 指定語言
 
@@ -765,3 +781,36 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --help
     3. 如果你不使用某些功能，那麼可以刪除對應功能模組函數中的內容，`命令選項 handle_command_options`、`備份原有軟體源 backup_original_mirrors`、`更新軟體包 upgrade_software`
     4. 移除不需要的語言包，例：`function msg_pack_en() {}`
 6. 腳本主要功能配置是由統一的變量控制的，命令選項亦是如此，這些全局變量由全大寫字母構成並遵循下劃線命名法，具體變量詳見如下表格，你只需要將這些變量聲明在腳本頭部（預留註釋區域）即可快速完成定制
+
+??? note "變數列表（點擊展開查看）"
+
+    | 名稱 | 含義 | 值型別 |
+    | :-: | :-: | :-: |
+    | `SOURCE` | 指定軟體源位址（網域名稱或IP） | `位址` |
+    | `SOURCE_EPEL` | 指定 EPEL 附加軟體包倉庫的軟體源位址（網域名稱或IP） | `位址` |
+    | `SOURCE_SECURITY` | 指定 Debian / Ubuntu 系統 security 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+    | `SOURCE_VAULT` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+    | `SOURCE_PORTAGE` | 指定 Gentoo 系統 portage 倉庫的軟體源位址（網域名稱或IP） | `位址` |
+    | `SOURCE_BASE_SYSTEM` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源位址（網域名稱或IP） | `位址` |
+    | `SOURCE_BRANCH` | 指定軟體源倉庫（路徑） | `倉庫名稱` |
+    | `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加軟體套件倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+    | `SOURCE_SECURITY_BRANCH` | 指定 Debian 系統 security 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+    | `SOURCE_VAULT_BRANCH` | 指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+    | `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系統 portage 倉庫的軟體源倉庫（路徑） | `倉庫名稱` |
+    | `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫（路徑） | `倉庫名稱` |
+    | `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 作業系統的版本代號 | `代號名稱` |
+    | `USE_INTRANET_SOURCE` | 是否優先使用內網軟體源位址 | `true` 或 `false` |
+    | `USE_OFFICIAL_SOURCE` | 是否使用目標作業系統的官方軟體源 | `true` 或 `false` |
+    | `USE_OFFICIAL_SOURCE_EPEL` | 是否使用 EPEL 附加軟體包的官方軟體源 | `true` 或 `false` |
+    | `WEB_PROTOCOL` | 指定 Web 協定 | `http` 或 `https` |
+    | `INSTALL_EPEL` | 是否安裝 EPEL 附加軟體包 | `true` 或 `false` |
+    | `ONLY_EPEL` | 僅更換 EPEL 軟體源模式 | `true` 或 `false` |
+    | `BACKUP` | 是否備份原有軟體源 | `true` 或 `false` |
+    | `IGNORE_BACKUP_TIPS` | 忽略覆蓋備份提示（即不覆蓋備份） | `true` 或 `false` |
+    | `UPGRADE_SOFTWARE` | 是否更新軟體包 | `true` 或 `false` |
+    | `CLEAN_CACHE` | 是否在更新軟體包後清理下載快取 | `true` 或 `false` |
+    | `CLEAN_SCREEN` | 是否在運行前清除螢幕上的所有內容 | `true` 或 `false` |
+    | `PRINT_DIFF` | 是否列印原始檔案修改前後差異 | `true` 或 `false` |
+    | `PURE_MODE` | 純淨模式，精簡列印內容 | `true` 或 `false` |
+
+    > 部分變數存在預設值，未涉及的變數無需宣告為空值（空字串），另外如果對應功能配置不存在那麼就可能會出現交互

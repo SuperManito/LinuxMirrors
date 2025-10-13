@@ -389,24 +389,6 @@ hide:
 
         If you see a text input instead of the new arrow key UI, install the `ncurses` or `nano` package. The new interaction relies on the `tput` command.
 
-- #### About the script's online location
-
-    !!! quote ""
-
-        The project uses [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) to automatically copy the source code to the docs directory after each commit for website publishing. The site is hosted on [:netlify: Netlify](https://www.netlify.com), with almost no risk of hijacking.
-
-        You can also use the raw address from the code repository. This is just to explain why there are several different addresses; the default official site address is easier to remember and access.
-
-- #### About mirror download speed
-
-    !!! quote ""
-
-        First, see the recommendations in the [Mirror List](../mirrors/index.md) usage help. These are based on experience, but some users still worry about speed.
-
-        The network latency (`Ping`) of a mirror is not directly related to download speed. Distance does not equal experience. Some mirrors have high bandwidth but poor speed due to load strategies.
-
-        There are many open source speed test scripts written in C or Python. This project is written in Bash Shell and does not depend on third-party libraries. Bash is the most common scripting language for Linux operations and is preinstalled on most distributions, so users can run it directly without installing anything. This convenience cannot be replaced by other languages. However, Bash scripts may not easily achieve accurate speed testing; using other languages for this is reinventing the wheel.
-
 - #### About disabled repositories
 
     !!! quote ""
@@ -429,6 +411,40 @@ hide:
 
             Some repos are disabled by default. Set `enabled=1` in the relevant repo files under `/etc/zypp/repos.d`.
 
+- #### Other
+
+    ??? quote "About the script's online location"
+
+        The project uses [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) to automatically copy the source code to the docs directory after each commit for website publishing. The site is hosted on [:netlify: Netlify](https://www.netlify.com), with almost no risk of hijacking.
+
+        You can also use the raw address from the code repository. This is just to explain why there are several different addresses; the default official site address is easier to remember and access.
+
+    ??? quote "About mirror download speed"
+
+        First, see the recommendations in the [Mirror List](../mirrors/index.md) usage help. These are based on experience, but some users still worry about speed.
+
+        The network latency (`Ping`) of a mirror is not directly related to download speed. Distance does not equal experience. Some mirrors have high bandwidth but poor speed due to load strategies.
+
+        There are many open source speed test scripts written in C or Python. This project is written in Bash Shell and does not depend on third-party libraries. Bash is the most common scripting language for Linux operations and is preinstalled on most distributions, so users can run it directly without installing anything. This convenience cannot be replaced by other languages. However, Bash scripts may not easily achieve accurate speed testing; using other languages for this is reinventing the wheel.
+
+        ??? quote "About software source selection"
+
+        Many people may wonder, "Since scripts are so convenient and highly automated, why can't we automatically select the optimal software source?" It's not that it can't be done, but that it can't be done.
+
+        "Software source selection" here refers to the script automatically selecting a software source with the best experience based on the client's network environment and location. This question needs to be addressed from multiple perspectives:
+
+        - Speed
+
+            As explained above, in summary, the pursuit of speed isn't a universal requirement. For most people, it's simply not noticeable; it's enough to get it working. Moreover, many Linux distributions now offer good speeds without switching sources.
+
+        - Regarding mirror sites themselves
+
+            To give a simple example, Alibaba Cloud mirror sites were once considered the top choice due to their high speed and availability. However, as the number of users increased, their speeds became increasingly slower, sometimes even below 10 Mbps.  
+            Over time, mirror sites with large user bases may not be able to handle the high traffic, resulting in a poor user experience. Mirror sites with fewer users may eventually close, which is detrimental to the development of the entire ecosystem.
+
+        - From Developer's Perspective
+
+            This project aims to develop a universal repository switching script from the perspective of an operations and maintenance tool, rather than a tool that specifically addresses software repository requirements. The script's default behavior should be suitable for the majority of users. As an operations and maintenance tool, it should have a clear functional positioning. As a script, its pros and cons should be carefully considered from multiple perspectives, including scalability, practicality, and portability. The choice of software repository should be fully vested in the user.
 
 ---
 
@@ -764,33 +780,35 @@ If you are a developer of another project and want to create a custom script bas
     4. Remove unnecessary language packs, for example: `function msg_pack_en() {}`
 6.  Main configuration is controlled by unified variables, as are command options. These global variables are all uppercase and use underscores. See the table below. Declare them at the top of the script (reserved comment area) for quick customization.
 
-| Variable | Meaning | Value Type |
-| :-: | :-: | :-: |
-| `SOURCE` | Specify mirror address (domain or IP) | `address` |
-| `SOURCE_EPEL` | Specify EPEL repo address (domain or IP) | `address` |
-| `SOURCE_SECURITY` | Specify Debian/Ubuntu security repo address (domain or IP) | `address` |
-| `SOURCE_VAULT` | Specify CentOS/AlmaLinux vault repo address (domain or IP) | `address` |
-| `SOURCE_PORTAGE` | Specify Gentoo portage repo address (domain or IP) | `address` |
-| `SOURCE_BASE_SYSTEM` | Specify Linux Mint/Raspberry Pi OS base system repo address (domain or IP) | `address` |
-| `SOURCE_BRANCH` | Specify mirror repo (path) | `repo name` |
-| `SOURCE_EPEL_BRANCH` | Specify EPEL repo (path) | `repo name` |
-| `SOURCE_SECURITY_BRANCH` | Specify Debian security repo (path) | `repo name` |
-| `SOURCE_VAULT_BRANCH` | Specify CentOS/AlmaLinux vault repo (path) | `repo name` |
-| `SOURCE_PORTAGE_BRANCH` | Specify Gentoo portage repo (path) | `repo name` |
-| `SOURCE_BASE_SYSTEM_BRANCH` | Specify Linux Mint/Raspberry Pi OS base system repo (path) | `repo name` |
-| `DEBIAN_CODENAME` | Specify Debian/openKylin codename | `codename` |
-| `USE_INTRANET_SOURCE` | Prefer intranet mirror address | `true` or `false` |
-| `USE_OFFICIAL_SOURCE` | Use official mirror of target OS | `true` or `false` |
-| `USE_OFFICIAL_SOURCE_EPEL` | Use official EPEL repo | `true` or `false` |
-| `WEB_PROTOCOL` | Specify Web protocol | `http` or `https` |
-| `INSTALL_EPEL` | Install EPEL repository | `true` or `false` |
-| `ONLY_EPEL` | Only switch EPEL repo | `true` or `false` |
-| `BACKUP` | Backup original mirrors | `true` or `false` |
-| `IGNORE_BACKUP_TIPS` | Ignore backup overwrite prompt | `true` or `false` |
-| `UPGRADE_SOFTWARE` | Upgrade packages | `true` or `false` |
-| `CLEAN_CACHE` | Clean cache after upgrade | `true` or `false` |
-| `CLEAN_SCREEN` | Clear screen before running | `true` or `false` |
-| `PRINT_DIFF` | Print diff before and after modification | `true` or `false` |
-| `PURE_MODE` | Pure mode, minimal output | `true` or `false` |
+??? note "Variable list (click to expand)"
 
-> Some variables have defaults. Unused variables do not need to be declared as empty strings. If a configuration is missing, interaction may occur.
+    | Variable | Meaning | Value Type |
+    | :-: | :-: | :-: |
+    | `SOURCE` | Specify mirror address (domain or IP) | `address` |
+    | `SOURCE_EPEL` | Specify EPEL repo address (domain or IP) | `address` |
+    | `SOURCE_SECURITY` | Specify Debian/Ubuntu security repo address (domain or IP) | `address` |
+    | `SOURCE_VAULT` | Specify CentOS/AlmaLinux vault repo address (domain or IP) | `address` |
+    | `SOURCE_PORTAGE` | Specify Gentoo portage repo address (domain or IP) | `address` |
+    | `SOURCE_BASE_SYSTEM` | Specify Linux Mint/Raspberry Pi OS base system repo address (domain or IP) | `address` |
+    | `SOURCE_BRANCH` | Specify mirror repo (path) | `repo name` |
+    | `SOURCE_EPEL_BRANCH` | Specify EPEL repo (path) | `repo name` |
+    | `SOURCE_SECURITY_BRANCH` | Specify Debian security repo (path) | `repo name` |
+    | `SOURCE_VAULT_BRANCH` | Specify CentOS/AlmaLinux vault repo (path) | `repo name` |
+    | `SOURCE_PORTAGE_BRANCH` | Specify Gentoo portage repo (path) | `repo name` |
+    | `SOURCE_BASE_SYSTEM_BRANCH` | Specify Linux Mint/Raspberry Pi OS base system repo (path) | `repo name` |
+    | `DEBIAN_CODENAME` | Specify Debian/openKylin codename | `codename` |
+    | `USE_INTRANET_SOURCE` | Prefer intranet mirror address | `true` or `false` |
+    | `USE_OFFICIAL_SOURCE` | Use official mirror of target OS | `true` or `false` |
+    | `USE_OFFICIAL_SOURCE_EPEL` | Use official EPEL repo | `true` or `false` |
+    | `WEB_PROTOCOL` | Specify Web protocol | `http` or `https` |
+    | `INSTALL_EPEL` | Install EPEL repository | `true` or `false` |
+    | `ONLY_EPEL` | Only switch EPEL repo | `true` or `false` |
+    | `BACKUP` | Backup original mirrors | `true` or `false` |
+    | `IGNORE_BACKUP_TIPS` | Ignore backup overwrite prompt | `true` or `false` |
+    | `UPGRADE_SOFTWARE` | Upgrade packages | `true` or `false` |
+    | `CLEAN_CACHE` | Clean cache after upgrade | `true` or `false` |
+    | `CLEAN_SCREEN` | Clear screen before running | `true` or `false` |
+    | `PRINT_DIFF` | Print diff before and after modification | `true` or `false` |
+    | `PURE_MODE` | Pure mode, minimal output | `true` or `false` |
+
+    > Some variables have defaults. Unused variables do not need to be declared as empty strings. If a configuration is missing, interaction may occur.

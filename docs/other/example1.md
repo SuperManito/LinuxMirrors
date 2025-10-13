@@ -7,6 +7,7 @@ function install_docker() {
 
     # script options
     local script_host="linuxmirrors.cn" # official host (CDN), more host see official site
+    local script_lang="zh-hans"         # script display language: zh-hans / zh-hant / en / auto
     local close_firewall="true"         # close firewalld service and selinux (redhat systems need)
     # mirrors options
     local source_docker_ce_address="mirrors.tencent.com/docker-ce" # global high availability address
@@ -58,6 +59,7 @@ function install_docker() {
         --close-firewall "${close_firewall}" \
         --install-latest true \
         --ignore-backup-tips \
+        --lang "${script_lang}" \
         --pure-mode
 }
 

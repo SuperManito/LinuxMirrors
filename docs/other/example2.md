@@ -7,7 +7,8 @@ function install_docker() {
 
     bash <(curl -sSL https://${script_host}/docker.sh) \
         --install-latest true \
-        --ignore-backup-tips
+        --ignore-backup-tips \
+        --lang auto
 
     if command -v docker &>/dev/null; then
         echo -e "\n# Docker installation successful.\n# Please run this script again manually after installation."

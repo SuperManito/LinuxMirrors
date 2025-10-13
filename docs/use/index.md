@@ -391,24 +391,6 @@ hide:
 
         如果发现交互界面是输入而不是新式的方向键控制，那么请自行安装 `ncurses` 或 `nano` 软件包，新式的按键交互依赖 `tput` 指令实现。
 
-- #### 关于调用脚本的互联网位置
-
-    !!! quote ""
-
-        项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 [:netlify: Netlify](https://www.netlify.com)，几乎没有被劫持的风险请放心使用。
-
-        当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
-
-- #### 关于软件源下载速度相关问题
-
-    !!! quote ""
-
-        首先，在[软件源列表](../mirrors/index.md)的使用帮助处有写使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
-
-        软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行总带宽很高但实际测速却并不理想，因为这与镜像站的负载策略有关。
-
-        网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能不太容易实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
-
 - #### 关于未启用的软件源仓库
 
     !!! quote ""
@@ -431,6 +413,40 @@ hide:
 
             部分仓库默认没有启用，若需启用请将 `/etc/zypp/repos.d` 目录下相关 repo 文件中的 `enabled` 值修改为 `1`
 
+- #### 其它
+
+    ??? quote "关于调用脚本的互联网位置"
+
+        项目利用 [GitHub Action](https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29) 在每次提交后自动拷贝源码到文档目录作为网站资源发布，网站托管于 [:netlify: Netlify](https://www.netlify.com)，几乎没有被劫持的风险请放心使用。
+
+        当然你也可以使用代码托管仓库的原始地址来调用，这里只是想告诉你为什么会有几个不同的地址，默认的官网地址更易于记忆和访问。
+
+    ??? quote "关于软件源下载速度问题"
+
+        首先，在[软件源列表](../mirrors/index.md)的使用帮助处有写使用推荐，这是根据以往经验总结出来的，但总有用户在纠结软件源速度的问题。
+
+        软件源（镜像站）的网络延迟即 `Ping` 与下载速度没有太大的关联，双方地理位置间隔的远近不代表实际体验，有些镜像站下行总带宽很高但实际测速却并不理想，因为这与镜像站的负载策略有关。
+
+        网上也有很多基于 C、Python 编写的镜像站测速开源脚本，而本项目脚本基于 Bash Shell 编写且不依赖任何第三方库，Bash 是 Linux 运维中最常用的脚本语言并且绝大部分发行版都会预装，这意味着用户不需要安装任何环境就能直接运行，这种便利性是其它高级语言无法替代的，不过目前来看 Bash 脚本可能不太容易实现精准测速的功能，使用其它高级语言编写测速功能无疑是造轮子的行为。
+
+    ??? quote "关于软件源选优"
+
+        很多朋友可能都会有一个疑问：“既然脚本已经如此便捷且实现了高度自动化，为什么不能实现软件源自动选优呢？”，不是做不到而是不能。
+
+        “软件源选优” 在这里指的是脚本根据客户端的网络环境、地理位置自动选择一个体验最佳的软件源，这个问题要从多个角度来论证：
+
+        - 速度方面
+
+            其实上面已经解释过了，总结来说就是追求速度不是普遍需求，对大多数人来说是无感的、能用即可，况且现在很多 Linux 发行版不需要换源就有不错的速度。
+
+        - 对于镜像站本身
+
+            举个最简单的例子，以前阿里云镜像站因为速度快、可用性高几乎被当成首选，但是随着用户越来越多导致速度变的原来越慢甚至可能不足 10 Mbps。  
+            长此以往，那些用户多的镜像站可能无法承受过高的流量而导致体验下降，用户少的镜像站可能会最终走向关闭，这不利于整个生态的发展。
+
+        - 开发者角度
+
+            本项目站在运维工具的角度致力于开发一个通用的换源脚本，而不是一个解决软件源需求的具体化工具，要使脚本的默认行为适用于大多数用户群体。作为运维工具要有明确的功能定位，作为脚本要从扩展性、实用性、可移植性等多个方面去衡量利弊，软件源的选择权应该完全交给用户。
 
 ---
 
@@ -766,33 +782,35 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
     4. 移除不需要的语言包，例：`function msg_pack_en() {}`
 6.  脚本主要功能配置是由统一的变量控制的，命令选项亦是如此，这些全局变量由全大写字母构成并遵循下划线命名法，具体变量详见如下表格，你只需要将这些变量声明在脚本头部（预留注释区域）即可快速完成定制
 
-| 变量名 | 含义 | 值类型 |
-| :-: | :-: | :-: |
-| `SOURCE` | 指定软件源地址（域名或IP） | `地址` |
-| `SOURCE_EPEL` | 指定 EPEL 附加软件包仓库的软件源地址（域名或IP） | `地址` |
-| `SOURCE_SECURITY` | 指定 Debian / Ubuntu 系统 security 仓库的软件源地址（域名或IP） | `地址` |
-| `SOURCE_VAULT` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
-| `SOURCE_PORTAGE` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
-| `SOURCE_BASE_SYSTEM` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址（域名或IP） | `地址` |
-| `SOURCE_BRANCH` | 指定软件源仓库（路径） | `仓库名` |
-| `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加软件包仓库的软件源仓库（路径） | `仓库名` |
-| `SOURCE_SECURITY_BRANCH` | 指定 Debian 系统 security 仓库的软件源仓库（路径） | `仓库名` |
-| `SOURCE_VAULT_BRANCH` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
-| `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
-| `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库（路径） | `仓库名` |
-| `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
-| `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |
-| `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
-| `USE_OFFICIAL_SOURCE_EPEL` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
-| `WEB_PROTOCOL` | 指定 Web 协议 | `http` 或 `https` |
-| `INSTALL_EPEL` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
-| `ONLY_EPEL` | 仅更换 EPEL 软件源模式 | `true` 或 `false` |
-| `BACKUP` | 是否备份原有软件源 | `true` 或 `false` |
-| `IGNORE_BACKUP_TIPS` | 忽略覆盖备份提示（即不覆盖备份） | `true` 或 `false` |
-| `UPGRADE_SOFTWARE` | 是否更新软件包 | `true` 或 `false` |
-| `CLEAN_CACHE` | 是否在更新软件包后清理下载缓存 | `true` 或 `false` |
-| `CLEAN_SCREEN` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
-| `PRINT_DIFF` | 是否打印源文件修改前后差异 | `true` 或 `false` |
-| `PURE_MODE` | 纯净模式，精简打印内容 | `true` 或 `false` |
+??? note "变量列表（点击展开查看）"
 
-> 部分变量存在默认值，未涉及的变量无需声明为空值（空字符串），另外如果对应功能配置不存在那么就可能会出现交互
+    | 变量名 | 含义 | 值类型 |
+    | :-: | :-: | :-: |
+    | `SOURCE` | 指定软件源地址（域名或IP） | `地址` |
+    | `SOURCE_EPEL` | 指定 EPEL 附加软件包仓库的软件源地址（域名或IP） | `地址` |
+    | `SOURCE_SECURITY` | 指定 Debian / Ubuntu 系统 security 仓库的软件源地址（域名或IP） | `地址` |
+    | `SOURCE_VAULT` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源地址（域名或IP） | `地址` |
+    | `SOURCE_PORTAGE` | 指定 Gentoo 系统 portage 仓库的软件源地址（域名或IP） | `地址` |
+    | `SOURCE_BASE_SYSTEM` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源地址（域名或IP） | `地址` |
+    | `SOURCE_BRANCH` | 指定软件源仓库（路径） | `仓库名` |
+    | `SOURCE_EPEL_BRANCH` | 指定 EPEL 附加软件包仓库的软件源仓库（路径） | `仓库名` |
+    | `SOURCE_SECURITY_BRANCH` | 指定 Debian 系统 security 仓库的软件源仓库（路径） | `仓库名` |
+    | `SOURCE_VAULT_BRANCH` | 指定 CentOS / AlmaLinux 系统 vault 仓库的软件源仓库（路径） | `仓库名` |
+    | `SOURCE_PORTAGE_BRANCH` | 指定 Gentoo 系统 portage 仓库的软件源仓库（路径） | `仓库名` |
+    | `SOURCE_BASE_SYSTEM_BRANCH` | 指定 Linux Mint / Raspberry Pi OS 底层系统的软件源仓库（路径） | `仓库名` |
+    | `DEBIAN_CODENAME` | 指定 Debian 系 / openKylin 操作系统的版本代号 | `代号名称` |
+    | `USE_INTRANET_SOURCE` | 是否优先使用内网软件源地址 | `true` 或 `false` |
+    | `USE_OFFICIAL_SOURCE` | 是否使用目标操作系统的官方软件源 | `true` 或 `false` |
+    | `USE_OFFICIAL_SOURCE_EPEL` | 是否使用 EPEL 附加软件包的官方软件源 | `true` 或 `false` |
+    | `WEB_PROTOCOL` | 指定 Web 协议 | `http` 或 `https` |
+    | `INSTALL_EPEL` | 是否安装 EPEL 附加软件包 | `true` 或 `false` |
+    | `ONLY_EPEL` | 仅更换 EPEL 软件源模式 | `true` 或 `false` |
+    | `BACKUP` | 是否备份原有软件源 | `true` 或 `false` |
+    | `IGNORE_BACKUP_TIPS` | 忽略覆盖备份提示（即不覆盖备份） | `true` 或 `false` |
+    | `UPGRADE_SOFTWARE` | 是否更新软件包 | `true` 或 `false` |
+    | `CLEAN_CACHE` | 是否在更新软件包后清理下载缓存 | `true` 或 `false` |
+    | `CLEAN_SCREEN` | 是否在运行前清除屏幕上的所有内容 | `true` 或 `false` |
+    | `PRINT_DIFF` | 是否打印源文件修改前后差异 | `true` 或 `false` |
+    | `PURE_MODE` | 纯净模式，精简打印内容 | `true` 或 `false` |
+
+    > 部分变量存在默认值，未涉及的变量无需声明为空值（空字符串），另外如果对应功能配置不存在那么就可能会出现交互
