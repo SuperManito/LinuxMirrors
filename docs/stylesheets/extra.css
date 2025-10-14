@@ -8,6 +8,7 @@
     --hero-background-image: linear-gradient(90deg, rgb(104 104 104) 50%, rgb(104 104 104) 50%);
     --navbar-background: hsla(240, 9%, 75%, 0.33);
     --component-border-radius: 8px;
+    --td-radius-default: 5px;
     --component-hover-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -728,6 +729,14 @@
 
 .t-table--column-fixed .t-table__cell--fixed-left {
     z-index: 4;
+}
+
+.t-table__filter-icon-wrap {
+    color: var(--md-default-fg-color--light);
+}
+
+.t-table__filter-pop .t-table__filter-pop-content .t-table__filter-pop-content-inner {
+    padding: 6px var(--td-comp-paddingLR-l);
 }
 
 /* termynal 插件 */

@@ -1,3 +1,7 @@
+const __p = typeof window !== 'undefined' && window.location && window.location.pathname ? window.location.pathname : ''
+const __isZhHant = __p.includes('/zh-Hant')
+const __isEn = __p.includes('/en')
+
 // 防抖
 function debounce(func, wait) {
     let timeout
@@ -24,6 +28,7 @@ const ComponentSystem = {
             lastInitTime: 0,
             def: componentDef,
             debouncedInit: null,
+            app: null,
         }
         // 创建组件初始化函数
         const initFunc = function () {
@@ -49,6 +54,14 @@ const ComponentSystem = {
             component.isInitializing = true
             component.lastInitTime = now
             try {
+                if (component.app && typeof component.app.unmount === 'function') {
+                    try {
+                        component.app.unmount()
+                    } catch (err) {
+                        console.error('ComponentSystem: unmount previous app error', err)
+                    }
+                    component.app = null
+                }
                 // 清空容器内容，防止重复初始化
                 while (component.instance.firstChild) {
                     component.instance.removeChild(component.instance.firstChild)
@@ -65,17 +78,19 @@ const ComponentSystem = {
                     App.use(TDesign.default)
                     // 挂载应用
                     App.mount(component.instance)
+                    // 保存 app 引用以便后续卸载
+                    component.app = App
                     // console.log(`组件 ${componentId} 初始化成功`)
                     // 标记组件已初始化
                     component.instance.setAttribute('data-initialized', 'true')
                     // 立即更新主题
                     updateTDesignGlobalTheme()
-                } else if (typeof Vue !== 'undefined')  {
+                } else if (typeof Vue !== 'undefined') {
                     console.error('Vue 未找到')
                     const errorDiv = document.createElement('div')
                     errorDiv.innerHTML = `<div class="admonition failure"><p class="admonition-title">组件 ${componentId} 加载失败，请检查 Vue 是否存在！</p></div>`
                     component.instance.appendChild(errorDiv)
-                } else if (typeof TDesign !== 'undefined')  {
+                } else if (typeof TDesign !== 'undefined') {
                     console.error('TDesign UI 未找到')
                     const errorDiv = document.createElement('div')
                     errorDiv.innerHTML = `<div class="admonition failure"><p class="admonition-title">组件 ${componentId} 加载失败，请检查 TDesign UI 是否存在！</p></div>`
@@ -107,6 +122,14 @@ const ComponentSystem = {
         if (component) {
             component.instance = document.getElementById(componentId)
             if (component.instance) {
+                if (component.app && typeof component.app.unmount === 'function') {
+                    try {
+                        component.app.unmount()
+                    } catch (err) {
+                        console.error('ComponentSystem: unmount on reinitialize error', err)
+                    }
+                    component.app = null
+                }
                 component.instance.removeAttribute('data-initialized')
                 setTimeout(component.debouncedInit, 300)
             }

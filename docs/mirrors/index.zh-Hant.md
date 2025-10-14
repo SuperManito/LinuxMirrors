@@ -8,15 +8,11 @@ search:
   exclude: true
 ---
 
-???+ question "友情提示"
-
-    本專案預設提供的軟體源列表主要服務位於中國大陸的用戶，因此對你來說該頁面上可能存在許多無用的資訊。作者沒有精力去採集和維護全世界的可用軟體源，因此可能需要透過命令選項自定義使用才能滿足你的實際需求，具體預設的國際軟體源詳見下方。
-
 ## 中國大陸 :flag-CN:
 
-> 下方列表中的鏡像站均同步了 `Debian`、`Ubuntu`、`CentOS`、`openSUSE`、`openEuler` 軟體倉庫，列表根據單位性質、地理位置、名稱長度排序，與實際下載速度無關。
+> 下方列表中的鏡像站均同步了 `Debian`、`Ubuntu`、`CentOS`、`openEuler` 軟體倉庫，列表根據單位性質、地理位置、名稱長度排序，與實際下載速度無關。
 
-<div id="mirrors-table"><p>正在載入表格 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: -0.15rem"><g stroke="currentColor"><circle cx="12" cy="12" r="9.5" fill="none" stroke-linecap="round" stroke-width="3"><animate attributeName="stroke-dasharray" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0 150;42 150;42 150;42 150"/><animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0;-16;-59;-59"/></circle><animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></g></svg></p></div>
+<div id="mirrors-table"><p>正在載入表格 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: -0.15rem"><g stroke="var(--md-default-fg-color--light)"><circle cx="12" cy="12" r="9.5" fill="none" stroke-linecap="round" stroke-width="3"><animate attributeName="stroke-dasharray" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0 150;42 150;42 150;42 150"/><animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0;-16;-59;-59"/></circle><animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></g></svg></p></div>
 
 ???+ question "使用幫助"
 
@@ -76,6 +72,7 @@ search:
     | 亞洲 · OSS Planet · 臺灣 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | 亞洲 · 國立陽明交通大學 · 臺灣 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
     | 亞洲 · 淡江大學 · 臺灣 :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
+    | 亞洲 · Taiwan Digital Streaming · 臺灣 :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | 亞洲 · AniGil Linux Archive · 韓國 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
     | 亞洲 · 工業網路安全中心(ICSCoE) · 日本 :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
     | 亞洲 · 北陸先端科學技術大學院大學(JAIST) · 日本 :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
@@ -173,6 +170,7 @@ search:
     | 亞洲 · OSS Planet · 臺灣 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | 亞洲 · 國立陽明交通大學 · 臺灣 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
     | 亞洲 · 淡江大學 · 臺灣 :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
+    | 亞洲 · Taiwan Digital Streaming · 臺灣 :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | 亞洲 · AniGil Linux Archive · 韓國 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
     | 亞洲 · 工業網路安全中心(ICSCoE) · 日本 :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
     | 亞洲 · 北陸先端科學技術大學院大學(JAIST) · 日本 :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |

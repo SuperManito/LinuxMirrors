@@ -78,7 +78,7 @@ const OramaI18nData = {
 
 // get search box config
 function getOramaSearchBoxConfig() {
-    const currentLang = window.location.pathname.includes('/zh-Hant') ? 'zh-Hant' : window.location.pathname.includes('/en') ? 'en' : 'zh-Hans'
+    const currentLang = __isZhHant ? 'zh-Hant' : __isEn ? 'en' : 'zh-Hans'
     return {
         themeConfig: {
             // colors: {
@@ -139,7 +139,7 @@ function getOramaSearchBoxConfig() {
 // localization search box component
 function localizationOramaSearchBox(searchBox) {
     if (!searchBox) return
-    const currentLang = window.location.pathname.includes('/zh-Hant') ? 'zh-Hant' : window.location.pathname.includes('/en') ? 'en' : 'zh-Hans'
+    const currentLang = __isZhHant ? 'zh-Hant' : __isEn ? 'en' : 'zh-Hans'
     const askAiText = OramaI18nData[currentLang].askAiText
     const searchText = OramaI18nData[currentLang].searchText
     const observer = new MutationObserver((mutations, obs) => {
