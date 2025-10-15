@@ -711,24 +711,23 @@
     color: var(--md-default-fg-color);
 }
 
-[theme-mode="dark"] .t-table {
-    --td-component-border: hsla(225deg, 15%, 95%, 0.12) !important;
+.t-tag.t-size-l {
+    height: var(--td-comp-size-xs);
+    padding: 0 var(--td-comp-paddingLR-s);
 }
 
-[theme-mode="dark"] .t-tag {
-    --td-warning-color-light: #cf6e2d48 !important;
+.t-tag-input .t-input.t-size-l {
+    min-height: var(--td-comp-size-m);
+    padding: 0 var(--td-comp-paddingLR-s) 0 var(--td-comp-margin-xs);
 }
 
 .t-table--hoverable tbody tr:hover {
     background-color: rgba(0, 0, 0, 0.016) !important;
 }
 
-[theme-mode="dark"] .t-table--hoverable tbody tr:hover {
-    background-color: rgba(240, 241, 244, 0.016) !important;
-}
-
 .t-table--column-fixed .t-table__cell--fixed-left {
-    z-index: 4;
+    z-index: 3;
+    background-color: var(--md-default-bg-color);
 }
 
 .t-table__filter-icon-wrap {
@@ -737,6 +736,18 @@
 
 .t-table__filter-pop .t-table__filter-pop-content .t-table__filter-pop-content-inner {
     padding: 6px var(--td-comp-paddingLR-l);
+}
+
+[theme-mode="dark"] .t-table {
+    --td-component-border: hsla(225deg, 15%, 95%, 0.12) !important;
+}
+
+[theme-mode="dark"] .t-tag {
+    --td-warning-color-light: #cf6e2d48 !important;
+}
+
+[theme-mode="dark"] .t-table--hoverable tbody tr:hover {
+    background-color: rgba(240, 241, 244, 0.016) !important;
 }
 
 /* termynal 插件 */

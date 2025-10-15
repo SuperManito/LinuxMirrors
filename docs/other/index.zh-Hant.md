@@ -209,7 +209,7 @@ hide:
 
 <!-- termynal -->
 ```
-$ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help 
+$ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --help 
 
 命令選項(名稱/含義/值)：
 

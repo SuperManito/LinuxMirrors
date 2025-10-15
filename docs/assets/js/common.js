@@ -58,7 +58,7 @@ const ComponentSystem = {
                     try {
                         component.app.unmount()
                     } catch (err) {
-                        console.error('ComponentSystem: unmount previous app error', err)
+                        console.error('组件卸载失败', err)
                     }
                     component.app = null
                 }
@@ -126,7 +126,7 @@ const ComponentSystem = {
                     try {
                         component.app.unmount()
                     } catch (err) {
-                        console.error('ComponentSystem: unmount on reinitialize error', err)
+                        console.error('组件初始化失败', err)
                     }
                     component.app = null
                 }

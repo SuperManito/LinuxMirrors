@@ -10,8 +10,6 @@ search:
 
 ## 中国大陆 :flag-CN:
 
-> 下方列表中的镜像站均同步了 `Debian` `Ubuntu` `CentOS` `openEuler` 软件仓库，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关
-
 <div id="mirrors-table"><p>正在加载表格 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: -0.15rem"><g stroke="var(--md-default-fg-color--light)"><circle cx="12" cy="12" r="9.5" fill="none" stroke-linecap="round" stroke-width="3"><animate attributeName="stroke-dasharray" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0 150;42 150;42 150;42 150"/><animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0;-16;-59;-59"/></circle><animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></g></svg></p></div>
 
 ???+ question "使用帮助"

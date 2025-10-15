@@ -1,78 +1,91 @@
 ComponentSystem.register('mirrors-table', {
     template: `
-<div>
+<div class="mirrors-table">
     <t-config-provider :global-config="globalConfig">
-        <t-space v-if="!isMobile" align="center" style="margin-bottom: 8px; display: flex; flex-flow: wrap; justify-content: flex-end">
-            <t-popup placement="bottom" :show-arrow="false">
-                <template #content>
-                    <t-checkbox-group v-model="selectedCellStatuses" style="padding: 6px" @change="onCellStatusChange">
-                        <t-space align="start" direction="vertical" style="gap: 4px">
-                            <t-checkbox value="supported">
-                                <t-space align="center" style="gap: 2px">
-                                    <t-tag theme="success" variant="light" style="background-color: transparent; vertical-align: -0.35em">
-                                        <template #icon>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z"></svg>
-                                        </template>
-                                    </t-tag>
-                                    <span>{{ statusLabels.supported }}</span>
-                                </t-space>
-                            </t-checkbox>
-                            <t-checkbox value="unsupported">
-                                <t-space align="center" style="gap: 0">
-                                    <t-tag theme="danger" variant="light" style="background-color: transparent; vertical-align: -0.35em">
-                                        <template #icon>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="vertical-align: -0.2em"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"></svg>
-                                        </template>
-                                    </t-tag>
-                                    <span>{{ statusLabels.unsupported }}</span>
-                                </t-space>
-                            </t-checkbox>
-                            <t-checkbox value="incompatible">
-                                <t-space align="center" style="gap: 2px">
-                                    <t-tag theme="warning" variant="light" style="background-color: transparent; vertical-align: -0.35em">
-                                        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 2px" width="16" height="16" viewBox="0 0 24 24" style="vertical-align: -0.15em"><path fill="#F6B604" d="M22.11 21.46L2.39 1.73L1.11 3l2.95 2.95A9.95 9.95 0 0 0 2 12c0 5.5 4.5 10 10 10c2.28 0 4.37-.77 6.05-2.06l2.79 2.79l1.27-1.27M12 20c-4.42 0-8-3.58-8-8c0-1.73.56-3.32 1.5-4.62L16.62 18.5A7.78 7.78 0 0 1 12 20M8.17 4.97L6.72 3.5C8.25 2.56 10.06 2 12 2c5.5 0 10 4.5 10 10c0 1.94-.56 3.75-1.5 5.28l-1.47-1.45c.62-1.14.97-2.44.97-3.83c0-4.42-3.58-8-8-8c-1.39 0-2.69.35-3.83.97Z"></svg>
-                                    </t-tag>
-                                    <span>{{ statusLabels.incompatible }}</span>
-                                </t-space>
-                            </t-checkbox>
-                        </t-space>
-                    </t-checkbox-group>
-                </template>
-                <t-button variant="text" shape="circle"><svg fill="none" viewBox="0 0 24 24" width="1em" height="1em" class="t-icon t-icon-filter" style="fill: none;"><g id="filter"><path id="fill1" fill="transparent" d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z" fill-rule="evenodd" clip-rule="evenodd"></path><path id="stroke1" stroke="currentColor" d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z" fill-rule="evenodd" stroke-linecap="square" stroke-width="2" clip-rule="evenodd"></path></g></svg></t-button>
-            </t-popup>
-            <t-select
-                v-model="selectedRowFilters"
-                :options="rowFilterOptionsRendered"
-                :min-collapsed-num="1"
-                multiple
-                clearable
-                :placeholder="rowSelectPlaceholder"
-                style="width: 250px"
-                @change="onRowFilterChange"
-            />
-            <t-select
-                v-model="selectedColumnFilters"
-                :options="filterOptions"
-                :min-collapsed-num="1"
-                multiple
-                clearable
-                :placeholder="selectPlaceholder"
-                style="width: 230px"
-                @change="onFilterChange"
-            />
+        <t-space v-if="!isMobile" align="center" style="margin-bottom: 8px; gap: 20px">
+            <blockquote>
+                <p>{{ startTitle[0] }} <code>Debian</code>、<code>Ubuntu</code>、<code>CentOS</code>、<code>openEuler</code> {{ startTitle[1] }}</p>
+            </blockquote>
+            <t-space style="width: 100%">
+                <t-popup placement="bottom" :show-arrow="false">
+                    <template #content>
+                        <t-checkbox-group v-model="selectedCellStatuses" style="padding: 6px" @change="onCellStatusChange">
+                            <t-space align="start" direction="vertical" style="gap: 4px">
+                                <t-checkbox value="supported">
+                                    <t-space align="center" style="gap: 2px">
+                                        <t-tag theme="success" variant="light" style="background-color: transparent; vertical-align: -0.35em">
+                                            <template #icon>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z"></svg>
+                                            </template>
+                                        </t-tag>
+                                        <span>{{ statusLabels.supported }}</span>
+                                    </t-space>
+                                </t-checkbox>
+                                <t-checkbox value="unsupported">
+                                    <t-space align="center" style="gap: 0">
+                                        <t-tag theme="danger" variant="light" style="background-color: transparent; vertical-align: -0.35em">
+                                            <template #icon>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="vertical-align: -0.2em"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"></svg>
+                                            </template>
+                                        </t-tag>
+                                        <span>{{ statusLabels.unsupported }}</span>
+                                    </t-space>
+                                </t-checkbox>
+                                <t-checkbox value="incompatible">
+                                    <t-space align="center" style="gap: 2px">
+                                        <t-tag theme="warning" variant="light" style="background-color: transparent; vertical-align: -0.35em">
+                                            <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 2px" width="16" height="16" viewBox="0 0 24 24" style="vertical-align: -0.15em"><path fill="#F6B604" d="M22.11 21.46L2.39 1.73L1.11 3l2.95 2.95A9.95 9.95 0 0 0 2 12c0 5.5 4.5 10 10 10c2.28 0 4.37-.77 6.05-2.06l2.79 2.79l1.27-1.27M12 20c-4.42 0-8-3.58-8-8c0-1.73.56-3.32 1.5-4.62L16.62 18.5A7.78 7.78 0 0 1 12 20M8.17 4.97L6.72 3.5C8.25 2.56 10.06 2 12 2c5.5 0 10 4.5 10 10c0 1.94-.56 3.75-1.5 5.28l-1.47-1.45c.62-1.14.97-2.44.97-3.83c0-4.42-3.58-8-8-8c-1.39 0-2.69.35-3.83.97Z"></svg>
+                                        </t-tag>
+                                        <span>{{ statusLabels.incompatible }}</span>
+                                    </t-space>
+                                </t-checkbox>
+                            </t-space>
+                        </t-checkbox-group>
+                    </template>
+                    <t-button variant="text" shape="circle">
+                        <svg fill="none" viewBox="0 0 24 24" width="1em" height="1em" class="t-icon t-icon-filter" style="fill: none;"><g id="filter"><path id="fill1" fill="transparent" d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z" fill-rule="evenodd" clip-rule="evenodd"></path><path id="stroke1" stroke="currentColor" d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z" fill-rule="evenodd" stroke-linecap="square" stroke-width="2" clip-rule="evenodd"></path></g></svg>
+                    </t-button>
+                </t-popup>
+                <t-select
+                    v-model="selectedRowFilters"
+                    :options="rowFilterOptionsRendered"
+                    :min-collapsed-num="1"
+                    multiple
+                    clearable
+                    size="large"
+                    :placeholder="rowSelectPlaceholder"
+                    style="min-width: 160px; width: 250px"
+                    @change="onRowFilterChange"
+                />
+                <t-select
+                    v-model="selectedColumnFilters"
+                    :options="filterOptions"
+                    :min-collapsed-num="1"
+                    multiple
+                    clearable
+                    size="large"
+                    :placeholder="selectPlaceholder"
+                    style="min-width: 160px; width: 230px"
+                    @change="onFilterChange"
+                />
+            </div>
         </t-space>
+        <blockquote v-if="isMobile">
+            <p>{{ startTitle[0] }} <code>Debian</code>、<code>Ubuntu</code>、<code>CentOS</code>、<code>openEuler</code> {{ startTitle[1] }}</p>
+        </blockquote>
         <t-table
             :columns="columns"
             :data="data"
             row-key="name"
             size="small"
             verticalAlign="bottom"
+            hover
             @data-change="dataChange"
             @filter-change="onTableFilterChange"
         >
             <template v-for="col in columns" :key="col.colKey" #[col.colKey]="{ row }">
                 <div v-if="col.colKey === 'name'">
-                    <t-popup placement="bottom" :show-arrow="false" v-if="cellStatusEnabled">
+                    <t-popup placement="bottom" :show-arrow="false">
                         <template #content>
                             <t-space direction="vertical" algin="center" style="gap: 2px">
                                 <span>{{ row.officialName }}</span>
@@ -90,13 +103,18 @@ ComponentSystem.register('mirrors-table', {
                     </t-popup>
                 </div>
                 <div v-else>
-                    <t-tag v-if="typeof row[col.colKey] === 'boolean'" :theme="row[col.colKey] ? 'success' : 'danger'" variant="light" size="small" style="background-color: transparent; height: 26px">
+                    <t-tag v-if="typeof row[col.colKey] === 'boolean'" :theme="row[col.colKey] ? 'success' : 'danger'" variant="light" size="small" style="background-color: transparent; height: 26px" style="z-index: 2">
                         <template #icon>
                             <div v-if="row[col.colKey] === true && !['ipv6'].includes(col.colKey) && showSupported">
-                                <a :href="'https://' + row.domain + '/' + col.colKey.replace(/_/, '-')" target="_blank" style="color: var(--td-success-color)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z"></svg>
-                                </a>
-                            </div>
+                                <t-popup placement="bottom" :show-arrow="false">
+                                    <template #content>
+                                        <a :href="getMirrorSiteBranchUrl(row.domain, col.colKey)" target="_blank" style="color: var(--md-typeset-a-color)">{{ getMirrorSiteBranchUrl(row.domain, col.colKey) }}</a>
+                                    </template>
+                                    <a :href="getMirrorSiteBranchUrl(row.domain, col.colKey)" target="_blank" style="color: var(--td-success-color)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z"></svg>
+                                    </a>
+                                </t-popup>
+                            </div>                                               
                             <svg v-else-if="row[col.colKey] === true && showSupported" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z"></svg>
                             <svg v-else-if="row[col.colKey] === false && showUnsupported" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"></svg>
                         </template>
@@ -122,7 +140,6 @@ ComponentSystem.register('mirrors-table', {
             selectedColumnFilters: [],
             selectedRowFilters: [],
             selectedCellStatuses: ['supported', 'unsupported', 'incompatible'],
-            cellStatusEnabled: true,
             activeTableFilters: {},
         }
     },
@@ -145,6 +162,10 @@ ComponentSystem.register('mirrors-table', {
                 isZhHant: p.includes('/zh-Hant'),
                 isEn: p.includes('/en'),
             }
+        },
+        startTitle() {
+            const f = this.localeFlags
+            return f.isZhHant ? ['下方列表中的鏡像站均同步了', '軟體倉庫，列表根據單位性質、地理位置、名稱長度排序，與實際下載速度無關。'] : f.isEn ? ['All mirror sites in the list below synchronize the', 'software repositories. The list is sorted by institution type, geographic location, and name length, and is not related to actual download speed.'] : ['下方列表中的镜像站均同步了', '软件仓库，列表根据单位性质、地理位置、名称长度进行排序，与实际速度无关。']
         },
         globalConfig() {
             const f = this.localeFlags
@@ -243,6 +264,32 @@ ComponentSystem.register('mirrors-table', {
         },
     },
     methods: {
+        dataChange(data) {
+            try {
+                const hasColumnFilters = this.activeTableFilters && Object.keys(this.activeTableFilters).length > 0
+                const hasRowFilters = Array.isArray(this.selectedRowFilters) && this.selectedRowFilters.length > 0
+                if (hasColumnFilters || hasRowFilters) {
+                    return
+                }
+                this.data = data
+            } catch {}
+        },
+        onFilterChange() {
+            if (this._debouncedUpdateColumns) this._debouncedUpdateColumns()
+            else this._updateColumns()
+        },
+        onRowFilterChange() {
+            try {
+                if (Array.isArray(this.selectedRowFilters) && this.selectedRowFilters.includes('__all__')) {
+                    this.selectedRowFilters = Array.isArray(this.originalData) ? this.originalData.map((r) => r.name) : []
+                }
+            } catch {}
+            if (this._debouncedUpdateRows) this._debouncedUpdateRows()
+            else this._updateRows()
+        },
+        getMirrorSiteBranchUrl(domain, branchName) {
+            return `https://${domain}/${branchName.replace(/_/, '-')}`
+        },
         _mapOptionForRow(opt) {
             const prefix = '/assets/images/icon/mirrors/'
             const copy = Object.assign({}, opt)
@@ -276,30 +323,6 @@ ComponentSystem.register('mirrors-table', {
             }
             return copy
         },
-
-        dataChange(data) {
-            try {
-                const hasColumnFilters = this.activeTableFilters && Object.keys(this.activeTableFilters).length > 0
-                const hasRowFilters = Array.isArray(this.selectedRowFilters) && this.selectedRowFilters.length > 0
-                if (hasColumnFilters || hasRowFilters) {
-                    return
-                }
-                this.data = data
-            } catch (e) { console.error('mirrors-table dataChange error', e) }
-        },
-        onFilterChange() {
-            if (this._debouncedUpdateColumns) this._debouncedUpdateColumns()
-            else this._updateColumns()
-        },
-        onRowFilterChange() {
-            try {
-                if (Array.isArray(this.selectedRowFilters) && this.selectedRowFilters.includes('__all__')) {
-                    this.selectedRowFilters = Array.isArray(this.originalData) ? this.originalData.map((r) => r.name) : []
-                }
-            } catch (e) { console.error('mirrors-table onRowFilterChange error', e) }
-            if (this._debouncedUpdateRows) this._debouncedUpdateRows()
-            else this._updateRows()
-        },
         onCellStatusChange() {
             if (this._debouncedUpdateRows) this._debouncedUpdateRows()
             else this._updateRows()
@@ -309,7 +332,7 @@ ComponentSystem.register('mirrors-table', {
                 this.activeTableFilters = filters || {}
                 if (this._debouncedUpdateRows) this._debouncedUpdateRows()
                 else this._updateRows()
-            } catch (e) { console.error('mirrors-table onTableFilterChange error', e) }
+            } catch {}
         },
         _updateColumns() {
             try {
@@ -322,12 +345,8 @@ ComponentSystem.register('mirrors-table', {
         _updateRows() {
             try {
                 this._computeFilteredData()
-            } catch (e) {
-                console.error('mirrors-table _updateRows error', e)
-                this.data = this.originalData.slice()
-            }
+            } catch {}
         },
-
         _computeFilteredData() {
             try {
                 let rows = Array.isArray(this.originalData) ? this.originalData.slice() : []
@@ -359,10 +378,7 @@ ComponentSystem.register('mirrors-table', {
                     })
                 }
                 this.data = rows
-            } catch (e) {
-                console.error('mirrors-table _computeFilteredData error', e)
-                this.data = this.originalData.slice()
-            }
+            } catch {}
         },
         _flattenFilterKeys(options) {
             const set = new Set()
