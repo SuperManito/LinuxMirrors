@@ -327,7 +327,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --help
     ``` { .bash .no-copy }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --branch centos
     ```
-    > 倉庫名稱是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 這幾個  
+    > 倉庫名稱是固定的，目前只有 [`centos`](https://download.docker.com/linux/centos/) [`debian`](https://download.docker.com/linux/debian/) [`fedora`](https://download.docker.com/linux/fedora/) [`raspbian`](https://download.docker.com/linux/raspbian/) [`rhel`](https://download.docker.com/linux/rhel/) [`sles`](https://download.docker.com/linux/sles/) [`static`](https://download.docker.com/linux/static/) [`ubuntu`](https://download.docker.com/linux/ubuntu/) 這幾個  
     > 詳情請見 [官方安裝文件](https://docs.docker.com/engine/install) 及 [Docker CE 官方倉庫](https://download.docker.com/linux)
 
     ``` { .bash .no-copy title="还可以指定倉庫版本號" }

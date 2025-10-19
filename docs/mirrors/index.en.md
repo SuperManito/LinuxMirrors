@@ -228,6 +228,24 @@ search:
     | AF · Liquid Telecom · Kenya :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com "https://mirror.liquidtelecom.com") |
     | AF · Dimension Data · South Africa :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com "https://mirror.dimensiondata.com") |
 
+???+ note "Help improve more overseas and foreign software sources"
+
+    The software repositories in this list are referenced from [`Ubuntu Mirrors`](https://launchpad.net/ubuntu/+cdmirrors "https://launchpad.net/ubuntu/+cdmirrors"), [`Debian Mirrors`](https://www.debian.org/CD/http-ftp/#mirrors "https://www.debian.org/CD/http-ftp/#mirrors"), and [`Fedora Mirror Manager`](https://mirrormanager.fedoraproject.org/mirrors "https://mirrormanager.fedoraproject.org/mirrors") and have all been verified for effectiveness, but not actually tested.
+
+    The author does not have the energy to continuously maintain these overseas mirror sites in the list. If you want to add more software sources or correct the existing ones, please modify the [`mirror_list_abroad array variable`](https://github.com/SuperManito/LinuxMirrors/blob/main/ChangeMirrors.sh#L70 "https://github.com/SuperManito/LinuxMirrors/blob/main/ChangeMirrors.sh#L70") in the script and modify it according to the following editing specifications.
+
+    You can submit [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls "https://github.com/SuperManito/LinuxMirrors/pulls") to the GitHub repository after confirming the mirror address is correct. You can also fork the repository and customize it yourself.
+
+    - Overseas and foreign software source (mirror site) editing specifications:
+
+        Complete format: `Continent · Software Source Name · Country/Region@Software Source Address (Domain)`
+
+        Please sort according to geographical location, country or region for user selection. Units with iconic abbreviation characters should be supplemented in brackets at the end, and the name of the unit should prioritize the domain name. The following are naming rules:
+
+        - Educational institution: Use the Chinese translation of the name. If the full name contains the name of the country or region, it should also be included. Pay attention to distinguishing subordinate units, such as colleges, student unions, societies, etc. The common second-level domain name format is `ftp.mirrors.xxx.xxx`. The name of the top-level institution should be used directly. If there is a third-level domain name, consider whether to add the subordinate unit in the name. The domain name takes priority.
+
+        - Non-educational institutions: The brand name used by their parent official website should be prioritized, and it should be the official English name rather than the characters in the logo. If there is no official English name and the website is in a language other than Chinese or English, the website domain name should be used as the name.
+
 ## Tool Websites
 
 <button class="md-button" title="https://tool.chinaz.com" onclick="window.open('https://tool.chinaz.com')">Domain Lookup</button>

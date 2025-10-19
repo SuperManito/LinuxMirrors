@@ -112,7 +112,7 @@ hide:
 
     兼容大量不受官方安装脚本支持的衍生操作系统 :material-information-outline:{ title="除官网首页展示的系统外还支持  <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code> 等特制系统" }
 
--   :material-weight-lifter:{ .lg .middle } __功能强大、无以伦比__
+-   :material-weight-lifter:{ .lg .middle } __功能强大、无与伦比__
 
     ---
 
@@ -327,7 +327,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
     ``` { .bash .no-copy }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
     ```
-    > 仓库名是固定的，目前只有 `centos` `debian` `fedora` `raspbian` `rhel` `sles` `static` `ubuntu` 这几个  
+    > 仓库名是固定的，目前只有 [`centos`](https://download.docker.com/linux/centos/) [`debian`](https://download.docker.com/linux/debian/) [`fedora`](https://download.docker.com/linux/fedora/) [`raspbian`](https://download.docker.com/linux/raspbian/) [`rhel`](https://download.docker.com/linux/rhel/) [`sles`](https://download.docker.com/linux/sles/) [`static`](https://download.docker.com/linux/static/) [`ubuntu`](https://download.docker.com/linux/ubuntu/) 这几个  
     > 具体详见 [官方安装文档](https://docs.docker.com/engine/install) 和 [Docker CE 官方仓库](https://download.docker.com/linux)
 
     ``` { .bash .no-copy title="还可以指定仓库版本号" }

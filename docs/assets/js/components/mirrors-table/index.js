@@ -1,6 +1,6 @@
 ComponentSystem.register('mirrors-table', {
     template: `
-<div class="mirrors-table">
+<div>
     <t-config-provider :global-config="globalConfig">
         <t-space v-if="!isMobile" align="center" style="margin-bottom: 8px; gap: 20px">
             <blockquote>

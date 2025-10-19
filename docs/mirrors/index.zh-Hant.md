@@ -228,6 +228,26 @@ search:
     | 非洲 · Liquid Telecom · 肯亞 :flag-KE: | [mirror.liquidtelecom.com](https://mirror.liquidtelecom.com "https://mirror.liquidtelecom.com") |
     | 非洲 · Dimension Data · 南非 :flag-ZA: | [mirror.dimensiondata.com](https://mirror.dimensiondata.com "https://mirror.dimensiondata.com") |
 
+???+ note "幫助專案完善更多境外、海外軟體源"
+
+    此清單中的軟體源參考自 [`Ubuntu 鏡像清單`](https://launchpad.net/ubuntu/+cdmirrors "https://launchpad.net/ubuntu/+cdmirrors")、[`Debian 鏡像清單`](https://www.debian.org/CD/http-ftp/#mirrors "https://www.debian.org/CD/http-ftp/#mirrors")、[`Fedora Mirror Manager`](https://mirrormanager.fedoraproject.org/mirrors "https://mirrormanager.fedoraproject.org/mirrors") 並且在此之前全部經過有效性驗證，但在此之前未完成了實際測試
+
+    作者沒有精力持續維護清單中的這些境外、海外鏡像站，如果你想補充更多軟體源或更正目前已有，請修改腳本內的 [`mirror_list_abroad 陣列變數`](https://github.com/SuperManito/LinuxMirrors/blob/main/ChangeMirrors.sh#L70 "https://github.com/SuperManito/LinuxMirrors/blob/main/ChangeMirrors.sh#L70") 並依照下面的編輯規格進行修改
+
+    你可以在確認鏡像站位址無誤後前往 GitHub 倉庫提交 [Pull Requests](https://github.com/SuperManito/LinuxMirrors/pulls "https://github.com/SuperManito/LinuxMirrors/pulls")，也可以 :material-source-fork: Fork 倉庫後自訂使用
+
+    - 境外以及海外軟體源（鏡像站）編輯規格：
+
+      完整格式：`洲 · 軟體源名稱 · 國家/地區@軟體源位址(網域)`
+
+      請根據地理位置、國家或地區進行排序以便於使用者選擇，有標誌性縮寫字元的單位應在最後用括號補充，單位的名稱應以網域名稱作為優先原則，以下是命名規則：
+
+      - 教育單位：需使用中文譯名，全稱若含有國家或地區的名稱也要帶上，注意區分下屬單位，例如學院、學生會、社團等。常見的二級網域格式 `ftp.mirrors.xxx.xxx` 應直接採用頂級單位的名稱，如果有三級網域則應考慮是否在名稱中加上下屬單位，以網域為優先原則
+
+        註：`Technology` 一詞應稱為 `理工` 而不能使用翻譯結果的 `技術` 一詞，大部分教育單位都有正式或公認的中文譯名
+
+      - 非教育單位：應優先採用其上屬官網所自稱的品牌名稱，注意是正式的英文名稱而不是logo中的字符，如果沒有並且網站是除中文、英文以外的語言文字應使用網站域名作為名稱
+
 ## 工具網站
 
 <button class="md-button" title="https://tool.chinaz.com" onclick="window.open('https://tool.chinaz.com')">域名查詢</button>

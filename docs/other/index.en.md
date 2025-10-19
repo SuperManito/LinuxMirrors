@@ -327,7 +327,7 @@ Command options(name/meaning/value):
     ``` { .bash .no-copy }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --branch centos
     ```
-    > Repository names are fixed: `centos`, `debian`, `fedora`, `raspbian`, `rhel`, `sles`, `static`, `ubuntu`  
+    > Repository names are fixed: [`centos`](https://download.docker.com/linux/centos/) [`debian`](https://download.docker.com/linux/debian/) [`fedora`](https://download.docker.com/linux/fedora/) [`raspbian`](https://download.docker.com/linux/raspbian/) [`rhel`](https://download.docker.com/linux/rhel/) [`sles`](https://download.docker.com/linux/sles/) [`static`](https://download.docker.com/linux/static/) [`ubuntu`](https://download.docker.com/linux/ubuntu/)  
     > See [official installation docs](https://docs.docker.com/engine/install) and [Docker CE official repo](https://download.docker.com/linux) for details.
 
     ``` { .bash .no-copy title="Can also specify the repository version number." }

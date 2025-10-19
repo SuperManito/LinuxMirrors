@@ -78,7 +78,7 @@ hide:
     本网站提供全球边缘网络加速，不惧各种网络环境，国内轻松访问  
     同时提供了多个备用地址以确保项目脚本始终可用，真正做到使用无忧
 
--   :material-arm-flex-outline:{ .lg .middle } __功能强大，无以伦比__
+-   :material-arm-flex-outline:{ .lg .middle } __功能强大，无与伦比__
 
     ---
 
