@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-14
+## Modified: 2025-10-20
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -644,12 +644,6 @@ function collect_system_info() {
                 ;;
             "${SYSTEM_RHEL}")
                 SOURCE_BRANCH="rhel"
-                # RHEL 10
-                if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 10 ]]; then
-                    echo -e "\n$WARN $(msg "warn.usedCentosBranch")"
-                    echo -e "\n$TIP $(msg "tip.unsupportRHEL10")"
-                    SOURCE_BRANCH="centos"
-                fi
                 ;;
             *)
                 SOURCE_BRANCH="centos"
@@ -2060,12 +2054,10 @@ function msg_pack_zh_hans() {
         ['error.defaultBehavior.installLatest']='默认安装最新版本'
         ['error.defaultBehavior.noOverwrite']='默认不覆盖'
         ['error.defaultBehavior.noUseIntranetSource']='默认不使用内网地址'
-        ['warn.usedCentosBranch']='当前采用 centos 分支（红帽衍生操作系统安装方式）进行安装，可能存在某些无法预料的兼容性问题！'
         ['warn.usedIntranetSource']='已切换至内网专用地址，仅限在特定环境下使用！'
         ['warn.needValidNumberIndex']='请输入有效的数字序号！'
         ['warn.needInputNumberIndex']='请输入数字序号！'
         ['warn.needManuallyDeleteConfig']='请自行删除 {} 中的 {} 配置并重启服务 {}'
-        ['tip.unsupportRHEL10']='Docker 官方尚未支持 RHEL 10 且红帽官方已将 Docker 从注册软件源中移除并默认使用 Podman。'
         ['tip.skipInstallDockerEngine']='检测到系统已安装 Docker Engine 且是最新版本，跳过安装'
         ['info.backuped.dockerConfig']='已备份原有 Docker 配置文件'
         ['interaction.source.type.public']='公网'
@@ -2213,12 +2205,10 @@ function msg_pack_zh_hant() {
         ['error.defaultBehavior.installLatest']='預設安裝最新版本'
         ['error.defaultBehavior.noOverwrite']='預設不覆寫'
         ['error.defaultBehavior.noUseIntranetSource']='預設不使用內網位址'
-        ['warn.usedCentosBranch']='目前採用 centos 分支（紅帽衍生系統安裝方式）進行安裝，可能存在某些無法預料的相容性問題！'
         ['warn.usedIntranetSource']='已切換至內網專用位址，僅限在特定環境下使用！'
         ['warn.needValidNumberIndex']='請輸入有效的數字序號！'
         ['warn.needInputNumberIndex']='請輸入數字序號！'
         ['warn.needManuallyDeleteConfig']='請自行刪除 {} 中的 {} 設定並重新啟動服務 {}'
-        ['tip.unsupportRHEL10']='Docker 官方尚未支援 RHEL 10 且紅帽官方已將 Docker 從註冊軟體源中移除並預設使用 Podman。'
         ['tip.skipInstallDockerEngine']='偵測到系統已安裝 Docker Engine 且是最新版本，跳過安裝'
         ['info.backuped.dockerConfig']='已備份原有 Docker 設定檔'
         ['interaction.source.type.public']='公網'
@@ -2367,12 +2357,10 @@ function msg_pack_en() {
         ['error.defaultBehavior.installLatest']='Installing latest version by default'
         ['error.defaultBehavior.noOverwrite']='Not overwriting by default'
         ['error.defaultBehavior.noUseIntranetSource']='Not using intranet address by default'
-        ['warn.usedCentosBranch']='Currently using centos branch (Red Hat derivative OS installation method), may have unpredictable compatibility issues!'
         ['warn.usedIntranetSource']='Switched to intranet-only address, use only in specific environments!'
         ['warn.needValidNumberIndex']='Please enter a valid number index!'
         ['warn.needInputNumberIndex']='Please enter a number index!'
         ['warn.needManuallyDeleteConfig']='Please manually delete {} configuration in {} and restart service {}'
-        ['tip.unsupportRHEL10']='Docker official has not yet supported RHEL 10 and Red Hat has removed Docker from registered repositories, using Podman by default.'
         ['tip.skipInstallDockerEngine']='Detected Docker Engine is already installed with latest version, skipping installation'
         ['info.backuped.dockerConfig']='Original Docker config file has been backed up'
         ['interaction.source.type.public']='Public'
