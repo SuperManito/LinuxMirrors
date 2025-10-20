@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-14
+## Modified: 2025-10-20
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2248,13 +2248,11 @@ $(gen_deb_unsrc "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sect
         write_source_file
         ## 底层系统软件源
         local base_system_branch base_system_codename
-        if [[ "${SYSTEM_VERSION_ID}" == 6 ]]; then
+        if [[ "${SYSTEM_NAME}" == *"LMDE"* ]]; then
             # Debian 版（LMDE）
             base_system_branch="debian"
-            grep -q "DEBIAN_CODENAME" $File_LinuxRelease
-            if [ $? -eq 0 ]; then
-                base_system_codename="$(get_os_release_value DEBIAN_CODENAME)"
-            else
+            base_system_codename="$(get_os_release_value DEBIAN_CODENAME)"
+            if [[ -z "${base_system_codename}" ]]; then
                 base_system_codename="bookworm"
             fi
             repository_sections="main contrib non-free non-free-firmware"
@@ -2271,20 +2269,10 @@ $(gen_deb_security "${source_security_host}" "${base_system_codename}" "${reposi
             else
                 base_system_branch="ubuntu-ports"
             fi
-            case "${SYSTEM_VERSION_ID_MAJOR}" in
-            22)
+            base_system_codename="$(get_os_release_value UBUNTU_CODENAME)"
+            if [[ -z "${base_system_codename}" ]]; then
                 base_system_codename="noble"
-                ;;
-            21)
-                base_system_codename="jammy"
-                ;;
-            20)
-                base_system_codename="focal"
-                ;;
-            19)
-                base_system_codename="bionic"
-                ;;
-            esac
+            fi
             repository_sections="main restricted universe multiverse"
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"

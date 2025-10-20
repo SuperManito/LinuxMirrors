@@ -620,20 +620,38 @@ function collect_system_info() {
             "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
                 SOURCE_BRANCH="ubuntu"
                 ;;
+            "${SYSTEM_KALI}")
+                SOURCE_BRANCH="debian"
+                SOURCE_BRANCH_CODENAME="trixie"
+                ;;
+            "${SYSTEM_LINUX_MINT}")
+                if [[ "${SYSTEM_NAME}" == *"LMDE"* ]]; then
+                    SOURCE_BRANCH="debian"
+                    SOURCE_BRANCH_CODENAME="$(get_os_release_value DEBIAN_CODENAME)"
+                else
+                    SOURCE_BRANCH="ubuntu"
+                    SOURCE_BRANCH_CODENAME="$(get_os_release_value UBUNTU_CODENAME)"
+                fi
+                if [[ -z "${SOURCE_BRANCH_CODENAME}" ]]; then
+                    SOURCE_BRANCH="debian"
+                    SOURCE_BRANCH_CODENAME="bookworm"
+                fi
+                ;;
             "${SYSTEM_RASPBERRY_PI_OS}")
                 case "${DEVICE_ARCH_RAW}" in
                 x86_64 | aarch64)
                     SOURCE_BRANCH="debian"
                     ;;
                 *)
+                    # 注：自 Docker 29 版本起将不再提供此分支仓库
                     SOURCE_BRANCH="raspbian"
                     ;;
                 esac
                 ;;
             *)
-                # 部分 Debian 系衍生操作系统使用 Debian 12 的 docker ce 源
+                # 其余 Debian 系衍生操作系统
                 SOURCE_BRANCH="debian"
-                SYSTEM_VERSION_CODENAME="bookworm"
+                SOURCE_BRANCH_CODENAME="bookworm"
                 ;;
             esac
             ;;
@@ -1080,7 +1098,7 @@ function configure_docker_ce_mirror() {
         chmod a+r $file_keyring
         ## 添加源
         [ -d "${Dir_AptAdditionalSources}" ] || mkdir -p $Dir_AptAdditionalSources
-        local source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SYSTEM_VERSION_CODENAME} stable"
+        local source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SOURCE_BRANCH_CODENAME:-"${SYSTEM_VERSION_CODENAME}"} stable"
         echo "${source_content}" | tee $File_DockerSourceList >/dev/null 2>&1
         commands+=("apt-get update")
         ;;
