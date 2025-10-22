@@ -648,8 +648,8 @@ Below are some advanced usage examples
 
                 ``` bash
                 bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
-                --codename trixie \
-                --upgrade-software false
+                  --codename trixie \
+                  --upgrade-software false
                 ```
 
             - Disable the backports repository
@@ -678,8 +678,8 @@ Below are some advanced usage examples
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) --en \
-            --codename testing \
-            --upgrade-software false
+              --codename testing \
+              --upgrade-software false
             ```
 
         ``` { .bash .no-copy title="If the script can't set the codename, you can manually replace it after running" }

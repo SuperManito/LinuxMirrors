@@ -234,7 +234,7 @@ Command options(name/meaning/value):
 | Name | Meaning | Value |
 | :-: | :-: | :-: |
 | `--source` | Specify `Docker CE` mirror address (domain or IP) | `address` |
-| `--source-registry` | Specify `Docker Registry` mirror address (domain or IP) | `address` |
+| `--source-registry` | Specify `Docker Registry` mirror address (domain or IP) | `address (separate multiple entries with commas)` |
 | `--branch` | Specify `Docker CE` mirror repository (path) | `repo name (see docs below)` |
 | `--branch-version` | Specify `Docker CE` mirror repository version | `version (see docs below)` |
 | `--designated-version` | Specify `Docker Engine` installation version | `version (see docs below)` |
@@ -258,6 +258,13 @@ Command options(name/meaning/value):
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --source-registry registry.example.com
     ```
 
+    Can specify multiple addresses at the same time, and they must be separated by commas.
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en \
+      --source-registry "registry-1.example.com,registry-2.example.com"
+    ```
+
 - ### Only Switch Registry Mirror
 
     === "Use Script for One-Click Replacement"
@@ -266,6 +273,14 @@ Command options(name/meaning/value):
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --only-registry
+        ```
+
+        Lazy one-click command (using multiple addresses)
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en \
+          --only-registry \
+          --source-registry "docker.1ms.run,docker.1panel.live,docker.m.daocloud.io"
         ```
 
     === "Manual Replacement"

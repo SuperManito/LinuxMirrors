@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-22
+## Modified: 2025-10-23
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -423,7 +423,11 @@ function handle_command_options() {
 
 function run_start() {
     if [ -z "${CLEAN_SCREEN}" ]; then
-        [[ -z "${SOURCE}" || -z "${SOURCE_REGISTRY}" ]] && clear
+        if [[ "${ONLY_REGISTRY}" == "true" ]]; then
+            [[ -z "${SOURCE_REGISTRY}" ]] && clear
+        else
+            [[ -z "${SOURCE}" || -z "${SOURCE_REGISTRY}" ]] && clear
+        fi
     elif [ "${CLEAN_SCREEN}" == "true" ]; then
         clear
     fi
@@ -1490,7 +1494,7 @@ function change_docker_registry_mirror() {
         touch $File_DockerConfig
     fi
 
-    echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$File_DockerConfig
+    echo -e '{\n  "registry-mirrors": '"$(handleRegistryMirrorsValue ${SOURCE_REGISTRY})"'\n}' >$File_DockerConfig
     ## 重启服务
     systemctl daemon-reload
     if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
@@ -1559,9 +1563,9 @@ function only_change_docker_registry_mirror() {
             fi
         fi
         [ -s "${File_DockerConfig}" ] || echo "{}" >$File_DockerConfig
-        jq '.["registry-mirrors"] = ["https://'"${SOURCE_REGISTRY}"'"]' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
+        jq '.["registry-mirrors"] = '"$(handleRegistryMirrorsValue ${SOURCE_REGISTRY})"'' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
     else
-        echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$File_DockerConfig
+        echo -e '{\n  "registry-mirrors": '"$(handleRegistryMirrorsValue ${SOURCE_REGISTRY})"'\n}' >$File_DockerConfig
     fi
     ## 重启服务
     systemctl daemon-reload
@@ -1573,6 +1577,27 @@ function only_change_docker_registry_mirror() {
     echo -e "\033[2m>${PLAIN} $(docker info --format '{{json .RegistryConfig.Mirrors}}')"
     if [[ "${PURE_MODE}" != "true" ]]; then
         echo -e "\n$COMPLETE $(msg "result.registry.success")"
+    fi
+}
+
+function handleRegistryMirrorsValue() {
+    local content="$1"
+    local delimiter=","
+    local result=""
+    content="$(echo "${content}" | sed 's| ||g')"
+    local -a items=(${content//,/ })
+    for item in "${items[@]}"; do
+        [[ -z "${item}" ]] && continue
+        if [[ -z "${result}" ]]; then
+            result='"https://'"${item}"'"'
+        else
+            result="${result},\"https://${item}\""
+        fi
+    done
+    if [[ "${result}" ]]; then
+        echo "[${result}]"
+    else
+        echo ""
     fi
 }
 

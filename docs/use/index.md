@@ -650,8 +650,8 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
                 ``` bash
                 bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-                --codename trixie \
-                --upgrade-software false
+                  --codename trixie \
+                  --upgrade-software false
                 ```
 
             - 禁用 backports 仓库
@@ -680,8 +680,8 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
             ``` bash
             bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
-            --codename testing \
-            --upgrade-software false
+              --codename testing \
+              --upgrade-software false
             ```
 
         ``` { .bash .no-copy title="若脚本无法实现指定版本代号，你也可以在执行脚本后手动替换" }

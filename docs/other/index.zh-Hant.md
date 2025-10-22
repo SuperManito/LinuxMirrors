@@ -234,7 +234,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --help
 | 名稱 | 意義 | 選項值 |
 | :-: | :-: | :-: |
 | `--source` | 指定 `Docker CE` 軟體源位址(網域名稱或IP) | `位址` |
-| `--source-registry` | 指定 `Docker` 映像倉庫位址(網域名稱或IP) | `位址` |
+| `--source-registry` | 指定 `Docker` 映像倉庫位址(網域名稱或IP) | `位址（多個用英文逗號分割）` |
 | `--branch` | 指定 `Docker CE` 軟體源倉庫(路徑) | `倉庫名稱（詳見下方文件）` |
 | `--branch-version` | 指定 `Docker CE` 軟體源倉庫版本 | `版本號（詳見下方文件）` |
 | `--designated-version` | 指定 `Docker Engine` 安裝版本 | `版本號（詳見下方文件）` |
@@ -258,6 +258,13 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --help
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --source-registry registry.example.com
     ```
 
+    可同時指定多個地址，需使用英文逗號分割
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant \
+      --source-registry "registry-1.example.com,registry-2.example.com"
+    ```
+
 - ### 僅更換映像倉庫
 
     === "使用腳本一鍵替換"
@@ -266,6 +273,14 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --help
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --only-registry
+        ```
+
+        懶人一鍵指令（使用多個位址）
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant \
+          --only-registry \
+          --source-registry "docker.1ms.run,docker.1panel.live,docker.m.daocloud.io"
         ```
 
     === "手動替換"

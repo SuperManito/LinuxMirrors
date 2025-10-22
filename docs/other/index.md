@@ -234,7 +234,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 | 名称 | 含义 | 选项值 |
 | :-: | :-: | :-: |
 | `--source` | 指定 `Docker CE` 源地址(域名或IP) | `地址` |
-| `--source-registry` | 指定 `Docker` 镜像仓库地址(域名或IP) | `地址` |
+| `--source-registry` | 指定 `Docker` 镜像仓库地址(域名或IP) | `地址（多个用英文逗号分割）` |
 | `--branch` | 指定 `Docker CE` 软件源仓库(路径) | `仓库名（详见下方文档）` |
 | `--branch-version` | 指定 `Docker CE` 软件源仓库版本 | `版本号（详见下方文档）` |
 | `--designated-version` | 指定 `Docker Engine` 安装版本 | `版本号（详见下方文档）` |
@@ -258,6 +258,13 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --source-registry registry.example.com
     ```
 
+    可以同时指定多个地址，需使用英文逗号进行分割
+
+    ``` { .bash .no-copy }
+    bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+      --source-registry "registry-1.example.com,registry-2.example.com"
+    ```
+
 - ### 仅更换镜像仓库
 
     === "使用脚本一键替换"
@@ -266,6 +273,14 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
+        ```
+
+        懒人一键命令（使用多个地址）
+
+        ``` bash
+        bash <(curl -sSL https://linuxmirrors.cn/docker.sh) \
+          --only-registry \
+          --source-registry "docker.1ms.run,docker.1panel.live,docker.m.daocloud.io"
         ```
 
     === "手动替换"
