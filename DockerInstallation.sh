@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-20
+## Modified: 2025-10-22
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1563,14 +1563,14 @@ function only_change_docker_registry_mirror() {
     else
         echo -e '{\n  "registry-mirrors": ["https://'"${SOURCE_REGISTRY}"'"]\n}' >$File_DockerConfig
     fi
-
-    echo -e "\n${BLUE}\$${PLAIN} docker info --format '{{json .RegistryConfig.Mirrors}}'"
-    echo -e "\n${GREEN}➜${PLAIN}  $(docker info --format '{{json .RegistryConfig.Mirrors}}')"
     ## 重启服务
     systemctl daemon-reload
     if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
         systemctl restart docker
     fi
+
+    echo -e "\n${BLUE}\$${PLAIN} docker info --format '{{json .RegistryConfig.Mirrors}}'"
+    echo -e "\033[2m>${PLAIN} $(docker info --format '{{json .RegistryConfig.Mirrors}}')"
     if [[ "${PURE_MODE}" != "true" ]]; then
         echo -e "\n$COMPLETE $(msg "result.registry.success")"
     fi
