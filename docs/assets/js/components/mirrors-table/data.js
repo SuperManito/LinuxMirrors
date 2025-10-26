@@ -414,7 +414,7 @@ const mirrorsTableData = [
         deepin: true,
         rocky: true,
         almalinux: true,
-        epel: true,
+        epel: 'incompatible',
         fedora: 'incompatible',
         opencloudos: true,
         openeuler: true,

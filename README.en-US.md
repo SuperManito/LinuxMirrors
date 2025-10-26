@@ -12,7 +12,7 @@
   <a href="https://deepwiki.com/SuperManito/LinuxMirrors"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a><br>
 </p>
 <p>
-    <a href="https://hellogithub.com/repository/775d5b3d0aa04e90be9162104e757f2e" target="_blank">
+    <a href="https://hellogithub.com/repository/775d5b3d0aa04e90be9162104e757f2e" target="_blank" rel="noopener noreferrer">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=dark" width="250">
           <img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=775d5b3d0aa04e90be9162104e757f2e&claim_uid=mXoISqgeyYLDf1a&theme=neutral" alt="Featured｜HelloGitHub" width="250">
@@ -26,103 +26,103 @@
         <th align="center">Supported Versions</th>
     </tr>
     <tr>
-        <td><a href="https://www.debian.org" target="_blank"><sub><img src="/docs/assets/images/icon/debian.svg" width="16" height="16"></sub></a>&nbsp;Debian</td>
+        <td><a href="https://www.debian.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/debian.svg" width="16" height="16"></sub></a>&nbsp;Debian</td>
         <td align="center">8 ~ 13</td>
     </tr>
     <tr>
-        <td><a href="https://ubuntu.com" target="_blank"><sub><img src="/docs/assets/images/icon/ubuntu.svg" width="16" height="16"></sub></a>&nbsp;Ubuntu</td>
+        <td><a href="https://ubuntu.com" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/ubuntu.svg" width="16" height="16"></sub></a>&nbsp;Ubuntu</td>
         <td align="center">14 ~ 25</td>
     </tr>
     <tr>
-        <td><a href="https://www.kali.org" target="_blank"><sub><img src="/docs/assets/images/icon/kali-linux.svg" width="16" height="16"></sub></a>&nbsp;Kali Linux</td>
+        <td><a href="https://www.kali.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/kali-linux.svg" width="16" height="16"></sub></a>&nbsp;Kali Linux</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://linuxmint.com" target="_blank"><sub><img src="/docs/assets/images/icon/linux-mint.ico" width="16" height="16"></sub></a>&nbsp;Linux Mint</td>
+        <td><a href="https://linuxmint.com" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/linux-mint.ico" width="16" height="16"></sub></a>&nbsp;Linux Mint</td>
         <td align="center">19 ~ 22 / LMDE 6</td>
     </tr>
     <tr>
-        <td><a href="https://www.deepin.org" target="_blank"><sub><img src="/docs/assets/images/icon/deepin.png" width="16" height="16"></sub></a>&nbsp;Deepin</td>
+        <td><a href="https://www.deepin.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/deepin.png" width="16" height="16"></sub></a>&nbsp;Deepin</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://zorin.com/os" target="_blank"><sub><img src="/docs/assets/images/icon/zorin-os.png" width="16" height="16"></sub></a>&nbsp;Zorin OS</td>
+        <td><a href="https://zorin.com/os" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/zorin-os.png" width="16" height="16"></sub></a>&nbsp;Zorin OS</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://www.armbian.org" target="_blank"><sub><img src="/docs/assets/images/icon/armbian.png" width="16" height="16"></sub></a>&nbsp;Armbian</td>
+        <td><a href="https://www.armbian.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/armbian.png" width="16" height="16"></sub></a>&nbsp;Armbian</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" target="_blank"><sub><img src="/docs/assets/images/icon/proxmox.svg" width="16" height="16"></sub></a>&nbsp;Proxmox VE</td>
+        <td><a href="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/proxmox.svg" width="16" height="16"></sub></a>&nbsp;Proxmox VE</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://www.raspberrypi.com/software" target="_blank"><sub><img src="/docs/assets/images/icon/raspberry-pi.png" width="16" height="16"></sub></a>&nbsp;Raspberry Pi OS</td>
+        <td><a href="https://www.raspberrypi.com/software" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/raspberry-pi.png" width="16" height="16"></sub></a>&nbsp;Raspberry Pi OS</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank"><sub><img src="/docs/assets/images/icon/redhat.svg" width="16" height="16"></sub></a>&nbsp;Red Hat Enterprise Linux</td>
+        <td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/redhat.svg" width="16" height="16"></sub></a>&nbsp;Red Hat Enterprise Linux</td>
         <td align="center">7 ~ 10</td>
     </tr>
     <tr>
-        <td><a href="https://fedoraproject.org" target="_blank"><sub><img src="/docs/assets/images/icon/fedora.ico" width="16" height="16"></sub></a>&nbsp;Fedora</td>
+        <td><a href="https://fedoraproject.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/fedora.ico" width="16" height="16"></sub></a>&nbsp;Fedora</td>
         <td align="center">30 ~ 42</td>
     </tr>
     <tr>
-        <td><a href="https://www.centos.org" target="_blank"><sub><img src="/docs/assets/images/icon/centos.svg" width="16" height="16"></sub></a>&nbsp;CentOS</td>
+        <td><a href="https://www.centos.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/centos.svg" width="16" height="16"></sub></a>&nbsp;CentOS</td>
         <td align="center">7 ~ 8 / Stream 8 ~ 10</td>
     </tr>
     <tr>
-        <td><a href="https://rockylinux.org" target="_blank"><sub><img src="/docs/assets/images/icon/rocky-linux.svg" width="16" height="16"></sub></a>&nbsp;Rocky Linux</td>
+        <td><a href="https://rockylinux.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/rocky-linux.svg" width="16" height="16"></sub></a>&nbsp;Rocky Linux</td>
         <td align="center">8 ~ 10</td>
     </tr>
     <tr>
-        <td><a href="https://almalinux.org" target="_blank"><sub><img src="/docs/assets/images/icon/almalinux.svg" width="16" height="16"></sub></a>&nbsp;AlmaLinux</td>
+        <td><a href="https://almalinux.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/almalinux.svg" width="16" height="16"></sub></a>&nbsp;AlmaLinux</td>
         <td align="center">8 ~ 10</td>
     </tr>
     <tr>
-        <td><a href="https://www.oracle.com/linux" target="_blank"><sub><img src="/docs/assets/images/icon/oracle-linux.png" width="16" height="16"></sub></a>&nbsp;Oracle Linux</td>
+        <td><a href="https://www.oracle.com/linux" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/oracle-linux.png" width="16" height="16"></sub></a>&nbsp;Oracle Linux</td>
         <td align="center">8 ~ 10</td>
     </tr>
     <tr>
-        <td><a href="https://www.openeuler.org/zh" target="_blank"><sub><img src="/docs/assets/images/icon/openeuler.ico" width="16" height="16"></sub></a>&nbsp;openEuler</td>
+        <td><a href="https://www.openeuler.org/zh" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/openeuler.ico" width="16" height="16"></sub></a>&nbsp;openEuler</td>
         <td align="center">20 ~ 25</td>
     </tr>
     <tr>
-        <td><a href="https://www.opencloudos.org" target="_blank"><sub><img src="/docs/assets/images/icon/opencloudos.png" width="16" height="16"></sub></a>&nbsp;OpenCloudOS</td>
+        <td><a href="https://www.opencloudos.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/opencloudos.png" width="16" height="16"></sub></a>&nbsp;OpenCloudOS</td>
         <td align="center">8.6 ~ 9 / Stream 23</td>
     </tr>
     <tr>
-        <td><a href="https://www.openkylin.top" target="_blank"><sub><img src="/docs/assets/images/icon/openkylin.ico" width="16" height="16"></sub></a>&nbsp;openKylin</td>
+        <td><a href="https://www.openkylin.top" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/openkylin.ico" width="16" height="16"></sub></a>&nbsp;openKylin</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://openanolis.cn" target="_blank"><sub><img src="/docs/assets/images/icon/anolis.png" width="16" height="16"></sub></a>&nbsp;Anolis OS</td>
+        <td><a href="https://openanolis.cn" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/anolis.png" width="16" height="16"></sub></a>&nbsp;Anolis OS</td>
         <td align="center">8 / 23</td>
     </tr>
     <tr>
-        <td><a href="https://www.opensuse.org" target="_blank"><sub><img src="/docs/assets/images/icon/opensuse.svg" width="16" height="16"></sub></a>&nbsp;openSUSE</td>
+        <td><a href="https://www.opensuse.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/opensuse.svg" width="16" height="16"></sub></a>&nbsp;openSUSE</td>
         <td align="center">Leap 15 ~ 16 / Tumbleweed</td>
     </tr>
     <tr>
-        <td><a href="https://archlinux.org" target="_blank"><sub><img src="/docs/assets/images/icon/arch-linux.ico" width="16" height="16"></sub></a>&nbsp;Arch Linux</td>
+        <td><a href="https://archlinux.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/arch-linux.ico" width="16" height="16"></sub></a>&nbsp;Arch Linux</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://manjaro.org" target="_blank"><sub><img src="/docs/assets/images/icon/manjaro.svg" width="16" height="16"></sub></a>&nbsp;Manjaro</td>
+        <td><a href="https://manjaro.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/manjaro.svg" width="16" height="16"></sub></a>&nbsp;Manjaro</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://www.alpinelinux.org" target="_blank"><sub><img src="/docs/assets/images/icon/alpine.png" width="16" height="16"></sub></a>&nbsp;Alpine Linux</td>
+        <td><a href="https://www.alpinelinux.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/alpine.png" width="16" height="16"></sub></a>&nbsp;Alpine Linux</td>
         <td align="center">v3 / edge</td>
     </tr>
     <tr>
-        <td><a href="https://www.gentoo.org" target="_blank"><sub><img src="/docs/assets/images/icon/gentoo.svg" width="16" height="16"></sub></a>&nbsp;Gentoo</td>
+        <td><a href="https://www.gentoo.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/gentoo.svg" width="16" height="16"></sub></a>&nbsp;Gentoo</td>
         <td align="center">all</td>
     </tr>
     <tr>
-        <td><a href="https://nixos.org" target="_blank"><sub><img src="/docs/assets/images/icon/nixos.svg" width="16" height="16"></sub></a>&nbsp;NixOS</td>
+        <td><a href="https://nixos.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/nixos.svg" width="16" height="16"></sub></a>&nbsp;NixOS</td>
         <td align="center">19 ~ 25</td>
     </tr>
 </table>

@@ -130,10 +130,10 @@ hide:
     <p>✨ After years of technical accumulation and production environment testing, it has been widely praised by the community and deeply loved by developers. It is used by major companies.</p>
     <div class="icon-brand-section">
       <div class="icon-brand-container no-select">
-        <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://1panel.pro" title="1Panel">
           <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
         </a>
-        <a class="icon-brand-button" target="_blank" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
           <img src="/assets/images/other/aaPanel.png" alt="aapanel" style="width: 76% !important" />
         </a>
       </div>

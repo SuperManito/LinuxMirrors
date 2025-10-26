@@ -130,10 +130,10 @@ hide:
     <p>✨ 經過了數年的技術沉澱與生產環境檢驗，廣受社區好評，深得開發者喜愛，大廠都在使用</p>
     <div class="icon-brand-section">
       <div class="icon-brand-container no-select">
-        <a class="icon-brand-button" target="_blank" href="https://1panel.pro" title="1Panel">
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://1panel.pro" title="1Panel">
           <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
         </a>
-        <a class="icon-brand-button" target="_blank" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://www.aapanel.com" title="aaPanel" style="padding: 0 !important">
           <img src="/assets/images/other/aaPanel.png" alt="aapanel" style="width: 76% !important" />
         </a>
       </div>

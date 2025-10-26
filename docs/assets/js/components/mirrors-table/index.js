@@ -89,10 +89,10 @@ ComponentSystem.register('mirrors-table', {
                         <template #content>
                             <t-space direction="vertical" algin="center" style="gap: 2px">
                                 <span>{{ row.officialName }}</span>
-                                <a :href="row.url" target="_blank" style="color: var(--md-typeset-a-color)">{{ row.domain }}</a>
+                                <a :href="row.url" target="_blank" rel="noopener noreferrer" style="color: var(--md-typeset-a-color)">{{ row.domain }}</a>
                             </t-space>
                         </template>
-                        <a :href="row.url" target="_blank">
+                        <a :href="row.url" target="_blank" rel="noopener noreferrer">
                             <t-space align="center" style="gap: 6px">
                                 <span style="display: flex; height: 16px; width: 16px; align-items: center; justify-content: center">
                                     <img v-if="row.icon" :src="'/assets/images/icon/mirrors/' + row.icon" width="16" height="16">
@@ -108,9 +108,9 @@ ComponentSystem.register('mirrors-table', {
                             <div v-if="row[col.colKey] === true && !['ipv6'].includes(col.colKey) && showSupported">
                                 <t-popup placement="bottom" :show-arrow="false">
                                     <template #content>
-                                        <a :href="getMirrorSiteBranchUrl(row.domain, col.colKey)" target="_blank" style="color: var(--md-typeset-a-color)">{{ getMirrorSiteBranchUrl(row.domain, col.colKey) }}</a>
+                                        <a :href="getMirrorSiteBranchUrl(row.domain, col.colKey)" target="_blank" rel="noopener noreferrer" style="color: var(--md-typeset-a-color)">{{ getMirrorSiteBranchUrl(row.domain, col.colKey) }}</a>
                                     </template>
-                                    <a :href="getMirrorSiteBranchUrl(row.domain, col.colKey)" target="_blank" style="color: var(--td-success-color)">
+                                    <a :href="getMirrorSiteBranchUrl(row.domain, col.colKey)" target="_blank" rel="noopener noreferrer" style="color: var(--td-success-color)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59L21 7Z"></svg>
                                     </a>
                                 </t-popup>
@@ -288,7 +288,7 @@ ComponentSystem.register('mirrors-table', {
             else this._updateRows()
         },
         getMirrorSiteBranchUrl(domain, branchName) {
-            return `https://${domain}/${branchName.replace(/_/, '-')}`
+            return `https://${domain}/${branchName.replace(/_/, '-')}/`
         },
         _mapOptionForRow(opt) {
             const prefix = '/assets/images/icon/mirrors/'

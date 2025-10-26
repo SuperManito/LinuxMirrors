@@ -130,10 +130,10 @@ hide:
     <p>✨ 经过了数年的技术沉淀与生产环境检验，广受社区好评，深得开发者喜爱，大厂都在使用</p>
     <div class="icon-brand-section">
       <div class="icon-brand-container no-select">
-        <a class="icon-brand-button" target="_blank" href="https://1panel.cn" title="1Panel">
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="1Panel">
           <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
         </a>
-        <a class="icon-brand-button" target="_blank" href="https://www.bt.cn" title="宝塔面板" style="padding: 0 !important">
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://www.bt.cn" title="宝塔面板" style="padding: 0 !important">
           <img src="/assets/images/other/bt.svg" alt="BT" />
         </a>
       </div>
