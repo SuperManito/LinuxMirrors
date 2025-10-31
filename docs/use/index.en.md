@@ -444,7 +444,7 @@ hide:
 
         - From Developer's Perspective
 
-            This project aims to develop a universal repository switching script from the perspective of an operations and maintenance tool, rather than a tool that specifically addresses software repository requirements. The script's default behavior should be suitable for the majority of users. As an operations and maintenance tool, it should have a clear functional positioning. As a script, its pros and cons should be carefully considered from multiple perspectives, including scalability, practicality, and portability. The choice of software repository should be fully vested in the user.
+            This project aims to develop a universal repository switching script from the perspective of an operations and maintenance tool, rather than a tool that specifically addresses software repository requirements. The script's default behavior should be suitable for the majority of users. As an operations and maintenance tool, it should have a clear functional positioning. As a script, its pros and cons should be carefully considered from multiple perspectives, including scalability,and practicality. The choice of software repository should be fully vested in the user.
 
 ---
 
