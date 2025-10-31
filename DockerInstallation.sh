@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-23
+## Modified: 2025-11-01
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -697,7 +697,7 @@ function collect_system_info() {
 function choose_display_language() {
     local result
     if command_exists tput; then
-        local lang_key_labels=()
+        local -a lang_key_labels=()
         local language_text
         for ((i = 0; i < ${#MESSAGE_LANG_KEYS[@]}; i++)); do
             language_text="${MESSAGE_LANG_DISPLAY[${MESSAGE_LANG_KEYS[$i]}]}"
@@ -744,14 +744,13 @@ function choose_mirrors() {
             local text=$1
             echo "${#text}"
         }
-
-        local list_arr=()
+        local -a list_arr=()
         local list_arr_sum="$(eval echo \${#$1[@]})"
         for ((i = 0; i < $list_arr_sum; i++)); do
             list_arr[$i]="$(eval echo \${$1[i]})"
         done
         local name_width=${2:-"30"}
-        local list_labels=()
+        local -a list_labels=()
         if [[ "${3}" ]]; then
             eval "list_labels=(\"\${${3}[@]}\")"
         fi
@@ -837,7 +836,7 @@ function choose_mirrors() {
     }
 
     local mirror_list_name mirror_list_length
-    local mirror_list_labels=()
+    local -a mirror_list_labels=()
     local label_msg_index label_msg_content
     if [[ -z "${SOURCE}" ]] && [[ "${ONLY_REGISTRY}" != "true" ]]; then
         mirror_list_name="mirror_list_docker_ce"
@@ -1087,7 +1086,7 @@ function install_dependency_packages() {
 
 ## 配置 Docker CE 源
 function configure_docker_ce_mirror() {
-    local commands=()
+    local -a commands=()
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}")
         ## 处理 GPG 密钥
@@ -1277,7 +1276,7 @@ function install_docker_engine() {
     function install_main() {
         local target_docker_version
         local pkgs=""
-        local commands=()
+        local -a commands=()
         if [[ "${INSTALL_LATESTED_DOCKER}" == "true" ]]; then
             pkgs="docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
         else
@@ -1295,7 +1294,7 @@ function install_docker_engine() {
                 target_docker_version="${DESIGNATED_DOCKER_VERSION}"
             else
                 if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-                    local version_list=(
+                    local -a version_list=(
                         $(cat $File_DockerVersionTmp | sort -t '.' -k1,1nr -k2,2nr -k3,3nr | tr '\n' ' ' | sed 's/ $//')
                     )
                     local mirror_list_name="version_list"
@@ -1526,7 +1525,7 @@ function only_change_docker_registry_mirror() {
         if ! command_exists jq; then
             ## 更新软件源
             local package_manager
-            local commands=()
+            local -a commands=()
             case "${SYSTEM_FACTIONS}" in
             "${SYSTEM_DEBIAN}")
                 package_manager="apt-get"
@@ -1582,7 +1581,6 @@ function only_change_docker_registry_mirror() {
 
 function handleRegistryMirrorsValue() {
     local content="$1"
-    local delimiter=","
     local result=""
     content="$(echo "${content}" | sed 's| ||g')"
     local -a items=(${content//,/ })
@@ -1669,8 +1667,8 @@ function get_package_manager() {
 
 function interactive_select_list() {
     _SELECT_RESULT=""
-    eval "local __values=(\"\${${1}[@]}\")"
-    local __labels=()
+    eval "local -a __values=(\"\${${1}[@]}\")"
+    local -a __labels=()
     local message="${2}"
     local selected=0
     local start=0
@@ -1904,7 +1902,7 @@ function animate_exec() {
         exit 130
     }
     function make_temp_file() {
-        local temp_dirs=("." "/tmp")
+        local -a temp_dirs=("." "/tmp")
         local tmp_file=""
         for dir in "${temp_dirs[@]}"; do
             [[ ! -d "${dir}" || ! -w "${dir}" ]] && continue

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-10-20
+## Modified: 2025-11-01
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1088,7 +1088,7 @@ function check_command_options() {
 function choose_display_language() {
     local result
     if command_exists tput; then
-        local lang_key_labels=()
+        local -a lang_key_labels=()
         local language_text
         for ((i = 0; i < ${#MESSAGE_LANG_KEYS[@]}; i++)); do
             language_text="${MESSAGE_LANG_DISPLAY[${MESSAGE_LANG_KEYS[$i]}]}"
@@ -1136,22 +1136,21 @@ function choose_mirrors() {
             local text=$1
             echo "${#text}"
         }
-
-        local list_arr=()
+        local -a list_arr=()
         local list_arr_sum="$(eval echo \${#$1[@]})"
         for ((i = 0; i < $list_arr_sum; i++)); do
             list_arr[$i]="$(eval echo \${$1[i]})"
         done
         local name_width=${2:-"30"}
-        local __labels=()
+        local -a list_labels=()
         if [[ "${3}" ]]; then
-            eval "__labels=(\"\${${3}[@]}\")"
+            eval "list_labels=(\"\${${3}[@]}\")"
         fi
         if command_exists printf; then
             local tmp_uchar_1 tmp_uchar_2 tmp_uchar_3 tmp_uchar_4 tmp_default_length tmp_length tmp_unicode_length tmp_spaces_nums tmp_max_length
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                if [[ "${__labels[$i]}" ]]; then
-                    tmp_name="${__labels[$i]}"
+                if [[ "${list_labels[$i]}" ]]; then
+                    tmp_name="${list_labels[$i]}"
                 else
                     tmp_name="${list_arr[i]}"
                 fi
@@ -1176,8 +1175,8 @@ function choose_mirrors() {
             done
         else
             for ((i = 0; i < ${#list_arr[@]}; i++)); do
-                if [[ "${__labels[$i]}" ]]; then
-                    tmp_name="${__labels[$i]}"
+                if [[ "${list_labels[$i]}" ]]; then
+                    tmp_name="${list_labels[$i]}"
                 else
                     tmp_name="${list_arr[i]}"
                 fi
@@ -1248,7 +1247,7 @@ function choose_mirrors() {
             mirror_list_label_msg_prefix="mirrors.default"
             mirror_list_print_length=32
         fi
-        local mirror_list_labels=()
+        local -a mirror_list_labels=()
         local mirror_list_length=$(eval "echo \${#${mirror_list_name}[@]}")
         local label_msg_index label_msg_content
         for ((i = 0; i < ${mirror_list_length}; i++)); do
@@ -1611,7 +1610,7 @@ function remove_original_mirrors() {
             mkdir -p "${Dir_YumRepos}"
             return
         fi
-        local repo_patterns=()
+        local -a repo_patterns=()
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_FEDORA}" ]]; then
             repo_patterns=(
                 "fedora.repo"
@@ -1849,7 +1848,7 @@ function change_mirrors_main() {
         print_diff
     fi
     ## 更新软件源
-    local commands=()
+    local -a commands=()
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         commands+=("apt-get update")
@@ -1972,7 +1971,7 @@ function upgrade_software() {
             esac
         fi
     fi
-    local commands=()
+    local -a commands=()
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         commands+=("apt-get upgrade -y")
@@ -2793,7 +2792,7 @@ function change_mirrors_openSUSE() {
 
     ## 修改源
     cd $Dir_ZYppRepos
-    local opensuse_repo_files=()
+    local -a opensuse_repo_files=()
     case "${SYSTEM_ID}" in
     opensuse-leap)
         case "${SYSTEM_VERSION_ID_MAJOR}" in
@@ -3071,8 +3070,8 @@ function get_package_manager() {
 
 function interactive_select_list() {
     _SELECT_RESULT=""
-    eval "local __values=(\"\${${1}[@]}\")"
-    local __labels=()
+    eval "local -a __values=(\"\${${1}[@]}\")"
+    local -a __labels=()
     local message="${2}"
     local selected=0
     local start=0
@@ -3306,7 +3305,7 @@ function animate_exec() {
         exit 130
     }
     function make_temp_file() {
-        local temp_dirs=("." "/tmp")
+        local -a temp_dirs=("." "/tmp")
         local tmp_file=""
         for dir in "${temp_dirs[@]}"; do
             [[ ! -d "${dir}" || ! -w "${dir}" ]] && continue
