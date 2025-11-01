@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-01
+## Modified: 2025-11-02
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -198,6 +198,8 @@ SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
 SYSTEM_TENCENTOS="TencentOS"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_ANOLISOS="Anolis"
+SYSTEM_KYLIN_DESKTOP="Kylin Desktop"
+SYSTEM_KYLIN_SERVER="Kylin Server"
 SYSTEM_OPENKYLIN="openKylin"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
@@ -223,7 +225,8 @@ File_ArchLinuxRelease=/etc/arch-release
 File_ManjaroRelease=/etc/manjaro-release
 File_AlpineRelease=/etc/alpine-release
 File_GentooRelease=/etc/gentoo-release
-File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
+File_KylinRelease=/etc/kylin-release
+File_kylinVersion=/etc/kylin-version/kylin-system-version.conf
 File_ProxmoxVersion=/etc/pve/.version
 
 ## 定义软件源相关文件或目录
@@ -759,7 +762,7 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_OPENCLOUDOS}" # 自 9.0 版本起不再基于红帽
     elif [ -s "${File_AnolisOSRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
-    elif [ -s "${File_openKylinVersion}" ]; then
+    elif [ -s "${File_kylinVersion}" ] && [[ "${SYSTEM_ID}" == *"openkylin"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_OPENKYLIN}"
     elif [ -f "${File_ArchLinuxRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_ARCH}"

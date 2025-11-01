@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-01
+## Modified: 2025-11-02
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -116,9 +116,12 @@ SYSTEM_OPENCLOUDOS_STREAM="OpenCloudOS Stream"
 SYSTEM_TENCENTOS="TencentOS"
 SYSTEM_OPENEULER="openEuler"
 SYSTEM_ANOLISOS="Anolis"
+SYSTEM_KYLIN_DESKTOP="Kylin Desktop"
+SYSTEM_KYLIN_SERVER="Kylin Server"
 SYSTEM_OPENKYLIN="openKylin"
 SYSTEM_OPENSUSE="openSUSE"
 SYSTEM_ARCH="Arch"
+SYSTEM_MANJARO="Manjaro"
 SYSTEM_ALPINE="Alpine"
 SYSTEM_GENTOO="Gentoo"
 SYSTEM_NIXOS="NixOS"
@@ -140,7 +143,9 @@ File_ArchLinuxRelease=/etc/arch-release
 File_ManjaroRelease=/etc/manjaro-release
 File_AlpineRelease=/etc/alpine-release
 File_GentooRelease=/etc/gentoo-release
-File_openKylinVersion=/etc/kylin-version/kylin-system-version.conf
+File_KylinRelease=/etc/kylin-release
+File_kylinVersion=/etc/kylin-version/kylin-system-version.conf
+File_ProxmoxVersion=/etc/pve/.version
 
 ## 定义软件源相关文件或目录
 File_AptSourceList=/etc/apt/sources.list
@@ -520,6 +525,9 @@ function collect_system_info() {
     ## 判定当前系统派系
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
+        if [ -s "${File_kylinVersion}" ]; then
+            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Kylin Desktop" "apt-get install -y docker\nsystemctl enable --now docker"
+        fi
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
     elif [ -s "${File_openEulerRelease}" ] || [ -s "${File_HuaweiCloudEulerOSRelease}" ]; then
@@ -530,8 +538,12 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_ANOLISOS}" # 自 8.8 版本起不再基于红帽
     elif [ -s "${File_TencentOSServerRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_TENCENTOS}" # 自 4 版本起不再基于红帽
-    elif [ -s "${File_openKylinVersion}" ]; then
-        [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "openKylin" "apt-get install -y docker\nsystemctl enable --now docker"
+    elif [ -s "${File_kylinVersion}" ] || [ -s "${File_KylinRelease}" ]; then
+        if [[ "${SYSTEM_ID}" == *"openkylin"* ]]; then
+            SYSTEM_FACTIONS="${SYSTEM_OPENKYLIN}"
+        else
+            SYSTEM_FACTIONS="${SYSTEM_KYLIN_SERVER}"
+        fi
     elif [ -f "${File_ArchLinuxRelease}" ]; then
         [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Arch Linux" "pacman -S docker\nsystemctl enable --now docker"
     elif [ -f "${File_GentooRelease}" ]; then
@@ -545,7 +557,7 @@ function collect_system_info() {
     fi
     ## 判定系统类型、版本、版本号
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         if command_exists lsb_release; then
             SYSTEM_JUDGMENT="$(lsb_release -is)"
             SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(lsb_release -cs)"}"
@@ -616,7 +628,8 @@ function collect_system_info() {
     ## 定义软件源仓库名称
     if [[ -z "${SOURCE_BRANCH}" ]]; then
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
+        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
+            local debian_codename_latest="trixie"
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_DEBIAN}")
                 SOURCE_BRANCH="debian"
@@ -626,7 +639,7 @@ function collect_system_info() {
                 ;;
             "${SYSTEM_KALI}")
                 SOURCE_BRANCH="debian"
-                SOURCE_BRANCH_CODENAME="trixie"
+                SOURCE_BRANCH_CODENAME="${debian_codename_latest}"
                 ;;
             "${SYSTEM_LINUX_MINT}")
                 if [[ "${SYSTEM_NAME}" == *"LMDE"* ]]; then
@@ -652,6 +665,24 @@ function collect_system_info() {
                     ;;
                 esac
                 ;;
+            # "${SYSTEM_KYLIN_DESKTOP}")
+            #     SOURCE_BRANCH="debian"
+            #     case "${SYSTEM_VERSION_ID_MAJOR}" in
+            #     "v10")
+            #         SOURCE_BRANCH_CODENAME="bullseye"
+            #         ;;
+            #     "v11")
+            #         SOURCE_BRANCH_CODENAME="${debian_codename_latest}"
+            #         ;;
+            #     *)
+            #         SOURCE_BRANCH_CODENAME="${debian_codename_latest}"
+            #         ;;
+            #     esac
+            #     ;;
+            "${SYSTEM_OPENKYLIN}")
+                SOURCE_BRANCH="debian"
+                SOURCE_BRANCH_CODENAME="${debian_codename_latest}"
+                ;;
             *)
                 # 其余 Debian 系衍生操作系统
                 SOURCE_BRANCH="debian"
@@ -659,7 +690,7 @@ function collect_system_info() {
                 ;;
             esac
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_FEDORA}")
                 SOURCE_BRANCH="fedora"
@@ -679,10 +710,10 @@ function collect_system_info() {
     fi
     ## 定义软件源更新文字
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         SYNC_MIRROR_TEXT="$(msg "source.sync.text1")"
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         SYNC_MIRROR_TEXT="$(msg "source.sync.text2")"
         ;;
     esac
@@ -1004,22 +1035,22 @@ function install_dependency_packages() {
     local commands package_manager
     ## 删除原有源
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         sed -i '/docker-ce/d' $File_AptSourceList
         rm -rf $File_DockerSourceList
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         rm -rf $Dir_YumRepos/*docker*.repo
         ;;
     esac
     ## 更新软件源
     commands=()
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         package_manager="apt-get"
         commands+=("${package_manager} update")
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         package_manager="$(get_package_manager)"
         commands+=("${package_manager} makecache")
         ;;
@@ -1047,11 +1078,10 @@ function install_dependency_packages() {
 
     commands=()
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         commands+=("${package_manager} install -y ca-certificates curl")
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
-        # 注：红帽 8 版本才发布了 dnf 包管理工具
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         7)
             commands+=("${package_manager} install -y yum-utils device-mapper-persistent-data lvm2")
@@ -1088,7 +1118,7 @@ function install_dependency_packages() {
 function configure_docker_ce_mirror() {
     local -a commands=()
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         ## 处理 GPG 密钥
         local file_keyring="/etc/apt/keyrings/docker.asc"
         apt-key del 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88 >/dev/null 2>&1 # 删除旧的密钥
@@ -1101,11 +1131,11 @@ function configure_docker_ce_mirror() {
         chmod a+r $file_keyring
         ## 添加源
         [ -d "${Dir_AptAdditionalSources}" ] || mkdir -p $Dir_AptAdditionalSources
-        local source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${SOURCE_BRANCH_CODENAME:-"${SYSTEM_VERSION_CODENAME}"} stable"
+        local source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${DEBIAN_CODENAME:-"${SOURCE_BRANCH_CODENAME:-"${SYSTEM_VERSION_CODENAME}"}"} stable"
         echo "${source_content}" | tee $File_DockerSourceList >/dev/null 2>&1
         commands+=("apt-get update")
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         local repo_file_url="${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo"
         local package_manager="$(get_package_manager)"
         case "${SYSTEM_VERSION_ID_MAJOR}" in
@@ -1194,6 +1224,19 @@ function configure_docker_ce_mirror() {
                         ;;
                     esac
                 fi
+                if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_KYLIN_SERVER}" ]]; then
+                    case "${SYSTEM_VERSION_ID_MAJOR}" in
+                    "V10")
+                        target_version="8"
+                        ;;
+                    "V11")
+                        target_version="10"
+                        ;;
+                    *)
+                        target_version="10"
+                        ;;
+                    esac
+                fi
                 ;;
             esac
             sed -e "s|\$releasever|${target_version}|g" \
@@ -1226,12 +1269,12 @@ function install_docker_engine() {
     ## 导出可安装的版本列表
     function export_version_list() {
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
+        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
             apt-cache madison docker-ce | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCEVersionTmp
             apt-cache madison docker-ce-cli | awk '{print $3}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCECliVersionTmp
             grep -wf $File_DockerCEVersionTmp $File_DockerCECliVersionTmp >$File_DockerVersionTmp
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
             local package_manager="$(get_package_manager)"
             $package_manager list docker-ce --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCEVersionTmp
             $package_manager list docker-ce-cli --showduplicates | sort -r | awk '{print $2}' | grep -Eo "[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}" >$File_DockerCECliVersionTmp
@@ -1251,20 +1294,20 @@ function install_docker_engine() {
         # 确定需要卸载的软件包
         local package_list
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
+        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
             package_list='docker* podman podman-docker containerd runc'
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
             package_list='docker* podman podman-docker runc'
             ;;
         esac
         # 卸载软件包并清理残留
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
+        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
             apt-get remove -y $package_list >/dev/null 2>&1
             apt-get autoremove -y >/dev/null 2>&1
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
             local package_manager="$(get_package_manager)"
             $package_manager remove -y $package_list >/dev/null 2>&1
             $package_manager autoremove -y >/dev/null 2>&1
@@ -1326,7 +1369,7 @@ function install_docker_engine() {
             local major_version="$(echo ${target_docker_version} | cut -d'.' -f1)"
             local minor_version="$(echo ${target_docker_version} | cut -d'.' -f2)"
             case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}")
+            "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
                 if [[ $major_version -gt 18 ]] || [[ $major_version -eq 18 && $minor_version -ge 9 ]]; then
                     local tmp_version="$(apt-cache madison docker-ce-cli | grep "${target_docker_version}" | head -1 | awk '{print $3}' | awk -F "${target_docker_version}" '{print$1}')"
                     pkgs="docker-ce=${tmp_version}${target_docker_version}* docker-ce-cli=${tmp_version}${target_docker_version}*"
@@ -1335,7 +1378,7 @@ function install_docker_engine() {
                 fi
                 ;;
 
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
                 pkgs="docker-ce-${target_docker_version}"
                 if [[ $major_version -gt 18 ]] || [[ $major_version -eq 18 && $minor_version -ge 9 ]]; then
                     pkgs="${pkgs} docker-ce-cli-${target_docker_version}"
@@ -1351,10 +1394,10 @@ function install_docker_engine() {
             fi
         fi
         case "${SYSTEM_FACTIONS}" in
-        "${SYSTEM_DEBIAN}")
+        "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
             commands+=("apt-get install -y ${pkgs}")
             ;;
-        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+        "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
             commands+=("$(get_package_manager) install -y ${pkgs}")
             ;;
         esac
@@ -1409,10 +1452,10 @@ function install_docker_engine() {
 
     ## 判定是否已安装
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         dpkg -l | grep docker-ce-cli -q
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         rpm -qa | grep docker-ce-cli -q
         ;;
     esac
@@ -1505,10 +1548,10 @@ function change_docker_registry_mirror() {
 function only_change_docker_registry_mirror() {
     ## 判定是否已安装
     case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}")
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         dpkg -l | grep docker-ce-cli -q
         ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         rpm -qa | grep docker-ce-cli -q
         ;;
     esac
@@ -1527,11 +1570,11 @@ function only_change_docker_registry_mirror() {
             local package_manager
             local -a commands=()
             case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}")
+            "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
                 package_manager="apt-get"
                 commands+=("${package_manager} update")
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
                 package_manager="$(get_package_manager)"
                 commands+=("${package_manager} makecache")
                 ;;
@@ -1612,11 +1655,11 @@ function check_installed_result() {
             echo -e "\n$FAIL $(msg "result.install.failed")"
             local source_file package_manager
             case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}")
+            "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
                 source_file="${File_DockerSourceList}"
                 package_manager="apt-get"
                 ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
                 source_file="${File_DockerRepo}"
                 package_manager="$(get_package_manager)"
                 ;;
@@ -1658,7 +1701,7 @@ function get_package_manager() {
             ;;
         esac
         ;;
-    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}")
+    "${SYSTEM_FEDORA}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         command="dnf"
         ;;
     esac
