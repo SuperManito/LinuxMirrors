@@ -34,7 +34,7 @@
         <td align="center">14 ~ 25</td>
     </tr>
     <tr>
-        <td><a href="https://www.kali.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/kali-linux.svg" width="16" height="16"></sub></a>&nbsp;Kali Linux</td>
+        <td><a href="https://www.kali.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/kali-linux.png" width="16" height="16"></sub></a>&nbsp;Kali Linux</td>
         <td align="center">all</td>
     </tr>
     <tr>

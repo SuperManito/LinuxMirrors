@@ -110,7 +110,7 @@ hide:
 
     ---
 
-    Compatible with a number of derivative operating systems not supported by the official installation script. :material-information-outline:{ title="In addition to the systems displayed on the official website, it also supports special systems such as <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code>" }
+    Compatible with a number of derivative operating systems not supported by the official installation script. :material-information-outline:{ title="In addition to the operating systems shown on the official website homepage, it also supports special systems such as those shown below. </br><ul><li>Kylin Server</li><li>Huawei Cloud EulerOS</li><li>TencentOS Server</li><li>Alibaba Cloud Linux</li></ul>" }
 
 -   :material-weight-lifter:{ .lg .middle } __Powerful and unparalleled__
 
@@ -282,6 +282,7 @@ Command options(name/meaning/value):
           --only-registry \
           --source-registry "docker.1ms.run,docker.1panel.live,docker.m.daocloud.io"
         ```
+        > The option value can specify multiple addresses, which must be separated by commas.
 
     === "Manual Replacement"
 

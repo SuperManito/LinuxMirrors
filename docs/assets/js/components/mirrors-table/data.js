@@ -755,7 +755,7 @@ const mirrorsTableFilterSelectOptions = [
             {
                 value: 'kali',
                 label: 'Kali Linux',
-                iconName: 'kali-linux.svg',
+                iconName: 'kali-linux.png',
             },
             {
                 value: 'armbian',

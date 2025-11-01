@@ -110,7 +110,7 @@ hide:
 
     ---
 
-    兼容大量不受官方安装脚本支持的衍生操作系统 :material-information-outline:{ title="除官网首页展示的系统外还支持  <code>Huawei Cloud EulerOS</code>&nbsp;&nbsp;<code>TencentOS Server</code>&nbsp;&nbsp;<code>Alibaba Cloud Linux</code> 等特制系统" }
+    兼容大量不受官方安装脚本支持的衍生操作系统 :material-information-outline:{ title="除官网首页展示的系统外还支持下方等特制系统</br><ul><li>Kylin Server</li><li>Huawei Cloud EulerOS</li><li>TencentOS Server</li><li>Alibaba Cloud Linux</li></ul>" }
 
 -   :material-weight-lifter:{ .lg .middle } __功能强大、无与伦比__
 
@@ -282,6 +282,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
           --only-registry \
           --source-registry "docker.1ms.run,docker.1panel.live,docker.m.daocloud.io"
         ```
+        > 选项值可以指定多个地址，需使用英文逗号进行分割
 
     === "手动替换"
 

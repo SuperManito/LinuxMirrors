@@ -255,4 +255,8 @@ search:
 
 !!! tip "This page displays only the default repository addresses provided by the script. If you can't find the one you want, don't worry—the script supports custom addresses via command options. See [Advanced Usage](../use/index.md#command-options-advanced-usage) for details."
 
-> The flag icons on this page are for quick geographic identification only and do not represent any political stance of the author. Please do not over-interpret. Statement made for clarification.
+---
+
+!!! warning "Because the information on this page may be controversial, it is recommended that you do not include this page's content in your sharing on certain social media platforms to avoid unnecessary trouble."
+
+    The flag icons on this page are for quick geographic identification only and do not represent any political stance of the author. Please do not over-interpret. Statement made for clarification.

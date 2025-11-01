@@ -6,6 +6,10 @@ search:
   exclude: true
 ---
 
+### `2025-11-02`
+
+  * Docker 腳本新增適配 Kylin Server 作業系統 [#1ddf1fb](https://github.com/SuperManito/LinuxMirrors/commit/1ddf1fb708987cf59c4ef56b0a0410caf1b8e726)
+
 ### `2025-10-12`
 
   * 新增適配 I18n [#bf2adc1](https://github.com/SuperManito/LinuxMirrors/commit/bf2adc1adf4f2de4820f617a23aabf247a47281c)
