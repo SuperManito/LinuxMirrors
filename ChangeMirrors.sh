@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-02
+## Modified: 2025-11-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -730,7 +730,11 @@ function command_exists() {
 
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
-        output_error "$(msg "error.needRoot")"
+        local change_cmd="su root"
+        if command_exists sudo; then
+            change_cmd="sudo -i"
+        fi
+        output_error "$(msg "error.needRoot" "${BLUE}${change_cmd}${PLAIN}")"
     fi
 }
 
@@ -747,7 +751,7 @@ function collect_system_info() {
     SYSTEM_PRETTY_NAME="$(get_os_release_value PRETTY_NAME)"
     ## 定义系统版本号
     SYSTEM_VERSION_ID="$(get_os_release_value VERSION_ID)"
-    SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
+    SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%%.*}"
     SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
     ## 定义系统ID
     SYSTEM_ID="$(get_os_release_value ID)"
@@ -803,7 +807,7 @@ function collect_system_info() {
             ## 尚未正式发布的版本
             if [[ -z "${SYSTEM_VERSION_ID}" && "${SYSTEM_VERSION_CODENAME}" == "trixie" ]]; then
                 SYSTEM_VERSION_ID="13"
-                SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
+                SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%%.*}"
                 SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
             fi
             ## 是否使用 DEB822 格式
@@ -843,10 +847,8 @@ function collect_system_info() {
     local is_supported="true"
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" =~ ^[0-9]{1,2}$ ]]; then
-            if [[ "${SYSTEM_VERSION_ID_MAJOR}" -lt 8 || "${SYSTEM_VERSION_ID_MAJOR}" -gt 13 ]]; then
-                is_supported="false"
-            fi
+        if [[ ! "${SYSTEM_VERSION_ID_MAJOR}" =~ ^(1[0-3]|[8-9])$ ]]; then
+            is_supported="false"
         fi
         if [[ "${SYSTEM_VERSION_CODENAME}" == "sid" ]]; then
             if [[ "${PURE_MODE}" != "true" ]]; then
@@ -855,17 +857,23 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_UBUNTU}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" -lt 14 || "${SYSTEM_VERSION_ID_MAJOR}" -gt 25 ]]; then
+        if [[ ! "${SYSTEM_VERSION_ID_MAJOR}" =~ ^(1[4-9]|2[0-5])$ ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_LINUX_MINT}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 19 && "${SYSTEM_VERSION_ID_MAJOR}" != 2[0-2] && "${SYSTEM_VERSION_ID_MAJOR}" != 6 ]]; then
-            is_supported="false"
+        if [[ "${SYSTEM_NAME}" == *"LMDE"* ]]; then
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [6-7] ]]; then
+                is_supported="false"
+            fi
+        else
+            if [[ ! "${SYSTEM_VERSION_ID_MAJOR}" =~ ^(19|2[0-2])$ ]]; then
+                is_supported="false"
+            fi
         fi
         ;;
     "${SYSTEM_RHEL}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [7-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 10 ]]; then
+        if [[ ! "${SYSTEM_VERSION_ID_MAJOR}" =~ ^([7-9]|10)$ ]]; then
             is_supported="false"
         fi
         ;;
@@ -875,7 +883,7 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ROCKY}" | "${SYSTEM_ALMALINUX}" | "${SYSTEM_ORACLE}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [8-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 10 ]]; then
+        if [[ ! "${SYSTEM_VERSION_ID_MAJOR}" =~ ^([8-9]|10)$ ]]; then
             is_supported="false"
         fi
         ;;
@@ -890,12 +898,12 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != [8-9] && "${SYSTEM_VERSION_ID_MAJOR}" != 23 ]] || [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 && "${SYSTEM_VERSION_ID_MINOR}" -lt 6 ]]; then
+        if [[ ! "${SYSTEM_VERSION_ID_MAJOR}" =~ ^([8-9]|23)$ ]] || [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 && "${SYSTEM_VERSION_ID_MINOR}" -lt 6 ]]; then
             is_supported="false"
         fi
         ;;
     "${SYSTEM_ANOLISOS}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 8 && "${SYSTEM_VERSION_ID_MAJOR}" != 23 ]]; then
+        if [[ ! "${SYSTEM_VERSION_ID_MAJOR}" =~ ^(8|23)$ ]]; then
             is_supported="false"
         fi
         ;;
@@ -2090,13 +2098,11 @@ Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
     function gen_deb822() {
         echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}")
 
-${deb_src_disabled_tips}
 $(_template_deb822 "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
     function gen_deb822_disabled() {
         echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")
 
-${deb_src_disabled_tips}
 $(_template_deb822 "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
     }
     function gen_deb_security() {
@@ -2125,10 +2131,12 @@ $(gen_deb "${1}" "${2}-updates" "${3}")"
     function gen_debian_deb822() {
         case "${2}" in
         forky | trixie | bookworm | stable | oldstable | testing)
-            echo "$(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")"
+            echo "${deb_src_disabled_tips}
+$(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")"
             ;;
         *)
-            echo "$(gen_deb822 "${1}" "${2} ${2}-updates" "${3}")"
+            echo "${deb_src_disabled_tips}
+$(gen_deb822 "${1}" "${2} ${2}-updates" "${3}")"
             ;;
         esac
     }
@@ -2140,7 +2148,8 @@ $(gen_deb "${1}" "${2}-backports" "${3}")
 $(gen_deb_disabled "${1}" "${2}-proposed" "${3}")"
     }
     function gen_ubuntu_deb822() {
-        echo "$(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
+        echo "${deb_src_disabled_tips}
+$(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
 
 ## $(msg "source.comment.proposedSource")
 $(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
@@ -6368,7 +6377,7 @@ EOF
 
 ## 生成 OpenCloudOS repo 源文件
 function gen_repo_files_OpenCloudOS() {
-    case "${1%.*}" in
+    case "${1%%.*}" in
     23)
         cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Stream.repo
 [BaseOS]
@@ -6697,7 +6706,7 @@ EOF
 
 ## 生成 Anolis OS repo 源文件
 function gen_repo_files_AnolisOS() {
-    case "${1%.*}" in
+    case "${1%%.*}" in
     23)
         cat <<'EOF' >$Dir_YumRepos/AnolisOS.repo
 [os]
@@ -6961,7 +6970,7 @@ EOF
 function gen_repo_files_openSUSE() {
     case "$1" in
     "leap")
-        case "${2%.*}" in
+        case "${2%%.*}" in
         16)
             cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-non-oss-debug.repo
 [openSUSE:repo-non-oss-debug]
@@ -7761,7 +7770,7 @@ function msg_pack_zh_hans() {
         ['error.unknownSystem']='未知系统'
         ['error.unknownVersion']='系统版本未知'
         ['error.input']='输入错误，{}！'
-        ['error.needRoot']='权限不足，请使用 Root 用户运行本脚本'
+        ['error.needRoot']='权限不足，请切换至 root 账户后运行本脚本，切换命令 {}'
         ['error.defaultBehavior.https']='默认使用 HTTPS 协议'
         ['error.defaultBehavior.noReplace']='默认不更换'
         ['error.defaultBehavior.noOverwrite']='默认不覆盖'
@@ -7993,7 +8002,7 @@ function msg_pack_zh_hant() {
         ['error.unknownSystem']='未知系統'
         ['error.unknownVersion']='系統版本未知'
         ['error.input']='輸入錯誤，{}！'
-        ['error.needRoot']='權限不足，請使用 Root 使用者執行本腳本'
+        ['error.needRoot']='權限不足，請切換至 root 帳戶後執行本腳本，切換指令 {}'
         ['error.defaultBehavior.https']='預設使用 HTTPS 協定'
         ['error.defaultBehavior.noReplace']='預設不更換'
         ['error.defaultBehavior.noOverwrite']='預設不覆蓋'
@@ -8225,7 +8234,7 @@ function msg_pack_en() {
         ['error.unknownSystem']='Unknown system'
         ['error.unknownVersion']='System version unknown'
         ['error.input']='Input error, {}!'
-        ['error.needRoot']='Insufficient permissions, please run this script as Root user'
+        ['error.needRoot']='Insufficient privileges, please run this script as root. Switch command: {}'
         ['error.defaultBehavior.https']='HTTPS is used by default'
         ['error.defaultBehavior.noReplace']='No replacement by default'
         ['error.defaultBehavior.noOverwrite']='No overwrite by default'

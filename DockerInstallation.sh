@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-02
+## Modified: 2025-11-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -501,7 +501,11 @@ function command_exists() {
 
 function permission_judgment() {
     if [ $UID -ne 0 ]; then
-        output_error "$(msg "error.needRoot")"
+        local change_cmd="su root"
+        if command_exists sudo; then
+            change_cmd="sudo -i"
+        fi
+        output_error "$(msg "error.needRoot" "${BLUE}${change_cmd}${PLAIN}")"
     fi
 }
 
@@ -518,7 +522,7 @@ function collect_system_info() {
     SYSTEM_PRETTY_NAME="$(get_os_release_value PRETTY_NAME)"
     ## 定义系统版本号
     SYSTEM_VERSION_ID="$(get_os_release_value VERSION_ID)"
-    SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%.*}"
+    SYSTEM_VERSION_ID_MAJOR="${SYSTEM_VERSION_ID%%.*}"
     SYSTEM_VERSION_ID_MINOR="${SYSTEM_VERSION_ID#*.}"
     ## 定义系统ID
     SYSTEM_ID="$(get_os_release_value ID)"
@@ -2124,7 +2128,7 @@ function msg_pack_zh_hans() {
         ['error.unknownArch']='未知的系统架构：{}'
         ['error.unsupportS390x']='请查阅 RHEL 发行版声明以了解 s390x 支持'
         ['error.input']='输入错误，{}！'
-        ['error.needRoot']='权限不足，请使用 Root 用户运行本脚本'
+        ['error.needRoot']='权限不足，请切换至 root 账户后运行本脚本，切换命令 {}'
         ['error.sync']='{}出错，请先解决系统原有软件源错误以确保 {} 软件包管理工具可用！'
         ['error.downloadGPG']='GPG 密钥下载失败，请检查网络或更换 Docker CE 软件源后重试！'
         ['error.queryVersionFailed']='查询 Docker Engine 版本列表失败！'
@@ -2275,7 +2279,7 @@ function msg_pack_zh_hant() {
         ['error.unknownArch']='未知的系統架構：{}'
         ['error.unsupportS390x']='請查閱 RHEL 發行版宣告以瞭解 s390x 支援'
         ['error.input']='輸入錯誤，{}！'
-        ['error.needRoot']='權限不足，請使用 Root 使用者執行本腳本'
+        ['error.needRoot']='權限不足，請切換至 root 帳戶後執行本腳本，切換指令 {}'
         ['error.sync']='{}出錯，請先解決系統原有軟體源錯誤以確保 {} 軟體包管理工具可用！'
         ['error.downloadGPG']='GPG 金鑰下載失敗，請檢查網路或更換 Docker CE 軟體源後重試！'
         ['error.queryVersionFailed']='查詢 Docker Engine 版本清單失敗！'
@@ -2427,7 +2431,7 @@ function msg_pack_en() {
         ['error.unknownArch']='Unknown system architecture: {}'
         ['error.unsupportS390x']='Please refer to RHEL distribution announcement for s390x support'
         ['error.input']='Input error, {}!'
-        ['error.needRoot']='Insufficient permissions, please run this script as Root user'
+        ['error.needRoot']='Insufficient privileges, please run this script as root. Switch command: {}'
         ['error.sync']='{} failed. Please fix system software sources (package repositories) so the {} package manager is available!'
         ['error.downloadGPG']='GPG key download failed, please check network or switch Docker CE mirror and retry!'
         ['error.queryVersionFailed']='Failed to query Docker Engine version list!'

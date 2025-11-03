@@ -775,7 +775,7 @@ const mirrorsTableFilterSelectOptions = [
             {
                 value: 'linuxmint',
                 label: 'Linux Mint',
-                iconName: 'linux-mint.ico',
+                iconName: 'linux-mint.svg',
             },
             {
                 value: 'deepin',

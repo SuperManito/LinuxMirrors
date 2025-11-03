@@ -153,29 +153,29 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-numeric-1:{style="color: #5b84f5" .lg} __需使用 `ROOT` 用户执行脚本__
+-   :material-numeric-1:{style="color: #5b84f5" .lg} __需要 `ROOT` 权限__
 
     ---
 
-    切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为部分系统没有在初始安装时为 ROOT 账户设置密码（例如 Ubuntu）或系统默认禁止 ROOT 用户登录。
+    请使用 `root` 账户运行本脚本，切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为部分系统没有在初始安装时为 root 账户设置密码（例如 Ubuntu）或系统默认禁止 `root` 账户登录。
 
 -   :material-numeric-2:{style="color: #5b84f5" .lg} __建议使用现代化的 `SSH` 客户端应用__
 
     ---
 
-    如果你系统命令行界面的中文显示乱码那么将导致无法查看交互内容，此外部分系统 GUI 图形界面的终端应用可能存在一些无法预料的显示问题。部分系统会自动开启 SSH 服务，否则请参考[开启方法](#关于开启-ssh-远程登录的方法)。
+    如果系统命令行界面的中文显示乱码，将导致无法查看交互内容，此外部分系统 GUI 图形界面的终端应用可能存在一些无法预料的显示问题。部分系统会自动开启 SSH 服务，否则请参考[开启方法](#关于开启-ssh-远程登录的方法)。
 
 -   :material-numeric-3:{style="color: #5b84f5" .lg} __如果是在新装系统上首次执行脚本__
 
     ---
 
-    当前依赖 `curl` 指令获取脚本内容，但部分操作系统没有预装此软件包，届时则会报错 `Command not found`，安装方法详见下方 [_关于报错 Command not found_](#关于报错-command-not-found)。脚本本身与 `curl` `wget` 指令无关，更不会下载任何内容。
+    当前依赖 `curl` 指令获取脚本内容，但部分操作系统未预装此软件包，将会报错 `Command not found`，安装方法详见下方 [_关于报错 Command not found_](#关于报错-command-not-found)。脚本本身与 `curl` `wget` 指令无关，不会下载任何内容。
 
 -   :material-numeric-4:{style="color: #5b84f5" .lg} __脚本运行期间需要交互选择配置__
 
     ---
 
-    请通过方向键 ++arrow-up++++arrow-down++++arrow-left++++arrow-right++ 或 ++w++++a++++s++++d++ 控制选项并按 ++enter++ 回车键确认。如果发现交互异常那么请改变终端软件的窗口大小后重试，另外窗口不要铺满全屏。
+    请通过方向键 ++arrow-up++++arrow-down++++arrow-left++++arrow-right++ 或 ++w++++a++++s++++d++ 控制选项并按 ++enter++ 回车键确认。如果发现交互异常请改变终端软件的窗口大小后重试，避免窗口铺满全屏。
 
 </div>
 
@@ -287,7 +287,7 @@ hide:
 
 - #### 还原已备份的软件源
 
-    !!! quote ""
+    ??? quote "点击展开查看"
 
         === "Debian 系 / openKylin"
 
@@ -354,36 +354,79 @@ hide:
 
 - #### 关于开启 SSH 远程登录的方法
 
-    !!! quote ""
+    ??? quote "点击展开查看"
 
-        命令以及配置步骤仅供参考，只适配了部分常见发行版
+        命令以及配置步骤仅供参考，注意灵活变通
 
         - 验证是否已安装 `SSH` 服务
 
             ``` bash
             ls /etc | grep ssh
             ```
-            > 如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh` 软件包  
-            > 需要注意的是不同系统上的软件包名称有所差异，可直接使用 `openssh*` 通配符进行安装
 
-        - 设置允许 Root 用户登录
+            如果没有这个文件夹说明系统未安装 `SSH` 服务，你需要通过包管理工具安装 `openssh-server` 软件包，安装命令如下：
 
-            ``` bash
+            === "Debian 系 / openKylin"
+
+                ``` bash
+                apt-get install -y openssh-server
+                ```
+
+                > `Debian` &nbsp; `Ubuntu` &nbsp; `Kali` &nbsp; `Linux Mint` &nbsp; `Deepin` &nbsp; `Zorin OS` &nbsp; `Armbian` &nbsp; `Proxmox VE` &nbsp; `Raspberry Pi OS` &nbsp; `openKylin`
+
+                新装系统需要先执行一遍更新 `apt-get update`
+
+            === "RedHat 系 / openEuler / OpenCloudOS / Anolis OS"
+
+                ``` bash
+                dnf install -y openssh-server || yum install -y openssh-server
+                ```
+
+                > `Red Hat Enterprise Linux` &nbsp; `CentOS` &nbsp; `Rocky Linux` &nbsp; `AlmaLinux` &nbsp; `Fedora` &nbsp; `openEuler` &nbsp; `OpenCloudOS` &nbsp; `Anolis OS`
+
+            === "openSUSE"
+
+                ``` bash
+                zypper install openssh-server
+                ```
+
+            === "Arch Linux / Manjaro"
+
+                ``` bash
+                pacman -S openssh
+                ```
+
+            === "Alpine Linux"
+
+                ``` bash
+                apk --no-cache add -f openssh
+                ```
+
+            === "Gentoo"
+
+                ``` bash
+                emerge --ask --changed-use --oneshot net-misc/openssh
+                ```
+
+            > 不同系统上的软件包名称有所差异，如果提示找不到该软件包可尝试使用通配符 `openssh*` 进行安装
+
+        - 配置 `SSH` 服务
+
+            ``` { .bash .no-copy title="允许 root 账户登录" }
             cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
             ```
 
-        - 设置密码认证
-
-            ``` bash
+            ``` { .bash .no-copy title="启用密码认证" }
             cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
             ```
 
         - 启动/重启 `SSH` 服务
 
             ``` bash
-            ps -ef | grep -q ssh ; [ $? -eq 0 ] && systemctl restart sshd || systemctl enable --now sshd
+            for ssh_svc in sshd ssh; do systemctl restart "${ssh_svc}" 2>/dev/null && break ; systemctl enable --now "${ssh_svc}" 2>/dev/null && break ; done
             ```
-            > 不同系统上的服务名称有所差异，如果不是 `sshd` 那就试试 `ssh`
+
+        !!! tip "友情提示：如果你正在使用公网服务器，建议关闭 SSH 密码认证方式并设置密钥登录。"
 
 - #### 关于未显示方向键交互控制界面
 
@@ -545,31 +588,31 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --help
 
         | 系统名称 | 涉及的名称 |
         | --- | :---: |
-        | <a href="https://www.debian.org" title="https://www.debian.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/debian.svg" width="16" height="16" style="vertical-align: -0.35em"></a> **Debian** | `debian` `debian-archive` |
-        | <a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/ubuntu.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **Ubuntu** | `ubuntu` `ubuntu-ports` |
-        | <a href="https://www.kali.org" title="https://www.kali.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/kali-linux.png" width="16" height="16"></a> **Kali Linux** | `kali` |
-        | <a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/linux-mint.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **Linux Mint** | `linuxmint` `ubuntu` `ubuntu-ports` `debian` |
-        | <a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/deepin.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Deepin（深度）** | `deepin` |
-        | <a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/zorin-os.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Zorin OS** | `ubuntu` `ubuntu-ports` |
-        | <a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/armbian.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Armbian** | `armbian` |
-        | <a href="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" title="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/proxmox.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Proxmox VE** | `proxmox` |
-        | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/raspberry-pi.png" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
-        | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/redhat.svg" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
-        | <a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/fedora.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
-        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/centos.svg" width="16" height="16" style="vertical-align: -0.135em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
-        | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/rocky-linux.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | `rocky` |
-        | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/almalinux.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
-        | <a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/oracle-linux.png" width="16" height="16" style="vertical-align: -0.25em"></a> **Oracle Linux** | `centos-stream` |
-        | <a href="https://www.openeuler.org/zh" title="https://www.openeuler.org/zh" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openeuler.ico" width="16" height="16" style="vertical-align: -0.2em"></a> **openEuler（开源欧拉）** | `openeuler` |
-        | <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opencloudos.png" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS（鸥栖）** | `opencloudos` |
-        | <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openkylin.ico" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin（开放麒麟）** | `openkylin` |
-        | <a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/anolis.png" width="16" height="16" style="vertical-align: -0.1em"></a> **Anolis OS（龙蜥）** | `anolis` |
-        | <a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opensuse.svg" width="16" height="16"></a> **openSUSE** | `opensuse` |
-        | <a href="https://archlinux.org" title="https://archlinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/arch-linux.ico" width="16" height="16" style="vertical-align: -0.15em"></a> **Arch Linux** | `archlinux` `archlinuxarm` |
-        | <a href="https://manjaro.org" title="https://manjaro.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/manjaro.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Manjaro** | `manjaro` |
-        | <a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/alpine.png" width="16" height="16" style="vertical-align: -0.15em"></a> **Alpine Linux** | `alpine` |
-        | <a href="https://www.gentoo.org" title="https://www.gentoo.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/gentoo.svg" width="16" height="16" style="vertical-align: -0.2em"></a> **Gentoo** | `gentoo` `gentoo-portage` |
-        | <a href="https://nixos.org" title="https://nixos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/nixos.svg" width="16" height="16" style="vertical-align: -0.15em"></a> **NixOS** | `nix-channels` |
+        | <a href="https://www.debian.org" title="https://www.debian.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/debian.svg" alt="Debian" width="16" height="16" style="vertical-align: -0.35em"></a> **Debian** | `debian` `debian-archive` |
+        | <a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/ubuntu.svg" alt="Ubuntu" width="16" height="16" style="vertical-align: -0.15em"></a> **Ubuntu** | `ubuntu` `ubuntu-ports` |
+        | <a href="https://www.kali.org" title="https://www.kali.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/kali-linux.png" alt="Kali Linux" width="16" height="16"></a> **Kali Linux** | `kali` |
+        | <a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/linux-mint.svg" alt="Linux Mint" width="16" height="16" style="vertical-align: -0.2em"></a> **Linux Mint** | `linuxmint` `ubuntu` `ubuntu-ports` `debian` |
+        | <a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/deepin.png" alt="Deepin" width="16" height="16" style="vertical-align: -0.2em"></a> **Deepin（深度）** | `deepin` |
+        | <a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/zorin-os.png" alt="Zorin OS" width="16" height="16" style="vertical-align: -0.15em"></a> **Zorin OS** | `ubuntu` `ubuntu-ports` |
+        | <a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/armbian.png" alt="Armbian" width="16" height="16" style="vertical-align: -0.2em"></a> **Armbian** | `armbian` |
+        | <a href="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" title="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/proxmox.svg" alt="Proxmox VE" width="16" height="16" style="vertical-align: -0.2em"></a> **Proxmox VE** | `proxmox` |
+        | <a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/raspberry-pi.png" alt="Raspberry Pi OS" width="16" height="16" style="vertical-align: -0.2em"></a> **Raspberry Pi OS** | `raspberrypi` `raspbian` `debian` `debian-archive` |
+        | <a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/redhat.svg" alt="Red Hat Enterprise Linux" width="16" height="16" style="vertical-align: -0.1em"></a> **Red Hat Enterprise Linux** :material-information-outline:{ title="9版本使用 <code>CentOS Stream</code>， 7、8版本使用<code>CentOS</code>" } | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/fedora.ico" alt="Fedora" width="16" height="16" style="vertical-align: -0.15em"></a> **Fedora** | `fedora` `fedora-archive` |
+        | <a href="https://www.centos.org" title="https://www.centos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/centos.svg" alt="CentOS" width="16" height="16" style="vertical-align: -0.135em"></a> **CentOS** | `centos` `centos-stream` `centos-altarch` `centos-vault` |
+        | <a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/rocky-linux.svg" alt="Rocky Linux" width="16" height="16" style="vertical-align: -0.2em"></a> **Rocky Linux** | `rocky` |
+        | <a href="https://almalinux.org" title="https://almalinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/almalinux.svg" alt="AlmaLinux" width="16" height="16" style="vertical-align: -0.15em"></a> **AlmaLinux** | `almalinux` `almalinux-vault` |
+        | <a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/oracle-linux.png" alt="Oracle Linux" width="16" height="16" style="vertical-align: -0.25em"></a> **Oracle Linux** | `centos-stream` |
+        | <a href="https://www.openeuler.org" title="https://www.openeuler.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openeuler.ico" alt="openEuler" width="16" height="16" style="vertical-align: -0.2em"></a> **openEuler（开源欧拉）** | `openeuler` |
+        | <a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opencloudos.png" alt="OpenCloudOS" width="16" height="16" style="vertical-align: -0.25em"></a> **OpenCloudOS（鸥栖）** | `opencloudos` |
+        | <a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openkylin.ico" alt="openKylin" width="16" height="16" style="vertical-align: -0.25em"></a> **openKylin（开放麒麟）** | `openkylin` |
+        | <a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/anolis.png" alt="Anolis OS" width="16" height="16" style="vertical-align: -0.1em"></a> **Anolis OS（龙蜥）** | `anolis` |
+        | <a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opensuse.svg" alt="openSUSE" width="16" height="16"></a> **openSUSE** | `opensuse` |
+        | <a href="https://archlinux.org" title="https://archlinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/arch-linux.ico" alt="Arch Linux" width="16" height="16" style="vertical-align: -0.15em"></a> **Arch Linux** | `archlinux` `archlinuxarm` |
+        | <a href="https://manjaro.org" title="https://manjaro.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/manjaro.svg" alt="Manjaro" width="16" height="16" style="vertical-align: -0.2em"></a> **Manjaro** | `manjaro` |
+        | <a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/alpine.png" alt="Alpine Linux" width="16" height="16" style="vertical-align: -0.15em"></a> **Alpine Linux** | `alpine` |
+        | <a href="https://www.gentoo.org" title="https://www.gentoo.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/gentoo.svg" alt="Gentoo" width="16" height="16" style="vertical-align: -0.2em"></a> **Gentoo** | `gentoo` `gentoo-portage` |
+        | <a href="https://nixos.org" title="https://nixos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/nixos.svg" alt="NixOS" width="16" height="16" style="vertical-align: -0.15em"></a> **NixOS** | `nix-channels` |
 
     请看下面的例子
 
