@@ -21,7 +21,7 @@ hide:
   <figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</figcaption>
   <figcaption>一键脚本使换源更简单</figcaption>
 </figure>
-<figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
+<figure class="home-cmd no-select" style="margin: 0 auto; display: flex; flex-direction: column; justify-content: center" markdown>
 === ":linux:{ .middle } GNU/Linux"
 
     <img src="/assets/images/brand/command/linux-light.png#only-light" alt="command-linux" />

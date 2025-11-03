@@ -21,7 +21,7 @@ hide:
   <figcaption>GNU/Linux mirror switching script & Docker installation and registry mirror switching script</figcaption>
   <figcaption>One-Click Script Makes Mirror Switching Easier</figcaption>
 </figure>
-<figure class="home-cmd no-select" style="margin: 0; display: flex; flex-direction: column; justify-content: center" markdown>
+<figure class="home-cmd no-select" style="margin: 0 auto; display: flex; flex-direction: column; justify-content: center" markdown>
 === ":linux:{ .middle } GNU/Linux"
 
     <img src="/assets/images/brand/command/linux-light.png#only-light" alt="command-linux" />
