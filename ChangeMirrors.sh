@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-04
+## Modified: 2025-11-12
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2598,7 +2598,8 @@ function change_mirrors_RedHat() {
         10)
             sed -e "s|^# baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|vault.almalinux.org|${SOURCE}/${SOURCE_BRANCH}|g" \
+                -e "s|vault.almalinux.org|${SOURCE_VAULT:-"${SOURCE}"}/${SOURCE_VAULT_BRANCH:-almalinux-vault}|g" \
+                -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
                 almalinux-appstream.repo \
                 almalinux-baseos.repo \
