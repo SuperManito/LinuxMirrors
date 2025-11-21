@@ -157,7 +157,7 @@ hide:
 
     ---
 
-    请使用 `root` 账户运行本脚本，切换命令为 `sudo -i` 或 `su root`。不同系统使用的命令不同，因为部分系统没有在初始安装时为 root 账户设置密码（例如 Ubuntu）或系统默认禁止 `root` 账户登录。
+    请使用 `root` 账户运行本脚本，切换命令为 `sudo -i` 或 `su root`，不同系统使用的命令不同。另外注意不要通过 `sudo` 直接运行一键命令例如 `sudo bash <(xxx)`。
 
 -   :material-numeric-2:{style="color: #5b84f5" .lg} __建议使用现代化的 `SSH` 客户端应用__
 

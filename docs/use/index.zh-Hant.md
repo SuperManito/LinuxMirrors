@@ -157,7 +157,7 @@ hide:
 
     ---
 
-    請使用 `root` 帳戶執行本腳本，切換指令為 `sudo -i` 或 `su root`。不同系統使用的指令不同，因為部分系統沒有在初始安裝時為 root 帳戶設定密碼（例如 Ubuntu）或系統預設禁止 `root` 帳戶登入。
+    請使用 `root` 帳戶執行本腳本，切換指令為 `sudo -i` 或 `su root`，不同系統使用的指令不同。另外注意不要透過 `sudo` 直接執行一鍵指令例如 `sudo bash <(xxx)`。
 
 -   :material-numeric-2:{style="color: #5b84f5" .lg} __建議使用現代化的 `SSH` 用戶端應用__
 

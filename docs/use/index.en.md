@@ -155,7 +155,7 @@ hide:
 
     ---
 
-    Please run this script using the `root` account. Switch commands are `sudo -i` or `su root`. Different systems use different commands because some systems do not set a password for the root account during initial installation (e.g., Ubuntu) or disable `root` account login by default.
+    Please run this script using the `root` account, switching between the `sudo -i` and `su root` commands, as the commands vary depending on the system. Also, avoid directly running one-click commands such as `sudo bash <(xxx)` using `sudo`.
 
 -   :material-numeric-2:{style="color: #5b84f5" .lg} __It is recommended to use a modern `SSH` client__
 
