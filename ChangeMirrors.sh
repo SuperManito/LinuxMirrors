@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-12
+## Modified: 2025-11-23
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -968,7 +968,7 @@ function collect_system_info() {
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
             case "${SYSTEM_VERSION_ID_MAJOR}" in
-            8 | 9 | 10)
+            8 | 9 | 10 | 11)
                 SOURCE_BRANCH="debian-archive/debian"
                 ;;
             *)
@@ -2160,10 +2160,22 @@ $(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
     if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
-            SOURCE="deb.debian.org"
+            case "${SYSTEM_VERSION_ID_MAJOR}" in
+            8 | 9 | 10 | 11)
+                SOURCE="archive.debian.org"
+                ;;
+            *)
+                SOURCE="deb.debian.org"
+                ;;
+            esac
+            SOURCE_BRANCH="debian"
             ;;
         "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
-            SOURCE="archive.ubuntu.com"
+            if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
+                SOURCE="archive.ubuntu.com"
+            else
+                SOURCE="ports.ubuntu.com"
+            fi
             ;;
         "${SYSTEM_KALI}")
             SOURCE="http.kali.org"
@@ -2262,10 +2274,26 @@ $(gen_deb_unsrc "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sect
         local base_system_branch base_system_codename
         if [[ "${SYSTEM_NAME}" == *"LMDE"* ]]; then
             # Debian 版（LMDE）
-            base_system_branch="debian"
             base_system_codename="$(get_os_release_value DEBIAN_CODENAME)"
-            if [[ -z "${base_system_codename}" ]]; then
-                base_system_codename="bookworm"
+            [[ -z "${base_system_codename}" ]] && base_system_codename="bookworm"
+            case "${base_system_codename}" in
+            "jessie" | "stretch" | "buster" | "bullseye")
+                base_system_branch="debian-archive/debian"
+                ;;
+            *)
+                base_system_branch="debian"
+                ;;
+            esac
+            if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+                case "${base_system_codename}" in
+                "jessie" | "stretch" | "buster" | "bullseye")
+                    SOURCE="archive.debian.org"
+                    ;;
+                *)
+                    SOURCE="deb.debian.org"
+                    ;;
+                esac
+                base_system_branch="debian"
             fi
             repository_sections="main contrib non-free non-free-firmware"
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
@@ -2276,14 +2304,18 @@ $(gen_deb_security "${source_security_host}" "${base_system_codename}" "${reposi
             write_source_file
         else
             # Ubuntu 版
+            base_system_codename="$(get_os_release_value UBUNTU_CODENAME)"
+            [[ -z "${base_system_codename}" ]] && base_system_codename="noble"
             if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
                 base_system_branch="ubuntu"
+                if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+                    SOURCE="archive.ubuntu.com"
+                fi
             else
                 base_system_branch="ubuntu-ports"
-            fi
-            base_system_codename="$(get_os_release_value UBUNTU_CODENAME)"
-            if [[ -z "${base_system_codename}" ]]; then
-                base_system_codename="noble"
+                if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+                    SOURCE="ports.ubuntu.com"
+                fi
             fi
             repository_sections="main restricted universe multiverse"
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
@@ -2312,7 +2344,7 @@ $(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}"
         case "${DEVICE_ARCH_RAW}" in
         x86_64 | aarch64)
             case "${SYSTEM_VERSION_ID_MAJOR}" in
-            8 | 9 | 10)
+            8 | 9 | 10 | 11)
                 base_system_branch="debian-archive/debian"
                 ;;
             *)
@@ -2329,7 +2361,15 @@ $(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}"
                 ;;
             esac
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-                SOURCE="deb.debian.org"
+                case "${SYSTEM_VERSION_ID_MAJOR}" in
+                8 | 9 | 10 | 11)
+                    SOURCE="archive.debian.org"
+                    ;;
+                *)
+                    SOURCE="deb.debian.org"
+                    ;;
+                esac
+                base_system_branch="debian"
             fi
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
             source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
