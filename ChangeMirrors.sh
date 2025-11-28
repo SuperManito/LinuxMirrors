@@ -644,6 +644,10 @@ function handle_command_options() {
         --pure-mode)
             PURE_MODE="true"
             ;;
+        ## 禁用滚动输出（适用于 CI 等非交互式终端）
+        --no-scroll)
+            NO_SCROLL="true"
+            ;;
         ## 命令帮助
         --help)
             echo -e "\n$(msg "commands.help" "https://github.com/SuperManito/LinuxMirrors/issues")\n"
@@ -662,6 +666,7 @@ function handle_command_options() {
     IGNORE_BACKUP_TIPS="${IGNORE_BACKUP_TIPS:-"false"}"
     PRINT_DIFF="${PRINT_DIFF:-"false"}"
     PURE_MODE="${PURE_MODE:-"false"}"
+    NO_SCROLL="${NO_SCROLL:-"false"}"
 }
 
 function run_start() {
@@ -3304,6 +3309,18 @@ function animate_exec() {
     local max_lines=${3:-5}
     local spinner_style="${4:-dots}"
     local refresh_rate="${5:-0.1}"
+    ## 禁用滚动输出模式：直接执行命令并显示普通输出
+    if [[ "${NO_SCROLL}" == "true" ]]; then
+        echo -e "◉ ${title} ..."
+        eval "${cmd}"
+        local exit_status=$?
+        if [ $exit_status -eq 0 ]; then
+            echo -e "◉ ${title} [✓]"
+        else
+            echo -e "◉ ${title} [✗]"
+        fi
+        return $exit_status
+    fi
     local -A spinners=([dots]="⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏" [circle]="◐ ◓ ◑ ◒" [classic]="-\\ |/")
     local -A recommended_rates=([dots]="0.08" [circle]="0.12" [classic]="0.12")
     [[ -z "${spinners[$spinner_style]}" ]] && spinner_style="dots"
@@ -7893,6 +7910,7 @@ function msg_pack_zh_hans() {
   --ignore-backup-tips         忽略覆盖备份提示                                                   无
   --print-diff                 打印源文件修改前后差异                                             无
   --pure-mode                  纯净模式，精简打印内容                                             无
+  --no-scroll                  禁用滚动输出，适用于 CI 等非交互式终端                             无
   --help                       查看帮助菜单                                                       无
 
 问题报告 {}'
@@ -8125,6 +8143,7 @@ function msg_pack_zh_hant() {
   --ignore-backup-tips         忽略覆蓋備份提示                                                       無
   --print-diff                 是否列印原始文件修改前後差異                                           無
   --pure-mode                  純淨模式，精簡列印內容                                                 無
+  --no-scroll                  禁用滾動輸出，適用於 CI 等非交互式終端                                 無
   --help                       查看幫助選單                                                           無
 
 問題報告 {}'
@@ -8357,6 +8376,7 @@ function msg_pack_en() {
   --ignore-backup-tips         Ignore backup overwrite prompt                                               none
   --print-diff                 Print diff before and after modification                                     none
   --pure-mode                  Pure mode, minimal output                                                    none
+  --no-scroll                  Disable scrolling output, for CI and non-interactive terminals              none
   --help                       Show help menu                                                               none
 
 Issue Report {}'
