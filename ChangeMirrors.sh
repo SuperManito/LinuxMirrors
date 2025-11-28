@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-23
+## Modified: 2025-11-29
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -3304,6 +3304,12 @@ function animate_exec() {
     local max_lines=${3:-5}
     local spinner_style="${4:-dots}"
     local refresh_rate="${5:-0.1}"
+    local scroll_mode="${6:-1}"
+    if [[ "${scroll_mode}" == "0" ]]; then
+        echo -e "◉ ${title} \n"
+        eval "${cmd}"
+        return $?
+    fi
     local -A spinners=([dots]="⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏" [circle]="◐ ◓ ◑ ◒" [classic]="-\\ |/")
     local -A recommended_rates=([dots]="0.08" [circle]="0.12" [classic]="0.12")
     [[ -z "${spinners[$spinner_style]}" ]] && spinner_style="dots"
