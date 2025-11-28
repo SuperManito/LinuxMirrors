@@ -116,8 +116,16 @@
     padding-right: 3em;
 }
 
+.home-cmd .tabbed-block {
+    position: relative;
+}
+
 .home-cmd .md-clipboard {
-    top: calc(100% - 60px);
+    position: absolute;
+    top: auto;
+    bottom: 20px;
+    right: 12px;
+    z-index: 10;
 }
 
 .home-cmd img {
@@ -128,7 +136,8 @@
 
 @media screen and (max-width: 768px) {
     .home-cmd .md-clipboard {
-        top: calc(100% - 50px);
+        bottom: 8px;
+        right: 6px;
     }
 }
 
