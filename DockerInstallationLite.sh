@@ -227,10 +227,6 @@ function handle_command_options() {
                 command_error "$1" "$(msg "error.cmd.options.needIntranetSource")"
             fi
             ;;
-        ## 忽略覆盖备份提示
-        --ignore-backup-tips)
-            IGNORE_BACKUP_TIPS="true"
-            ;;
         ## 关闭防火墙
         --close-firewall)
             if [ "$2" ]; then
@@ -1758,13 +1754,10 @@ function msg_pack_en() {
   --designated-version      Specify Docker Engine installation version                version
   --codename                Specify Debian-based OS codename                          codename
   --protocol                Specify Web protocol for Docker CE mirror                 http or https
-  --use-intranet-source     Prefer intranet Docker CE mirror address                  true or false
   --install-latest          Whether to install the latest Docker Engine               true or false
   --close-firewall          Whether to disable the firewall                           true or false
   --clean-screen            Whether to clear the screen before running                true or false
-  --lang                    Specify the language of the script output                 language
   --only-registry           Only switch registry mirror mode                          none
-  --ignore-backup-tips      Ignore backup overwrite prompt (do not backup)            none
   --pure-mode               Pure mode, minimal output                                 none
   --help                    Show help menu                                            none
 
