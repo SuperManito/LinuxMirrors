@@ -297,7 +297,7 @@ function run_end() {
         echo ''
         return
     fi
-    echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m - \033[3mlinuxmirrors.cn\033[0m\n"
+    echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m - \033[3mhttps://linuxmirrors.cn\033[0m\n"
 }
 
 function output_error() {
