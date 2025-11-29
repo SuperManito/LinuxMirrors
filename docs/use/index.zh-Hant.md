@@ -412,11 +412,11 @@ hide:
 
         - 設定 `SSH` 服務
 
-            ``` { .bash .no-copy title="允許 root 帳戶登入" }
+            ``` { .bash title="允許 root 帳戶登入" }
             cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
             ```
 
-            ``` { .bash .no-copy title="啟用密碼認證" }
+            ``` { .bash title="啟用密碼認證" }
             cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
             ```
 

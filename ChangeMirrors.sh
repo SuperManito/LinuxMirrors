@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-29
+## Modified: 2025-11-30
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2116,9 +2116,11 @@ $(gen_deb822 "${1}" "${2}-security" "${3}")"
     }
 
     ## 针对特定系统生成软件源
+    # debian-backports see https://ftp.debian.org/debian/dists/
+    # debian-security see https://security.debian.org/debian-security/dists/
     function gen_debian_deb() {
         case "${2}" in
-        forky | trixie | bookworm | stable | oldstable | testing)
+        "forky" | "trixie" | "bookworm" | "stable" | "oldstable" | "testing")
             echo "$(gen_deb "${1}" "${2}" "${3}")
 $(gen_deb "${1}" "${2}-updates" "${3}")
 $(gen_deb "${1}" "${2}-backports" "${3}")"
@@ -2129,15 +2131,35 @@ $(gen_deb "${1}" "${2}-updates" "${3}")"
             ;;
         esac
     }
+    function gen_debian_deb_security() {
+        case "${2}" in
+        "forky" | "trixie" | "bookworm" | "bullseye" | "oldoldstable" | "oldstable" | "stable" | "testing")
+            echo "$(gen_deb_security "${1}" "${2}" "${3}")"
+            ;;
+        *)
+            echo ''
+            ;;
+        esac
+    }
     function gen_debian_deb822() {
         case "${2}" in
-        forky | trixie | bookworm | stable | oldstable | testing)
+        "forky" | "trixie" | "bookworm" | "stable" | "oldstable" | "testing")
             echo "${deb_src_disabled_tips}
 $(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")"
             ;;
         *)
             echo "${deb_src_disabled_tips}
 $(gen_deb822 "${1}" "${2} ${2}-updates" "${3}")"
+            ;;
+        esac
+    }
+    function gen_debian_deb822_security() {
+        case "${2}" in
+        "forky" | "trixie" | "bookworm" | "bullseye" | "oldoldstable" | "oldstable" | "stable" | "testing")
+            echo "$(gen_deb822_security "${1}" "${2}" "${3}")"
+            ;;
+        *)
+            echo ''
             ;;
         esac
     }
@@ -2156,18 +2178,54 @@ $(gen_deb822 "${1}" "${2} ${2}-updates ${2}-backports" "${3}")
 $(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
     }
 
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+    function _template_get_debian_info() {
+        local data1="$1"
+        local data2="$2"
+        local codename="$3"
+        local result=""
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_DEBIAN}")
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             8 | 9 | 10 | 11)
-                SOURCE="archive.debian.org"
+                result="${data1}"
                 ;;
             *)
-                SOURCE="deb.debian.org"
+                result="${data2}"
                 ;;
             esac
+            ;;
+        *)
+            case "${codename}" in
+            "jessie" | "stretch" | "buster" | "bullseye")
+                result="${data1}"
+                ;;
+            *)
+                result="${data2}"
+                ;;
+            esac
+            ;;
+        esac
+        echo "${result}"
+    }
+    function get_debian_official_source() {
+        # 注：使用官方源时仓库分支固定为 debian，需同此方法一起使用
+        _template_get_debian_info "archive.debian.org" "deb.debian.org" "${1}"
+    }
+    function get_debian_source_branch() {
+        _template_get_debian_info "debian-archive/debian" "debian" "${1}"
+    }
+    function get_debian_official_source_security() {
+        _template_get_debian_info "archive.debian.org" "security.debian.org" "${1}"
+    }
+    function get_debian_repository_sections() {
+        _template_get_debian_info "main contrib non-free" "main contrib non-free non-free-firmware" "${1}"
+    }
+
+    ## 使用官方源
+    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+        case "${SYSTEM_JUDGMENT}" in
+        "${SYSTEM_DEBIAN}")
+            SOURCE="$(get_debian_official_source "${SYSTEM_VERSION_CODENAME}")"
             SOURCE_BRANCH="debian"
             ;;
         "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
@@ -2185,6 +2243,7 @@ $(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
             ;;
         "${SYSTEM_LINUX_MINT}")
             SOURCE="packages.linuxmint.com"
+            SOURCE_BRANCH="" # 官方源无分支
             ;;
         esac
     fi
@@ -2195,21 +2254,17 @@ $(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
 
     case "${SYSTEM_JUDGMENT}" in
     "${SYSTEM_DEBIAN}")
-        case "${SYSTEM_VERSION_ID}" in
-        8 | 9 | 10 | 11)
-            repository_sections="main contrib non-free"
-            ;;
-        *)
-            repository_sections="main contrib non-free non-free-firmware"
-            ;;
-        esac
-        source_security_host="${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-"${SOURCE_BRANCH}-security"}"
+        repository_sections="$(get_debian_repository_sections "${SYSTEM_VERSION_CODENAME}")"
+        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+            SOURCE="$(get_debian_official_source_security "${SYSTEM_VERSION_CODENAME}")"
+        fi
+        source_security_host="${SOURCE_SECURITY:-"${SOURCE}"}/${SOURCE_SECURITY_BRANCH:-debian-security}"
         if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
             source_file="${File_DebianSources}"
             if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
                 source_content="$(gen_debian_deb822 "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
 
-$(gen_deb822_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
+$(gen_debian_deb822_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
             else
                 source_content="$(gen_debian_deb822 "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
             fi
@@ -2218,7 +2273,7 @@ $(gen_deb822_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${
             if [[ "${SYSTEM_VERSION_CODENAME}" != "sid" ]]; then
                 source_content="${deb_src_disabled_tips}
 $(gen_debian_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
-$(gen_deb_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
+$(gen_debian_deb_security "${source_security_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
             else
                 source_content="${deb_src_disabled_tips}
 $(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")"
@@ -2268,7 +2323,7 @@ $(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}"
         source_file="${File_LinuxMintSourceList}"
         source_content="${deb_src_disabled_tips}
 $(gen_deb_unsrc "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}")
-"
+" # 注：此处空行用于隔开两种软件源内容
         write_source_file
         ## 底层系统软件源
         local base_system_branch base_system_codename
@@ -2276,31 +2331,20 @@ $(gen_deb_unsrc "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sect
             # Debian 版（LMDE）
             base_system_codename="$(get_os_release_value DEBIAN_CODENAME)"
             [[ -z "${base_system_codename}" ]] && base_system_codename="bookworm"
-            case "${base_system_codename}" in
-            "jessie" | "stretch" | "buster" | "bullseye")
-                base_system_branch="debian-archive/debian"
-                ;;
-            *)
-                base_system_branch="debian"
-                ;;
-            esac
+            base_system_branch="$(get_debian_source_branch "${base_system_codename}")"
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-                case "${base_system_codename}" in
-                "jessie" | "stretch" | "buster" | "bullseye")
-                    SOURCE="archive.debian.org"
-                    ;;
-                *)
-                    SOURCE="deb.debian.org"
-                    ;;
-                esac
+                SOURCE="$(get_debian_official_source "${base_system_codename}")"
                 base_system_branch="debian"
             fi
-            repository_sections="main contrib non-free non-free-firmware"
+            repository_sections="$(get_debian_repository_sections "${base_system_codename}")"
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
-            source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+                SOURCE="$(get_debian_official_source_security "${base_system_codename}")"
+            fi
+            source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-debian-security}"
             source_file="${File_LinuxMintSourceList}"
             source_content="$(gen_debian_deb "${source_host}" "${base_system_codename}" "${repository_sections}")
-$(gen_deb_security "${source_security_host}" "${base_system_codename}" "${repository_sections}")"
+$(gen_debian_deb_security "${source_security_host}" "${base_system_codename}" "${repository_sections}")"
             write_source_file
         else
             # Ubuntu 版
@@ -2343,40 +2387,22 @@ $(gen_deb "${source_host}" "${SYSTEM_VERSION_CODENAME}" "${repository_sections}"
         local base_system_branch base_system_codename
         case "${DEVICE_ARCH_RAW}" in
         x86_64 | aarch64)
-            case "${SYSTEM_VERSION_ID_MAJOR}" in
-            8 | 9 | 10 | 11)
-                base_system_branch="debian-archive/debian"
-                ;;
-            *)
-                base_system_branch="debian"
-                ;;
-            esac
             base_system_codename="${SYSTEM_VERSION_CODENAME}"
-            case "${SYSTEM_VERSION_ID}" in
-            8 | 9 | 10 | 11)
-                repository_sections="main contrib non-free"
-                ;;
-            *)
-                repository_sections="main contrib non-free non-free-firmware"
-                ;;
-            esac
+            base_system_branch="$(get_debian_source_branch "${base_system_codename}")"
+            repository_sections="$(get_debian_repository_sections "${base_system_codename}")"
             if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-                case "${SYSTEM_VERSION_ID_MAJOR}" in
-                8 | 9 | 10 | 11)
-                    SOURCE="archive.debian.org"
-                    ;;
-                *)
-                    SOURCE="deb.debian.org"
-                    ;;
-                esac
+                SOURCE="$(get_debian_official_source "${base_system_codename}")"
                 base_system_branch="debian"
             fi
             source_host="${SOURCE_BASE_SYSTEM:-"${SOURCE}"}/${SOURCE_BASE_SYSTEM_BRANCH:-"${base_system_branch}"}"
-            source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-${SOURCE_BASE_SYSTEM_BRANCH:-debian-security}}"
+            if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+                SOURCE="$(get_debian_official_source_security "${base_system_codename}")"
+            fi
+            source_security_host="${SOURCE_SECURITY:-${SOURCE_BASE_SYSTEM:-${SOURCE}}}/${SOURCE_SECURITY_BRANCH:-debian-security}"
             source_file="${File_AptSourceList}"
             source_content="${deb_src_disabled_tips}
 $(gen_debian_deb "${source_host}" "${base_system_codename}" "${repository_sections}")
-$(gen_deb_security "${source_security_host}" "${base_system_codename}" "${repository_sections}")"
+$(gen_debian_deb_security "${source_security_host}" "${base_system_codename}" "${repository_sections}")"
             write_source_file
             ;;
         *)

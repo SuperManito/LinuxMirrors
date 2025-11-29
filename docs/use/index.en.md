@@ -410,11 +410,11 @@ hide:
 
         - Configure `SSH` service
 
-            ``` { .bash .no-copy title="Allow root account login" }
+            ``` { .bash title="Allow root account login" }
             cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PermitRootLogin " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config || echo -e "\nPermitRootLogin yes" >> /etc/ssh/sshd_config
             ```
 
-            ``` { .bash .no-copy title="Enable password authentication" }
+            ``` { .bash title="Enable password authentication" }
             cat /etc/ssh/sshd_config | grep -Eq "^[# ]?PasswordAuthentication " ; [ $? -eq 0 ] && sed -i 's/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config || echo -e "\nPasswordAuthentication yes" >> /etc/ssh/sshd_config
             ```
 
