@@ -2,7 +2,7 @@ name: Build docs website
 on:
   push:
     branches:
-      - master 
+      - master
       - main
 permissions:
   contents: write
@@ -28,4 +28,5 @@ jobs:
       - run: pip install -r ./requirements.txt
       - run: cp -rvf ./ChangeMirrors.sh ./docs/main.sh
       - run: cp -rvf ./DockerInstallation.sh ./docs/docker.sh
+      - run: cp -rvf ./DockerInstallationLite.sh ./docs/docker-lite.sh
       - run: mkdocs gh-deploy --force

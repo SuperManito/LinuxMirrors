@@ -471,6 +471,20 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --help
 
     也可以使用 &nbsp; [![Docker Desktop](../assets/images/icon/custom/docker-desktop.svg){ width="140" style="vertical-align: -0.2rem" }](https://www.docker.com/products/docker-desktop)
 
+## 精簡版（Lite）
+
+專案額外提供一個精簡版本，是主腳本的複製，面向企業產品、大型開源社群專案使用，具有以下特性：
+
+- 單一顯示語言 `English`，無 I18n 國際化功能
+- 預設使用官方來源，去除了互動選擇內建軟體源功能
+- 去除了無關的列印內容
+- 保留核心邏輯與指令選項設計
+
+``` bash
+bash <(curl -sSL https://linuxmirrors.cn/docker-lite.sh)
+```
+> 請熟悉本項目後再使用，不建議新手使用者使用
+
 - ## 最佳實踐
 
 ??? note "適用於企業產品部署以及 CI/CD 等自動化維運場景的程式碼範例（展開檢視）"

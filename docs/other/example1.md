@@ -7,7 +7,6 @@ function install_docker() {
 
     # script options
     local script_host="linuxmirrors.cn" # official host (CDN), more host see official site
-    local script_lang="zh-hans"         # script display language: zh-hans / zh-hant / en / auto
     local close_firewall="true"         # close firewalld service and selinux (redhat systems need)
     # mirrors options
     local source_docker_ce_address="mirrors.tencent.com/docker-ce" # global high availability address
@@ -52,15 +51,11 @@ function install_docker() {
     fi
 
     # install docker engine
-    bash <(curl -sSL https://${script_host}/docker.sh) \
+    bash <(curl -sSL https://${script_host}/docker-lite.sh) \
         --source "${source_docker_ce_address}" \
         --source-registry "${source_docker_registry_address}" \
         --protocol "${source_docker_ce_protocol}" \
-        --close-firewall "${close_firewall}" \
-        --install-latest true \
-        --ignore-backup-tips \
-        --lang "${script_lang}" \
-        --pure-mode
+        --close-firewall "${close_firewall}"
 }
 
 install_docker

@@ -21,6 +21,6 @@ jobs:
           src: github/SuperManito
           dst: gitee/SuperManito
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
-          dst_token:  ${{ secrets.GITEE_TOKEN }}
+          dst_token: ${{ secrets.GITEE_TOKEN }}
           static_list: "LinuxMirrors"
           force_update: true
