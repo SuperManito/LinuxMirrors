@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-11-29
+## Modified: 2025-12-01
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -698,8 +698,8 @@ function configure_docker_ce_mirror() {
         chmod a+r $file_keyring
         ## 添加源
         [ -d "${Dir_AptAdditionalSources}" ] || mkdir -p $Dir_AptAdditionalSources
-        local source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${DEBIAN_CODENAME:-"${SOURCE_BRANCH_CODENAME:-"${SYSTEM_VERSION_CODENAME}"}"} stable"
-        echo "${source_content}" | tee $File_DockerSourceList >/dev/null 2>&1
+        local apt_source_content="deb [arch=$(dpkg --print-architecture) signed-by=${file_keyring}] ${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH} ${DEBIAN_CODENAME:-${SOURCE_BRANCH_CODENAME:-${SYSTEM_VERSION_CODENAME}}} stable"
+        echo "${apt_source_content}" | tee $File_DockerSourceList >/dev/null 2>&1
         commands+=("apt-get update")
         ;;
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
@@ -1654,7 +1654,7 @@ function init_msg_pack() {
             eval "${func_name}"
         fi
     }
-    local current_lang="${1:-"${MESSAGE_LANG_DEFAULT}"}"
+    local current_lang="${1:-${MESSAGE_LANG_DEFAULT}}"
     current_lang="$(echo "${current_lang}" | sed 's/^-*//')"
     current_lang="${current_lang,,}"
     if [[ "${MESSAGE_LANG_DISPLAY[${current_lang}]}" ]]; then
