@@ -735,7 +735,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --help
 
         !!! info "EOL 為生命週期結束的縮寫（End Of Life），Ubuntu 迭代速度較快一般非LTS(長期支持)版本的生命週期只有9個月。官方會定期從主倉庫移除不在生命週期內的版本倉庫目錄，屆時可能就需要使用鏡像站的 `Ubuntu Old Releases` 倉庫"
 
-        具體版本支援情況詳見官方 [Wiki](https://wiki.ubuntu.com/Releases)，關於 `Ubuntu Old Releases` 倉庫的支援情況詳見各鏡像站
+        具體版本支援情況詳見官方 [Wiki](https://documentation.ubuntu.com/project/release-team/list-of-releases/)，關於 `Ubuntu Old Releases` 倉庫的支援情況詳見各鏡像站
 
         ``` bash
         bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant \

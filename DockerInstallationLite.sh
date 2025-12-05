@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-12-01
+## Modified: 2025-12-06
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -356,7 +356,7 @@ function collect_system_info() {
     if [ -s "${File_DebianVersion}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_DEBIAN}"
         if [ -s "${File_kylinVersion}" ]; then
-            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Kylin Desktop" "apt-get install -y docker\nsystemctl enable --now docker"
+            [[ "${ONLY_REGISTRY}" != "true" ]] && unsupport_system_error "Kylin Desktop" "apt-get install -y docker\nsystemctl enable --now docker.io"
         fi
     elif [ -s "${File_RedHatRelease}" ]; then
         SYSTEM_FACTIONS="${SYSTEM_REDHAT}"
@@ -496,16 +496,16 @@ function collect_system_info() {
                 esac
                 ;;
             # "${SYSTEM_KYLIN_DESKTOP}")
-            #     SOURCE_BRANCH="debian"
+            #     SOURCE_BRANCH="ubuntu"
             #     case "${SYSTEM_VERSION_ID_MAJOR}" in
             #     "v10")
-            #         SOURCE_BRANCH_CODENAME="bullseye"
+            #         SOURCE_BRANCH_CODENAME="focal"
             #         ;;
             #     "v11")
-            #         SOURCE_BRANCH_CODENAME="${debian_codename_latest}"
+            #         SOURCE_BRANCH_CODENAME="noble"
             #         ;;
             #     *)
-            #         SOURCE_BRANCH_CODENAME="${debian_codename_latest}"
+            #         SOURCE_BRANCH_CODENAME="noble"
             #         ;;
             #     esac
             #     ;;
