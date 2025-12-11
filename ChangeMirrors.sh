@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-12-01
+## Modified: 2025-12-11
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -3070,7 +3070,7 @@ function change_mirrors_Alpine() {
     if [ $? -eq 0 ]; then
         version_name="edge"
     else
-        version_name="v${SYSTEM_VERSION_ID_MAJOR}"
+        version_name="v${SYSTEM_VERSION_ID%.*}"
     fi
     ## 修改源
     echo "${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/${version_name}/main
