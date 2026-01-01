@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-12-06
+## Modified: 2026-01-01
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -904,7 +904,7 @@ function choose_mirrors() {
                     if [[ -z "${tmp_result}" ]]; then
                         echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
                     else
-                        SOURCE="$(echo "${tmp_result}" | awk -F '@' '{print$2}')"
+                        SOURCE="${tmp_result}"
                         break
                     fi
                     ;;
@@ -947,11 +947,11 @@ function choose_mirrors() {
                 read -rp "${CHOICE_C}" INPUT
                 case "${INPUT}" in
                 [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
-                    local tmp_source="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
-                    if [[ -z "${tmp_source}" ]]; then
+                    local tmp_result="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]})"
+                    if [[ -z "${tmp_result}" ]]; then
                         echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
                     else
-                        SOURCE_REGISTRY="$(eval echo \${${mirror_list_name}[$(($INPUT - 1))]} | awk -F '@' '{print$2}')"
+                        SOURCE="${tmp_result}"
                         break
                     fi
                     ;;

@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2025-12-11
+## Modified: 2026-01-01
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1290,7 +1290,7 @@ function choose_mirrors() {
                     if [[ -z "${tmp_result}" ]]; then
                         echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
                     else
-                        SOURCE="$(echo "${tmp_result}" | awk -F '@' '{print$2}')"
+                        SOURCE="${tmp_result}"
                         break
                     fi
                     ;;
