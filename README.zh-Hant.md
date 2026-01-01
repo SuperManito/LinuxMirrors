@@ -179,7 +179,7 @@
 
 ## LICENSE
 
-Copyright © 2025, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
+Copyright © 2026, [SuperManito](https://github.com/SuperManito). Released under the [MIT](https://github.com/SuperManito/LinuxMirrors/blob/main/LICENSE).
 
 這是一個完全開源的專案，旨在為從事電腦相關行業的朋友提供便利，使換源更簡單
 

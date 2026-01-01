@@ -2,7 +2,7 @@ site_name: LinuxMirrors
 repo_name: LinuxMirrors
 repo_url: https://github.com/SuperManito/LinuxMirrors
 edit_uri: edit/main/docs/
-copyright: 'Copyright &copy; 2025 <a href="https://github.com/SuperManito" target="_blank" rel="noopener noreferrer">SuperManito</a>'
+copyright: 'Copyright &copy; 2026 <a href="https://github.com/SuperManito" target="_blank" rel="noopener noreferrer">SuperManito</a>'
 
 nav:
   - "介绍": index.md
