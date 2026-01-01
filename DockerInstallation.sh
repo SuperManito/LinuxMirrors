@@ -951,7 +951,7 @@ function choose_mirrors() {
                     if [[ -z "${tmp_result}" ]]; then
                         echo -e "\n$WARN $(msg "warn.needValidNumberIndex")"
                     else
-                        SOURCE="${tmp_result}"
+                        SOURCE_REGISTRY="${tmp_result}"
                         break
                     fi
                     ;;
