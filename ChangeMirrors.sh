@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-01-01
+## Modified: 2026-01-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -258,6 +258,8 @@ File_RaspberryPiSourceList=$Dir_AptAdditionalSources/raspi.list
 File_RaspberryPiSourceListBackup=$File_RaspberryPiSourceList.bak
 File_PacmanMirrorList=/etc/pacman.d/mirrorlist
 File_PacmanMirrorListBackup=$File_PacmanMirrorList.bak
+File_PacmanEndeavourOSMirrorList=/etc/pacman.d/endeavouros-mirrorlist
+File_PacmanEndeavourOSMirrorListBackup=$File_PacmanEndeavourOSMirrorList.bak
 File_AlpineRepositories=/etc/apk/repositories
 File_AlpineRepositoriesBackup=$File_AlpineRepositories.bak
 File_GentooMakeConf=/etc/portage/make.conf
@@ -1035,6 +1037,10 @@ function collect_system_info() {
             else
                 SOURCE_BRANCH="archlinuxarm"
             fi
+            # EndeavourOS
+            if [[ "${SYSTEM_NAME}" == *"EndeavourOS"* ]] && [[ -f "${File_PacmanEndeavourOSMirrorList}" ]]; then
+                SOURCE_BRANCH="archlinux"
+            fi
             ;;
         "${SYSTEM_OPENCLOUDOS}")
             # OpenCloudOS Stream
@@ -1555,6 +1561,11 @@ function backup_original_mirrors() {
         "${SYSTEM_ARCH}")
             # /etc/pacman.d/mirrorlist
             backup_file $File_PacmanMirrorList $File_PacmanMirrorListBackup "mirrorlist"
+            # EndeavourOS
+            if [[ "${SYSTEM_NAME}" == *"EndeavourOS"* ]] && [[ -f "${File_PacmanEndeavourOSMirrorList}" ]]; then
+                # /etc/pacman.d/endeavouros-mirrorlist
+                backup_file $File_PacmanEndeavourOSMirrorList $File_PacmanEndeavourOSMirrorListBackup "endeavouros-mirrorlist"
+            fi
             ;;
         "${SYSTEM_ALPINE}")
             # /etc/apk/repositories
@@ -1731,6 +1742,10 @@ function remove_original_mirrors() {
         ;;
     "${SYSTEM_ARCH}")
         clear_file $File_PacmanMirrorList
+        # EndeavourOS
+        if [[ "${SYSTEM_NAME}" == *"EndeavourOS"* ]] && [[ -f "${File_PacmanEndeavourOSMirrorList}" ]]; then
+            clear_file $File_PacmanEndeavourOSMirrorList
+        fi
         ;;
     "${SYSTEM_ALPINE}")
         clear_file $File_AlpineRepositories
@@ -1806,6 +1821,10 @@ function change_mirrors_main() {
                 ;;
             "${SYSTEM_ARCH}")
                 diff_file $File_PacmanMirrorListBackup $File_PacmanMirrorList
+                # EndeavourOS
+                if [[ "${SYSTEM_NAME}" == *"EndeavourOS"* ]] && [[ -f "${File_PacmanEndeavourOSMirrorList}" ]]; then
+                    diff_file $File_PacmanEndeavourOSMirrorListBackup $File_PacmanEndeavourOSMirrorList
+                fi
                 ;;
             "${SYSTEM_ALPINE}")
                 diff_file $File_AlpineRepositoriesBackup $File_AlpineRepositories
@@ -3046,6 +3065,11 @@ function change_mirrors_ArchLinux() {
             echo "Server = ${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}/\$repo/os/\$arch" >>$File_PacmanMirrorList
             ;;
         esac
+        # EndeavourOS
+        if [[ "${SYSTEM_NAME}" == *"EndeavourOS"* ]] && [[ -f "${File_PacmanEndeavourOSMirrorList}" ]]; then
+            [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && SOURCE="mirror.alpix.eu" ## 使用官方源
+            echo "Server = ${WEB_PROTOCOL}://${SOURCE}/endeavouros/repo/\$repo/\$arch" >>$File_PacmanEndeavourOSMirrorList
+        fi
         ;;
     "${SYSTEM_MANJARO}")
         ## 使用官方源

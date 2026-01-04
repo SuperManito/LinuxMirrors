@@ -1,3 +1,7 @@
+2026-01-04
+
+* Added support for EndeavourOS
+
 2025-11-02
 
 * Adapted for Kylin Server to docker script [#1ddf1fb](https://github.com/SuperManito/LinuxMirrors/commit/1ddf1fb708987cf59c4ef56b0a0410caf1b8e726)

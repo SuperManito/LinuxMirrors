@@ -6,6 +6,10 @@ search:
   exclude: true
 ---
 
+### `2026-01-04`
+
+  * 新增适配 EndeavourOS 操作系统
+
 ### `2025-11-02`
 
   * Docker 脚本新增适配 Kylin Server 操作系统 [#1ddf1fb](https://github.com/SuperManito/LinuxMirrors/commit/1ddf1fb708987cf59c4ef56b0a0410caf1b8e726)

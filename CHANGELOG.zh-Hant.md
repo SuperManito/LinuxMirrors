@@ -1,3 +1,7 @@
+2026-01-04
+
+* 新增適配 EndeavourOS 作業系統
+
 2025-11-02
 
 * Docker 腳本新增適配 Kylin Server 作業系統 [#1ddf1fb](https://github.com/SuperManito/LinuxMirrors/commit/1ddf1fb708987cf59c4ef56b0a0410caf1b8e726)
