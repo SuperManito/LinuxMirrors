@@ -32,6 +32,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: true,
         manjaro: true,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '騰訊雲' : __isEn ? 'Tencent Cloud' : '腾讯云',
@@ -65,6 +66,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: false,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '華為雲' : __isEn ? 'Huawei Cloud' : '华为云',
@@ -98,6 +100,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: true,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '移動雲' : __isEn ? 'China Mobile Cloud' : '移动云 ',
@@ -131,6 +134,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: false,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '天翼雲' : __isEn ? 'China Telecom Cloud' : '天翼云',
@@ -164,6 +168,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: false,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '網易' : __isEn ? 'NetEase' : '网易',
@@ -197,6 +202,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: false,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '火山引擎' : __isEn ? 'Volcengine' : '火山引擎',
@@ -230,6 +236,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: false,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '清華大學' : __isEn ? 'Tsinghua University' : '清华大学',
@@ -263,6 +270,7 @@ const mirrorsTableData = [
         nix_channels: true,
         raspberrypi: true,
         manjaro: true,
+        endeavouros: true,
     },
     {
         name: __isZhHant ? '北京大學' : __isEn ? 'Peking University' : '北京大学',
@@ -296,6 +304,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: true,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '浙江大學' : __isEn ? 'Zhejiang University' : '浙江大学',
@@ -329,6 +338,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: true,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '南京大學' : __isEn ? 'Nanjing University' : '南京大学',
@@ -362,6 +372,7 @@ const mirrorsTableData = [
         nix_channels: true,
         raspberrypi: true,
         manjaro: true,
+        endeavouros: true,
     },
     {
         name: __isZhHant ? '蘭州大學' : __isEn ? 'Lanzhou University' : '兰州大学',
@@ -395,6 +406,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: false,
         manjaro: true,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '上海交通大學' : __isEn ? 'Shanghai Jiao Tong University' : '上海交通大学',
@@ -428,6 +440,7 @@ const mirrorsTableData = [
         nix_channels: false,
         raspberrypi: true,
         manjaro: true,
+        endeavouros: true,
     },
     {
         name: __isZhHant ? '重慶郵電大學' : __isEn ? 'Chongqing University of Posts and Telecommunications' : '重庆邮电大学',
@@ -461,6 +474,7 @@ const mirrorsTableData = [
         nix_channels: true,
         raspberrypi: true,
         manjaro: true,
+        endeavouros: true,
     },
     {
         name: __isZhHant ? '中國科學技術大學' : __isEn ? 'University of Science and Technology of China' : '中国科学技术大学',
@@ -494,6 +508,7 @@ const mirrorsTableData = [
         nix_channels: true,
         raspberrypi: true,
         manjaro: true,
+        endeavouros: false,
     },
     {
         name: __isZhHant ? '中國科學院軟體研究所' : __isEn ? 'Institute of Software, Chinese Academy of Sciences (ISCAS)' : '中国科学院软件研究所',
@@ -527,6 +542,7 @@ const mirrorsTableData = [
         nix_channels: true,
         raspberrypi: true,
         manjaro: true,
+        endeavouros: true,
     },
 ]
 
@@ -544,6 +560,7 @@ const mirrorsTableColumns = [
         title: 'IPv6',
         align: 'center',
         width: '70',
+        tooltip: 'IPv6 ' + (__isZhHant ? '(網際協定第6版)' : __isEn ? '(Internet Protocol version 6)' : '(网际协议第6版)'),
     },
     {
         colKey: 'epel',
@@ -552,24 +569,24 @@ const mirrorsTableColumns = [
         width: '90',
         tooltip: 'EPEL (Extra Packages for Enterprise Linux) ' + (__isZhHant ? '是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版' : __isEn ? 'is an additional package repository maintained by the Fedora organization. It is mainly applicable to Red Hat Linux distributions other than the Fedora operating system.' : '是由 Fedora 组织维护的一个附加软件包仓库，它主要适用于除 Fedora 操作系统以外的红帽系 Linux 发行版'),
     },
-    // {
-    //     colKey: 'debian',
-    //     title: 'Debian',
-    //     align: 'center',
-    //     width: '80',
-    // },
-    // {
-    //     colKey: 'ubuntu',
-    //     title: 'Ubuntu',
-    //     align: 'center',
-    //     width: '80',
-    // },
-    // {
-    //     colKey: 'centos',
-    //     title: 'CentOS',
-    //     align: 'center',
-    //     width: '80',
-    // },
+    {
+        colKey: 'debian',
+        title: 'Debian',
+        align: 'center',
+        width: '80',
+    },
+    {
+        colKey: 'ubuntu',
+        title: 'Ubuntu',
+        align: 'center',
+        width: '80',
+    },
+    {
+        colKey: 'centos',
+        title: 'CentOS',
+        align: 'center',
+        width: '80',
+    },
     {
         colKey: 'centos_stream',
         title: 'CentOS Stream',
@@ -654,12 +671,12 @@ const mirrorsTableColumns = [
         align: 'center',
         width: '140',
     },
-    // {
-    //     colKey: 'openeuler',
-    //     title: 'openEuler',
-    //     align: 'center',
-    //     width: '110',
-    // },
+    {
+        colKey: 'openeuler',
+        title: 'openEuler',
+        align: 'center',
+        width: '110',
+    },
     {
         colKey: 'anolis',
         title: 'Anolis OS',
@@ -690,8 +707,14 @@ const mirrorsTableColumns = [
         align: 'center',
         width: '80',
     },
+    {
+        colKey: 'endeavouros',
+        title: 'EndeavourOS',
+        align: 'center',
+        width: '140',
+    },
 ].map((item) => {
-    if (['ipv6', 'debian', 'ubuntu', 'centos', 'centos_stream', 'opensuse', 'epel', 'archlinux', 'manjaro', 'kali', 'armbian', 'deepin', 'raspberrypi', 'linuxmint', 'proxmox', 'fedora', 'rocky', 'almalinux', 'opencloudos', 'openeuler', 'anolis', 'openkylin', 'alpine', 'gentoo', 'nix_channels'].includes(item.colKey)) {
+    if (item.colKey !== 'name') {
         const labelSupported = __isZhHant ? '支持' : __isEn ? 'Supported' : '支持'
         const labelUnsupported = __isZhHant ? '不支持' : __isEn ? 'Unsupported' : '不支持'
         const labelIncompatible = __isZhHant ? '不兼容' : __isEn ? 'Incompatible' : '不兼容'
@@ -742,16 +765,16 @@ const mirrorsTableFilterSelectOptions = [
     {
         group: 'Debian',
         children: [
-            // {
-            //     value: 'debian',
-            //     label: 'Debian',
-            //     iconName: 'debian.svg',
-            // },
-            // {
-            //     value: 'ubuntu',
-            //     label: 'Ubuntu',
-            //     iconName: 'ubuntu.svg',
-            // },
+            {
+                value: 'debian',
+                label: 'Debian',
+                iconName: 'debian.svg',
+            },
+            {
+                value: 'ubuntu',
+                label: 'Ubuntu',
+                iconName: 'ubuntu.svg',
+            },
             {
                 value: 'kali',
                 label: 'Kali Linux',
@@ -797,11 +820,11 @@ const mirrorsTableFilterSelectOptions = [
                 label: 'Fedora',
                 iconName: 'fedora.ico',
             },
-            // {
-            //     value: 'centos',
-            //     label: 'CentOS',
-            //     iconName: 'centos.svg',
-            // },
+            {
+                value: 'centos',
+                label: 'CentOS',
+                iconName: 'centos.svg',
+            },
             {
                 value: 'centos_stream',
                 label: 'CentOS Stream',
@@ -817,11 +840,11 @@ const mirrorsTableFilterSelectOptions = [
                 label: 'AlmaLinux',
                 iconName: 'almalinux.svg',
             },
-            // {
-            //     value: 'openeuler',
-            //     label: 'openEuler',
-            //     iconName: 'openeuler.ico',
-            // },
+            {
+                value: 'openeuler',
+                label: 'openEuler',
+                iconName: 'openeuler.ico',
+            },
             {
                 value: 'opencloudos',
                 label: 'OpenCloudOS',
@@ -850,6 +873,11 @@ const mirrorsTableFilterSelectOptions = [
                 value: 'manjaro',
                 label: 'Manjaro',
                 iconName: 'manjaro.svg',
+            },
+            {
+                value: 'endeavouros',
+                label: 'EndeavourOS',
+                iconName: 'endeavouros.png',
             },
         ],
     },

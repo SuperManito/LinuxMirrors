@@ -68,7 +68,7 @@ ComponentSystem.register('mirrors-table', {
                     style="min-width: 160px; width: 230px"
                     @change="onFilterChange"
                 />
-            </div>
+            </t-space>
         </t-space>
         <blockquote v-if="isMobile">
             <p>{{ startTitle[0] }} <code>Debian</code>、<code>Ubuntu</code>、<code>CentOS</code>、<code>openEuler</code> {{ startTitle[1] }}</p>
@@ -83,11 +83,21 @@ ComponentSystem.register('mirrors-table', {
             @data-change="dataChange"
             @filter-change="onTableFilterChange"
         >
+            <template #IPv6="{ col }">
+                <t-tooltip :content="col.tooltip">
+                    <span>IPv6</span>
+                </t-tooltip>
+            </template>
+            <template #EPEL="{ col }">
+                <t-tooltip :content="col.tooltip">
+                    <span>EPEL</span>
+                </t-tooltip>
+            </template>
             <template v-for="col in columns" :key="col.colKey" #[col.colKey]="{ row }">
                 <div v-if="col.colKey === 'name'">
                     <t-popup placement="bottom" :show-arrow="false">
                         <template #content>
-                            <t-space direction="vertical" algin="center" style="gap: 2px">
+                            <t-space direction="vertical" align="center" style="gap: 2px">
                                 <span>{{ row.officialName }}</span>
                                 <a :href="row.url" target="_blank" rel="noopener noreferrer" style="color: var(--md-typeset-a-color)">{{ row.domain }}</a>
                             </t-space>
@@ -145,7 +155,8 @@ ComponentSystem.register('mirrors-table', {
     },
     created() {
         const allKeys = this._flattenFilterKeys(this.filterOptions)
-        this.selectedColumnFilters = allKeys.slice()
+        const defaultHidden = new Set(['debian', 'ubuntu', 'centos', 'openeuler'])
+        this.selectedColumnFilters = allKeys.filter((k) => !defaultHidden.has(k))
         this.selectedRowFilters = Array.isArray(this.originalData) ? this.originalData.map((r) => r.name) : []
         this._debouncedUpdateColumns = debounce(this._updateColumns.bind(this), 120)
         this._debouncedUpdateRows = debounce(this._updateRows.bind(this), 120)
