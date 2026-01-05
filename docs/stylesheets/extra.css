@@ -15,6 +15,8 @@
 [data-md-color-scheme='slate'] {
     --md-default-bg-color: rgb(18, 18, 18);
     --md-code-bg-color: hsla(var(--md-hue), 5%, 12%, 1);
+    --md-code-bg-color--lighter: hsla(var(--md-hue), 5%, 12%, 1);
+    --md-code-bg-color--light: hsla(var(--md-hue), 5%, 12%, 1);
     --md-footer-bg-color--dark: hsla(var(--md-hue), 5%, 12%, 1);
     --navbar-background: hsla(var(--md-hue), 5%, 19%, 0.33);
     --hero-background-image: linear-gradient(90deg, rgb(88 88 88) 50%, rgb(88 88 88) 50%);
