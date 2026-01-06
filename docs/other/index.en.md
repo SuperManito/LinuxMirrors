@@ -164,7 +164,7 @@ hide:
 
     </div>
 
-    Due to some force majeure, [Docker Hub](https://hub.docker.com) is currently inaccessible in the Chinese mainland network environment, so the image cannot be pulled normally. It is recommended to use the image warehouse source available in Chinese mainland mentioned below.
+    Due to some force majeure, [Docker Hub](https://hub.docker.com) is currently inaccessible in the Chinese mainland network environment, so the image cannot be pulled normally. It is recommended to use the image repository source available in Chinese mainland mentioned below.
 
     Note: The specified Web protocol in the script is only for controlling the `Docker CE` software source. `Docker Registry` always uses the `HTTPS` protocol.
 
@@ -351,7 +351,7 @@ Command options(name/meaning/value):
       --branch centos \
       --branch-version 9
     ```
-    > This option can be used to control the compatibility of the installed software package (only applicable to Red Hat operating systems). For details, see the path name (positive integer) representing the version number in the corresponding warehouse directory.
+    > This option can be used to control the compatibility of the installed software package (only applicable to Red Hat operating systems). For details, see the path name (positive integer) representing the version number in the corresponding repository directory.
 
 - ### Specify Docker Engine Installation Version
 
