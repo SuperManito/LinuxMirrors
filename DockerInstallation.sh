@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-01-01
+## Modified: 2026-01-06
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1201,7 +1201,9 @@ function configure_docker_ce_mirror() {
                         esac
                     else
                         # openEuler
-                        if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 22 ]]; then
+                        if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 24 ]]; then
+                            target_version="10"
+                        elif [[ "${SYSTEM_VERSION_ID_MAJOR}" -gt 22 ]]; then
                             target_version="9"
                         fi
                     fi
