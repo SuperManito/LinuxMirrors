@@ -87,9 +87,9 @@ theme:
     - content.tooltips
     - content.code.copy
     - content.code.annotate
-    - search.suggest
-    - search.highlight
-    - search.share
+    # - search.suggest
+    # - search.highlight
+    # - search.share
     - announce.dismiss
 extra:
   generator: false
@@ -201,9 +201,9 @@ plugins:
               - media: "(prefers-color-scheme: dark)"
                 toggle:
                   name: Dark Mode
-  - search:
-      # lang: en
-      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  # - search:
+  #     # lang: en
+  #     separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - tags
   - termynal
   # - minify:
