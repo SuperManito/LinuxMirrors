@@ -796,7 +796,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --help
     1. 首先在刪除內容時應盡可能保留腳本原始結構，直接把涉及函數中的內容刪除即可，使其保留為空函數
     2. 可以刪除一些不使用（作業系統）的軟體源原始內容 `gen_repo_files_xxx`，這些內容佔據了腳本 `60%` 以上的體積
     3. 如果你不使用某些功能，那麼可以刪除對應功能模組函數中的內容，`命令選項 handle_command_options`、`備份原有軟體源 backup_original_mirrors`、`更新軟體包 upgrade_software`
-    4. 移除不需要的語言包，例：`function msg_pack_en() {}`
+    4. 移除不需要的語言包，例：`function msg_pack_en() { :; }`
 6. 腳本主要功能配置是由統一的變量控制的，命令選項亦是如此，這些全局變量由全大寫字母構成並遵循下劃線命名法，具體變量詳見如下表格，你只需要將這些變量聲明在腳本頭部（預留註釋區域）即可快速完成定制
 
 ??? note "變數列表（點擊展開查看）"

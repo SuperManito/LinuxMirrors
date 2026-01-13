@@ -794,7 +794,7 @@ If you are a developer of another project and want to create a custom script bas
     1. Keep the original structure; empty out the function bodies if not needed.
     2. Remove unused OS repo content `gen_repo_files_xxx`, which takes up over 60% of the script.
     3. Remove unused feature modules, e.g., `handle_command_options`, `backup_original_mirrors`, `upgrade_software`.
-    4. Remove unnecessary language packs, for example: `function msg_pack_en() {}`
+    4. Remove unnecessary language packs, for example: `function msg_pack_en() { :; }`
 6.  Main configuration is controlled by unified variables, as are command options. These global variables are all uppercase and use underscores. See the table below. Declare them at the top of the script (reserved comment area) for quick customization.
 
 ??? note "Variable list (click to expand)"
