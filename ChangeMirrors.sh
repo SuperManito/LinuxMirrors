@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-01-04
+## Modified: 2026-01-16
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -252,7 +252,12 @@ File_ArmbianSourceList=$Dir_AptAdditionalSources/armbian.list
 File_ArmbianSourceListBackup=$File_ArmbianSourceList.bak
 File_ProxmoxSourceList=$Dir_AptAdditionalSources/pve-no-subscription.list
 File_ProxmoxSourceListBackup=$File_ProxmoxSourceList.bak
-File_ProxmoxAPLInfo=/usr/share/perl5/PVE/APLInfo.pm
+File_ProxmoxSources=$Dir_AptAdditionalSources/pve-no-subscription.sources
+File_ProxmoxSourcesBackup=$File_ProxmoxSources.bak
+File_ProxmoxCephSourceList=$Dir_AptAdditionalSources/ceph.list
+File_ProxmoxCephSourceListBackup=$File_ProxmoxCephSourceList.bak
+File_ProxmoxCephSources=$Dir_AptAdditionalSources/ceph.sources
+File_ProxmoxCephSourcesBackup=$File_ProxmoxCephSources.bak
 File_LinuxMintSourceList=$Dir_AptAdditionalSources/official-package-repositories.list
 File_LinuxMintSourceListBackup=$File_LinuxMintSourceList.bak
 File_RaspberryPiSourceList=$Dir_AptAdditionalSources/raspi.list
@@ -1540,7 +1545,13 @@ function backup_original_mirrors() {
             fi
             # Proxmox VE
             if [ -f "${File_ProxmoxVersion}" ]; then
-                backup_file $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
+                if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+                    backup_file $File_ProxmoxSources $File_ProxmoxSourcesBackup "pve-no-subscription.sources"
+                    [ -f "${File_ProxmoxCephSources}" ] && backup_file $File_ProxmoxCephSources $File_ProxmoxCephSourcesBackup "ceph.sources"
+                else
+                    backup_file $File_ProxmoxSourceList $File_ProxmoxSourceListBackup "pve-no-subscription.list"
+                    [ -f "${File_ProxmoxCephSourceList}" ] && backup_file $File_ProxmoxCephSourceList $File_ProxmoxCephSourceListBackup "ceph.list"
+                fi
             fi
             # Linux Mint
             if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
@@ -1625,7 +1636,15 @@ function remove_original_mirrors() {
         # Armbian
         [ -f "${File_ArmbianRelease}" ] && clear_file $File_ArmbianSourceList
         # Proxmox VE
-        [ -f "${File_ProxmoxVersion}" ] && clear_file $File_ProxmoxSourceList
+        if [ -f "${File_ProxmoxVersion}" ]; then
+            if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+                clear_file $File_ProxmoxSources
+                [ -f "${File_ProxmoxCephSources}" ] && clear_file $File_ProxmoxCephSources
+            else
+                clear_file $File_ProxmoxSourceList
+                [ -f "${File_ProxmoxCephSourceList}" ] && clear_file $File_ProxmoxCephSourceList
+            fi
+        fi
         # Linux Mint
         [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]] && clear_file $File_LinuxMintSourceList
         # Raspberry Pi OS
@@ -1803,7 +1822,13 @@ function change_mirrors_main() {
                 fi
                 # Proxmox VE
                 if [ -f "${File_ProxmoxVersion}" ]; then
-                    diff_file $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
+                    if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+                        diff_file $File_ProxmoxSourcesBackup $File_ProxmoxSources
+                        [ -f "${File_ProxmoxCephSources}" ] && diff_file $File_ProxmoxCephSourcesBackup $File_ProxmoxCephSources
+                    else
+                        diff_file $File_ProxmoxSourceListBackup $File_ProxmoxSourceList
+                        [ -f "${File_ProxmoxCephSourceList}" ] && diff_file $File_ProxmoxCephSourceListBackup $File_ProxmoxCephSourceList
+                    fi
                 fi
                 # Linux Mint
                 if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_LINUX_MINT}" ]]; then
@@ -2131,6 +2156,9 @@ Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
         echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}")
 
 $(_template_deb822 "deb-src" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")"
+    }
+    function gen_deb822_unsrc() {
+        echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}")"
     }
     function gen_deb822_disabled() {
         echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}" | sed -e "s|^|# |g")
@@ -2549,17 +2577,39 @@ $(gen_deb "${source_address}" "${base_system_codename}" "${repo_components}")"
     fi
     # Proxmox VE
     if [ -f "${File_ProxmoxVersion}" ]; then
-        source_address="${SOURCE}/proxmox/debian"
-        apt_source_file="${File_ProxmoxSourceList}"
-        apt_source_content="$(gen_deb_unsrc "${source_address}/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")  
-$(gen_deb_unsrc_disabled "${source_address}/pbs" "${SYSTEM_VERSION_CODENAME}" "pbs-no-subscription")
-$(gen_deb_unsrc_disabled "${source_address}/pbs-client" "${SYSTEM_VERSION_CODENAME}" "pbs-client-no-subscription")
-$(gen_deb_unsrc_disabled "${source_address}/pmg" "${SYSTEM_VERSION_CODENAME}" "pmg-no-subscription")"
-        write_apt_source
-        if [ -s "${File_ProxmoxAPLInfo}" ]; then
-            sed -e "s|url => [\"']https\?://[^/]*/images[\"']|url => \"${WEB_PROTOCOL}://${SOURCE}/images\"|g" \
+        if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
+            source_address="download.proxmox.com"
+        else
+            source_address="${SOURCE}/proxmox"
+        fi
+        if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+            apt_source_file="${File_ProxmoxSources}"
+            apt_source_content="$(gen_deb822_unsrc "${source_address}/debian/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")"
+            write_apt_source
+            # Ceph 仓库
+            if [ -f "${File_ProxmoxCephSources}" ]; then
+                local ceph_codename="$(ceph -v | grep ceph | awk '{print $(NF-1)}')"
+                apt_source_file="${File_ProxmoxCephSources}"
+                apt_source_content="$(gen_deb822_unsrc "${source_address}/debian/ceph-${ceph_codename}" "${SYSTEM_VERSION_CODENAME}" "no-subscription")"
+                write_apt_source
+            fi
+        else
+            apt_source_file="${File_ProxmoxSourceList}"
+            apt_source_content="$(gen_deb_unsrc "${source_address}/debian/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")"
+            write_apt_source
+            # Ceph 仓库
+            if [ -f "${File_ProxmoxCephSourceList}" ]; then
+                local ceph_codename="$(ceph -v | grep ceph | awk '{print $(NF-1)}')"
+                apt_source_file="${File_ProxmoxCephSourceList}"
+                apt_source_content="$(gen_deb_unsrc "${source_address}/debian/ceph-${ceph_codename}" "${SYSTEM_VERSION_CODENAME}" "no-subscription")"
+                write_apt_source
+            fi
+        fi
+        # CT Templates
+        if [ -s /usr/share/perl5/PVE/APLInfo.pm ]; then
+            sed -e "s|url => [\"']https\?://[^/]*/images[\"']|url => \"${WEB_PROTOCOL}://${source_address}/images\"|g" \
                 -i \
-                $File_ProxmoxAPLInfo
+                /usr/share/perl5/PVE/APLInfo.pm
         fi
     fi
 }
@@ -7012,7 +7062,7 @@ baseurl=https://mirrors.openanolis.cn/anolis/$releasever/Plus/$basearch/debug
 enabled=0
 gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
 gpgcheck=1
-          
+
 [PowerTools-debuginfo]
 name=AnolisOS-$releasever - PowerTools Debuginfo
 baseurl=https://mirrors.openanolis.cn/anolis/$releasever/PowerTools/$basearch/debug
@@ -7080,7 +7130,7 @@ baseurl=https://mirrors.openanolis.cn/anolis/$releasever/Plus/source/
 enabled=0
 gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
 gpgcheck=1
-          
+
 [PowerTools-source]
 name=AnolisOS-$releasever - PowerTools Source
 baseurl=https://mirrors.openanolis.cn/anolis/$releasever/PowerTools/source/
