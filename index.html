@@ -1,0 +1,1453 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本">
+      
+      
+      
+      
+      
+        <link rel="next" href="use/">
+      
+      
+        
+          <link rel="alternate" href="/" hreflang="zh">
+        
+          <link rel="alternate" href="/zh-Hant/" hreflang="zh-Hant">
+        
+          <link rel="alternate" href="/en/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>一键脚本使换源更简单 - LinuxMirrors</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20384%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M296.5%20291.1C321%20265.2%20336%20230.4%20336%20192c0-79.5-64.5-144-144-144S48%20112.5%2048%20192c0%2038.4%2015%2073.2%2039.5%2099.1%2021.3%2022.4%2044.9%2054%2053.3%2092.9h102.4c8.4-39%2032-70.5%2053.3-92.9m34.8%2033C307.7%20349%20288%20379.4%20288%20413.7V432c0%2044.2-35.8%2080-80%2080h-32c-44.2%200-80-35.8-80-80v-18.3c0-34.3-19.7-64.7-43.3-89.6C20%20289.7%200%20243.2%200%20192%200%2086%2086%200%20192%200s192%2086%20192%20192c0%2051.2-20%2097.7-52.7%20132.1M144%20184c0%2013.3-10.7%2024-24%2024s-24-10.7-24-24c0-48.6%2039.4-88%2088-88%2013.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024c-22.1%200-40%2017.9-40%2040%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.css">
+    
+      <link rel="stylesheet" href="assets/css/orama-ui.css">
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="termynal.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-WG7T40F7YP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-WG7T40F7YP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-WG7T40F7YP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="system" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="不再显示此消息">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  <span style="font-size: .6rem !important;">如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友</span>
+  &nbsp;&nbsp;<span class="twemoji heart" style="font-size: .6rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 20.408c-.492.308-.903.546-1.192.709q-.23.129-.463.252h-.002a.75.75 0 0 1-.686 0 17 17 0 0 1-.465-.252 31 31 0 0 1-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31 31 0 0 1 14 20.408"></path></svg></span>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="页眉"
+  >
+
+    <a
+      href="https://linuxmirrors.cn"
+      title="LinuxMirrors"
+      class="md-header__button md-logo"
+      aria-label="LinuxMirrors"
+      data-md-component="logo"
+    >
+      
+  <img src="assets/images/brand/svg/logo-light.svg" alt="logo">
+
+    </a>
+
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5.75 2.5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5M2 14a1 1 0 1 1 0-2 1 1 0 0 1 0 2m1-6a1 1 0 1 1-2 0 1 1 0 0 1 2 0M2 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/></svg>
+    </label>
+
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LinuxMirrors
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              一键脚本使换源更简单
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme)"
+      data-md-color-scheme="system"
+      data-md-color-primary="indigo"
+      data-md-color-accent="indigo"
+      
+        aria-label="跟随系统"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_0"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="跟随系统"
+        for="__palette_1"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+        </div>
+      </label>
+    
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme: light)"
+      data-md-color-scheme="default"
+      data-md-color-primary="white"
+      data-md-color-accent="blue"
+      
+        aria-label="亮色模式"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_1"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="亮色模式"
+        for="__palette_2"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0M8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0M3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8m13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8m-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13m3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061M2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-.018 1.042.75.75 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"/></svg>
+        </div>
+      </label>
+    
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme: dark)"
+      data-md-color-scheme="slate"
+      data-md-color-primary="black"
+      data-md-color-accent="blue"
+      
+        aria-label="暗黑模式"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_2"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="暗黑模式"
+        for="__palette_0"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.598 1.591a.75.75 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786m1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678"/></svg>
+        </div>
+      </label>
+    
+  
+</form>
+      
+    
+
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/zh-Hant/" hreflang="zh-Hant" class="md-select__link">
+              繁體中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/en/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7"/></svg>
+        </label>
+        <a class="md-header__button md-icon coze-icon-wrapper" href="https://www.coze.cn/store/agent/7503197985959428108?bot_id=true" target="_blank" rel="noopener noreferrer" title="扣子 AI 助手">
+  <div aria-label="Coze" class="coze-icon-bg">
+    <svg fill="currentColor" fill-rule="evenodd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" color="#fff" style="display: block; margin: auto;">
+      <path clip-rule="evenodd" d="M3.908 9.096A8.092 8.092 0 0111.998 1h.006c4.468 0 8.09 3.628 8.09 8.096v3.392h1.942c2.23 0 2.732 3.126.615 3.828l-2.556.85v1.466a1.947 1.947 0 01-2.818 1.742l-1.42-.707c-.067-.03-.149 0-.17.071-1.147 3.587-6.225 3.587-7.373 0a.123.123 0 00-.169-.07l-1.42.706c-1.29.65-2.817-.292-2.817-1.742v-1.466l-2.557-.85c-2.122-.697-1.614-3.828.615-3.828h1.942V9.096zm4.571 2.613a.784.784 0 00-.784.784v1.568a.784.784 0 101.568 0v-1.568a.784.784 0 00-.784-.784zm7.045.779a.784.784 0 100 1.568.784.784 0 000-1.568zm-6.186 3.415a.78.78 0 00.17.254 3.517 3.517 0 004.98 0 .782.782 0 10-1.106-1.107 1.958 1.958 0 01-2.767 0 .78.78 0 00-1.277.254.78.78 0 000 .6z"></path>
+    </svg>
+  </div>
+</a>
+
+<div class="md-search__inner" role="search">
+  <form class="md-search__form" name="search" onsubmit="return false;">
+    <input type="text" class="md-search__input" name="query" aria-label="AI 搜索" placeholder="AI 搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" readonly required onclick="OpenOramaSearchComponent()" />
+    <label class="md-search__icon md-icon" for="__search" onclick="OpenOramaSearchComponent()">  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg> </label>
+  </form>
+  <div class="md-search__output">
+    <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+      <div class="md-search-result" data-md-component="search-result">
+        <div class="md-search-result__meta">正在初始化搜索引擎</div>
+        <ol class="md-search-result__list" role="presentation"></ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const __lang = "zh";
+  let __notReadyMsg = '';
+  switch (__lang) {
+    case 'en':
+      __notReadyMsg = "The search component has not yet been loaded. Please try again later.";
+      break;
+    case 'zh-Hant':
+      __notReadyMsg = "搜尋元件尚未載入完畢，請稍後再試。";
+      break;
+    default:
+      __notReadyMsg = "搜索组件尚未加载完毕，请稍后再试。";
+  }
+
+  function OpenOramaSearchComponent() {
+    if (window.openOramaSearch) {
+      window.openOramaSearch();
+    } else {
+      alert$.next(__notReadyMsg);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchToggle = document.getElementById('__search');
+    if (searchToggle) {
+      searchToggle.addEventListener('change', function() {
+        if (this.checked) {
+          this.checked = false;
+          OpenOramaSearchComponent();
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .md-search__output {
+    display: none !important;
+  }
+  .md-search__inner {
+    padding-left: 8px;
+  }
+  .md-search__input {
+    cursor: pointer !important;
+  }
+  .md-search__form {
+    border-radius: 6px;
+  }
+  @media screen and (min-width: 60em) {
+    .md-search__inner {
+      width: 8.7rem;
+    }
+  }
+  .coze-icon-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(77, 83, 232);
+    border-radius: 6px;
+    color: #fff;
+    height: 28px;
+    width: 28px;
+  }
+  .coze-icon-bg svg {
+    width: 20px !important;
+    height: 20px !important;
+    display: block;
+  }
+  .coze-icon-wrapper {
+    @media screen and (max-width: 768px) {
+      display: none !important;
+    }
+  }
+  
+</style>
+      
+    
+
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SuperManito/LinuxMirrors" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LinuxMirrors
+  </div>
+</a>
+      </div>
+    
+  </nav>
+
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="." class="md-tabs__link">
+        
+  
+  
+    
+  
+  介绍
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="use/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  使用方法
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="mirrors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  软件源列表
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="other/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  容器工具
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  更新日志
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="community/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  社区
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="sponsor/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  赞助
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://linuxmirrors.cn" title="LinuxMirrors" class="md-nav__button md-logo" aria-label="LinuxMirrors" data-md-component="logo">
+      
+  <img src="assets/images/brand/svg/logo-light.svg" alt="logo">
+
+    </a>
+    LinuxMirrors
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SuperManito/LinuxMirrors" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LinuxMirrors
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    介绍
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用方法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mirrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    软件源列表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="other/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    容器工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    更新日志
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    社区
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sponsor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    赞助
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--secondary" aria-label="">
+     
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+  
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+
+  
+  
+
+
+
+  <h1>介绍</h1>
+
+
+<div class="grid">
+<figure style="margin: 0 auto">
+<div class="hero">
+    <span class="hero-background">
+    </span>
+  </div>
+<p><img src="/assets/images/brand/light/2.png#only-light" alt="LinuxMirrors" style="width: 300px" />
+  <img src="/assets/images/brand/dark/2.png#only-dark" alt="LinuxMirrors" style="width: 300px" />
+  </p>
+<figcaption>GNU/Linux 更换系统软件源脚本及 Docker 安装与换源脚本</figcaption>
+<figcaption>一键脚本使换源更简单</figcaption>
+</figure>
+<figure class="home-cmd no-select" style="margin: 0 auto; display: flex; flex-direction: column; justify-content: center">
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="gnulinux" name="__tabbed_1" type="radio" /><input id="docker" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="gnulinux"><span class="twemoji middle"><svg xmlns="http://www.w3.org/2000/svg" width="27.77" height="32" viewBox="0 0 256 295"><defs><linearGradient id="SVGW7E1RkMg" x1="48.548%" x2="51.047%" y1="115.276%" y2="41.364%"><stop offset="0%" stop-color="#FFEED7"/><stop offset="100%" stop-color="#BDBFC2"/></linearGradient><linearGradient id="SVGyiZg8cwW" x1="54.407%" x2="46.175%" y1="2.404%" y2="90.542%"><stop offset="0%" stop-color="#FFF" stop-opacity=".8"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGfuh4OdCZ" x1="51.86%" x2="47.947%" y1="88.248%" y2="9.748%"><stop offset="0%" stop-color="#FFEED7"/><stop offset="100%" stop-color="#BDBFC2"/></linearGradient><linearGradient id="SVGb9blqeLb" x1="49.925%" x2="49.924%" y1="85.49%" y2="13.811%"><stop offset="0%" stop-color="#FFEED7"/><stop offset="100%" stop-color="#BDBFC2"/></linearGradient><linearGradient id="SVGyL58WdzB" x1="53.901%" x2="45.956%" y1="3.102%" y2="93.895%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGXfyibbyx" x1="45.593%" x2="54.811%" y1="5.475%" y2="93.524%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGTNBIecIv" x1="49.984%" x2="49.984%" y1="89.845%" y2="40.632%"><stop offset="0%" stop-color="#FFEED7"/><stop offset="100%" stop-color="#BDBFC2"/></linearGradient><linearGradient id="SVGXeZd3drj" x1="53.505%" x2="42.746%" y1="99.975%" y2="23.545%"><stop offset="0%" stop-color="#FFEED7"/><stop offset="100%" stop-color="#BDBFC2"/></linearGradient><linearGradient id="SVGb45EQbPD" x1="49.841%" x2="50.241%" y1="13.229%" y2="94.673%"><stop offset="0%" stop-color="#FFF" stop-opacity=".8"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGRPbAJGAc" x1="49.927%" x2="50.727%" y1="37.327%" y2="92.782%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGjW2secZz" x1="49.876%" x2="49.876%" y1="2.299%" y2="81.204%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGh2zi4dPG" x1="49.833%" x2="49.824%" y1="2.272%" y2="71.799%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGRa6POd1H" x1="53.467%" x2="38.949%" y1="48.921%" y2="98.1%"><stop offset="0%" stop-color="#FFA63F"/><stop offset="100%" stop-color="#FF0"/></linearGradient><linearGradient id="SVG6FxQ2EiQ" x1="52.373%" x2="47.579%" y1="143.009%" y2="-64.622%"><stop offset="0%" stop-color="#FFEED7"/><stop offset="100%" stop-color="#BDBFC2"/></linearGradient><linearGradient id="SVGdSn3tdYz" x1="30.581%" x2="65.887%" y1="34.024%" y2="89.175%"><stop offset="0%" stop-color="#FFA63F"/><stop offset="100%" stop-color="#FF0"/></linearGradient><linearGradient id="SVGUedoFcfT" x1="59.572%" x2="48.361%" y1="-17.216%" y2="66.118%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVG8tTE3cwx" x1="47.769%" x2="51.373%" y1="1.565%" y2="104.313%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGL8diadTW" x1="43.55%" x2="57.114%" y1="4.533%" y2="92.827%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><linearGradient id="SVGssL8hbJl" x1="49.733%" x2="50.558%" y1="17.609%" y2="99.385%"><stop offset="0%" stop-color="#FFA63F"/><stop offset="100%" stop-color="#FF0"/></linearGradient><linearGradient id="SVG7qICGeYz" x1="50.17%" x2="49.68%" y1="2.89%" y2="94.17%"><stop offset="0%" stop-color="#FFF" stop-opacity=".65"/><stop offset="100%" stop-color="#FFF" stop-opacity="0"/></linearGradient><filter id="SVGk8AjT3IS" width="200%" height="200%" x="-50%" y="-50%" filterUnits="objectBoundingBox"><feOffset in="SourceAlpha" result="shadowOffsetOuter1"/><feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="6.5"/></filter></defs><g fill="none"><path fill="#000" fill-opacity=".2" d="M235.125 249.359c0 17.355-52.617 31.497-117.54 31.497S.044 266.806.044 249.359c0-17.356 52.618-31.498 117.54-31.498c64.924 0 117.45 14.142 117.541 31.498" filter="url(#SVGk8AjT3IS)" transform="translate(10)"/><path fill="#000" d="M63.213 215.474c-11.387-16.346-13.591-69.606 12.947-102.39C89.292 97.383 92.69 86.455 93.7 71.67c.734-16.805-11.846-66.851 35.537-70.616c48.027-3.857 45.364 43.526 45.088 68.596c-.183 21.12 15.52 33.15 26.355 49.68c19.927 30.303 18.274 82.461-3.765 110.745c-27.916 35.354-51.791 20.018-67.678 21.304c-29.752 1.745-30.762 17.54-66.024-35.905"/><path fill="url(#SVGW7E1RkMg)" d="M169.1 122.451c8.265 7.622 29.661 41.69-4.224 62.995c-11.937 7.438 10.653 35.721 21.488 22.039c19.193-24.61 6.98-63.913-4.591-77.963c-7.714-9.917-19.651-13.774-12.672-7.07" transform="translate(10)"/><path fill="#000" stroke="#000" stroke-width=".977" d="M176.805 117.86c13.59 11.02 38.292 49.587 2.204 74.748c-11.846 7.806 10.468 32.508 23.049 19.927c43.618-43.894-1.102-94.308-16.53-111.664c-13.774-15.151-25.987 3.49-8.723 16.989Z"/><path fill="url(#SVGyiZg8cwW)" d="M147.245 25.02c-.459 12.581-14.325 23.51-30.946 24.52S86.639 41 87.097 28.418c.46-12.581 14.326-23.509 30.947-24.519c16.62-.918 29.66 8.54 29.201 21.12" transform="translate(10)"/><path fill="url(#SVGfuh4OdCZ)" d="M107.483 54.957c.46 8.173-3.397 15.06-8.723 15.335s-10.01-6.06-10.47-14.232S91.688 41 97.014 40.725s10.01 6.06 10.468 14.233" transform="translate(10)"/><path fill="url(#SVGb9blqeLb)" d="M117.125 55.6c.184 9.458 6.337 16.988 13.683 16.805c7.346-.184 13.131-7.99 12.948-17.54c-.184-9.458-6.336-16.988-13.683-16.804c-7.346.183-13.223 8.08-12.948 17.539" transform="translate(10)"/><path fill="#000" d="M133.186 57.712c-.092 5.234 2.48 9.458 5.877 9.458c3.306 0 6.153-4.224 6.245-9.366c.091-5.234-2.48-9.459-5.878-9.459c-3.397 0-6.152 4.225-6.244 9.367m-21.212.092c.459 4.316-1.194 7.989-3.582 8.356c-2.387.276-4.683-2.938-5.142-7.254s1.194-7.99 3.581-8.357c2.388-.275 4.684 2.939 5.143 7.255"/><path fill="url(#SVGyL58WdzB)" d="M124.564 54.773c-.276 2.939 1.102 5.326 3.03 5.51s3.765-2.112 4.04-4.959c.276-2.938-1.102-5.326-3.03-5.51c-1.928-.183-3.765 2.113-4.04 4.96" transform="translate(10)"/><path fill="url(#SVGXfyibbyx)" d="M99.953 55.508c.276 2.388-.734 4.5-2.203 4.683c-1.47.184-2.847-1.653-3.123-4.132c-.275-2.388.735-4.5 2.204-4.683c1.47-.184 2.847 1.744 3.122 4.132" transform="translate(10)"/><path fill="url(#SVGTNBIecIv)" d="M71.027 145.684c6.52-14.785 20.386-40.772 20.662-60.883c0-15.978 47.843-19.835 51.7-3.856c3.856 15.978 13.59 39.853 19.834 51.424c6.245 11.478 24.335 48.118 5.051 80.074c-17.356 28.284-69.973 50.69-98.073-3.856c-9.55-18.917-7.806-42.333.826-62.903" transform="translate(10)"/><path fill="url(#SVGXeZd3drj)" d="M65.15 134.664c-5.601 10.56-17.172 38.293 11.112 53.445c30.395 16.162 30.303 49.312-6.245 33.517c-33.425-14.233-18.641-71.902-9.274-85.676c6.06-9.642 15.243-21.488 4.407-1.286" transform="translate(10)"/><path fill="#000" stroke="#000" stroke-width="1.25" d="M79.925 122.727c-8.907 14.509-30.211 48.669-1.652 66.484c38.384 23.6 27.548 47.108-7.53 25.895c-49.404-29.568-5.97-89.257 13.774-112.03c22.59-25.529 4.316 4.683-4.592 19.65Z"/><path fill="url(#SVGb45EQbPD)" d="M156.428 151.285c0 16.162-15.519 37.1-42.15 36.916c-27.456.183-39.118-20.754-39.118-36.916s18.182-29.293 40.588-29.293c22.498.092 40.68 13.132 40.68 29.293" transform="translate(10)"/><path fill="url(#SVGRPbAJGAc)" d="M141.92 100.504c-.276 16.713-11.204 20.662-24.978 20.662s-23.784-2.48-24.978-20.662c0-11.387 11.203-17.998 24.978-17.998c13.774-.092 24.977 6.52 24.977 17.998" transform="translate(10)"/><path fill="url(#SVGjW2secZz)" d="M58.63 126.216c9-13.682 28.008-34.711 3.582 2.939c-19.835 31.038-7.346 50.965-.918 56.474c18.549 16.53 17.814 27.64 3.214 18.917c-31.314-18.641-24.794-50.047-5.878-78.33" transform="translate(10)"/><path fill="url(#SVGh2zi4dPG)" d="M188.936 131.818c-7.806-16.07-32.6-56.842 1.193-9.459c30.763 42.884 9.183 72.729 5.326 75.667c-3.856 2.939-16.804 8.908-13.04-1.469c3.858-10.377 22.958-30.028 6.52-64.74" transform="translate(10)"/><path fill="url(#SVGRa6POd1H)" stroke="#E68C3F" stroke-width="6.25" d="M51.835 258.542c-20.57-10.928-50.414 2.112-39.578-27.457c2.204-6.704-3.214-16.805.275-23.325c4.133-7.989 13.04-6.244 18.366-11.57c5.234-5.51 8.54-15.06 18.366-13.59c9.734 1.468 16.254 13.406 23.049 28.099c5.05 10.468 22.865 25.253 21.672 37.007c-1.47 17.998-21.948 21.396-42.15 10.836Z" transform="translate(10)"/><path fill="url(#SVG6FxQ2EiQ)" d="M201.608 189.119c-3.122 5.877-16.162 15.335-24.886 12.856c-8.815-2.388-12.856-15.795-11.111-25.988c1.653-11.386 11.111-12.03 23.05-6.336c12.855 6.336 16.712 11.662 12.947 19.468" transform="translate(10)"/><path fill="url(#SVGdSn3tdYz)" stroke="#E68C3F" stroke-width="6.251" d="M194.445 253.49c15.06-18.273 48.578-14.508 25.988-39.577c-4.775-5.418-3.306-16.989-9.183-21.947c-6.887-6.061-14.509-1.102-21.488-4.224c-6.979-3.398-14.325-9.918-22.865-5.327c-8.54 4.684-9.459 16.805-10.285 32.783c-.735 11.479-11.203 30.671-5.602 41.231c8.081 16.346 29.11 14.142 43.435-2.938Z" transform="translate(10)"/><path fill="url(#SVGUedoFcfT)" d="M187.925 229.064c23.325-34.435 5.97-34.16.092-36.823c-5.877-2.755-12.03-8.173-18.916-4.408c-6.888 3.857-7.255 13.775-7.439 26.814c-.275 9.367-8.08 25.07-3.397 33.793c5.693 10.193 19.467-4.591 29.66-19.376" transform="translate(10)"/><path fill="url(#SVG8tTE3cwx)" d="M47.06 234.023c-34.895-22.59-18.55-30.303-13.315-33.885c6.336-4.591 6.428-13.407 14.233-12.58c7.806.826 12.397 10.468 17.631 22.406c3.857 8.54 17.264 19.927 16.254 29.753c-1.285 11.57-19.743 3.948-34.803-5.694" transform="translate(10)"/><path fill="#000" d="M209.588 188.843c-2.755 4.776-13.958 12.306-21.396 10.285c-7.622-1.928-11.112-12.672-9.55-20.753c1.377-9.183 9.55-9.642 19.834-5.05c10.928 4.958 14.326 9.182 11.112 15.518"/><path fill="url(#SVGL8diadTW)" d="M192.058 186.18c-1.745 3.306-9.091 8.54-14.234 7.163c-5.142-1.377-7.713-8.815-6.887-14.417c.735-6.336 6.244-6.704 13.223-3.581c7.53 3.49 9.918 6.428 7.898 10.835" transform="translate(10)"/><path fill="url(#SVGssL8hbJl)" stroke="#E68C3F" stroke-width="3.75" d="M97.107 66.344c3.673-3.398 12.58-13.774 29.477-2.939c3.122 2.02 5.693 2.204 11.662 4.775c12.03 4.96 6.336 16.897-6.52 20.937c-5.51 1.745-10.468 8.449-20.386 7.806c-8.54-.46-10.744-6.06-15.978-9.091c-9.275-5.234-10.652-12.305-5.602-16.07c5.051-3.765 6.98-5.143 7.347-5.418Z" transform="translate(10)"/><path stroke="#E68C3F" stroke-width="2.5" d="M148.43 75.986c-5.05.275-15.979 11.203-27.457 11.203s-18.366-10.652-20.11-10.652"/><path fill="url(#SVG7qICGeYz)" d="M102.8 65.426c1.837-1.653 7.622-6.153 15.244-1.562c1.653.919 3.306 1.929 5.693 3.306c4.867 2.847 2.48 6.98-3.398 9.55c-2.663 1.102-7.07 3.49-10.376 3.306c-3.673-.367-6.153-2.755-8.54-4.316c-4.5-2.938-4.224-5.418-2.112-7.346c1.56-1.47 3.305-2.847 3.49-2.938" transform="translate(10)"/></g></svg></span> GNU/Linux</label><label for="docker"><span class="twemoji lg middle" style="color: #1d63ed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.983 11.078h2.119a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.119a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 0 0 .186-.186V3.574a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 0 0 .186-.186V6.29a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 0 0 .184-.186V6.29a.185.185 0 0 0-.185-.185H8.1a.185.185 0 0 0-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 0 0 .185-.186V6.29a.185.185 0 0 0-.185-.185H5.136a.186.186 0 0 0-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 0 0 .184-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.185.185 0 0 0-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 0 0 .185-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.186.186 0 0 0-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 0 0 .184-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.185.185 0 0 0-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51q-.508.001-1.01.087c-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.75.75 0 0 0-.75.748 11.4 11.4 0 0 0 .692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137a15.7 15.7 0 0 0 2.93-.266 12.3 12.3 0 0 0 3.823-1.389 10.5 10.5 0 0 0 2.61-2.136c1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z"/></svg></span> Docker</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><img src="/assets/images/brand/command/linux-light.png#only-light" alt="command-linux" />
+<img src="/assets/images/brand/command/linux-dark.png#only-dark" alt="command-linux" /></p>
+<p><button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)" title="复制"></button></p>
+</div>
+<div class="tabbed-block">
+<p><img src="/assets/images/brand/command/docker-light.png#only-light" alt="command-docker" />
+<img src="/assets/images/brand/command/docker-dark.png#only-dark" alt="command-docker" /></p>
+<p><button class="md-clipboard" data-clipboard-text="bash &lt;(curl -sSL https://linuxmirrors.cn/docker.sh)" title="复制"></button></p>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<div class="grid">
+<div class="grid cards" style="height: fit-content">
+<ul>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 9v12H1V9zm4 12a2 2 0 0 1-2-2V9c0-.55.22-1.05.59-1.41L14.17 1l1.06 1.06c.27.27.44.64.44 1.05l-.03.32L14.69 8H21a2 2 0 0 1 2 2v2c0 .26-.05.5-.14.73l-3.02 7.05C19.54 20.5 18.83 21 18 21zm0-2h9.03L21 12v-2h-8.79l1.13-5.32L9 9.03z"/></svg></span> <strong>轻松使用</strong></p>
+<hr />
+<p>只需要一行命令就能直接运行，零技术门槛，无需安装任何依赖<br />
+文档集成了 AI 搜索与聊天，提供各种使用场景的解决方案</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 3v6h2.95l2 6H6v6h6v-4.59L17.41 11H22V5h-6v4.57L10.59 15H9.06l-2-6H8V3M4 5h2v2H4m14 0h2v2h-2M8 17h2v2H8Z"/></svg></span> <strong>系统支持广泛</strong></p>
+<hr />
+<p>已适配高达 <code>26+</code> 操作系统，涵盖各类版本，精准识别系统类型<br />
+脚本兼容性高，不支持的系统会有相应提示并无操作跳出</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v6h.73l-3.94 7H2v6h6v-2h8v2h6v-6h-3.79l-3.94-7H15V3m-4 2h2v2h-2m1 2.04 4 7.11V18H8v-1.85M4 18h2v2H4m14-2h2v2h-2"/></svg></span> <strong>多元软件源适配</strong></p>
+<hr />
+<p>深入考察了国内镜像站的系统适配情况，专为中国用户打造<br />
+还提供全网搜集的国内教育网和海外镜像站供用户选择</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m13.13 22.19-1.63-3.83c1.57-.58 3.04-1.36 4.4-2.27zM5.64 12.5l-3.83-1.63 6.1-2.77C7 9.46 6.22 10.93 5.64 12.5M19.22 4c.28 0 .53 0 .74.05.17 1.39-.02 4.25-3.3 7.53-1.7 1.71-3.73 3.02-6.01 3.89l-2.15-2.1c.92-2.31 2.23-4.34 3.92-6.03C15.18 4.58 17.64 4 19.22 4m0-2c-1.98 0-4.98.69-8.22 3.93-2.19 2.19-3.5 4.6-4.35 6.71-.28.75-.09 1.57.46 2.13l2.13 2.12c.38.38.89.61 1.42.61.23 0 .47-.06.7-.15A19.1 19.1 0 0 0 18.07 13c5.66-5.66 3.54-10.61 3.54-10.61S20.7 2 19.22 2m-4.68 7.46c-.78-.78-.78-2.05 0-2.83s2.05-.78 2.83 0c.77.78.78 2.05 0 2.83s-2.05.78-2.83 0m-5.66 7.07-1.41-1.41zM6.24 22l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83 22zM2 22h1.41l4.77-4.76-1.42-1.41L2 20.59zm0-2.83 4.09-4.08c-.21-.3-.36-.62-.45-.97L2 17.76z"/></svg></span> <strong>快，且高效</strong></p>
+<hr />
+<p>最快仅需 10 秒即可完成软件源的更换，高效运维，节省大量时间成本<br />
+项目经过数年的迭代与优化，脚本性能卓越运行稳定，场景判断完善</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1c6.075 0 11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1m3.241 10.5zc-.1-2.708-.992-4.904-1.89-6.452a14 14 0 0 0-1.304-1.88L12 3.11l-.047.059c-.354.425-.828 1.06-1.304 1.88-.898 1.547-1.79 3.743-1.89 6.451Zm-12.728 0h4.745c.1-3.037 1.1-5.49 2.093-7.204.39-.672.78-1.233 1.119-1.673C6.11 3.329 2.746 7 2.513 11.5m18.974 0C21.254 7 17.89 3.329 13.53 2.623c.339.44.729 1.001 1.119 1.673.993 1.714 1.993 4.167 2.093 7.204ZM8.787 13c.182 2.478 1.02 4.5 1.862 5.953q.574.993 1.304 1.88l.047.057.047-.059c.354-.425.828-1.06 1.304-1.88.842-1.451 1.679-3.471 1.862-5.951Zm-1.504 0H2.552a9.505 9.505 0 0 0 7.918 8.377 16 16 0 0 1-1.119-1.673C8.413 18.085 7.47 15.807 7.283 13m9.434 0c-.186 2.807-1.13 5.085-2.068 6.704-.39.672-.78 1.233-1.118 1.673A9.506 9.506 0 0 0 21.447 13Z"/></svg></span> <strong>全球网络，调用无忧</strong></p>
+<hr />
+<p>本网站提供全球边缘网络加速，不惧各种网络环境，国内轻松访问<br />
+同时提供了多个备用地址以确保项目脚本始终可用，真正做到使用无忧</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 7.76v8.49h4.08l.6-.91c1.16-1.79 3.25-2.59 4.79-2.59.53 0 .98.09 1.32.25.91.41 1.16 1.18 1.21 1.74.08 1.13-.5 2.29-1.5 2.97-.9.62-3.06 1.29-5.63 1.29-1.75 0-4.26-.31-6.75-1.7.29-2.45.88-6.42 1.88-9.54M7 3C4 7.09 3 18.34 3 18.34 5.9 20.31 9.08 21 11.87 21c2.99 0 5.52-.79 6.77-1.64 3-2.04 3.3-6.65 0-8.18-.64-.29-1.38-.43-2.17-.43-2.3 0-4.97 1.21-6.47 3.5H9V7.09h2L12 4z"/></svg></span> <strong>功能强大，无与伦比</strong></p>
+<hr />
+<p>脚本通过方向键交互逐步引导用户选择软件源配置，使换源更简单<br />
+此外脚本提供了丰富的命令选项，支持 CI/CD 集成与自动化运维</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m22.61 18.36-4.25 4.25-5.2-5.2 1.77-1.77 1 1 2.47-2.48 1.42 1.42L18.36 17l1.06 1 1.42-1.4zm-16-7.53L1.39 5.64l4.25-4.25L7.4 3.16 4.93 5.64 6 6.7l2.46-2.48 1.42 1.42-1.42 1.41 1 1zM14.06 9l.94.93L5.92 19H5v-.92zm3.61-6c-.25 0-.51.09-.71.29l-1.84 1.83 3.75 3.75L20.71 7c.39-.39.39-1 0-1.41l-2.34-2.3a.98.98 0 0 0-.7-.29m-3.61 3.18L3 17.25V21h3.75L17.81 9.93z"/></svg></span> <strong>高度可定制</strong></p>
+<hr />
+<p>脚本命令选项遵循正式应用程序规范设计，能够满足各种高级需求<br />
+代码结构清晰，易于阅读和修改，支持克隆后定制，支持多语言打印</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3c-1.27 0-2.4.8-2.82 2H3v2h1.95L2 14c-.47 2 1 3 3.5 3s4.06-1 3.5-3L6.05 7h3.12c.33.85.98 1.5 1.83 1.83V20H2v2h20v-2h-9V8.82c.85-.32 1.5-.97 1.82-1.82h3.13L15 14c-.47 2 1 3 3.5 3s4.06-1 3.5-3l-2.95-7H21V5h-6.17C14.4 3.8 13.27 3 12 3m0 2a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1m-6.5 5.25L7 14H4zm13 0L20 14h-3z"/></svg></span> <strong>自由，开源</strong></p>
+<hr />
+<p>项目已设立 MIT 开源许可协议，脚本代码完全开源且免费使用<br />
+请尊重作者的知识成果，传播时请在显著位置标注来源或项目地址</p>
+</li>
+</ul>
+</div>
+<div class="home-table" style="text-align: center">
+<table>
+<thead>
+<tr>
+<th>操作系统</th>
+<th style="text-align: center;">适配版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.debian.org" title="https://www.debian.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/debian.svg" alt="Debian" width="16" height="16" style="vertical-align: -0.35em"></a> <strong>Debian</strong></td>
+<td style="text-align: center;"><em>8～13</em></td>
+</tr>
+<tr>
+<td><a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/ubuntu.svg" alt="Ubuntu" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Ubuntu</strong> <span class="twemoji" title="支持乌班图家族衍生操作系统，例如 <code>优麒麟</code> <code>Kubuntu</code> 等<br/>由于迭代速度较快并不直接支持所有非 LTS 的版本，具体详见文档"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg></span></td>
+<td style="text-align: center;"><em>14～25</em></td>
+</tr>
+<tr>
+<td><a href="https://www.kali.org" title="https://www.kali.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/kali-linux.png" alt="Kali Linux" width="16" height="16"></a> <strong>Kali Linux</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/linux-mint.svg" alt="Linux Mint" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Linux Mint</strong></td>
+<td style="text-align: center;"><em>17～22 / LMDE 2～7</em></td>
+</tr>
+<tr>
+<td><a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/deepin.png" alt="Deepin" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Deepin（深度）</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/zorin-os.png" alt="Zorin OS" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Zorin OS</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/armbian.png" alt="Armbian" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Armbian</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" title="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/proxmox.svg" alt="Proxmox VE" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Proxmox VE</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/raspberry-pi.png" alt="Raspberry Pi OS" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Raspberry Pi OS</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/redhat.svg" alt="Red Hat Enterprise Linux" width="16" height="16" style="vertical-align: -0.1em"></a> <strong>Red Hat Enterprise Linux</strong> <span class="twemoji" title="使用 <code>CentOS Stream</code> 或 <code>CentOS</code> 源"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg></span></td>
+<td style="text-align: center;"><em>7～10</em></td>
+</tr>
+<tr>
+<td><a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/fedora.ico" alt="Fedora" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Fedora</strong></td>
+<td style="text-align: center;"><em>30～43</em></td>
+</tr>
+<tr>
+<td><a href="https://www.centos.org" title="https://www.centos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/centos.svg" alt="CentOS" width="16" height="16" style="vertical-align: -0.125em"></a> <strong>CentOS</strong></td>
+<td style="text-align: center;"><em>7～8 / Stream 8～10</em></td>
+</tr>
+<tr>
+<td><a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/rocky-linux.svg" alt="Rocky Linux" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Rocky Linux</strong></td>
+<td style="text-align: center;"><em>8～10</em></td>
+</tr>
+<tr>
+<td><a href="https://almalinux.org" title="https://almalinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/almalinux.svg" alt="AlmaLinux" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>AlmaLinux</strong></td>
+<td style="text-align: center;"><em>8～10</em></td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/oracle-linux.png" alt="Oracle Linux" width="16" height="16" style="vertical-align: -0.25em"></a> <strong>Oracle Linux</strong> <span class="twemoji" title="使用 <code>CentOS Stream</code> 源"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg></span></td>
+<td style="text-align: center;"><em>8～10</em></td>
+</tr>
+<tr>
+<td><a href="https://www.openeuler.org" title="https://www.openeuler.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openeuler.ico" alt="openEuler" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>openEuler（开源欧拉）</strong></td>
+<td style="text-align: center;"><em>20～25</em></td>
+</tr>
+<tr>
+<td><a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opencloudos.png" alt="OpenCloudOS" width="16" height="16" style="vertical-align: -0.25em"></a> <strong>OpenCloudOS（鸥栖）</strong></td>
+<td style="text-align: center;"><em>8.6～9 / Stream 23</em></td>
+</tr>
+<tr>
+<td><a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openkylin.ico" alt="openKylin" width="16" height="16" style="vertical-align: -0.25em"></a> <strong>openKylin（开放麒麟）</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/anolis.png" alt="Anolis OS" width="16" height="16" style="vertical-align: -0.1em"></a> <strong>Anolis OS（龙蜥）</strong></td>
+<td style="text-align: center;"><em>8 / 23</em></td>
+</tr>
+<tr>
+<td><a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opensuse.svg" alt="openSUSE" width="16" height="16"></a> <strong>openSUSE</strong></td>
+<td style="text-align: center;"><em>Leap 15 ~ 16 / Tumbleweed</em></td>
+</tr>
+<tr>
+<td><a href="https://archlinux.org" title="https://archlinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/arch-linux.ico" alt="Arch Linux" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Arch Linux</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://manjaro.org" title="https://manjaro.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/manjaro.svg" alt="Manjaro" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Manjaro</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://endeavouros.com" title="https://endeavouros.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/endeavouros.png" alt="EndeavourOS" width="16" height="16" style="vertical-align: -0.1em"></a> <strong>EndeavourOS</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/alpine.png" alt="Alpine Linux" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Alpine Linux</strong></td>
+<td style="text-align: center;"><em>v3 / edge</em></td>
+</tr>
+<tr>
+<td><a href="https://www.gentoo.org" title="https://www.gentoo.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/gentoo.svg" alt="Gentoo" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Gentoo</strong></td>
+<td style="text-align: center;"><em>all</em></td>
+</tr>
+<tr>
+<td><a href="https://nixos.org" title="https://nixos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/nixos.svg" alt="NixOS" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>NixOS</strong></td>
+<td style="text-align: center;"><em>19～25</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div style="text-align: center; padding: 1rem 0">
+<p><a class="md-button md-button--primary" href="use/">开 始 使 用</a> &nbsp; <a class="md-button" href="mirrors/">软件源列表</a></p>
+</div>
+<div class="sponsor">
+  <div class="sponsor-label">
+    <strong class="sponsor-text-1"></strong>
+  </div>
+  <div class="sponsor-wrapper sponsor-flex-wrapper no-select">
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
+      <img src="/assets/images/sponsor/1panel.png" alt="1Panel" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.duotuyun.com" title="智能化防护，每一次连接皆在安全之下">
+      <!-- 27 5 19 -->
+      <img src="/assets/images/sponsor/duotuyun-light.svg#only-light" alt="多途云" style="width: 56% !important" />
+      <img src="/assets/images/sponsor/duotuyun-dark.svg#only-dark" alt="多途云" style="width: 56% !important" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://1ms.run?utm_source=linuxmirrors" title="专为中国开发者提供镜像极速下载服务，告别 Docker 镜像拉取慢！</br>支持 Docker Hub、gcr.io、registry.k8s.io 等主流镜像仓库。">
+      <!-- 27 6 10 -->
+      <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="毫秒镜像" style="width: 56% !important" />
+      <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="毫秒镜像" style="width: 56% !important" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.dkdun.cn/aff/VAWGETUL" title="专注独立IP高频VPS｜R9/i9系列定制">
+      <!-- 27 11 1 -->
+      <img src="/assets/images/sponsor/linfengyun.png" alt="林枫云" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.bsncdn.org" title="香港日本高防CDN，免实名/免备案，轻松阻断 DDOS / CC 攻击">
+      <!-- 26 8 17 -->
+      <img src="/assets/images/sponsor/businiaocdn.png" alt="不死鸟CDN" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.qingyeyun.com" title="香港1T高防｜自助防火墙，无视CC｜大带宽回国优化线路">
+      <!-- 26 8 18 -->
+      <img src="/assets/images/sponsor/qingyeyun-light.png#only-light" alt="青叶云" />
+      <img src="/assets/images/sponsor/qingyeyun-dark.png#only-dark" alt="青叶云" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://langlangy.cn/?icf164b" title="BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费">
+      <!-- 26 8 25 -->
+      <img src="/assets/images/sponsor/langlangyun-light.png#only-light" alt="浪浪云" />
+      <img src="/assets/images/sponsor/langlangyun-dark.png#only-dark" alt="浪浪云" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.lcayun.com" title="专业云计算服务器提供商">
+      <!-- 26 9 7 -->
+      <img src="/assets/images/sponsor/laikayun-light.png#only-light" alt="莱卡云" />
+      <img src="/assets/images/sponsor/laikayun-dark.png#only-dark" alt="莱卡云" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://yunyoo.cc/aff/KPTJHNWM" title="全球高性价比云服务器｜低至15.99元起">
+      <!-- 26 9 5 -->
+      <img src="/assets/images/sponsor/yunyoo.png" alt="云悠YUNYOO" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" href="https://www.hkgserver.com" title="HKGserver - 全球家宽｜双ISP｜住宅原生云服务器54元/月起">
+      <!-- 26 12 17 -->
+      <img src="/assets/images/sponsor/hkgserver-light.png#only-light" alt="HKGserver" />
+      <img src="/assets/images/sponsor/hkgserver-dark.png#only-dark" alt="HKGserver" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.wuyouyun.com" title="BGP多线高性能、高主频自动化云、物理服务器">
+      <!-- 26 12 30 -->
+      <img src="/assets/images/sponsor/wuyouyun.png" alt="无忧云" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.svyun.com" title="大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器">
+      <!-- 27 1 13 -->
+      <img src="/assets/images/sponsor/suweiyun-light.png#only-light" alt="速维云" />
+      <img src="/assets/images/sponsor/suweiyun-dark.png#only-dark" alt="速维云" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://arcadia.cool" title="一站式代码运维平台">
+      <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="width: 57% !important" />
+      <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="width: 57% !important" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.lucdn.cn?utm_source=linuxmirrors" title="专业CDN加速、防御，亚太百兆三网优化CDN低至9元起">
+      <!-- 26 3 16 -->
+      <img src="/assets/images/sponsor/yuluyundun-light.png#only-light" alt="语鹿云盾" />
+      <img src="/assets/images/sponsor/yuluyundun-dark.png#only-dark" alt="语鹿云盾" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://cb2.cn" title="国内外建站快响应服务器的不二之选">
+      <!-- 26 1 15 -->
+      <img src="/assets/images/sponsor/bueryun.svg" alt="不二云" style="width: 64% !important" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://idc.cn2network.com" title="超低价优质机器免实名自动开通">
+      <!-- 26 2 14 -->
+      <img src="/assets/images/sponsor/cn2network.png" alt="CN2network" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.crash.work" title="专注高性能国内外云服务器">
+      <!-- 26 1 21 -->
+      <img src="/assets/images/sponsor/posuigongfangyun.png" alt="破碎工坊云" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" href="https://www.runxinyun.com" title="国内挂机宝海外云服务器低至9.9元/月">
+      <!-- 26 1 14 -->
+      <img src="/assets/images/sponsor/runxinyun-light.png#only-light" alt="润信云" />
+      <img src="/assets/images/sponsor/runxinyun-dark.png#only-dark" alt="润信云" />
+    </a>
+  </div>
+</div>
+
+<div class="sponsor" style="padding-top: 2rem;">
+  <div class="sponsor-label">
+    <strong class="sponsor-text-2"></strong>
+  </div>
+  <div class="sponsor-wrapper sponsor-flex-wrapper no-select">
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.jetbrains.com" title="JetBrains">
+      <img src="/assets/images/icon/jetbrains-light.svg#only-light" alt="JetBrains" />
+      <img src="/assets/images/icon/jetbrains-dark.svg#only-dark" alt="JetBrains" />
+    </a>
+    <a class="sponsor-item sponsor-item-flex" target="_blank" rel="noopener noreferrer" href="https://www.netlify.com" title="Netlify">
+      <img src="/assets/images/icon/netlify-light.png#only-light" alt="Netlify" style="width: 46% !important" />
+      <img src="/assets/images/icon/netlify-dark.png#only-dark" alt="Netlify" style="width: 46% !important" />
+    </a>
+  </div>
+  <div style="text-align: center; padding-top: 1rem; font-size: 0.6rem">
+    <blockquote class="sponsor-text-3" style="border-left: none !important"></blockquote>
+  </div>
+</div>
+
+<style>
+  .sponsor-text-1::after { content: "赞助商"; }
+  .sponsor-text-2::after { content: "特别感谢"; }
+  .sponsor-text-3::after { content: "本项目已加入 JetBrains & Netlify 开源项目计划"; }
+
+  [lang="en"] .sponsor-text-1::after { content: "Sponsors"; }
+  [lang="en"] .sponsor-text-2::after { content: "Special Thanks"; }
+  [lang="en"] .sponsor-text-3::after { content: "This project has joined the JetBrains & Netlify open source program"; }
+
+  [lang="zh-Hant"] .sponsor-text-1::after { content: "贊助商"; }
+  [lang="zh-Hant"] .sponsor-text-2::after { content: "特別感謝"; }
+  [lang="zh-Hant"] .sponsor-text-3::after { content: "本專案已加入 JetBrains & Netlify 開源專案計劃"; }
+</style>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+  
+
+
+
+
+  <h2 id="__comments">评论</h2>
+  
+    <blockquote>该评论区仅用于展示项目使用评价和经验分享，反馈问题或建议请前往<a href="/community">社区</a>或<a href="https://github.com/SuperManito/LinuxMirrors/issues" target="_blank" rel="noopener noreferrer">Issues</a></blockquote>
+  
+  <script src="https://giscus.app/client.js"
+    data-repo="SuperManito/LinuxMirrors"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkzMzI2Nzg5NzI="
+    data-category="General"
+    data-category-id="DIC_kwDOE9RHPM4CWOQP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+  >
+  </script>
+
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+
+<orama-search-box class="orama-ui"></orama-search-box>
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" hidden>
+        
+        
+          
+          <a href="use/" class="md-footer__link md-footer__link--next" aria-label="下一页: 使用方法">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                使用方法
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  <div class="md-copyright__highlight">
+    
+      Copyright &copy; 2026 <a href="https://github.com/SuperManito" target="_blank" rel="noopener noreferrer">SuperManito</a>
+    
+    </br>
+    
+      本网站由 Netlify 部署并提供全球 CDN 边缘网络加速
+    
+    <a href="https://www.netlify.com" title="Netlify" target="_blank" rel="noopener noreferrer"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>
+  </div>
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://gitee.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="Gitee" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://gitcode.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="GitCode" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.top", "navigation.tabs", "navigation.path", "navigation.instant.progress", "navigation.indexes", "navigation.footer", "navigation.prune", "navigation.tracking", "navigation.sections", "content.tooltips", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight", "search.share", "announce.dismiss"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+  <script type="module" src="https://unpkg.com/@orama/wc-components@latest/dist/orama-ui/orama-ui.esm.js"></script>
+  <script nomodule src="https://unpkg.com/@orama/wc-components@latest/dist/cjs/orama-ui.cjs.js"></script>
+  
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/vue/dist/vue.global.prod.js"></script>
+      
+        <script src="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.js"></script>
+      
+        <script src="assets/js/modules/tdesign-theme.js"></script>
+      
+        <script src="assets/js/components/orama-ui/config.js"></script>
+      
+        <script src="assets/js/components/orama-ui/index.js"></script>
+      
+        <script src="assets/js/useThemeTransition.js"></script>
+      
+        <script src="assets/js/common.js"></script>
+      
+        <script src="assets/js/component.js"></script>
+      
+        <script src="assets/js/components/mirrors-table/data.js"></script>
+      
+        <script src="assets/js/components/mirrors-table/index.js"></script>
+      
+        <script src="termynal.js"></script>
+      
+    
+
+  </body>
+</html>

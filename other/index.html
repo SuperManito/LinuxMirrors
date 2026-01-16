@@ -1,0 +1,2361 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../mirrors/">
+      
+      
+        <link rel="next" href="../changelog/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="zh">
+        
+          <link rel="alternate" href="../zh-Hant/other/" hreflang="zh-Hant">
+        
+          <link rel="alternate" href="../en/other/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>容器工具 - LinuxMirrors</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20384%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M296.5%20291.1C321%20265.2%20336%20230.4%20336%20192c0-79.5-64.5-144-144-144S48%20112.5%2048%20192c0%2038.4%2015%2073.2%2039.5%2099.1%2021.3%2022.4%2044.9%2054%2053.3%2092.9h102.4c8.4-39%2032-70.5%2053.3-92.9m34.8%2033C307.7%20349%20288%20379.4%20288%20413.7V432c0%2044.2-35.8%2080-80%2080h-32c-44.2%200-80-35.8-80-80v-18.3c0-34.3-19.7-64.7-43.3-89.6C20%20289.7%200%20243.2%200%20192%200%2086%2086%200%20192%200s192%2086%20192%20192c0%2051.2-20%2097.7-52.7%20132.1M144%20184c0%2013.3-10.7%2024-24%2024s-24-10.7-24-24c0-48.6%2039.4-88%2088-88%2013.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024c-22.1%200-40%2017.9-40%2040%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.css">
+    
+      <link rel="stylesheet" href="../assets/css/orama-ui.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../termynal.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-WG7T40F7YP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-WG7T40F7YP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-WG7T40F7YP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="system" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#docker-安装与换源脚本" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="不再显示此消息">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  <span style="font-size: .6rem !important;">如果觉得这个项目不错对您有所帮助的话，请点击仓库右上角的 Star 并分享给更多的朋友</span>
+  &nbsp;&nbsp;<span class="twemoji heart" style="font-size: .6rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 20.408c-.492.308-.903.546-1.192.709q-.23.129-.463.252h-.002a.75.75 0 0 1-.686 0 17 17 0 0 1-.465-.252 31 31 0 0 1-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31 31 0 0 1 14 20.408"></path></svg></span>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="页眉"
+  >
+
+    <a
+      href="https://linuxmirrors.cn"
+      title="LinuxMirrors"
+      class="md-header__button md-logo"
+      aria-label="LinuxMirrors"
+      data-md-component="logo"
+    >
+      
+  <img src="../assets/images/brand/svg/logo-light.svg" alt="logo">
+
+    </a>
+
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5.75 2.5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5M2 14a1 1 0 1 1 0-2 1 1 0 0 1 0 2m1-6a1 1 0 1 1-2 0 1 1 0 0 1 2 0M2 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/></svg>
+    </label>
+
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LinuxMirrors
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              容器工具
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme)"
+      data-md-color-scheme="system"
+      data-md-color-primary="indigo"
+      data-md-color-accent="indigo"
+      
+        aria-label="跟随系统"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_0"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="跟随系统"
+        for="__palette_1"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+        </div>
+      </label>
+    
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme: light)"
+      data-md-color-scheme="default"
+      data-md-color-primary="white"
+      data-md-color-accent="blue"
+      
+        aria-label="亮色模式"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_1"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="亮色模式"
+        for="__palette_2"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0M8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0M3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8m13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8m-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13m3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061M2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-.018 1.042.75.75 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"/></svg>
+        </div>
+      </label>
+    
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme: dark)"
+      data-md-color-scheme="slate"
+      data-md-color-primary="black"
+      data-md-color-accent="blue"
+      
+        aria-label="暗黑模式"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_2"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="暗黑模式"
+        for="__palette_0"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.598 1.591a.75.75 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786m1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678"/></svg>
+        </div>
+      </label>
+    
+  
+</form>
+      
+    
+
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../zh-Hant/other/" hreflang="zh-Hant" class="md-select__link">
+              繁體中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../en/other/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7"/></svg>
+        </label>
+        <a class="md-header__button md-icon coze-icon-wrapper" href="https://www.coze.cn/store/agent/7503197985959428108?bot_id=true" target="_blank" rel="noopener noreferrer" title="扣子 AI 助手">
+  <div aria-label="Coze" class="coze-icon-bg">
+    <svg fill="currentColor" fill-rule="evenodd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" color="#fff" style="display: block; margin: auto;">
+      <path clip-rule="evenodd" d="M3.908 9.096A8.092 8.092 0 0111.998 1h.006c4.468 0 8.09 3.628 8.09 8.096v3.392h1.942c2.23 0 2.732 3.126.615 3.828l-2.556.85v1.466a1.947 1.947 0 01-2.818 1.742l-1.42-.707c-.067-.03-.149 0-.17.071-1.147 3.587-6.225 3.587-7.373 0a.123.123 0 00-.169-.07l-1.42.706c-1.29.65-2.817-.292-2.817-1.742v-1.466l-2.557-.85c-2.122-.697-1.614-3.828.615-3.828h1.942V9.096zm4.571 2.613a.784.784 0 00-.784.784v1.568a.784.784 0 101.568 0v-1.568a.784.784 0 00-.784-.784zm7.045.779a.784.784 0 100 1.568.784.784 0 000-1.568zm-6.186 3.415a.78.78 0 00.17.254 3.517 3.517 0 004.98 0 .782.782 0 10-1.106-1.107 1.958 1.958 0 01-2.767 0 .78.78 0 00-1.277.254.78.78 0 000 .6z"></path>
+    </svg>
+  </div>
+</a>
+
+<div class="md-search__inner" role="search">
+  <form class="md-search__form" name="search" onsubmit="return false;">
+    <input type="text" class="md-search__input" name="query" aria-label="AI 搜索" placeholder="AI 搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" readonly required onclick="OpenOramaSearchComponent()" />
+    <label class="md-search__icon md-icon" for="__search" onclick="OpenOramaSearchComponent()">  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg> </label>
+  </form>
+  <div class="md-search__output">
+    <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+      <div class="md-search-result" data-md-component="search-result">
+        <div class="md-search-result__meta">正在初始化搜索引擎</div>
+        <ol class="md-search-result__list" role="presentation"></ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const __lang = "zh";
+  let __notReadyMsg = '';
+  switch (__lang) {
+    case 'en':
+      __notReadyMsg = "The search component has not yet been loaded. Please try again later.";
+      break;
+    case 'zh-Hant':
+      __notReadyMsg = "搜尋元件尚未載入完畢，請稍後再試。";
+      break;
+    default:
+      __notReadyMsg = "搜索组件尚未加载完毕，请稍后再试。";
+  }
+
+  function OpenOramaSearchComponent() {
+    if (window.openOramaSearch) {
+      window.openOramaSearch();
+    } else {
+      alert$.next(__notReadyMsg);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchToggle = document.getElementById('__search');
+    if (searchToggle) {
+      searchToggle.addEventListener('change', function() {
+        if (this.checked) {
+          this.checked = false;
+          OpenOramaSearchComponent();
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .md-search__output {
+    display: none !important;
+  }
+  .md-search__inner {
+    padding-left: 8px;
+  }
+  .md-search__input {
+    cursor: pointer !important;
+  }
+  .md-search__form {
+    border-radius: 6px;
+  }
+  @media screen and (min-width: 60em) {
+    .md-search__inner {
+      width: 8.7rem;
+    }
+  }
+  .coze-icon-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(77, 83, 232);
+    border-radius: 6px;
+    color: #fff;
+    height: 28px;
+    width: 28px;
+  }
+  .coze-icon-bg svg {
+    width: 20px !important;
+    height: 20px !important;
+    display: block;
+  }
+  .coze-icon-wrapper {
+    @media screen and (max-width: 768px) {
+      display: none !important;
+    }
+  }
+  
+</style>
+      
+    
+
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SuperManito/LinuxMirrors" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LinuxMirrors
+  </div>
+</a>
+      </div>
+    
+  </nav>
+
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  介绍
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../use/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  使用方法
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../mirrors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  软件源列表
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  容器工具
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  更新日志
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../community/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  社区
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sponsor/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  赞助
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://linuxmirrors.cn" title="LinuxMirrors" class="md-nav__button md-logo" aria-label="LinuxMirrors" data-md-component="logo">
+      
+  <img src="../assets/images/brand/svg/logo-light.svg" alt="logo">
+
+    </a>
+    LinuxMirrors
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SuperManito/LinuxMirrors" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LinuxMirrors
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    介绍
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用方法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    软件源列表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    容器工具
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    容器工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        <nav class="md-nav md-nav--secondary" aria-label="">
+       
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+     <li class="md-nav__item">
+  <a href="#一键执行命令" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一键执行命令
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#命令选项高级用法" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命令选项（高级用法）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="命令选项（高级用法）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#指定镜像仓库地址" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定镜像仓库地址
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#仅更换镜像仓库" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        仅更换镜像仓库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-docker-ce-软件源地址" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定 Docker CE 软件源地址
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-docker-ce-软件源仓库" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定 Docker CE 软件源仓库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-docker-engine-安装版本" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定 Docker Engine 安装版本
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#国际化i18n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        国际化（I18n）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#无人值守自动化" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        无人值守（自动化）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#纯净模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        纯净模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>  <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#精简版lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        精简版（Lite）
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#最佳实践" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最佳实践
+      
+    </span>
+  </a>
+  
+</li> 
+  </ul>
+
+  <div class="md-content" data-md-component="content">
+    <div class="sponsor sponsor-toc">
+      <div class="sponsor-label">
+        <strong>赞助商</strong>
+      </div>
+      <div class="sponsor-wrapper sponsor-flex-wrapper-toc no-select">
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
+          <img src="/assets/images/sponsor/1panel.png" alt="1Panel" style="filter: grayscale(1) invert(0.6)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.duotuyun.com" title="智能化防护，每一次连接皆在安全之下">
+          <img src="/assets/images/sponsor/duotuyun-light.svg#only-light" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/duotuyun-dark.svg#only-dark" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1ms.run?utm_source=linuxmirrors" title="专为中国开发者提供镜像极速下载服务，告别 Docker 镜像拉取慢！</br>支持 Docker Hub、gcr.io、registry.k8s.io 等主流镜像仓库。">
+          <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="毫秒镜像" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="毫秒镜像" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.dkdun.cn/aff/VAWGETUL" title="专注独立IP高频VPS｜R9/i9系列定制">
+          <img src="/assets/images/sponsor/linfengyun.png#only-light" alt="林枫云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/linfengyun.png#only-dark" alt="林枫云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.bsncdn.org" title="香港日本高防CDN，免实名/免备案，轻松阻断 DDOS / CC 攻击">
+          <img src="/assets/images/sponsor/businiaocdn.png#only-light" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/businiaocdn.png#only-dark" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.qingyeyun.com" title="香港1T高防｜自助防火墙，无视CC｜大带宽回国优化线路">
+          <img src="/assets/images/sponsor/qingyeyun-light.png#only-light" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/qingyeyun-dark.png#only-dark" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://langlangy.cn/?icf164b" title="BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费">
+          <img src="/assets/images/sponsor/langlangyun-light.png#only-light" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+          <img src="/assets/images/sponsor/langlangyun-dark.png#only-dark" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lcayun.com" title="专业云计算服务器提供商">
+          <img src="/assets/images/sponsor/laikayun-light.png#only-light" alt="莱卡云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/laikayun-dark.png#only-dark" alt="莱卡云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://yunyoo.cc/aff/KPTJHNWM" title="全球高性价比云服务器｜低至15.99元起">
+          <img src="/assets/images/sponsor/yunyoo.png#only-light" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/yunyoo.png#only-dark" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1.1)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.hkgserver.com" title="全球家宽｜双ISP｜住宅原生云服务器54元/月起">
+          <img src="/assets/images/sponsor/hkgserver-light.png#only-light" alt="HKGserver" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/hkgserver-dark.png#only-dark" alt="HKGserver" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.wuyouyun.com" title="BGP多线高性能、高主频自动化云、物理服务器">
+          <img src="/assets/images/sponsor/wuyouyun.png#only-light" alt="无忧云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/wuyouyun.png#only-dark" alt="无忧云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.svyun.com" title="大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器">
+          <img src="/assets/images/sponsor/suweiyun-light.png#only-light" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/suweiyun-dark.png#only-dark" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://arcadia.cool" title="一站式代码运维平台">
+          <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lucdn.cn?utm_source=linuxmirrors" title="专业CDN加速、防御，亚太百兆三网优化CDN低至9元起">
+          <img src="/assets/images/sponsor/yuluyundun-light.png#only-light" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/yuluyundun-dark.png#only-dark" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://cb2.cn" title="国内外建站快响应服务器的不二之选">
+          <img src="/assets/images/sponsor/bueryun.svg#only-light" alt="不二云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/bueryun.svg#only-dark" alt="不二云" style="filter: grayscale(1) invert(0.7)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://idc.cn2network.com" title="超低价优质机器免实名自动开通">
+          <img src="/assets/images/sponsor/cn2network.png#only-light" alt="CN2network" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/cn2network.png#only-dark" alt="CN2network" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.crash.work" title="专注高性能国内外云服务器">
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-light" alt="破碎工坊云" style="filter: grayscale(1) invert(0.2)" />
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-dark" alt="破碎工坊云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.runxinyun.com" title="挂机宝海外云服务器低至9.9元/月">
+          <img src="/assets/images/sponsor/runxinyun-light.png#only-light" alt="润信云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/runxinyun-dark.png#only-dark" alt="润信云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <!-- <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" title="成为赞助商" href="/sponsor/">
+          <span style="font-size: 0.6rem; opacity: 0.5">
+            <strong>成为赞助商</strong>
+          </span>
+        </a> -->
+      </div>
+    </div>
+  </div>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    更新日志
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    社区
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sponsor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    赞助
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--secondary" aria-label="">
+       
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+     <li class="md-nav__item">
+  <a href="#一键执行命令" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一键执行命令
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#命令选项高级用法" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命令选项（高级用法）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="命令选项（高级用法）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#指定镜像仓库地址" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定镜像仓库地址
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#仅更换镜像仓库" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        仅更换镜像仓库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-docker-ce-软件源地址" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定 Docker CE 软件源地址
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-docker-ce-软件源仓库" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定 Docker CE 软件源仓库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定-docker-engine-安装版本" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定 Docker Engine 安装版本
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#国际化i18n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        国际化（I18n）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#无人值守自动化" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        无人值守（自动化）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#纯净模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        纯净模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>  <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#精简版lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        精简版（Lite）
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#最佳实践" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最佳实践
+      
+    </span>
+  </a>
+  
+</li> 
+  </ul>
+
+  <div class="md-content" data-md-component="content">
+    <div class="sponsor sponsor-toc">
+      <div class="sponsor-label">
+        <strong>赞助商</strong>
+      </div>
+      <div class="sponsor-wrapper sponsor-flex-wrapper-toc no-select">
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
+          <img src="/assets/images/sponsor/1panel.png" alt="1Panel" style="filter: grayscale(1) invert(0.6)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.duotuyun.com" title="智能化防护，每一次连接皆在安全之下">
+          <img src="/assets/images/sponsor/duotuyun-light.svg#only-light" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/duotuyun-dark.svg#only-dark" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1ms.run?utm_source=linuxmirrors" title="专为中国开发者提供镜像极速下载服务，告别 Docker 镜像拉取慢！</br>支持 Docker Hub、gcr.io、registry.k8s.io 等主流镜像仓库。">
+          <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="毫秒镜像" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="毫秒镜像" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.dkdun.cn/aff/VAWGETUL" title="专注独立IP高频VPS｜R9/i9系列定制">
+          <img src="/assets/images/sponsor/linfengyun.png#only-light" alt="林枫云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/linfengyun.png#only-dark" alt="林枫云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.bsncdn.org" title="香港日本高防CDN，免实名/免备案，轻松阻断 DDOS / CC 攻击">
+          <img src="/assets/images/sponsor/businiaocdn.png#only-light" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/businiaocdn.png#only-dark" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.qingyeyun.com" title="香港1T高防｜自助防火墙，无视CC｜大带宽回国优化线路">
+          <img src="/assets/images/sponsor/qingyeyun-light.png#only-light" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/qingyeyun-dark.png#only-dark" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://langlangy.cn/?icf164b" title="BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费">
+          <img src="/assets/images/sponsor/langlangyun-light.png#only-light" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+          <img src="/assets/images/sponsor/langlangyun-dark.png#only-dark" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lcayun.com" title="专业云计算服务器提供商">
+          <img src="/assets/images/sponsor/laikayun-light.png#only-light" alt="莱卡云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/laikayun-dark.png#only-dark" alt="莱卡云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://yunyoo.cc/aff/KPTJHNWM" title="全球高性价比云服务器｜低至15.99元起">
+          <img src="/assets/images/sponsor/yunyoo.png#only-light" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/yunyoo.png#only-dark" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1.1)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.hkgserver.com" title="全球家宽｜双ISP｜住宅原生云服务器54元/月起">
+          <img src="/assets/images/sponsor/hkgserver-light.png#only-light" alt="HKGserver" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/hkgserver-dark.png#only-dark" alt="HKGserver" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.wuyouyun.com" title="BGP多线高性能、高主频自动化云、物理服务器">
+          <img src="/assets/images/sponsor/wuyouyun.png#only-light" alt="无忧云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/wuyouyun.png#only-dark" alt="无忧云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.svyun.com" title="大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器">
+          <img src="/assets/images/sponsor/suweiyun-light.png#only-light" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/suweiyun-dark.png#only-dark" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://arcadia.cool" title="一站式代码运维平台">
+          <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lucdn.cn?utm_source=linuxmirrors" title="专业CDN加速、防御，亚太百兆三网优化CDN低至9元起">
+          <img src="/assets/images/sponsor/yuluyundun-light.png#only-light" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/yuluyundun-dark.png#only-dark" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://cb2.cn" title="国内外建站快响应服务器的不二之选">
+          <img src="/assets/images/sponsor/bueryun.svg#only-light" alt="不二云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/bueryun.svg#only-dark" alt="不二云" style="filter: grayscale(1) invert(0.7)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://idc.cn2network.com" title="超低价优质机器免实名自动开通">
+          <img src="/assets/images/sponsor/cn2network.png#only-light" alt="CN2network" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/cn2network.png#only-dark" alt="CN2network" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.crash.work" title="专注高性能国内外云服务器">
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-light" alt="破碎工坊云" style="filter: grayscale(1) invert(0.2)" />
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-dark" alt="破碎工坊云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.runxinyun.com" title="挂机宝海外云服务器低至9.9元/月">
+          <img src="/assets/images/sponsor/runxinyun-light.png#only-light" alt="润信云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/runxinyun-dark.png#only-dark" alt="润信云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <!-- <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" title="成为赞助商" href="/sponsor/">
+          <span style="font-size: 0.6rem; opacity: 0.5">
+            <strong>成为赞助商</strong>
+          </span>
+        </a> -->
+      </div>
+    </div>
+  </div>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+  
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+
+  
+  
+
+
+
+
+<h1 id="docker-安装与换源脚本"><span class="twemoji" style="color: #1d63ed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.983 11.078h2.119a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.119a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 0 0 .186-.186V3.574a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 0 0 .186-.186V6.29a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 0 0 .184-.186V6.29a.185.185 0 0 0-.185-.185H8.1a.185.185 0 0 0-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 0 0 .185-.186V6.29a.185.185 0 0 0-.185-.185H5.136a.186.186 0 0 0-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 0 0 .184-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.185.185 0 0 0-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 0 0 .185-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.186.186 0 0 0-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 0 0 .184-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.185.185 0 0 0-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51q-.508.001-1.01.087c-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.75.75 0 0 0-.75.748 11.4 11.4 0 0 0 .692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137a15.7 15.7 0 0 0 2.93-.266 12.3 12.3 0 0 0 3.823-1.389 10.5 10.5 0 0 0 2.61-2.136c1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z"/></svg></span> Docker 安装与换源脚本<a class="headerlink" href="#docker-安装与换源脚本" title="链接">#</a></h1>
+<h2 id="一键执行命令">一键执行命令<a class="headerlink" href="#一键执行命令" title="链接">#</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="安装" name="__tabbed_1" type="radio" /><input id="仅更换镜像加速器" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="安装">安装</label><label for="仅更换镜像加速器">仅更换镜像加速器</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:6"><input checked="checked" id="官网推荐" name="__tabbed_2" type="radio" /><input id="github" name="__tabbed_2" type="radio" /><input id="gitee-码云-镜像仓库" name="__tabbed_2" type="radio" /><input id="gitcode-镜像仓库" name="__tabbed_2" type="radio" /><input id="jsdelivr-cdn" name="__tabbed_2" type="radio" /><input id="腾讯云-eo-cdn" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="官网推荐"><span class="twemoji"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="451.000000pt" height="451.000000pt"
+	viewBox="0 0 451.000000 451.000000" preserveAspectRatio="xMidYMid meet">
+	<g transform="translate(0.000000,451.000000) scale(0.100000,-0.100000)" fill="currentColor"
+		stroke="none">
+		<path
+			d="M133 4048 c-4 -7 -9 -818 -10 -1803 -2 -1415 0 -1795 10 -1815 7 -13
+23 -27 37 -30 14 -3 281 31 595 77 314 45 798 114 1078 153 279 39 521 76 538
+82 17 6 34 21 40 35 5 13 9 89 9 168 l0 144 -148 278 c-82 153 -177 332 -212
+398 -35 66 -92 173 -127 238 -35 64 -66 130 -69 145 -4 21 6 56 39 128 25 54
+80 178 122 274 42 96 85 190 95 209 l17 34 73 -139 c41 -76 103 -193 139 -259
+l66 -120 5 -590 5 -590 97 190 c53 105 169 332 257 505 88 173 205 401 258
+507 54 106 101 189 105 185 3 -4 95 -178 203 -387 108 -209 221 -427 251 -484
+30 -57 53 -105 51 -107 -2 -2 -123 -7 -268 -10 -280 -7 -311 -12 -325 -56 -4
+-13 -52 -113 -106 -223 -55 -110 -106 -215 -113 -232 l-14 -33 800 0 c534 0
+799 3 799 10 0 11 -1275 2818 -1284 2828 -3 3 -8 3 -10 1 -2 -2 -101 -215
+-221 -474 -213 -461 -399 -860 -453 -973 l-27 -57 -5 726 c-5 694 -6 728 -24
+748 -24 27 -26 27 -201 50 -82 11 -321 45 -530 75 -848 123 -1450 206 -1491
+206 -23 0 -46 -6 -51 -12z m1602 -355 c112 -240 245 -535 245 -543 0 -5 -55
+-130 -121 -277 -222 -491 -430 -946 -494 -1083 -35 -74 -86 -188 -113 -252
+-45 -106 -48 -118 -32 -123 10 -3 142 -5 294 -3 169 1 279 -1 285 -7 10 -10
+181 -460 181 -476 0 -4 -348 -8 -780 -8 -603 0 -780 3 -780 12 0 17 1274 2817
+1282 2817 3 0 19 -26 33 -57z" />
+	</g>
+</svg></span> 官网（推荐）</label><label for="github"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee-码云-镜像仓库"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee 码云 (镜像仓库)</label><label for="gitcode-镜像仓库"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg></span> GitCode (镜像仓库)</label><label for="jsdelivr-cdn"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.851 0 .811 4.02l1.56 14.7L11.85 24l9.6-5.28 1.74-14.76zm.062 4.622a6.668 6.75 0 0 1 2.666.572 12.5 12.5 0 0 0-2.59 1.95c-.045-.02-.092-.031-.138-.045a1.2 1.2 0 0 0-.346-.056c-.071 0-.141.01-.21.021a9 9 0 0 1-.615-2.318 6.668 6.75 0 0 1 1.171-.122 6.668 6.75 0 0 1 .062-.002m-1.99.312a9.8 9.8 0 0 0 .69 2.504 1.2 1.2 0 0 0-.328.825 1.2 1.2 0 0 0 .18.63c-.937 1.294-1.656 2.803-1.905 4.31-.01.056-.013.11-.02.166-.282.09-.515.284-.656.54-.987-.333-1.885-.968-2.615-2.022a6.668 6.75 0 0 1-.026-.515 6.668 6.75 0 0 1 4.68-6.438m5.507.709a6.668 6.75 0 0 1 2.53 2.9c-.377.953-1.049 1.892-1.893 2.727a1.24 1.24 0 0 0-.644-.184 1.24 1.24 0 0 0-.768.27 11 11 0 0 1-1.318-1.168c-.333-.35-.637-.73-.921-1.123.19-.215.31-.494.31-.802a1.2 1.2 0 0 0-.159-.586c1.058-1.008 2.112-1.67 2.863-2.034m-3.925 1.982a.62.62 0 0 1 .346.114.62.62 0 0 1 .292.524.62.62 0 0 1-.292.524.63.63 0 0 1-.346.113.634.634 0 0 1-.638-.637c0-.355.283-.638.638-.638m-.441 1.771a1.2 1.2 0 0 0 .675.062q.055.073.112.148a11 11 0 0 0 .921 1.119 12 12 0 0 0 1.446 1.277c-.032.11-.054.224-.054.342a1.2 1.2 0 0 0 .066.38 10 10 0 0 1-2.118 1.042c-.087.029-.173.052-.261.078a7.7 7.7 0 0 1-1.87.332 1.15 1.15 0 0 0-.66-.773q.004-.036.01-.073c.219-1.333.873-2.73 1.733-3.934m7.272.19a6.668 6.75 0 0 1 .245 1.786 6.668 6.75 0 0 1-.259 1.856 10 10 0 0 1-1.666-.63 1.24 1.24 0 0 0-.065-.713 9.4 9.4 0 0 0 1.745-2.3zm-2.913 2.101c.367 0 .657.291.657.658s-.291.657-.657.657-.658-.29-.658-.657.29-.658.658-.658m.837 1.59a11 11 0 0 0 1.802.688 6.668 6.75 0 0 1-6.149 4.157 6.668 6.75 0 0 1-.062-.004 6.668 6.75 0 0 1-.042 0c-.087-.042-.168-.08-.266-.129-.312-.154-.667-.352-.846-.5a3.8 3.8 0 0 1-1.294-2.03c.21-.111.38-.284.487-.495a8.4 8.4 0 0 0 1.96-.306 9 9 0 0 0 .513-.154 11 11 0 0 0 2.341-1.13c.205.143.452.23.719.23a1.25 1.25 0 0 0 .837-.328zm-10.707.116a5.8 5.8 0 0 0 2.212 1.298 1.15 1.15 0 0 0 .857.87 4.6 4.6 0 0 0 1.24 2.222 6.668 6.75 0 0 1-4.31-4.39zm3.327.464c.331 0 .595.263.595.596s-.264.595-.595.595a.59.59 0 0 1-.596-.595.59.59 0 0 1 .596-.596"/></svg></span> jsDelivr (CDN)</label><label for="腾讯云-eo-cdn"><span class="twemoji"><svg t="1750550178180" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4745" width="200" height="200"><path d="M795.306667 877.226667h-580.266667l389.12-392.533334c54.613333-54.613333 105.813333-75.093333 112.64-78.506666l10.24-3.413334c88.746667-10.24 160.426667 6.826667 211.626667 54.613334 78.506667 71.68 78.506667 184.32 78.506666 191.146666 0 160.426667-143.36 218.453333-221.866666 228.693334z m-337.92-98.986667h334.506666c20.48-3.413333 129.706667-23.893333 133.12-133.12 0 0 0-75.093333-44.373333-116.053333-27.306667-23.893333-71.68-34.133333-126.293333-27.306667-10.24 6.826667-40.96 20.48-71.68 54.613333l-225.28 221.866667zM303.786667 413.013333L204.8 406.186667c3.413333-81.92 71.68-235.52 283.306667-259.413334 10.24 0 197.973333-17.066667 303.786666 187.733334l-88.746666 44.373333c-75.093333-143.36-201.386667-136.533333-204.8-133.12-177.493333 20.48-194.56 153.6-194.56 167.253333z" p-id="4746"></path><path d="M225.28 877.226667C92.16 877.226667 27.306667 771.413333 13.653333 716.8c-47.786667-160.426667 92.16-273.066667 95.573334-276.48 150.186667-109.226667 296.96 13.653333 354.986666 92.16l-81.92 58.026667 40.96-30.72-40.96 30.72c0-3.413333-109.226667-146.773333-211.626666-71.68-3.413333 3.413333-88.746667 71.68-61.44 167.253333 3.413333 10.24 27.306667 88.746667 116.053333 88.746667v102.4z" p-id="4747"></path><path d="M225.28 778.24h143.36v98.986667H225.28z" p-id="4748"></path></svg></span> 腾讯云 EO (CDN)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh<span class="o">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh<span class="o">)</span>
+</code></pre></div>
+<blockquote>
+<p>实时同步、无延迟，国内网络环境下推荐使用</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh<span class="o">)</span>
+</code></pre></div>
+<blockquote>
+<p>同步存在1小时延迟</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh<span class="o">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://edgeone.linuxmirrors.cn/docker.sh<span class="o">)</span>
+</code></pre></div>
+<blockquote>
+<p>不建议在国内网络环境下使用</p>
+</blockquote>
+</div>
+</div>
+</div>
+<p>集成安装 <a href="https://docs.docker.com/engine"><code>Docker Engine</code></a> 和 <a href="https://docs.docker.com/compose"><code>Docker Compose</code></a>，支持选择或更换软件源（Docker 软件仓库）以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构</p>
+<p>脚本参考<a href="https://docs.docker.com/engine/install">官方文档</a>使用系统包管理工具进行安装，不存在兼容性、安全性等问题，可安装的版本由 Docker CE 仓库决定</p>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:6"><input checked="checked" id="官网推荐_1" name="__tabbed_3" type="radio" /><input id="github_1" name="__tabbed_3" type="radio" /><input id="gitee-码云-镜像仓库_1" name="__tabbed_3" type="radio" /><input id="gitcode-镜像仓库_1" name="__tabbed_3" type="radio" /><input id="jsdelivr-cdn_1" name="__tabbed_3" type="radio" /><input id="腾讯云-eo-cdn_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="官网推荐_1"><span class="twemoji"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="451.000000pt" height="451.000000pt"
+	viewBox="0 0 451.000000 451.000000" preserveAspectRatio="xMidYMid meet">
+	<g transform="translate(0.000000,451.000000) scale(0.100000,-0.100000)" fill="currentColor"
+		stroke="none">
+		<path
+			d="M133 4048 c-4 -7 -9 -818 -10 -1803 -2 -1415 0 -1795 10 -1815 7 -13
+23 -27 37 -30 14 -3 281 31 595 77 314 45 798 114 1078 153 279 39 521 76 538
+82 17 6 34 21 40 35 5 13 9 89 9 168 l0 144 -148 278 c-82 153 -177 332 -212
+398 -35 66 -92 173 -127 238 -35 64 -66 130 -69 145 -4 21 6 56 39 128 25 54
+80 178 122 274 42 96 85 190 95 209 l17 34 73 -139 c41 -76 103 -193 139 -259
+l66 -120 5 -590 5 -590 97 190 c53 105 169 332 257 505 88 173 205 401 258
+507 54 106 101 189 105 185 3 -4 95 -178 203 -387 108 -209 221 -427 251 -484
+30 -57 53 -105 51 -107 -2 -2 -123 -7 -268 -10 -280 -7 -311 -12 -325 -56 -4
+-13 -52 -113 -106 -223 -55 -110 -106 -215 -113 -232 l-14 -33 800 0 c534 0
+799 3 799 10 0 11 -1275 2818 -1284 2828 -3 3 -8 3 -10 1 -2 -2 -101 -215
+-221 -474 -213 -461 -399 -860 -453 -973 l-27 -57 -5 726 c-5 694 -6 728 -24
+748 -24 27 -26 27 -201 50 -82 11 -321 45 -530 75 -848 123 -1450 206 -1491
+206 -23 0 -46 -6 -51 -12z m1602 -355 c112 -240 245 -535 245 -543 0 -5 -55
+-130 -121 -277 -222 -491 -430 -946 -494 -1083 -35 -74 -86 -188 -113 -252
+-45 -106 -48 -118 -32 -123 10 -3 142 -5 294 -3 169 1 279 -1 285 -7 10 -10
+181 -460 181 -476 0 -4 -348 -8 -780 -8 -603 0 -780 3 -780 12 0 17 1274 2817
+1282 2817 3 0 19 -26 33 -57z" />
+	</g>
+</svg></span> 官网（推荐）</label><label for="github_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee-码云-镜像仓库_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee 码云 (镜像仓库)</label><label for="gitcode-镜像仓库_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg></span> GitCode (镜像仓库)</label><label for="jsdelivr-cdn_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.851 0 .811 4.02l1.56 14.7L11.85 24l9.6-5.28 1.74-14.76zm.062 4.622a6.668 6.75 0 0 1 2.666.572 12.5 12.5 0 0 0-2.59 1.95c-.045-.02-.092-.031-.138-.045a1.2 1.2 0 0 0-.346-.056c-.071 0-.141.01-.21.021a9 9 0 0 1-.615-2.318 6.668 6.75 0 0 1 1.171-.122 6.668 6.75 0 0 1 .062-.002m-1.99.312a9.8 9.8 0 0 0 .69 2.504 1.2 1.2 0 0 0-.328.825 1.2 1.2 0 0 0 .18.63c-.937 1.294-1.656 2.803-1.905 4.31-.01.056-.013.11-.02.166-.282.09-.515.284-.656.54-.987-.333-1.885-.968-2.615-2.022a6.668 6.75 0 0 1-.026-.515 6.668 6.75 0 0 1 4.68-6.438m5.507.709a6.668 6.75 0 0 1 2.53 2.9c-.377.953-1.049 1.892-1.893 2.727a1.24 1.24 0 0 0-.644-.184 1.24 1.24 0 0 0-.768.27 11 11 0 0 1-1.318-1.168c-.333-.35-.637-.73-.921-1.123.19-.215.31-.494.31-.802a1.2 1.2 0 0 0-.159-.586c1.058-1.008 2.112-1.67 2.863-2.034m-3.925 1.982a.62.62 0 0 1 .346.114.62.62 0 0 1 .292.524.62.62 0 0 1-.292.524.63.63 0 0 1-.346.113.634.634 0 0 1-.638-.637c0-.355.283-.638.638-.638m-.441 1.771a1.2 1.2 0 0 0 .675.062q.055.073.112.148a11 11 0 0 0 .921 1.119 12 12 0 0 0 1.446 1.277c-.032.11-.054.224-.054.342a1.2 1.2 0 0 0 .066.38 10 10 0 0 1-2.118 1.042c-.087.029-.173.052-.261.078a7.7 7.7 0 0 1-1.87.332 1.15 1.15 0 0 0-.66-.773q.004-.036.01-.073c.219-1.333.873-2.73 1.733-3.934m7.272.19a6.668 6.75 0 0 1 .245 1.786 6.668 6.75 0 0 1-.259 1.856 10 10 0 0 1-1.666-.63 1.24 1.24 0 0 0-.065-.713 9.4 9.4 0 0 0 1.745-2.3zm-2.913 2.101c.367 0 .657.291.657.658s-.291.657-.657.657-.658-.29-.658-.657.29-.658.658-.658m.837 1.59a11 11 0 0 0 1.802.688 6.668 6.75 0 0 1-6.149 4.157 6.668 6.75 0 0 1-.062-.004 6.668 6.75 0 0 1-.042 0c-.087-.042-.168-.08-.266-.129-.312-.154-.667-.352-.846-.5a3.8 3.8 0 0 1-1.294-2.03c.21-.111.38-.284.487-.495a8.4 8.4 0 0 0 1.96-.306 9 9 0 0 0 .513-.154 11 11 0 0 0 2.341-1.13c.205.143.452.23.719.23a1.25 1.25 0 0 0 .837-.328zm-10.707.116a5.8 5.8 0 0 0 2.212 1.298 1.15 1.15 0 0 0 .857.87 4.6 4.6 0 0 0 1.24 2.222 6.668 6.75 0 0 1-4.31-4.39zm3.327.464c.331 0 .595.263.595.596s-.264.595-.595.595a.59.59 0 0 1-.596-.595.59.59 0 0 1 .596-.596"/></svg></span> jsDelivr (CDN)</label><label for="腾讯云-eo-cdn_1"><span class="twemoji"><svg t="1750550178180" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4745" width="200" height="200"><path d="M795.306667 877.226667h-580.266667l389.12-392.533334c54.613333-54.613333 105.813333-75.093333 112.64-78.506666l10.24-3.413334c88.746667-10.24 160.426667 6.826667 211.626667 54.613334 78.506667 71.68 78.506667 184.32 78.506666 191.146666 0 160.426667-143.36 218.453333-221.866666 228.693334z m-337.92-98.986667h334.506666c20.48-3.413333 129.706667-23.893333 133.12-133.12 0 0 0-75.093333-44.373333-116.053333-27.306667-23.893333-71.68-34.133333-126.293333-27.306667-10.24 6.826667-40.96 20.48-71.68 54.613333l-225.28 221.866667zM303.786667 413.013333L204.8 406.186667c3.413333-81.92 71.68-235.52 283.306667-259.413334 10.24 0 197.973333-17.066667 303.786666 187.733334l-88.746666 44.373333c-75.093333-143.36-201.386667-136.533333-204.8-133.12-177.493333 20.48-194.56 153.6-194.56 167.253333z" p-id="4746"></path><path d="M225.28 877.226667C92.16 877.226667 27.306667 771.413333 13.653333 716.8c-47.786667-160.426667 92.16-273.066667 95.573334-276.48 150.186667-109.226667 296.96 13.653333 354.986666 92.16l-81.92 58.026667 40.96-30.72-40.96 30.72c0-3.413333-109.226667-146.773333-211.626666-71.68-3.413333 3.413333-88.746667 71.68-61.44 167.253333 3.413333 10.24 27.306667 88.746667 116.053333 88.746667v102.4z" p-id="4747"></path><path d="M225.28 778.24h143.36v98.986667H225.28z" p-id="4748"></path></svg></span> 腾讯云 EO (CDN)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--only-registry
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/DockerInstallation.sh<span class="o">)</span><span class="w"> </span>--only-registry
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh<span class="o">)</span><span class="w"> </span>--only-registry
+</code></pre></div>
+<blockquote>
+<p>实时同步、无延迟，国内网络环境下推荐使用</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh<span class="o">)</span><span class="w"> </span>--only-registry
+</code></pre></div>
+<blockquote>
+<p>同步存在1小时延迟</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/DockerInstallation.sh<span class="o">)</span><span class="w"> </span>--only-registry
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://edgeone.linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--only-registry
+</code></pre></div>
+<blockquote>
+<p>不建议在国内网络环境下使用</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid cards">
+<ul>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.6 9.6 9 15 7.4 9.6 2 8l5.4-1.6L9 1l1.6 5.4L16 8zm6.4 4.6 4-2.2-2.2 4 2.2 4-4-2.2-4 2.2 2.2-4-2.2-4zM10 16l-1.7 3 1.7 3-3-1.7L4 22l1.7-3L4 16l3 1.7z"/></svg></span> <strong>完全替代官方安装脚本</strong></p>
+<hr />
+<p>与 <a href="https://get.docker.com">get.docker.com</a> 逻辑一致，融合了本项目换源架构以及特性</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.5 17c-.13 0-.26 0-.39.04l-1.61-3.25a2.5 2.5 0 0 0-1.75-4.29c-.13 0-.25 0-.39.04l-1.63-3.25c.48-.45.77-1.08.77-1.79a2.5 2.5 0 0 0-5 0c0 .71.29 1.34.76 1.79L8.64 9.54c-.14-.04-.26-.04-.39-.04a2.5 2.5 0 0 0-1.75 4.29l-1.61 3.25C4.76 17 4.63 17 4.5 17a2.5 2.5 0 0 0 0 5A2.5 2.5 0 0 0 7 19.5c0-.7-.29-1.34-.76-1.79l1.62-3.25c.14.04.26.04.39.04s.25 0 .39-.04l1.63 3.25c-.47.45-.77 1.09-.77 1.79a2.5 2.5 0 0 0 5 0A2.5 2.5 0 0 0 12 17c-.13 0-.26 0-.39.04L10 13.79c.46-.45.75-1.08.75-1.79s-.29-1.34-.75-1.79l1.61-3.25c.13.04.26.04.39.04s.26 0 .39-.04L14 10.21c-.45.45-.75 1.09-.75 1.79a2.5 2.5 0 0 0 2.5 2.5c.13 0 .25 0 .39-.04l1.63 3.25c-.47.45-.77 1.09-.77 1.79a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0-2.5-2.5"/></svg></span> <strong>支持国产衍生操作系统</strong></p>
+<hr />
+<p>兼容大量不受官方安装脚本支持的衍生操作系统 <span class="twemoji" title="除官网首页展示的系统外还支持下方等特制系统</br><ul><li>Kylin Server</li><li>Huawei Cloud EulerOS</li><li>TencentOS Server</li><li>Alibaba Cloud Linux</li></ul>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg></span></p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2m10-4v5h-2V4H4v2H2V1h2v2h16V1zm-7 10.26V23h-2v-5h-2v5H9V11.26C6.93 10.17 5.5 8 5.5 5.5V5h2v.5C7.5 8 9.5 10 12 10s4.5-2 4.5-4.5V5h2v.5c0 2.5-1.43 4.67-3.5 5.76"/></svg></span> <strong>功能强大、无与伦比</strong></p>
+<hr />
+<p>全网最实用的开源运维脚本之一，性能卓越</p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15 9-3-9-3 9-9 3 9 3 3 9 3-9 9-3zM4 12l6-2 1 2zm8 8-2-6 2-1zm0-16 2 6-2 1zm2 10-1-2h7zm-5.3 3.3L5 19l1.7-3.7 1.6.5zm8.6-2L19 19l-3.7-1.7.5-1.6zM6.7 8.7 5 5l3.7 1.7-.5 1.5zm8.6-2L19 5l-1.7 3.7-1.6-.5z"/></svg></span> <strong>精妙绝伦的交互设计</strong></p>
+<hr />
+<p>易于理解和使用的交互式命令行界面，遥遥领先</p>
+</li>
+</ul>
+</div>
+<div style="display: flex; align-items: center; gap: 8px;">
+    <p>✨ 经过了数年的技术沉淀与生产环境检验，广受社区好评，深得开发者喜爱，大厂都在使用</p>
+    <div class="icon-brand-section">
+      <div class="icon-brand-container no-select">
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="1Panel">
+          <img src="/assets/images/sponsor/1panel.png" alt="1panel" />
+        </a>
+        <a class="icon-brand-button" target="_blank" rel="noopener noreferrer" href="https://www.bt.cn" title="宝塔面板" style="padding: 0 !important">
+          <img src="/assets/images/other/bt.svg" alt="BT" />
+        </a>
+      </div>
+    </div>
+</div>
+
+<p></br></p>
+<div class="admonition tip">
+<p class="admonition-title">Docker Compose 不再需要独立安装</p>
+<p>Docker Compose 自 V2 版本起开始作为 Docker CLI（命令行）的一部分，脚本默认集成安装该<a href="https://docs.docker.com/compose/install/linux">插件</a>，请使用 <code>docker compose</code> 命令替代 <code>docker-compose</code></p>
+</div>
+<div class="admonition node">
+<p class="admonition-title">软件源说明</p>
+<div class="grid cards" markdown>
+<ul>
+<li>
+<p><strong>Docker CE 软件仓库</strong></p>
+<hr />
+<p>Docker CE 全称 Docker Community Edition（Docker 社区版），是 Docker Engine 的别称，该仓库用于下载并安装 Docker 相关软件包</p>
+</li>
+<li>
+<p><strong>Docker Registry 镜像仓库</strong></p>
+<hr />
+<p>用于控制拉取镜像的默认来源存储仓库，又称镜像加速器，默认为官方容器镜像仓库 <a href="https://hub.docker.com">Docker Hub</a> </p>
+</li>
+</ul>
+</div>
+<p>由于一些不可抗力的因素，国内网络环境下目前无法访问 <a href="https://hub.docker.com">Docker Hub</a> 因此不能正常拉取镜像，建议使用下方提到的国内可用镜像仓库源</p>
+<p>注：脚本内的指定 Web 协议交互仅用于控制 <code>Docker CE</code> 软件源，<code>Docker Registry</code> 强制使用 <code>HTTPS</code> 协议</p>
+</div>
+<div class="admonition quote">
+<p class="admonition-title">内置的镜像仓库源</p>
+<p><div style="text-align: center" markdown>
+<div style="font-size: 0.8rem"><strong>国内可用</strong></div></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">站点名称</th>
+<th style="text-align: center;">地址</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">毫秒镜像</td>
+<td style="text-align: center;"><a href="https://1ms.run" title="docker.1ms.run">docker.1ms.run</a></td>
+<td style="text-align: left;">企业镜像站，CDN智能分发速度极快，支持付费定制，推荐使用</td>
+</tr>
+<tr>
+<td style="text-align: center;">Docker Proxy</td>
+<td style="text-align: center;"><a href="https://dockerproxy.net" title="dockerproxy.net">dockerproxy.net</a></td>
+<td style="text-align: left;">由 ghproxy 创建，可用性高但速度很慢，支持企业镜像付费加速</td>
+</tr>
+<tr>
+<td style="text-align: center;">DaoCloud 道客</td>
+<td style="text-align: center;"><a href="https://docker.m.daocloud.io" title="docker.m.daocloud.io">docker.m.daocloud.io</a></td>
+<td style="text-align: left;">老牌企业镜像站，可用性高且速度快，现为白名单模式</td>
+</tr>
+<tr>
+<td style="text-align: center;">1Panel 镜像</td>
+<td style="text-align: center;"><a href="https://1panel.cn" title="docker.1panel.live">docker.1panel.live</a></td>
+<td style="text-align: left;">企业产品自用镜像</td>
+</tr>
+</tbody>
+</table>
+<p><blockquote style="border-left: none !important">本开源项目不适合采集个人自建的镜像加速器，如有需要可搭配命令选项自行使用</blockquote></p>
+<p><div style="font-size: 0.8rem; margin-top: 1rem"><strong>其它</strong></div></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">站点名称</th>
+<th style="text-align: center;">地址</th>
+<th style="text-align: left;">站点名称</th>
+<th style="text-align: center;">地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">阿里云（杭州）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-hangzhou.aliyuncs.com">registry.cn-hangzhou.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（日本-东京）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.ap-northeast-1.aliyuncs.com">registry.ap-northeast-1.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（上海）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-shanghai.aliyuncs.com">registry.cn-shanghai.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（新加坡）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.ap-southeast-1.aliyuncs.com">registry.ap-southeast-1.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（青岛）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-qingdao.aliyuncs.com">registry.cn-qingdao.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（马来西亚-吉隆坡）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.ap-southeast-3.aliyuncs.com">registry.ap-southeast-3.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（北京）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-beijing.aliyuncs.com">registry.cn-beijing.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（印度尼西亚-雅加达）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.ap-southeast-5.aliyuncs.com">registry.ap-southeast-5.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（张家口）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-zhangjiakou.aliyuncs.com">registry.cn-zhangjiakou.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（德国-法兰克福）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.eu-central-1.aliyuncs.com">registry.eu-central-1.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（呼和浩特）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-huhehaote.aliyuncs.com">registry.cn-huhehaote.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（英国-伦敦）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.eu-west-1.aliyuncs.com">registry.eu-west-1.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（乌兰察布）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-wulanchabu.aliyuncs.com">registry.cn-wulanchabu.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（美国西部-硅谷）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.us-west-1.aliyuncs.com">registry.us-west-1.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（深圳）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-shenzhen.aliyuncs.com">registry.cn-shenzhen.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（美国东部-弗吉尼亚）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.us-east-1.aliyuncs.com">registry.us-east-1.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（河源）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-heyuan.aliyuncs.com">registry.cn-heyuan.aliyuncs.com</a></td>
+<td style="text-align: left;">阿里云（阿联酋-迪拜）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.me-east-1.aliyuncs.com">registry.me-east-1.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（广州）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-guangzhou.aliyuncs.com">registry.cn-guangzhou.aliyuncs.com</a></td>
+<td style="text-align: left;">谷歌云（北美）</td>
+<td style="text-align: center;"><a href="https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn" title="https://gcr.io">gcr.io</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（成都）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-chengdu.aliyuncs.com">registry.cn-chengdu.aliyuncs.com</a></td>
+<td style="text-align: left;">谷歌云（亚洲）</td>
+<td style="text-align: center;"><a href="https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn" title="https://asia.gcr.io">asia.gcr.io</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">阿里云（香港）</td>
+<td style="text-align: center;"><a href="https://help.aliyun.com/zh/acr/user-guide/accelerate-the-pulls-of-docker-official-images" title="https://registry.cn-hongkong.aliyuncs.com">registry.cn-hongkong.aliyuncs.com</a></td>
+<td style="text-align: left;">谷歌云（欧洲）</td>
+<td style="text-align: center;"><a href="https://cloud.google.com/artifact-registry/docs/transition/gcr-repositories?hl=zh-cn" title="https://eu.gcr.io">eu.gcr.io</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">腾讯云</td>
+<td style="text-align: center;"><a href="https://cloud.tencent.com/document/product/1207/45596" title="https://mirror.ccs.tencentyun.com">mirror.ccs.tencentyun.com</a></td>
+<td style="text-align: left;">Docker Hub</td>
+<td style="text-align: center;"><a href="https://hub.docker.com/" title="registry.hub.docker.com">registry.hub.docker.com</a></td>
+</tr>
+</tbody>
+</table>
+<p><blockquote style="border-left: none !important">注：国内云计算企业的镜像仓库源仅针对其业务，境内实例可能仍无法访问 Docker Hub</blockquote></p>
+</div>
+</div>
+<h2 id="命令选项高级用法">命令选项（高级用法）<a class="headerlink" href="#命令选项高级用法" title="链接">#</a></h2>
+<div class="termy" data-termynal data-ty-macos data-ty-title="bash"><span data-ty="input" data-ty-prompt="$">bash &lt;(curl -sSL https://linuxmirrors.cn/docker.sh) --help </span><span data-ty><br>命令选项(名称/含义/值)：<br><br>  --source                  指定 Docker CE 软件源地址(域名或IP)        地址<br>  --source-registry         指定 Docker 镜像仓库地址(域名或IP)         地址<br>  --branch                  指定 Docker CE 软件源仓库(路径)            仓库名<br>  --branch-version          指定 Docker CE 软件源仓库版本              版本号<br>  --designated-version      指定 Docker Engine 安装版本                版本号<br>  --codename                指定 Debian 系操作系统的版本代号            代号名称<br>  --protocol                指定 Docker CE 软件源的 Web 协议           http 或 https<br>  --use-intranet-source     是否优先使用内网 Docker CE 软件源地址       true 或 false<br>  --install-latest          是否安装最新版本的 Docker Engine           true 或 false<br>  --close-firewall          是否关闭防火墙                             true 或 false<br>  --clean-screen            是否在运行前清除屏幕上的所有内容             true 或 false<br>  --lang                    指定脚本输出的语言                          语言<br>  --only-registry           仅更换镜像仓库模式                          无<br>  --ignore-backup-tips      忽略覆盖备份提示                            无<br>  --pure-mode               纯净模式，精简打印内容                      无<br>  --help                    查看帮助菜单                               无<br></span></div>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">名称</th>
+<th style="text-align: center;">含义</th>
+<th style="text-align: center;">选项值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>--source</code></td>
+<td style="text-align: center;">指定 <code>Docker CE</code> 源地址(域名或IP)</td>
+<td style="text-align: center;"><code>地址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--source-registry</code></td>
+<td style="text-align: center;">指定 <code>Docker</code> 镜像仓库地址(域名或IP)</td>
+<td style="text-align: center;"><code>地址（多个用英文逗号分割）</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--branch</code></td>
+<td style="text-align: center;">指定 <code>Docker CE</code> 软件源仓库(路径)</td>
+<td style="text-align: center;"><code>仓库名（详见下方文档）</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--branch-version</code></td>
+<td style="text-align: center;">指定 <code>Docker CE</code> 软件源仓库版本</td>
+<td style="text-align: center;"><code>版本号（详见下方文档）</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--designated-version</code></td>
+<td style="text-align: center;">指定 <code>Docker Engine</code> 安装版本</td>
+<td style="text-align: center;"><code>版本号（详见下方文档）</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--codename</code></td>
+<td style="text-align: center;">指定 <code>Debian</code> 系操作系统的版本代号</td>
+<td style="text-align: center;"><code>代号名称</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--protocol</code></td>
+<td style="text-align: center;">指定 <code>Docker CE</code> 源的 Web 协议</td>
+<td style="text-align: center;"><code>http</code> 或 <code>https</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--use-intranet-source</code></td>
+<td style="text-align: center;">是否优先使用内网 <code>Docker CE</code> 软件源地址</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--install-latest</code></td>
+<td style="text-align: center;">是否安装最新版本的 <code>Docker Engine</code></td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--close-firewall</code></td>
+<td style="text-align: center;">是否关闭防火墙</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--clean-screen</code></td>
+<td style="text-align: center;">是否在运行前清除屏幕上的所有内容</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--lang</code></td>
+<td style="text-align: center;">指定脚本输出的语言</td>
+<td style="text-align: center;"><code>语言ID（详见下方文档）</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--only-registry</code></td>
+<td style="text-align: center;">仅更换镜像仓库模式</td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--ignore-backup-tips</code></td>
+<td style="text-align: center;">忽略覆盖备份提示（即不覆盖备份）</td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--pure-mode</code></td>
+<td style="text-align: center;">纯净模式，精简打印内容</td>
+<td style="text-align: center;">无</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>--help</code></td>
+<td style="text-align: center;">查看帮助菜单</td>
+<td style="text-align: center;">无</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>软件源完整格式 <code>&lt;WEB协议&gt;://&lt;软件源地址(域名或IP)&gt;/&lt;软件源仓库(路径)&gt;</code></p>
+</blockquote>
+<ul>
+<li>
+<h3 id="指定镜像仓库地址">指定镜像仓库地址<a class="headerlink" href="#指定镜像仓库地址" title="链接">#</a></h3>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--source-registry<span class="w"> </span>registry.example.com
+</code></pre></div>
+<p>可以同时指定多个地址，需使用英文逗号进行分割</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>--source-registry<span class="w"> </span><span class="s2">&quot;registry-1.example.com,registry-2.example.com&quot;</span>
+</code></pre></div>
+</li>
+<li>
+<h3 id="仅更换镜像仓库">仅更换镜像仓库<a class="headerlink" href="#仅更换镜像仓库" title="链接">#</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="使用脚本一键替换" name="__tabbed_4" type="radio" /><input id="手动替换" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="使用脚本一键替换">使用脚本一键替换</label><label for="手动替换">手动替换</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>仅更换镜像加速器，当检测到未安装 Docker 时会报错跳出</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--only-registry
+</code></pre></div>
+<p>懒人一键命令（使用多个地址）</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>--only-registry<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span>--source-registry<span class="w"> </span><span class="s2">&quot;docker.1ms.run,docker.1panel.live,docker.m.daocloud.io&quot;</span>
+</code></pre></div>
+<blockquote>
+<p>选项值可以指定多个地址，需使用英文逗号进行分割</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>
+<p>安装 <code>jq</code> 软件包</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="debian-系--openkylin" name="__tabbed_5" type="radio" /><input id="redhat-系--openeuler--opencloudos--anolis-os" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin">Debian 系 / openKylin</label><label for="redhat-系--openeuler--opencloudos--anolis-os">RedHat 系 / openEuler / OpenCloudOS / Anolis OS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>jq
+</code></pre></div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox VE</code> &nbsp; <code>Raspberry Pi OS</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+<p>新装系统需要先执行一遍更新 <code>apt-get update</code></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>jq<span class="w"> </span><span class="o">||</span><span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>jq
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>openEuler</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>指定镜像仓库地址</p>
+<blockquote>
+<p>请手动替换 <code>&lt;example.registry.com&gt;</code> 为镜像仓库地址后在执行，详见上方 “项目内置的镜像仓库源” 表格中的地址列</p>
+</blockquote>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nv">SOURCE_REGISTRY</span><span class="o">=</span><span class="s1">&#39;&quot;https://&lt;example.registry.com&gt;&quot;&#39;</span>
+</code></pre></div>
+还可以指定多个镜像仓库，如 <code>SOURCE_REGISTRY='"https://example.registry.com","https://test.registry.com"'</code>，注意用英文逗号分割</p>
+</li>
+<li>
+<p>替换镜像仓库地址</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="o">[</span><span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;/etc/docker/daemon.json&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;{}&quot;</span><span class="w"> </span>&gt;/etc/docker/daemon.json
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>jq<span class="w"> </span><span class="s1">&#39;.[&quot;registry-mirrors&quot;] = [&#39;</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOURCE_REGISTRY</span><span class="si">}</span><span class="s2">&quot;</span><span class="s1">&#39;]&#39;</span><span class="w"> </span>/etc/docker/daemon.json<span class="w"> </span>&gt;/etc/docker/daemon.json.tmp<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mv<span class="w"> </span>/etc/docker/daemon.json.tmp
+</code></pre></div>
+</li>
+<li>
+<p>重启 Docker 服务</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>systemctl<span class="w"> </span>daemon-reload
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="o">[[</span><span class="w"> </span><span class="k">$(</span>systemctl<span class="w"> </span>is-active<span class="w"> </span>docker<span class="k">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;active&quot;</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>docker<span class="w"> </span><span class="o">||</span><span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>docker
+</code></pre></div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</li>
+<li>
+<h3 id="指定-docker-ce-软件源地址">指定 Docker CE 软件源地址<a class="headerlink" href="#指定-docker-ce-软件源地址" title="链接">#</a></h3>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--source<span class="w"> </span>mirror.example.com/docker-ce
+</code></pre></div>
+<blockquote>
+<p>注意该地址路径需要包含镜像站的 Docker CE 软件源仓库路径即 <code>docker-ce</code></p>
+</blockquote>
+</li>
+<li>
+<h3 id="指定-docker-ce-软件源仓库">指定 Docker CE 软件源仓库<a class="headerlink" href="#指定-docker-ce-软件源仓库" title="链接">#</a></h3>
+<p>脚本默认会自动判断一般无需指定，除非你有特殊需求</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--branch<span class="w"> </span>centos
+</code></pre></div>
+<blockquote>
+<p>仓库名是固定的，目前只有 <a href="https://download.docker.com/linux/centos/"><code>centos</code></a> <a href="https://download.docker.com/linux/debian/"><code>debian</code></a> <a href="https://download.docker.com/linux/fedora/"><code>fedora</code></a> <a href="https://download.docker.com/linux/raspbian/"><code>raspbian</code></a> <a href="https://download.docker.com/linux/rhel/"><code>rhel</code></a> <a href="https://download.docker.com/linux/sles/"><code>sles</code></a> <a href="https://download.docker.com/linux/static/"><code>static</code></a> <a href="https://download.docker.com/linux/ubuntu/"><code>ubuntu</code></a> 这几个<br />
+具体详见 <a href="https://docs.docker.com/engine/install">官方安装文档</a> 和 <a href="https://download.docker.com/linux">Docker CE 官方仓库</a></p>
+</blockquote>
+<div class="no-copy highlight"><span class="filename">还可以指定仓库版本号</span><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span>--branch<span class="w"> </span>centos<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span>--branch-version<span class="w"> </span><span class="m">9</span>
+</code></pre></div>
+<blockquote>
+<p>可以使用该选项来控制安装软件包的兼容性（仅适用于红帽系操作系统），具体详见对应仓库目录中代表版本号的路径名称（正整数）。</p>
+</blockquote>
+</li>
+<li>
+<h3 id="指定-docker-engine-安装版本">指定 Docker Engine 安装版本<a class="headerlink" href="#指定-docker-engine-安装版本" title="链接">#</a></h3>
+<p>指定安装版本时会忽略 <code>是否安装最新版本</code> 的命令选项，格式为 <code>主版本.次版本.补丁版本</code>，例如 <code>28.4.1</code>。</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--designated-version<span class="w"> </span><span class="m">28</span>.0.0
+</code></pre></div>
+<blockquote>
+<p>如果指定的版本不存在或者不支持当前系统，届时脚本会报错跳出</p>
+</blockquote>
+<details class="quote">
+<summary>查看版本列表的方法</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="debian-系" name="__tabbed_6" type="radio" /><input id="redhat-系--openeuler--opencloudos--anolis-os_1" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="debian-系">Debian 系</label><label for="redhat-系--openeuler--opencloudos--anolis-os_1">RedHat 系 / openEuler / OpenCloudOS / Anolis OS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>apt-cache<span class="w"> </span>madison<span class="w"> </span>docker-ce<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Eo<span class="w"> </span><span class="s2">&quot;[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-t<span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="w"> </span>-k1,1nr<span class="w"> </span>-k2,2nr<span class="w"> </span>-k3,3nr
+</code></pre></div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox VE</code> &nbsp; <code>Raspberry Pi OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>dnf<span class="w"> </span>list<span class="w"> </span>docker-ce<span class="w"> </span>--showduplicates<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-r<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Eo<span class="w"> </span><span class="s2">&quot;[0-9][0-9].[0-9]{1,2}.[0-9]{1,2}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-t<span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="w"> </span>-k1,1nr<span class="w"> </span>-k2,2nr<span class="w"> </span>-k3,3nr
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>openEuler</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+</div>
+</div>
+<p>未出现在该列表中的版本则不支持通过本脚本安装，如果获取不到版本列表说明你当前的系统环境还没有正确配置 Docker CE 软件源（运行脚本时不存在该问题）</p>
+</details>
+</li>
+<li>
+<h3 id="国际化i18n">国际化（I18n）<a class="headerlink" href="#国际化i18n" title="链接">#</a></h3>
+<p>脚本提供多语言支持，当前内置 <code>简体中文</code>、<code>繁體中文</code>、<code>English</code> 共三种显示语言，默认为 <code>简体中文</code></p>
+<ul>
+<li>
+<h4 id="指定语言">指定语言<a class="headerlink" href="#指定语言" title="链接">#</a></h4>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--lang<span class="w"> </span>xxx
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">类型</th>
+<th style="text-align: center;">值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">简体中文</td>
+<td style="text-align: center;"><code>zh-hans</code> <code>zh-cn</code> <code>zh</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">繁體中文</td>
+<td style="text-align: center;"><code>zh-hant</code> <code>zh-tw</code> <code>zh-hk</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">English</td>
+<td style="text-align: center;"><code>en</code> <code>en-us</code></td>
+</tr>
+</tbody>
+</table>
+<p>也可以直接作为命令选项使用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--en
+</code></pre></div>
+<blockquote>
+<p><code>--en</code> <code>--en-us</code> <code>--zh</code> <code>--zh-cn</code> <code>--zh-hans</code> <code>--zh-hant</code></p>
+</blockquote>
+</li>
+<li>
+<h4 id="通过交互进行选择">通过交互进行选择<a class="headerlink" href="#通过交互进行选择" title="链接">#</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--lang<span class="w"> </span>auto
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="无人值守自动化">无人值守（自动化）<a class="headerlink" href="#无人值守自动化" title="链接">#</a></h3>
+<p>不通过交互完成安装操作，至少需要使用如下命令选项来实现，建议熟悉后再使用</p>
+<div class="no-copy highlight"><span class="filename">参考命令</span><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span>--source<span class="w"> </span>mirror.example.com/docker-ce<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">  </span>--source-registry<span class="w"> </span>registry.hub.docker.com<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">  </span>--protocol<span class="w"> </span>http<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">  </span>--use-intranet-source<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">  </span>--install-latest<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="w">  </span>--close-firewall<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">  </span>--ignore-backup-tips
+</code></pre></div>
+<blockquote>
+<p>如果报错 <code>命令选项无效</code> 那么请检查选项合法性以及空格字符编码，在示例中一行写一个选项是为了提高命令的可读性</p>
+</blockquote>
+</li>
+<li>
+<h3 id="纯净模式">纯净模式<a class="headerlink" href="#纯净模式" title="链接">#</a></h3>
+<p>推出该功能是为了便于开发以及运维人员使用，启用后会精简脚本内容输出，建议搭配其它命令选项无交互使用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker.sh<span class="o">)</span><span class="w"> </span>--pure-mode
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">滚动输出的命令日志可能存在无法预料的显示问题，不过目前暂未发现异常</p>
+</div>
+</li>
+</ul>
+<h2 id="常见问题">常见问题<a class="headerlink" href="#常见问题" title="链接">#</a></h2>
+<ul>
+<li>
+<h4 id="关于服务报错无法启动">关于服务报错无法启动<a class="headerlink" href="#关于服务报错无法启动" title="链接">#</a></h4>
+<div class="admonition quote">
+<p>非新装环境可能会在运行脚本后遇到 <code>Docker</code> 服务无法启动的情况，建议重新安装来解决，卸载不会删除本地镜像和容器数据</p>
+<p>卸载命令如下：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="debian-系_1" name="__tabbed_7" type="radio" /><input id="redhat-系--openeuler--opencloudos--anolis-os_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="debian-系_1">Debian 系</label><label for="redhat-系--openeuler--opencloudos--anolis-os_2">RedHat 系 / openEuler / OpenCloudOS / Anolis OS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>apt-get<span class="w"> </span>remove<span class="w"> </span>-y<span class="w"> </span>docker*<span class="w"> </span>containerd.io<span class="w"> </span>runc<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>autoremove
+</code></pre></div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox VE</code> &nbsp; <code>Raspberry Pi OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>yum<span class="w"> </span>remove<span class="w"> </span>-y<span class="w"> </span>docker*<span class="w"> </span>containerd.io<span class="w"> </span>podman*<span class="w"> </span>runc
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>openEuler</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+</div>
+</div>
+<p>卸载完成后重新执行脚本安装即可</p>
+</div>
+</li>
+<li>
+<h4 id="关于不支持的操作系统">关于不支持的操作系统<a class="headerlink" href="#关于不支持的操作系统" title="链接">#</a></h4>
+<p>如果提示不支持那么请使用系统自带的包管理工具进行安装。因为这些软件包由 Linux 发行版的软件包维护者构建和维护，可能存在配置差异或由修改后的源代码构建。</p>
+<p>也可以使用 &nbsp; <a href="https://www.docker.com/products/docker-desktop"><img alt="Docker Desktop" src="../assets/images/icon/custom/docker-desktop.svg" style="vertical-align: -0.2rem" width="140" /></a></p>
+</li>
+</ul>
+<h2 id="精简版lite">精简版（Lite）<a class="headerlink" href="#精简版lite" title="链接">#</a></h2>
+<p>项目额外提供一个精简版本，是主脚本的复制，面向企业产品、大型开源社区项目使用，具有以下特性：</p>
+<ul>
+<li>单一显示语言 <code>English</code>，无 I18n 国际化功能</li>
+<li>默认使用官方源，去除了交互选择内置软件源功能</li>
+<li>去除了无关的打印内容</li>
+<li>保留核心逻辑与命令选项设计</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/docker-lite.sh<span class="o">)</span>
+</code></pre></div>
+<blockquote>
+<p>请熟悉本项目后再使用，不建议新手用户使用</p>
+</blockquote>
+<h2 id="最佳实践">最佳实践<a class="headerlink" href="#最佳实践" title="链接">#</a></h2>
+<details class="note">
+<summary>适用于企业产品部署以及 CI/CD 等自动化运维场景的代码示例（展开查看）</summary>
+<p>如果你不想让用户进行任何交互，请使用 <code>完全自动化</code> 示例</p>
+<ul>
+<li>
+<h4 id="完全自动化推荐">完全自动化（推荐）<a class="headerlink" href="#完全自动化推荐" title="链接">#</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># !/bin/bash</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="k">function</span><span class="w"> </span>install_docker<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>docker<span class="w"> </span><span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">        </span><span class="k">return</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="w">    </span><span class="c1"># script options</span>
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">script_host</span><span class="o">=</span><span class="s2">&quot;linuxmirrors.cn&quot;</span><span class="w"> </span><span class="c1"># official host (CDN), more host see official site</span>
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">close_firewall</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="w">         </span><span class="c1"># close firewalld service and selinux (redhat systems need)</span>
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="w">    </span><span class="c1"># mirrors options</span>
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">source_docker_ce_address</span><span class="o">=</span><span class="s2">&quot;mirrors.tencent.com/docker-ce&quot;</span><span class="w"> </span><span class="c1"># global high availability address</span>
+<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">source_docker_ce_protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="w">                        </span><span class="c1"># https or http</span>
+<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">source_docker_registry_address</span><span class="o">=</span><span class="s2">&quot;registry.hub.docker.com&quot;</span>
+<a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a>
+<a id="__codelineno-35-15" name="__codelineno-35-15" href="#__codelineno-35-15"></a><span class="w">    </span><span class="c1"># judge network environment</span>
+<a id="__codelineno-35-16" name="__codelineno-35-16" href="#__codelineno-35-16"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">region_code</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>ipinfo.io/country<span class="k">)</span><span class="s2">&quot;</span>
+<a id="__codelineno-35-17" name="__codelineno-35-17" href="#__codelineno-35-17"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">region_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;CN&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-18" name="__codelineno-35-18" href="#__codelineno-35-18"></a><span class="w">        </span><span class="nb">local</span><span class="w"> </span><span class="nv">source_intranet_address</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<a id="__codelineno-35-19" name="__codelineno-35-19" href="#__codelineno-35-19"></a><span class="w">        </span><span class="c1"># use intranet source if possible</span>
+<a id="__codelineno-35-20" name="__codelineno-35-20" href="#__codelineno-35-20"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;/sys/class/dmi/id/sys_vendor&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-21" name="__codelineno-35-21" href="#__codelineno-35-21"></a><span class="w">            </span><span class="nb">local</span><span class="w"> </span><span class="nv">sys_vendor</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>/sys/class/dmi/id/sys_vendor<span class="k">)</span><span class="s2">&quot;</span>
+<a id="__codelineno-35-22" name="__codelineno-35-22" href="#__codelineno-35-22"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">sys_vendor</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>*<span class="s2">&quot;Alibaba&quot;</span>*<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-23" name="__codelineno-35-23" href="#__codelineno-35-23"></a><span class="w">                </span><span class="nv">source_intranet_address</span><span class="o">=</span><span class="s2">&quot;mirrors.cloud.aliyuncs.com/docker-ce&quot;</span>
+<a id="__codelineno-35-24" name="__codelineno-35-24" href="#__codelineno-35-24"></a><span class="w">            </span><span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">sys_vendor</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>*<span class="s2">&quot;Huawei&quot;</span>*<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-25" name="__codelineno-35-25" href="#__codelineno-35-25"></a><span class="w">                </span><span class="nv">source_intranet_address</span><span class="o">=</span><span class="s2">&quot;mirrors.myhuaweicloud.com/docker-ce&quot;</span>
+<a id="__codelineno-35-26" name="__codelineno-35-26" href="#__codelineno-35-26"></a><span class="w">            </span><span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">sys_vendor</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>*<span class="s2">&quot;Tencent&quot;</span>*<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-27" name="__codelineno-35-27" href="#__codelineno-35-27"></a><span class="w">                </span><span class="nv">source_intranet_address</span><span class="o">=</span><span class="s2">&quot;mirrors.tencentyun.com/docker-ce&quot;</span>
+<a id="__codelineno-35-28" name="__codelineno-35-28" href="#__codelineno-35-28"></a><span class="w">            </span><span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">sys_vendor</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>*<span class="s2">&quot;Inspur&quot;</span>*<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-29" name="__codelineno-35-29" href="#__codelineno-35-29"></a><span class="w">                </span><span class="nv">source_intranet_address</span><span class="o">=</span><span class="s2">&quot;mirrors.ivolces.com/docker-ce&quot;</span>
+<a id="__codelineno-35-30" name="__codelineno-35-30" href="#__codelineno-35-30"></a><span class="w">            </span><span class="k">fi</span>
+<a id="__codelineno-35-31" name="__codelineno-35-31" href="#__codelineno-35-31"></a><span class="w">        </span><span class="k">else</span>
+<a id="__codelineno-35-32" name="__codelineno-35-32" href="#__codelineno-35-32"></a><span class="w">            </span>cat<span class="w"> </span>/etc/motd<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Alibaba Cloud &quot;</span><span class="w"> </span>-q
+<a id="__codelineno-35-33" name="__codelineno-35-33" href="#__codelineno-35-33"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-34" name="__codelineno-35-34" href="#__codelineno-35-34"></a><span class="w">                </span><span class="nv">source_intranet_address</span><span class="o">=</span><span class="s2">&quot;mirrors.cloud.aliyuncs.com/docker-ce&quot;</span>
+<a id="__codelineno-35-35" name="__codelineno-35-35" href="#__codelineno-35-35"></a><span class="w">            </span><span class="k">fi</span>
+<a id="__codelineno-35-36" name="__codelineno-35-36" href="#__codelineno-35-36"></a><span class="w">        </span><span class="k">fi</span>
+<a id="__codelineno-35-37" name="__codelineno-35-37" href="#__codelineno-35-37"></a><span class="w">        </span><span class="c1"># check connectivity</span>
+<a id="__codelineno-35-38" name="__codelineno-35-38" href="#__codelineno-35-38"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">source_intranet_address</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-39" name="__codelineno-35-39" href="#__codelineno-35-39"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span>ping<span class="w"> </span>-c1<span class="w"> </span>-W1<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">source_intranet_address</span><span class="p">%%/*</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>&gt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-35-40" name="__codelineno-35-40" href="#__codelineno-35-40"></a><span class="w">                </span><span class="nv">source_docker_ce_address</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">source_intranet_address</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-35-41" name="__codelineno-35-41" href="#__codelineno-35-41"></a><span class="w">                </span><span class="nv">source_docker_ce_protocol</span><span class="o">=</span><span class="s2">&quot;http&quot;</span>
+<a id="__codelineno-35-42" name="__codelineno-35-42" href="#__codelineno-35-42"></a><span class="w">            </span><span class="k">fi</span>
+<a id="__codelineno-35-43" name="__codelineno-35-43" href="#__codelineno-35-43"></a><span class="w">        </span><span class="k">fi</span>
+<a id="__codelineno-35-44" name="__codelineno-35-44" href="#__codelineno-35-44"></a><span class="w">        </span><span class="c1"># registry mirror (best choice for Chinese mainland)</span>
+<a id="__codelineno-35-45" name="__codelineno-35-45" href="#__codelineno-35-45"></a><span class="w">        </span><span class="nv">source_docker_registry_address</span><span class="o">=</span><span class="s2">&quot;docker.1ms.run&quot;</span>
+<a id="__codelineno-35-46" name="__codelineno-35-46" href="#__codelineno-35-46"></a><span class="w">    </span><span class="k">else</span>
+<a id="__codelineno-35-47" name="__codelineno-35-47" href="#__codelineno-35-47"></a><span class="w">        </span><span class="c1"># use official source</span>
+<a id="__codelineno-35-48" name="__codelineno-35-48" href="#__codelineno-35-48"></a><span class="w">        </span><span class="nv">source_docker_ce_address</span><span class="o">=</span><span class="s2">&quot;download.docker.com&quot;</span>
+<a id="__codelineno-35-49" name="__codelineno-35-49" href="#__codelineno-35-49"></a><span class="w">        </span><span class="nv">source_docker_registry_address</span><span class="o">=</span><span class="s2">&quot;registry.hub.docker.com&quot;</span>
+<a id="__codelineno-35-50" name="__codelineno-35-50" href="#__codelineno-35-50"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-35-51" name="__codelineno-35-51" href="#__codelineno-35-51"></a>
+<a id="__codelineno-35-52" name="__codelineno-35-52" href="#__codelineno-35-52"></a><span class="w">    </span><span class="c1"># install docker engine</span>
+<a id="__codelineno-35-53" name="__codelineno-35-53" href="#__codelineno-35-53"></a><span class="w">    </span>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://<span class="si">${</span><span class="nv">script_host</span><span class="si">}</span>/docker-lite.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-54" name="__codelineno-35-54" href="#__codelineno-35-54"></a><span class="w">        </span>--source<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">source_docker_ce_address</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-55" name="__codelineno-35-55" href="#__codelineno-35-55"></a><span class="w">        </span>--source-registry<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">source_docker_registry_address</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-56" name="__codelineno-35-56" href="#__codelineno-35-56"></a><span class="w">        </span>--protocol<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">source_docker_ce_protocol</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-57" name="__codelineno-35-57" href="#__codelineno-35-57"></a><span class="w">        </span>--close-firewall<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">close_firewall</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-35-58" name="__codelineno-35-58" href="#__codelineno-35-58"></a><span class="o">}</span>
+<a id="__codelineno-35-59" name="__codelineno-35-59" href="#__codelineno-35-59"></a>
+<a id="__codelineno-35-60" name="__codelineno-35-60" href="#__codelineno-35-60"></a>install_docker
+</code></pre></div>
+</li>
+<li>
+<h4 id="简易方式">简易方式<a class="headerlink" href="#简易方式" title="链接">#</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># !/bin/bash</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="k">function</span><span class="w"> </span>install_docker<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>docker<span class="w"> </span><span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">        </span><span class="k">return</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">    </span>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://<span class="si">${</span><span class="nv">script_host</span><span class="si">}</span>/docker.sh<span class="o">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">        </span>--install-latest<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="w">        </span>--ignore-backup-tips<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="w">        </span>--lang<span class="w"> </span>auto
+<a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a>
+<a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>docker<span class="w"> </span><span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\n# Docker installation successful.\n# Please run this script again manually after installation.&quot;</span>
+<a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a><span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a><span class="w">    </span><span class="k">else</span>
+<a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\n# Docker installation failed.\n# Please check the error message above.&quot;</span>
+<a id="__codelineno-36-17" name="__codelineno-36-17" href="#__codelineno-36-17"></a><span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-36-18" name="__codelineno-36-18" href="#__codelineno-36-18"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-36-19" name="__codelineno-36-19" href="#__codelineno-36-19"></a><span class="o">}</span>
+<a id="__codelineno-36-20" name="__codelineno-36-20" href="#__codelineno-36-20"></a>
+<a id="__codelineno-36-21" name="__codelineno-36-21" href="#__codelineno-36-21"></a>install_docker
+</code></pre></div>
+<blockquote>
+<p>注：不指定 <code>Docker CE 源</code> 以及 <code>镜像仓库源</code> 则会交由用户进行交互选择，届时会自动清屏 <code>$ clear</code>，从而导致你脚本的运行日志被清除</p>
+</blockquote>
+</li>
+</ul>
+</details>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+<orama-search-box class="orama-ui"></orama-search-box>
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" hidden>
+        
+          
+          <a href="../mirrors/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 软件源列表">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                软件源列表
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../changelog/" class="md-footer__link md-footer__link--next" aria-label="下一页: 更新日志">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                更新日志
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  <div class="md-copyright__highlight">
+    
+      Copyright &copy; 2026 <a href="https://github.com/SuperManito" target="_blank" rel="noopener noreferrer">SuperManito</a>
+    
+    </br>
+    
+      本网站由 Netlify 部署并提供全球 CDN 边缘网络加速
+    
+    <a href="https://www.netlify.com" title="Netlify" target="_blank" rel="noopener noreferrer"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>
+  </div>
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://gitee.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="Gitee" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://gitcode.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="GitCode" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["header.autohide", "navigation.top", "navigation.tabs", "navigation.path", "navigation.instant.progress", "navigation.indexes", "navigation.footer", "navigation.prune", "navigation.tracking", "navigation.sections", "content.tooltips", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight", "search.share", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+  <script type="module" src="https://unpkg.com/@orama/wc-components@latest/dist/orama-ui/orama-ui.esm.js"></script>
+  <script nomodule src="https://unpkg.com/@orama/wc-components@latest/dist/cjs/orama-ui.cjs.js"></script>
+  
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/vue/dist/vue.global.prod.js"></script>
+      
+        <script src="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.js"></script>
+      
+        <script src="../assets/js/modules/tdesign-theme.js"></script>
+      
+        <script src="../assets/js/components/orama-ui/config.js"></script>
+      
+        <script src="../assets/js/components/orama-ui/index.js"></script>
+      
+        <script src="../assets/js/useThemeTransition.js"></script>
+      
+        <script src="../assets/js/common.js"></script>
+      
+        <script src="../assets/js/component.js"></script>
+      
+        <script src="../assets/js/components/mirrors-table/data.js"></script>
+      
+        <script src="../assets/js/components/mirrors-table/index.js"></script>
+      
+        <script src="../termynal.js"></script>
+      
+    
+
+  </body>
+</html>
