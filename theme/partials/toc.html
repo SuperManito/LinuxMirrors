@@ -1,0 +1,97 @@
+<nav class="md-nav md-nav--secondary" aria-label="{{ title }}">
+  {% set toc = page.toc %} {% set first = toc | first %} {% if first and first.level == 1 %} {% set toc = first.children %} {% endif %} {% if toc %}
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    {{ title }}
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+    {% for toc_item in toc %} {% include "partials/toc-item.html" %} {% endfor %}
+  </ul>
+
+  <div class="md-content" data-md-component="content">
+    <div class="sponsor sponsor-toc">
+      <div class="sponsor-label">
+        <strong>{{'Sponsors' if i18n_page_locale == 'en' else '贊助商' if i18n_page_locale == 'zh-Hant' else '赞助商'}}</strong>
+      </div>
+      <div class="sponsor-wrapper sponsor-flex-wrapper-toc no-select">
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
+          <img src="/assets/images/sponsor/1panel.png" alt="1Panel" style="filter: grayscale(1) invert(0.6)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.duotuyun.com" title="智能化防护，每一次连接皆在安全之下">
+          <img src="/assets/images/sponsor/duotuyun-light.svg#only-light" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/duotuyun-dark.svg#only-dark" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1ms.run?utm_source=linuxmirrors" title="专为中国开发者提供镜像极速下载服务，告别 Docker 镜像拉取慢！</br>支持 Docker Hub、gcr.io、registry.k8s.io 等主流镜像仓库。">
+          <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="毫秒镜像" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="毫秒镜像" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.dkdun.cn/aff/VAWGETUL" title="专注独立IP高频VPS｜R9/i9系列定制">
+          <img src="/assets/images/sponsor/linfengyun.png#only-light" alt="林枫云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/linfengyun.png#only-dark" alt="林枫云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.bsncdn.org" title="香港日本高防CDN，免实名/免备案，轻松阻断 DDOS / CC 攻击">
+          <img src="/assets/images/sponsor/businiaocdn.png#only-light" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/businiaocdn.png#only-dark" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.qingyeyun.com" title="香港1T高防｜自助防火墙，无视CC｜大带宽回国优化线路">
+          <img src="/assets/images/sponsor/qingyeyun-light.png#only-light" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/qingyeyun-dark.png#only-dark" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://langlangy.cn/?icf164b" title="BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费">
+          <img src="/assets/images/sponsor/langlangyun-light.png#only-light" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+          <img src="/assets/images/sponsor/langlangyun-dark.png#only-dark" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lcayun.com" title="专业云计算服务器提供商">
+          <img src="/assets/images/sponsor/laikayun-light.png#only-light" alt="莱卡云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/laikayun-dark.png#only-dark" alt="莱卡云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://yunyoo.cc/aff/KPTJHNWM" title="全球高性价比云服务器｜低至15.99元起">
+          <img src="/assets/images/sponsor/yunyoo.png#only-light" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/yunyoo.png#only-dark" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1.1)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.hkgserver.com" title="全球家宽｜双ISP｜住宅原生云服务器54元/月起">
+          <img src="/assets/images/sponsor/hkgserver-light.png#only-light" alt="HKGserver" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/hkgserver-dark.png#only-dark" alt="HKGserver" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.wuyouyun.com" title="BGP多线高性能、高主频自动化云、物理服务器">
+          <img src="/assets/images/sponsor/wuyouyun.png#only-light" alt="无忧云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/wuyouyun.png#only-dark" alt="无忧云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.svyun.com" title="大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器">
+          <img src="/assets/images/sponsor/suweiyun-light.png#only-light" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/suweiyun-dark.png#only-dark" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://arcadia.cool" title="一站式代码运维平台">
+          <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lucdn.cn?utm_source=linuxmirrors" title="专业CDN加速、防御，亚太百兆三网优化CDN低至9元起">
+          <img src="/assets/images/sponsor/yuluyundun-light.png#only-light" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/yuluyundun-dark.png#only-dark" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://cb2.cn" title="国内外建站快响应服务器的不二之选">
+          <img src="/assets/images/sponsor/bueryun.svg#only-light" alt="不二云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/bueryun.svg#only-dark" alt="不二云" style="filter: grayscale(1) invert(0.7)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://idc.cn2network.com" title="超低价优质机器免实名自动开通">
+          <img src="/assets/images/sponsor/cn2network.png#only-light" alt="CN2network" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/cn2network.png#only-dark" alt="CN2network" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.crash.work" title="专注高性能国内外云服务器">
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-light" alt="破碎工坊云" style="filter: grayscale(1) invert(0.2)" />
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-dark" alt="破碎工坊云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.runxinyun.com" title="挂机宝海外云服务器低至9.9元/月">
+          <img src="/assets/images/sponsor/runxinyun-light.png#only-light" alt="润信云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/runxinyun-dark.png#only-dark" alt="润信云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <!-- <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" title="{{'Become a Sponsor' if i18n_page_locale == 'en' else '成為贊助商' if i18n_page_locale == 'zh-Hant' else '成为赞助商'}}" href="/sponsor/">
+          <span style="font-size: 0.6rem; opacity: 0.5">
+            <strong>{{'Become a Sponsor' if i18n_page_locale == 'en' else '成為贊助商' if i18n_page_locale == 'zh-Hant' else '成为赞助商'}}</strong>
+          </span>
+        </a> -->
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</nav>

@@ -1,0 +1,2796 @@
+
+<!doctype html>
+<html lang="zh-Hant" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../mirrors/">
+      
+      
+        
+          <link rel="alternate" href="../../use/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="zh-Hant">
+        
+          <link rel="alternate" href="../../en/use/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>使用方法 - LinuxMirrors</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20384%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M296.5%20291.1C321%20265.2%20336%20230.4%20336%20192c0-79.5-64.5-144-144-144S48%20112.5%2048%20192c0%2038.4%2015%2073.2%2039.5%2099.1%2021.3%2022.4%2044.9%2054%2053.3%2092.9h102.4c8.4-39%2032-70.5%2053.3-92.9m34.8%2033C307.7%20349%20288%20379.4%20288%20413.7V432c0%2044.2-35.8%2080-80%2080h-32c-44.2%200-80-35.8-80-80v-18.3c0-34.3-19.7-64.7-43.3-89.6C20%20289.7%200%20243.2%200%20192%200%2086%2086%200%20192%200s192%2086%20192%20192c0%2051.2-20%2097.7-52.7%20132.1M144%20184c0%2013.3-10.7%2024-24%2024s-24-10.7-24-24c0-48.6%2039.4-88%2088-88%2013.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024c-22.1%200-40%2017.9-40%2040%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.css">
+    
+      <link rel="stylesheet" href="../../assets/css/orama-ui.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../termynal.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-WG7T40F7YP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-WG7T40F7YP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-WG7T40F7YP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="system" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#一鍵執行命令" class="md-skip">
+          跳轉至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="不再顯示此訊息">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  <span style="font-size: .6rem !important;">如果您覺得這個專案不錯對您有幫助的話，請點擊倉庫右上角的 Star 並分享給更多的朋友</span>
+  &nbsp;&nbsp;<span class="twemoji heart" style="font-size: .6rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 20.408c-.492.308-.903.546-1.192.709q-.23.129-.463.252h-.002a.75.75 0 0 1-.686 0 17 17 0 0 1-.465-.252 31 31 0 0 1-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31 31 0 0 1 14 20.408"></path></svg></span>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="頁首"
+  >
+
+    <a
+      href="https://linuxmirrors.cn"
+      title="LinuxMirrors"
+      class="md-header__button md-logo"
+      aria-label="LinuxMirrors"
+      data-md-component="logo"
+    >
+      
+  <img src="../../assets/images/brand/svg/logo-light.svg" alt="logo">
+
+    </a>
+
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5.75 2.5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5M2 14a1 1 0 1 1 0-2 1 1 0 0 1 0 2m1-6a1 1 0 1 1-2 0 1 1 0 0 1 2 0M2 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/></svg>
+    </label>
+
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LinuxMirrors
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              使用方法
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme)"
+      data-md-color-scheme="system"
+      data-md-color-primary="indigo"
+      data-md-color-accent="indigo"
+      
+        aria-label="跟隨系統"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_0"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="跟隨系統"
+        for="__palette_1"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+        </div>
+      </label>
+    
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme: light)"
+      data-md-color-scheme="default"
+      data-md-color-primary="white"
+      data-md-color-accent="blue"
+      
+        aria-label="亮色模式"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_1"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="亮色模式"
+        for="__palette_2"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0M8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0M3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8m13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8m-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13m3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061M2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-.018 1.042.75.75 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"/></svg>
+        </div>
+      </label>
+    
+  
+    
+    
+    
+    <input
+      class="md-option"
+      data-md-color-media="(prefers-color-scheme: dark)"
+      data-md-color-scheme="slate"
+      data-md-color-primary="black"
+      data-md-color-accent="blue"
+      
+        aria-label="暗黑模式"
+      
+      type="radio"
+      name="__palette"
+      id="__palette_2"
+    />
+    
+      <label
+        class="md-header__button md-icon"
+        title="暗黑模式"
+        for="__palette_0"
+        hidden
+      >
+        <div class="palette-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.598 1.591a.75.75 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786m1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678"/></svg>
+        </div>
+      </label>
+    
+  
+</form>
+      
+    
+
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="選擇語言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../use/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh-Hant" class="md-select__link">
+              繁體中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/use/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7"/></svg>
+        </label>
+        <a class="md-header__button md-icon coze-icon-wrapper" href="https://www.coze.cn/store/agent/7503197985959428108?bot_id=true" target="_blank" rel="noopener noreferrer" title="Coze AI 助手">
+  <div aria-label="Coze" class="coze-icon-bg">
+    <svg fill="currentColor" fill-rule="evenodd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" color="#fff" style="display: block; margin: auto;">
+      <path clip-rule="evenodd" d="M3.908 9.096A8.092 8.092 0 0111.998 1h.006c4.468 0 8.09 3.628 8.09 8.096v3.392h1.942c2.23 0 2.732 3.126.615 3.828l-2.556.85v1.466a1.947 1.947 0 01-2.818 1.742l-1.42-.707c-.067-.03-.149 0-.17.071-1.147 3.587-6.225 3.587-7.373 0a.123.123 0 00-.169-.07l-1.42.706c-1.29.65-2.817-.292-2.817-1.742v-1.466l-2.557-.85c-2.122-.697-1.614-3.828.615-3.828h1.942V9.096zm4.571 2.613a.784.784 0 00-.784.784v1.568a.784.784 0 101.568 0v-1.568a.784.784 0 00-.784-.784zm7.045.779a.784.784 0 100 1.568.784.784 0 000-1.568zm-6.186 3.415a.78.78 0 00.17.254 3.517 3.517 0 004.98 0 .782.782 0 10-1.106-1.107 1.958 1.958 0 01-2.767 0 .78.78 0 00-1.277.254.78.78 0 000 .6z"></path>
+    </svg>
+  </div>
+</a>
+
+<div class="md-search__inner" role="search">
+  <form class="md-search__form" name="search" onsubmit="return false;">
+    <input type="text" class="md-search__input" name="query" aria-label="AI 搜尋" placeholder="AI 搜尋" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" readonly required onclick="OpenOramaSearchComponent()" />
+    <label class="md-search__icon md-icon" for="__search" onclick="OpenOramaSearchComponent()">  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg> </label>
+  </form>
+  <div class="md-search__output">
+    <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+      <div class="md-search-result" data-md-component="search-result">
+        <div class="md-search-result__meta">正在初始化搜尋引擎</div>
+        <ol class="md-search-result__list" role="presentation"></ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const __lang = "zh-Hant";
+  let __notReadyMsg = '';
+  switch (__lang) {
+    case 'en':
+      __notReadyMsg = "The search component has not yet been loaded. Please try again later.";
+      break;
+    case 'zh-Hant':
+      __notReadyMsg = "搜尋元件尚未載入完畢，請稍後再試。";
+      break;
+    default:
+      __notReadyMsg = "搜索组件尚未加载完毕，请稍后再试。";
+  }
+
+  function OpenOramaSearchComponent() {
+    if (window.openOramaSearch) {
+      window.openOramaSearch();
+    } else {
+      alert$.next(__notReadyMsg);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchToggle = document.getElementById('__search');
+    if (searchToggle) {
+      searchToggle.addEventListener('change', function() {
+        if (this.checked) {
+          this.checked = false;
+          OpenOramaSearchComponent();
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .md-search__output {
+    display: none !important;
+  }
+  .md-search__inner {
+    padding-left: 8px;
+  }
+  .md-search__input {
+    cursor: pointer !important;
+  }
+  .md-search__form {
+    border-radius: 6px;
+  }
+  @media screen and (min-width: 60em) {
+    .md-search__inner {
+      width: 8.7rem;
+    }
+  }
+  .coze-icon-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(77, 83, 232);
+    border-radius: 6px;
+    color: #fff;
+    height: 28px;
+    width: 28px;
+  }
+  .coze-icon-bg svg {
+    width: 20px !important;
+    height: 20px !important;
+    display: block;
+  }
+  .coze-icon-wrapper {
+    @media screen and (max-width: 768px) {
+      display: none !important;
+    }
+  }
+  
+</style>
+      
+    
+
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SuperManito/LinuxMirrors" title="前往倉庫" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LinuxMirrors
+  </div>
+</a>
+      </div>
+    
+  </nav>
+
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="標籤頁" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  介紹
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  使用方法
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../mirrors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  軟體源列表
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../other/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  容器工具
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  更新日誌
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../community/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  社群
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sponsor/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  贊助
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="導航" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://linuxmirrors.cn" title="LinuxMirrors" class="md-nav__button md-logo" aria-label="LinuxMirrors" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/svg/logo-light.svg" alt="logo">
+
+    </a>
+    LinuxMirrors
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SuperManito/LinuxMirrors" title="前往倉庫" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LinuxMirrors
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    介紹
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用方法
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用方法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        <nav class="md-nav md-nav--secondary" aria-label="">
+     
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+     <li class="md-nav__item">
+  <a href="#一鍵執行命令" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一鍵執行命令
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一鍵執行命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#常見問題" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常見問題
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>  <li class="md-nav__item">
+  <a href="#命令選項進階用法" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命令選項（進階用法）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="命令選項（進階用法）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#指定軟體源位址" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定軟體源位址
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定軟體源倉庫目錄" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定軟體源倉庫目錄
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#單獨更換-epel-源" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        單獨更換 EPEL 源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#恢復使用官方源" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        恢復使用官方源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#特定係統的使用範例" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        特定係統的使用範例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#國際化i18n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        國際化（I18n）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#無人值守自動化" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        無人值守（自動化）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#純淨模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        純淨模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>  <li class="md-nav__item">
+  <a href="#精簡版lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        精簡版（Lite）
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#客製化腳本" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        客製化腳本
+      
+    </span>
+  </a>
+  
+</li> 
+  </ul>
+
+  <div class="md-content" data-md-component="content">
+    <div class="sponsor sponsor-toc">
+      <div class="sponsor-label">
+        <strong>贊助商</strong>
+      </div>
+      <div class="sponsor-wrapper sponsor-flex-wrapper-toc no-select">
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
+          <img src="/assets/images/sponsor/1panel.png" alt="1Panel" style="filter: grayscale(1) invert(0.6)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.duotuyun.com" title="智能化防护，每一次连接皆在安全之下">
+          <img src="/assets/images/sponsor/duotuyun-light.svg#only-light" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/duotuyun-dark.svg#only-dark" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1ms.run?utm_source=linuxmirrors" title="专为中国开发者提供镜像极速下载服务，告别 Docker 镜像拉取慢！</br>支持 Docker Hub、gcr.io、registry.k8s.io 等主流镜像仓库。">
+          <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="毫秒镜像" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="毫秒镜像" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.dkdun.cn/aff/VAWGETUL" title="专注独立IP高频VPS｜R9/i9系列定制">
+          <img src="/assets/images/sponsor/linfengyun.png#only-light" alt="林枫云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/linfengyun.png#only-dark" alt="林枫云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.bsncdn.org" title="香港日本高防CDN，免实名/免备案，轻松阻断 DDOS / CC 攻击">
+          <img src="/assets/images/sponsor/businiaocdn.png#only-light" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/businiaocdn.png#only-dark" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.qingyeyun.com" title="香港1T高防｜自助防火墙，无视CC｜大带宽回国优化线路">
+          <img src="/assets/images/sponsor/qingyeyun-light.png#only-light" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/qingyeyun-dark.png#only-dark" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://langlangy.cn/?icf164b" title="BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费">
+          <img src="/assets/images/sponsor/langlangyun-light.png#only-light" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+          <img src="/assets/images/sponsor/langlangyun-dark.png#only-dark" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lcayun.com" title="专业云计算服务器提供商">
+          <img src="/assets/images/sponsor/laikayun-light.png#only-light" alt="莱卡云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/laikayun-dark.png#only-dark" alt="莱卡云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://yunyoo.cc/aff/KPTJHNWM" title="全球高性价比云服务器｜低至15.99元起">
+          <img src="/assets/images/sponsor/yunyoo.png#only-light" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/yunyoo.png#only-dark" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1.1)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.hkgserver.com" title="全球家宽｜双ISP｜住宅原生云服务器54元/月起">
+          <img src="/assets/images/sponsor/hkgserver-light.png#only-light" alt="HKGserver" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/hkgserver-dark.png#only-dark" alt="HKGserver" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.wuyouyun.com" title="BGP多线高性能、高主频自动化云、物理服务器">
+          <img src="/assets/images/sponsor/wuyouyun.png#only-light" alt="无忧云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/wuyouyun.png#only-dark" alt="无忧云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.svyun.com" title="大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器">
+          <img src="/assets/images/sponsor/suweiyun-light.png#only-light" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/suweiyun-dark.png#only-dark" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://arcadia.cool" title="一站式代码运维平台">
+          <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lucdn.cn?utm_source=linuxmirrors" title="专业CDN加速、防御，亚太百兆三网优化CDN低至9元起">
+          <img src="/assets/images/sponsor/yuluyundun-light.png#only-light" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/yuluyundun-dark.png#only-dark" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://cb2.cn" title="国内外建站快响应服务器的不二之选">
+          <img src="/assets/images/sponsor/bueryun.svg#only-light" alt="不二云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/bueryun.svg#only-dark" alt="不二云" style="filter: grayscale(1) invert(0.7)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://idc.cn2network.com" title="超低价优质机器免实名自动开通">
+          <img src="/assets/images/sponsor/cn2network.png#only-light" alt="CN2network" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/cn2network.png#only-dark" alt="CN2network" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.crash.work" title="专注高性能国内外云服务器">
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-light" alt="破碎工坊云" style="filter: grayscale(1) invert(0.2)" />
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-dark" alt="破碎工坊云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.runxinyun.com" title="挂机宝海外云服务器低至9.9元/月">
+          <img src="/assets/images/sponsor/runxinyun-light.png#only-light" alt="润信云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/runxinyun-dark.png#only-dark" alt="润信云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <!-- <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" title="成為贊助商" href="/sponsor/">
+          <span style="font-size: 0.6rem; opacity: 0.5">
+            <strong>成為贊助商</strong>
+          </span>
+        </a> -->
+      </div>
+    </div>
+  </div>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    軟體源列表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    容器工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    更新日誌
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    社群
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sponsor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    贊助
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--secondary" aria-label="">
+     
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+     <li class="md-nav__item">
+  <a href="#一鍵執行命令" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一鍵執行命令
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一鍵執行命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#常見問題" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常見問題
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>  <li class="md-nav__item">
+  <a href="#命令選項進階用法" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命令選項（進階用法）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="命令選項（進階用法）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#指定軟體源位址" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定軟體源位址
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指定軟體源倉庫目錄" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指定軟體源倉庫目錄
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#單獨更換-epel-源" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        單獨更換 EPEL 源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#恢復使用官方源" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        恢復使用官方源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#特定係統的使用範例" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        特定係統的使用範例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#國際化i18n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        國際化（I18n）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#無人值守自動化" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        無人值守（自動化）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#純淨模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        純淨模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>  <li class="md-nav__item">
+  <a href="#精簡版lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        精簡版（Lite）
+      
+    </span>
+  </a>
+  
+</li>  <li class="md-nav__item">
+  <a href="#客製化腳本" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        客製化腳本
+      
+    </span>
+  </a>
+  
+</li> 
+  </ul>
+
+  <div class="md-content" data-md-component="content">
+    <div class="sponsor sponsor-toc">
+      <div class="sponsor-label">
+        <strong>贊助商</strong>
+      </div>
+      <div class="sponsor-wrapper sponsor-flex-wrapper-toc no-select">
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1panel.cn" title="新一代的 Linux 服务器运维管理面板">
+          <img src="/assets/images/sponsor/1panel.png" alt="1Panel" style="filter: grayscale(1) invert(0.6)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.duotuyun.com" title="智能化防护，每一次连接皆在安全之下">
+          <img src="/assets/images/sponsor/duotuyun-light.svg#only-light" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/duotuyun-dark.svg#only-dark" alt="多途云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://1ms.run?utm_source=linuxmirrors" title="专为中国开发者提供镜像极速下载服务，告别 Docker 镜像拉取慢！</br>支持 Docker Hub、gcr.io、registry.k8s.io 等主流镜像仓库。">
+          <img src="/assets/images/sponsor/1ms-light.svg#only-light" alt="毫秒镜像" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/1ms-dark.svg#only-dark" alt="毫秒镜像" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.dkdun.cn/aff/VAWGETUL" title="专注独立IP高频VPS｜R9/i9系列定制">
+          <img src="/assets/images/sponsor/linfengyun.png#only-light" alt="林枫云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/linfengyun.png#only-dark" alt="林枫云" style="filter: grayscale(1) invert(0.5)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.bsncdn.org" title="香港日本高防CDN，免实名/免备案，轻松阻断 DDOS / CC 攻击">
+          <img src="/assets/images/sponsor/businiaocdn.png#only-light" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/businiaocdn.png#only-dark" alt="不死鸟CDN" style="filter: grayscale(1) brightness(1.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.qingyeyun.com" title="香港1T高防｜自助防火墙，无视CC｜大带宽回国优化线路">
+          <img src="/assets/images/sponsor/qingyeyun-light.png#only-light" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/qingyeyun-dark.png#only-dark" alt="青叶云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://langlangy.cn/?icf164b" title="BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费">
+          <img src="/assets/images/sponsor/langlangyun-light.png#only-light" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+          <img src="/assets/images/sponsor/langlangyun-dark.png#only-dark" alt="浪浪云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lcayun.com" title="专业云计算服务器提供商">
+          <img src="/assets/images/sponsor/laikayun-light.png#only-light" alt="莱卡云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/laikayun-dark.png#only-dark" alt="莱卡云" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://yunyoo.cc/aff/KPTJHNWM" title="全球高性价比云服务器｜低至15.99元起">
+          <img src="/assets/images/sponsor/yunyoo.png#only-light" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1)" />
+          <img src="/assets/images/sponsor/yunyoo.png#only-dark" alt="云悠YUNYOO" style="filter: grayscale(1) brightness(1.1)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.hkgserver.com" title="全球家宽｜双ISP｜住宅原生云服务器54元/月起">
+          <img src="/assets/images/sponsor/hkgserver-light.png#only-light" alt="HKGserver" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/hkgserver-dark.png#only-dark" alt="HKGserver" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.wuyouyun.com" title="BGP多线高性能、高主频自动化云、物理服务器">
+          <img src="/assets/images/sponsor/wuyouyun.png#only-light" alt="无忧云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/wuyouyun.png#only-dark" alt="无忧云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.svyun.com" title="大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器">
+          <img src="/assets/images/sponsor/suweiyun-light.png#only-light" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/suweiyun-dark.png#only-dark" alt="速维云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://arcadia.cool" title="一站式代码运维平台">
+          <img src="/assets/images/sponsor/arcadia-light.png#only-light" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/arcadia-dark.png#only-dark" alt="Arcadia" style="padding: 0 2px; filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.lucdn.cn?utm_source=linuxmirrors" title="专业CDN加速、防御，亚太百兆三网优化CDN低至9元起">
+          <img src="/assets/images/sponsor/yuluyundun-light.png#only-light" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/yuluyundun-dark.png#only-dark" alt="语鹿云盾" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://cb2.cn" title="国内外建站快响应服务器的不二之选">
+          <img src="/assets/images/sponsor/bueryun.svg#only-light" alt="不二云" style="filter: grayscale(1) invert(0.6)" />
+          <img src="/assets/images/sponsor/bueryun.svg#only-dark" alt="不二云" style="filter: grayscale(1) invert(0.7)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://idc.cn2network.com" title="超低价优质机器免实名自动开通">
+          <img src="/assets/images/sponsor/cn2network.png#only-light" alt="CN2network" style="filter: grayscale(1) invert(0.4)" />
+          <img src="/assets/images/sponsor/cn2network.png#only-dark" alt="CN2network" style="filter: grayscale(1) invert(0.3)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" href="https://www.crash.work" title="专注高性能国内外云服务器">
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-light" alt="破碎工坊云" style="filter: grayscale(1) invert(0.2)" />
+          <img src="/assets/images/sponsor/posuigongfangyun.png#only-dark" alt="破碎工坊云" style="filter: grayscale(1) invert(0.8)" />
+        </a>
+        <a class="sponsor-item sponsor-item-toc" target="_blank" href="https://www.runxinyun.com" title="挂机宝海外云服务器低至9.9元/月">
+          <img src="/assets/images/sponsor/runxinyun-light.png#only-light" alt="润信云" style="filter: grayscale(1) invert(0.5)" />
+          <img src="/assets/images/sponsor/runxinyun-dark.png#only-dark" alt="润信云" style="filter: grayscale(1) invert(0.4)" />
+        </a>
+        <!-- <a class="sponsor-item sponsor-item-toc" target="_blank" rel="noopener noreferrer" title="成為贊助商" href="/sponsor/">
+          <span style="font-size: 0.6rem; opacity: 0.5">
+            <strong>成為贊助商</strong>
+          </span>
+        </a> -->
+      </div>
+    </div>
+  </div>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+  
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+
+  
+  
+
+
+
+  <h1>使用方法</h1>
+
+
+<h2 id="一鍵執行命令">一鍵執行命令<a class="headerlink" href="#一鍵執行命令" title="链接">#</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="中國大陸" name="__tabbed_1" type="radio" /><input id="國際地區" name="__tabbed_1" type="radio" /><input id="中國大陸教育網" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="中國大陸"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 21V10l7.5-5 7.5 5v11h-5v-7H5v7zM24 2v19h-7V8.93l-1-.66V6h-2v.93l-4-2.66V2zm-3 12h-2v2h2zm0-4h-2v2h2zm0-4h-2v2h2z"/></svg></span> 中國大陸</label><label for="國際地區"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> 國際地區</label><label for="中國大陸教育網"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg></span> 中國大陸教育網</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:6"><input checked="checked" id="官網-推薦" name="__tabbed_2" type="radio" /><input id="github" name="__tabbed_2" type="radio" /><input id="gitee-碼雲-鏡像倉庫" name="__tabbed_2" type="radio" /><input id="gitcode-鏡像倉庫" name="__tabbed_2" type="radio" /><input id="jsdelivr-cdn" name="__tabbed_2" type="radio" /><input id="騰訊雲-eo-cdn" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="官網-推薦"><span class="twemoji"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="451.000000pt" height="451.000000pt"
+	viewBox="0 0 451.000000 451.000000" preserveAspectRatio="xMidYMid meet">
+	<g transform="translate(0.000000,451.000000) scale(0.100000,-0.100000)" fill="currentColor"
+		stroke="none">
+		<path
+			d="M133 4048 c-4 -7 -9 -818 -10 -1803 -2 -1415 0 -1795 10 -1815 7 -13
+23 -27 37 -30 14 -3 281 31 595 77 314 45 798 114 1078 153 279 39 521 76 538
+82 17 6 34 21 40 35 5 13 9 89 9 168 l0 144 -148 278 c-82 153 -177 332 -212
+398 -35 66 -92 173 -127 238 -35 64 -66 130 -69 145 -4 21 6 56 39 128 25 54
+80 178 122 274 42 96 85 190 95 209 l17 34 73 -139 c41 -76 103 -193 139 -259
+l66 -120 5 -590 5 -590 97 190 c53 105 169 332 257 505 88 173 205 401 258
+507 54 106 101 189 105 185 3 -4 95 -178 203 -387 108 -209 221 -427 251 -484
+30 -57 53 -105 51 -107 -2 -2 -123 -7 -268 -10 -280 -7 -311 -12 -325 -56 -4
+-13 -52 -113 -106 -223 -55 -110 -106 -215 -113 -232 l-14 -33 800 0 c534 0
+799 3 799 10 0 11 -1275 2818 -1284 2828 -3 3 -8 3 -10 1 -2 -2 -101 -215
+-221 -474 -213 -461 -399 -860 -453 -973 l-27 -57 -5 726 c-5 694 -6 728 -24
+748 -24 27 -26 27 -201 50 -82 11 -321 45 -530 75 -848 123 -1450 206 -1491
+206 -23 0 -46 -6 -51 -12z m1602 -355 c112 -240 245 -535 245 -543 0 -5 -55
+-130 -121 -277 -222 -491 -430 -946 -494 -1083 -35 -74 -86 -188 -113 -252
+-45 -106 -48 -118 -32 -123 10 -3 142 -5 294 -3 169 1 279 -1 285 -7 10 -10
+181 -460 181 -476 0 -4 -348 -8 -780 -8 -603 0 -780 3 -780 12 0 17 1274 2817
+1282 2817 3 0 19 -26 33 -57z" />
+	</g>
+</svg></span> 官網 (推薦)</label><label for="github"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee-碼雲-鏡像倉庫"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee 碼雲 (鏡像倉庫)</label><label for="gitcode-鏡像倉庫"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg></span> GitCode (鏡像倉庫)</label><label for="jsdelivr-cdn"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.851 0 .811 4.02l1.56 14.7L11.85 24l9.6-5.28 1.74-14.76zm.062 4.622a6.668 6.75 0 0 1 2.666.572 12.5 12.5 0 0 0-2.59 1.95c-.045-.02-.092-.031-.138-.045a1.2 1.2 0 0 0-.346-.056c-.071 0-.141.01-.21.021a9 9 0 0 1-.615-2.318 6.668 6.75 0 0 1 1.171-.122 6.668 6.75 0 0 1 .062-.002m-1.99.312a9.8 9.8 0 0 0 .69 2.504 1.2 1.2 0 0 0-.328.825 1.2 1.2 0 0 0 .18.63c-.937 1.294-1.656 2.803-1.905 4.31-.01.056-.013.11-.02.166-.282.09-.515.284-.656.54-.987-.333-1.885-.968-2.615-2.022a6.668 6.75 0 0 1-.026-.515 6.668 6.75 0 0 1 4.68-6.438m5.507.709a6.668 6.75 0 0 1 2.53 2.9c-.377.953-1.049 1.892-1.893 2.727a1.24 1.24 0 0 0-.644-.184 1.24 1.24 0 0 0-.768.27 11 11 0 0 1-1.318-1.168c-.333-.35-.637-.73-.921-1.123.19-.215.31-.494.31-.802a1.2 1.2 0 0 0-.159-.586c1.058-1.008 2.112-1.67 2.863-2.034m-3.925 1.982a.62.62 0 0 1 .346.114.62.62 0 0 1 .292.524.62.62 0 0 1-.292.524.63.63 0 0 1-.346.113.634.634 0 0 1-.638-.637c0-.355.283-.638.638-.638m-.441 1.771a1.2 1.2 0 0 0 .675.062q.055.073.112.148a11 11 0 0 0 .921 1.119 12 12 0 0 0 1.446 1.277c-.032.11-.054.224-.054.342a1.2 1.2 0 0 0 .066.38 10 10 0 0 1-2.118 1.042c-.087.029-.173.052-.261.078a7.7 7.7 0 0 1-1.87.332 1.15 1.15 0 0 0-.66-.773q.004-.036.01-.073c.219-1.333.873-2.73 1.733-3.934m7.272.19a6.668 6.75 0 0 1 .245 1.786 6.668 6.75 0 0 1-.259 1.856 10 10 0 0 1-1.666-.63 1.24 1.24 0 0 0-.065-.713 9.4 9.4 0 0 0 1.745-2.3zm-2.913 2.101c.367 0 .657.291.657.658s-.291.657-.657.657-.658-.29-.658-.657.29-.658.658-.658m.837 1.59a11 11 0 0 0 1.802.688 6.668 6.75 0 0 1-6.149 4.157 6.668 6.75 0 0 1-.062-.004 6.668 6.75 0 0 1-.042 0c-.087-.042-.168-.08-.266-.129-.312-.154-.667-.352-.846-.5a3.8 3.8 0 0 1-1.294-2.03c.21-.111.38-.284.487-.495a8.4 8.4 0 0 0 1.96-.306 9 9 0 0 0 .513-.154 11 11 0 0 0 2.341-1.13c.205.143.452.23.719.23a1.25 1.25 0 0 0 .837-.328zm-10.707.116a5.8 5.8 0 0 0 2.212 1.298 1.15 1.15 0 0 0 .857.87 4.6 4.6 0 0 0 1.24 2.222 6.668 6.75 0 0 1-4.31-4.39zm3.327.464c.331 0 .595.263.595.596s-.264.595-.595.595a.59.59 0 0 1-.596-.595.59.59 0 0 1 .596-.596"/></svg></span> jsDelivr (CDN)</label><label for="騰訊雲-eo-cdn"><span class="twemoji"><svg t="1750550178180" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4745" width="200" height="200"><path d="M795.306667 877.226667h-580.266667l389.12-392.533334c54.613333-54.613333 105.813333-75.093333 112.64-78.506666l10.24-3.413334c88.746667-10.24 160.426667 6.826667 211.626667 54.613334 78.506667 71.68 78.506667 184.32 78.506666 191.146666 0 160.426667-143.36 218.453333-221.866666 228.693334z m-337.92-98.986667h334.506666c20.48-3.413333 129.706667-23.893333 133.12-133.12 0 0 0-75.093333-44.373333-116.053333-27.306667-23.893333-71.68-34.133333-126.293333-27.306667-10.24 6.826667-40.96 20.48-71.68 54.613333l-225.28 221.866667zM303.786667 413.013333L204.8 406.186667c3.413333-81.92 71.68-235.52 283.306667-259.413334 10.24 0 197.973333-17.066667 303.786666 187.733334l-88.746666 44.373333c-75.093333-143.36-201.386667-136.533333-204.8-133.12-177.493333 20.48-194.56 153.6-194.56 167.253333z" p-id="4746"></path><path d="M225.28 877.226667C92.16 877.226667 27.306667 771.413333 13.653333 716.8c-47.786667-160.426667 92.16-273.066667 95.573334-276.48 150.186667-109.226667 296.96 13.653333 354.986666 92.16l-81.92 58.026667 40.96-30.72-40.96 30.72c0-3.413333-109.226667-146.773333-211.626666-71.68-3.413333 3.413333-88.746667 71.68-61.44 167.253333 3.413333 10.24 27.306667 88.746667 116.053333 88.746667v102.4z" p-id="4747"></path><path d="M225.28 778.24h143.36v98.986667H225.28z" p-id="4748"></path></svg></span> 騰訊雲 EO (CDN)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant
+</code></pre></div>
+<blockquote>
+<p>即時同步、無延遲，中國大陸網路環境下推薦使用</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant
+</code></pre></div>
+<blockquote>
+<p>同步存在1小時延遲</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://edgeone.linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant
+</code></pre></div>
+<blockquote>
+<p>不建議在中國大陸網路環境下使用</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:6"><input checked="checked" id="官網-推薦_1" name="__tabbed_3" type="radio" /><input id="github_1" name="__tabbed_3" type="radio" /><input id="gitee-碼雲-鏡像倉庫_1" name="__tabbed_3" type="radio" /><input id="gitcode-鏡像倉庫_1" name="__tabbed_3" type="radio" /><input id="jsdelivr-cdn_1" name="__tabbed_3" type="radio" /><input id="騰訊雲-eo-cdn_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="官網-推薦_1"><span class="twemoji"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="451.000000pt" height="451.000000pt"
+	viewBox="0 0 451.000000 451.000000" preserveAspectRatio="xMidYMid meet">
+	<g transform="translate(0.000000,451.000000) scale(0.100000,-0.100000)" fill="currentColor"
+		stroke="none">
+		<path
+			d="M133 4048 c-4 -7 -9 -818 -10 -1803 -2 -1415 0 -1795 10 -1815 7 -13
+23 -27 37 -30 14 -3 281 31 595 77 314 45 798 114 1078 153 279 39 521 76 538
+82 17 6 34 21 40 35 5 13 9 89 9 168 l0 144 -148 278 c-82 153 -177 332 -212
+398 -35 66 -92 173 -127 238 -35 64 -66 130 -69 145 -4 21 6 56 39 128 25 54
+80 178 122 274 42 96 85 190 95 209 l17 34 73 -139 c41 -76 103 -193 139 -259
+l66 -120 5 -590 5 -590 97 190 c53 105 169 332 257 505 88 173 205 401 258
+507 54 106 101 189 105 185 3 -4 95 -178 203 -387 108 -209 221 -427 251 -484
+30 -57 53 -105 51 -107 -2 -2 -123 -7 -268 -10 -280 -7 -311 -12 -325 -56 -4
+-13 -52 -113 -106 -223 -55 -110 -106 -215 -113 -232 l-14 -33 800 0 c534 0
+799 3 799 10 0 11 -1275 2818 -1284 2828 -3 3 -8 3 -10 1 -2 -2 -101 -215
+-221 -474 -213 -461 -399 -860 -453 -973 l-27 -57 -5 726 c-5 694 -6 728 -24
+748 -24 27 -26 27 -201 50 -82 11 -321 45 -530 75 -848 123 -1450 206 -1491
+206 -23 0 -46 -6 -51 -12z m1602 -355 c112 -240 245 -535 245 -543 0 -5 -55
+-130 -121 -277 -222 -491 -430 -946 -494 -1083 -35 -74 -86 -188 -113 -252
+-45 -106 -48 -118 -32 -123 10 -3 142 -5 294 -3 169 1 279 -1 285 -7 10 -10
+181 -460 181 -476 0 -4 -348 -8 -780 -8 -603 0 -780 3 -780 12 0 17 1274 2817
+1282 2817 3 0 19 -26 33 -57z" />
+	</g>
+</svg></span> 官網 (推薦)</label><label for="github_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee-碼雲-鏡像倉庫_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee 碼雲 (鏡像倉庫)</label><label for="gitcode-鏡像倉庫_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg></span> GitCode (鏡像倉庫)</label><label for="jsdelivr-cdn_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.851 0 .811 4.02l1.56 14.7L11.85 24l9.6-5.28 1.74-14.76zm.062 4.622a6.668 6.75 0 0 1 2.666.572 12.5 12.5 0 0 0-2.59 1.95c-.045-.02-.092-.031-.138-.045a1.2 1.2 0 0 0-.346-.056c-.071 0-.141.01-.21.021a9 9 0 0 1-.615-2.318 6.668 6.75 0 0 1 1.171-.122 6.668 6.75 0 0 1 .062-.002m-1.99.312a9.8 9.8 0 0 0 .69 2.504 1.2 1.2 0 0 0-.328.825 1.2 1.2 0 0 0 .18.63c-.937 1.294-1.656 2.803-1.905 4.31-.01.056-.013.11-.02.166-.282.09-.515.284-.656.54-.987-.333-1.885-.968-2.615-2.022a6.668 6.75 0 0 1-.026-.515 6.668 6.75 0 0 1 4.68-6.438m5.507.709a6.668 6.75 0 0 1 2.53 2.9c-.377.953-1.049 1.892-1.893 2.727a1.24 1.24 0 0 0-.644-.184 1.24 1.24 0 0 0-.768.27 11 11 0 0 1-1.318-1.168c-.333-.35-.637-.73-.921-1.123.19-.215.31-.494.31-.802a1.2 1.2 0 0 0-.159-.586c1.058-1.008 2.112-1.67 2.863-2.034m-3.925 1.982a.62.62 0 0 1 .346.114.62.62 0 0 1 .292.524.62.62 0 0 1-.292.524.63.63 0 0 1-.346.113.634.634 0 0 1-.638-.637c0-.355.283-.638.638-.638m-.441 1.771a1.2 1.2 0 0 0 .675.062q.055.073.112.148a11 11 0 0 0 .921 1.119 12 12 0 0 0 1.446 1.277c-.032.11-.054.224-.054.342a1.2 1.2 0 0 0 .066.38 10 10 0 0 1-2.118 1.042c-.087.029-.173.052-.261.078a7.7 7.7 0 0 1-1.87.332 1.15 1.15 0 0 0-.66-.773q.004-.036.01-.073c.219-1.333.873-2.73 1.733-3.934m7.272.19a6.668 6.75 0 0 1 .245 1.786 6.668 6.75 0 0 1-.259 1.856 10 10 0 0 1-1.666-.63 1.24 1.24 0 0 0-.065-.713 9.4 9.4 0 0 0 1.745-2.3zm-2.913 2.101c.367 0 .657.291.657.658s-.291.657-.657.657-.658-.29-.658-.657.29-.658.658-.658m.837 1.59a11 11 0 0 0 1.802.688 6.668 6.75 0 0 1-6.149 4.157 6.668 6.75 0 0 1-.062-.004 6.668 6.75 0 0 1-.042 0c-.087-.042-.168-.08-.266-.129-.312-.154-.667-.352-.846-.5a3.8 3.8 0 0 1-1.294-2.03c.21-.111.38-.284.487-.495a8.4 8.4 0 0 0 1.96-.306 9 9 0 0 0 .513-.154 11 11 0 0 0 2.341-1.13c.205.143.452.23.719.23a1.25 1.25 0 0 0 .837-.328zm-10.707.116a5.8 5.8 0 0 0 2.212 1.298 1.15 1.15 0 0 0 .857.87 4.6 4.6 0 0 0 1.24 2.222 6.668 6.75 0 0 1-4.31-4.39zm3.327.464c.331 0 .595.263.595.596s-.264.595-.595.595a.59.59 0 0 1-.596-.595.59.59 0 0 1 .596-.596"/></svg></span> jsDelivr (CDN)</label><label for="騰訊雲-eo-cdn_1"><span class="twemoji"><svg t="1750550178180" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4745" width="200" height="200"><path d="M795.306667 877.226667h-580.266667l389.12-392.533334c54.613333-54.613333 105.813333-75.093333 112.64-78.506666l10.24-3.413334c88.746667-10.24 160.426667 6.826667 211.626667 54.613334 78.506667 71.68 78.506667 184.32 78.506666 191.146666 0 160.426667-143.36 218.453333-221.866666 228.693334z m-337.92-98.986667h334.506666c20.48-3.413333 129.706667-23.893333 133.12-133.12 0 0 0-75.093333-44.373333-116.053333-27.306667-23.893333-71.68-34.133333-126.293333-27.306667-10.24 6.826667-40.96 20.48-71.68 54.613333l-225.28 221.866667zM303.786667 413.013333L204.8 406.186667c3.413333-81.92 71.68-235.52 283.306667-259.413334 10.24 0 197.973333-17.066667 303.786666 187.733334l-88.746666 44.373333c-75.093333-143.36-201.386667-136.533333-204.8-133.12-177.493333 20.48-194.56 153.6-194.56 167.253333z" p-id="4746"></path><path d="M225.28 877.226667C92.16 877.226667 27.306667 771.413333 13.653333 716.8c-47.786667-160.426667 92.16-273.066667 95.573334-276.48 150.186667-109.226667 296.96 13.653333 354.986666 92.16l-81.92 58.026667 40.96-30.72-40.96 30.72c0-3.413333-109.226667-146.773333-211.626666-71.68-3.413333 3.413333-88.746667 71.68-61.44 167.253333 3.413333 10.24 27.306667 88.746667 116.053333 88.746667v102.4z" p-id="4747"></path><path d="M225.28 778.24h143.36v98.986667H225.28z" p-id="4748"></path></svg></span> 騰訊雲 EO (CDN)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--abroad
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--abroad
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--abroad
+</code></pre></div>
+<blockquote>
+<p>即時同步、無延遲，中國大陸網路環境下推薦使用</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--abroad
+</code></pre></div>
+<blockquote>
+<p>同步存在1小時延遲</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--abroad
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://edgeone.linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--abroad
+</code></pre></div>
+<blockquote>
+<p>不建議在中國大陸網路環境下使用</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="admonition quote">
+<div class="tabbed-set tabbed-alternate" data-tabs="4:6"><input checked="checked" id="官網-推薦_2" name="__tabbed_4" type="radio" /><input id="github_2" name="__tabbed_4" type="radio" /><input id="gitee-碼雲-鏡像倉庫_2" name="__tabbed_4" type="radio" /><input id="gitcode-鏡像倉庫_2" name="__tabbed_4" type="radio" /><input id="jsdelivr-cdn_2" name="__tabbed_4" type="radio" /><input id="騰訊雲-eo-cdn_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="官網-推薦_2"><span class="twemoji"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="451.000000pt" height="451.000000pt"
+	viewBox="0 0 451.000000 451.000000" preserveAspectRatio="xMidYMid meet">
+	<g transform="translate(0.000000,451.000000) scale(0.100000,-0.100000)" fill="currentColor"
+		stroke="none">
+		<path
+			d="M133 4048 c-4 -7 -9 -818 -10 -1803 -2 -1415 0 -1795 10 -1815 7 -13
+23 -27 37 -30 14 -3 281 31 595 77 314 45 798 114 1078 153 279 39 521 76 538
+82 17 6 34 21 40 35 5 13 9 89 9 168 l0 144 -148 278 c-82 153 -177 332 -212
+398 -35 66 -92 173 -127 238 -35 64 -66 130 -69 145 -4 21 6 56 39 128 25 54
+80 178 122 274 42 96 85 190 95 209 l17 34 73 -139 c41 -76 103 -193 139 -259
+l66 -120 5 -590 5 -590 97 190 c53 105 169 332 257 505 88 173 205 401 258
+507 54 106 101 189 105 185 3 -4 95 -178 203 -387 108 -209 221 -427 251 -484
+30 -57 53 -105 51 -107 -2 -2 -123 -7 -268 -10 -280 -7 -311 -12 -325 -56 -4
+-13 -52 -113 -106 -223 -55 -110 -106 -215 -113 -232 l-14 -33 800 0 c534 0
+799 3 799 10 0 11 -1275 2818 -1284 2828 -3 3 -8 3 -10 1 -2 -2 -101 -215
+-221 -474 -213 -461 -399 -860 -453 -973 l-27 -57 -5 726 c-5 694 -6 728 -24
+748 -24 27 -26 27 -201 50 -82 11 -321 45 -530 75 -848 123 -1450 206 -1491
+206 -23 0 -46 -6 -51 -12z m1602 -355 c112 -240 245 -535 245 -543 0 -5 -55
+-130 -121 -277 -222 -491 -430 -946 -494 -1083 -35 -74 -86 -188 -113 -252
+-45 -106 -48 -118 -32 -123 10 -3 142 -5 294 -3 169 1 279 -1 285 -7 10 -10
+181 -460 181 -476 0 -4 -348 -8 -780 -8 -603 0 -780 3 -780 12 0 17 1274 2817
+1282 2817 3 0 19 -26 33 -57z" />
+	</g>
+</svg></span> 官網 (推薦)</label><label for="github_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</label><label for="gitee-碼雲-鏡像倉庫_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg></span> Gitee 碼雲 (鏡像倉庫)</label><label for="gitcode-鏡像倉庫_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg></span> GitCode (鏡像倉庫)</label><label for="jsdelivr-cdn_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.851 0 .811 4.02l1.56 14.7L11.85 24l9.6-5.28 1.74-14.76zm.062 4.622a6.668 6.75 0 0 1 2.666.572 12.5 12.5 0 0 0-2.59 1.95c-.045-.02-.092-.031-.138-.045a1.2 1.2 0 0 0-.346-.056c-.071 0-.141.01-.21.021a9 9 0 0 1-.615-2.318 6.668 6.75 0 0 1 1.171-.122 6.668 6.75 0 0 1 .062-.002m-1.99.312a9.8 9.8 0 0 0 .69 2.504 1.2 1.2 0 0 0-.328.825 1.2 1.2 0 0 0 .18.63c-.937 1.294-1.656 2.803-1.905 4.31-.01.056-.013.11-.02.166-.282.09-.515.284-.656.54-.987-.333-1.885-.968-2.615-2.022a6.668 6.75 0 0 1-.026-.515 6.668 6.75 0 0 1 4.68-6.438m5.507.709a6.668 6.75 0 0 1 2.53 2.9c-.377.953-1.049 1.892-1.893 2.727a1.24 1.24 0 0 0-.644-.184 1.24 1.24 0 0 0-.768.27 11 11 0 0 1-1.318-1.168c-.333-.35-.637-.73-.921-1.123.19-.215.31-.494.31-.802a1.2 1.2 0 0 0-.159-.586c1.058-1.008 2.112-1.67 2.863-2.034m-3.925 1.982a.62.62 0 0 1 .346.114.62.62 0 0 1 .292.524.62.62 0 0 1-.292.524.63.63 0 0 1-.346.113.634.634 0 0 1-.638-.637c0-.355.283-.638.638-.638m-.441 1.771a1.2 1.2 0 0 0 .675.062q.055.073.112.148a11 11 0 0 0 .921 1.119 12 12 0 0 0 1.446 1.277c-.032.11-.054.224-.054.342a1.2 1.2 0 0 0 .066.38 10 10 0 0 1-2.118 1.042c-.087.029-.173.052-.261.078a7.7 7.7 0 0 1-1.87.332 1.15 1.15 0 0 0-.66-.773q.004-.036.01-.073c.219-1.333.873-2.73 1.733-3.934m7.272.19a6.668 6.75 0 0 1 .245 1.786 6.668 6.75 0 0 1-.259 1.856 10 10 0 0 1-1.666-.63 1.24 1.24 0 0 0-.065-.713 9.4 9.4 0 0 0 1.745-2.3zm-2.913 2.101c.367 0 .657.291.657.658s-.291.657-.657.657-.658-.29-.658-.657.29-.658.658-.658m.837 1.59a11 11 0 0 0 1.802.688 6.668 6.75 0 0 1-6.149 4.157 6.668 6.75 0 0 1-.062-.004 6.668 6.75 0 0 1-.042 0c-.087-.042-.168-.08-.266-.129-.312-.154-.667-.352-.846-.5a3.8 3.8 0 0 1-1.294-2.03c.21-.111.38-.284.487-.495a8.4 8.4 0 0 0 1.96-.306 9 9 0 0 0 .513-.154 11 11 0 0 0 2.341-1.13c.205.143.452.23.719.23a1.25 1.25 0 0 0 .837-.328zm-10.707.116a5.8 5.8 0 0 0 2.212 1.298 1.15 1.15 0 0 0 .857.87 4.6 4.6 0 0 0 1.24 2.222 6.668 6.75 0 0 1-4.31-4.39zm3.327.464c.331 0 .595.263.595.596s-.264.595-.595.595a.59.59 0 0 1-.596-.595.59.59 0 0 1 .596-.596"/></svg></span> jsDelivr (CDN)</label><label for="騰訊雲-eo-cdn_2"><span class="twemoji"><svg t="1750550178180" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4745" width="200" height="200"><path d="M795.306667 877.226667h-580.266667l389.12-392.533334c54.613333-54.613333 105.813333-75.093333 112.64-78.506666l10.24-3.413334c88.746667-10.24 160.426667 6.826667 211.626667 54.613334 78.506667 71.68 78.506667 184.32 78.506666 191.146666 0 160.426667-143.36 218.453333-221.866666 228.693334z m-337.92-98.986667h334.506666c20.48-3.413333 129.706667-23.893333 133.12-133.12 0 0 0-75.093333-44.373333-116.053333-27.306667-23.893333-71.68-34.133333-126.293333-27.306667-10.24 6.826667-40.96 20.48-71.68 54.613333l-225.28 221.866667zM303.786667 413.013333L204.8 406.186667c3.413333-81.92 71.68-235.52 283.306667-259.413334 10.24 0 197.973333-17.066667 303.786666 187.733334l-88.746666 44.373333c-75.093333-143.36-201.386667-136.533333-204.8-133.12-177.493333 20.48-194.56 153.6-194.56 167.253333z" p-id="4746"></path><path d="M225.28 877.226667C92.16 877.226667 27.306667 771.413333 13.653333 716.8c-47.786667-160.426667 92.16-273.066667 95.573334-276.48 150.186667-109.226667 296.96 13.653333 354.986666 92.16l-81.92 58.026667 40.96-30.72-40.96 30.72c0-3.413333-109.226667-146.773333-211.626666-71.68-3.413333 3.413333-88.746667 71.68-61.44 167.253333 3.413333 10.24 27.306667 88.746667 116.053333 88.746667v102.4z" p-id="4747"></path><path d="M225.28 778.24h143.36v98.986667H225.28z" p-id="4748"></path></svg></span> 騰訊雲 EO (CDN)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--edu
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--edu
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--edu
+</code></pre></div>
+<blockquote>
+<p>即時同步、無延遲，中國大陸網路環境下推薦使用</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--edu
+</code></pre></div>
+<blockquote>
+<p>同步存在1小時延遲</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://cdn.jsdelivr.net/gh/SuperManito/LinuxMirrors@main/ChangeMirrors.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--edu
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://edgeone.linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--edu
+</code></pre></div>
+<blockquote>
+<p>不建議在中國大陸網路環境下使用</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">使用幫助</p>
+<p>選項卡分別代表腳本內建軟體源（鏡像站）類型和獲取腳本途徑，請在使用前檢查目標鏡像站是否支援你所使用的作業系統，可以在<a href="../mirrors/">軟體源列表</a>中查看。<br />
+預設自動備份原有軟體源內容，如需了解更多請翻閱下方文件。若使用過程中的某些選項令你疑惑不解，那麼在選擇軟體源後一路回車即是最佳實踐。</p>
+<p><em>支援在系統原有軟體源損壞、缺失、無效等異常環境下使用，無需額外安裝任何依賴。</em></p>
+</div>
+<div class="admonition quote">
+<p class="admonition-title">關於軟體源的選擇（新用戶必讀）</p>
+<p>如果你不了解這些鏡像站，那麼建議使用 <code>阿里雲 (相容性高、可用性強)</code> 或 <code>中國科學技術大學 (速度快)</code>，請不要陷入測速焦慮，內建的軟體源一般不會有太大的差異。<br />
+本專案腳本是一個自動化維運工具，不會對鏡像站進行主觀的優劣排序和客製化適配，使用者的選擇應該是自由的，這也是為了開源軟體精神能夠得到更好的延續。</p>
+</div>
+<div class="grid cards">
+<ul>
+<li>
+<p><span class="twemoji lg" style="color: #5b84f5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 7v2h2v8h2V7z"/></svg></span> <strong>需要 <code>ROOT</code> 權限</strong></p>
+<hr />
+<p>請使用 <code>root</code> 帳戶執行本腳本，切換指令為 <code>sudo -i</code> 或 <code>su root</code>，不同系統使用的指令不同。另外注意不要透過 <code>sudo</code> 直接執行一鍵指令例如 <code>sudo bash &lt;(xxx)</code>。</p>
+</li>
+<li>
+<p><span class="twemoji lg" style="color: #5b84f5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 7v2h4v2h-2a2 2 0 0 0-2 2v4h6v-2h-4v-2h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></span> <strong>建議使用現代化的 <code>SSH</code> 用戶端應用</strong></p>
+<hr />
+<p>如果系統命令列介面的中文顯示亂碼，將導致無法查看互動內容，此外部分系統 GUI 圖形介面的終端應用可能存在一些無法預料的顯示問題。部分系統會自動開啟 SSH 服務，否則請參考<a href="#關於開啟-ssh-遠端登入的方法">開啟方法</a>。</p>
+</li>
+<li>
+<p><span class="twemoji lg" style="color: #5b84f5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 15v-1.5a1.5 1.5 0 0 0-1.5-1.5 1.5 1.5 0 0 0 1.5-1.5V9a2 2 0 0 0-2-2H9v2h4v2h-2v2h2v2H9v2h4a2 2 0 0 0 2-2"/></svg></span> <strong>如果是在新裝系統上首次執行腳本</strong></p>
+<hr />
+<p>目前依賴 <code>curl</code> 指令取得腳本內容，但部分作業系統未預先安裝此軟體包，將會報錯 <code>Command not found</code>，安裝方法詳見下方 <a href="#關於報錯-command-not-found"><em>關於報錯 Command not found</em></a>。腳本本身與 <code>curl</code> <code>wget</code> 指令無關，不會下載任何內容。</p>
+</li>
+<li>
+<p><span class="twemoji lg" style="color: #5b84f5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 7v6h4v4h2V7h-2v4h-2V7z"/></svg></span> <strong>腳本運行期間需要互動選擇配置</strong></p>
+<hr />
+<p>請透過方向鍵 <span class="keys"><kbd class="key-arrow-up">Up</kbd></span><span class="keys"><kbd class="key-arrow-down">Down</kbd></span><span class="keys"><kbd class="key-arrow-left">Left</kbd></span><span class="keys"><kbd class="key-arrow-right">Right</kbd></span> 或 <span class="keys"><kbd class="key-w">W</kbd></span><span class="keys"><kbd class="key-a">A</kbd></span><span class="keys"><kbd class="key-s">S</kbd></span><span class="keys"><kbd class="key-d">D</kbd></span> 控制選項並按 <span class="keys"><kbd class="key-enter">Enter</kbd></span> 回車鍵確認。如果發現互動異常請改變終端軟體的視窗大小後重試，避免視窗鋪滿全螢幕。</p>
+</li>
+</ul>
+</div>
+<h3 id="常見問題">常見問題<a class="headerlink" href="#常見問題" title="链接">#</a></h3>
+<ul>
+<li>
+<h4 id="關於報錯-command-not-found">關於報錯 Command not found<a class="headerlink" href="#關於報錯-command-not-found" title="链接">#</a></h4>
+<div class="admonition quote">
+<p>此報錯是由於系統沒有安裝 <code>curl</code> 軟體包導致，安裝命令如下</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:7"><input checked="checked" id="debian-系--openkylin" name="__tabbed_5" type="radio" /><input id="redhat-系--openeuler--opencloudos--anolis-os" name="__tabbed_5" type="radio" /><input id="opensuse" name="__tabbed_5" type="radio" /><input id="arch-linux--manjaro" name="__tabbed_5" type="radio" /><input id="alpine-linux" name="__tabbed_5" type="radio" /><input id="gentoo" name="__tabbed_5" type="radio" /><input id="nixos" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin">Debian 系 / openKylin</label><label for="redhat-系--openeuler--opencloudos--anolis-os">RedHat 系 / openEuler / OpenCloudOS / Anolis OS</label><label for="opensuse">openSUSE</label><label for="arch-linux--manjaro">Arch Linux / Manjaro</label><label for="alpine-linux">Alpine Linux</label><label for="gentoo">Gentoo</label><label for="nixos">NixOS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl
+</code></pre></div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox VE</code> &nbsp; <code>Raspberry Pi OS</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+<p>新裝系統需要先執行一遍更新 <code>apt-get update</code></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl<span class="w"> </span><span class="o">||</span><span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>openEuler</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>zypper<span class="w"> </span>install<span class="w"> </span>curl
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>pacman<span class="w"> </span>-S<span class="w"> </span>curl
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>apk<span class="w"> </span>--no-cache<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>curl<span class="w"> </span>bash<span class="w"> </span>ncurses
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>emerge<span class="w"> </span>--ask<span class="w"> </span>curl
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>nix-env<span class="w"> </span>-iA<span class="w"> </span>nixos.curl
+</code></pre></div>
+</div>
+</div>
+</div>
+<details class="question">
+<summary>安裝不上？ （點擊展開查看其它解決方法）</summary>
+<p>假如系統原有軟體源是無效的導致安裝不上 <code>curl</code> 軟體包，那麼對於 Linux 初學者來說可能會比較麻煩，這裡提供幾個在線獲取腳本的應急方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="使用-python-下載" name="__tabbed_6" type="radio" /><input id="使用-wget-指令下載" name="__tabbed_6" type="radio" /><input id="使用瀏覽器下載" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="使用-python-下載">使用 Python 下載</label><label for="使用-wget-指令下載">使用 wget 指令下載</label><label for="使用瀏覽器下載">使用瀏覽器下載</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>適用於大部分作業系統（<code>Alpine Linux</code> 除外），<code>python3</code> 要是不存在那就再試試 <code>python</code> 指令
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import urllib.request; urllib.request.urlretrieve(&#39;https://linuxmirrors.cn/main.sh&#39;, &#39;main.sh&#39;)&quot;</span>
+</code></pre></div></p>
+</div>
+<div class="tabbed-block">
+<p>一般沒有預先安裝 <code>curl</code> 軟體包的系統也不會預先安裝 <code>wget</code> 軟體包，所以大機率這個方法應該是不行的
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>wget<span class="w"> </span>https://linuxmirrors.cn/main.sh
+</code></pre></div></p>
+</div>
+<div class="tabbed-block">
+<p>如果可以訪問系統 ​​GUI 映像介面和桌面的話那可以直接在瀏覽器中開啟連結下載腳本，許多系統都會預先安裝 Firefox 火狐瀏覽器</p>
+</div>
+</div>
+</div>
+<p>之後再執行腳本即可</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:3"><input checked="checked" id="中國大陸_1" name="__tabbed_7" type="radio" /><input id="國際地區_1" name="__tabbed_7" type="radio" /><input id="中國大陸教育網_1" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="中國大陸_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 21V10l7.5-5 7.5 5v11h-5v-7H5v7zM24 2v19h-7V8.93l-1-.66V6h-2v.93l-4-2.66V2zm-3 12h-2v2h2zm0-4h-2v2h2zm0-4h-2v2h2z"/></svg></span> 中國大陸</label><label for="國際地區_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> 國際地區</label><label for="中國大陸教育網_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg></span> 中國大陸教育網</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>bash<span class="w"> </span>main.sh<span class="w"> </span>--zh-hant
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>bash<span class="w"> </span>main.sh<span class="w"> </span>--zh-hant<span class="w"> </span>--abroad
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>bash<span class="w"> </span>main.sh<span class="w"> </span>--zh-hant<span class="w"> </span>--edu
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>如果以上方法試了都不行，那就複製<a href="https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh">原始碼</a>至本地新建任意名稱的 <code>.sh</code> 腳本，貼上原始碼內容後透過 <code>bash</code> 指令手動執行。</p>
+</details>
+</div>
+</li>
+<li>
+<h4 id="備份原有軟體源">備份原有軟體源<a class="headerlink" href="#備份原有軟體源" title="链接">#</a></h4>
+<div class="admonition quote">
+<p>腳本會自動備份原有軟體源內容，備份路徑為原始文件或目錄的絕對路徑加上 <code>.bak</code> 後綴，例如 <code>/etc/apt/sources.list =&gt; /etc/apt/sources.list.bak</code>，檢查已存在備份內容時會詢問是否覆蓋備份。</p>
+</div>
+</li>
+<li>
+<h4 id="還原已備份的軟體源">還原已備份的軟體源<a class="headerlink" href="#還原已備份的軟體源" title="链接">#</a></h4>
+<details class="quote">
+<summary>點擊展開查看</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:7"><input checked="checked" id="debian-系--openkylin_1" name="__tabbed_8" type="radio" /><input id="redhat-系--openeuler--opencloudos--anolis-os_1" name="__tabbed_8" type="radio" /><input id="opensuse_1" name="__tabbed_8" type="radio" /><input id="arch-linux--manjaro_1" name="__tabbed_8" type="radio" /><input id="alpine-linux_1" name="__tabbed_8" type="radio" /><input id="gentoo_1" name="__tabbed_8" type="radio" /><input id="nixos_1" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin_1">Debian 系 / openKylin</label><label for="redhat-系--openeuler--opencloudos--anolis-os_1">RedHat 系 / openEuler / OpenCloudOS / Anolis OS</label><label for="opensuse_1">openSUSE</label><label for="arch-linux--manjaro_1">Arch Linux / Manjaro</label><label for="alpine-linux_1">Alpine Linux</label><label for="gentoo_1">Gentoo</label><label for="nixos_1">NixOS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="傳統格式" name="__tabbed_9" type="radio" /><input id="deb822-格式" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="傳統格式">傳統格式</label><label for="deb822-格式">DEB822 格式</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/apt/sources.list.bak<span class="w"> </span>/etc/apt/sources.list
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>apt-get<span class="w"> </span>update
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nv">system_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>lsb_release<span class="w"> </span>-is<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">&#39;[:upper:]&#39;</span><span class="w"> </span><span class="s1">&#39;[:lower:]&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>cp<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;/etc/apt/sources.list.d/</span><span class="si">${</span><span class="nv">system_name</span><span class="si">}</span><span class="s2">.sources.bak&quot;</span><span class="w"> </span><span class="s2">&quot;/etc/apt/sources.list.d/</span><span class="si">${</span><span class="nv">system_name</span><span class="si">}</span><span class="s2">.sources&quot;</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>apt-get<span class="w"> </span>update
+</code></pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox VE</code> &nbsp; <code>Raspberry Pi OS</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/yum.repos.d.bak<span class="w"> </span>/etc/yum.repos.d
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>yum<span class="w"> </span>makecache
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>openEuler</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/zypp/repos.d.bak<span class="w"> </span>/etc/zypp/repos.d
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>zypper<span class="w"> </span>ref
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/pacman.d/mirrorlist.bak<span class="w"> </span>/etc/pacman.d/mirrorlist
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>pacman<span class="w"> </span>-Sy
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/apk/repositories.bak<span class="w"> </span>/etc/apk/repositories
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>apk<span class="w"> </span>update<span class="w"> </span>-f
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/portage/make.conf.bak<span class="w"> </span>/etc/portage/make.conf
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>/etc/portage/repos.conf<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/portage/repos.conf/gentoo.conf.bak<span class="w"> </span>/etc/portage/repos.conf/gentoo.conf
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>emerge<span class="w"> </span>--sync<span class="w"> </span>--quiet
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>cp<span class="w"> </span>-rf<span class="w"> </span>/etc/nix/nix.conf.bak<span class="w"> </span>/etc/nix/nix.conf
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</li>
+<li>
+<h4 id="關於開啟-ssh-遠端登入的方法">關於開啟 SSH 遠端登入的方法<a class="headerlink" href="#關於開啟-ssh-遠端登入的方法" title="链接">#</a></h4>
+<details class="quote">
+<summary>點擊展開查看</summary>
+<p>指令以及設定步驟僅供參考，注意靈活變通</p>
+<ul>
+<li>
+<p>驗證是否已安裝 <code>SSH</code> 服務</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>ls<span class="w"> </span>/etc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh
+</code></pre></div>
+<p>如果沒有這個資料夾說明系統未安裝 <code>SSH</code> 服務，你需要透過套件管理工具安裝 <code>openssh-server</code> 軟體包，安裝指令如下：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:6"><input checked="checked" id="debian-系--openkylin_2" name="__tabbed_10" type="radio" /><input id="redhat-系--openeuler--opencloudos--anolis-os_2" name="__tabbed_10" type="radio" /><input id="opensuse_2" name="__tabbed_10" type="radio" /><input id="arch-linux--manjaro_2" name="__tabbed_10" type="radio" /><input id="alpine-linux_2" name="__tabbed_10" type="radio" /><input id="gentoo_2" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin_2">Debian 系 / openKylin</label><label for="redhat-系--openeuler--opencloudos--anolis-os_2">RedHat 系 / openEuler / OpenCloudOS / Anolis OS</label><label for="opensuse_2">openSUSE</label><label for="arch-linux--manjaro_2">Arch Linux / Manjaro</label><label for="alpine-linux_2">Alpine Linux</label><label for="gentoo_2">Gentoo</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>openssh-server
+</code></pre></div>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox VE</code> &nbsp; <code>Raspberry Pi OS</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+<p>新裝系統需要先執行一遍更新 <code>apt-get update</code></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>openssh-server<span class="w"> </span><span class="o">||</span><span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>openssh-server
+</code></pre></div>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>openEuler</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>zypper<span class="w"> </span>install<span class="w"> </span>openssh-server
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>pacman<span class="w"> </span>-S<span class="w"> </span>openssh
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>apk<span class="w"> </span>--no-cache<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>openssh
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>emerge<span class="w"> </span>--ask<span class="w"> </span>--changed-use<span class="w"> </span>--oneshot<span class="w"> </span>net-misc/openssh
+</code></pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>不同系統上的軟體包名稱有所差異，如果提示找不到該軟體包可嘗試使用通配符 <code>openssh*</code> 進行安裝</p>
+</blockquote>
+</li>
+<li>
+<p>設定 <code>SSH</code> 服務</p>
+<div class="highlight"><span class="filename">允許 root 帳戶登入</span><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>cat<span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Eq<span class="w"> </span><span class="s2">&quot;^[# ]?PermitRootLogin &quot;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^[# ]\?PermitRootLogin.*/PermitRootLogin yes/g&#39;</span><span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nPermitRootLogin yes&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/ssh/sshd_config
+</code></pre></div>
+<div class="highlight"><span class="filename">啟用密碼認證</span><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>cat<span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Eq<span class="w"> </span><span class="s2">&quot;^[# ]?PasswordAuthentication &quot;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^[# ]\?PasswordAuthentication.*/PasswordAuthentication yes/g&#39;</span><span class="w"> </span>/etc/ssh/sshd_config<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nPasswordAuthentication yes&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/ssh/sshd_config
+</code></pre></div>
+</li>
+<li>
+<p>啟動/重啟 <code>SSH</code> 服務</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="k">for</span><span class="w"> </span>ssh_svc<span class="w"> </span><span class="k">in</span><span class="w"> </span>sshd<span class="w"> </span>ssh<span class="w"> </span>openssh<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">ssh_svc</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">ssh_svc</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</code></pre></div>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">友情提示：如果你正在使用公網伺服器，建議關閉 SSH 密碼認證方式並設定金鑰登入。</p>
+</div>
+</details>
+</li>
+<li>
+<h4 id="關於未顯示方向鍵交互控制介面">關於未顯示方向鍵交互控制介面<a class="headerlink" href="#關於未顯示方向鍵交互控制介面" title="链接">#</a></h4>
+<div class="admonition quote">
+<p>如果發現互動介面是輸入而非新式的方向鍵控制，那麼請自行安裝 <code>ncurses</code> 或 <code>nano</code> 軟體包，新式的按鍵互動依賴 <code>tput</code> 指令實作。</p>
+</div>
+</li>
+<li>
+<h4 id="關於未啟用的軟體源倉庫">關於未啟用的軟體源倉庫<a class="headerlink" href="#關於未啟用的軟體源倉庫" title="链接">#</a></h4>
+<div class="admonition quote">
+<p>許多系統的軟體源會啟用多個倉庫，腳本遵循系統預設設置，預設不啟用的軟體源（倉庫）不會在運行完本腳本後被啟用，但是它們也隨腳本更換了目標軟體源位址，具體啟用方法如下：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="11:3"><input checked="checked" id="debian-系--openkylin_3" name="__tabbed_11" type="radio" /><input id="redhat-系--openeuler--opencloudos--anolis-os_3" name="__tabbed_11" type="radio" /><input id="opensuse_3" name="__tabbed_11" type="radio" /><div class="tabbed-labels"><label for="debian-系--openkylin_3">Debian 系 / openKylin</label><label for="redhat-系--openeuler--opencloudos--anolis-os_3">RedHat 系 / openEuler / OpenCloudOS / Anolis OS</label><label for="opensuse_3">openSUSE</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>預設禁用了<code>deb-src</code>原始碼倉庫和<code>proposed</code>預發佈軟體源，若需啟用請將 <code>/etc/apt/sources.list</code> 文件中相關內容的所在行取消註釋</p>
+<blockquote>
+<p><code>Debian</code> &nbsp; <code>Ubuntu</code> &nbsp; <code>Kali</code> &nbsp; <code>Linux Mint</code> &nbsp; <code>Deepin</code> &nbsp; <code>Zorin OS</code> &nbsp; <code>Armbian</code> &nbsp; <code>Proxmox VE</code> &nbsp; <code>Raspberry Pi OS</code> &nbsp; <code>openKylin</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<p>部分倉庫預設沒有啟用，若需啟用請將 <code>/etc/yum.repos.d</code> 目錄下相關 repo 文件中的 <code>enabled</code> 值修改為 <code>1</code></p>
+<blockquote>
+<p><code>Red Hat Enterprise Linux</code> &nbsp; <code>CentOS</code> &nbsp; <code>Rocky Linux</code> &nbsp; <code>AlmaLinux</code> &nbsp; <code>Fedora</code> &nbsp; <code>openEuler</code> &nbsp; <code>OpenCloudOS</code> &nbsp; <code>Anolis OS</code></p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<p>部分倉庫預設沒有啟用，若需啟用請將 <code>/etc/zypp/repos.d</code> 目錄下相關 repo 文件中的 <code>enabled</code> 值修改為 <code>1</code></p>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<h4 id="其它">其它<a class="headerlink" href="#其它" title="链接">#</a></h4>
+<details class="quote">
+<summary>關於呼叫腳本的互聯網位置</summary>
+<p>專案利用 <a href="https://github.com/SuperManito/LinuxMirrors/blob/main/.github/workflows/build-docs.yml#L29">GitHub Action</a> 在每次提交後自動拷貝原始碼到文件目錄作為網站資源發佈，網站託管於 <a href="https://www.netlify.com"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#014847" d="M29.39 13.98L18.02 2.61l-.42-.42l-.47-.19h-2.26l-.47.2l-.42.41L2.61 13.98l-.42.42l-.19.47v2.26l.2.47l.41.42l11.37 11.37l.42.42l.47.19h2.26l.47-.2l.42-.41l11.37-11.37l.42-.42l.19-.47v-2.26l-.2-.47z"/><path fill="#32E6E2" d="M14.99 27.38v-5.46l.14-.15h1.74l.14.15v5.46l-.14.14h-1.74zm0-17.3V4.62l.14-.14h1.74l.14.14v5.46l-.14.15h-1.74zM10.4 23.33h-.24l-1.2-1.2v-.23l1.6-1.6h1.26l.17.18v1.26l-1.6 1.6ZM8.96 10.16v-.24l1.2-1.2h.24l1.59 1.6v1.26l-.17.17h-1.26zm-4.8 4.82h6.14l.14.15v1.74l-.14.14H4.16L4 16.87v-1.74l.15-.15Z"/><path fill="#fff" d="M19.26 19.62h-1.74l-.15-.15v-4.06c0-.73-.28-1.29-1.15-1.3c-.45-.02-.97 0-1.51.02l-.09.08v5.26l-.14.15h-1.74l-.14-.15v-6.94l.14-.15h3.9a2.75 2.75 0 0 1 2.76 2.75v4.34l-.15.15Z"/><path fill="#32E6E2" d="M27.84 17.02H21.7l-.14-.15v-1.74l.14-.14h6.14l.15.14v1.74z"/></svg></span> Netlify</a>，幾乎沒有使用風險。 </p>
+<p>當然你也可以使用程式碼託管倉庫的原始位址來調用，這裡只是想告訴你為什麼會有幾個不同的位址，預設的官網位址更容易記憶和訪問。</p>
+</details>
+<details class="quote">
+<summary>關於軟體源下載速度問題</summary>
+<p>首先，在<a href="../mirrors/">軟體源列表</a>的使用幫助處有寫使用推薦，這是根據以往經驗總結出來的，但總有用戶在糾結軟體源速度的問題。 </p>
+<p>軟體源（鏡像站）的網路延遲即 <code>Ping</code> 與下載速度沒有太大的關聯，雙方地理位置間隔的遠近不代表實際體驗，有些鏡像站下行總頻寬很高但實際測速卻並不理想，因為這與鏡像站的負載策略有關。 </p>
+<p>網路上也有很多基於 C、Python 編寫的鏡像站測速開源腳本，而本專案腳本基於 Bash Shell 編寫且不依賴任何第三方庫，Bash 是 Linux 運維中最常用的腳本語言並且絕大部分發行版都會預裝，這意味著用戶不需要安裝任何環境就能直接運行，這種便利性是其他高級語言無法替代的，不過目前 Bash 腳本可能不太容易實現精準測速的功能，使用其它高級語言編寫測速功能無疑是造輪子的行為。</p>
+</details>
+<details class="quote">
+<summary>關於軟體源選優</summary>
+<p>很多朋友可能都會有一個疑問：“既然腳本已經如此便捷且實現了高度自動化，為什麼不能實現軟體源自動選優呢？”，不是做不到而是不能。</p>
+<p>「軟體源選優」 在這裡指的是腳本根據客戶端的網路環境、地理位置自動選擇一個體驗最佳的軟體源，這個問題要從多個角度來論證：</p>
+<ul>
+<li>
+<p>速度方面</p>
+<p>其實上面已經解釋過了，總結來說就是追求速度不是普遍需求，對大多數人來說是無感的、能用即可，況且現在很多 Linux 發行版不需要換源就有不錯的速度。</p>
+</li>
+<li>
+<p>對於鏡像站本身</p>
+<p>舉個最簡單的例子，以前阿里雲鏡像站因為速度快、可用性高幾乎被當成首選，但是隨著用戶越來越多導致速度變的原來越慢甚至可能不足 10 Mbps。<br />
+長此以往，那些用戶多的鏡像站可能無法承受過高的流量而導致體驗下降，用戶少的鏡像站可能會最終走向關閉，這不利於整個生態的發展。</p>
+</li>
+<li>
+<p>開發者角度</p>
+<p>本專案站在維運工具的角度致力於開發一個通用的換源腳本，而不是一個解決軟體源需求的具體化工具，要使腳本的預設行為適用於大多數使用者群體。作為維運工具要有明確的功能定位，作為腳本要從擴展性、實用性等多個方面去衡量利弊，軟體源的選擇權應該完全交給使用者。</p>
+</li>
+</ul>
+</details>
+</li>
+</ul>
+<hr />
+<h2 id="命令選項進階用法">命令選項（進階用法）<a class="headerlink" href="#命令選項進階用法" title="链接">#</a></h2>
+<div class="termy" data-termynal data-ty-macos data-ty-title="bash"><span data-ty="input" data-ty-prompt="$">bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh) --zh-hant --help </span><span data-ty><br>命令選項(名稱/含義/值)：<br><br>  --abroad                     使用境外以及海外軟體源                                                 無<br>  --edu                        使用中國大陸教育網軟體源                                               無<br>  --source                     指定軟體源地址(網域名稱或IP)                                           位址<br>  --source-epel                指定 EPEL 附加軟體包倉庫的軟體源地址(網域名稱或IP)                       位址<br>  --source-security            指定 Debian / Ubuntu 系統 security 倉庫的軟體源地址(網域名稱或IP)       位址<br>  --source-vault               指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源地址(網域名稱或IP)       位址<br>  --source-portage             指定 Gentoo 系統 portage 倉庫的軟體源地址(網域名稱或IP)                 位址<br>  --source-base-system         指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源地址(網域名稱或IP)    位址<br>  --branch                     指定軟體源倉庫(路徑)                                                   倉庫名稱<br>  --branch-epel                指定 EPEL 附加軟體包倉庫的軟體源倉庫(路徑)                               倉庫名稱<br>  --branch-security            指定 Debian 系統 security 倉庫的軟體源倉庫(路徑)                        倉庫名稱<br>  --branch-vault               指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫(路徑)               倉庫名稱<br>  --branch-portage             指定 Gentoo 系統 portage 倉庫的軟體源倉庫(路徑)                         倉庫名稱<br>  --branch-base-system         指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫(路徑)            倉庫名稱<br>  --codename                   指定 Debian 系 / openKylin 系統的版本代號                              代號名稱<br>  --protocol                   指定 Web 協定                                                         http 或 https<br>  --use-intranet-source        是否優先使用內部網路軟體源位址                                          true 或 false<br>  --use-official-source        是否使用目標系統的官方軟體源                                            true 或 false<br>  --use-official-source-epel   是否使用 EPEL 附加軟體包的官方軟體源                                    true 或 false<br>  --install-epel               是否安裝 EPEL 附加軟體包                                               true 或 false<br>  --backup                     是否備份原有軟體源                                                     true 或 false<br>  --upgrade-software           是否更新軟體包                                                         true 或 false<br>  --clean-cache                是否在更新軟體包後清理下載快取                                           true 或 false<br>  --clean-screen               是否在運行前清除螢幕上的所有內容                                         true 或 false<br>  --lang                       指定腳本輸出的語言                                                      语言<br>  --only-epel                  僅更換 EPEL 軟體源模式                                                  無<br>  --ignore-backup-tips         忽略覆蓋備份提示                                                        無<br>  --print-diff                 是否列印原始文件修改前後差異                                             無<br>  --pure-mode                  純淨模式，精簡列印內容                                                   無<br>  --help                       查看幫助選單                                                            無<br></span></div>
+
+<table>
+<thead>
+<tr>
+<th>名稱</th>
+<th>含義</th>
+<th style="text-align: center;">選項值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--abroad</code></td>
+<td>使用境外以及海外軟體源</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td><code>--edu</code></td>
+<td>使用中國大陸教育網軟體源</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td><code>--source</code></td>
+<td>指定軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td><code>--source-epel</code></td>
+<td>指定 EPEL 附加軟體包倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td><code>--source-security</code></td>
+<td>指定 Debian / Ubuntu 系統 security 倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td><code>--source-vault</code></td>
+<td>指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td><code>--source-portage</code></td>
+<td>指定 Gentoo 系統 portage 倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td><code>--source-base-system</code></td>
+<td>指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td><code>--branch</code></td>
+<td>指定軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td><code>--branch-epel</code></td>
+<td>指定 EPEL 附加軟體包倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td><code>--branch-security</code></td>
+<td>指定 Debian 係統 security 倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td><code>--branch-vault</code></td>
+<td>指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td><code>--branch-portage</code></td>
+<td>指定 Gentoo 系統 portage 倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td><code>--branch-base-system</code></td>
+<td>指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td><code>--codename</code></td>
+<td>指定 Debian 系 / openKylin 作業系統的版本代號</td>
+<td style="text-align: center;"><code>代號名稱</code></td>
+</tr>
+<tr>
+<td><code>--protocol</code></td>
+<td>指定 Web 協定</td>
+<td style="text-align: center;"><code>http</code> 或 <code>https</code></td>
+</tr>
+<tr>
+<td><code>--use-intranet-source</code></td>
+<td>是否優先使用內部網路軟體源位址</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--use-official-source</code></td>
+<td>是否使用目標作業系統的官方軟體源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--use-official-source-epel</code></td>
+<td>是否使用 EPEL 附加軟體包的官方軟體源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--install-epel</code></td>
+<td>是否安裝 EPEL 附加軟體包</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--backup</code></td>
+<td>是否備份原有軟體源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--upgrade-software</code></td>
+<td>是否更新軟體套件</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--clean-cache</code></td>
+<td>是否在更新軟體包後清理下載快取</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--clean-screen</code></td>
+<td>是否在運行前清除螢幕上的所有內容</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td><code>--lang</code></td>
+<td>指定腳本輸出的語言</td>
+<td style="text-align: center;"><code>語言ID（詳見下方文件）</code></td>
+</tr>
+<tr>
+<td><code>--only-epel</code></td>
+<td>僅更換 EPEL 軟體源模式</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td><code>--ignore-backup-tips</code></td>
+<td>忽略覆蓋備份提示（即不覆蓋備份）</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td><code>--print-diff</code></td>
+<td>是否列印原始文件修改前後差異</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td><code>--pure-mode</code></td>
+<td>純淨模式，精簡列印內容</td>
+<td style="text-align: center;">無</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>查看幫助選單</td>
+<td style="text-align: center;">無</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>軟體源完整格式 <code>&lt;WEB協定&gt;://&lt;軟體源位址(網域名稱或IP)&gt;/&lt;軟體源倉庫(路徑)&gt;</code></p>
+</blockquote>
+<p>以下是一些進階用法的舉例</p>
+<ul>
+<li>
+<h3 id="指定軟體源位址">指定軟體源位址<a class="headerlink" href="#指定軟體源位址" title="链接">#</a></h3>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--source<span class="w"> </span>mirror.example.com
+</code></pre></div>
+</li>
+<li>
+<h3 id="指定軟體源倉庫目錄">指定軟體源倉庫目錄<a class="headerlink" href="#指定軟體源倉庫目錄" title="链接">#</a></h3>
+<p>這裡描述的軟體源倉庫與系統軟體倉庫不同，指的是軟體源（鏡像站）位址後面的路徑即鏡像站的倉庫目錄，雖然名義上都是倉庫但是非常容易混淆</p>
+<p>主要使用情境：目標鏡像站有對應的系統鏡像倉庫但是不符合本專案腳本關於軟體源倉庫設定的預設規則</p>
+<details class="note">
+<summary>專案對於各作業系統所使用的預設倉庫名稱（點選展開檢視）</summary>
+<p>專案腳本為了適配大的環境不會針對某一鏡像站獨特的倉庫名稱而單獨適配</p>
+<table>
+<thead>
+<tr>
+<th>SYSTEM</th>
+<th style="text-align: center;">NAMES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.debian.org" title="https://www.debian.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/debian.svg" alt="Debian" width="16" height="16" style="vertical-align: -0.35em"></a> <strong>Debian</strong></td>
+<td style="text-align: center;"><code>debian</code> <code>debian-archive</code></td>
+</tr>
+<tr>
+<td><a href="https://ubuntu.com" title="https://ubuntu.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/ubuntu.svg" alt="Ubuntu" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Ubuntu</strong></td>
+<td style="text-align: center;"><code>ubuntu</code> <code>ubuntu-ports</code></td>
+</tr>
+<tr>
+<td><a href="https://www.kali.org" title="https://www.kali.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/kali-linux.png" alt="Kali Linux" width="16" height="16"></a> <strong>Kali Linux</strong></td>
+<td style="text-align: center;"><code>kali</code></td>
+</tr>
+<tr>
+<td><a href="https://linuxmint.com" title="https://linuxmint.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/linux-mint.svg" alt="Linux Mint" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Linux Mint</strong></td>
+<td style="text-align: center;"><code>linuxmint</code> <code>ubuntu</code> <code>ubuntu-ports</code> <code>debian</code></td>
+</tr>
+<tr>
+<td><a href="https://www.deepin.org" title="https://www.deepin.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/deepin.png" alt="Deepin" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Deepin</strong></td>
+<td style="text-align: center;"><code>deepin</code></td>
+</tr>
+<tr>
+<td><a href="https://zorin.com/os" title="https://zorin.com/os" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/zorin-os.png" alt="Zorin OS" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Zorin OS</strong></td>
+<td style="text-align: center;"><code>ubuntu</code> <code>ubuntu-ports</code></td>
+</tr>
+<tr>
+<td><a href="https://www.armbian.com" title="https://www.armbian.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/armbian.png" alt="Armbian" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Armbian</strong></td>
+<td style="text-align: center;"><code>armbian</code></td>
+</tr>
+<tr>
+<td><a href="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" title="https://www.proxmox.com/en/products/proxmox-virtual-environment/overview" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/proxmox.svg" alt="Proxmox VE" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Proxmox VE</strong></td>
+<td style="text-align: center;"><code>proxmox</code></td>
+</tr>
+<tr>
+<td><a href="https://www.raspberrypi.com/software" title="https://www.raspberrypi.com/software" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/raspberry-pi.png" alt="Raspberry Pi OS" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Raspberry Pi OS</strong></td>
+<td style="text-align: center;"><code>raspberrypi</code> <code>raspbian</code> <code>debian</code> <code>debian-archive</code></td>
+</tr>
+<tr>
+<td><a href="https://access.redhat.com/products/red-hat-enterprise-linux" title="https://access.redhat.com/products/red-hat-enterprise-linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/redhat.svg" alt="Red Hat Enterprise Linux" width="16" height="16" style="vertical-align: -0.1em"></a> <strong>Red Hat Enterprise Linux</strong> <span class="twemoji" title="9 use <code>CentOS Stream</code>, 7~8 use <code>CentOS</code>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg></span></td>
+<td style="text-align: center;"><code>centos</code> <code>centos-stream</code> <code>centos-altarch</code> <code>centos-vault</code></td>
+</tr>
+<tr>
+<td><a href="https://fedoraproject.org" title="https://fedoraproject.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/fedora.ico" alt="Fedora" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Fedora</strong></td>
+<td style="text-align: center;"><code>fedora</code> <code>fedora-archive</code></td>
+</tr>
+<tr>
+<td><a href="https://www.centos.org" title="https://www.centos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/centos.svg" alt="CentOS" width="16" height="16" style="vertical-align: -0.135em"></a> <strong>CentOS</strong></td>
+<td style="text-align: center;"><code>centos</code> <code>centos-stream</code> <code>centos-altarch</code> <code>centos-vault</code></td>
+</tr>
+<tr>
+<td><a href="https://rockylinux.org" title="https://rockylinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/rocky-linux.svg" alt="Rocky Linux" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Rocky Linux</strong></td>
+<td style="text-align: center;"><code>rocky</code></td>
+</tr>
+<tr>
+<td><a href="https://almalinux.org" title="https://almalinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/almalinux.svg" alt="AlmaLinux" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>AlmaLinux</strong></td>
+<td style="text-align: center;"><code>almalinux</code> <code>almalinux-vault</code></td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/linux" title="https://www.oracle.com/linux" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/oracle-linux.png" alt="Oracle Linux" width="16" height="16" style="vertical-align: -0.25em"></a> <strong>Oracle Linux</strong></td>
+<td style="text-align: center;"><code>centos-stream</code></td>
+</tr>
+<tr>
+<td><a href="https://www.openeuler.org" title="https://www.openeuler.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openeuler.ico" alt="openEuler" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>openEuler</strong></td>
+<td style="text-align: center;"><code>openeuler</code></td>
+</tr>
+<tr>
+<td><a href="https://www.opencloudos.org" title="https://www.opencloudos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opencloudos.png" alt="OpenCloudOS" width="16" height="16" style="vertical-align: -0.25em"></a> <strong>OpenCloudOS</strong></td>
+<td style="text-align: center;"><code>opencloudos</code></td>
+</tr>
+<tr>
+<td><a href="https://www.openkylin.top" title="https://www.openkylin.top" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/openkylin.ico" alt="openKylin" width="16" height="16" style="vertical-align: -0.25em"></a> <strong>openKylin</strong></td>
+<td style="text-align: center;"><code>openkylin</code></td>
+</tr>
+<tr>
+<td><a href="https://openanolis.cn" title="https://openanolis.cn" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/anolis.png" alt="Anolis OS" width="16" height="16" style="vertical-align: -0.1em"></a> <strong>Anolis OS</strong></td>
+<td style="text-align: center;"><code>anolis</code></td>
+</tr>
+<tr>
+<td><a href="https://www.opensuse.org" title="https://www.opensuse.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/opensuse.svg" alt="openSUSE" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>openSUSE</strong></td>
+<td style="text-align: center;"><code>opensuse</code></td>
+</tr>
+<tr>
+<td><a href="https://archlinux.org" title="https://archlinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/arch-linux.ico" alt="Arch Linux" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Arch Linux</strong></td>
+<td style="text-align: center;"><code>archlinux</code> <code>archlinuxarm</code></td>
+</tr>
+<tr>
+<td><a href="https://manjaro.org" title="https://manjaro.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/manjaro.svg" alt="Manjaro" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Manjaro</strong></td>
+<td style="text-align: center;"><code>manjaro</code></td>
+</tr>
+<tr>
+<td><a href="https://endeavouros.com" title="https://endeavouros.com" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/endeavouros.png" alt="EndeavourOS" width="16" height="16" style="vertical-align: -0.1em"></a> <strong>EndeavourOS</strong></td>
+<td style="text-align: center;"><code>endeavouros</code></td>
+</tr>
+<tr>
+<td><a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/alpine.png" alt="Alpine Linux" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>Alpine Linux</strong></td>
+<td style="text-align: center;"><code>alpine</code></td>
+</tr>
+<tr>
+<td><a href="https://www.gentoo.org" title="https://www.gentoo.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/gentoo.svg" alt="Gentoo" width="16" height="16" style="vertical-align: -0.2em"></a> <strong>Gentoo</strong></td>
+<td style="text-align: center;"><code>gentoo</code> <code>gentoo-portage</code></td>
+</tr>
+<tr>
+<td><a href="https://nixos.org" title="https://nixos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/nixos.svg" alt="NixOS" width="16" height="16" style="vertical-align: -0.15em"></a> <strong>NixOS</strong></td>
+<td style="text-align: center;"><code>nix-channels</code></td>
+</tr>
+</tbody>
+</table>
+</details>
+<p>請看下面的例子</p>
+<div class="highlight"><span class="filename">使用阿里雲鏡像站的 Rocky Linux 軟體源</span><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">  </span>--source<span class="w"> </span>mirrors.aliyun.com<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="w">  </span>--branch<span class="w"> </span>rockylinux
+</code></pre></div>
+<p>阿里雲鏡像站的 Rocky Linux 倉庫目錄名稱為 <a href="https://mirrors.aliyun.com/rockylinux"><code>rockylinux</code></a>，不符合預設規則 <code>rocky</code>，但是可以透過命令選項繞過腳本預設規則來實現。</p>
+<blockquote>
+<p>部分系統會同時配置多個倉庫的軟體源，具體詳見命令選項</p>
+<p>由於軟體源倉庫作用在軟體源位址上因此也可以使用多層路徑，例如 <code>--branch "linux/debian"</code> -&gt; <code>https://mirrors.example.com/linux/debian</code></p>
+</blockquote>
+</li>
+<li>
+<h3 id="單獨更換-epel-源">單獨更換 EPEL 源<a class="headerlink" href="#單獨更換-epel-源" title="链接">#</a></h3>
+<div class="admonition info">
+<p class="admonition-title">EPEL (Extra Packages for Enterprise Linux) 是由 Fedora 組織維護的一個附加軟體包倉庫，它主要適用於除 Fedora 作業系統以外的紅帽系 Linux 發行版，配置 EPEL 倉庫已成為廣大用戶的普遍需求，建議預設安裝它</p>
+</div>
+<p>有些時候你會發現想使用的鏡像站沒有 EPEL 倉庫，那麼你可以在第一次運行腳本時不安裝或更換 EPEL 軟體源，然後再單獨執行下面的命令</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--only-epel
+</code></pre></div>
+<p>對於已經 EOL 的 EPEL 7，注意需要使用 <a href="https://dl.fedoraproject.org/pub/archive/epel"><code>archive</code></a> 倉庫，境外以及海外網絡環境建議通過命令選項 <code>--use-official-source-epel true</code> 使用官方源</p>
+</li>
+<li>
+<h3 id="恢復使用官方源">恢復使用官方源<a class="headerlink" href="#恢復使用官方源" title="链接">#</a></h3>
+<p>當你不小心刪除了官方軟體源的備份時可以使用此命令來恢復，使用此命令選項後將跳過選擇軟體源步驟</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--use-official-source<span class="w"> </span><span class="nb">true</span>
+</code></pre></div>
+<blockquote>
+<p>部分系統不存在官方軟體源例如 <code>Arch Linux</code>，屆時會自動更換成相容性較高的阿里雲鏡像站</p>
+</blockquote>
+</li>
+<li>
+<h3 id="特定係統的使用範例">特定係統的使用範例<a class="headerlink" href="#特定係統的使用範例" title="链接">#</a></h3>
+<ul>
+<li>
+<h4 id="關於-centos-停服問題">關於 CentOS 停服問題<a class="headerlink" href="#關於-centos-停服問題" title="链接">#</a></h4>
+<p>腳本對於已經 EOL 的 CentOS 7/8、CentOS Stream 8 進行了適配</p>
+<div class="grid cards" markdown>
+<ul>
+<li>
+<p><strong>中國大陸</strong></p>
+<hr />
+<p>正常使用腳本，沒有額外操作，因為大部分中國大陸鏡像站都已同步 <a href="https://vault.centos.org"><code>CentOS Vault</code></a> 倉庫</p>
+</li>
+<li>
+<p><strong>國際地區</strong></p>
+<hr />
+<p>建議使用 <code>騰訊雲</code> 或 <code>阿里雲</code> 鏡像站，或透過 <code>--use-official-source true</code> 命令選項使用官方軟體源</p>
+</li>
+</ul>
+</div>
+<p>另外 EPEL 7 也進入了 EOL，腳本同樣對其進行了適配</p>
+</li>
+<li>
+<h4 id="指定-gnulinux-debian-作業系統的-security-軟體源">指定 GNU/Linux Debian 作業系統的 Security 軟體源<a class="headerlink" href="#指定-gnulinux-debian-作業系統的-security-軟體源" title="链接">#</a></h4>
+<p>如果你想盡可能提高伺服器的安全性建議使用官方軟體源，因為鏡像同步存在延遲</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">  </span>--source-security<span class="w"> </span>security.debian.org<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="w">  </span>--branch-security<span class="w"> </span>debian-security
+</code></pre></div>
+</li>
+<li>
+<h4 id="指定-debian-系-linux-作業系統的版本代號">指定 Debian 系 Linux 作業系統的版本代號<a class="headerlink" href="#指定-debian-系-linux-作業系統的版本代號" title="链接">#</a></h4>
+<p>大多數情況下自訂版本代號用於更換系統版本，請看下面的例子</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="checked" id="升級-gnulinux-debian-至-13-trixie" name="__tabbed_12" type="radio" /><input id="將-gnulinux-debian-的版本切換到測試分支" name="__tabbed_12" type="radio" /><div class="tabbed-labels"><label for="升級-gnulinux-debian-至-13-trixie">升級 GNU/Linux Debian 至 13 "trixie"</label><label for="將-gnulinux-debian-的版本切換到測試分支">將 GNU/Linux Debian 的版本切換到測試分支</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>
+<p>更換版本代號</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="w">  </span>--codename<span class="w"> </span>trixie<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="w">  </span>--upgrade-software<span class="w"> </span><span class="nb">false</span>
+</code></pre></div>
+</li>
+<li>
+<p>停用 backports 倉庫</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;/backports/s/^/# /&#39;</span><span class="w"> </span>/etc/apt/sources.list
+</code></pre></div>
+</li>
+<li>
+<p>升級系統</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>apt-get<span class="w"> </span>update
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>apt-get<span class="w"> </span>dist-upgrade
+</code></pre></div>
+</li>
+<li>
+<p>升級完成並重新引導系統後執行下列步驟</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="c1"># 清空原有軟體源（如有非系統軟體源內容請先自行手動備份）</span>
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;1,$d&#39;</span><span class="w"> </span>/etc/apt/sources.list
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="c1"># 重新執行換源腳本</span>
+<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant
+</code></pre></div>
+</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="w">  </span>--codename<span class="w"> </span>testing<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="w">  </span>--upgrade-software<span class="w"> </span><span class="nb">false</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="no-copy highlight"><span class="filename">如果腳本無法實現指定版本代號，你也可以在執行腳本後手動替換</span><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;s/</span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2">/指定版本代號/g&quot;</span><span class="w"> </span>/etc/apt/sources.list
+</code></pre></div>
+</li>
+<li>
+<h4 id="更換-ubuntu-eol版本軟體源">更換 Ubuntu EOL版本軟體源<a class="headerlink" href="#更換-ubuntu-eol版本軟體源" title="链接">#</a></h4>
+<div class="admonition info">
+<p class="admonition-title">EOL 為生命週期結束的縮寫（End Of Life），Ubuntu 迭代速度較快一般非LTS(長期支持)版本的生命週期只有9個月。官方會定期從主倉庫移除不在生命週期內的版本倉庫目錄，屆時可能就需要使用鏡像站的 <code>Ubuntu Old Releases</code> 倉庫</p>
+</div>
+<p>具體版本支援情況詳見官方 <a href="https://documentation.ubuntu.com/project/release-team/list-of-releases/">Wiki</a>，關於 <code>Ubuntu Old Releases</code> 倉庫的支援情況詳見各鏡像站</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="w">  </span>--source<span class="w"> </span>mirrors.ustc.edu.cn<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="w">  </span>--branch<span class="w"> </span>ubuntu-old-releases
+</code></pre></div>
+</li>
+<li>
+<h4 id="arch-linux-使用中文社群倉庫">Arch Linux 使用中文社群倉庫<a class="headerlink" href="#arch-linux-使用中文社群倉庫" title="链接">#</a></h4>
+<p>本專案腳本目前不支援此額外倉庫，因使用人數較少等原因暫不考慮適配，若想使用請參考下方的一鍵設定命令</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="nv">SOURCE</span><span class="o">=</span><span class="s2">&quot;https://mirrors.aliyun.com/archlinuxcn&quot;</span><span class="w"> </span><span class="c1"># 指定軟體源位址</span>
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;\[archlinuxcn\]&quot;</span><span class="w"> </span>/etc/pacman.conf<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;[archlinuxcn]\nServer = </span><span class="si">${</span><span class="nv">SOURCE</span><span class="si">}</span><span class="s2">/\$arch&quot;</span><span class="w"> </span>&gt;&gt;/etc/pacman.conf<span class="w"> </span><span class="c1"># 一鍵配置命令</span>
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="國際化i18n">國際化（I18n）<a class="headerlink" href="#國際化i18n" title="链接">#</a></h3>
+<p>腳本提供多語言支持，目前內建 <code>简体中文</code>、<code>繁體中文</code>、<code>English</code> 共三種顯示語言，預設為 <code>简体中文</code></p>
+<ul>
+<li>
+<h4 id="指定語言">指定語言<a class="headerlink" href="#指定語言" title="链接">#</a></h4>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--lang<span class="w"> </span>xxx
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">類型</th>
+<th style="text-align: center;">值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">简体中文</td>
+<td style="text-align: center;"><code>zh-hans</code> <code>zh-cn</code> <code>zh</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">繁體中文</td>
+<td style="text-align: center;"><code>zh-hant</code> <code>zh-tw</code> <code>zh-hk</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">English</td>
+<td style="text-align: center;"><code>en</code> <code>en-us</code></td>
+</tr>
+</tbody>
+</table>
+<p>也可以直接作為指令選項使用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--en
+</code></pre></div>
+<blockquote>
+<p><code>--en</code> <code>--en-us</code> <code>--zh</code> <code>--zh-cn</code> <code>--zh-hans</code> <code>--zh-hant</code></p>
+</blockquote>
+</li>
+<li>
+<h4 id="透過互動進行選擇">透過互動進行選擇<a class="headerlink" href="#透過互動進行選擇" title="链接">#</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--lang<span class="w"> </span>auto
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="無人值守自動化">無人值守（自動化）<a class="headerlink" href="#無人值守自動化" title="链接">#</a></h3>
+<p>不透過交互完成換源操作，至少需要使用以下命令選項來實現，建議熟悉後再使用</p>
+<div class="no-copy highlight"><span class="filename">参考命令</span><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="w">  </span>--source<span class="w"> </span>mirror.example.com<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="w">  </span>--protocol<span class="w"> </span>http<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a><span class="w">  </span>--use-intranet-source<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a><span class="w">  </span>--install-epel<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="w">  </span>--backup<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a><span class="w">  </span>--upgrade-software<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-8" name="__codelineno-64-8" href="#__codelineno-64-8"></a><span class="w">  </span>--clean-cache<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-64-9" name="__codelineno-64-9" href="#__codelineno-64-9"></a><span class="w">  </span>--ignore-backup-tips
+</code></pre></div>
+<blockquote>
+<p>如果報錯 <code>命令選項無效</code> 那麼請檢查選項合法性以及空格字元編碼，在範例中一行寫一個選項是為了提高命令的可讀性</p>
+</blockquote>
+</li>
+<li>
+<h3 id="純淨模式">純淨模式<a class="headerlink" href="#純淨模式" title="链接">#</a></h3>
+<p>推出此功能是為了方便開發以及运維人員使用，啟用後會精簡腳本內容輸出，建議搭配其它指令選項無互動使用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main.sh<span class="o">)</span><span class="w"> </span>--zh-hant<span class="w"> </span>--pure-mode
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">滾動輸出的命令日誌可能有無法預料的顯示問題，不過目前暫未發現異常</p>
+</div>
+</li>
+</ul>
+<hr />
+<h2 id="精簡版lite">精簡版（Lite）<a class="headerlink" href="#精簡版lite" title="链接">#</a></h2>
+<p>額外提供一個精簡版本，是主腳本的複製，面向企業產品、開源專案使用，具有以下特性：</p>
+<ul>
+<li>單一顯示語言 <code>English</code>，無 I18n 國際化功能</li>
+<li>預設使用官方來源，去除了互動選擇內建軟體源功能</li>
+<li>去除了無關的列印內容</li>
+<li>保留核心邏輯與指令選項設計</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://linuxmirrors.cn/main-lite.sh<span class="o">)</span>
+</code></pre></div>
+<blockquote>
+<p>請熟悉本項目後再使用，不建議新手使用者使用</p>
+</blockquote>
+<hr />
+<h2 id="客製化腳本">客製化腳本<a class="headerlink" href="#客製化腳本" title="链接">#</a></h2>
+<p>如果你是其它專案的開發者希望透過本專案來製作專屬腳本，那麼請參考下面提到的內容，目前已經有中國大陸教育單位鏡像站的維護者這樣做了。</p>
+<ol>
+<li>首先不建議修改程式碼的底層邏輯，應盡量與本專案原始碼保持同步，腳本內容執行順序由 <code>main</code> 函數控制，程式碼邏輯清晰</li>
+<li>你可以簡單去除一些無關內容，例如將軟體源列表（陣列）<code>mirror_list_(default|edu|abroad|extranet|intranet)</code> 中的內容刪除，例如：<code>mirror_list_default=()</code></li>
+<li>如果你想要自定義腳本列印內容可直接修改 <code>run_start</code> <code>run_end</code> <code>print_title</code> 這三個函數中的內容</li>
+<li>如果你想加入自定義 Shell 內容請參見 <code>main</code> 函數中腳本執行順序，可以在對應位置直接插入內容也可以封裝函數後調用</li>
+<li>如果你想要縮減腳本體積那麼可以刪除一些不必要的內容，除了上面提到的軟體源列表還有一些涉及腳本工作的部分模組內容，具體如下：<ol>
+<li>首先在刪除內容時應盡可能保留腳本原始結構，直接把涉及函數中的內容刪除即可，使其保留為空函數</li>
+<li>可以刪除一些不使用（作業系統）的軟體源原始內容 <code>gen_repo_files_xxx</code>，這些內容佔據了腳本 <code>60%</code> 以上的體積</li>
+<li>如果你不使用某些功能，那麼可以刪除對應功能模組函數中的內容，<code>命令選項 handle_command_options</code>、<code>備份原有軟體源 backup_original_mirrors</code>、<code>更新軟體包 upgrade_software</code></li>
+<li>移除不需要的語言包，例：<code>function msg_pack_en() { :; }</code></li>
+</ol>
+</li>
+<li>腳本主要功能配置是由統一的變量控制的，命令選項亦是如此，這些全局變量由全大寫字母構成並遵循下劃線命名法，具體變量詳見如下表格，你只需要將這些變量聲明在腳本頭部（預留註釋區域）即可快速完成定制</li>
+</ol>
+<details class="note">
+<summary>變數列表（點擊展開查看）</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">名稱</th>
+<th style="text-align: center;">含義</th>
+<th style="text-align: center;">值型別</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>SOURCE</code></td>
+<td style="text-align: center;">指定軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_EPEL</code></td>
+<td style="text-align: center;">指定 EPEL 附加軟體包倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_SECURITY</code></td>
+<td style="text-align: center;">指定 Debian / Ubuntu 系統 security 倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_VAULT</code></td>
+<td style="text-align: center;">指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_PORTAGE</code></td>
+<td style="text-align: center;">指定 Gentoo 系統 portage 倉庫的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_BASE_SYSTEM</code></td>
+<td style="text-align: center;">指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源位址（網域名稱或IP）</td>
+<td style="text-align: center;"><code>位址</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_BRANCH</code></td>
+<td style="text-align: center;">指定軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_EPEL_BRANCH</code></td>
+<td style="text-align: center;">指定 EPEL 附加軟體套件倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_SECURITY_BRANCH</code></td>
+<td style="text-align: center;">指定 Debian 系統 security 倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_VAULT_BRANCH</code></td>
+<td style="text-align: center;">指定 CentOS / AlmaLinux 系統 vault 倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_PORTAGE_BRANCH</code></td>
+<td style="text-align: center;">指定 Gentoo 系統 portage 倉庫的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>SOURCE_BASE_SYSTEM_BRANCH</code></td>
+<td style="text-align: center;">指定 Linux Mint / Raspberry Pi OS 底層系統的軟體源倉庫（路徑）</td>
+<td style="text-align: center;"><code>倉庫名稱</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>DEBIAN_CODENAME</code></td>
+<td style="text-align: center;">指定 Debian 系 / openKylin 作業系統的版本代號</td>
+<td style="text-align: center;"><code>代號名稱</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>USE_INTRANET_SOURCE</code></td>
+<td style="text-align: center;">是否優先使用內網軟體源位址</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>USE_OFFICIAL_SOURCE</code></td>
+<td style="text-align: center;">是否使用目標作業系統的官方軟體源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>USE_OFFICIAL_SOURCE_EPEL</code></td>
+<td style="text-align: center;">是否使用 EPEL 附加軟體包的官方軟體源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>WEB_PROTOCOL</code></td>
+<td style="text-align: center;">指定 Web 協定</td>
+<td style="text-align: center;"><code>http</code> 或 <code>https</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>INSTALL_EPEL</code></td>
+<td style="text-align: center;">是否安裝 EPEL 附加軟體包</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>ONLY_EPEL</code></td>
+<td style="text-align: center;">僅更換 EPEL 軟體源模式</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>BACKUP</code></td>
+<td style="text-align: center;">是否備份原有軟體源</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>IGNORE_BACKUP_TIPS</code></td>
+<td style="text-align: center;">忽略覆蓋備份提示（即不覆蓋備份）</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>UPGRADE_SOFTWARE</code></td>
+<td style="text-align: center;">是否更新軟體包</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>CLEAN_CACHE</code></td>
+<td style="text-align: center;">是否在更新軟體包後清理下載快取</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>CLEAN_SCREEN</code></td>
+<td style="text-align: center;">是否在運行前清除螢幕上的所有內容</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>PRINT_DIFF</code></td>
+<td style="text-align: center;">是否列印原始檔案修改前後差異</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>PURE_MODE</code></td>
+<td style="text-align: center;">純淨模式，精簡列印內容</td>
+<td style="text-align: center;"><code>true</code> 或 <code>false</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>部分變數存在預設值，未涉及的變數無需宣告為空值（空字串），另外如果對應功能配置不存在那麼就可能會出現交互</p>
+</blockquote>
+</details>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+<orama-search-box class="orama-ui"></orama-search-box>
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到頂部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="頁脚" hidden>
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="上一頁: 介紹">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一頁
+              </span>
+              <div class="md-ellipsis">
+                介紹
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../mirrors/" class="md-footer__link md-footer__link--next" aria-label="下一頁: 軟體源列表">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一頁
+              </span>
+              <div class="md-ellipsis">
+                軟體源列表
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  <div class="md-copyright__highlight">
+    
+      Copyright &copy; 2026 <a href="https://github.com/SuperManito" target="_blank" rel="noopener noreferrer">SuperManito</a>
+    
+    </br>
+    
+      本網站由 Netlify 部署並提供全球 CDN 邊緣網路加速
+    
+    <a href="https://www.netlify.com" title="Netlify" target="_blank" rel="noopener noreferrer"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>
+  </div>
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://gitee.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="Gitee" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.63c0 .327.266.592.593.592h5.63c.982 0 1.778-.796 1.778-1.778v-.296a.593.593 0 0 0-.592-.593h-4.15a.59.59 0 0 1-.592-.592v-1.482a.593.593 0 0 1 .593-.592h6.815c.327 0 .593.265.593.592v3.408a4 4 0 0 1-4 4H5.926a.593.593 0 0 1-.593-.593V9.778a4.444 4.444 0 0 1 4.445-4.444h8.296Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://gitcode.com/SuperManito/LinuxMirrors" target="_blank" rel="noopener" title="GitCode" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.585 4.586.486-.274q.032.17.06.303c.032.158.06.289.072.418.103 1.118.665 1.941 1.462 2.127 1.165.27 2.264-.177 2.856-1.164.711-1.184.403-2.634-.808-3.507C16.346.061 12.647-.609 8.663.56.072 3.095-2.867 13.65 3.23 20.122c2.608 2.769 5.92 3.964 9.68 3.873 4.817-.113 8.285-2.513 10.5-6.674 1.57-2.952-.137-6.178-3.405-6.849a21 21 0 0 0-5.675-.362 4.8 4.8 0 0 0-1.805.548c-.625.325-.805.998-.735 1.666.065.608.531.972 1.086 1.064 1.118.175 2.25.277 3.378.37.327.027.657.03.986.033.473.005.944.01 1.405.086 1.314.217 1.766 1.284 1.09 2.425a4.7 4.7 0 0 1-.577.766 6.55 6.55 0 0 1-3.318 1.964c-2.333.57-4.669.603-6.99-.13-2.645-.835-4.221-2.777-4.277-5.392A9.1 9.1 0 0 1 5.76 8.907c.36-.654.558-1.327.503-2.067a26 26 0 0 1-.05-.972l-.025-.565q.401.084.792.212c1.011.406 2.007.592 3.102.294a5.6 5.6 0 0 1 1.902-.122 4.76 4.76 0 0 0 2.921-.714c.218-.128.439-.251.681-.387"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["header.autohide", "navigation.top", "navigation.tabs", "navigation.path", "navigation.instant.progress", "navigation.indexes", "navigation.footer", "navigation.prune", "navigation.tracking", "navigation.sections", "content.tooltips", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight", "search.share", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u62f7\u8c9d", "clipboard.copy": "\u62f7\u8c9d", "search.result.more.one": "\u6b64\u9801\u5c1a\u6709 1 \u500b\u7b26\u5408\u7684\u9805\u76ee", "search.result.more.other": "\u6b64\u9801\u5c1a\u6709 # \u500b\u7b26\u5408\u7684\u9805\u76ee", "search.result.none": "\u6c92\u6709\u627e\u5230\u7b26\u5408\u689d\u4ef6\u7684\u7d50\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u689d\u4ef6\u7684\u7d50\u679c", "search.result.other": "\u627e\u5230 # \u500b\u7b26\u5408\u689d\u4ef6\u7684\u7d50\u679c", "search.result.placeholder": "\u9375\u5165\u4ee5\u958b\u59cb\u6aa2\u7d22", "search.result.term.missing": "\u7f3a\u5931", "select.version": "\u9078\u64c7\u7248\u672c"}, "version": null}</script>
+    
+    
+  <script type="module" src="https://unpkg.com/@orama/wc-components@latest/dist/orama-ui/orama-ui.esm.js"></script>
+  <script nomodule src="https://unpkg.com/@orama/wc-components@latest/dist/cjs/orama-ui.cjs.js"></script>
+  
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/vue/dist/vue.global.prod.js"></script>
+      
+        <script src="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.js"></script>
+      
+        <script src="../../assets/js/modules/tdesign-theme.js"></script>
+      
+        <script src="../../assets/js/components/orama-ui/config.js"></script>
+      
+        <script src="../../assets/js/components/orama-ui/index.js"></script>
+      
+        <script src="../../assets/js/useThemeTransition.js"></script>
+      
+        <script src="../../assets/js/common.js"></script>
+      
+        <script src="../../assets/js/component.js"></script>
+      
+        <script src="../../assets/js/components/mirrors-table/data.js"></script>
+      
+        <script src="../../assets/js/components/mirrors-table/index.js"></script>
+      
+        <script src="../../termynal.js"></script>
+      
+    
+
+  </body>
+</html>
