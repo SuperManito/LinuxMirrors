@@ -1,12 +1,10 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-01-06
+## Modified: 2026-01-19
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
 
-SOURCE="download.docker.com"
-SOURCE_REGISTRY="registry.hub.docker.com"
 WEB_PROTOCOL="https"
 INSTALL_LATESTED_DOCKER="true"
 IGNORE_BACKUP_TIPS="true"
@@ -683,6 +681,9 @@ function install_dependency_packages() {
 
 ## 配置 Docker CE 源
 function configure_docker_ce_mirror() {
+    if [[ -z "${SOURCE}" ]]; then
+        SOURCE="download.docker.com"
+    fi
     local -a commands=()
     case "${SYSTEM_FACTIONS}" in
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
@@ -1047,14 +1048,29 @@ function install_docker_engine() {
 
 ## 修改 Docker Registry 镜像仓库源
 function change_docker_registry_mirror() {
+    if [[ -z "${SOURCE_REGISTRY}" ]]; then
+        SOURCE_REGISTRY="registry.hub.docker.com"
+    fi
     ## 使用官方 Docker Hub
-    if [[ "${REGISTRY_SOURCEL}" == "registry.hub.docker.com" ]]; then
+    if [[ "${SOURCE_REGISTRY}" == "registry.hub.docker.com" ]]; then
         if [ -s "${File_DockerConfig}" ]; then
             ## 安装 jq
-            local package_manager="$(get_package_manager)"
-            $package_manager install -y jq
+            case "${SYSTEM_FACTIONS}" in
+            "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
+                apt-get install -y jq
+                ;;
+            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
+                local package_manager="$(get_package_manager)"
+                $package_manager install -y jq
+                ;;
+            esac
             if command_exists jq; then
                 jq 'del(.["registry-mirrors"])' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
+                # 删除空的配置文件
+                jq -rcM . $File_DockerConfig 2>&1 | grep -Eq '^{}$'
+                if [ $? -eq 0 ]; then
+                    rm -rf $File_DockerConfig
+                fi
                 # 重启服务
                 systemctl daemon-reload
                 if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then

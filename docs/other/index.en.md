@@ -473,7 +473,7 @@ Command options(name/meaning/value):
 
 ## Lite Version
 
-The project also provides a simplified version, which is a copy of the main script, designed for enterprise products and large open-source community projects. It has the following features:
+The project also provides a simplified version, which is a copy of the main script, designed for enterprise products and open-source projects. It has the following features:
 
 - Single display language `English`, no I18n internationalization
 - Uses the official source by default, removing the interactive selection of built-in software sources

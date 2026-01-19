@@ -782,7 +782,23 @@ Below are some advanced usage examples
 
 ---
 
-## Customizing the Script
+## Lite Version
+
+The project also provides a simplified version, which is a copy of the main script, designed for enterprise products and open-source projects. It has the following features:
+
+- Single display language `English`, no I18n internationalization
+- Uses the official source by default, removing the interactive selection of built-in software sources
+- Removes irrelevant printouts
+- Retains core logic and command option design
+
+``` bash
+bash <(curl -sSL https://linuxmirrors.cn/main-lite.sh)
+```
+> Please familiarize yourself with this project before using it. It is not recommended for novice users.
+
+---
+
+## Customizing
 
 If you are a developer of another project and want to create a custom script based on this project, refer to the following. Some maintainers of China education network mirrors have already done so.
 

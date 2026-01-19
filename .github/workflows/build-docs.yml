@@ -27,6 +27,7 @@ jobs:
             mkdocs-material-
       - run: pip install -r ./requirements.txt
       - run: cp -rvf ./ChangeMirrors.sh ./docs/main.sh
+      - run: cp -rvf ./ChangeMirrorsLite.sh ./docs/main-lite.sh
       - run: cp -rvf ./DockerInstallation.sh ./docs/docker.sh
       - run: cp -rvf ./DockerInstallationLite.sh ./docs/docker-lite.sh
       - run: mkdocs gh-deploy --force --quiet
