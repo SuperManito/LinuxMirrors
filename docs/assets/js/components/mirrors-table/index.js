@@ -42,7 +42,7 @@ ComponentSystem.register('mirrors-table', {
                             </t-space>
                         </t-checkbox-group>
                     </template>
-                    <t-button variant="text" shape="circle">
+                    <t-button variant="text" shape="circle" :theme="selectedCellStatuses.length < 3 ? 'primary' : 'default'">
                         <svg fill="none" viewBox="0 0 24 24" width="1em" height="1em" class="t-icon t-icon-filter" style="fill: none;"><g id="filter"><path id="fill1" fill="transparent" d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z" fill-rule="evenodd" clip-rule="evenodd"></path><path id="stroke1" stroke="currentColor" d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z" fill-rule="evenodd" stroke-linecap="square" stroke-width="2" clip-rule="evenodd"></path></g></svg>
                     </t-button>
                 </t-popup>
@@ -202,25 +202,25 @@ ComponentSystem.register('mirrors-table', {
                           searchResultText: '\u641C\u5C0B"{result}"\uFF0C\u627E\u5230{count}\u9805\u7D50\u679C',
                       }
                     : f.isEn
-                    ? {
-                          empty: 'Empty Data',
-                          loadingText: 'loading...',
-                          loadingMoreText: 'loading more',
-                          filterInputPlaceholder: '',
-                          sortAscendingOperationText: 'click to sort ascending',
-                          sortCancelOperationText: 'click to cancel sorting',
-                          sortDescendingOperationText: 'click to sort descending',
-                          clearFilterResultButtonText: 'Clear',
-                          columnConfigButtonText: 'Column Config',
-                          columnConfigTitleText: 'Table Column Config',
-                          columnConfigDescriptionText: 'Please select columns to show them in the table',
-                          confirmText: 'Confirm',
-                          cancelText: 'Cancel',
-                          resetText: 'Reset',
-                          selectAllText: 'Select All',
-                          searchResultText: 'Search "{result}". Found no items. | Search "{result}". Found 1 item. | Search "{result}". Found {count} items.',
-                      }
-                    : undefined,
+                      ? {
+                            empty: 'Empty Data',
+                            loadingText: 'loading...',
+                            loadingMoreText: 'loading more',
+                            filterInputPlaceholder: '',
+                            sortAscendingOperationText: 'click to sort ascending',
+                            sortCancelOperationText: 'click to cancel sorting',
+                            sortDescendingOperationText: 'click to sort descending',
+                            clearFilterResultButtonText: 'Clear',
+                            columnConfigButtonText: 'Column Config',
+                            columnConfigTitleText: 'Table Column Config',
+                            columnConfigDescriptionText: 'Please select columns to show them in the table',
+                            confirmText: 'Confirm',
+                            cancelText: 'Cancel',
+                            resetText: 'Reset',
+                            selectAllText: 'Select All',
+                            searchResultText: 'Search "{result}". Found no items. | Search "{result}". Found 1 item. | Search "{result}". Found {count} items.',
+                        }
+                      : undefined,
                 select: f.isZhHant
                     ? {
                           empty: '\u66AB\u7121\u6578\u64DA',
@@ -228,12 +228,12 @@ ComponentSystem.register('mirrors-table', {
                           placeholder: '\u8ACB\u9078\u64C7',
                       }
                     : f.isEn
-                    ? {
-                          empty: 'Empty Data',
-                          loadingText: 'loading...',
-                          placeholder: 'please select',
-                      }
-                    : undefined,
+                      ? {
+                            empty: 'Empty Data',
+                            loadingText: 'loading...',
+                            placeholder: 'please select',
+                        }
+                      : undefined,
             }
         },
         selectPlaceholder() {

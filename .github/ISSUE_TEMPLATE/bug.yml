@@ -3,6 +3,17 @@ description: Report bug
 labels: ["bug"]
 body:
   - type: dropdown
+    id: script_type
+    attributes:
+      label: 脚本类型
+      options:
+        - Linux
+        - Docker
+      description: "请在创建此 Issue 前排除软件源（镜像站）故障等非本项目脚本自身问题，建议先尝试重新运行脚本并检查网络连接。"
+    validations:
+      required: true
+
+  - type: dropdown
     id: os
     attributes:
       label: 操作系统
@@ -29,6 +40,7 @@ body:
         - openSUSE
         - Arch Linux
         - Manjaro
+        - EndeavourOS
         - Alpine Linux
         - Gentoo
         - NixOS
@@ -48,26 +60,19 @@ body:
       required: true
 
   - type: textarea
-    id: release
+    id: os_release
     attributes:
       label: 系统详细信息
-      description: '请执行命令 `cat /etc/os-release`，并将输出结果粘贴在下方'
-      render: 'shell'
+      description: "请执行命令 `cat /etc/os-release`，并将输出结果粘贴在下方"
+      render: "shell"
     validations:
       required: true
 
   - type: input
-    id: uname
+    id: os_uname
     attributes:
       label: 环境信息
-      description: '请执行命令 `uname -a`，并将输出结果粘贴在下方'
-    validations:
-      required: true
-
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: 描述遇到的问题
+      description: "请执行命令 `uname -a`，并将输出结果粘贴在下方"
     validations:
       required: true
 
@@ -76,6 +81,14 @@ body:
     attributes:
       label: 详细的执行日志
       placeholder: 日志内容
-      render: 'shell'
+      description: "请务必粘贴完整的日志内容，不要掺杂其它无用信息，如果是日志图片请在下方描述问题表单项添加文件"
+      render: "shell"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 描述遇到的问题
     validations:
       required: true

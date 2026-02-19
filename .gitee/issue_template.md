@@ -1,5 +1,7 @@
 <!-- 这是隐藏的信息
 
+请在创建此 Issue 前排除软件源（镜像站）故障等非本项目脚本自身问题，建议先尝试重新运行脚本并检查网络连接。
+
 在提交前请阅读下面的内容：
 
 ⚠️如果方便的话请优先在 GitHub 官方仓库提交 Issue！
@@ -41,6 +43,7 @@
 - [ ] `openSUSE`
 - [ ] `Arch Linux`
 - [ ] `Manjaro`
+- [ ] `EndeavourOS`
 - [ ] `Alpine Linux`
 - [ ] `Gentoo`
 - [ ] `NixOS`
