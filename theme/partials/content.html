@@ -1,0 +1,17 @@
+{% include "partials/tags.html" %}
+
+{% include "partials/actions.html" %}
+
+{% if "\u003ch1" not in page.content %}
+  <h1>{{ page.title | d(config.site_name, true)}}</h1>
+{% endif %}
+
+{{ page.content }}
+
+{% include "partials/source-file.html" %}
+
+{% include "partials/feedback.html" %}
+
+{% include "partials/comments.html" %}
+
+<orama-search-box class="orama-ui"></orama-search-box>

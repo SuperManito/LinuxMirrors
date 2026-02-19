@@ -1,0 +1,98 @@
+<a class="md-header__button md-icon coze-icon-wrapper" href="https://www.coze.cn/store/agent/7503197985959428108?bot_id=true" target="_blank" rel="noopener noreferrer" title="{{'Coze AI Assistant' if i18n_page_locale == 'en' else 'Coze AI 助手' if i18n_page_locale == 'zh-Hant' else '扣子 AI 助手'}}">
+  <div aria-label="Coze" class="coze-icon-bg">
+    <svg fill="currentColor" fill-rule="evenodd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" color="#fff" style="display: block; margin: auto;">
+      <path clip-rule="evenodd" d="M3.908 9.096A8.092 8.092 0 0111.998 1h.006c4.468 0 8.09 3.628 8.09 8.096v3.392h1.942c2.23 0 2.732 3.126.615 3.828l-2.556.85v1.466a1.947 1.947 0 01-2.818 1.742l-1.42-.707c-.067-.03-.149 0-.17.071-1.147 3.587-6.225 3.587-7.373 0a.123.123 0 00-.169-.07l-1.42.706c-1.29.65-2.817-.292-2.817-1.742v-1.466l-2.557-.85c-2.122-.697-1.614-3.828.615-3.828h1.942V9.096zm4.571 2.613a.784.784 0 00-.784.784v1.568a.784.784 0 101.568 0v-1.568a.784.784 0 00-.784-.784zm7.045.779a.784.784 0 100 1.568.784.784 0 000-1.568zm-6.186 3.415a.78.78 0 00.17.254 3.517 3.517 0 004.98 0 .782.782 0 10-1.106-1.107 1.958 1.958 0 01-2.767 0 .78.78 0 00-1.277.254.78.78 0 000 .6z"></path>
+    </svg>
+  </div>
+</a>
+
+<div class="md-search__inner" role="search">
+  <form class="md-search__form" name="search" onsubmit="return false;">
+    <input type="text" class="md-search__input" name="query" aria-label="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" placeholder="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" readonly required onclick="OpenOramaSearchComponent()" />
+    <label class="md-search__icon md-icon" for="__search" onclick="OpenOramaSearchComponent()"> {% set icon = config.theme.icon.search or "material/magnify" %} {% include ".icons/" ~ icon ~ ".svg" %} {% set icon = config.theme.icon.previous or "material/arrow-left" %} {% include ".icons/" ~ icon ~ ".svg" %} </label>
+  </form>
+  <div class="md-search__output">
+    <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+      <div class="md-search-result" data-md-component="search-result">
+        <div class="md-search-result__meta">{{ lang.t("search.result.initializer") }}</div>
+        <ol class="md-search-result__list" role="presentation"></ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const __lang = "{{ i18n_page_locale }}";
+  let __notReadyMsg = '';
+  switch (__lang) {
+    case 'en':
+      __notReadyMsg = "The search component has not yet been loaded. Please try again later.";
+      break;
+    case 'zh-Hant':
+      __notReadyMsg = "搜尋元件尚未載入完畢，請稍後再試。";
+      break;
+    default:
+      __notReadyMsg = "搜索组件尚未加载完毕，请稍后再试。";
+  }
+
+  function OpenOramaSearchComponent() {
+    if (window.openOramaSearch) {
+      window.openOramaSearch();
+    } else {
+      alert$.next(__notReadyMsg);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchToggle = document.getElementById('__search');
+    if (searchToggle) {
+      searchToggle.addEventListener('change', function() {
+        if (this.checked) {
+          this.checked = false;
+          OpenOramaSearchComponent();
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .md-search__output {
+    display: none !important;
+  }
+  .md-search__inner {
+    padding-left: 8px;
+  }
+  .md-search__input {
+    cursor: pointer !important;
+  }
+  .md-search__form {
+    border-radius: 6px;
+  }
+  @media screen and (min-width: 60em) {
+    .md-search__inner {
+      width: 8.7rem;
+    }
+  }
+  .coze-icon-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(77, 83, 232);
+    border-radius: 6px;
+    color: #fff;
+    height: 28px;
+    width: 28px;
+  }
+  .coze-icon-bg svg {
+    width: 20px !important;
+    height: 20px !important;
+    display: block;
+  }
+  .coze-icon-wrapper {
+    @media screen and (max-width: 768px) {
+      display: none !important;
+    }
+  }
+  
+</style>

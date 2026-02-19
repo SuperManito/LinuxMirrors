@@ -1,0 +1,122 @@
+.orama-ui {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--md-text-font);
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+    vertical-align: baseline;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    text-size-adjust: none;
+    --orama-base-font-size: 18;
+
+    --font-size-xxs: calc(10rem/var(--orama-base-font-size, 16));
+    --font-size-xs: calc(12rem/var(--orama-base-font-size, 16));
+    --font-size-sm: calc(14rem/var(--orama-base-font-size, 16));
+    --font-size-md: calc(16rem/var(--orama-base-font-size, 16));
+    --font-size-lg: calc(20rem/var(--orama-base-font-size, 16));
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
+    --font-line-height-s: 1.25;
+    --font-line-height-m: 1.5;
+    --radius-xs: calc(6rem/var(--orama-base-font-size, 16));
+    --radius-s: calc(8rem/var(--orama-base-font-size, 16));
+    --radius-m: calc(12rem/var(--orama-base-font-size, 16));
+    --radius-l: calc(16rem/var(--orama-base-font-size, 16));
+    --radius-3xl: calc(40rem/var(--orama-base-font-size, 16));
+    --textarea-radius: calc(16rem/var(--orama-base-font-size, 16));
+    --spacing-2xs: calc(2rem/var(--orama-base-font-size, 16));
+    --spacing-xs: calc(4rem/var(--orama-base-font-size, 16));
+    --spacing-s: calc(8rem/var(--orama-base-font-size, 16));
+    --spacing-m: calc(12rem/var(--orama-base-font-size, 16));
+    --spacing-l: calc(16rem/var(--orama-base-font-size, 16));
+    --spacing-xl: calc(24rem/var(--orama-base-font-size, 16));
+    --spacing-2xl: calc(32rem/var(--orama-base-font-size, 16));
+    --spacing-3xl: calc(40rem/var(--orama-base-font-size, 16));
+    --textarea-shadow: var(--md-shadow-z1);
+
+    --text-color-primary: #151515;
+    --text-color-secondary: #838289;
+    --text-color-tertiary: #99989d;
+    --text-color-accent: var(--md-accent-fg-color);
+    --text-color-inactive: #99989d;
+    --text-color-reverse: #fff;
+    --background-color-primary: #fbfbfb;
+    --background-color-secondary: #fff;
+    --background-color-tertiary: var(--md-accent-fg-color--transparent);
+    --background-color-fourth: #efefef;
+    --background-color-reverse: #000;
+    --background-color-accent: var(--md-accent-fg-color);
+    --border-color-primary: #dadada;
+    --border-color-secondary: #efefef;
+    --border-color-tertiary: #151515;
+    --border-color-accent: var(--md-accent-fg-color);
+    --icon-color-primary: #151515;
+    --icon-color-secondary: #dadada;
+    --icon-color-tertiary: #838289;
+    --icon-color-inactive: #99989d;
+    --icon-color-reverse: #fbfbfb;
+    --shadow-color-primary: #fff;
+    --button-text-color-primary: #fbfbfb;
+    --button-text-color-secondary: #838289;
+    --button-background-color-primary: var(--md-accent-fg-color);
+    --button-background-color-secondary: hsla(240, 9%, 75%, 0.33);
+    --button-background-color-secondary-hover: var(--md-accent-fg-color--transparent);
+    --button-border-color-secondary: #dadada;
+    --backdrop-background-color-primary: hsla(0, 0%, 98%, .7);
+    --chat-button-border-color-gradientOne: transparent;
+    --chat-button-border-color-gradientTwo: transparent;
+    --chat-button-border-color-gradientThree: var(--md-accent-fg-color);
+    --chat-button-border-color-gradientFour: var(--md-accent-fg-color);
+    --chat-button-border-color-gradientFive: transparent;
+    --chat-button-border-color-gradientSix: transparent;
+    --chat-button-background-color-gradientOne: var(--md-accent-fg-color);
+    --chat-button-background-color-gradientTwo: transparent;
+
+}
+
+.orama-ui *,
+.orama-ui:after,
+.orama-ui:before {
+    box-sizing: border-box
+}
+
+[data-md-color-scheme="slate"] .orama-ui {
+    --text-color-primary: #fbfbfb;
+    --text-color-secondary: #dadada;
+    --text-color-tertiary: #838289;
+    --text-color-accent: var(--md-accent-fg-color);
+    --text-color-inactive: #99989d;
+    --text-color-reverse: #000;
+    --background-color-primary: var(--md-default-bg-color);
+    --background-color-secondary: #101010;
+    --background-color-tertiary: var(--md-accent-fg-color--transparent);
+    --background-color-fourth: #2e2e2e;
+    --background-color-reverse: #fff;
+    --background-color-accent: var(--md-accent-fg-color);
+    --border-color-primary: #2e2e2e;
+    --border-color-secondary: #151515;
+    --border-color-tertiary: #afafb1;
+    --border-color-accent: var(--md-accent-fg-color);
+    --icon-color-primary: #fbfbfb;
+    --icon-color-secondary: #dadada;
+    --icon-color-tertiary: #838289;
+    --icon-color-inactive: #99989d;
+    --icon-color-reverse: var(--md-default-bg-color);
+    --shadow-color-primary: #000;
+    --button-text-color-primary: #fbfbfb;
+    --button-text-color-secondary: #99989d;
+    --button-background-color-primary: var(--md-accent-fg-color);
+    --button-background-color-secondary: hsla(var(--md-hue), 15%, 9%, 0.33);
+    --button-background-color-secondary-hover: var(--md-accent-fg-color--transparent);
+    --button-border-color-secondary: #2e2e2e;
+    --backdrop-background-color-primary: rgba(5, 5, 5, .7);
+    --chat-button-border-color-gradientOne: transparent;
+    --chat-button-border-color-gradientTwo: transparent;
+    --chat-button-border-color-gradientThree: var(--md-accent-fg-color);
+    --chat-button-border-color-gradientFour: var(--md-accent-fg-color);
+    --chat-button-border-color-gradientFive: transparent;
+    --chat-button-border-color-gradientSix: transparent;
+    --chat-button-background-color-gradientOne: var(--md-accent-fg-color);
+    --chat-button-background-color-gradientTwo: transparent;
+}

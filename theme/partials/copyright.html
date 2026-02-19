@@ -1,0 +1,16 @@
+<div class="md-copyright">
+  <div class="md-copyright__highlight">
+    {% if config.copyright %}
+      {{ config.copyright }}
+    {% endif %}
+    </br>
+    {% if i18n_page_locale == 'en' %}
+      This website is deployed by Netlify and provides global CDN edge network acceleration.
+    {% elif i18n_page_locale == 'zh-Hant' %}
+      本網站由 Netlify 部署並提供全球 CDN 邊緣網路加速
+    {% else %}
+      本网站由 Netlify 部署并提供全球 CDN 边缘网络加速
+    {% endif %}
+    <a href="https://www.netlify.com" title="Netlify" target="_blank" rel="noopener noreferrer"><img height="64" width="64" src="/assets/images/icon/netlify.svg" style="vertical-align: -0.6em"></a>
+  </div>
+</div>
