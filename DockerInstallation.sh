@@ -89,6 +89,8 @@ SPONSOR_ADS=(
     "HKGserver · 全球家宽｜双ISP｜住宅原生云服务器54元/月起 ➜  \033[3mhttps://www.hkgserver.com\033[0m"
     "无忧云 · BGP多线高性能、高主频自动化云、物理服务器 ➜  \033[3mhttps://https://www.wuyouyun.com\033[0m"
     "速维云 · 大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器 ➜  \033[3mhttps://www.svyun.com\033[0m"
+    "酷盾安全 · 集分布式DDoS防护、CC防护、WAF防护、BOT行为分析一体化防护 ➜  \033[3mhttps://www.kd.cn\033[0m"
+    "酷番云 · 安全、稳定、可信赖的企业级云服务提供商 ➜  \033[3mhttps://www.kufanyun.com\033[0m"
     "语鹿云盾 · 专业CDN加速、防御，亚太百兆三网优化CDN低至9元起 ➜  \033[3mhttps://www.lucdn.cn\033[0m"
     "不二云 · 国内外建站快响应服务器的不二之选 ➜  \033[3mhttps://cb2.cn\033[0m"
     "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  \033[3mhttps://www.runxinyun.com\033[0m"
