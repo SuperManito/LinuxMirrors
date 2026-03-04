@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-01-19
+## Modified: 2026-03-04
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2160,7 +2160,7 @@ $(gen_deb "${1}" "${2}-security" "${3}")"
 URIs: ${WEB_PROTOCOL}://${2}/
 Suites: ${3}
 Components: ${4}
-Signed-By: /usr/share/keyrings/${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"
+Signed-By: /usr/share/keyrings/${_DEB22_ARCHIVE_KEYRING:-"${SYSTEM_JUDGMENT,,}-archive-keyring.gpg"}"
     }
     function gen_deb822() {
         echo "$(_template_deb822 "deb" "${1}" "${2}" "${3}")
@@ -2593,9 +2593,11 @@ $(gen_deb "${source_address}" "${base_system_codename}" "${repo_components}")"
             source_address="${SOURCE}/proxmox"
         fi
         if [[ "${USE_DEB822_FORMAT}" == "true" ]]; then
+            _DEB22_ARCHIVE_KEYRING="proxmox-archive-keyring.gpg"
             apt_source_file="${File_ProxmoxSources}"
             apt_source_content="$(gen_deb822_unsrc "${source_address}/debian/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")"
             write_apt_source
+            _DEB22_ARCHIVE_KEYRING=""
             # Ceph 仓库
             if [ -f "${File_ProxmoxCephSources}" ]; then
                 local ceph_codename="$(ceph -v | grep ceph | awk '{print $(NF-1)}')"
