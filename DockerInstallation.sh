@@ -84,10 +84,10 @@ SPONSOR_ADS=(
     "林枫云 · 专注独立IP高频VPS｜R9/i9系列定制 ➜  \033[3mhttps://www.dkdun.cn\033[0m"
     "不死鸟CDN · 香港日本高防CDN，免实名/免备案，轻松阻断DDOS/CC攻击 ➜  \033[3mhttps://bsncdn.ai\033[0m"
     "青叶云 · 香港1T高防｜自助防火墙，无视CC｜大带宽回国优化线路 ➜  \033[3mhttps://www.qingyeyun.com\033[0m"
-    "莱卡云 · 专业云计算服务器提供商 ➜  \033[3m https://www.lcayun.com\033[0m"
+    "莱卡云 · 专业云计算服务器提供商 ➜  \033[3mhttps://www.lcayun.com\033[0m"
     "云悠YUNYOO · 全球高性价比云服务器｜低至15.99元起 ➜  \033[3mhttps://yunyoo.cc\033[0m"
     "HKGserver · 全球家宽｜双ISP｜住宅原生云服务器54元/月起 ➜  \033[3mhttps://www.hkgserver.com\033[0m"
-    "无忧云 · BGP多线高性能、高主频自动化云、物理服务器 ➜  \033[3mhttps://https://www.wuyouyun.com\033[0m"
+    "无忧云 · BGP多线高性能、高主频自动化云、物理服务器 ➜  \033[3mhttps://www.wuyouyun.com\033[0m"
     "速维云 · 大陆香港美日全球千兆大带宽、BGP多线、高频云、物理服务器 ➜  \033[3mhttps://www.svyun.com\033[0m"
     "酷盾安全 · 集分布式DDoS防护、CC防护、WAF防护、BOT行为分析一体化防护 ➜  \033[3mhttps://www.kd.cn\033[0m"
     "酷番云 · 安全、稳定、可信赖的企业级云服务提供商 ➜  \033[3mhttps://www.kufanyun.com\033[0m"
@@ -95,6 +95,7 @@ SPONSOR_ADS=(
     "不二云 · 国内外建站快响应服务器的不二之选 ➜  \033[3mhttps://cb2.cn\033[0m"
     "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  \033[3mhttps://www.runxinyun.com\033[0m"
     "蓝易云 · 高防CDN，国内BGP多线/香港/死扛CC/DDos攻击 ➜  \033[3mhttps://www.tsycdn.com\033[0m"
+    "慈云数据 · 香港直连2H2G 99元/年 ➜  \033[3mhttps://www.ciyundata.com\033[0m"
     "浪浪云 · BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费 ➜  \033[3mhttps://langlangy.cn\033[0m"
 )
 
@@ -467,9 +468,51 @@ function run_end() {
     echo -e "\n✨ $(msg "end.moreInfo") 👉 \033[3mhttps://linuxmirrors.cn\033[0m"
     if [[ "${#SPONSOR_ADS[@]}" -gt 0 ]]; then
         echo -e "\n\033[2m$(msg "end.sponsorAds")\033[0m"
-        for ad in "${SPONSOR_ADS[@]}"; do
+        _str_width() {
+            local s="$1"
+            shopt -s extglob
+            s="${s//\\033\[+([0-9;])[a-zA-Z]/}"
+            local width=0 i len val
+            local LC_ALL=C
+            len=${#s}
+            for ((i = 0; i < len; )); do
+                printf -v val '%d' "'${s:i:1}"
+                ((val < 0)) && ((val += 256))
+                if ((val < 128)); then
+                    ((width += 1, i += 1))
+                elif ((val < 192)); then
+                    ((i += 1))
+                elif ((val < 224)); then
+                    ((width += 1, i += 2))
+                elif ((val < 240)); then
+                    ((width += 2, i += 3))
+                else
+                    ((width += 2, i += 4))
+                fi
+            done
+            echo $width
+        }
+        local -a _c1 _c2 _c3 _w1 _w2
+        local _max1=0 _max2=0 _w _a _b
+        for _entry in "${SPONSOR_ADS[@]}"; do
+            _a="${_entry%% · *}"
+            _b="${_entry#* · }"
+            _c1+=("$_a")
+            _c2+=("${_b%% ➜  *}")
+            _c3+=("${_b##* ➜  }")
+            _w=$(_str_width "$_a")
+            _w1+=("$_w")
+            [[ $_w -gt $_max1 ]] && _max1=$_w
+            _w=$(_str_width "${_b%% ➜  *}")
+            _w2+=("$_w")
+            [[ $_w -gt $_max2 ]] && _max2=$_w
+        done
+        local _pad1 _pad2
+        for ((_i = 0; _i < ${#SPONSOR_ADS[@]}; _i++)); do
             sleep 0.1
-            echo -e "  \033[2m${ad}\033[0m"
+            printf -v _pad1 '%*s' $((_max1 - _w1[_i])) ''
+            printf -v _pad2 '%*s' $((_max2 - _w2[_i])) ''
+            echo -e "  \033[2m${_c1[_i]}${_pad1} ${_c2[_i]}${_pad2} ${_c3[_i]}\033[0m"
         done
     fi
     echo -e "\n\033[3;1mPowered by \033[34mLinuxMirrors\033[0m\n"
