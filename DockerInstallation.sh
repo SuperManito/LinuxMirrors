@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-04-16
+## Modified: 2026-05-16
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -194,7 +194,7 @@ function main() {
     run_start
     choose_mirrors
     if [[ "${ONLY_REGISTRY}" == "true" ]]; then
-        only_change_docker_registry_mirror
+        only_change_docker_registry_mirror_mode
     else
         choose_protocol
         close_firewall_service
@@ -1011,7 +1011,7 @@ function choose_mirrors() {
             fi
         done
         if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
-            sleep 1 >/dev/null 2>&1
+            [[ "${ONLY_REGISTRY}" != "true" ]] && sleep 1 >/dev/null 2>&1
             interactive_select_list "${mirror_list_name}" "\n ${BOLD}$(msg "interaction.source.dockerRegistry.select")${PLAIN}\n" "mirror_list_labels"
             SOURCE_REGISTRY="${_SELECT_RESULT%%@@*}"
             echo -e "\n${GREEN}➜${PLAIN}  ${BOLD}Docker Registry: $(echo "${_SELECT_RESULT#*@@}" | sed 's|（推荐）||g; s|（推薦）||g')${PLAIN}"
@@ -1573,44 +1573,10 @@ function install_docker_engine() {
     fi
 }
 
-## 修改 Docker Registry 镜像仓库源
-function change_docker_registry_mirror() {
-    if [[ -z "${SOURCE_REGISTRY}" ]]; then
-        SOURCE_REGISTRY="registry.hub.docker.com"
-    fi
-    ## 使用官方 Docker Hub
-    if [[ "${SOURCE_REGISTRY}" == "registry.hub.docker.com" ]]; then
-        if [ -s "${File_DockerConfig}" ]; then
-            ## 安装 jq
-            case "${SYSTEM_FACTIONS}" in
-            "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-                apt-get install -y jq
-                ;;
-            "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
-                local package_manager="$(get_package_manager)"
-                $package_manager install -y jq
-                ;;
-            esac
-            if command_exists jq; then
-                jq 'del(.["registry-mirrors"])' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
-                # 删除空的配置文件
-                jq -rcM . $File_DockerConfig 2>&1 | grep -Eq '^{}$'
-                if [ $? -eq 0 ]; then
-                    rm -rf $File_DockerConfig
-                fi
-                # 重启服务
-                systemctl daemon-reload
-                if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
-                    systemctl restart docker
-                fi
-            else
-                echo -e "\n${WARN} $(msg "warn.needManuallyDeleteConfig" "${File_DockerConfig}" "${BLUE}registry-mirrors${PLAIN}" "${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}")\n"
-            fi
-        fi
-        return
-    fi
-    ## 备份原有配置文件
-    if [ -d "${Dir_Docker}" ] && [ -e "${File_DockerConfig}" ]; then
+## 更换 Docker Registry 镜像仓库源
+function change_docker_registry_mirror_main() {
+    ## 备份配置文件
+    function backup_docker_config() {
         if [ -e "${File_DockerConfigBackup}" ]; then
             if [[ "${IGNORE_BACKUP_TIPS}" == "false" ]]; then
                 local ask_text="$(msg "interaction.backup.skipOverwrite")?"
@@ -1620,6 +1586,7 @@ function change_docker_registry_mirror() {
                     if [[ "${_SELECT_RESULT}" == "false" ]]; then
                         echo ''
                         cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
+                        sleep 2s
                     fi
                 else
                     local CHOICE_BACKUP="$(echo -e "\n${BOLD}└─ ${ask_text} [Y/n] ${PLAIN}")"
@@ -1630,6 +1597,7 @@ function change_docker_registry_mirror() {
                     [Nn] | [Nn][Oo])
                         echo ''
                         cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
+                        sleep 2s
                         ;;
                     *)
                         input_error "$(msg "error.defaultBehavior.noOverwrite")"
@@ -1641,42 +1609,12 @@ function change_docker_registry_mirror() {
             echo ''
             cp -rvf $File_DockerConfig $File_DockerConfigBackup 2>&1
             echo -e "\n$COMPLETE $(msg "info.backuped.dockerConfig")"
+            sleep 2s
         fi
-        sleep 2s
-    else
-        mkdir -p $Dir_Docker >/dev/null 2>&1
-        touch $File_DockerConfig
-    fi
+    }
 
-    echo -e '{\n  "registry-mirrors": '"$(handleRegistryMirrorsValue ${SOURCE_REGISTRY})"'\n}' >$File_DockerConfig
-    ## 重启服务
-    systemctl daemon-reload
-    if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
-        systemctl restart docker
-    fi
-}
-
-## 仅修改 Docker Registry 镜像仓库源模式
-function only_change_docker_registry_mirror() {
-    ## 判定是否已安装
-    case "${SYSTEM_FACTIONS}" in
-    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
-        dpkg -l | grep docker-ce-cli -q
-        ;;
-    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
-        rpm -qa | grep docker-ce-cli -q
-        ;;
-    esac
-    if [ $? -ne 0 ]; then
-        ## 仅镜像仓库换源模式
-        if [[ "${ONLY_REGISTRY}" == "true" ]]; then
-            output_error "$(msg "result.registry.dockerEngineNotExsit" "${BLUE}--only-registry${PLAIN}")"
-        fi
-    fi
-
-    [ -d "${Dir_Docker}" ] || mkdir -p "${Dir_Docker}"
-    if [ -s "${File_DockerConfig}" ]; then
-        ## 安装 jq
+    ## 安装 jq
+    function install_jq_package() {
         if ! command_exists jq; then
             ## 更新软件源
             local package_manager
@@ -1712,45 +1650,137 @@ function only_change_docker_registry_mirror() {
                 output_error "$(msg "error.sync" "${SYNC_MIRROR_TEXT}" "${BLUE}${package_manager}${PLAIN}")"
             fi
             $package_manager install -y jq
-            if ! command_exists jq; then
-                output_error "$(msg "error.installPackageFailed" "${BLUE}jq${PLAIN}")"
+        fi
+    }
+
+    function modify_registry_mirrors() {
+        local action="$1"
+        local value="$2"
+        local tmp="${File_DockerConfig}.tmp"
+        local _rc=1
+        if [[ "${action}" == "set" ]]; then
+            jq --argjson v "${value}" '.["registry-mirrors"] = $v' "${File_DockerConfig}" >"${tmp}" 2>/dev/null
+        else
+            jq 'del(.["registry-mirrors"])' "${File_DockerConfig}" >"${tmp}" 2>/dev/null
+        fi
+        _rc=$?
+        if [ ${_rc} -eq 0 ] && [ -s "${tmp}" ]; then
+            mv "${tmp}" "${File_DockerConfig}"
+            return 0
+        else
+            rm -f "${tmp}"
+            return 1
+        fi
+    }
+
+    ## 处理 registry-mirrors 配置项的值
+    function handle_registry_mirrors_value() {
+        local content="$1"
+        local result=""
+        content="$(echo "${content}" | sed 's| ||g')"
+        local -a items=(${content//,/ })
+        for item in "${items[@]}"; do
+            [[ -z "${item}" ]] && continue
+            if [[ -z "${result}" ]]; then
+                result='"https://'"${item}"'"'
+            else
+                result="${result},\"https://${item}\""
+            fi
+        done
+        if [[ "${result}" ]]; then
+            echo "[${result}]"
+        else
+            echo ""
+        fi
+    }
+
+    [ -d "${Dir_Docker}" ] || mkdir -p "${Dir_Docker}"
+    if [ -s "${File_DockerConfig}" ]; then
+        ## 备份配置文件
+        backup_docker_config
+        ## 安装 jq
+        install_jq_package
+        if ! command_exists jq; then
+            output_error "$(msg "error.installPackageFailed" "${BLUE}jq${PLAIN}")"
+        fi
+
+        if [[ "${SOURCE_REGISTRY}" == "registry.hub.docker.com" ]]; then
+            ## Docker Hub 官方源 - 删除 registry-mirrors
+            modify_registry_mirrors "del"
+            if [ $? -eq 0 ]; then
+                # 配置文件仅剩空对象时删除
+                local _stripped
+                _stripped="$(tr -d '[:space:]' <"${File_DockerConfig}" 2>/dev/null)"
+                [[ "${_stripped}" == "{}" ]] && rm -f "${File_DockerConfig}"
+            else
+                if [[ "${ONLY_REGISTRY}" == "true" ]]; then
+                    output_error "$(msg "error.dockerConfigModifyFailed" "${BLUE}${File_DockerConfig}${PLAIN}")"
+                else
+                    echo -e "\n${WARN} $(msg "warn.dockerConfigDelMirrorsFailed" "${BLUE}${File_DockerConfig}${PLAIN}" "${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}")\n"
+                    return
+                fi
+            fi
+        else
+            ## 非官方源 - 设置 registry-mirrors
+            local registry_mirrors_value="$(handle_registry_mirrors_value "${SOURCE_REGISTRY}")"
+            modify_registry_mirrors "set" "${registry_mirrors_value}"
+            if [ $? -ne 0 ]; then
+                if [[ "${ONLY_REGISTRY}" == "true" ]]; then
+                    output_error "$(msg "warn.dockerConfigSetMirrorsFailed" "${BLUE}${File_DockerConfig}${PLAIN}" "${BLUE}${registry_mirrors_value}${PLAIN}" "${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}")"
+                else
+                    echo -e "\n${WARN} $(msg "warn.dockerConfigSetMirrorsFailed" "${BLUE}${File_DockerConfig}${PLAIN}" "${BLUE}${registry_mirrors_value}${PLAIN}" "${BLUE}systemctl daemon-reload && systemctl restart docker${PLAIN}")\n"
+                    return
+                fi
             fi
         fi
-        [ -s "${File_DockerConfig}" ] || echo "{}" >$File_DockerConfig
-        jq '.["registry-mirrors"] = '"$(handleRegistryMirrorsValue ${SOURCE_REGISTRY})"'' $File_DockerConfig >$File_DockerConfig.tmp && mv $File_DockerConfig.tmp $File_DockerConfig
     else
-        echo -e '{\n  "registry-mirrors": '"$(handleRegistryMirrorsValue ${SOURCE_REGISTRY})"'\n}' >$File_DockerConfig
+        if [[ "${SOURCE_REGISTRY}" == "registry.hub.docker.com" ]]; then
+            return
+        fi
+        echo -e '{\n  "registry-mirrors": '"$(handle_registry_mirrors_value "${SOURCE_REGISTRY}")"'\n}' >"${File_DockerConfig}"
     fi
+
     ## 重启服务
     systemctl daemon-reload
     if [[ "$(systemctl is-active docker 2>/dev/null)" == "active" ]]; then
         systemctl restart docker
     fi
+}
+
+## 更换 Docker Registry 镜像仓库
+function change_docker_registry_mirror() {
+    if [[ -z "${SOURCE_REGISTRY}" ]]; then
+        SOURCE_REGISTRY="registry.hub.docker.com"
+    fi
+
+    change_docker_registry_mirror_main
+}
+
+## 仅修改 Docker Registry 镜像仓库模式
+function only_change_docker_registry_mirror_mode() {
+    ## 判定是否已安装
+    case "${SYSTEM_FACTIONS}" in
+    "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
+        dpkg -l | grep docker-ce-cli -q
+        ;;
+    "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
+        rpm -qa | grep docker-ce-cli -q
+        ;;
+    esac
+    if [ $? -ne 0 ]; then
+        ## 仅镜像仓库换源模式
+        if [[ "${ONLY_REGISTRY}" == "true" ]]; then
+            output_error "$(msg "result.registry.dockerEngineNotExsit" "${BLUE}--only-registry${PLAIN}")"
+        fi
+    fi
+
+    change_docker_registry_mirror_main
 
     echo -e "\n${BLUE}\$${PLAIN} docker info --format '{{json .RegistryConfig.Mirrors}}'"
     echo -e "\033[2m>${PLAIN} $(docker info --format '{{json .RegistryConfig.Mirrors}}')"
+
     if [[ "${PURE_MODE}" != "true" ]]; then
         echo -e "\n$COMPLETE $(msg "result.registry.success")"
-    fi
-}
-
-function handleRegistryMirrorsValue() {
-    local content="$1"
-    local result=""
-    content="$(echo "${content}" | sed 's| ||g')"
-    local -a items=(${content//,/ })
-    for item in "${items[@]}"; do
-        [[ -z "${item}" ]] && continue
-        if [[ -z "${result}" ]]; then
-            result='"https://'"${item}"'"'
-        else
-            result="${result},\"https://${item}\""
-        fi
-    done
-    if [[ "${result}" ]]; then
-        echo "[${result}]"
-    else
-        echo ""
     fi
 }
 
@@ -2260,6 +2290,9 @@ function msg_pack_zh_hans() {
         ['warn.needValidNumberIndex']='请输入有效的数字序号！'
         ['warn.needInputNumberIndex']='请输入数字序号！'
         ['warn.needManuallyDeleteConfig']='请自行删除 {} 中的 {} 配置并重启服务 {}'
+        ['warn.dockerConfigDelMirrorsFailed']='无法修改 {}，请手动删除 registry-mirrors 配置后重启服务 {}'
+        ['warn.dockerConfigSetMirrorsFailed']='无法修改 {}，请手动将 registry-mirrors 设置为 {} 后重启服务 {}'
+        ['error.dockerConfigModifyFailed']='无法修改 {}，请手动删除 registry-mirrors 配置后重新运行脚本！'
         ['tip.skipInstallDockerEngine']='检测到系统已安装 Docker Engine 且是最新版本，跳过安装'
         ['info.backuped.dockerConfig']='已备份原有 Docker 配置文件'
         ['interaction.source.type.public']='公网'
@@ -2411,6 +2444,9 @@ function msg_pack_zh_hant() {
         ['warn.needValidNumberIndex']='請輸入有效的數字序號！'
         ['warn.needInputNumberIndex']='請輸入數字序號！'
         ['warn.needManuallyDeleteConfig']='請自行刪除 {} 中的 {} 設定並重新啟動服務 {}'
+        ['warn.dockerConfigDelMirrorsFailed']='無法修改 {}，請手動刪除 registry-mirrors 設定後重新啟動服務 {}'
+        ['warn.dockerConfigSetMirrorsFailed']='無法修改 {}，請手動將 registry-mirrors 設定為 {} 後重新啟動服務 {}'
+        ['error.dockerConfigModifyFailed']='無法修改 {}，請手動刪除 registry-mirrors 設定後重新執行腳本！'
         ['tip.skipInstallDockerEngine']='偵測到系統已安裝 Docker Engine 且是最新版本，跳過安裝'
         ['info.backuped.dockerConfig']='已備份原有 Docker 設定檔'
         ['interaction.source.type.public']='公網'
@@ -2563,6 +2599,9 @@ function msg_pack_en() {
         ['warn.needValidNumberIndex']='Please enter a valid number index!'
         ['warn.needInputNumberIndex']='Please enter a number index!'
         ['warn.needManuallyDeleteConfig']='Please manually delete {} configuration in {} and restart service {}'
+        ['warn.dockerConfigDelMirrorsFailed']='Failed to modify {}. Please manually delete the registry-mirrors entry and restart service {}'
+        ['warn.dockerConfigSetMirrorsFailed']='Failed to modify {}. Please manually set registry-mirrors to {} and restart service {}'
+        ['error.dockerConfigModifyFailed']='Failed to modify {}. Please manually delete the registry-mirrors entry and rerun the script!'
         ['tip.skipInstallDockerEngine']='Detected Docker Engine is already installed with latest version, skipping installation'
         ['info.backuped.dockerConfig']='Original Docker config file has been backed up'
         ['interaction.source.type.public']='Public'
