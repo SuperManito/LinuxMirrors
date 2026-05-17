@@ -146,6 +146,12 @@ hide:
 
     Docker Compose 自 V2 版本起开始作为 Docker CLI（命令行）的一部分，脚本默认集成安装该[插件](https://docs.docker.com/compose/install/linux)，请使用 `docker compose` 命令替代 `docker-compose`
 
+!!! node "脚本兼容性说明"
+
+    该脚本兼容性较高，不强制检测和判定系统类型，仅支持 `Debian` 系和 `RedHat` 系的 Linux 发行版以及衍生版。由于支持列表难以统计和维护，因此可能会使部分独立发行版操作系统的用户感到困惑，请您查看系统官方提供的软件包仓库或参考 [从二进制文件安装 Docker Engine](https://docs.docker.com/engine/install/binaries/) 与 [Docker Desktop](https://www.docker.com/products/docker-desktop)。
+
+    对于 NAS 用户（截止至 2026 年 5 月 16 日之前），由于原先更换镜像仓库（镜像加速器）源的逻辑较为简单、直接覆盖配置，从而导致产生了数据丢失的 “假象”，原因包括上面所说的兼容性较高问题，并且（在此之前）没有预料到会有 NAS 设备使用本项目，因此恰巧误伤了 NAS 系统场景。脚本原先只有安装模式作为预设使用场景，“仅更换镜像加速器” 模式是近期推出的功能。当前已改为通过 jq 修改配置，不会再覆盖配置文件，为此深感抱歉！
+
 !!! node "软件源说明"
 
     <div class="grid cards" markdown>
@@ -167,7 +173,6 @@ hide:
     由于一些不可抗力的因素，国内网络环境下目前无法访问 [Docker Hub](https://hub.docker.com) 因此不能正常拉取镜像，建议使用下方提到的国内可用镜像仓库源
 
     注：脚本内的指定 Web 协议交互仅用于控制 `Docker CE` 软件源，`Docker Registry` 强制使用 `HTTPS` 协议
-
 
 !!! quote "内置的镜像仓库源"
 

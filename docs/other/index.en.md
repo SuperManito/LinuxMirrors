@@ -146,6 +146,12 @@ hide:
 
     Starting from V2, Docker Compose is part of the Docker CLI. The script integrates the installation of this [plugin](https://docs.docker.com/compose/install/linux) by default. Please use the `docker compose` command instead of `docker-compose`.
 
+!!! node "Script Compatibility Notes"
+
+    This script offers broad compatibility; it does not strictly detect or validate the specific system type, but officially supports only Debian-based and Red Hat-based Linux distributions and their derivatives. Since maintaining a comprehensive and up-to-date list of supported systems is challenging, users of certain independent Linux distributions may encounter difficulties. In such cases, please consult your operating system's official package repositories, or refer to the official documentation on [Installing Docker Engine from Binaries](https://docs.docker.com/engine/install/binaries/) and [Docker Desktop](https://www.docker.com/products/docker-desktop).
+
+    For NAS users (specifically regarding the period prior to May 16, 2026): The original logic for switching container registry sources (mirror accelerators) was quite simplistic—it directly overwrote the existing configuration file. This approach inadvertently created the *illusion* of data loss. The root causes included the aforementioned issue regarding high system compatibility (which allowed the script to run on a wide range of systems) and—crucially—the fact that we had not anticipated that NAS devices would utilize this project. Consequently, NAS system environments were unintentionally and adversely affected. Originally, the script was designed with only an "installation" mode as its intended use case; the "change mirror accelerator only" mode is a feature that was introduced more recently. We have since revised the script to modify configurations using `jq`, thereby ensuring that the configuration file is no longer overwritten. We sincerely apologize for any inconvenience or distress this may have caused!
+
 !!! node "About Software Sources"
 
     <div class="grid cards" markdown>

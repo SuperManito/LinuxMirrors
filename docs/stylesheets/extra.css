@@ -518,9 +518,9 @@
 
 .sponsor-item-toc {
     margin: 0;
-    padding: 14px !important;
-    height: 56px !important;
-    max-height: 56px !important;
+    padding: 4px 18px !important;
+    height: 40px !important;
+    max-height: 40px !important;
     border-radius: 6px !important;
     box-sizing: border-box;
     flex: 0 0 calc(50% - 2px) !important;
