@@ -67,7 +67,7 @@
     </tr>
     <tr>
         <td><a href="https://fedoraproject.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/fedora.ico" alt="Fedora" width="16" height="16"></sub></a>&nbsp;Fedora</td>
-        <td align="center">30 ~ 43</td>
+        <td align="center">30 ~ 44</td>
     </tr>
     <tr>
         <td><a href="https://www.centos.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/centos.svg" alt="CentOS" width="16" height="16"></sub></a>&nbsp;CentOS</td>

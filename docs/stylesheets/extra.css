@@ -277,7 +277,12 @@
 }
 
 .md-select__inner .md-select__list .md-select__item:hover {
-    background-color: var(--component-hover-color);
+    background-color: var(--md-default-fg-color--lightest);
+    border-radius: calc(var(--component-border-radius) - 2px) !important;
+}
+
+.md-select__link:focus {
+    background-color: transparent !important;
 }
 
 .md-header__button>*:first-child,
