@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-04-15
+## Modified: 2026-06-08
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -7009,8 +7009,8 @@ function gen_repo_files_EPEL() {
         cat <<'EOF' >$Dir_YumRepos/epel.repo
 [epel]
 name=Extra Packages for Enterprise Linux $releasever - $basearch
-#baseurl=https://download.example/pub/epel/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+#baseurl=https://download.example/pub/epel/$releasever${releasever_minor:+z}/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-$releasever&arch=$basearch
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
 gpgcheck=1
 repo_gpgcheck=0
@@ -7020,8 +7020,8 @@ enabled=1
 
 [epel-debuginfo]
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-#baseurl=https://download.example/pub/epel/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+#baseurl=https://download.example/pub/epel/$releasever${releasever_minor:+z}/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-debug-$releasever&arch=$basearch
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
 gpgcheck=1
 repo_gpgcheck=0
@@ -7030,8 +7030,8 @@ enabled=0
 
 [epel-source]
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-#baseurl=https://download.example/pub/epel/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+#baseurl=https://download.example/pub/epel/$releasever${releasever_minor:+z}/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-source-$releasever&arch=source
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
 gpgcheck=1
 repo_gpgcheck=0
@@ -7041,8 +7041,8 @@ EOF
         cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
 [epel-testing]
 name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
-#baseurl=https://download.example/pub/epel/testing/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+#baseurl=https://download.example/pub/epel/testing/$releasever${releasever_minor:+z}/Everything/$basearch/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-testing-$releasever&arch=$basearch
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
 gpgcheck=1
 repo_gpgcheck=0
@@ -7052,8 +7052,8 @@ enabled=0
 
 [epel-testing-debuginfo]
 name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
-#baseurl=https://download.example/pub/epel/testing/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+#baseurl=https://download.example/pub/epel/testing/$releasever${releasever_minor:+z}/Everything/$basearch/debug/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-testing-debug-$releasever&arch=$basearch
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
 gpgcheck=1
 repo_gpgcheck=0
@@ -7062,8 +7062,8 @@ enabled=0
 
 [epel-testing-source]
 name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
-#baseurl=https://download.example/pub/epel/testing/$releasever_major${releasever_minor:+.$releasever_minor}/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel$releasever_major${releasever_minor:+.$releasever_minor}&arch=$basearch
+#baseurl=https://download.example/pub/epel/testing/$releasever${releasever_minor:+z}/Everything/source/tree/
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-testing-source-$releasever&arch=source
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
 gpgcheck=1
 repo_gpgcheck=0
