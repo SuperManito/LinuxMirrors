@@ -179,7 +179,6 @@ SPONSOR_ADS=(
     "不二云 · 国内外建站快响应服务器的不二之选 ➜  \033[3mhttps://cb2.cn\033[0m"
     "润信云 · 国内挂机宝海外云服务器低至9.9元/月 ➜  \033[3mhttps://www.runxinyun.com\033[0m"
     "蓝易云 · 高防CDN，国内BGP多线/香港/死扛CC/DDos攻击 ➜  \033[3mhttps://www.tsycdn.com\033[0m"
-    "慈云数据 · 香港直连2H2G 99元/年 ➜  \033[3mhttps://www.ciyundata.com\033[0m"
     "浪浪云 · BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费 ➜  \033[3mhttps://langlangy.cn\033[0m"
 )
 
