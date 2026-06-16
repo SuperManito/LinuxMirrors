@@ -54,7 +54,7 @@ ComponentSystem.register('mirrors-table', {
                     clearable
                     size="large"
                     :placeholder="rowSelectPlaceholder"
-                    style="min-width: 160px; width: 250px"
+                    style="min-width: 160px; width: 250px; user-select: none"
                     @change="onRowFilterChange"
                 />
                 <t-select
@@ -65,7 +65,7 @@ ComponentSystem.register('mirrors-table', {
                     clearable
                     size="large"
                     :placeholder="selectPlaceholder"
-                    style="min-width: 160px; width: 230px"
+                    style="min-width: 160px; width: 230px; user-select: none"
                     @change="onFilterChange"
                 />
             </t-space>

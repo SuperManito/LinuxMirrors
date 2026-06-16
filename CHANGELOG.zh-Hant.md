@@ -1,3 +1,7 @@
+2026-06-16
+
+* 新增適配 Void Linux 作業系統
+
 2026-01-04
 
 * 新增適配 EndeavourOS 作業系統 [#30310f5](https://github.com/SuperManito/LinuxMirrors/commit/30310f5508b1943b647b54834dd60c206d9fb366)

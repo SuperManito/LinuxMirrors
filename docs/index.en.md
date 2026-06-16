@@ -54,7 +54,7 @@ hide:
 
     ---
 
-    Supports up to `26+` operating systems, covering various versions, accurately identifying system types  
+    Supports up to `27+` operating systems, covering various versions, accurately identifying system types  
     High script compatibility, unsupported systems will prompt and exit without operation
 
 -   :material-vector-triangle:{ .lg .middle } __Diverse Mirror Adaptation__
@@ -131,6 +131,7 @@ hide:
 | <a href="https://www.alpinelinux.org" title="https://www.alpinelinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/alpine.png" alt="Alpine Linux" width="16" height="16" style="vertical-align: -0.15em"></a> **Alpine Linux** | _v3 / edge_ |
 | <a href="https://www.gentoo.org" title="https://www.gentoo.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/gentoo.svg" alt="Gentoo" width="16" height="16" style="vertical-align: -0.2em"></a> **Gentoo** | _all_ |
 | <a href="https://nixos.org" title="https://nixos.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/nixos.svg" alt="NixOS" width="16" height="16" style="vertical-align: -0.15em"></a> **NixOS** | _19～25_ |
+| <a href="https://voidlinux.org" title="https://voidlinux.org" target="_blank" rel="noopener noreferrer"><img src="/assets/images/icon/void-linux.png" alt="Void Linux" width="16" height="16" style="vertical-align: -0.15em"></a> **Void Linux** | _all_ |
 
 </div>
 </div>

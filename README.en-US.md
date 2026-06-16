@@ -129,6 +129,10 @@
         <td><a href="https://nixos.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/nixos.svg" alt="NixOS" width="16" height="16"></sub></a>&nbsp;NixOS</td>
         <td align="center">19 ~ 25</td>
     </tr>
+    <tr>
+        <td><a href="https://voidlinux.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/void-linux.png" alt="Void Linux" width="16" height="16"></sub></a>&nbsp;Void Linux</td>
+        <td align="center">all</td>
+    </tr>
 </table>
 
 <p>

@@ -33,6 +33,7 @@ const mirrorsTableData = [
         raspberrypi: true,
         manjaro: true,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '騰訊雲' : __isEn ? 'Tencent Cloud' : '腾讯云',
@@ -67,6 +68,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: false,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '華為雲' : __isEn ? 'Huawei Cloud' : '华为云',
@@ -101,6 +103,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: true,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '移動雲' : __isEn ? 'China Mobile Cloud' : '移动云 ',
@@ -135,6 +138,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: false,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '天翼雲' : __isEn ? 'China Telecom Cloud' : '天翼云',
@@ -169,6 +173,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: false,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '網易' : __isEn ? 'NetEase' : '网易',
@@ -203,6 +208,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: false,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '火山引擎' : __isEn ? 'Volcengine' : '火山引擎',
@@ -237,6 +243,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: false,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '清華大學' : __isEn ? 'Tsinghua University' : '清华大学',
@@ -271,6 +278,7 @@ const mirrorsTableData = [
         raspberrypi: true,
         manjaro: true,
         endeavouros: true,
+        voidlinux: true,
     },
     {
         name: __isZhHant ? '北京大學' : __isEn ? 'Peking University' : '北京大学',
@@ -305,6 +313,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: true,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '浙江大學' : __isEn ? 'Zhejiang University' : '浙江大学',
@@ -339,6 +348,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: true,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '南京大學' : __isEn ? 'Nanjing University' : '南京大学',
@@ -373,6 +383,7 @@ const mirrorsTableData = [
         raspberrypi: true,
         manjaro: true,
         endeavouros: true,
+        voidlinux: true,
     },
     {
         name: __isZhHant ? '蘭州大學' : __isEn ? 'Lanzhou University' : '兰州大学',
@@ -407,6 +418,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: true,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '上海交通大學' : __isEn ? 'Shanghai Jiao Tong University' : '上海交通大学',
@@ -441,6 +453,7 @@ const mirrorsTableData = [
         raspberrypi: true,
         manjaro: true,
         endeavouros: true,
+        voidlinux: true,
     },
     {
         name: __isZhHant ? '華中科技大學' : __isEn ? 'Huazhong University of Science and Technology' : '华中科技大学',
@@ -475,6 +488,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: true,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '中國科學技術大學' : __isEn ? 'University of Science and Technology of China' : '中国科学技术大学',
@@ -509,6 +523,7 @@ const mirrorsTableData = [
         raspberrypi: true,
         manjaro: true,
         endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '中國科學院軟體研究所' : __isEn ? 'Institute of Software, Chinese Academy of Sciences (ISCAS)' : '中国科学院软件研究所',
@@ -542,7 +557,8 @@ const mirrorsTableData = [
         nix_channels: true,
         raspberrypi: true,
         manjaro: false,
-        endeavouros: true,
+        endeavouros: false,
+        voidlinux: false,
     },
     {
         name: __isZhHant ? '中國科技雲' : __isEn ? 'China Science & Technology Cloud' : '中国科技云',
@@ -577,6 +593,7 @@ const mirrorsTableData = [
         raspberrypi: false,
         manjaro: false,
         endeavouros: false,
+        voidlinux: false,
     },
 ]
 
@@ -745,7 +762,13 @@ const mirrorsTableColumns = [
         colKey: 'endeavouros',
         title: 'EndeavourOS',
         align: 'center',
-        width: '140',
+        width: '130',
+    },
+    {
+        colKey: 'voidlinux',
+        title: 'Void Linux',
+        align: 'center',
+        width: '110',
     },
 ].map((item) => {
     if (item.colKey !== 'name') {
@@ -937,6 +960,11 @@ const mirrorsTableFilterSelectOptions = [
                 value: 'nix_channels',
                 label: 'NixOS',
                 iconName: 'nixos.svg',
+            },
+            {
+                value: 'voidlinux',
+                label: 'Void Linux',
+                iconName: 'void-linux.png',
             },
         ],
     },

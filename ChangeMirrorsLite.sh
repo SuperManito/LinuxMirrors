@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-06-08
+## Modified: 2026-06-16
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -42,6 +42,7 @@ SYSTEM_MANJARO="Manjaro"
 SYSTEM_ALPINE="Alpine"
 SYSTEM_GENTOO="Gentoo"
 SYSTEM_NIXOS="NixOS"
+SYSTEM_VOID="Void"
 
 ## 定义系统版本文件
 File_LinuxRelease=/etc/os-release
@@ -73,6 +74,8 @@ Dir_ZYppRepos=/etc/zypp/repos.d
 Dir_ZYppReposBackup=$Dir_ZYppRepos.bak
 Dir_GentooReposConf=/etc/portage/repos.conf
 Dir_NixConfig=/etc/nix
+Dir_XbpsRepos=/etc/xbps.d
+Dir_XbpsReposBackup=$Dir_XbpsRepos.bak
 File_AptSourceList=/etc/apt/sources.list
 File_AptSourceListBackup=$File_AptSourceList.bak
 File_DebianSources=$Dir_AptAdditionalSources/debian.sources
@@ -523,6 +526,8 @@ function collect_system_info() {
         SYSTEM_FACTIONS="${SYSTEM_OPENSUSE}"
     elif [[ "${SYSTEM_NAME}" == *"NixOS"* ]]; then
         SYSTEM_FACTIONS="${SYSTEM_NIXOS}"
+    elif [[ "${SYSTEM_ID}" == "void" ]]; then
+        SYSTEM_FACTIONS="${SYSTEM_VOID}"
     else
         unsupport_system_error "$(msg "error.unknownSystem")"
     fi
@@ -667,7 +672,7 @@ function collect_system_info() {
         ;;
     # 理论全部支持或不作判断
     "${SYSTEM_KALI}" | "${SYSTEM_DEEPIN}" | "${SYSTEM_ZORIN}" | "${SYSTEM_RASPBERRY_PI_OS}" | "${SYSTEM_OPENKYLIN}") ;;
-    "${SYSTEM_ARCH}" | "${SYSTEM_MANJARO}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_NIXOS}") ;;
+    "${SYSTEM_ARCH}" | "${SYSTEM_MANJARO}" | "${SYSTEM_ALPINE}" | "${SYSTEM_GENTOO}" | "${SYSTEM_NIXOS}" | "${SYSTEM_VOID}") ;;
     *)
         unsupport_system_error "$(msg "error.unknownVersion")"
         ;;
@@ -793,6 +798,9 @@ function collect_system_info() {
         "${SYSTEM_NIXOS}")
             SOURCE_BRANCH="nix-channels"
             ;;
+        "${SYSTEM_VOID}")
+            SOURCE_BRANCH="voidlinux"
+            ;;
         esac
     fi
     ## 定义软件源更新文字
@@ -806,7 +814,7 @@ function collect_system_info() {
     "${SYSTEM_OPENSUSE}")
         SYNC_MIRROR_TEXT="$(msg "source.sync.text3")"
         ;;
-    "${SYSTEM_ARCH}" | "${SYSTEM_GENTOO}")
+    "${SYSTEM_ARCH}" | "${SYSTEM_GENTOO}" | "${SYSTEM_VOID}")
         SYNC_MIRROR_TEXT="$(msg "source.sync.text4")"
         ;;
     "${SYSTEM_NIXOS}")
@@ -901,20 +909,21 @@ function backup_original_mirrors() {
     function backup_dir() {
         local target_dir=$1
         local backup_dir=$2
+        local file_type="${3:-repo}"
         [ -d "${target_dir}" ] || mkdir -p "${target_dir}"
         [ -d "${backup_dir}" ] || mkdir -p "${backup_dir}"
-        ## 判断是否存在 repo 源文件
-        ls "${target_dir}" | grep '\.repo$' -q
+        ## 判断是否存在软件源文件
+        ls "${target_dir}" | grep "\.${file_type}$" -q
         if [ $? -ne 0 ]; then
             return
         fi
-        ## 判断是否存在已备份的 repo 源文件
-        ls "${backup_dir}" | grep '\.repo$' -q
+        ## 判断是否存在已备份的软件源文件
+        ls "${backup_dir}" | grep "\.${file_type}$" -q
         if [ $? -eq 0 ]; then
             if [[ "${IGNORE_BACKUP_TIPS}" != "false" ]]; then
                 return
             fi
-            local ask_text="$(msg "interaction.backup.skipOverwrite.sourceFile" "repo")?"
+            local ask_text="$(msg "interaction.backup.skipOverwrite.sourceFile" "${file_type}")?"
             if [[ "${CAN_USE_ADVANCED_INTERACTIVE_SELECTION}" == "true" ]]; then
                 echo ''
                 interactive_select_boolean "${BOLD}${ask_text}${PLAIN}"
@@ -943,7 +952,7 @@ function backup_original_mirrors() {
             echo ''
             cp -rvf $target_dir/* "${backup_dir}" 2>&1
             BACKED_UP="true"
-            echo -e "\n$COMPLETE $(msg "info.backuped.sourceFile" "repo")"
+            echo -e "\n$COMPLETE $(msg "info.backuped.sourceFile" "${file_type}")"
             sleep 1s
         fi
     }
@@ -1028,6 +1037,10 @@ function backup_original_mirrors() {
             [ ! -d "${Dir_NixConfig}" ] && mkdir -p "${Dir_NixConfig}"
             # /etc/nix/nix.conf
             backup_file $File_NixConf $File_NixConfBackup "nix.conf"
+            ;;
+        "${SYSTEM_VOID}")
+            # /etc/xbps.d
+            backup_dir $Dir_XbpsRepos $Dir_XbpsReposBackup "conf"
             ;;
         esac
     fi
@@ -1207,6 +1220,13 @@ function remove_original_mirrors() {
     "${SYSTEM_GENTOO}")
         clear_file $File_GentooReposConf
         ;;
+    "${SYSTEM_VOID}")
+        if [ ! -d "${Dir_XbpsRepos}" ]; then
+            mkdir -p "${Dir_XbpsRepos}"
+            return
+        fi
+        rm -rf $Dir_XbpsRepos/*-repository-*.conf
+        ;;
     esac
 }
 
@@ -1296,6 +1316,9 @@ function change_mirrors_main() {
             "${SYSTEM_NIXOS}")
                 diff_file $File_NixConfBackup $File_NixConf
                 ;;
+            "${SYSTEM_VOID}")
+                diff_dir $Dir_XbpsReposBackup $Dir_XbpsRepos
+                ;;
             esac
         fi
     }
@@ -1337,6 +1360,9 @@ function change_mirrors_main() {
     "${SYSTEM_NIXOS}")
         change_mirrors_NixOS
         ;;
+    "${SYSTEM_VOID}")
+        change_mirrors_Void
+        ;;
     esac
     ## 比较差异
     if [[ "${PRINT_DIFF}" == "true" ]]; then
@@ -1367,6 +1393,9 @@ function change_mirrors_main() {
     "${SYSTEM_NIXOS}")
         commands+=("nix-store --verify")
         commands+=("nix-channel --update")
+        ;;
+    "${SYSTEM_VOID}")
+        commands+=("xbps-install -S")
         ;;
     esac
     if [[ "${PURE_MODE}" == "true" ]]; then
@@ -1490,6 +1519,9 @@ function upgrade_software() {
     "${SYSTEM_NIXOS}")
         commands+=("nixos-rebuild switch")
         ;;
+    "${SYSTEM_VOID}")
+        commands+=("xbps-install -yu")
+        ;;
     esac
     if [[ "${PURE_MODE}" == "true" ]]; then
         local exec_cmd=""
@@ -1536,6 +1568,9 @@ function upgrade_software() {
         ;;
     "${SYSTEM_NIXOS}")
         nix-collect-garbage -d >/dev/null 2>&1
+        ;;
+    "${SYSTEM_VOID}")
+        xbps-remove -O >/dev/null 2>&1
         ;;
     esac
 }
@@ -2641,6 +2676,20 @@ function change_mirrors_NixOS() {
     # channel
     nix-channel --add "${channel_source}/nixos-${SYSTEM_VERSION_ID}" nixos
     nix-channel --update >/dev/null 2>&1
+}
+
+## 更换 Void Linux 软件源
+function change_mirrors_Void() {
+    [ -d "${Dir_XbpsRepos}" ] || mkdir -p $Dir_XbpsRepos
+    cp -rvf /usr/share/xbps.d/*-repository-*.conf $Dir_XbpsRepos
+    ## 使用官方源
+    [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
+
+    ## 修改源
+    cd $Dir_XbpsRepos
+    sed -e "s|https://repo-default.voidlinux.org|${WEB_PROTOCOL}://${SOURCE}/${SOURCE_BRANCH}|g" \
+        -i \
+        *-repository-*.conf
 }
 
 ## EPEL (Extra Packages for Enterprise Linux) 附加软件包 - 安装或更换软件源
