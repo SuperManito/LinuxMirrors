@@ -137,7 +137,7 @@
 
 <p>
     <strong>
-        <a href="https://linuxmirrors.cn/zh-Hant/" style="text-decoration: none;">官方網站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/use/" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/mirrors/" style="text-decoration: none;">軟體源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/other/" style="text-decoration: none;">Docker 安裝(額外腳本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/community/" style="text-decoration: none;">社群</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/sponsor/" style="text-decoration: none;">贊助</a>
+        <a href="https://linuxmirrors.cn/zh-Hant/" style="text-decoration: none;">官方網站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/use/" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/mirrors/" style="text-decoration: none;">軟體源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/other/" style="text-decoration: none;">Docker 安裝(額外腳本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/community/" style="text-decoration: none;">社群</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/zh-Hant/sponsor/" style="text-decoration: none;">成為贊助商</a>
     </strong>
 </p>
 
@@ -159,8 +159,6 @@
 
 ## 快速開始
 
-> 更多使用方法詳見專案官方網站 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-Hant/use/)
-
 - ### GNU/Linux 更換系統軟體源
 
     ```bash
@@ -178,6 +176,8 @@
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --only-registry
     ```
+
+> 更多使用方法詳見專案官方網站 [**linuxmirrors.cn**](https://linuxmirrors.cn/zh-Hant/use/)，備用訪問網域 [**edgeone.linuxmirrors.cn**](https://edgeone.linuxmirrors.cn/zh-Hant/use/)
 
 ## 特別感謝
 

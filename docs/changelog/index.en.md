@@ -8,7 +8,7 @@ search:
 
 ### `2026-06-16`
 
-  * Added support for Void Linux
+  * Added support for Void Linux [#bdb1142](https://github.com/SuperManito/LinuxMirrors/commit/bdb11426c62aa6e7f10ad44ae76bd9f7458bed6b)
 
 ### `2026-01-04`
 

@@ -49,7 +49,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh)
             ```
-            > 不建议在国内网络环境下使用
+            > 备用官网地址，不建议在国内网络环境下使用
 
         集成安装 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支持选择或更换软件源（Docker 软件仓库）以及镜像仓库、安装指定版本、重装等功能，支持 ARM 架构
 
@@ -96,7 +96,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --only-registry
             ```
-            > 不建议在国内网络环境下使用
+            > 备用官网地址，不建议在国内网络环境下使用
 
 <div class="grid cards" markdown>
 
@@ -348,7 +348,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --help
     ``` { .bash .no-copy }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --branch centos
     ```
-    > 仓库名是固定的，目前只有 [`centos`](https://download.docker.com/linux/centos/) [`debian`](https://download.docker.com/linux/debian/) [`fedora`](https://download.docker.com/linux/fedora/) [`raspbian`](https://download.docker.com/linux/raspbian/) [`rhel`](https://download.docker.com/linux/rhel/) [`sles`](https://download.docker.com/linux/sles/) [`static`](https://download.docker.com/linux/static/) [`ubuntu`](https://download.docker.com/linux/ubuntu/) 这几个  
+    > 仓库名是固定的，目前只有 [`alma`](https://download.docker.com/linux/alma/) [`centos`](https://download.docker.com/linux/centos/) [`debian`](https://download.docker.com/linux/debian/) [`fedora`](https://download.docker.com/linux/fedora/) [`oracle`](https://download.docker.com/linux/oracle/) [`raspbian`](https://download.docker.com/linux/raspbian/) [`rhel`](https://download.docker.com/linux/rhel/) [`rocky`](https://download.docker.com/linux/rocky/) [`sles`](https://download.docker.com/linux/sles/) [`static`](https://download.docker.com/linux/static/) [`ubuntu`](https://download.docker.com/linux/ubuntu/) 这几个  
     > 具体详见 [官方安装文档](https://docs.docker.com/engine/install) 和 [Docker CE 官方仓库](https://download.docker.com/linux)
 
     ``` { .bash .no-copy title="还可以指定仓库版本号" }

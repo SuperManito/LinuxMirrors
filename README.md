@@ -137,7 +137,7 @@
 
 <p>
     <strong>
-        <a href="https://linuxmirrors.cn/" style="text-decoration: none;">官方网站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/use/" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors/" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other/" style="text-decoration: none;">Docker 安装(额外脚本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/community/" style="text-decoration: none;">社区</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/sponsor/" style="text-decoration: none;">赞助</a>
+        <a href="https://linuxmirrors.cn/" style="text-decoration: none;">官方网站</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/use/" style="text-decoration: none;">使用方法</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/mirrors/" style="text-decoration: none;">软件源列表</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/other/" style="text-decoration: none;">Docker 安装(额外脚本)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/community/" style="text-decoration: none;">社区</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/sponsor/" style="text-decoration: none;">成为赞助商</a>
     </strong>
 </p>
 
@@ -159,8 +159,6 @@
 
 ## 快速开始
 
-> 更多使用方法详见项目官方网站 [**linuxmirrors.cn**](https://linuxmirrors.cn/use/)
-
 - ### GNU/Linux 更换系统软件源
 
     ```bash
@@ -178,6 +176,8 @@
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --only-registry
     ```
+
+> 更多使用方法详见项目官方网站 [**linuxmirrors.cn**](https://linuxmirrors.cn/use/)，备用访问域名 [**edgeone.linuxmirrors.cn**](https://edgeone.linuxmirrors.cn)
 
 ## 特别感谢
 

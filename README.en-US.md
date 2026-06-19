@@ -137,7 +137,7 @@
 
 <p>
     <strong>
-        <a href="https://linuxmirrors.cn/en/" style="text-decoration: none;">Official Website</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/use/" style="text-decoration: none;">Usage</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/mirrors/" style="text-decoration: none;">Mirror List</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/other/" style="text-decoration: none;">Docker Install (Extra Script)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/community/" style="text-decoration: none;">Community</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/sponsor/" style="text-decoration: none;">Sponsor</a>
+        <a href="https://linuxmirrors.cn/en/" style="text-decoration: none;">Official Website</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/use/" style="text-decoration: none;">Usage</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/mirrors/" style="text-decoration: none;">Mirror List</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/other/" style="text-decoration: none;">Docker Install (Extra Script)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/community/" style="text-decoration: none;">Community</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://linuxmirrors.cn/en/sponsor/" style="text-decoration: none;">Become a Sponsor</a>
     </strong>
 </p>
 
@@ -159,8 +159,6 @@
 
 ## Quick Start
 
-> For more usage, see official project website [**linuxmirrors.cn**](https://linuxmirrors.cn/en/use/)
-
 - ### GNU/Linux System Software Mirror Switching
 
     ```bash
@@ -178,6 +176,8 @@
     ```bash
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --en --only-registry
     ```
+
+> For more usage instructions, please visit the official project website at [**linuxmirrors.cn**](https://linuxmirrors.cn/en/use/). An alternative access domain is [**edgeone.linuxmirrors.cn**](https://edgeone.linuxmirrors.cn/en/use/).
 
 ## Special Thanks
 

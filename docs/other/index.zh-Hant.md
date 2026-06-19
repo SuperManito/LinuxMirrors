@@ -49,7 +49,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --zh-hant
             ```
-            > 不建議在中國大陸網路環境下使用
+            > 備用官網位址，不建議在中國大陸網路環境下使用
 
         整合安裝 [`Docker Engine`](https://docs.docker.com/engine) 和 [`Docker Compose`](https://docs.docker.com/compose)，支援選擇或更換軟體源（Docker 軟體倉庫）以及映像倉庫、安裝指定版本、重裝等功能，支援 ARM 架構
 
@@ -96,7 +96,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/docker.sh) --zh-hant --only-registry
             ```
-            > 不建議在中國大陸網路環境下使用
+            > 備用官網位址，不建議在中國大陸網路環境下使用
 
 <div class="grid cards" markdown>
 
@@ -349,7 +349,7 @@ $ bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --help
     ``` { .bash .no-copy }
     bash <(curl -sSL https://linuxmirrors.cn/docker.sh) --zh-hant --branch centos
     ```
-    > 倉庫名稱是固定的，目前只有 [`centos`](https://download.docker.com/linux/centos/) [`debian`](https://download.docker.com/linux/debian/) [`fedora`](https://download.docker.com/linux/fedora/) [`raspbian`](https://download.docker.com/linux/raspbian/) [`rhel`](https://download.docker.com/linux/rhel/) [`sles`](https://download.docker.com/linux/sles/) [`static`](https://download.docker.com/linux/static/) [`ubuntu`](https://download.docker.com/linux/ubuntu/) 這幾個  
+    > 倉庫名稱是固定的，目前只有 [`alma`](https://download.docker.com/linux/alma/) [`centos`](https://download.docker.com/linux/centos/) [`debian`](https://download.docker.com/linux/debian/) [`fedora`](https://download.docker.com/linux/fedora/) [`oracle`](https://download.docker.com/linux/oracle/) [`raspbian`](https://download.docker.com/linux/raspbian/) [`rhel`](https://download.docker.com/linux/rhel/) [`rocky`](https://download.docker.com/linux/rocky/) [`sles`](https://download.docker.com/linux/sles/) [`static`](https://download.docker.com/linux/static/) [`ubuntu`](https://download.docker.com/linux/ubuntu/) 這幾個  
     > 詳情請見 [官方安裝文件](https://docs.docker.com/engine/install) 及 [Docker CE 官方倉庫](https://download.docker.com/linux)
 
     ``` { .bash .no-copy title="还可以指定倉庫版本號" }

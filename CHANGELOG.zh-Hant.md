@@ -1,6 +1,6 @@
 2026-06-16
 
-* 新增適配 Void Linux 作業系統
+* 新增適配 Void Linux 作業系統 [#bdb1142](https://github.com/SuperManito/LinuxMirrors/commit/bdb11426c62aa6e7f10ad44ae76bd9f7458bed6b)
 
 2026-01-04
 

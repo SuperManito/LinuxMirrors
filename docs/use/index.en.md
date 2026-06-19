@@ -47,7 +47,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --en
             ```
-            > Not recommended in Chinese mainland network environments.
+            > Alternative official website address. Not recommended for use in Chinese mainland network environments.
 
 === ":material-earth: International Regions"
 
@@ -90,7 +90,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --abroad
             ```
-            > Not recommended in Chinese mainland network environments.
+            > Alternative official website address. Not recommended for use in Chinese mainland network environments.
 
 === ":material-library: China Education Network"
 
@@ -133,7 +133,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --en --edu
             ```
-            > Not recommended in Chinese mainland network environments.
+            > Alternative official website address. Not recommended for use in Chinese mainland network environments.
 
 
 

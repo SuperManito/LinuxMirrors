@@ -47,7 +47,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --zh-hant
             ```
-            > 不建議在中國大陸網路環境下使用
+            > 備用官網位址，不建議在中國大陸網路環境下使用
 
 === ":material-earth: 國際地區"
 
@@ -91,7 +91,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --zh-hant --abroad
             ```
-            > 不建議在中國大陸網路環境下使用
+            > 備用官網位址，不建議在中國大陸網路環境下使用
 
 === ":material-library: 中國大陸教育網"
 
@@ -135,7 +135,7 @@ hide:
             ``` bash
             bash <(curl -sSL https://edgeone.linuxmirrors.cn/main.sh) --zh-hant --edu
             ```
-            > 不建議在中國大陸網路環境下使用
+            > 備用官網位址，不建議在中國大陸網路環境下使用
 
 
 
