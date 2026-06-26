@@ -76,7 +76,7 @@ mirror_list_abroad=(
     "mirrors.xtom.sg"
     "free.nchc.org.tw"
     "mirror.ossplanet.net"
-    "linux.cs.nctu.edu.tw"
+    "linux.cs.nycu.edu.tw"
     "ftp.tku.edu.tw"
     "mirror.twds.com.tw"
     "mirror.anigil.com"

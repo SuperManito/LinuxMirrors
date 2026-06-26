@@ -68,7 +68,7 @@ search:
     | 亚洲 · xTom · 新加坡 :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
     | 亚洲 · 自由软件实验室(NCHC) · 台湾 :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | 亚洲 · OSS Planet · 台湾 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
-    | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
+    | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | 亚洲 · 淡江大学 · 台湾 :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
     | 亚洲 · Taiwan Digital Streaming · 台湾 :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | 亚洲 · AniGil Linux Archive · 韩国 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
@@ -166,7 +166,7 @@ search:
     | 亚洲 · xTom · 新加坡 :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
     | 亚洲 · 自由软件实验室(NCHC) · 台湾 :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | 亚洲 · OSS Planet · 台湾 :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
-    | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
+    | 亚洲 · 国立阳明交通大学 · 台湾 :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | 亚洲 · 淡江大学 · 台湾 :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
     | 亚洲 · Taiwan Digital Streaming · 台湾 :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | 亚洲 · AniGil Linux Archive · 韩国 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |

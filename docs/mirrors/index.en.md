@@ -68,7 +68,7 @@ search:
     | AS · xTom · Singapore :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
     | AS · NCHC Free Software Lab · Taiwan :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | AS · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
-    | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
+    | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | AS · Tamkang University · Taiwan :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
     | AS · Taiwan Digital Streaming · Taiwan :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | AS · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
@@ -166,7 +166,7 @@ search:
     | AS · xTom · Singapore :flag-SG: | [mirrors.xtom.sg](https://mirrors.xtom.sg "https://mirrors.xtom.sg") |
     | AS · NCHC Free Software Lab · Taiwan :flag-TW: | [free.nchc.org.tw](https://free.nchc.org.tw "https://free.nchc.org.tw") |
     | AS · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
-    | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nctu.edu.tw](https://linux.cs.nctu.edu.tw "https://linux.cs.nctu.edu.tw") |
+    | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | AS · Tamkang University · Taiwan :flag-TW: | [ftp.tku.edu.tw](https://ftp.tku.edu.tw "https://ftp.tku.edu.tw") |
     | AS · Taiwan Digital Streaming · Taiwan :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | AS · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
