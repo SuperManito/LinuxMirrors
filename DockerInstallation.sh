@@ -95,6 +95,7 @@ SPONSOR_ADS=(
     "语鹿云盾 · 专业CDN加速、防御，亚太百兆三网优化CDN低至9元起 ➜  \033[3mhttps://www.lucdn.cn\033[0m"
     "不二云 · 国内外建站快响应服务器的不二之选 ➜  \033[3mhttps://cb2.cn\033[0m"
     "蓝易云 · 高防CDN，国内BGP多线/香港/死扛CC/DDos攻击 ➜  \033[3mhttps://www.tsycdn.com\033[0m"
+    "99CDN · 自建 CDN 平台，自主管理节点｜智能流量调度｜多级缓存加速 ➜  \033[3mhttps://ww.99cdn.com\033[0m"
     "浪浪云 · BGP网络让每一次连接都纵享丝滑，明码标价、无套路续费 ➜  \033[3mhttps://langlangy.cn\033[0m"
 )
 
