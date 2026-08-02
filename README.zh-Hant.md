@@ -191,11 +191,11 @@ Copyright © 2026, [SuperManito](https://github.com/SuperManito). Released under
 
 這是一個完全開源的專案，致力於為電腦從業者提供便利，使換源更簡單
 
-<a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
+<a href="https://www.star-history.com/?repos=SuperManito%2FLinuxMirrors&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=SuperManito/LinuxMirrors&type=date&theme=dark&legend=top-left&sealed_token=EXdmXhGX5gl8--HVo-AU6Xt7R74OdsLCJrVwerKtlh3fPRZ-EWo0oh2yC7FIK-3njqR4rvKRGUDNCD7h-IWBuWGqIVvi0kN_LOfYZSg3PHH9YiiMoJz2nA" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=SuperManito/LinuxMirrors&type=date&legend=top-left&sealed_token=EXdmXhGX5gl8--HVo-AU6Xt7R74OdsLCJrVwerKtlh3fPRZ-EWo0oh2yC7FIK-3njqR4rvKRGUDNCD7h-IWBuWGqIVvi0kN_LOfYZSg3PHH9YiiMoJz2nA" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=SuperManito/LinuxMirrors&type=date&legend=top-left&sealed_token=EXdmXhGX5gl8--HVo-AU6Xt7R74OdsLCJrVwerKtlh3fPRZ-EWo0oh2yC7FIK-3njqR4rvKRGUDNCD7h-IWBuWGqIVvi0kN_LOfYZSg3PHH9YiiMoJz2nA" />
  </picture>
 </a>
 
