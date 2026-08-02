@@ -191,11 +191,11 @@ Copyright © 2026, [SuperManito](https://github.com/SuperManito). Released under
 
 This is a fully open-source project dedicated to providing convenience for computer professionals, making the process of switching software sources simpler.
 
-<a href="https://star-history.com/#SuperManito/LinuxMirrors&Date">
+<a href="https://afterglow.watch">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=SuperManito/LinuxMirrors&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://afterglow.watch/svg?repos=SuperManito/LinuxMirrors&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://afterglow.watch/svg?repos=SuperManito/LinuxMirrors&type=Date" />
+   <img alt="Star History Chart" src="https://afterglow.watch/svg?repos=SuperManito/LinuxMirrors&type=Date" />
  </picture>
 </a>
 
