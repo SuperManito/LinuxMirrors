@@ -735,6 +735,14 @@ function collect_system_info() {
         "${SYSTEM_RASPBERRY_PI_OS}")
             SOURCE_BRANCH="raspberrypi"
             ;;
+        "${SYSTEM_DEEPIN}")
+            # deepin 25 起仓库路径追加版本代号（如 deepin/beige），旧版本为 deepin
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 25 ]]; then
+                SOURCE_BRANCH="deepin/${SYSTEM_VERSION_CODENAME,,}"
+            else
+                SOURCE_BRANCH="deepin"
+            fi
+            ;;
         "${SYSTEM_RHEL}")
             case "${SYSTEM_VERSION_ID_MAJOR}" in
             7 | 8)
@@ -1897,7 +1905,6 @@ $(gen_deb "${source_address}" "${SYSTEM_VERSION_CODENAME}" "${repo_components}")
         fi
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
             SOURCE="community-packages.deepin.com"
-            SOURCE_BRANCH="deepin"
             source_address="${SOURCE}/${SOURCE_BRANCH}"
         fi
         apt_source_content="${deb_src_disabled_tips}
