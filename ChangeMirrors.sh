@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-09-08
+## Modified: 2026-10-06
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2655,7 +2655,6 @@ $(gen_deb "${source_address}" "${base_system_codename}" "${repo_components}")"
             apt_source_file="${File_ProxmoxSources}"
             apt_source_content="$(gen_deb822_unsrc "${source_address}/debian/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")"
             write_apt_source
-            _DEB22_ARCHIVE_KEYRING=""
             # Ceph 仓库
             if [ -f "${File_ProxmoxCephSources}" ]; then
                 local ceph_codename="$(ceph -v | grep ceph | awk '{print $(NF-1)}')"
@@ -2663,6 +2662,7 @@ $(gen_deb "${source_address}" "${base_system_codename}" "${repo_components}")"
                 apt_source_content="$(gen_deb822_unsrc "${source_address}/debian/ceph-${ceph_codename}" "${SYSTEM_VERSION_CODENAME}" "no-subscription")"
                 write_apt_source
             fi
+            _DEB22_ARCHIVE_KEYRING=""
         else
             apt_source_file="${File_ProxmoxSourceList}"
             apt_source_content="$(gen_deb_unsrc "${source_address}/debian/pve" "${SYSTEM_VERSION_CODENAME}" "pve-no-subscription")"
