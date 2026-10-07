@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-10-06
+## Modified: 2026-10-07
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -1789,25 +1789,6 @@ ${proposed_source_tips}
 $(gen_deb822_disabled "${1}" "${2}-proposed" "${3}")"
     }
 
-    ## 使用官方源
-    if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
-        case "${SYSTEM_JUDGMENT}" in
-        "${SYSTEM_UBUNTU}" | "${SYSTEM_ZORIN}")
-            if [[ "${DEVICE_ARCH_RAW}" == "x86_64" || "${DEVICE_ARCH_RAW}" == *i?86* ]]; then
-                SOURCE="archive.ubuntu.com"
-            else
-                SOURCE="ports.ubuntu.com"
-            fi
-            ;;
-        "${SYSTEM_KALI}")
-            SOURCE="http.kali.org"
-            ;;
-        "${SYSTEM_DEEPIN}")
-            SOURCE="community-packages.deepin.com"
-            ;;
-        esac
-    fi
-
     # 注：SOURCE_<XXX> SOURCE_<XXX>_BRANCH 系列变量默认为空值，仅在自定义（使用相关命令选项）时提供，需注意逻辑顺序
     local repo_components=""                          # 软件源仓库区域
     local source_address="${SOURCE}/${SOURCE_BRANCH}" # 软件源地址
@@ -1905,6 +1886,11 @@ $(gen_deb "${source_address}" "${SYSTEM_VERSION_CODENAME}" "${repo_components}")
         fi
         if [[ "${USE_OFFICIAL_SOURCE}" == "true" ]]; then
             SOURCE="community-packages.deepin.com"
+            if [[ "${SYSTEM_VERSION_ID_MAJOR}" -ge 25 ]]; then
+                SOURCE_BRANCH="deepin/${SYSTEM_VERSION_CODENAME,,}"
+            else
+                SOURCE_BRANCH="deepin"
+            fi
             source_address="${SOURCE}/${SOURCE_BRANCH}"
         fi
         apt_source_content="${deb_src_disabled_tips}
