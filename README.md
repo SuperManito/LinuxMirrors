@@ -87,7 +87,7 @@
     </tr>
     <tr>
         <td><a href="https://www.openeuler.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/openeuler.ico" alt="openEuler" width="16" height="16"></sub></a>&nbsp;openEuler（开源欧拉）</td>
-        <td align="center">20 ~ 25</td>
+        <td align="center">20 ~ 26</td>
     </tr>
     <tr>
         <td><a href="https://www.opencloudos.org" target="_blank" rel="noopener noreferrer"><sub><img src="/docs/assets/images/icon/opencloudos.png" alt="OpenCloudOS" width="16" height="16"></sub></a>&nbsp;OpenCloudOS（鸥栖）</td>

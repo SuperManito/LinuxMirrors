@@ -643,7 +643,7 @@ function collect_system_info() {
         fi
         ;;
     "${SYSTEM_OPENEULER}")
-        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 2[0-5] ]]; then
+        if [[ "${SYSTEM_VERSION_ID_MAJOR}" != 2[0-6] ]]; then
             is_supported="false"
         fi
         ;;
@@ -2405,7 +2405,7 @@ function change_mirrors_openEuler() {
 
     ## 修改源
     cd $Dir_YumRepos
-    sed -e "s|^baseurl=http|baseurl=${WEB_PROTOCOL}|g" \
+    sed -e "s|^baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
         -e "s|repo.openeuler.org|${SOURCE}/${SOURCE_BRANCH}|g" \
         -i \
         openEuler.repo
@@ -6057,52 +6057,52 @@ function gen_repo_files_openEuler() {
     cat <<'EOF' >$Dir_YumRepos/openEuler.repo
 [OS]
 name=OS
-baseurl=http://repo.openeuler.org/openEuler-version/OS/$basearch/
+baseurl=https://repo.openeuler.org/openEuler-version/OS/$basearch/
 enabled=1
 gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
 
 [everything]
 name=everything
-baseurl=http://repo.openeuler.org/openEuler-version/everything/$basearch/
+baseurl=https://repo.openeuler.org/openEuler-version/everything/$basearch/
 enabled=1
 gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/everything/$basearch/RPM-GPG-KEY-openEuler
+gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
 
 [EPOL]
 name=EPOL
-baseurl=http://repo.openeuler.org/openEuler-version/EPOL/main/$basearch/
+baseurl=https://repo.openeuler.org/openEuler-version/EPOL/main/$basearch/
 enabled=1
 gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
 
 [debuginfo]
 name=debuginfo
-baseurl=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/
+baseurl=https://repo.openeuler.org/openEuler-version/debuginfo/$basearch/
 enabled=1
 gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/debuginfo/$basearch/RPM-GPG-KEY-openEuler
+gpgkey=https://repo.openeuler.org/openEuler-version/debuginfo/$basearch/RPM-GPG-KEY-openEuler
 
 [source]
 name=source
-baseurl=http://repo.openeuler.org/openEuler-version/source/
+baseurl=https://repo.openeuler.org/openEuler-version/source/
 enabled=1
 gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
+gpgkey=https://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
 
 [update]
 name=update
-baseurl=http://repo.openeuler.org/openEuler-version/update/$basearch/
+baseurl=https://repo.openeuler.org/openEuler-version/update/$basearch/
 enabled=1
 gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
 
 [update-source]
 name=update-source
-baseurl=http://repo.openeuler.org/openEuler-version/update/source/
-enabled=1
+baseurl=https://repo.openeuler.org/openEuler-version/update/source/
+enabled=0
 gpgcheck=1
-gpgkey=http://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
+gpgkey=https://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
 EOF
     ## 替换版本号
     local version_name="$(get_os_release_value VERSION | sed 's/["()]//g; s/[_ ]\+/-/g; s/^-\+\|-\+$//g')"
