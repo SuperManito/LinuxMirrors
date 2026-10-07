@@ -1,0 +1,71 @@
+<div id="search-container">
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search" onsubmit="return false;">
+      <input type="text" class="md-search__input" name="query" aria-label="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" placeholder="{{'AI Search' if i18n_page_locale == 'en' else 'AI 搜尋' if i18n_page_locale == 'zh-Hant' else 'AI 搜索'}}" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" readonly required onclick="OpenAlgoliaSearchComponent()" />
+      <label class="md-search__icon md-icon" for="__search"> {% set icon = config.theme.icon.search or "material/magnify" %} {% include ".icons/" ~ icon ~ ".svg" %} {% set icon = config.theme.icon.previous or "material/arrow-left" %} {% include ".icons/" ~ icon ~ ".svg" %} </label>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">{{ lang.t("search.result.initializer") }}</div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const __lang = "{{ i18n_page_locale }}";
+  let __notReadyMsg = '';
+  switch (__lang) {
+    case 'en':
+      __notReadyMsg = "The search component has not yet been loaded. Please try again later.";
+      break;
+    case 'zh-Hant':
+      __notReadyMsg = "搜尋元件尚未載入完畢，請稍後再試。";
+      break;
+    default:
+      __notReadyMsg = "搜索组件尚未加载完毕，请稍后再试。";
+  }
+
+  function OpenAlgoliaSearchComponent() {
+    const isMac = /Mac|iPhone|iPod|iPad/i.test(navigator.platform);
+    const dispatched = document.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'k',
+      code: 'KeyK',
+      ctrlKey: !isMac,
+      metaKey: isMac,
+      bubbles: true,
+      cancelable: true,
+    }));
+  }
+
+
+</script>
+
+<style>
+  .md-search__output {
+    display: none !important;
+  }
+  .md-search__inner {
+    padding-left: 8px;
+  }
+  .md-search__input {
+    cursor: pointer !important;
+  }
+  .md-search__form {
+    border-radius: 6px;
+  }
+  @media screen and (min-width: 60em) {
+    .md-search-trigger {
+      display: none;
+    }
+    .md-search__inner {
+      width: 8.7rem;
+    }
+  }
+  [class^="sitesearch-button"] {
+    display: none;
+  }
+</style>
