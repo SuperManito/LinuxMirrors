@@ -63,7 +63,7 @@ search:
     | AS · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | AS · Taiwan Digital Streaming · Taiwan :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
-    | AS · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
+    | AS · Archive of Siwoo · Korea :flag-KR: | [mirror.siwoo.org](https://mirror.siwoo.org "https://mirror.siwoo.org") |
     | AS · KAIST (Korea Advanced Institute of Science and Technology) · Korea :flag-KR: | [ftp.kaist.ac.kr](https://ftp.kaist.ac.kr "https://ftp.kaist.ac.kr") |
     | AS · Elice, Inc. · Korea :flag-KR: | [mirror.elice.io](https://mirror.elice.io "https://mirror.elice.io") |
     | AS · ICSCoE (Industrial Cyber Security Center of Excellence) · Japan :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
@@ -152,7 +152,7 @@ search:
     | AS · OSS Planet · Taiwan :flag-TW: | [mirror.ossplanet.net](https://mirror.ossplanet.net "https://mirror.ossplanet.net") |
     | AS · National Yang Ming Chiao Tung University · Taiwan :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | AS · Taiwan Digital Streaming · Taiwan :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
-    | AS · AniGil Linux Archive · Korea :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
+    | AS · Archive of Siwoo · Korea :flag-KR: | [mirror.siwoo.org](https://mirror.siwoo.org "https://mirror.siwoo.org") |
     | AS · KAIST (Korea Advanced Institute of Science and Technology) · Korea :flag-KR: | [ftp.kaist.ac.kr](https://ftp.kaist.ac.kr "https://ftp.kaist.ac.kr") |
     | AS · Elice, Inc. · Korea :flag-KR: | [mirror.elice.io](https://mirror.elice.io "https://mirror.elice.io") |
     | AS · ICSCoE (Industrial Cyber Security Center of Excellence) · Japan :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
