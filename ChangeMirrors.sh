@@ -72,6 +72,8 @@ mirror_list_abroad=(
     "linux.cs.nycu.edu.tw"
     "mirror.twds.com.tw"
     "mirror.anigil.com"
+    "ftp.kaist.ac.kr"
+    "mirror.elice.io"
     "ftp.udx.icscoe.jp/Linux"
     "ftp.jaist.ac.jp/pub/Linux"
     "linux2.yz.yamagata-u.ac.jp/pub/Linux"

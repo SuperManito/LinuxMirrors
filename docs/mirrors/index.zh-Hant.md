@@ -64,6 +64,8 @@ search:
     | 亞洲 · 國立陽明交通大學 · 臺灣 :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | 亞洲 · Taiwan Digital Streaming · 臺灣 :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | 亞洲 · AniGil Linux Archive · 韓國 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
+    | 亞洲 · 韓國科學技術院(KAIST) · 韓國 :flag-KR: | [ftp.kaist.ac.kr](https://ftp.kaist.ac.kr "https://ftp.kaist.ac.kr") |
+    | 亞洲 · Elice, Inc. · 韓國 :flag-KR: | [mirror.elice.io](https://mirror.elice.io "https://mirror.elice.io") |
     | 亞洲 · 工業網路安全中心(ICSCoE) · 日本 :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
     | 亞洲 · 北陸先端科學技術大學院大學(JAIST) · 日本 :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
     | 亞洲 · 山形大學 · 日本 :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
@@ -151,6 +153,8 @@ search:
     | 亞洲 · 國立陽明交通大學 · 臺灣 :flag-TW: | [linux.cs.nycu.edu.tw](https://linux.cs.nycu.edu.tw "https://linux.cs.nycu.edu.tw") |
     | 亞洲 · Taiwan Digital Streaming · 臺灣 :flag-TW: | [mirror.twds.com.tw](https://mirror.twds.com.tw "https://mirror.twds.com.tw") |
     | 亞洲 · AniGil Linux Archive · 韓國 :flag-KR: | [mirror.anigil.com](https://mirror.anigil.com "https://mirror.anigil.com") |
+    | 亞洲 · 韓國科學技術院(KAIST) · 韓國 :flag-KR: | [ftp.kaist.ac.kr](https://ftp.kaist.ac.kr "https://ftp.kaist.ac.kr") |
+    | 亞洲 · Elice, Inc. · 韓國 :flag-KR: | [mirror.elice.io](https://mirror.elice.io "https://mirror.elice.io") |
     | 亞洲 · 工業網路安全中心(ICSCoE) · 日本 :flag-JP: | [ftp.udx.icscoe.jp/Linux](https://ftp.udx.icscoe.jp/Linux "https://ftp.udx.icscoe.jp/Linux") |
     | 亞洲 · 北陸先端科學技術大學院大學(JAIST) · 日本 :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
     | 亞洲 · 山形大學 · 日本 :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
