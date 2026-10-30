@@ -70,6 +70,7 @@ search:
     | AS · JAIST (Japan Advanced Institute of Science and Technology) · Japan :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
     | AS · Yamagata University · Japan :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
     | AS · xTom · Japan :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
+    | AS · hashy0917 · Japan :flag-JP: | [mirror.hashy0917.net](https://mirror.hashy0917.net "https://mirror.hashy0917.net") |
     | AS · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
     | AS · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
 
@@ -159,6 +160,7 @@ search:
     | AS · JAIST (Japan Advanced Institute of Science and Technology) · Japan :flag-JP: | [ftp.jaist.ac.jp/pub/Linux](https://ftp.jaist.ac.jp/pub/Linux "https://ftp.jaist.ac.jp/pub/Linux") |
     | AS · Yamagata University · Japan :flag-JP: | [linux2.yz.yamagata-u.ac.jp/pub/Linux](https://linux2.yz.yamagata-u.ac.jp/pub/Linux "https://linux2.yz.yamagata-u.ac.jp/pub/Linux") |
     | AS · xTom · Japan :flag-JP: | [mirrors.xtom.jp](https://mirrors.xtom.jp "https://mirrors.xtom.jp") |
+    | AS · hashy0917 · Japan :flag-JP: | [mirror.hashy0917.net](https://mirror.hashy0917.net "https://mirror.hashy0917.net") |
     | AS · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
     | AS · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
     | EU · Vorboss Ltd · United Kiongdom :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
