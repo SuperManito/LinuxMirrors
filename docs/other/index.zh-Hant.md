@@ -31,13 +31,6 @@ hide:
             ```
             > 即時同步、無延遲，中國大陸網路環境建議使用
 
-        === ":simple-gitcode: GitCode (鏡像倉庫)"
-
-            ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --zh-hant
-            ```
-            > 同步存在1小時延遲
-
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
@@ -77,13 +70,6 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --zh-hant --only-registry
             ```
             > 即時同步、無延遲，中國大陸網路環境建議使用
-
-        === ":simple-gitcode: GitCode (映像倉庫)"
-
-            ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --zh-hant --only-registry
-            ```
-            > 同步存在1小時延遲
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 

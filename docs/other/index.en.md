@@ -31,13 +31,6 @@ hide:
             ```
             > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
 
-        === ":simple-gitcode: GitCode"
-
-            ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --en
-            ```
-            > 1-hour sync delay.
-
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
@@ -77,13 +70,6 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --en --only-registry
             ```
             > Real-time sync, no delay. Recommended for use in Chinese mainland network environments.
-
-        === ":simple-gitcode: GitCode"
-
-            ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/DockerInstallation.sh) --en --only-registry
-            ```
-            > 1-hour sync delay.
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 

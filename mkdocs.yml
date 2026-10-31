@@ -102,9 +102,6 @@ extra:
     - icon: simple/gitee
       link: https://gitee.com/SuperManito/LinuxMirrors
       name: Gitee
-    - icon: simple/gitcode
-      link: https://gitcode.com/SuperManito/LinuxMirrors
-      name: GitCode
   analytics:
     provider: google
     property: G-WG7T40F7YP

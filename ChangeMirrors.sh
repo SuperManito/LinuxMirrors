@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-10-07
+## Modified: 2026-10-31
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -8687,7 +8687,7 @@ Issue Report {}'
         ['mirrors.abroad.16']='AS · hashy0917 · Japan'
         ['mirrors.abroad.17']='AS · GB Network Solutions · Malaysia'
         ['mirrors.abroad.18']='AS · Khon Kaen University · Thailand'
-        ['mirrors.abroad.19']='EU · Vorboss Ltd · United Kiongdom'
+        ['mirrors.abroad.19']='EU · Vorboss Ltd · United Kingdom'
         ['mirrors.abroad.20']='EU · dogado · Germany'
         ['mirrors.abroad.21']='EU · xTom · Germany'
         ['mirrors.abroad.22']='EU · RWTH Aachen University · Germany'

@@ -78,7 +78,7 @@ search:
 
     | Mirror Name | Mirror URL |
     | :- | :-: |
-    | EU · Vorboss Ltd · United Kiongdom :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
+    | EU · Vorboss Ltd · United Kingdom :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
     | EU · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
     | EU · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
     | EU · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |
@@ -163,7 +163,7 @@ search:
     | AS · hashy0917 · Japan :flag-JP: | [mirror.hashy0917.net](https://mirror.hashy0917.net "https://mirror.hashy0917.net") |
     | AS · GB Network Solutions · Malaysia :flag-MY: | [mirrors.gbnetwork.com](https://mirrors.gbnetwork.com "https://mirrors.gbnetwork.com") |
     | AS · Khon Kaen University · Thailand :flag-TH: | [mirror.kku.ac.th](https://mirror.kku.ac.th "https://mirror.kku.ac.th") |
-    | EU · Vorboss Ltd · United Kiongdom :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
+    | EU · Vorboss Ltd · United Kingdom :flag-GB: | [mirror.vorboss.net](https://mirror.vorboss.net "https://mirror.vorboss.net") |
     | EU · dogado · Germany :flag-DE: | [mirror.dogado.de](https://mirror.dogado.de "https://mirror.dogado.de") |
     | EU · xTom · Germany :flag-DE: | [mirrors.xtom.de](https://mirrors.xtom.de "https://mirrors.xtom.de") |
     | EU · RWTH Aachen University · Germany :flag-DE: | [ftp.halifax.rwth-aachen.de](https://ftp.halifax.rwth-aachen.de "https://ftp.halifax.rwth-aachen.de") |

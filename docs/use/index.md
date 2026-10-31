@@ -29,13 +29,6 @@ hide:
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":simple-gitcode: GitCode (镜像仓库)"
-
-            ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
-            ```
-            > 同步存在1小时延迟
-
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
@@ -72,14 +65,6 @@ hide:
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
 
-        === ":simple-gitcode: GitCode (镜像仓库)"
-
-            ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --abroad
-            ```
-            > 同步存在1小时延迟
-
-
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
             ``` bash
@@ -115,14 +100,6 @@ hide:
             bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
             ```
             > 实时同步、无延迟，国内网络环境下推荐使用
-
-        === ":simple-gitcode: GitCode (镜像仓库)"
-
-            ``` bash
-            bash <(curl -sSL https://raw.gitcode.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh) --edu
-            ```
-            > 同步存在1小时延迟
-
 
         === ":simple-jsdelivr: jsDelivr (CDN)"
 
