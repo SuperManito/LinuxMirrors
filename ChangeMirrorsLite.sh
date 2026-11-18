@@ -3199,7 +3199,7 @@ function gen_repo_files_CentOS() {
         local __u4="${_bu}http://vault.centos.org/$_ctd/$_rv/"
         local __n1="${_n}CentOS Linux $_rv - "
         local __k1="${_gk}${_pki}centosofficial"
-        local __f='&infra=$infra'
+        local __f="&infra=$_if"
         local _fp='CentOS-Linux-'
         _w "${_fp}AppStream.repo" <<EOF
 [appstream]
@@ -3344,7 +3344,7 @@ EOF
         local __u6="${_bu}http://vault.centos.org/centos/$_rv/"
         local __n2="${_n}CentOS-$_rv - "
         local __k2="${_gk}${_pki}CentOS-7"
-        local __f='&infra=$infra'
+        local __f="&infra=$_if"
         local _fp='CentOS-'
         _w "${_fp}Base.repo" <<EOF
 [base]
@@ -5923,7 +5923,7 @@ function gen_repo_files_Fedora() {
     local __n1="${_n}Fedora $_rv - "
     local __n2="${_n}Fedora Modular $_rv - "
     local __k="${_gk}${_pki}fedora-$_rv-$_ba"
-    local __f='&arch=$basearch'
+    local __f="&arch=$_ba"
     _w fedora.repo <<EOF
 [fedora]
 ${__n1}$_ba
@@ -7196,12 +7196,13 @@ function gen_repo_files_EPEL() {
     case "${1}" in
     10)
         local _m24="${_me}24h"
+        local __s4='${stream:+s}'
         local __k1="${_gk}${_pki}"'EPEL-$releasever_major'
         _w epel.repo <<EOF
 [epel]
 ${__n}$_ba
-#${__u1}$_rv\${releasever_minor:+z}${__s1}$_ba/
-${__u2}repo=epel\${releasever_minor:+-z}-$_rv&arch=$_ba
+#${__u1}$_rv${__s4}${__s1}$_ba/
+${__u2}repo=epel-$_rv${__s4}&arch=$_ba
 $__k1
 $_gc1
 $_rg0
@@ -7211,8 +7212,8 @@ $_e1
 
 [epel-debuginfo]
 ${__n}$_ba - Debug
-#${__u1}$_rv\${releasever_minor:+z}${__s1}$_ba/debug/
-${__u2}repo=epel\${releasever_minor:+-z}-debug-$_rv&arch=$_ba
+#${__u1}$_rv${__s4}${__s1}$_ba/debug/
+${__u2}repo=epel-debug-$_rv${__s4}&arch=$_ba
 $__k1
 $_gc1
 $_rg0
@@ -7221,8 +7222,8 @@ $_e0
 
 [epel-source]
 ${__n}$_ba - Source
-#${__u1}$_rv\${releasever_minor:+z}${__s1}${__s2}
-${__u2}repo=epel\${releasever_minor:+-z}-source-$_rv&arch=source
+#${__u1}$_rv${__s4}${__s1}${__s2}
+${__u2}repo=epel-source-$_rv${__s4}&arch=source
 $__k1
 $_gc1
 $_rg0
@@ -7232,8 +7233,8 @@ EOF
         _w epel-testing.repo <<EOF
 [epel-testing]
 ${__n}Testing - $_ba
-#${__u1}testing/$_rv\${releasever_minor:+z}${__s1}$_ba/
-${__u2}repo=epel\${releasever_minor:+-z}-testing-$_rv&arch=$_ba
+#${__u1}testing/$_rv${__s4}${__s1}$_ba/
+${__u2}repo=epel-testing-$_rv${__s4}&arch=$_ba
 $__k1
 $_gc1
 $_rg0
@@ -7243,8 +7244,8 @@ $_e0
 
 [epel-testing-debuginfo]
 ${__n}Testing - $_ba - Debug
-#${__u1}testing/$_rv\${releasever_minor:+z}${__s1}$_ba/debug/
-${__u2}repo=epel\${releasever_minor:+-z}-testing-debug-$_rv&arch=$_ba
+#${__u1}testing/$_rv${__s4}${__s1}$_ba/debug/
+${__u2}repo=epel-testing-debug-$_rv${__s4}&arch=$_ba
 $__k1
 $_gc1
 $_rg0
@@ -7253,8 +7254,8 @@ $_e0
 
 [epel-testing-source]
 ${__n}Testing - $_ba - Source
-#${__u1}testing/$_rv\${releasever_minor:+z}${__s1}${__s2}
-${__u2}repo=epel\${releasever_minor:+-z}-testing-source-$_rv&arch=source
+#${__u1}testing/$_rv${__s4}${__s1}${__s2}
+${__u2}repo=epel-testing-source-$_rv${__s4}&arch=source
 $__k1
 $_gc1
 $_rg0
@@ -7266,11 +7267,12 @@ EOF
         local _m14="${_me}14d"
         local _tyr="${_ty}rpm"
         local __k2="${_gk}${_pki}EPEL-$_rv"
+        local __f="&arch=$_ba&infra=$_if&content=$_ctd"
         _w epel.repo <<EOF
 [epel]
 ${__n}$_ba
 #${__u1}$_rv${__s1}$_ba/
-${__u2}repo=epel-$_rv&arch=$_ba&infra=$_if&content=$_ctd
+${__u2}repo=epel-$_rv${__f}
 $_e1
 $_gc1
 $_cm1
@@ -7279,7 +7281,7 @@ $__k2
 [epel-debuginfo]
 ${__n}$_ba - Debug
 #${__u1}$_rv${__s1}$_ba/debug/
-${__u2}repo=epel-debug-$_rv&arch=$_ba&infra=$_if&content=$_ctd
+${__u2}repo=epel-debug-$_rv${__f}
 $_e0
 $__k2
 $_gc1
@@ -7287,7 +7289,7 @@ $_gc1
 [epel-source]
 ${__n}$_ba - Source
 #${__u1}$_rv${__s1}${__s2}
-${__u2}repo=epel-source-$_rv&arch=$_ba&infra=$_if&content=$_ctd
+${__u2}repo=epel-source-$_rv${__f}
 $_e0
 $__k2
 $_gc1
@@ -7296,7 +7298,7 @@ EOF
 [epel-testing]
 ${__n}Testing - $_ba
 #${__u1}testing/$_rv${__s1}$_ba/
-${__u2}repo=testing-epel$_rv&arch=$_ba&infra=$_if&content=$_ctd
+${__u2}repo=testing-epel$_rv${__f}
 $_e0
 $_gc1
 $_cm1
@@ -7305,7 +7307,7 @@ $__k2
 [epel-testing-debuginfo]
 ${__n}Testing - $_ba - Debug
 #${__u1}testing/$_rv${__s1}$_ba/debug/
-${__u2}repo=testing-debug-epel$_rv&arch=$_ba&infra=$_if&content=$_ctd
+${__u2}repo=testing-debug-epel$_rv${__f}
 $_e0
 $__k2
 $_gc1
@@ -7313,7 +7315,7 @@ $_gc1
 [epel-testing-source]
 ${__n}Testing - $_ba - Source
 #${__u1}testing/$_rv${__s1}${__s2}
-${__u2}repo=testing-source-epel$_rv&arch=$_ba&infra=$_if&content=$_ctd
+${__u2}repo=testing-source-epel$_rv${__f}
 $_e0
 $__k2
 $_gc1
@@ -7356,7 +7358,7 @@ EOF
         ;;
     8)
         local __k3="${_gk}${_pki}EPEL-8"
-        local __f='&arch=$basearch&infra=$infra&content=$contentdir'
+        local __f="&arch=$_ba&infra=$_if&content=$_ctd"
         _w epel.repo <<EOF
 [epel]
 ${_n}${__s3}8 - $_ba
@@ -7467,7 +7469,7 @@ EOF
         local _fop="${_fm}priority"
         local __u3="${_bu}http://download.example/pub/epel/"
         local __k4="${_gk}${_pki}EPEL-7"
-        local __f='&arch=$basearch&infra=$infra&content=$contentdir'
+        local __f="&arch=$_ba&infra=$_if&content=$_ctd"
         _w epel.repo <<EOF
 [epel]
 ${_n}${__s3}7 - $_ba
@@ -7538,7 +7540,7 @@ function gen_repo_files_EPEL_NEXT() {
         local __u1="${_bu}https://download.example/pub/epel/"
         local __u2="${_mt}https://mirrors.fedoraproject.org/metalink?"
         local __k="${_gk}${_pki}EPEL-9"
-        local __f='&arch=$basearch&infra=$infra&content=$contentdir'
+        local __f="&arch=$_ba&infra=$_if&content=$_ctd"
         _w epel-next.repo <<EOF
 [epel-next]
 ${_n}${__s3}9 - Next - $_ba
