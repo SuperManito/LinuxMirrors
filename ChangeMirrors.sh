@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-10-31
+## Modified: 2026-11-19
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -2692,33 +2692,33 @@ function change_mirrors_RedHat() {
     "${SYSTEM_RHEL}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         7 | 8)
-            gen_repo_files_CentOS "${SYSTEM_VERSION_ID_MAJOR}"
+            gen_repo_files CentOS "${SYSTEM_VERSION_ID_MAJOR}"
             ;;
         *)
-            gen_repo_files_CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
+            gen_repo_files CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
             ;;
         esac
         ;;
     "${SYSTEM_CENTOS}")
-        gen_repo_files_CentOS "${SYSTEM_VERSION_ID_MAJOR}"
+        gen_repo_files CentOS "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}")
-        gen_repo_files_CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
+        gen_repo_files CentOSStream "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_ROCKY}")
-        gen_repo_files_RockyLinux "${SYSTEM_VERSION_ID_MAJOR}"
+        gen_repo_files RockyLinux "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_ALMALINUX}")
-        gen_repo_files_AlmaLinux "${SYSTEM_VERSION_ID_MAJOR}"
+        gen_repo_files AlmaLinux "${SYSTEM_VERSION_ID_MAJOR}"
         ;;
     "${SYSTEM_FEDORA}")
-        gen_repo_files_Fedora "${SYSTEM_VERSION_ID}"
+        gen_repo_files Fedora "${SYSTEM_VERSION_ID}"
         ;;
     "${SYSTEM_OPENCLOUDOS}")
-        gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_ID}"
+        gen_repo_files OpenCloudOS "${SYSTEM_VERSION_ID}"
         ;;
     "${SYSTEM_ANOLISOS}")
-        gen_repo_files_AnolisOS "${SYSTEM_VERSION_ID}"
+        gen_repo_files AnolisOS "${SYSTEM_VERSION_ID}"
         ;;
     esac
     ## 使用官方源
@@ -2999,7 +2999,7 @@ function change_mirrors_RedHat() {
 ## 更换 openEuler 软件源
 function change_mirrors_openEuler() {
     ## 生成 repo 源文件
-    gen_repo_files_openEuler
+    gen_repo_files openEuler
     ## 使用官方源
     [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
 
@@ -3014,7 +3014,7 @@ function change_mirrors_openEuler() {
 ## 更换 OpenCloudOS 软件源
 function change_mirrors_OpenCloudOS() {
     ## 生成 repo 源文件
-    gen_repo_files_OpenCloudOS "${SYSTEM_VERSION_ID}"
+    gen_repo_files OpenCloudOS "${SYSTEM_VERSION_ID}"
     ## 使用官方源
     [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
 
@@ -3059,7 +3059,7 @@ $(gen_deb "${source_address}" "${SYSTEM_VERSION_CODENAME}" "${repo_components}")
 ## 更换 Anolis OS 软件源
 function change_mirrors_AnolisOS() {
     ## 生成 repo 源文件
-    gen_repo_files_AnolisOS "${SYSTEM_VERSION_ID}"
+    gen_repo_files AnolisOS "${SYSTEM_VERSION_ID}"
     ## 使用官方源
     [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && return
 
@@ -3089,10 +3089,10 @@ function change_mirrors_openSUSE() {
     ## 生成 repo 源文件
     case "${SYSTEM_ID}" in
     "opensuse-leap")
-        gen_repo_files_openSUSE "leap" "${SYSTEM_VERSION_ID}"
+        gen_repo_files openSUSE "leap" "${SYSTEM_VERSION_ID}"
         ;;
     "opensuse-tumbleweed")
-        gen_repo_files_openSUSE "tumbleweed"
+        gen_repo_files openSUSE "tumbleweed"
         ;;
     esac
     ## 使用官方源
@@ -3356,11 +3356,11 @@ function change_mirrors_or_install_EPEL() {
         [ $? -eq 0 ] && rm -rf $Dir_YumReposBackup/epel*
     fi
     ## 生成 repo 源文件
-    gen_repo_files_EPEL "${SYSTEM_VERSION_ID_MAJOR}"
+    gen_repo_files EPEL "${SYSTEM_VERSION_ID_MAJOR}"
     if [[ "${epel_version}" == 9 ]]; then
         case "${SYSTEM_JUDGMENT}" in
         "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}" | "${SYSTEM_RHEL}")
-            gen_repo_files_EPEL_NEXT "${SYSTEM_VERSION_ID_MAJOR}"
+            gen_repo_files EPEL_NEXT "${SYSTEM_VERSION_ID_MAJOR}"
             ;;
         esac
     fi
@@ -3754,242 +3754,291 @@ function animate_exec() {
 
 ##############################################################################
 
+function gen_repo_files() {
+    _w() { cat >"$Dir_YumRepos/$1"; }
+    _wz() { cat >"$Dir_ZYppRepos/$1"; }
+    local _rv='$releasever'
+    local _rvb='${releasever}'
+    local _ba='$basearch'
+    local _ctd='$contentdir'
+    local _st='$stream'
+    local _rl='$rltype'
+    local _if='$infra'
+    local _bu='baseurl='
+    local _cm='countme='
+    local _cm1="${_cm}1"
+    local _e='enabled='
+    local _e0="${_e}0"
+    local _e1="${_e}1"
+    local _gc='gpgcheck='
+    local _gc1="${_gc}1"
+    local _gk='gpgkey='
+    local _me='metadata_expire='
+    local _ml='mirrorlist='
+    local _mt='metalink='
+    local _n='name='
+    local _rg='repo_gpgcheck='
+    local _rg0="${_rg}0"
+    local _su='skip_if_unavailable='
+    local _suF="${_su}False"
+    local _suT="${_su}True"
+    local _ty='type='
+    local _pki='file:///etc/pki/rpm-gpg/RPM-GPG-KEY-'
+    local _md='file:///media/'
+    "gen_repo_files_$1" "${@:2}"
+}
+
 ## 生成 CentOS repo 源文件
 function gen_repo_files_CentOS() {
+    local __u1="${_bu}http://debuginfo.centos.org/"
+    local __u2="${_ml}http://mirrorlist.centos.org/"
     case "$1" in
     8)
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-AppStream.repo
+        local __s='HighAvailability'
+        local __u3="${_bu}http://mirror.centos.org/$_ctd/$_rv/"
+        local __u4="${_bu}http://vault.centos.org/$_ctd/$_rv/"
+        local __n1="${_n}CentOS Linux $_rv - "
+        local __k1="${_gk}${_pki}centosofficial"
+        local __f='&infra=$infra'
+        local _fp='CentOS-Linux-'
+        _w "${_fp}AppStream.repo" <<EOF
 [appstream]
-name=CentOS Linux $releasever - AppStream
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=AppStream&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}AppStream
+${__u2}?release=$_rv&arch=$_ba&repo=AppStream${__f}
+#${__u3}AppStream/$_ba/os/
+$_gc1
+$_e1
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-BaseOS.repo
+        _w "${_fp}BaseOS.repo" <<EOF
 [baseos]
-name=CentOS Linux $releasever - BaseOS
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=BaseOS&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}BaseOS
+${__u2}?release=$_rv&arch=$_ba&repo=BaseOS${__f}
+#${__u3}BaseOS/$_ba/os/
+$_gc1
+$_e1
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-ContinuousRelease.repo
+        _w "${_fp}ContinuousRelease.repo" <<EOF
 [cr]
-name=CentOS Linux $releasever - ContinuousRelease
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=cr&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/cr/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}ContinuousRelease
+${__u2}?release=$_rv&arch=$_ba&repo=cr${__f}
+#${__u3}cr/$_ba/os/
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Debuginfo.repo
+        _w "${_fp}Debuginfo.repo" <<EOF
 [debuginfo]
-name=CentOS Linux $releasever - Debuginfo
-baseurl=http://debuginfo.centos.org/$releasever/$basearch/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Debuginfo
+${__u1}$_rv/$_ba/
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Devel.repo
+        _w "${_fp}Devel.repo" <<EOF
 [devel]
-name=CentOS Linux $releasever - Devel WARNING! FOR BUILDROOT USE ONLY!
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=Devel&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/Devel/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Devel WARNING! FOR BUILDROOT USE ONLY!
+${__u2}?release=$_rv&arch=$_ba&repo=Devel${__f}
+#${__u3}Devel/$_ba/os/
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Extras.repo
+        _w "${_fp}Extras.repo" <<EOF
 [extras]
-name=CentOS Linux $releasever - Extras
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/extras/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Extras
+${__u2}?release=$_rv&arch=$_ba&repo=extras${__f}
+#${__u3}extras/$_ba/os/
+$_gc1
+$_e1
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-FastTrack.repo
+        _w "${_fp}FastTrack.repo" <<EOF
 [fasttrack]
-name=CentOS Linux $releasever - FastTrack
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=fasttrack&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/fasttrack/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}FastTrack
+${__u2}?release=$_rv&arch=$_ba&repo=fasttrack${__f}
+#${__u3}fasttrack/$_ba/os/
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-HighAvailability.repo
+        _w "${_fp}HighAvailability.repo" <<EOF
 [ha]
-name=CentOS Linux $releasever - HighAvailability
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=HighAvailability&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/HighAvailability/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}${__s}
+${__u2}?release=$_rv&arch=$_ba&repo=${__s}${__f}
+#${__u3}${__s}/$_ba/os/
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Media.repo
+        _w "${_fp}Media.repo" <<EOF
 [media-baseos]
-name=CentOS Linux $releasever - Media - BaseOS
-baseurl=file:///media/CentOS/BaseOS
-        file:///media/cdrom/BaseOS
-        file:///media/cdrecorder/BaseOS
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Media - BaseOS
+${_bu}${_md}CentOS/BaseOS
+        ${_md}cdrom/BaseOS
+        ${_md}cdrecorder/BaseOS
+$_gc1
+$_e0
+$__k1
 
 [media-appstream]
-name=CentOS Linux $releasever - Media - AppStream
-baseurl=file:///media/CentOS/AppStream
-        file:///media/cdrom/AppStream
-        file:///media/cdrecorder/AppStream
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Media - AppStream
+${_bu}${_md}CentOS/AppStream
+        ${_md}cdrom/AppStream
+        ${_md}cdrecorder/AppStream
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Plus.repo
+        _w "${_fp}Plus.repo" <<EOF
 [plus]
-name=CentOS Linux $releasever - Plus
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/centosplus/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Plus
+${__u2}?release=$_rv&arch=$_ba&repo=centosplus${__f}
+#${__u3}centosplus/$_ba/os/
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-PowerTools.repo
+        _w "${_fp}PowerTools.repo" <<EOF
 [powertools]
-name=CentOS Linux $releasever - PowerTools
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=PowerTools&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$releasever/PowerTools/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}PowerTools
+${__u2}?release=$_rv&arch=$_ba&repo=PowerTools${__f}
+#${__u3}PowerTools/$_ba/os/
+$_gc1
+$_e0
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Linux-Sources.repo
+        _w "${_fp}Sources.repo" <<EOF
 [baseos-source]
-name=CentOS Linux $releasever - BaseOS - Source
-baseurl=http://vault.centos.org/$contentdir/$releasever/BaseOS/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}BaseOS - Source
+${__u4}BaseOS/Source/
+$_gc1
+$_e0
+$__k1
 
 [appstream-source]
-name=CentOS Linux $releasever - AppStream - Source
-baseurl=http://vault.centos.org/$contentdir/$releasever/AppStream/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}AppStream - Source
+${__u4}AppStream/Source/
+$_gc1
+$_e0
+$__k1
 
 [extras-source]
-name=CentOS Linux $releasever - Extras - Source
-baseurl=http://vault.centos.org/$contentdir/$releasever/extras/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Extras - Source
+${__u4}extras/Source/
+$_gc1
+$_e0
+$__k1
 
 [plus-source]
-name=CentOS Linux $releasever - Plus - Source
-baseurl=http://vault.centos.org/$contentdir/$releasever/centosplus/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n1}Plus - Source
+${__u4}centosplus/Source/
+$_gc1
+$_e0
+$__k1
 EOF
         ;;
     7)
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Base.repo
+        local __u5="${_bu}http://mirror.centos.org/centos/$_rv/"
+        local __u6="${_bu}http://vault.centos.org/centos/$_rv/"
+        local __n2="${_n}CentOS-$_rv - "
+        local __k2="${_gk}${_pki}CentOS-7"
+        local __f='&infra=$infra'
+        local _fp='CentOS-'
+        _w "${_fp}Base.repo" <<EOF
 [base]
-name=CentOS-$releasever - Base
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Base
+${__u2}?release=$_rv&arch=$_ba&repo=os${__f}
+#${__u5}os/$_ba/
+$_gc1
+$__k2
 
 [updates]
-name=CentOS-$releasever - Updates
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Updates
+${__u2}?release=$_rv&arch=$_ba&repo=updates${__f}
+#${__u5}updates/$_ba/
+$_gc1
+$__k2
 
 [extras]
-name=CentOS-$releasever - Extras
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Extras
+${__u2}?release=$_rv&arch=$_ba&repo=extras${__f}
+#${__u5}extras/$_ba/
+$_gc1
+$__k2
 
 [centosplus]
-name=CentOS-$releasever - Plus
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra
-#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Plus
+${__u2}?release=$_rv&arch=$_ba&repo=centosplus${__f}
+#${__u5}centosplus/$_ba/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-CR.repo
+        _w "${_fp}CR.repo" <<EOF
 [cr]
-name=CentOS-$releasever - cr
-baseurl=http://mirror.centos.org/centos/$releasever/cr/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-enabled=0
+${__n2}cr
+${__u5}cr/$_ba/
+$_gc1
+$__k2
+$_e0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Debuginfo.repo
+        _w "${_fp}Debuginfo.repo" <<EOF
 [base-debuginfo]
-name=CentOS-7 - Debuginfo
-baseurl=http://debuginfo.centos.org/7/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7
-enabled=0
+${_n}CentOS-7 - Debuginfo
+${__u1}7/$_ba/
+$_gc1
+${_gk}${_pki}CentOS-Debug-7
+$_e0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-fasttrack.repo
+        _w "${_fp}fasttrack.repo" <<EOF
 [fasttrack]
-name=CentOS-7 - fasttrack
-mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=fasttrack&infra=$infra
-#baseurl=http://mirror.centos.org/centos/$releasever/fasttrack/$basearch/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${_n}CentOS-7 - fasttrack
+${__u2}?release=$_rv&arch=$_ba&repo=fasttrack${__f}
+#${__u5}fasttrack/$_ba/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Media.repo
+        _w "${_fp}Media.repo" <<EOF
 [c7-media]
-name=CentOS-$releasever - Media
-baseurl=file:///media/CentOS/
-        file:///media/cdrom/
-        file:///media/cdrecorder/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Media
+${_bu}${_md}CentOS/
+        ${_md}cdrom/
+        ${_md}cdrecorder/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Sources.repo
+        _w "${_fp}Sources.repo" <<EOF
 [base-source]
-name=CentOS-$releasever - Base Sources
-baseurl=http://vault.centos.org/centos/$releasever/os/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Base Sources
+${__u6}os/Source/
+$_gc1
+$_e0
+$__k2
 
 [updates-source]
-name=CentOS-$releasever - Updates Sources
-baseurl=http://vault.centos.org/centos/$releasever/updates/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Updates Sources
+${__u6}updates/Source/
+$_gc1
+$_e0
+$__k2
 
 [extras-source]
-name=CentOS-$releasever - Extras Sources
-baseurl=http://vault.centos.org/centos/$releasever/extras/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Extras Sources
+${__u6}extras/Source/
+$_gc1
+$_e0
+$__k2
 
 [centosplus-source]
-name=CentOS-$releasever - Plus Sources
-baseurl=http://vault.centos.org/centos/$releasever/centosplus/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+${__n2}Plus Sources
+${__u6}centosplus/Source/
+$_gc1
+$_e0
+$__k2
 EOF
         ;;
     esac
@@ -3997,626 +4046,641 @@ EOF
 
 ## 生成 CentOS Stream repo 源文件
 function gen_repo_files_CentOSStream() {
+    local _m6="${_me}6h"
+    local __s1='HighAvailability'
+    local __s2='ResilientStorage'
+    local __u1="${_bu}https://mirror.stream.centos.org/$_rv-stream/"
+    local __u2="${_mt}https://mirrors.centos.org/metalink?"
+    local __n="${_n}CentOS Stream $_rv - "
+    local __k1="${_gk}${_pki}CentOS-SIG-Extras-SHA512"
+    local __k2="${_gk}${_pki}centosofficial"
     case "$1" in
     10)
-        cat <<'EOF' >$Dir_YumRepos/centos.repo
+        local __k3="${_gk}${_pki}centosofficial-SHA256"
+        local __f='&protocol=https,http'
+        _w centos.repo <<EOF
 [baseos]
-name=CentOS Stream $releasever - BaseOS
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/BaseOS/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=1
+${__n}BaseOS
+#${__u1}BaseOS/$_ba/os/
+${__u2}repo=centos-baseos-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e1
 
 [baseos-debuginfo]
-name=CentOS Stream $releasever - BaseOS - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}BaseOS - Debug
+${__u2}repo=centos-baseos-debug-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [baseos-source]
-name=CentOS Stream $releasever - BaseOS - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}BaseOS - Source
+${__u2}repo=centos-baseos-source-$_st&arch=source${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [appstream]
-name=CentOS Stream $releasever - AppStream
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/AppStream/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=1
+${__n}AppStream
+#${__u1}AppStream/$_ba/os/
+${__u2}repo=centos-appstream-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e1
 
 [appstream-debuginfo]
-name=CentOS Stream $releasever - AppStream - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}AppStream - Debug
+${__u2}repo=centos-appstream-debug-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [appstream-source]
-name=CentOS Stream $releasever - AppStream - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}AppStream - Source
+${__u2}repo=centos-appstream-source-$_st&arch=source${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [crb]
-name=CentOS Stream $releasever - CRB
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/CRB/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-crb-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}CRB
+#${__u1}CRB/$_ba/os/
+${__u2}repo=centos-crb-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [crb-debuginfo]
-name=CentOS Stream $releasever - CRB - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-crb-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}CRB - Debug
+${__u2}repo=centos-crb-debug-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [crb-source]
-name=CentOS Stream $releasever - CRB - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-crb-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}CRB - Source
+${__u2}repo=centos-crb-source-$_st&arch=source${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/centos-addons.repo
+        _w centos-addons.repo <<EOF
 [highavailability]
-name=CentOS Stream $releasever - HighAvailability
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/HighAvailability/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}${__s1}
+#${__u1}${__s1}/$_ba/os/
+${__u2}repo=centos-highavailability-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [highavailability-debuginfo]
-name=CentOS Stream $releasever - HighAvailability - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s1} - Debug
+${__u2}repo=centos-highavailability-debug-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [highavailability-source]
-name=CentOS Stream $releasever - HighAvailability - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s1} - Source
+${__u2}repo=centos-highavailability-source-$_st&arch=source${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [nfv]
-name=CentOS Stream $releasever - NFV
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/NFV/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}NFV
+#${__u1}NFV/$_ba/os/
+${__u2}repo=centos-nfv-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [nfv-debuginfo]
-name=CentOS Stream $releasever - NFV - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}NFV - Debug
+${__u2}repo=centos-nfv-debug-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [nfv-source]
-name=CentOS Stream $releasever - NFV - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}NFV - Source
+${__u2}repo=centos-nfv-source-$_st&arch=source${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [rt]
-name=CentOS Stream $releasever - RT
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/RT/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}RT
+#${__u1}RT/$_ba/os/
+${__u2}repo=centos-rt-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [rt-debuginfo]
-name=CentOS Stream $releasever - RT - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}RT - Debug
+${__u2}repo=centos-rt-debug-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [rt-source]
-name=CentOS Stream $releasever - RT - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}RT - Source
+${__u2}repo=centos-rt-source-$_st&arch=source${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [resilientstorage]
-name=CentOS Stream $releasever - ResilientStorage
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/ResilientStorage/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}${__s2}
+#${__u1}${__s2}/$_ba/os/
+${__u2}repo=centos-resilientstorage-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [resilientstorage-debuginfo]
-name=CentOS Stream $releasever - ResilientStorage - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s2} - Debug
+${__u2}repo=centos-resilientstorage-debug-$_st&arch=$_ba${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [resilientstorage-source]
-name=CentOS Stream $releasever - ResilientStorage - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s2} - Source
+${__u2}repo=centos-resilientstorage-source-$_st&arch=source${__f}
+$__k3
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [extras-common]
-name=CentOS Stream $releasever - Extras packages
-#baseurl=https://mirror.stream.centos.org/SIGs/$releasever-stream/extras/$basearch/extras-common/
-metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=1
+${__n}Extras packages
+#${_bu}https://mirror.stream.centos.org/SIGs/$_rv-stream/extras/$_ba/extras-common/
+${__u2}repo=centos-extras-sig-extras-common-$_st&arch=$_ba${__f}
+$__k1
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e1
 
 [extras-common-source]
-name=CentOS Stream $releasever - Extras packages - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}Extras packages - Source
+${__u2}repo=centos-extras-sig-extras-common-source-$_st&arch=source${__f}
+$__k1
+$_gc1
+$_rg0
+$_m6
+$_e0
 EOF
         ;;
     9)
-        cat <<'EOF' >$Dir_YumRepos/centos.repo
+        local __f='&protocol=https,http'
+        _w centos.repo <<EOF
 [baseos]
-name=CentOS Stream $releasever - BaseOS
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/BaseOS/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=1
+${__n}BaseOS
+#${__u1}BaseOS/$_ba/os/
+${__u2}repo=centos-baseos-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e1
 
 [baseos-debug]
-name=CentOS Stream $releasever - BaseOS - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}BaseOS - Debug
+${__u2}repo=centos-baseos-debug-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [baseos-source]
-name=CentOS Stream $releasever - BaseOS - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-baseos-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}BaseOS - Source
+${__u2}repo=centos-baseos-source-$_st&arch=source${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [appstream]
-name=CentOS Stream $releasever - AppStream
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/AppStream/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=1
+${__n}AppStream
+#${__u1}AppStream/$_ba/os/
+${__u2}repo=centos-appstream-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e1
 
 [appstream-debug]
-name=CentOS Stream $releasever - AppStream - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}AppStream - Debug
+${__u2}repo=centos-appstream-debug-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [appstream-source]
-name=CentOS Stream $releasever - AppStream - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-appstream-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}AppStream - Source
+${__u2}repo=centos-appstream-source-$_st&arch=source${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [crb]
-name=CentOS Stream $releasever - CRB
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/CRB/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-crb-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}CRB
+#${__u1}CRB/$_ba/os/
+${__u2}repo=centos-crb-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [crb-debug]
-name=CentOS Stream $releasever - CRB - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-crb-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}CRB - Debug
+${__u2}repo=centos-crb-debug-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [crb-source]
-name=CentOS Stream $releasever - CRB - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-crb-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}CRB - Source
+${__u2}repo=centos-crb-source-$_st&arch=source${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/centos-addons.repo
+        _w centos-addons.repo <<EOF
 [highavailability]
-name=CentOS Stream $releasever - HighAvailability
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/HighAvailability/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}${__s1}
+#${__u1}${__s1}/$_ba/os/
+${__u2}repo=centos-highavailability-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [highavailability-debug]
-name=CentOS Stream $releasever - HighAvailability - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s1} - Debug
+${__u2}repo=centos-highavailability-debug-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [highavailability-source]
-name=CentOS Stream $releasever - HighAvailability - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-highavailability-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s1} - Source
+${__u2}repo=centos-highavailability-source-$_st&arch=source${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [nfv]
-name=CentOS Stream $releasever - NFV
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/NFV/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}NFV
+#${__u1}NFV/$_ba/os/
+${__u2}repo=centos-nfv-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [nfv-debug]
-name=CentOS Stream $releasever - NFV - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}NFV - Debug
+${__u2}repo=centos-nfv-debug-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [nfv-source]
-name=CentOS Stream $releasever - NFV - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-nfv-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}NFV - Source
+${__u2}repo=centos-nfv-source-$_st&arch=source${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [rt]
-name=CentOS Stream $releasever - RT
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/RT/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}RT
+#${__u1}RT/$_ba/os/
+${__u2}repo=centos-rt-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [rt-debug]
-name=CentOS Stream $releasever - RT - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}RT - Debug
+${__u2}repo=centos-rt-debug-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [rt-source]
-name=CentOS Stream $releasever - RT - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-rt-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}RT - Source
+${__u2}repo=centos-rt-source-$_st&arch=source${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [resilientstorage]
-name=CentOS Stream $releasever - ResilientStorage
-#baseurl=https://mirror.stream.centos.org/$releasever-stream/ResilientStorage/$basearch/os/
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=0
+${__n}${__s2}
+#${__u1}${__s2}/$_ba/os/
+${__u2}repo=centos-resilientstorage-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e0
 
 [resilientstorage-debug]
-name=CentOS Stream $releasever - ResilientStorage - Debug
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-debug-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s2} - Debug
+${__u2}repo=centos-resilientstorage-debug-$_st&arch=$_ba${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [resilientstorage-source]
-name=CentOS Stream $releasever - ResilientStorage - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-resilientstorage-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}${__s2} - Source
+${__u2}repo=centos-resilientstorage-source-$_st&arch=source${__f}
+$__k2
+$_gc1
+$_rg0
+$_m6
+$_e0
 
 [extras-common]
-name=CentOS Stream $releasever - Extras packages
-#baseurl=https://mirror.stream.centos.org/SIGs/$releasever-stream/extras/$basearch/extras-common/
-metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-$stream&arch=$basearch&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-countme=1
-enabled=1
+${__n}Extras packages
+#${_bu}https://mirror.stream.centos.org/SIGs/$_rv-stream/extras/$_ba/extras-common/
+${__u2}repo=centos-extras-sig-extras-common-$_st&arch=$_ba${__f}
+$__k1
+$_gc1
+$_rg0
+$_m6
+$_cm1
+$_e1
 
 [extras-common-source]
-name=CentOS Stream $releasever - Extras packages - Source
-metalink=https://mirrors.centos.org/metalink?repo=centos-extras-sig-extras-common-source-$stream&arch=source&protocol=https,http
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=6h
-enabled=0
+${__n}Extras packages - Source
+${__u2}repo=centos-extras-sig-extras-common-source-$_st&arch=source${__f}
+$__k1
+$_gc1
+$_rg0
+$_m6
+$_e0
 EOF
         ;;
     8)
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-AppStream.repo
+        local __u3="${_bu}http://debuginfo.centos.org/"
+        local __u4="${_ml}http://mirrorlist.centos.org/"
+        local __u5="${_bu}http://vault.centos.org/$_ctd/$_st/"
+        local _fp='CentOS-Stream-'
+        _w "${_fp}AppStream.repo" <<EOF
 [appstream]
-name=CentOS Stream $releasever - AppStream
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=AppStream&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}AppStream
+${__u4}?release=$_st&arch=$_ba&repo=AppStream&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/AppStream/$_ba/os/
+$_gc1
+$_e1
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-BaseOS.repo
+        _w "${_fp}BaseOS.repo" <<EOF
 [baseos]
-name=CentOS Stream $releasever - BaseOS
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=BaseOS&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}BaseOS
+${__u4}?release=$_st&arch=$_ba&repo=BaseOS&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/BaseOS/$_ba/os/
+$_gc1
+$_e1
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Debuginfo.repo
+        _w "${_fp}Debuginfo.repo" <<EOF
 [debuginfo]
-name=CentOS Stream $releasever - Debuginfo
-baseurl=http://debuginfo.centos.org/$stream/$basearch/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}Debuginfo
+${__u3}$_st/$_ba/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Extras-common.repo
+        _w "${_fp}Extras-common.repo" <<EOF
 [extras-common]
-name=CentOS Stream $releasever - Extras common packages
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=extras-extras-common
-#baseurl=http://mirror.centos.org/$contentdir/$stream/extras/$basearch/extras-common/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras
+${__n}Extras common packages
+${__u4}?release=$_st&arch=$_ba&repo=extras-extras-common
+#${_bu}http://mirror.centos.org/$_ctd/$_st/extras/$_ba/extras-common/
+$_gc1
+$_e1
+${_gk}${_pki}CentOS-SIG-Extras
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Extras.repo
+        _w "${_fp}Extras.repo" <<EOF
 [extras]
-name=CentOS Stream $releasever - Extras
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=extras&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/extras/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}Extras
+${__u4}?release=$_st&arch=$_ba&repo=extras&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/extras/$_ba/os/
+$_gc1
+$_e1
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-HighAvailability.repo
+        _w "${_fp}HighAvailability.repo" <<EOF
 [ha]
-name=CentOS Stream $releasever - HighAvailability
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=HighAvailability&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/HighAvailability/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}${__s1}
+${__u4}?release=$_st&arch=$_ba&repo=${__s1}&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/${__s1}/$_ba/os/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Media.repo
+        _w "${_fp}Media.repo" <<EOF
 [media-baseos]
-name=CentOS Stream $releasever - Media - BaseOS
-baseurl=file:///media/CentOS/BaseOS
-        file:///media/cdrom/BaseOS
-        file:///media/cdrecorder/BaseOS
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}Media - BaseOS
+${_bu}${_md}CentOS/BaseOS
+        ${_md}cdrom/BaseOS
+        ${_md}cdrecorder/BaseOS
+$_gc1
+$_e0
+$__k2
 
 [media-appstream]
-name=CentOS Stream $releasever - Media - AppStream
-baseurl=file:///media/CentOS/AppStream
-        file:///media/cdrom/AppStream
-        file:///media/cdrecorder/AppStream
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}Media - AppStream
+${_bu}${_md}CentOS/AppStream
+        ${_md}cdrom/AppStream
+        ${_md}cdrecorder/AppStream
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-NFV.repo
+        _w "${_fp}NFV.repo" <<EOF
 [nfv]
-name=CentOS Stream $releasever - NFV
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=NFV&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/NFV/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}NFV
+${__u4}?release=$_st&arch=$_ba&repo=NFV&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/NFV/$_ba/os/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-PowerTools.repo
+        _w "${_fp}PowerTools.repo" <<EOF
 [powertools]
-name=CentOS Stream $releasever - PowerTools
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=PowerTools&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/PowerTools/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}PowerTools
+${__u4}?release=$_st&arch=$_ba&repo=PowerTools&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/PowerTools/$_ba/os/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-RealTime.repo
+        _w "${_fp}RealTime.repo" <<EOF
 [rt]
-name=CentOS Stream $releasever - RealTime
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=RT&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/RT/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}RealTime
+${__u4}?release=$_st&arch=$_ba&repo=RT&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/RT/$_ba/os/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-ResilientStorage.repo
+        _w "${_fp}ResilientStorage.repo" <<EOF
 [resilientstorage]
-name=CentOS Stream $releasever - ResilientStorage
-mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=ResilientStorage&infra=$infra
-#baseurl=http://mirror.centos.org/$contentdir/$stream/ResilientStorage/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}${__s2}
+${__u4}?release=$_st&arch=$_ba&repo=${__s2}&infra=$_if
+#${_bu}http://mirror.centos.org/$_ctd/$_st/${__s2}/$_ba/os/
+$_gc1
+$_e0
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/CentOS-Stream-Sources.repo
+        _w "${_fp}Sources.repo" <<EOF
 [baseos-source]
-name=CentOS Stream $releasever - BaseOS - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/BaseOS/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}BaseOS - Source
+${__u5}BaseOS/Source/
+$_gc1
+$_e0
+$__k2
 
 [appstream-source]
-name=CentOS Stream $releasever - AppStream - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/AppStream/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}AppStream - Source
+${__u5}AppStream/Source/
+$_gc1
+$_e0
+$__k2
 
 [powertools-source]
-name=CentOS Stream $releasever - PowerTools - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/PowerTools/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}PowerTools - Source
+${__u5}PowerTools/Source/
+$_gc1
+$_e0
+$__k2
 
 [extras-source]
-name=CentOS Stream $releasever - Extras - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/extras/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}Extras - Source
+${__u5}extras/Source/
+$_gc1
+$_e0
+$__k2
 
 [ha-source]
-name=CentOS Stream $releasever - HighAvailability - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/HighAvailability/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}${__s1} - Source
+${__u5}${__s1}/Source/
+$_gc1
+$_e0
+$__k2
 
 [rt-source]
-name=CentOS Stream $releasever - RT - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/RT/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}RT - Source
+${__u5}RT/Source/
+$_gc1
+$_e0
+$__k2
 
 [resilientstorage-source]
-name=CentOS Stream $releasever - ResilientStorage - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/ResilientStorage/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}${__s2} - Source
+${__u5}${__s2}/Source/
+$_gc1
+$_e0
+$__k2
 
 [nfv-source]
-name=CentOS Stream $releasever - NFV - Source
-baseurl=http://vault.centos.org/$contentdir/$stream/NFV/Source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+${__n}NFV - Source
+${__u5}NFV/Source/
+$_gc1
+$_e0
+$__k2
 EOF
         ;;
     esac
@@ -4624,860 +4688,873 @@ EOF
 
 ## 生成 Rocky Linux repo 源文件
 function gen_repo_files_RockyLinux() {
+    local _m6="${_me}6h"
+    local __s5='WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED'
+    local __s3='HighAvailability'
+    local __s4='ResilientStorage'
+    local __s2='source/tree/'
+    local __s1='debug/tree/'
+    local __u1="${_bu}http://dl.rockylinux.org/$_ctd/$_rv/"
+    local __u2="${_ml}https://mirrors.rockylinux.org/mirrorlist?arch="
+    local __n="${_n}Rocky Linux $_rv - "
     case "$1" in
     10)
-        cat <<'EOF' >$Dir_YumRepos/rocky.repo
+        local __k1="${_gk}${_pki}Rocky-10"
+        _w rocky.repo <<EOF
 [baseos]
-name=Rocky Linux $releasever - BaseOS
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}BaseOS
+${__u2}$_ba&repo=BaseOS-$_rv$_rl
+#${__u1}BaseOS/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$_m6
+$__k1
 
 [baseos-debuginfo]
-name=Rocky Linux $releasever - BaseOS - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}BaseOS - Debug
+${__u2}$_ba&repo=BaseOS-$_rv-debug$_rl
+#${__u1}BaseOS/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [baseos-source]
-name=Rocky Linux $releasever - BaseOS - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}BaseOS - Source
+${__u2}source&repo=BaseOS-$_rv-source$_rl
+#${__u1}BaseOS/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [appstream]
-name=Rocky Linux $releasever - AppStream
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}AppStream
+${__u2}$_ba&repo=AppStream-$_rv$_rl
+#${__u1}AppStream/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$_m6
+$__k1
 
 [appstream-debuginfo]
-name=Rocky Linux $releasever - AppStream - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}AppStream - Debug
+${__u2}$_ba&repo=AppStream-$_rv-debug$_rl
+#${__u1}AppStream/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [appstream-source]
-name=Rocky Linux $releasever - AppStream - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}AppStream - Source
+${__u2}source&repo=AppStream-$_rv-source$_rl
+#${__u1}AppStream/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [crb]
-name=Rocky Linux $releasever - CRB
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}CRB
+${__u2}$_ba&repo=CRB-$_rv$_rl
+#${__u1}CRB/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k1
 
 [crb-debuginfo]
-name=Rocky Linux $releasever - CRB - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}CRB - Debug
+${__u2}$_ba&repo=CRB-$_rv-debug$_rl
+#${__u1}CRB/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [crb-source]
-name=Rocky Linux $releasever - CRB - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=CRB-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}CRB - Source
+${__u2}source&repo=CRB-$_rv-source$_rl
+#${__u1}CRB/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/rocky-addons.repo
+        _w rocky-addons.repo <<EOF
 [highavailability]
-name=Rocky Linux $releasever - High Availability
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}High Availability
+${__u2}$_ba&repo=${__s3}-$_rv$_rl
+#${__u1}${__s3}/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k1
 
 [highavailability-debuginfo]
-name=Rocky Linux $releasever - High Availability - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}High Availability - Debug
+${__u2}$_ba&repo=${__s3}-$_rv-debug$_rl
+#${__u1}${__s3}/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [highavailability-source]
-name=Rocky Linux $releasever - High Availability - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=HighAvailability-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}High Availability - Source
+${__u2}source&repo=${__s3}-$_rv-source$_rl
+#${__u1}${__s3}/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [nfv]
-name=Rocky Linux $releasever - NFV
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}NFV
+${__u2}$_ba&repo=NFV-$_rv$_rl
+#${__u1}NFV/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k1
 
 [nfv-debuginfo]
-name=Rocky Linux $releasever - NFV Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}NFV Debug
+${__u2}$_ba&repo=RT-$_rv-debug$_rl
+#${__u1}NFV/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [nfv-source]
-name=Rocky Linux $releasever - NFV Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}NFV Source
+${__u2}$_ba&repo=RT-$_rv-source$_rl
+#${__u1}NFV/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [rt]
-name=Rocky Linux $releasever - Realtime
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Realtime
+${__u2}$_ba&repo=RT-$_rv$_rl
+#${__u1}RT/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k1
 
 [rt-debuginfo]
-name=Rocky Linux $releasever - Realtime Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Realtime Debug
+${__u2}$_ba&repo=RT-$_rv-debug$_rl
+#${__u1}RT/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [rt-source]
-name=Rocky Linux $releasever - Realtime Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Realtime Source
+${__u2}$_ba&repo=RT-$_rv-source$_rl
+#${__u1}RT/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [sap]
-name=Rocky Linux $releasever - SAP
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}SAP
+${__u2}$_ba&repo=SAP-$_rv$_rl
+#${__u1}SAP/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k1
 
 [sap-debuginfo]
-name=Rocky Linux $releasever - SAP Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}SAP Debug
+${__u2}$_ba&repo=SAP-$_rv-debug$_rl
+#${__u1}SAP/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [sap-source]
-name=Rocky Linux $releasever - SAP Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}SAP Source
+${__u2}$_ba&repo=SAP-$_rv-source$_rl
+#${__u1}SAP/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [saphana]
-name=Rocky Linux $releasever - SAPHANA
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}SAPHANA
+${__u2}$_ba&repo=SAPHANA-$_rv$_rl
+#${__u1}SAPHANA/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k1
 
 [saphana-debuginfo]
-name=Rocky Linux $releasever - SAPHANA Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}SAPHANA Debug
+${__u2}$_ba&repo=SAPHANA-$_rv-debug$_rl
+#${__u1}SAPHANA/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [saphana-source]
-name=Rocky Linux $releasever - SAPHANA Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}SAPHANA Source
+${__u2}$_ba&repo=SAPHANA-$_rv-source$_rl
+#${__u1}SAPHANA/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/rocky-devel.repo
+        _w rocky-devel.repo <<EOF
 [devel]
-name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/devel/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Devel ${__s5}
+${__u2}$_ba&repo=devel-$_rv$_rl
+#${__u1}devel/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k1
 
 [devel-debuginfo]
-name=Rocky Linux $releasever - Devel Debug WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/devel/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Devel Debug ${__s5}
+${__u2}$_ba&repo=devel-$_rv-debug$_rl
+#${__u1}devel/$_ba/${__s1}
+$_gc1
+$_e0
+$_cm1
+$__k1
 
 [devel-source]
-name=Rocky Linux $releasever - Devel Source WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/devel/source/tree/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Devel Source ${__s5}
+${__u2}$_ba&repo=devel-$_rv-source$_rl
+#${__u1}devel/${__s2}
+$_gc1
+$_e0
+$_cm1
+$__k1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/rocky-extras.repo
+        _w rocky-extras.repo <<EOF
 [extras]
-name=Rocky Linux $releasever - Extras
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Extras
+${__u2}$_ba&repo=extras-$_rv$_rl
+#${__u1}extras/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$_m6
+$__k1
 
 [extras-debuginfo]
-name=Rocky Linux $releasever - Extras Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Extras Debug
+${__u2}$_ba&repo=extras-$_rv-debug$_rl
+#${__u1}extras/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [extras-source]
-name=Rocky Linux $releasever - Extras Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Extras Source
+${__u2}$_ba&repo=extras-$_rv-source$_rl
+#${__u1}extras/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [plus]
-name=Rocky Linux $releasever - Plus
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=plus-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Plus
+${__u2}$_ba&repo=plus-$_rv$_rl
+#${__u1}plus/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k1
 
 [plus-debuginfo]
-name=Rocky Linux $releasever - Plus - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=plus-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Plus - Debug
+${__u2}$_ba&repo=plus-$_rv-debug$_rl
+#${__u1}plus/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k1
 
 [plus-source]
-name=Rocky Linux $releasever - Plus - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=plus-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+${__n}Plus - Source
+${__u2}source&repo=plus-$_rv-source$_rl
+#${__u1}plus/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k1
 EOF
         ;;
     9)
-        cat <<'EOF' >$Dir_YumRepos/rocky.repo
+        local __k2="${_gk}${_pki}Rocky-9"
+        _w rocky.repo <<EOF
 [baseos]
-name=Rocky Linux $releasever - BaseOS
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}BaseOS
+${__u2}$_ba&repo=BaseOS-$_rv$_rl
+#${__u1}BaseOS/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$_m6
+$__k2
 
 [baseos-debug]
-name=Rocky Linux $releasever - BaseOS - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}BaseOS - Debug
+${__u2}$_ba&repo=BaseOS-$_rv-debug$_rl
+#${__u1}BaseOS/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [baseos-source]
-name=Rocky Linux $releasever - BaseOS - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}BaseOS - Source
+${__u2}source&repo=BaseOS-$_rv-source$_rl
+#${__u1}BaseOS/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [appstream]
-name=Rocky Linux $releasever - AppStream
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}AppStream
+${__u2}$_ba&repo=AppStream-$_rv$_rl
+#${__u1}AppStream/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$_m6
+$__k2
 
 [appstream-debug]
-name=Rocky Linux $releasever - AppStream - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}AppStream - Debug
+${__u2}$_ba&repo=AppStream-$_rv-debug$_rl
+#${__u1}AppStream/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [appstream-source]
-name=Rocky Linux $releasever - AppStream - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}AppStream - Source
+${__u2}source&repo=AppStream-$_rv-source$_rl
+#${__u1}AppStream/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [crb]
-name=Rocky Linux $releasever - CRB
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}CRB
+${__u2}$_ba&repo=CRB-$_rv$_rl
+#${__u1}CRB/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [crb-debug]
-name=Rocky Linux $releasever - CRB - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}CRB - Debug
+${__u2}$_ba&repo=CRB-$_rv-debug$_rl
+#${__u1}CRB/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [crb-source]
-name=Rocky Linux $releasever - CRB - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=CRB-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/CRB/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}CRB - Source
+${__u2}source&repo=CRB-$_rv-source$_rl
+#${__u1}CRB/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/rocky-addons.repo
+        _w rocky-addons.repo <<EOF
 [highavailability]
-name=Rocky Linux $releasever - High Availability
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}High Availability
+${__u2}$_ba&repo=${__s3}-$_rv$_rl
+#${__u1}${__s3}/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [highavailability-debug]
-name=Rocky Linux $releasever - High Availability - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}High Availability - Debug
+${__u2}$_ba&repo=${__s3}-$_rv-debug$_rl
+#${__u1}${__s3}/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [highavailability-source]
-name=Rocky Linux $releasever - High Availability - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=HighAvailability-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}High Availability - Source
+${__u2}source&repo=${__s3}-$_rv-source$_rl
+#${__u1}${__s3}/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [resilientstorage]
-name=Rocky Linux $releasever - Resilient Storage
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Resilient Storage
+${__u2}$_ba&repo=${__s4}-$_rv$_rl
+#${__u1}${__s4}/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [resilientstorage-debug]
-name=Rocky Linux $releasever - Resilient Storage - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Resilient Storage - Debug
+${__u2}$_ba&repo=${__s4}-$_rv-debug$_rl
+#${__u1}${__s4}/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [resilientstorage-source]
-name=Rocky Linux $releasever - Resilient Storage - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=ResilientStorage-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Resilient Storage - Source
+${__u2}source&repo=${__s4}-$_rv-source$_rl
+#${__u1}${__s4}/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [nfv]
-name=Rocky Linux $releasever - NFV
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}NFV
+${__u2}$_ba&repo=NFV-$_rv$_rl
+#${__u1}NFV/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [nfv-debug]
-name=Rocky Linux $releasever - NFV Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}NFV Debug
+${__u2}$_ba&repo=RT-$_rv-debug$_rl
+#${__u1}NFV/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [nfv-source]
-name=Rocky Linux $releasever - NFV Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/NFV/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}NFV Source
+${__u2}$_ba&repo=RT-$_rv-source$_rl
+#${__u1}NFV/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [rt]
-name=Rocky Linux $releasever - Realtime
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Realtime
+${__u2}$_ba&repo=RT-$_rv$_rl
+#${__u1}RT/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [rt-debug]
-name=Rocky Linux $releasever - Realtime Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Realtime Debug
+${__u2}$_ba&repo=RT-$_rv-debug$_rl
+#${__u1}RT/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [rt-source]
-name=Rocky Linux $releasever - Realtime Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Realtime Source
+${__u2}$_ba&repo=RT-$_rv-source$_rl
+#${__u1}RT/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [sap]
-name=Rocky Linux $releasever - SAP
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}SAP
+${__u2}$_ba&repo=SAP-$_rv$_rl
+#${__u1}SAP/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [sap-debug]
-name=Rocky Linux $releasever - SAP Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}SAP Debug
+${__u2}$_ba&repo=SAP-$_rv-debug$_rl
+#${__u1}SAP/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [sap-source]
-name=Rocky Linux $releasever - SAP Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAP/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}SAP Source
+${__u2}$_ba&repo=SAP-$_rv-source$_rl
+#${__u1}SAP/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [saphana]
-name=Rocky Linux $releasever - SAPHANA
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}SAPHANA
+${__u2}$_ba&repo=SAPHANA-$_rv$_rl
+#${__u1}SAPHANA/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [saphana-debug]
-name=Rocky Linux $releasever - SAPHANA Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}SAPHANA Debug
+${__u2}$_ba&repo=SAPHANA-$_rv-debug$_rl
+#${__u1}SAPHANA/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [saphana-source]
-name=Rocky Linux $releasever - SAPHANA Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/SAPHANA/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}SAPHANA Source
+${__u2}$_ba&repo=SAPHANA-$_rv-source$_rl
+#${__u1}SAPHANA/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/rocky-devel.repo
+        _w rocky-devel.repo <<EOF
 [devel]
-name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/devel/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Devel ${__s5}
+${__u2}$_ba&repo=devel-$_rv$_rl
+#${__u1}devel/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k2
 EOF
-        cat <<'EOF' >$Dir_YumRepos/rocky-extras.repo
+        _w rocky-extras.repo <<EOF
 [extras]
-name=Rocky Linux $releasever - Extras
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Extras
+${__u2}$_ba&repo=extras-$_rv$_rl
+#${__u1}extras/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$_m6
+$__k2
 
 [extras-debug]
-name=Rocky Linux $releasever - Extras Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Extras Debug
+${__u2}$_ba&repo=extras-$_rv-debug$_rl
+#${__u1}extras/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [extras-source]
-name=Rocky Linux $releasever - Extras Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Extras Source
+${__u2}$_ba&repo=extras-$_rv-source$_rl
+#${__u1}extras/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [plus]
-name=Rocky Linux $releasever - Plus
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=plus-$releasever$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Plus
+${__u2}$_ba&repo=plus-$_rv$_rl
+#${__u1}plus/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$_m6
+$__k2
 
 [plus-debug]
-name=Rocky Linux $releasever - Plus - Debug
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=plus-$releasever-debug$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Plus - Debug
+${__u2}$_ba&repo=plus-$_rv-debug$_rl
+#${__u1}plus/$_ba/${__s1}
+$_gc1
+$_e0
+$_m6
+$__k2
 
 [plus-source]
-name=Rocky Linux $releasever - Plus - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=plus-$releasever-source$rltype
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/source/tree/
-gpgcheck=1
-enabled=0
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+${__n}Plus - Source
+${__u2}source&repo=plus-$_rv-source$_rl
+#${__u1}plus/${__s2}
+$_gc1
+$_e0
+$_m6
+$__k2
 EOF
         ;;
     8)
-        cat <<'EOF' >$Dir_YumRepos/Rocky-AppStream.repo
+        local __k3="${_gk}${_pki}rockyofficial"
+        local _fp='Rocky-'
+        _w "${_fp}AppStream.repo" <<EOF
 [appstream]
-name=Rocky Linux $releasever - AppStream
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}AppStream
+${__u2}$_ba&repo=AppStream-$_rv
+#${__u1}AppStream/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-BaseOS.repo
+        _w "${_fp}BaseOS.repo" <<EOF
 [baseos]
-name=Rocky Linux $releasever - BaseOS
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}BaseOS
+${__u2}$_ba&repo=BaseOS-$_rv
+#${__u1}BaseOS/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-Debuginfo.repo
+        _w "${_fp}Debuginfo.repo" <<EOF
 [baseos-debug]
-name=Rocky Linux $releasever - BaseOS - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}BaseOS - Source
+${__u2}$_ba&repo=BaseOS-$_rv-debug
+#${__u1}BaseOS/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [appstream-debug]
-name=Rocky Linux $releasever - AppStream - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}AppStream - Source
+${__u2}$_ba&repo=AppStream-$_rv-debug
+#${__u1}AppStream/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [ha-debug]
-name=Rocky Linux $releasever - High Availability - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever-debug
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}High Availability - Source
+${__u2}$_ba&repo=${__s3}-$_rv-debug
+#${__u1}${__s3}/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [powertools-debug]
-name=Rocky Linux $releasever - PowerTools - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=PowerTools-$releasever-debug
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/PowerTools/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}PowerTools - Source
+${__u2}$_ba&repo=PowerTools-$_rv-debug
+#${__u1}PowerTools/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [resilient-storage-debug]
-name=Rocky Linux $releasever - Resilient Storage - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever-debug
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Resilient Storage - Source
+${__u2}$_ba&repo=${__s4}-$_rv-debug
+#${__u1}${__s4}/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-Devel.repo
+        _w "${_fp}Devel.repo" <<EOF
 [devel]
-name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT AND KOJI USE
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=Devel-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/Devel/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Devel WARNING! FOR BUILDROOT AND KOJI USE
+${__u2}$_ba&repo=Devel-$_rv
+#${__u1}Devel/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-Extras.repo
+        _w "${_fp}Extras.repo" <<EOF
 [extras]
-name=Rocky Linux $releasever - Extras
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/os/
-gpgcheck=1
-enabled=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Extras
+${__u2}$_ba&repo=extras-$_rv
+#${__u1}extras/$_ba/os/
+$_gc1
+$_e1
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-HighAvailability.repo
+        _w "${_fp}HighAvailability.repo" <<EOF
 [ha]
-name=Rocky Linux $releasever - HighAvailability
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}${__s3}
+${__u2}$_ba&repo=${__s3}-$_rv
+#${__u1}${__s3}/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-Media.repo
+        _w "${_fp}Media.repo" <<EOF
 [media-baseos]
-name=Rocky Linux $releasever - Media - BaseOS
-baseurl=file:///media/Rocky/BaseOS
-        file:///media/cdrom/BaseOS
-        file:///media/cdrecorder/BaseOS
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Media - BaseOS
+${_bu}${_md}Rocky/BaseOS
+        ${_md}cdrom/BaseOS
+        ${_md}cdrecorder/BaseOS
+$_gc1
+$_e0
+$__k3
 
 [media-appstream]
-name=Rocky Linux $releasever - Media - AppStream
-baseurl=file:///media/Rocky/AppStream
-        file:///media/cdrom/AppStream
-        file:///media/cdrecorder/AppStream
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Media - AppStream
+${_bu}${_md}Rocky/AppStream
+        ${_md}cdrom/AppStream
+        ${_md}cdrecorder/AppStream
+$_gc1
+$_e0
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-NFV.repo
+        _w "${_fp}NFV.repo" <<EOF
 [nfv]
-name=Rocky Linux $releasever - NFV
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/nfv/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}NFV
+${__u2}$_ba&repo=NFV-$_rv
+#${__u1}nfv/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-Plus.repo
+        _w "${_fp}Plus.repo" <<EOF
 [plus]
-name=Rocky Linux $releasever - Plus
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=rockyplus-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Plus
+${__u2}$_ba&repo=rockyplus-$_rv
+#${__u1}plus/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-PowerTools.repo
+        _w "${_fp}PowerTools.repo" <<EOF
 [powertools]
-name=Rocky Linux $releasever - PowerTools
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=PowerTools-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/PowerTools/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}PowerTools
+${__u2}$_ba&repo=PowerTools-$_rv
+#${__u1}PowerTools/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-ResilientStorage.repo
+        _w "${_fp}ResilientStorage.repo" <<EOF
 [resilient-storage]
-name=Rocky Linux $releasever - ResilientStorage
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}${__s4}
+${__u2}$_ba&repo=${__s4}-$_rv
+#${__u1}${__s4}/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-RT.repo
+        _w "${_fp}RT.repo" <<EOF
 [rt]
-name=Rocky Linux $releasever - Realtime
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/RT/$basearch/os/
-gpgcheck=1
-enabled=0
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Realtime
+${__u2}$_ba&repo=RT-$_rv
+#${__u1}RT/$_ba/os/
+$_gc1
+$_e0
+$_cm1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/Rocky-Sources.repo
+        _w "${_fp}Sources.repo" <<EOF
 [baseos-source]
-name=Rocky Linux $releasever - BaseOS - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/BaseOS/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}BaseOS - Source
+${__u2}source&repo=BaseOS-$_rv-source
+#${__u1}BaseOS/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [appstream-source]
-name=Rocky Linux $releasever - AppStream - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/AppStream/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}AppStream - Source
+${__u2}source&repo=AppStream-$_rv-source
+#${__u1}AppStream/${__s2}
+$_gc1
+$_e0
+$__k3
 
 #[extras-source]
-#name=Rocky Linux $releasever - Extras - Source
-#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=extras-$releasever-source
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/extras/source/tree/
-#gpgcheck=1
-#enabled=0
-#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+#${__n}Extras - Source
+#${__u2}source&repo=extras-$_rv-source
+#${__u1}extras/${__s2}
+#$_gc1
+#$_e0
+#$__k3
 
 #[plus-source]
-#name=Rocky Linux $releasever - Plus - Source
-#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=plus-$releasever-source
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/Plus/source/tree/
-#gpgcheck=1
-#enabled=0
-#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+#${__n}Plus - Source
+#${__u2}source&repo=plus-$_rv-source
+#${__u1}Plus/${__s2}
+#$_gc1
+#$_e0
+#$__k3
 
 [ha-source]
-name=Rocky Linux $releasever - High Availability - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=HighAvailability-$releasever-source
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/HighAvailability/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}High Availability - Source
+${__u2}source&repo=${__s3}-$_rv-source
+#${__u1}${__s3}/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [powertools-source]
-name=Rocky Linux $releasever - PowerTools - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=PowerTools-$releasever-source
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/PowerTools/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}PowerTools - Source
+${__u2}source&repo=PowerTools-$_rv-source
+#${__u1}PowerTools/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [resilient-storage-source]
-name=Rocky Linux $releasever - Resilient Storage - Source
-mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=ResilientStorage-$releasever-source
-#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+${__n}Resilient Storage - Source
+${__u2}source&repo=${__s4}-$_rv-source
+#${__u1}${__s4}/${__s2}
+$_gc1
+$_e0
+$__k3
 EOF
         ;;
     esac
@@ -5485,933 +5562,949 @@ EOF
 
 ## 生成 AlmaLinux repo 源文件
 function gen_repo_files_AlmaLinux() {
+    local _em='enabled_metadata='
+    local _em0="${_em}0"
+    local _em1="${_em}1"
+    local _m86="${_me}86400"
+    local __s1='https://repo.almalinux.org/'
+    local __s2='HighAvailability'
+    local __s3='ResilientStorage'
+    local __u1="${_ml}https://mirrors.almalinux.org/mirrorlist/$_rv/"
+    local __u2="${_bu}${__s1}almalinux/$_rv/"
+    local __u3="${_bu}${__s1}vault/$_rv/"
+    local __n="${_n}AlmaLinux $_rv - "
+    local _fp='almalinux-'
     case "$1" in
     10)
-        cat <<'EOF' >$Dir_YumRepos/almalinux-appstream.repo
+        local __u4="${_bu}https://vault.almalinux.org/$_rv/"
+        local __k1="${_gk}${_pki}AlmaLinux-10"
+        _w "${_fp}appstream.repo" <<EOF
 [appstream]
-name=AlmaLinux $releasever - AppStream
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/AppStream/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=1
+${__n}AppStream
+${__u1}appstream
+# ${__u2}AppStream/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em1
 
 [appstream-debuginfo]
-name=AlmaLinux $releasever - AppStream - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-debug
-# baseurl=https://vault.almalinux.org/$releasever/AppStream/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}AppStream - Debug
+${__u1}appstream-debug
+# ${__u4}AppStream/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [appstream-source]
-name=AlmaLinux $releasever - AppStream - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-source
-# baseurl=https://vault.almalinux.org/$releasever/AppStream/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}AppStream - Source
+${__u1}appstream-source
+# ${__u4}AppStream/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-baseos.repo
+        _w "${_fp}baseos.repo" <<EOF
 [baseos]
-name=AlmaLinux $releasever - BaseOS
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/BaseOS/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=1
+${__n}BaseOS
+${__u1}baseos
+# ${__u2}BaseOS/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em1
 
 [baseos-debuginfo]
-name=AlmaLinux $releasever - BaseOS - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-debug
-# baseurl=https://vault.almalinux.org/$releasever/BaseOS/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}BaseOS - Debug
+${__u1}baseos-debug
+# ${__u4}BaseOS/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [baseos-source]
-name=AlmaLinux $releasever - BaseOS - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-source
-# baseurl=https://vault.almalinux.org/$releasever/BaseOS/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}BaseOS - Source
+${__u1}baseos-source
+# ${__u4}BaseOS/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-crb.repo
+        _w "${_fp}crb.repo" <<EOF
 [crb]
-name=AlmaLinux $releasever - CRB
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/CRB/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}CRB
+${__u1}crb
+# ${__u2}CRB/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em0
 
 [crb-debuginfo]
-name=AlmaLinux $releasever - CRB - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb-debug
-# baseurl=https://vault.almalinux.org/$releasever/CRB/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}CRB - Debug
+${__u1}crb-debug
+# ${__u4}CRB/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [crb-source]
-name=AlmaLinux $releasever - CRB - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb-source
-# baseurl=https://vault.almalinux.org/$releasever/CRB/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}CRB - Source
+${__u1}crb-source
+# ${__u4}CRB/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-extras.repo
+        _w "${_fp}extras.repo" <<EOF
 [extras]
-name=AlmaLinux $releasever - Extras
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/extras/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}Extras
+${__u1}extras
+# ${__u2}extras/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em0
 
 [extras-debuginfo]
-name=AlmaLinux $releasever - Extras - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-debug
-# baseurl=https://vault.almalinux.org/$releasever/extras/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}Extras - Debug
+${__u1}extras-debug
+# ${__u4}extras/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [extras-source]
-name=AlmaLinux $releasever - Extras - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-source
-# baseurl=https://vault.almalinux.org/$releasever/extras/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}Extras - Source
+${__u1}extras-source
+# ${__u4}extras/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-highavailability.repo
+        _w "${_fp}highavailability.repo" <<EOF
 [highavailability]
-name=AlmaLinux $releasever - HighAvailability
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/HighAvailability/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s2}
+${__u1}highavailability
+# ${__u2}${__s2}/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em0
 
 [highavailability-debuginfo]
-name=AlmaLinux $releasever - HighAvailability - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability-debug
-# baseurl=https://vault.almalinux.org/$releasever/HighAvailability/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s2} - Debug
+${__u1}highavailability-debug
+# ${__u4}${__s2}/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [highavailability-source]
-name=AlmaLinux $releasever - HighAvailability - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability-source
-# baseurl=https://vault.almalinux.org/$releasever/HighAvailability/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s2} - Source
+${__u1}highavailability-source
+# ${__u4}${__s2}/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-nfv.repo
+        _w "${_fp}nfv.repo" <<EOF
 [nfv]
-name=AlmaLinux $releasever - NFV
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/NFV/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}NFV
+${__u1}nfv
+# ${__u2}NFV/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em0
 
 [nfv-debuginfo]
-name=AlmaLinux $releasever - NFV - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-debug
-# baseurl=https://vault.almalinux.org/$releasever/NFV/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}NFV - Debug
+${__u1}nfv-debug
+# ${__u4}NFV/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [nfv-source]
-name=AlmaLinux $releasever - NFV - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-source
-# baseurl=https://vault.almalinux.org/$releasever/NFV/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}NFV - Source
+${__u1}nfv-source
+# ${__u4}NFV/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-rt.repo
+        _w "${_fp}rt.repo" <<EOF
 [rt]
-name=AlmaLinux $releasever - RT
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/RT/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}RT
+${__u1}rt
+# ${__u2}RT/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em0
 
 [rt-debuginfo]
-name=AlmaLinux $releasever - RT - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-debug
-# baseurl=https://vault.almalinux.org/$releasever/RT/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}RT - Debug
+${__u1}rt-debug
+# ${__u4}RT/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [rt-source]
-name=AlmaLinux $releasever - RT - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-source
-# baseurl=https://vault.almalinux.org/$releasever/RT/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}RT - Source
+${__u1}rt-source
+# ${__u4}RT/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-saphana.repo
+        _w "${_fp}saphana.repo" <<EOF
 [saphana]
-name=AlmaLinux $releasever - SAPHANA
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAPHANA/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAPHANA
+${__u1}saphana
+# ${__u2}SAPHANA/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em0
 
 [saphana-debuginfo]
-name=AlmaLinux $releasever - SAPHANA - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-debug
-# baseurl=https://vault.almalinux.org/$releasever/SAPHANA/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAPHANA - Debug
+${__u1}saphana-debug
+# ${__u4}SAPHANA/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [saphana-source]
-name=AlmaLinux $releasever - SAPHANA - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-source
-# baseurl=https://vault.almalinux.org/$releasever/SAPHANA/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAPHANA - Source
+${__u1}saphana-source
+# ${__u4}SAPHANA/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-sap.repo
+        _w "${_fp}sap.repo" <<EOF
 [sap]
-name=AlmaLinux $releasever - SAP
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAP/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAP
+${__u1}sap
+# ${__u2}SAP/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k1
+$_m86
+$_em0
 
 [sap-debuginfo]
-name=AlmaLinux $releasever - SAP - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-debug
-# baseurl=https://vault.almalinux.org/$releasever/SAP/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAP - Debug
+${__u1}sap-debug
+# ${__u4}SAP/debug/$_ba/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 
 [sap-source]
-name=AlmaLinux $releasever - SAP - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-source
-# baseurl=https://vault.almalinux.org/$releasever/SAP/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-10
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAP - Source
+${__u1}sap-source
+# ${__u4}SAP/Source/
+$_e0
+$_gc1
+$__k1
+$_m86
+$_em0
 EOF
         ;;
     9)
-        cat <<'EOF' >$Dir_YumRepos/almalinux-appstream.repo
+        local __k2="${_gk}${_pki}AlmaLinux-9"
+        _w "${_fp}appstream.repo" <<EOF
 [appstream]
-name=AlmaLinux $releasever - AppStream
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/AppStream/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=1
+${__n}AppStream
+${__u1}appstream
+# ${__u2}AppStream/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em1
 
 [appstream-debug]
-name=AlmaLinux $releasever - AppStream - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/AppStream/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}AppStream - Debug
+${__u1}appstream-debug
+# ${__u3}AppStream/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [appstream-source]
-name=AlmaLinux $releasever - AppStream - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/AppStream/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}AppStream - Source
+${__u1}appstream-source
+# ${__u3}AppStream/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-baseos.repo
+        _w "${_fp}baseos.repo" <<EOF
 [baseos]
-name=AlmaLinux $releasever - BaseOS
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/BaseOS/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=1
+${__n}BaseOS
+${__u1}baseos
+# ${__u2}BaseOS/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em1
 
 [baseos-debug]
-name=AlmaLinux $releasever - BaseOS - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/BaseOS/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}BaseOS - Debug
+${__u1}baseos-debug
+# ${__u3}BaseOS/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [baseos-source]
-name=AlmaLinux $releasever - BaseOS - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/BaseOS/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}BaseOS - Source
+${__u1}baseos-source
+# ${__u3}BaseOS/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-crb.repo
+        _w "${_fp}crb.repo" <<EOF
 [crb]
-name=AlmaLinux $releasever - CRB
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/CRB/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}CRB
+${__u1}crb
+# ${__u2}CRB/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [crb-debug]
-name=AlmaLinux $releasever - CRB - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/CRB/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}CRB - Debug
+${__u1}crb-debug
+# ${__u3}CRB/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [crb-source]
-name=AlmaLinux $releasever - CRB - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/crb-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/CRB/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}CRB - Source
+${__u1}crb-source
+# ${__u3}CRB/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-extras.repo
+        _w "${_fp}extras.repo" <<EOF
 [extras]
-name=AlmaLinux $releasever - Extras
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/extras/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}Extras
+${__u1}extras
+# ${__u2}extras/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [extras-debug]
-name=AlmaLinux $releasever - Extras - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/extras/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}Extras - Debug
+${__u1}extras-debug
+# ${__u3}extras/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [extras-source]
-name=AlmaLinux $releasever - Extras - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/extras/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}Extras - Source
+${__u1}extras-source
+# ${__u3}extras/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-highavailability.repo
+        _w "${_fp}highavailability.repo" <<EOF
 [highavailability]
-name=AlmaLinux $releasever - HighAvailability
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/HighAvailability/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s2}
+${__u1}highavailability
+# ${__u2}${__s2}/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [highavailability-debug]
-name=AlmaLinux $releasever - HighAvailability - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/HighAvailability/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s2} - Debug
+${__u1}highavailability-debug
+# ${__u3}${__s2}/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [highavailability-source]
-name=AlmaLinux $releasever - HighAvailability - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/highavailability-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/HighAvailability/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s2} - Source
+${__u1}highavailability-source
+# ${__u3}${__s2}/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-nfv.repo
+        _w "${_fp}nfv.repo" <<EOF
 [nfv]
-name=AlmaLinux $releasever - NFV
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/NFV/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}NFV
+${__u1}nfv
+# ${__u2}NFV/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [nfv-debug]
-name=AlmaLinux $releasever - NFV - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/NFV/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}NFV - Debug
+${__u1}nfv-debug
+# ${__u3}NFV/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [nfv-source]
-name=AlmaLinux $releasever - NFV - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/NFV/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}NFV - Source
+${__u1}nfv-source
+# ${__u3}NFV/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-plus.repo
+        _w "${_fp}plus.repo" <<EOF
 [plus]
-name=AlmaLinux $releasever - Plus
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/plus/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}Plus
+${__u1}plus
+# ${__u2}plus/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [plus-debug]
-name=AlmaLinux $releasever - Plus - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/plus/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}Plus - Debug
+${__u1}plus-debug
+# ${__u3}plus/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [plus-source]
-name=AlmaLinux $releasever - Plus - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/plus/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}Plus - Source
+${__u1}plus-source
+# ${__u3}plus/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-resilientstorage.repo
+        _w "${_fp}resilientstorage.repo" <<EOF
 [resilientstorage]
-name=AlmaLinux $releasever - ResilientStorage
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/ResilientStorage/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s3}
+${__u1}resilientstorage
+# ${__u2}${__s3}/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [resilientstorage-debug]
-name=AlmaLinux $releasever - ResilientStorage - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/ResilientStorage/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s3} - Debug
+${__u1}resilientstorage-debug
+# ${__u3}${__s3}/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [resilientstorage-source]
-name=AlmaLinux $releasever - ResilientStorage - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/ResilientStorage/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}${__s3} - Source
+${__u1}resilientstorage-source
+# ${__u3}${__s3}/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-rt.repo
+        _w "${_fp}rt.repo" <<EOF
 [rt]
-name=AlmaLinux $releasever - RT
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/RT/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}RT
+${__u1}rt
+# ${__u2}RT/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [rt-debug]
-name=AlmaLinux $releasever - RT - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/RT/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}RT - Debug
+${__u1}rt-debug
+# ${__u3}RT/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [rt-source]
-name=AlmaLinux $releasever - RT - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/RT/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}RT - Source
+${__u1}rt-source
+# ${__u3}RT/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-sap.repo
+        _w "${_fp}sap.repo" <<EOF
 [sap]
-name=AlmaLinux $releasever - SAP
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAP/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAP
+${__u1}sap
+# ${__u2}SAP/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [sap-debug]
-name=AlmaLinux $releasever - SAP - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAP/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAP - Debug
+${__u1}sap-debug
+# ${__u3}SAP/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [sap-source]
-name=AlmaLinux $releasever - SAP - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAP/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAP - Source
+${__u1}sap-source
+# ${__u3}SAP/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-saphana.repo
+        _w "${_fp}saphana.repo" <<EOF
 [saphana]
-name=AlmaLinux $releasever - SAPHANA
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAPHANA/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAPHANA
+${__u1}saphana
+# ${__u2}SAPHANA/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k2
+$_m86
+$_em0
 
 [saphana-debug]
-name=AlmaLinux $releasever - SAPHANA - Debug
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-debug
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAPHANA/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAPHANA - Debug
+${__u1}saphana-debug
+# ${__u3}SAPHANA/debug/$_ba/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 
 [saphana-source]
-name=AlmaLinux $releasever - SAPHANA - Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAPHANA/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux-9
-metadata_expire=86400
-enabled_metadata=0
+${__n}SAPHANA - Source
+${__u1}saphana-source
+# ${__u3}SAPHANA/Source/
+$_e0
+$_gc1
+$__k2
+$_m86
+$_em0
 EOF
         ;;
     8)
-        cat <<'EOF' >$Dir_YumRepos/almalinux-ha.repo
+        local __k3="${_gk}${_pki}AlmaLinux"
+        _w "${_fp}ha.repo" <<EOF
 [ha]
-name=AlmaLinux $releasever - HighAvailability
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/ha
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/HighAvailability/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}${__s2}
+${__u1}ha
+# ${__u2}${__s2}/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [ha-source]
-name=AlmaLinux $releasever - HighAvailability Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/ha-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/HighAvailability/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}${__s2} Source
+${__u1}ha-source
+# ${__u3}${__s2}/Source/
+$_e0
+$_gc1
+$__k3
 
 [ha-debuginfo]
-name=AlmaLinux $releasever - HighAvailability debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/ha-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/HighAvailability/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}${__s2} debuginfo
+${__u1}ha-debuginfo
+# ${__u3}${__s2}/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-nfv.repo
+        _w "${_fp}nfv.repo" <<EOF
 [nfv]
-name=AlmaLinux $releasever - Real Time for NFV
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/NFV/$basearch/os/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Real Time for NFV
+${__u1}nfv
+# ${__u2}NFV/$_ba/os/
+$_e0
+$_gc1
+$__k3
 
 [nfv-source]
-name=AlmaLinux $releasever - Real Time for NFV Sources
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/NFV/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Real Time for NFV Sources
+${__u1}nfv-source
+# ${__u3}NFV/Source/
+$_e0
+$_gc1
+$__k3
 
 [nfv-debuginfo]
-name=AlmaLinux $releasever - Real Time for NFV Debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/nfv-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/NFV/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Real Time for NFV Debuginfo
+${__u1}nfv-debuginfo
+# ${__u3}NFV/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-plus.repo
+        _w "${_fp}plus.repo" <<EOF
 [plus]
-name=AlmaLinux $releasever - Plus
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/plus/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Plus
+${__u1}plus
+# ${__u2}plus/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [plus-source]
-name=AlmaLinux $releasever - Plus Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/plus/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Plus Source
+${__u1}plus-source
+# ${__u3}plus/Source/
+$_e0
+$_gc1
+$__k3
 
 [plus-debuginfo]
-name=AlmaLinux $releasever - Plus debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/plus-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/plus/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Plus debuginfo
+${__u1}plus-debuginfo
+# ${__u3}plus/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-powertools.repo
+        _w "${_fp}powertools.repo" <<EOF
 [powertools]
-name=AlmaLinux $releasever - PowerTools
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/powertools
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/PowerTools/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}PowerTools
+${__u1}powertools
+# ${__u2}PowerTools/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [powertools-source]
-name=AlmaLinux $releasever - PowerTools Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/powertools-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/PowerTools/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}PowerTools Source
+${__u1}powertools-source
+# ${__u3}PowerTools/Source/
+$_e0
+$_gc1
+$__k3
 
 [powertools-debuginfo]
-name=AlmaLinux $releasever - PowerTools debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/powertools-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/PowerTools/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}PowerTools debuginfo
+${__u1}powertools-debuginfo
+# ${__u3}PowerTools/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-resilientstorage.repo
+        _w "${_fp}resilientstorage.repo" <<EOF
 [resilientstorage]
-name=AlmaLinux $releasever - ResilientStorage
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/ResilientStorage/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}${__s3}
+${__u1}resilientstorage
+# ${__u2}${__s3}/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [resilientstorage-source]
-name=AlmaLinux $releasever - ResilientStorage Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/ResilientStorage/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}${__s3} Source
+${__u1}resilientstorage-source
+# ${__u3}${__s3}/Source/
+$_e0
+$_gc1
+$__k3
 
 [resilientstorage-debuginfo]
-name=AlmaLinux $releasever - ResilientStorage debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/resilientstorage-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/ResilientStorage/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}${__s3} debuginfo
+${__u1}resilientstorage-debuginfo
+# ${__u3}${__s3}/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-rt.repo
+        _w "${_fp}rt.repo" <<EOF
 [rt]
-name=AlmaLinux $releasever - Real Time
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/RT/$basearch/os/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Real Time
+${__u1}rt
+# ${__u2}RT/$_ba/os/
+$_e0
+$_gc1
+$__k3
 
 [rt-source]
-name=AlmaLinux $releasever - Real Time Sources
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/RT/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Real Time Sources
+${__u1}rt-source
+# ${__u3}RT/Source/
+$_e0
+$_gc1
+$__k3
 
 [rt-debuginfo]
-name=AlmaLinux $releasever - Real Time Debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/rt-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/RT/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Real Time Debuginfo
+${__u1}rt-debuginfo
+# ${__u3}RT/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-sap.repo
+        _w "${_fp}sap.repo" <<EOF
 [sap]
-name=AlmaLinux $releasever - SAP
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAP/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}SAP
+${__u1}sap
+# ${__u2}SAP/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [sap-source]
-name=AlmaLinux $releasever - SAP Sources
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAP/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}SAP Sources
+${__u1}sap-source
+# ${__u3}SAP/Source/
+$_e0
+$_gc1
+$__k3
 
 [sap-debuginfo]
-name=AlmaLinux $releasever - SAP Debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/sap-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAP/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}SAP Debuginfo
+${__u1}sap-debuginfo
+# ${__u3}SAP/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux-saphana.repo
+        _w "${_fp}saphana.repo" <<EOF
 [saphana]
-name=AlmaLinux $releasever - SAP HANA
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/SAPHANA/$basearch/os/
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}SAP HANA
+${__u1}saphana
+# ${__u2}SAPHANA/$_ba/os/
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [saphana-source]
-name=AlmaLinux $releasever - SAP HANA Sources
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAPHANA/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}SAP HANA Sources
+${__u1}saphana-source
+# ${__u3}SAPHANA/Source/
+$_e0
+$_gc1
+$__k3
 
 [saphana-debuginfo]
-name=AlmaLinux $releasever - SAP HANA Debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/saphana-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/SAPHANA/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}SAP HANA Debuginfo
+${__u1}saphana-debuginfo
+# ${__u3}SAPHANA/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
-        cat <<'EOF' >$Dir_YumRepos/almalinux.repo
+        _w almalinux.repo <<EOF
 [baseos]
-name=AlmaLinux $releasever - BaseOS
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/BaseOS/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}BaseOS
+${__u1}baseos
+# ${__u2}BaseOS/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k3
 
 [appstream]
-name=AlmaLinux $releasever - AppStream
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/AppStream/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}AppStream
+${__u1}appstream
+# ${__u2}AppStream/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k3
 
 [extras]
-name=AlmaLinux $releasever - Extras
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras
-# baseurl=https://repo.almalinux.org/almalinux/$releasever/extras/$basearch/os/
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Extras
+${__u1}extras
+# ${__u2}extras/$_ba/os/
+$_e1
+$_gc1
+$_cm1
+$__k3
 
 [baseos-source]
-name=AlmaLinux $releasever - BaseOS Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/BaseOS/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}BaseOS Source
+${__u1}baseos-source
+# ${__u3}BaseOS/Source/
+$_e0
+$_gc1
+$__k3
 
 [appstream-source]
-name=AlmaLinux $releasever - AppStream Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/AppStream/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}AppStream Source
+${__u1}appstream-source
+# ${__u3}AppStream/Source/
+$_e0
+$_gc1
+$__k3
 
 [extras-source]
-name=AlmaLinux $releasever - Extras Source
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-source
-# baseurl=https://repo.almalinux.org/vault/$releasever/extras/Source/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Extras Source
+${__u1}extras-source
+# ${__u3}extras/Source/
+$_e0
+$_gc1
+$__k3
 
 [baseos-debuginfo]
-name=AlmaLinux $releasever - BaseOS debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/baseos-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/BaseOS/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}BaseOS debuginfo
+${__u1}baseos-debuginfo
+# ${__u3}BaseOS/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 
 [appstream-debuginfo]
-name=AlmaLinux $releasever - AppStream debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/appstream-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/AppStream/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}AppStream debuginfo
+${__u1}appstream-debuginfo
+# ${__u3}AppStream/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 
 [extras-debuginfo]
-name=AlmaLinux $releasever - Extras debuginfo
-mirrorlist=https://mirrors.almalinux.org/mirrorlist/$releasever/extras-debuginfo
-# baseurl=https://repo.almalinux.org/vault/$releasever/extras/debug/$basearch/
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
+${__n}Extras debuginfo
+${__u1}extras-debuginfo
+# ${__u3}extras/debug/$_ba/
+$_e0
+$_gc1
+$__k3
 EOF
         ;;
     esac
@@ -6419,290 +6512,306 @@ EOF
 
 ## 生成 Fedora repo 源文件
 function gen_repo_files_Fedora() {
-    cat <<'EOF' >$Dir_YumRepos/fedora.repo
+    local _m6="${_me}6h"
+    local _m7="${_me}7d"
+    local _tyr="${_ty}rpm"
+    local __s3='source/tree/'
+    local __s2='/Everything/'
+    local __s1='debug/tree/'
+    local __u1="${_bu}http://download.example/pub/fedora/linux/"
+    local __u2="${_mt}https://mirrors.fedoraproject.org/metalink?"
+    local __n1="${_n}Fedora $_rv - "
+    local __n2="${_n}Fedora Modular $_rv - "
+    local __k="${_gk}${_pki}fedora-$_rv-$_ba"
+    local __f='&arch=$basearch'
+    _w fedora.repo <<EOF
 [fedora]
-name=Fedora $releasever - $basearch
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Everything/$basearch/os/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-$releasever&arch=$basearch
-enabled=1
-countme=1
-metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}$_ba
+#${__u1}releases/$_rv${__s2}$_ba/os/
+${__u2}repo=fedora-$_rv${__f}
+$_e1
+$_cm1
+$_m7
+$_rg0
+$_tyr
+$_gc1
+$__k
+$_suF
 
 [fedora-debuginfo]
-name=Fedora $releasever - $basearch - Debug
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Everything/$basearch/debug/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-debug-$releasever&arch=$basearch
-enabled=0
-metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}$_ba - Debug
+#${__u1}releases/$_rv${__s2}$_ba/${__s1}
+${__u2}repo=fedora-debug-$_rv${__f}
+$_e0
+$_m7
+$_rg0
+$_tyr
+$_gc1
+$__k
+$_suF
 
 [fedora-source]
-name=Fedora $releasever - Source
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-source-$releasever&arch=$basearch
-enabled=0
-metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}Source
+#${__u1}releases/$_rv${__s2}${__s3}
+${__u2}repo=fedora-source-$_rv${__f}
+$_e0
+$_m7
+$_rg0
+$_tyr
+$_gc1
+$__k
+$_suF
 EOF
-    cat <<'EOF' >$Dir_YumRepos/fedora-updates.repo
+    _w fedora-updates.repo <<EOF
 [updates]
-name=Fedora $releasever - $basearch - Updates
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-f$releasever&arch=$basearch
-enabled=1
-countme=1
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}$_ba - Updates
+#${__u1}updates/$_rv${__s2}$_ba/
+${__u2}repo=updates-released-f$_rv${__f}
+$_e1
+$_cm1
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-debuginfo]
-name=Fedora $releasever - $basearch - Updates - Debug
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-debug-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}$_ba - Updates - Debug
+#${__u1}updates/$_rv${__s2}$_ba/debug/
+${__u2}repo=updates-released-debug-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-source]
-name=Fedora $releasever - Updates Source
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Everything/SRPMS/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-source-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}Updates Source
+#${__u1}updates/$_rv${__s2}SRPMS/
+${__u2}repo=updates-released-source-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 EOF
-    cat <<'EOF' >$Dir_YumRepos/fedora-updates-testing.repo
+    _w fedora-updates-testing.repo <<EOF
 [updates-testing]
-name=Fedora $releasever - $basearch - Test Updates
-#baseurl=http://download.example/pub/fedora/linux/updates/testing/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-f$releasever&arch=$basearch
-enabled=0
-countme=1
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}$_ba - Test Updates
+#${__u1}updates/testing/$_rv${__s2}$_ba/
+${__u2}repo=updates-testing-f$_rv${__f}
+$_e0
+$_cm1
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-testing-debuginfo]
-name=Fedora $releasever - $basearch - Test Updates Debug
-#baseurl=http://download.example/pub/fedora/linux/updates/testing/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-debug-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}$_ba - Test Updates Debug
+#${__u1}updates/testing/$_rv${__s2}$_ba/debug/
+${__u2}repo=updates-testing-debug-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-testing-source]
-name=Fedora $releasever - Test Updates Source
-#baseurl=http://download.example/pub/fedora/linux/updates/testing/$releasever/Everything/SRPMS/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-source-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n1}Test Updates Source
+#${__u1}updates/testing/$_rv${__s2}SRPMS/
+${__u2}repo=updates-testing-source-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 EOF
     ## 自 Fedora 39 起不再使用 modular 仓库
     if [[ $1 -lt 39 ]]; then
-        cat <<'EOF' >$Dir_YumRepos/fedora-modular.repo
+        _w fedora-modular.repo <<EOF
 [fedora-modular]
-name=Fedora Modular $releasever - $basearch
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/$basearch/os/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-$releasever&arch=$basearch
-enabled=1
-countme=1
-#metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}$_ba
+#${__u1}releases/$_rv/Modular/$_ba/os/
+${__u2}repo=fedora-modular-$_rv${__f}
+$_e1
+$_cm1
+#$_m7
+$_rg0
+$_tyr
+$_gc1
+$__k
+$_suF
 
 [fedora-modular-debuginfo]
-name=Fedora Modular $releasever - $basearch - Debug
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/$basearch/debug/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-debug-$releasever&arch=$basearch
-enabled=0
-metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}$_ba - Debug
+#${__u1}releases/$_rv/Modular/$_ba/${__s1}
+${__u2}repo=fedora-modular-debug-$_rv${__f}
+$_e0
+$_m7
+$_rg0
+$_tyr
+$_gc1
+$__k
+$_suF
 
 [fedora-modular-source]
-name=Fedora Modular $releasever - Source
-#baseurl=http://download.example/pub/fedora/linux/releases/$releasever/Modular/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-source-$releasever&arch=$basearch
-enabled=0
-metadata_expire=7d
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}Source
+#${__u1}releases/$_rv/Modular/${__s3}
+${__u2}repo=fedora-modular-source-$_rv${__f}
+$_e0
+$_m7
+$_rg0
+$_tyr
+$_gc1
+$__k
+$_suF
 EOF
-        cat <<'EOF' >$Dir_YumRepos/fedora-updates-modular.repo
+        _w fedora-updates-modular.repo <<EOF
 [updates-modular]
-name=Fedora Modular $releasever - $basearch - Updates
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-f$releasever&arch=$basearch
-enabled=1
-countme=1
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}$_ba - Updates
+#${__u1}updates/$_rv/Modular/$_ba/
+${__u2}repo=updates-released-modular-f$_rv${__f}
+$_e1
+$_cm1
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-modular-debuginfo]
-name=Fedora Modular $releasever - $basearch - Updates - Debug
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-debug-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}$_ba - Updates - Debug
+#${__u1}updates/$_rv/Modular/$_ba/debug/
+${__u2}repo=updates-released-modular-debug-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-modular-source]
-name=Fedora Modular $releasever - Updates Source
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/SRPMS/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-released-modular-source-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}Updates Source
+#${__u1}updates/$_rv/Modular/SRPMS/
+${__u2}repo=updates-released-modular-source-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 EOF
-        cat <<'EOF' >$Dir_YumRepos/fedora-updates-testing-modular.repo
+        _w fedora-updates-testing-modular.repo <<EOF
 [updates-testing-modular]
-name=Fedora Modular $releasever - $basearch - Test Updates
-#baseurl=http://download.example/pub/fedora/linux/updates/testing/$releasever/Modular/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-modular-f$releasever&arch=$basearch
-enabled=0
-countme=1
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}$_ba - Test Updates
+#${__u1}updates/testing/$_rv/Modular/$_ba/
+${__u2}repo=updates-testing-modular-f$_rv${__f}
+$_e0
+$_cm1
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-testing-modular-debuginfo]
-name=Fedora Modular $releasever - $basearch - Test Updates Debug
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-modular-debug-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}$_ba - Test Updates Debug
+#${__u1}updates/$_rv/Modular/$_ba/debug/
+${__u2}repo=updates-testing-modular-debug-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 
 [updates-testing-modular-source]
-name=Fedora Modular $releasever - Test Updates Source
-#baseurl=http://download.example/pub/fedora/linux/updates/$releasever/Modular/SRPMS/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-modular-source-f$releasever&arch=$basearch
-enabled=0
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
-skip_if_unavailable=False
+${__n2}Test Updates Source
+#${__u1}updates/$_rv/Modular/SRPMS/
+${__u2}repo=updates-testing-modular-source-f$_rv${__f}
+$_e0
+$_rg0
+$_tyr
+$_gc1
+$_m6
+$__k
+$_suF
 EOF
     fi
 }
 
 ## 生成 openEuler repo 源文件
 function gen_repo_files_openEuler() {
-    cat <<'EOF' >$Dir_YumRepos/openEuler.repo
+    local __s='openEuler-version/'
+    local __u='https://repo.openeuler.org/'
+    local __k1="${_gk}${__u}${__s}OS/$_ba/RPM-GPG-KEY-openEuler"
+    local __k2="${_gk}${__u}${__s}source/RPM-GPG-KEY-openEuler"
+    _w openEuler.repo <<EOF
 [OS]
-name=OS
-baseurl=https://repo.openeuler.org/openEuler-version/OS/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+${_n}OS
+${_bu}${__u}${__s}OS/$_ba/
+$_e1
+$_gc1
+$__k1
 
 [everything]
-name=everything
-baseurl=https://repo.openeuler.org/openEuler-version/everything/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+${_n}everything
+${_bu}${__u}${__s}everything/$_ba/
+$_e1
+$_gc1
+$__k1
 
 [EPOL]
-name=EPOL
-baseurl=https://repo.openeuler.org/openEuler-version/EPOL/main/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+${_n}EPOL
+${_bu}${__u}${__s}EPOL/main/$_ba/
+$_e1
+$_gc1
+$__k1
 
 [debuginfo]
-name=debuginfo
-baseurl=https://repo.openeuler.org/openEuler-version/debuginfo/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.openeuler.org/openEuler-version/debuginfo/$basearch/RPM-GPG-KEY-openEuler
+${_n}debuginfo
+${_bu}${__u}${__s}debuginfo/$_ba/
+$_e1
+$_gc1
+${_gk}${__u}${__s}debuginfo/$_ba/RPM-GPG-KEY-openEuler
 
 [source]
-name=source
-baseurl=https://repo.openeuler.org/openEuler-version/source/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
+${_n}source
+${_bu}${__u}${__s}source/
+$_e1
+$_gc1
+$__k2
 
 [update]
-name=update
-baseurl=https://repo.openeuler.org/openEuler-version/update/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.openeuler.org/openEuler-version/OS/$basearch/RPM-GPG-KEY-openEuler
+${_n}update
+${_bu}${__u}${__s}update/$_ba/
+$_e1
+$_gc1
+$__k1
 
 [update-source]
-name=update-source
-baseurl=https://repo.openeuler.org/openEuler-version/update/source/
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.openeuler.org/openEuler-version/source/RPM-GPG-KEY-openEuler
+${_n}update-source
+${_bu}${__u}${__s}update/source/
+$_e0
+$_gc1
+$__k2
 EOF
     ## 替换版本号
     local version_name="$(get_os_release_value VERSION | sed 's/["()]//g; s/[_ ]\+/-/g; s/^-\+\|-\+$//g')"
@@ -6713,328 +6822,338 @@ EOF
 
 ## 生成 OpenCloudOS repo 源文件
 function gen_repo_files_OpenCloudOS() {
+    local __s2='source/tree/'
+    local __s1='debug/tree/'
+    local __u1="${_bu}https://mirrors.opencloudos.tech/opencloudos/$_rv/"
     case "${1%%.*}" in
     23)
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Stream.repo
+        local __u2="${_bu}https://mirrors.opencloudos.tech/opencloudos-stream/releases/$_rv/"
+        local __k1="${_gk}${_pki}OpenCloudOS-Stream"
+        _w OpenCloudOS-Stream.repo <<EOF
 [BaseOS]
-name=BaseOS $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/BaseOS/$basearch/Packages/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+${_n}BaseOS $_rv - $_ba
+${__u2}BaseOS/$_ba/Packages/
+$_gc1
+$_e1
+$__k1
 
 [AppStream]
-name=AppStream $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/AppStream/$basearch/Packages/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+${_n}AppStream $_rv - $_ba
+${__u2}AppStream/$_ba/Packages/
+$_gc1
+$_e1
+$__k1
 
 [BaseOS-debug]
-name=BaseOS-debug $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/BaseOS/$basearch/debug/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+${_n}BaseOS-debug $_rv - $_ba
+${__u2}BaseOS/$_ba/debug/
+$_gc1
+$_e0
+$__k1
 
 [AppStream-debug]
-name=AppStream-debug $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/AppStream/$basearch/debug/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+${_n}AppStream-debug $_rv - $_ba
+${__u2}AppStream/$_ba/debug/
+$_gc1
+$_e0
+$__k1
 
 [BaseOS-source]
-name=BaseOS-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/BaseOS/source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+${_n}BaseOS-source $_rv
+${__u2}BaseOS/source/
+$_gc1
+$_e0
+$__k1
 
 [AppStream-source]
-name=AppStream-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos-stream/releases/$releasever/AppStream/source/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-Stream
+${_n}AppStream-source $_rv
+${__u2}AppStream/source/
+$_gc1
+$_e0
+$__k1
 EOF
         ;;
     9)
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+        local __k2="${_gk}${_pki}OpenCloudOS-9"
+        _w OpenCloudOS.repo <<EOF
 [BaseOS]
-name=BaseOS $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}BaseOS $_rv - $_ba
+${__u1}BaseOS/$_ba/os/
+$_gc1
+$_e1
+$__k2
 
 [AppStream]
-name=AppStream $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}AppStream $_rv - $_ba
+${__u1}AppStream/$_ba/os/
+$_gc1
+$_e1
+$__k2
 
 [extras]
-name=extras $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}extras $_rv - $_ba
+${__u1}extras/$_ba/os/
+$_gc1
+$_e1
+$__k2
 
 [BaseOS-debuginfo]
-name=BaseOS-debuginfo $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}BaseOS-debuginfo $_rv - $_ba
+${__u1}BaseOS/$_ba/${__s1}
+$_gc1
+$_e0
+$__k2
 
 [AppStream-debuginfo]
-name=AppStream-debuginfo $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}AppStream-debuginfo $_rv - $_ba
+${__u1}AppStream/$_ba/${__s1}
+$_gc1
+$_e0
+$__k2
 
 [extras-debuginfo]
-name=extras-debuginfo $releasever - $basearch
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}extras-debuginfo $_rv - $_ba
+${__u1}extras/$_ba/${__s1}
+$_gc1
+$_e0
+$__k2
 
 [BaseOS-source]
-name=BaseOS-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}BaseOS-source $_rv
+${__u1}BaseOS/${__s2}
+$_gc1
+$_e0
+$__k2
 
 [AppStream-source]
-name=AppStream-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}AppStream-source $_rv
+${__u1}AppStream/${__s2}
+$_gc1
+$_e0
+$__k2
 
 [extras-source]
-name=extras-source $releasever
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS-9
+${_n}extras-source $_rv
+${__u1}extras/${__s2}
+$_gc1
+$_e0
+$__k2
 EOF
         ;;
     8)
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Debuginfo.repo
+        local __s3='HighAvailability'
+        local __s4='ResilientStorage'
+        local __n="${_n}OpenCloudOS $_rv - "
+        local __k3="${_gk}${_pki}OpenCloudOS"
+        _w OpenCloudOS-Debuginfo.repo <<EOF
 [BaseOS-debuginfo]
-name=OpenCloudOS $releasever - BaseOS-debuginfo
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}BaseOS-debuginfo
+${__u1}BaseOS/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [AppStream-debuginfo]
-name=OpenCloudOS $releasever - AppStream-debuginfo
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}AppStream-debuginfo
+${__u1}AppStream/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [Extras-debuginfo]
-name=OpenCloudOS $releasever - Extras-debuginfo
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Extras/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Extras-debuginfo
+${__u1}Extras/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [HighAvailability-debuginfo]
-name=OpenCloudOS $releasever - HighAvailability-debuginfo
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/HighAvailability/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s3}-debuginfo
+${__u1}${__s3}/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [PowerTools-debuginfo]
-name=OpenCloudOS $releasever - PowerTools-debuginfo
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/PowerTools/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}PowerTools-debuginfo
+${__u1}PowerTools/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [ResilientStorage-debuginfo]
-name=OpenCloudOS $releasever - ResilientStorage-debuginfo
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/ResilientStorage/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s4}-debuginfo
+${__u1}${__s4}/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 
 [Plus-debuginfo]
-name=OpenCloudOS $releasever - Plus-debuginfo
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Plus/$basearch/debug/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Plus-debuginfo
+${__u1}Plus/$_ba/${__s1}
+$_gc1
+$_e0
+$__k3
 EOF
         if [[ "${1}" == "8.6" ]]; then
-            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+            _w OpenCloudOS.repo <<EOF
 [BaseOS]
-name=OpenCloudOS $releasever - BaseOS
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}BaseOS
+${__u1}BaseOS/$_ba/os/
+$_gc1
+$_e1
+$__k3
 
 [AppStream]
-name=OpenCloudOS $releasever - AppStream
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}AppStream
+${__u1}AppStream/$_ba/os/
+$_gc1
+$_e1
+$__k3
 
 [Extras]
-name=OpenCloudOS $releasever - Extras
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Extras/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Extras
+${__u1}Extras/$_ba/os/
+$_gc1
+$_e1
+$__k3
 
 [HighAvailability]
-name=OpenCloudOS $releasever - HighAvailability
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/HighAvailability/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s3}
+${__u1}${__s3}/$_ba/os/
+$_gc1
+$_e0
+$__k3
 
 [PowerTools]
-name=OpenCloudOS $releasever - PowerTools
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/PowerTools/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}PowerTools
+${__u1}PowerTools/$_ba/os/
+$_gc1
+$_e0
+$__k3
 
 [ResilientStorage]
-name=OpenCloudOS $releasever - ResilientStorage
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/ResilientStorage/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s4}
+${__u1}${__s4}/$_ba/os/
+$_gc1
+$_e0
+$__k3
 
 [Plus]
-name=OpenCloudOS $releasever - Plus
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Plus/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Plus
+${__u1}Plus/$_ba/os/
+$_gc1
+$_e1
+$__k3
 EOF
         else
-            cat <<'EOF' >$Dir_YumRepos/OpenCloudOS.repo
+            _w OpenCloudOS.repo <<EOF
 [BaseOS]
-name=OpenCloudOS $releasever - BaseOS
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}BaseOS
+${__u1}BaseOS/$_ba/os/
+$_gc1
+$_e1
+$__k3
 
 [AppStream]
-name=OpenCloudOS $releasever - AppStream
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}AppStream
+${__u1}AppStream/$_ba/os/
+$_gc1
+$_e1
+$__k3
 
 [Extras]
-name=OpenCloudOS $releasever - Extras
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Extras/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Extras
+${__u1}Extras/$_ba/os/
+$_gc1
+$_e1
+$__k3
 
 [HighAvailability]
-name=OpenCloudOS $releasever - HighAvailability
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/HighAvailability/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s3}
+${__u1}${__s3}/$_ba/os/
+$_gc1
+$_e0
+$__k3
 
 [NFV]
-name=OpenCloudOS $releasever - NFV
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/NFV/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}NFV
+${__u1}NFV/$_ba/os/
+$_gc1
+$_e0
+$__k3
 
 [PowerTools]
-name=OpenCloudOS $releasever - PowerTools
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/PowerTools/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}PowerTools
+${__u1}PowerTools/$_ba/os/
+$_gc1
+$_e0
+$__k3
 
 [ResilientStorage]
-name=OpenCloudOS $releasever - ResilientStorage
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/ResilientStorage/$basearch/os/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s4}
+${__u1}${__s4}/$_ba/os/
+$_gc1
+$_e0
+$__k3
 
 [Plus]
-name=OpenCloudOS $releasever - Plus
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Plus/$basearch/os/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Plus
+${__u1}Plus/$_ba/os/
+$_gc1
+$_e1
+$__k3
 EOF
         fi
-        cat <<'EOF' >$Dir_YumRepos/OpenCloudOS-Sources.repo
+        _w OpenCloudOS-Sources.repo <<EOF
 [BaseOS-source]
-name=OpenCloudOS $releasever - Base-source
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Base-source
+${__u1}BaseOS/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [AppStream-source]
-name=OpenCloudOS $releasever - AppStream-source
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}AppStream-source
+${__u1}AppStream/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [Extras-source]
-name=OpenCloudOS $releasever - Extras-source
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Extras/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Extras-source
+${__u1}Extras/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [HighAvailability-source]
-name=OpenCloudOS $releasever - HighAvailability-source
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/HighAvailability/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s3}-source
+${__u1}${__s3}/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [PowerTools-source]
-name=OpenCloudOS $releasever - PowerTools-source
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/PowerTools/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}PowerTools-source
+${__u1}PowerTools/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [ResilientStorage-source]
-name=OpenCloudOS $releasever - ResilientStorage-source
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/ResilientStorage/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}${__s4}-source
+${__u1}${__s4}/${__s2}
+$_gc1
+$_e0
+$__k3
 
 [Plus-source]
-name=OpenCloudOS $releasever - Plus-source
-baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/Plus/source/tree/
-gpgcheck=1
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OpenCloudOS
+${__n}Plus-source
+${__u1}Plus/${__s2}
+$_gc1
+$_e0
+$__k3
 EOF
         ;;
     esac
@@ -7042,260 +7161,268 @@ EOF
 
 ## 生成 Anolis OS repo 源文件
 function gen_repo_files_AnolisOS() {
+    local __s1='mirrors.openanolis.cn/anolis/'
+    local __u1="${_bu}http://${__s1}"
+    local __u2="https://${__s1}"
+    local __n="${_n}AnolisOS-$_rv - "
+    local __k1="${_gk}${_pki}ANOLIS"
+    local __k2="${_gk}${__u2}RPM-GPG-KEY-ANOLIS"
     case "${1%%.*}" in
     23)
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS.repo
+        _w AnolisOS.repo <<EOF
 [os]
-name=AnolisOS-$releasever - os
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/os/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}os
+${__u1}$_rv/os/$_ba/os
+$_e1
+$__k1
+$_gc1
 
 [updates]
-name=AnolisOS-$releasever - updates
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/updates/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}updates
+${__u1}$_rv/updates/$_ba/os
+$_e1
+$__k1
+$_gc1
 
 [kernel-6]
-name=AnolisOS-$releasever - kernel-6
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-6/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}kernel-6
+${__u1}$_rv/kernel-6/$_ba/os
+$_e1
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Source.repo
+        _w AnolisOS-Source.repo <<EOF
 [os-source]
-name=AnolisOS-$releasever - os Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/os/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}os Source
+${_bu}${__u2}$_rv/os/source/
+$_e0
+$__k2
+$_gc1
 
 [updates-source]
-name=AnolisOS-$releasever - updates Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/updates/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}updates Source
+${_bu}${__u2}$_rv/updates/source/
+$_e0
+$__k2
+$_gc1
 
 [kernel-source]
-name=AnolisOS-$releasever - kernel-6 Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/kernel-6/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}kernel-6 Source
+${_bu}${__u2}$_rv/kernel-6/source/
+$_e0
+$__k2
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Debuginfo.repo
+        _w AnolisOS-Debuginfo.repo <<EOF
 [os-debuginfo]
-name=AnolisOS-$releasever - os Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/os/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}os Debuginfo
+${_bu}${__u2}$_rv/os/$_ba/debug
+$_e0
+$__k2
+$_gc1
 
 [updates-debuginfo]
-name=AnolisOS-$releasever - updates Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/updates/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}updates Debuginfo
+${_bu}${__u2}$_rv/updates/$_ba/debug
+$_e0
+$__k2
+$_gc1
 
 [kernel-6-debuginfo]
-name=AnolisOS-$releasever - kernel-6 Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/kernel-6/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}kernel-6 Debuginfo
+${_bu}${__u2}$_rv/kernel-6/$_ba/debug
+$_e0
+$__k2
+$_gc1
 EOF
         ;;
     8)
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-AppStream.repo
+        local __s2='HighAvailability'
+        local _fp='AnolisOS-'
+        _w "${_fp}AppStream.repo" <<EOF
 [AppStream]
-name=AnolisOS-$releasever - AppStream
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/AppStream/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}AppStream
+${__u1}$_rv/AppStream/$_ba/os
+$_e1
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-BaseOS.repo
+        _w "${_fp}BaseOS.repo" <<EOF
 [BaseOS]
-name=AnolisOS-$releasever - BaseOS
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/BaseOS/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}BaseOS
+${__u1}$_rv/BaseOS/$_ba/os
+$_e1
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-DDE.repo
+        _w "${_fp}DDE.repo" <<EOF
 [DDE]
-name=AnolisOS-$releasever - DDE
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/DDE/$basearch/os
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}DDE
+${__u1}$_rv/DDE/$_ba/os
+$_e0
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Debuginfo.repo
+        _w "${_fp}Debuginfo.repo" <<EOF
 [AppStream-debuginfo]
-name=AnolisOS-$releasever - AppStream Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/AppStream/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}AppStream Debuginfo
+${_bu}${__u2}$_rv/AppStream/$_ba/debug
+$_e0
+$__k2
+$_gc1
 
 [BaseOS-debuginfo]
-name=AnolisOS-$releasever - BaseOS Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/BaseOS/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}BaseOS Debuginfo
+${_bu}${__u2}$_rv/BaseOS/$_ba/debug
+$_e0
+$__k2
+$_gc1
 
 [Plus-debuginfo]
-name=AnolisOS-$releasever - Plus Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/Plus/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Plus Debuginfo
+${_bu}${__u2}$_rv/Plus/$_ba/debug
+$_e0
+$__k2
+$_gc1
 
 [PowerTools-debuginfo]
-name=AnolisOS-$releasever - PowerTools Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/PowerTools/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}PowerTools Debuginfo
+${_bu}${__u2}$_rv/PowerTools/$_ba/debug
+$_e0
+$__k2
+$_gc1
 
 [DDE-debuginfo]
-name=AnolisOS-$releasever - DDE Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/DDE/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}DDE Debuginfo
+${_bu}${__u2}$_rv/DDE/$_ba/debug
+$_e0
+$__k2
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Extras.repo
+        _w "${_fp}Extras.repo" <<EOF
 [Extras]
-name=AnolisOS-$releasever - Extras
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/Extras/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Extras
+${__u1}$_rv/Extras/$_ba/os
+$_e1
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-HighAvailability.repo
+        _w "${_fp}HighAvailability.repo" <<EOF
 [HighAvailability]
-name=AnolisOS-$releasever - HighAvailability
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/HighAvailability/$basearch/os
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}${__s2}
+${__u1}$_rv/${__s2}/$_ba/os
+$_e0
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Plus.repo
+        _w "${_fp}Plus.repo" <<EOF
 [Plus]
-name=AnolisOS-$releasever - Plus
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/Plus/$basearch/os
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Plus
+${__u1}$_rv/Plus/$_ba/os
+$_e0
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-PowerTools.repo
+        _w "${_fp}PowerTools.repo" <<EOF
 [PowerTools]
-name=AnolisOS-$releasever - PowerTools
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/PowerTools/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}PowerTools
+${__u1}$_rv/PowerTools/$_ba/os
+$_e1
+$__k1
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/AnolisOS-Source.repo
+        _w "${_fp}Source.repo" <<EOF
 [AppStream-source]
-name=AnolisOS-$releasever - AppStream Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/AppStream/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}AppStream Source
+${_bu}${__u2}$_rv/AppStream/source/
+$_e0
+$__k2
+$_gc1
 
 [BaseOS-source]
-name=AnolisOS-$releasever - BaseOS Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/BaseOS/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}BaseOS Source
+${_bu}${__u2}$_rv/BaseOS/source/
+$_e0
+$__k2
+$_gc1
 
 [Plus-source]
-name=AnolisOS-$releasever - Plus Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/Plus/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Plus Source
+${_bu}${__u2}$_rv/Plus/source/
+$_e0
+$__k2
+$_gc1
 
 [PowerTools-source]
-name=AnolisOS-$releasever - PowerTools Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/PowerTools/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}PowerTools Source
+${_bu}${__u2}$_rv/PowerTools/source/
+$_e0
+$__k2
+$_gc1
 
 [DDE-source]
-name=AnolisOS-$releasever - DDE Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/DDE/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}DDE Source
+${_bu}${__u2}$_rv/DDE/source/
+$_e0
+$__k2
+$_gc1
 EOF
         ## 8.8 新增
         if [[ "${1#*.}" -ge 8 ]]; then
-            cat <<'EOF' >$Dir_YumRepos/AnolisOS-kernel-5.10.repo
+            _w "${_fp}kernel-5.10.repo" <<EOF
 [kernel-5.10]
-name=AnolisOS-$releasever - Kernel 5.10
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/os
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Kernel 5.10
+${__u1}$_rv/kernel-5.10/$_ba/os
+$_e1
+$__k1
+$_gc1
 
 [kernel-5.10-source]
-name=AnolisOS-$releasever - Kernel 5.10 source
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/source
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Kernel 5.10 source
+${__u1}$_rv/kernel-5.10/source
+$_e0
+$__k1
+$_gc1
 
 [kernel-5.10-debug]
-name=AnolisOS-$releasever - Kernel 5.10 debug
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/kernel-5.10/$basearch/debug
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Kernel 5.10 debug
+${__u1}$_rv/kernel-5.10/$_ba/debug
+$_e0
+$__k1
+$_gc1
 EOF
         fi
         ## 8.10 新增
         if [[ "${1#*.}" -eq 10 ]]; then
-            cat <<'EOF' >$Dir_YumRepos/AnolisOS-Devel.repo
+            _w "${_fp}Devel.repo" <<EOF
 [Devel]
-name=AnolisOS-$releasever - Devel
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/Devel/$basearch/os
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}Devel
+${__u1}$_rv/Devel/$_ba/os
+$_e0
+$__k1
+$_gc1
 EOF
-            cat <<'EOF' >$Dir_YumRepos/AnolisOS-NDE.repo
+            _w "${_fp}NDE.repo" <<EOF
 [NDE]
-name=AnolisOS-$releasever - NDE
-baseurl=http://mirrors.openanolis.cn/anolis/$releasever/NDE/$basearch/os
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}NDE
+${__u1}$_rv/NDE/$_ba/os
+$_e0
+$__k1
+$_gc1
 
 [NDE-debuginfo]
-name=AnolisOS-$releasever - NDE Debuginfo
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/NDE/$basearch/debug
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}NDE Debuginfo
+${_bu}${__u2}$_rv/NDE/$_ba/debug
+$_e0
+$__k2
+$_gc1
 
 [NDE-source]
-name=AnolisOS-$releasever - NDE Source
-baseurl=https://mirrors.openanolis.cn/anolis/$releasever/NDE/source/
-enabled=0
-gpgkey=https://mirrors.openanolis.cn/anolis/RPM-GPG-KEY-ANOLIS
-gpgcheck=1
+${__n}NDE Source
+${_bu}${__u2}$_rv/NDE/source/
+$_e0
+$__k2
+$_gc1
 EOF
         fi
         ;;
@@ -7304,277 +7431,290 @@ EOF
 
 ## 生成 openSUSE repo 源文件
 function gen_repo_files_openSUSE() {
+    local _ar='autorefresh='
+    local _ar1="${_ar}1"
+    local _kp='keeppackages='
+    local _kp0="${_kp}0"
+    local _tyN="${_ty}NONE"
+    local _tym="${_ty}rpm-md"
+    local __u1="${_bu}http://codecs.opensuse.org/"
+    local __u2="${_bu}http://download.opensuse.org/"
     case "$1" in
     "leap")
         case "${2%%.*}" in
         16)
-            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-non-oss-debug.repo
+            local __s='repodata/repomd.xml.key'
+            local __u3='http://cdn.opensuse.org/'
+            local _fp='openSUSE:repo-'
+            _wz "${_fp}non-oss-debug.repo" <<EOF
 [openSUSE:repo-non-oss-debug]
-name=repo-non-oss-debug (${releasever})
-enabled=0
-autorefresh=1
-baseurl=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/non-oss/$basearch
-gpgkey=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/non-oss/$basearch/repodata/repomd.xml.key
+${_n}repo-non-oss-debug (${_rvb})
+$_e0
+$_ar1
+${_bu}${__u3}debug/distribution/leap/${_rvb}/repo/non-oss/$_ba
+${_gk}${__u3}debug/distribution/leap/${_rvb}/repo/non-oss/$_ba/${__s}
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-non-oss.repo
+            _wz "${_fp}non-oss.repo" <<EOF
 [openSUSE:repo-non-oss]
-name=repo-non-oss (${releasever})
-enabled=0
-autorefresh=1
-baseurl=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/non-oss/$basearch
-gpgkey=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/non-oss/$basearch/repodata/repomd.xml.key
+${_n}repo-non-oss (${_rvb})
+$_e0
+$_ar1
+${_bu}${__u3}distribution/leap/${_rvb}/repo/non-oss/$_ba
+${_gk}${__u3}distribution/leap/${_rvb}/repo/non-oss/$_ba/${__s}
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-openh264.repo
+            _wz "${_fp}openh264.repo" <<EOF
 [openSUSE:repo-openh264]
-name=repo-openh264 (${releasever})
-enabled=1
-autorefresh=1
-baseurl=http://codecs.opensuse.org/openh264/openSUSE_Leap_16
-gpgkey=https://codecs.opensuse.org/openh264/openSUSE_Leap_16/repodata/repomd.xml.key
+${_n}repo-openh264 (${_rvb})
+$_e1
+$_ar1
+${__u1}openh264/openSUSE_Leap_16
+${_gk}https://codecs.opensuse.org/openh264/openSUSE_Leap_16/${__s}
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss-debug.repo
+            _wz "${_fp}oss-debug.repo" <<EOF
 [openSUSE:repo-oss-debug]
-name=repo-oss-debug (${releasever})
-enabled=0
-autorefresh=1
-baseurl=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/oss/$basearch
-gpgkey=http://cdn.opensuse.org/debug/distribution/leap/${releasever}/repo/oss/$basearch/repodata/repomd.xml.key
+${_n}repo-oss-debug (${_rvb})
+$_e0
+$_ar1
+${_bu}${__u3}debug/distribution/leap/${_rvb}/repo/oss/$_ba
+${_gk}${__u3}debug/distribution/leap/${_rvb}/repo/oss/$_ba/${__s}
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss.repo
+            _wz "${_fp}oss.repo" <<EOF
 [openSUSE:repo-oss]
-name=repo-oss (${releasever})
-enabled=1
-autorefresh=1
-baseurl=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/oss/$basearch
-gpgkey=http://cdn.opensuse.org/distribution/leap/${releasever}/repo/oss/$basearch/repodata/repomd.xml.key
+${_n}repo-oss (${_rvb})
+$_e1
+$_ar1
+${_bu}${__u3}distribution/leap/${_rvb}/repo/oss/$_ba
+${_gk}${__u3}distribution/leap/${_rvb}/repo/oss/$_ba/${__s}
 EOF
-            cat <<'EOF' >$Dir_ZYppRepos/openSUSE:repo-oss-source.repo
+            _wz "${_fp}oss-source.repo" <<EOF
 [openSUSE:repo-oss-source]
-name=repo-oss-source (${releasever})
-enabled=0
-autorefresh=1
-baseurl=http://cdn.opensuse.org/source/distribution/leap/${releasever}/repo/oss
-gpgkey=http://cdn.opensuse.org/source/distribution/leap/${releasever}/repo/oss/repodata/repomd.xml.key
+${_n}repo-oss-source (${_rvb})
+$_e0
+$_ar1
+${_bu}${__u3}source/distribution/leap/${_rvb}/repo/oss
+${_gk}${__u3}source/distribution/leap/${_rvb}/repo/oss/${__s}
 EOF
             ;;
         15)
+            local _fp='repo-'
             case "${2#*.}" in
             [0-2])
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
+                _wz "${_fp}debug-non-oss.repo" <<EOF
 [repo-debug-non-oss]
-name=Debug Repository (Non-OSS)
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/non-oss/
-type=NONE
-keeppackages=0
+${_n}Debug Repository (Non-OSS)
+$_e0
+$_ar1
+${__u2}debug/distribution/leap/$_rv/repo/non-oss/
+$_tyN
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
+                _wz "${_fp}debug.repo" <<EOF
 [repo-debug]
-name=Debug Repository
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/oss/
-type=NONE
-keeppackages=0
+${_n}Debug Repository
+$_e0
+$_ar1
+${__u2}debug/distribution/leap/$_rv/repo/oss/
+$_tyN
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
+                _wz "${_fp}debug-update-non-oss.repo" <<EOF
 [repo-debug-update-non-oss]
-name=Update Repository (Debug, Non-OSS)
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
-type=NONE
-keeppackages=0
+${_n}Update Repository (Debug, Non-OSS)
+$_e0
+$_ar1
+${__u2}debug/update/leap/$_rv/non-oss/
+$_tyN
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
+                _wz "${_fp}debug-update.repo" <<EOF
 [repo-debug-update]
-name=Update Repository (Debug)
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
-type=NONE
-keeppackages=0
+${_n}Update Repository (Debug)
+$_e0
+$_ar1
+${__u2}debug/update/leap/$_rv/oss/
+$_tyN
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
+                _wz "${_fp}non-oss.repo" <<EOF
 [repo-non-oss]
-name=Non-OSS Repository
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
-type=rpm-md
-keeppackages=0
+${_n}Non-OSS Repository
+$_e1
+$_ar1
+${__u2}distribution/leap/$_rv/repo/non-oss/
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
+                _wz "${_fp}oss.repo" <<EOF
 [repo-oss]
-name=Main Repository
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
-type=rpm-md
-keeppackages=0
+${_n}Main Repository
+$_e1
+$_ar1
+${__u2}distribution/leap/$_rv/repo/oss/
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-source-non-oss.repo
+                _wz "${_fp}source-non-oss.repo" <<EOF
 [repo-source-non-oss]
-name=Source Repository (Non-OSS)
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/non-oss/
-type=NONE
-keeppackages=0
+${_n}Source Repository (Non-OSS)
+$_e0
+$_ar1
+${__u2}source/distribution/leap/$_rv/repo/non-oss/
+$_tyN
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
+                _wz "${_fp}source.repo" <<EOF
 [repo-source]
-name=Source Repository
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/oss/
-type=NONE
-keeppackages=0
+${_n}Source Repository
+$_e0
+$_ar1
+${__u2}source/distribution/leap/$_rv/repo/oss/
+$_tyN
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
+                _wz "${_fp}update-non-oss.repo" <<EOF
 [repo-update-non-oss]
-name=Update Repository (Non-Oss)
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
-type=rpm-md
-keeppackages=0
+${_n}Update Repository (Non-Oss)
+$_e1
+$_ar1
+${__u2}update/leap/$_rv/non-oss/
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
+                _wz "${_fp}update.repo" <<EOF
 [repo-update]
-name=Main Update Repository
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/update/leap/$releasever/oss/
-type=rpm-md
-keeppackages=0
+${_n}Main Update Repository
+$_e1
+$_ar1
+${__u2}update/leap/$_rv/oss/
+$_tym
+$_kp0
 EOF
                 ;;
             *)
-                cat <<'EOF' >$Dir_ZYppRepos/repo-backports-debug-update.repo
+                local _fp='repo-'
+                _wz "${_fp}backports-debug-update.repo" <<EOF
 [repo-backports-debug-update]
-name=Update repository with updates for openSUSE Leap debuginfo packages from openSUSE Backports
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/update/leap/$releasever/backports_debug/
-type=NONE
-keeppackages=0
+${_n}Update repository with updates for openSUSE Leap debuginfo packages from openSUSE Backports
+$_e0
+$_ar1
+${__u2}update/leap/$_rv/backports_debug/
+$_tyN
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-backports-update.repo
+                _wz "${_fp}backports-update.repo" <<EOF
 [repo-backports-update]
-name=Update repository of openSUSE Backports
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/update/leap/$releasever/backports/
+${_n}Update repository of openSUSE Backports
+$_e1
+$_ar1
+${__u2}update/leap/$_rv/backports/
 path=/
-type=rpm-md
-keeppackages=0
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-non-oss.repo
+                _wz "${_fp}debug-non-oss.repo" <<EOF
 [repo-debug-non-oss]
-name=Debug Repository (Non-OSS)
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/non-oss/
-keeppackages=0
+${_n}Debug Repository (Non-OSS)
+$_e0
+$_ar1
+${__u2}debug/distribution/leap/$_rv/repo/non-oss/
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
+                _wz "${_fp}debug.repo" <<EOF
 [repo-debug]
-name=Debug Repository
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/distribution/leap/$releasever/repo/oss/
-keeppackages=0
+${_n}Debug Repository
+$_e0
+$_ar1
+${__u2}debug/distribution/leap/$_rv/repo/oss/
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update-non-oss.repo
+                _wz "${_fp}debug-update-non-oss.repo" <<EOF
 [repo-debug-update-non-oss]
-name=Update Repository (Debug, Non-OSS)
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/update/leap/$releasever/non-oss/
-keeppackages=0
+${_n}Update Repository (Debug, Non-OSS)
+$_e0
+$_ar1
+${__u2}debug/update/leap/$_rv/non-oss/
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-debug-update.repo
+                _wz "${_fp}debug-update.repo" <<EOF
 [repo-debug-update]
-name=Update Repository (Debug)
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/update/leap/$releasever/oss/
-keeppackages=0
+${_n}Update Repository (Debug)
+$_e0
+$_ar1
+${__u2}debug/update/leap/$_rv/oss/
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
+                _wz "${_fp}non-oss.repo" <<EOF
 [repo-non-oss]
-name=Non-OSS Repository
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/non-oss/
-type=rpm-md
-keeppackages=0
+${_n}Non-OSS Repository
+$_e1
+$_ar1
+${__u2}distribution/leap/$_rv/repo/non-oss/
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-openh264.repo
+                _wz "${_fp}openh264.repo" <<EOF
 [repo-openh264]
-name=Open H.264 Codec (openSUSE Leap)
-enabled=1
-autorefresh=1
-baseurl=http://codecs.opensuse.org/openh264/openSUSE_Leap/
-type=rpm-md
-keeppackages=0
+${_n}Open H.264 Codec (openSUSE Leap)
+$_e1
+$_ar1
+${__u1}openh264/openSUSE_Leap/
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
+                _wz "${_fp}oss.repo" <<EOF
 [repo-oss]
-name=Main Repository
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/distribution/leap/$releasever/repo/oss/
-type=rpm-md
-keeppackages=0
+${_n}Main Repository
+$_e1
+$_ar1
+${__u2}distribution/leap/$_rv/repo/oss/
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-sle-debug-update.repo
+                _wz "${_fp}sle-debug-update.repo" <<EOF
 [repo-sle-debug-update]
-name=Update repository with debuginfo for updates from SUSE Linux Enterprise 15
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/update/leap/$releasever/sle/
+${_n}Update repository with debuginfo for updates from SUSE Linux Enterprise 15
+$_e0
+$_ar1
+${__u2}debug/update/leap/$_rv/sle/
 path=/
-type=rpm-md
-keeppackages=0
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-sle-update.repo
+                _wz "${_fp}sle-update.repo" <<EOF
 [repo-sle-update]
-name=Update repository with updates from SUSE Linux Enterprise 15
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/update/leap/$releasever/sle/
+${_n}Update repository with updates from SUSE Linux Enterprise 15
+$_e1
+$_ar1
+${__u2}update/leap/$_rv/sle/
 path=/
-type=rpm-md
-keeppackages=0
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
+                _wz "${_fp}source.repo" <<EOF
 [repo-source]
-name=Source Repository
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/source/distribution/leap/$releasever/repo/oss/
-keeppackages=0
+${_n}Source Repository
+$_e0
+$_ar1
+${__u2}source/distribution/leap/$_rv/repo/oss/
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-update-non-oss.repo
+                _wz "${_fp}update-non-oss.repo" <<EOF
 [repo-update-non-oss]
-name=Update Repository (Non-Oss)
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/update/leap/$releasever/non-oss/
-type=rpm-md
-keeppackages=0
+${_n}Update Repository (Non-Oss)
+$_e1
+$_ar1
+${__u2}update/leap/$_rv/non-oss/
+$_tym
+$_kp0
 EOF
-                cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
+                _wz "${_fp}update.repo" <<EOF
 [repo-update]
-name=Main Update Repository
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/update/leap/$releasever/oss/
-type=rpm-md
-keeppackages=0
+${_n}Main Update Repository
+$_e1
+$_ar1
+${__u2}update/leap/$_rv/oss/
+$_tym
+$_kp0
 EOF
                 ;;
             esac
@@ -7582,63 +7722,64 @@ EOF
         esac
         ;;
     "tumbleweed")
-        cat <<'EOF' >$Dir_ZYppRepos/repo-debug.repo
+        local _fp='repo-'
+        _wz "${_fp}debug.repo" <<EOF
 [repo-debug]
-name=openSUSE-Tumbleweed-Debug
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/debug/tumbleweed/repo/oss/
+${_n}openSUSE-Tumbleweed-Debug
+$_e0
+$_ar1
+${__u2}debug/tumbleweed/repo/oss/
 path=/
-keeppackages=0
+$_kp0
 EOF
-        cat <<'EOF' >$Dir_ZYppRepos/repo-non-oss.repo
+        _wz "${_fp}non-oss.repo" <<EOF
 [repo-non-oss]
-name=openSUSE-Tumbleweed-Non-Oss
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/tumbleweed/repo/non-oss/
+${_n}openSUSE-Tumbleweed-Non-Oss
+$_e1
+$_ar1
+${__u2}tumbleweed/repo/non-oss/
 path=/
-type=rpm-md
-keeppackages=0
+$_tym
+$_kp0
 EOF
-        cat <<'EOF' >$Dir_ZYppRepos/repo-openh264.repo
+        _wz "${_fp}openh264.repo" <<EOF
 [repo-openh264]
-name=Open H.264 Codec (openSUSE Tumbleweed)
-enabled=1
-autorefresh=1
-baseurl=http://codecs.opensuse.org/openh264/openSUSE_Tumbleweed
+${_n}Open H.264 Codec (openSUSE Tumbleweed)
+$_e1
+$_ar1
+${__u1}openh264/openSUSE_Tumbleweed
 path=/
-type=rpm-md
-keeppackages=0
+$_tym
+$_kp0
 EOF
-        cat <<'EOF' >$Dir_ZYppRepos/repo-oss.repo
+        _wz "${_fp}oss.repo" <<EOF
 [repo-oss]
-name=openSUSE-Tumbleweed-Oss
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/tumbleweed/repo/oss/
+${_n}openSUSE-Tumbleweed-Oss
+$_e1
+$_ar1
+${__u2}tumbleweed/repo/oss/
 path=/
-type=rpm-md
-keeppackages=0
+$_tym
+$_kp0
 EOF
-        cat <<'EOF' >$Dir_ZYppRepos/repo-source.repo
+        _wz "${_fp}source.repo" <<EOF
 [repo-source]
-name=openSUSE-Tumbleweed-Source
-enabled=0
-autorefresh=1
-baseurl=http://download.opensuse.org/source/tumbleweed/repo/oss/
+${_n}openSUSE-Tumbleweed-Source
+$_e0
+$_ar1
+${__u2}source/tumbleweed/repo/oss/
 path=/
-keeppackages=0
+$_kp0
 EOF
-        cat <<'EOF' >$Dir_ZYppRepos/repo-update.repo
+        _wz "${_fp}update.repo" <<EOF
 [repo-update]
-name=openSUSE-Tumbleweed-Update
-enabled=1
-autorefresh=1
-baseurl=http://download.opensuse.org/update/tumbleweed/
+${_n}openSUSE-Tumbleweed-Update
+$_e1
+$_ar1
+${__u2}update/tumbleweed/
 path=/
-type=rpm-md
-keeppackages=0
+$_tym
+$_kp0
 EOF
         ;;
     esac
@@ -7646,324 +7787,342 @@ EOF
 
 ## 生成 EPEL 附加软件包 repo 源文件
 function gen_repo_files_EPEL() {
+    local __s3='Extra Packages for Enterprise Linux '
+    local __s2='source/tree/'
+    local __s1='/Everything/'
+    local __u1="${_bu}https://download.example/pub/epel/"
+    local __u2="${_mt}https://mirrors.fedoraproject.org/metalink?"
+    local __n="${_n}${__s3}$_rv - "
     case "${1}" in
     10)
-        cat <<'EOF' >$Dir_YumRepos/epel.repo
+        local _m24="${_me}24h"
+        local __k1="${_gk}${_pki}"'EPEL-$releasever_major'
+        _w epel.repo <<EOF
 [epel]
-name=Extra Packages for Enterprise Linux $releasever - $basearch
-#baseurl=https://download.example/pub/epel/$releasever${releasever_minor:+z}/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-$releasever&arch=$basearch
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=24h
-countme=1
-enabled=1
+${__n}$_ba
+#${__u1}$_rv\${releasever_minor:+z}${__s1}$_ba/
+${__u2}repo=epel\${releasever_minor:+-z}-$_rv&arch=$_ba
+$__k1
+$_gc1
+$_rg0
+$_m24
+$_cm1
+$_e1
 
 [epel-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-#baseurl=https://download.example/pub/epel/$releasever${releasever_minor:+z}/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-debug-$releasever&arch=$basearch
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=24h
-enabled=0
+${__n}$_ba - Debug
+#${__u1}$_rv\${releasever_minor:+z}${__s1}$_ba/debug/
+${__u2}repo=epel\${releasever_minor:+-z}-debug-$_rv&arch=$_ba
+$__k1
+$_gc1
+$_rg0
+$_m24
+$_e0
 
 [epel-source]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-#baseurl=https://download.example/pub/epel/$releasever${releasever_minor:+z}/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-source-$releasever&arch=source
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=24h
-enabled=0
+${__n}$_ba - Source
+#${__u1}$_rv\${releasever_minor:+z}${__s1}${__s2}
+${__u2}repo=epel\${releasever_minor:+-z}-source-$_rv&arch=source
+$__k1
+$_gc1
+$_rg0
+$_m24
+$_e0
 EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+        _w epel-testing.repo <<EOF
 [epel-testing]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
-#baseurl=https://download.example/pub/epel/testing/$releasever${releasever_minor:+z}/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-testing-$releasever&arch=$basearch
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=24h
-countme=1
-enabled=0
+${__n}Testing - $_ba
+#${__u1}testing/$_rv\${releasever_minor:+z}${__s1}$_ba/
+${__u2}repo=epel\${releasever_minor:+-z}-testing-$_rv&arch=$_ba
+$__k1
+$_gc1
+$_rg0
+$_m24
+$_cm1
+$_e0
 
 [epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
-#baseurl=https://download.example/pub/epel/testing/$releasever${releasever_minor:+z}/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-testing-debug-$releasever&arch=$basearch
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=24h
-enabled=0
+${__n}Testing - $_ba - Debug
+#${__u1}testing/$_rv\${releasever_minor:+z}${__s1}$_ba/debug/
+${__u2}repo=epel\${releasever_minor:+-z}-testing-debug-$_rv&arch=$_ba
+$__k1
+$_gc1
+$_rg0
+$_m24
+$_e0
 
 [epel-testing-source]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
-#baseurl=https://download.example/pub/epel/testing/$releasever${releasever_minor:+z}/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel${releasever_minor:+-z}-testing-source-$releasever&arch=source
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever_major
-gpgcheck=1
-repo_gpgcheck=0
-metadata_expire=24h
-enabled=0
+${__n}Testing - $_ba - Source
+#${__u1}testing/$_rv\${releasever_minor:+z}${__s1}${__s2}
+${__u2}repo=epel\${releasever_minor:+-z}-testing-source-$_rv&arch=source
+$__k1
+$_gc1
+$_rg0
+$_m24
+$_e0
 EOF
         ;;
     9)
-        cat <<'EOF' >$Dir_YumRepos/epel.repo
+        local _m14="${_me}14d"
+        local _tyr="${_ty}rpm"
+        local __k2="${_gk}${_pki}EPEL-$_rv"
+        _w epel.repo <<EOF
 [epel]
-name=Extra Packages for Enterprise Linux $releasever - $basearch
-#baseurl=https://download.example/pub/epel/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+${__n}$_ba
+#${__u1}$_rv${__s1}$_ba/
+${__u2}repo=epel-$_rv&arch=$_ba&infra=$_if&content=$_ctd
+$_e1
+$_gc1
+$_cm1
+$__k2
 
 [epel-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-#baseurl=https://download.example/pub/epel/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
+${__n}$_ba - Debug
+#${__u1}$_rv${__s1}$_ba/debug/
+${__u2}repo=epel-debug-$_rv&arch=$_ba&infra=$_if&content=$_ctd
+$_e0
+$__k2
+$_gc1
 
 [epel-source]
-name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
-#baseurl=https://download.example/pub/epel/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
+${__n}$_ba - Source
+#${__u1}$_rv${__s1}${__s2}
+${__u2}repo=epel-source-$_rv&arch=$_ba&infra=$_if&content=$_ctd
+$_e0
+$__k2
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+        _w epel-testing.repo <<EOF
 [epel-testing]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
-#baseurl=https://download.example/pub/epel/testing/$releasever/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
+${__n}Testing - $_ba
+#${__u1}testing/$_rv${__s1}$_ba/
+${__u2}repo=testing-epel$_rv&arch=$_ba&infra=$_if&content=$_ctd
+$_e0
+$_gc1
+$_cm1
+$__k2
 
 [epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Debug
-#baseurl=https://download.example/pub/epel/testing/$releasever/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
+${__n}Testing - $_ba - Debug
+#${__u1}testing/$_rv${__s1}$_ba/debug/
+${__u2}repo=testing-debug-epel$_rv&arch=$_ba&infra=$_if&content=$_ctd
+$_e0
+$__k2
+$_gc1
 
 [epel-testing-source]
-name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch - Source
-#baseurl=https://download.example/pub/epel/testing/$releasever/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel$releasever&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-gpgcheck=1
+${__n}Testing - $_ba - Source
+#${__u1}testing/$_rv${__s1}${__s2}
+${__u2}repo=testing-source-epel$_rv&arch=$_ba&infra=$_if&content=$_ctd
+$_e0
+$__k2
+$_gc1
 EOF
         ## 此仓库特殊，默认不启用
-        cat <<'EOF' >$Dir_YumRepos/epel-cisco-openh264.repo
+        _w epel-cisco-openh264.repo <<EOF
 [epel-cisco-openh264]
-name=Extra Packages for Enterprise Linux $releasever openh264 (From Cisco) - $basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-cisco-openh264-$releasever&arch=$basearch
-type=rpm
-enabled=0
-metadata_expire=14d
-repo_gpgcheck=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-skip_if_unavailable=True
+${_n}${__s3}$_rv openh264 (From Cisco) - $_ba
+${__u2}repo=epel-cisco-openh264-$_rv&arch=$_ba
+$_tyr
+$_e0
+$_m14
+$_rg0
+$_gc1
+$__k2
+$_suT
 
 [epel-cisco-openh264-debuginfo]
-name=Extra Packages for Enterprise Linux $releasever openh264 (From Cisco) - $basearch - Debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-cisco-openh264-debug-$releasever&arch=$basearch
-type=rpm
-enabled=0
-metadata_expire=14d
-repo_gpgcheck=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-skip_if_unavailable=True
+${_n}${__s3}$_rv openh264 (From Cisco) - $_ba - Debug
+${__u2}repo=epel-cisco-openh264-debug-$_rv&arch=$_ba
+$_tyr
+$_e0
+$_m14
+$_rg0
+$_gc1
+$__k2
+$_suT
 
 [epel-cisco-openh264-source]
-name=Extra Packages for Enterprise Linux $releasever openh264 (From Cisco) - $basearch - Source
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-cisco-openh264-source-$releasever&arch=$basearch
-type=rpm
-enabled=0
-metadata_expire=14d
-repo_gpgcheck=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
-skip_if_unavailable=True
+${_n}${__s3}$_rv openh264 (From Cisco) - $_ba - Source
+${__u2}repo=epel-cisco-openh264-source-$_rv&arch=$_ba
+$_tyr
+$_e0
+$_m14
+$_rg0
+$_gc1
+$__k2
+$_suT
 EOF
         ;;
     8)
-        cat <<'EOF' >$Dir_YumRepos/epel.repo
+        local __k3="${_gk}${_pki}EPEL-8"
+        local __f='&arch=$basearch&infra=$infra&content=$contentdir'
+        _w epel.repo <<EOF
 [epel]
-name=Extra Packages for Enterprise Linux 8 - $basearch
-#baseurl=https://download.example/pub/epel/8/Everything/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+${_n}${__s3}8 - $_ba
+#${__u1}8${__s1}$_ba
+${__u2}repo=epel-8${__f}
+$_e1
+$_gc1
+$_cm1
+$__k3
 
 [epel-debuginfo]
-name=Extra Packages for Enterprise Linux 8 - $basearch - Debug
-#baseurl=https://download.example/pub/epel/8/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}8 - $_ba - Debug
+#${__u1}8${__s1}$_ba/debug
+${__u2}repo=epel-debug-8${__f}
+$_e0
+$__k3
+$_gc1
 
 [epel-source]
-name=Extra Packages for Enterprise Linux 8 - $basearch - Source
-#baseurl=https://download.example/pub/epel/8/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}8 - $_ba - Source
+#${__u1}8${__s1}${__s2}
+${__u2}repo=epel-source-8${__f}
+$_e0
+$__k3
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+        _w epel-testing.repo <<EOF
 [epel-testing]
-name=Extra Packages for Enterprise Linux 8 - Testing - $basearch
-#baseurl=https://download.example/pub/epel/testing/8/Everything/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+${_n}${__s3}8 - Testing - $_ba
+#${__u1}testing/8${__s1}$_ba
+${__u2}repo=testing-epel8${__f}
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux 8 - Testing - $basearch - Debug
-#baseurl=https://download.example/pub/epel/testing/8/Everything/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}8 - Testing - $_ba - Debug
+#${__u1}testing/8${__s1}$_ba/debug
+${__u2}repo=testing-debug-epel8${__f}
+$_e0
+$__k3
+$_gc1
 
 [epel-testing-source]
-name=Extra Packages for Enterprise Linux 8 - Testing - $basearch - Source
-#baseurl=https://download.example/pub/epel/testing/8/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}8 - Testing - $_ba - Source
+#${__u1}testing/8${__s1}${__s2}
+${__u2}repo=testing-source-epel8${__f}
+$_e0
+$__k3
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-modular.repo
+        _w epel-modular.repo <<EOF
 [epel-modular]
-name=Extra Packages for Enterprise Linux Modular 8 - $basearch - RETIRED
-#baseurl=https://download.example/pub/epel/8/Modular/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+${_n}${__s3}Modular 8 - $_ba - RETIRED
+#${__u1}8/Modular/$_ba
+${__u2}repo=epel-modular-8${__f}
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [epel-modular-debuginfo]
-name=Extra Packages for Enterprise Linux Modular 8 - $basearch - Debug - RETIRED
-#baseurl=https://download.example/pub/epel/8/Modular/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-debug-8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}Modular 8 - $_ba - Debug - RETIRED
+#${__u1}8/Modular/$_ba/debug
+${__u2}repo=epel-modular-debug-8${__f}
+$_e0
+$__k3
+$_gc1
 
 [epel-modular-source]
-name=Extra Packages for Enterprise Linux Modular 8 - $basearch - Source - RETIRED
-#baseurl=https://download.example/pub/epel/8/Modular/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-modular-source-8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}Modular 8 - $_ba - Source - RETIRED
+#${__u1}8/Modular/${__s2}
+${__u2}repo=epel-modular-source-8${__f}
+$_e0
+$__k3
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-testing-modular.repo
+        _w epel-testing-modular.repo <<EOF
 [epel-testing-modular]
-name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - RETIRED
-#baseurl=https://download.example/pub/epel/testing/8/Modular/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-epel8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+${_n}${__s3}Modular 8 - Testing - $_ba - RETIRED
+#${__u1}testing/8/Modular/$_ba
+${__u2}repo=testing-modular-epel8${__f}
+$_e0
+$_gc1
+$_cm1
+$__k3
 
 [epel-testing-modular-debuginfo]
-name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - Debug - RETIRED
-#baseurl=https://download.example/pub/epel/testing/8/Modular/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-debug-epel8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}Modular 8 - Testing - $_ba - Debug - RETIRED
+#${__u1}testing/8/Modular/$_ba/debug
+${__u2}repo=testing-modular-debug-epel8${__f}
+$_e0
+$__k3
+$_gc1
 
 [epel-testing-modular-source]
-name=Extra Packages for Enterprise Linux Modular 8 - Testing - $basearch - Source - RETIRED
-#baseurl=https://download.example/pub/epel/testing/8/Modular/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-modular-source-epel8&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
-gpgcheck=1
+${_n}${__s3}Modular 8 - Testing - $_ba - Source - RETIRED
+#${__u1}testing/8/Modular/${__s2}
+${__u2}repo=testing-modular-source-epel8${__f}
+$_e0
+$__k3
+$_gc1
 EOF
         ;;
     7)
-        cat <<'EOF' >$Dir_YumRepos/epel.repo
+        local _fm='failovermethod='
+        local _fop="${_fm}priority"
+        local __u3="${_bu}http://download.example/pub/epel/"
+        local __k4="${_gk}${_pki}EPEL-7"
+        local __f='&arch=$basearch&infra=$infra&content=$contentdir'
+        _w epel.repo <<EOF
 [epel]
-name=Extra Packages for Enterprise Linux 7 - $basearch
-#baseurl=http://download.example/pub/epel/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch&infra=$infra&content=$contentdir
-failovermethod=priority
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+${_n}${__s3}7 - $_ba
+#${__u3}7/$_ba
+${__u2}repo=epel-7${__f}
+$_fop
+$_e1
+$_gc1
+$__k4
 
 [epel-debuginfo]
-name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
-#baseurl=http://download.example/pub/epel/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch&infra=$infra&content=$contentdir
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
+${_n}${__s3}7 - $_ba - Debug
+#${__u3}7/$_ba/debug
+${__u2}repo=epel-debug-7${__f}
+$_fop
+$_e0
+$__k4
+$_gc1
 
 [epel-source]
-name=Extra Packages for Enterprise Linux 7 - $basearch - Source
-#baseurl=http://download.example/pub/epel/7/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch&infra=$infra&content=$contentdir
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
+${_n}${__s3}7 - $_ba - Source
+#${__u3}7/${__s2}
+${__u2}repo=epel-source-7${__f}
+$_fop
+$_e0
+$__k4
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-testing.repo
+        _w epel-testing.repo <<EOF
 [epel-testing]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch
-#baseurl=http://download.example/pub/epel/testing/7/$basearch
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch&infra=$infra&content=$contentdir
-failovermethod=priority
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+${_n}${__s3}7 - Testing - $_ba
+#${__u3}testing/7/$_ba
+${__u2}repo=testing-epel7${__f}
+$_fop
+$_e0
+$_gc1
+$__k4
 
 [epel-testing-debuginfo]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Debug
-#baseurl=http://download.example/pub/epel/testing/7/$basearch/debug
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch&infra=$infra&content=$contentdir
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
+${_n}${__s3}7 - Testing - $_ba - Debug
+#${__u3}testing/7/$_ba/debug
+${__u2}repo=testing-debug-epel7${__f}
+$_fop
+$_e0
+$__k4
+$_gc1
 
 [epel-testing-source]
-name=Extra Packages for Enterprise Linux 7 - Testing - $basearch - Source
-#baseurl=http://download.example/pub/epel/testing/7/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch&infra=$infra&content=$contentdir
-failovermethod=priority
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
+${_n}${__s3}7 - Testing - $_ba - Source
+#${__u3}testing/7/${__s2}
+${__u2}repo=testing-source-epel7${__f}
+$_fop
+$_e0
+$__k4
+$_gc1
 EOF
         ;;
     esac
@@ -7973,57 +8132,64 @@ EOF
 function gen_repo_files_EPEL_NEXT() {
     case "${1}" in
     9)
-        cat <<'EOF' >$Dir_YumRepos/epel-next.repo
+        local __s3='Extra Packages for Enterprise Linux '
+        local __s2='source/tree/'
+        local __s1='/Everything/'
+        local __u1="${_bu}https://download.example/pub/epel/"
+        local __u2="${_mt}https://mirrors.fedoraproject.org/metalink?"
+        local __k="${_gk}${_pki}EPEL-9"
+        local __f='&arch=$basearch&infra=$infra&content=$contentdir'
+        _w epel-next.repo <<EOF
 [epel-next]
-name=Extra Packages for Enterprise Linux 9 - Next - $basearch
-#baseurl=https://download.example/pub/epel/next/9/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-9&arch=$basearch&infra=$infra&content=$contentdir
-enabled=1
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
+${_n}${__s3}9 - Next - $_ba
+#${__u1}next/9${__s1}$_ba/
+${__u2}repo=epel-next-9${__f}
+$_e1
+$_gc1
+$_cm1
+$__k
 
 [epel-next-debuginfo]
-name=Extra Packages for Enterprise Linux 9 - Next - $basearch - Debug
-#baseurl=https://download.example/pub/epel/next/9/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-debug-9&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
-gpgcheck=1
+${_n}${__s3}9 - Next - $_ba - Debug
+#${__u1}next/9${__s1}$_ba/debug/
+${__u2}repo=epel-next-debug-9${__f}
+$_e0
+$__k
+$_gc1
 
 [epel-next-source]
-name=Extra Packages for Enterprise Linux 9 - Next - $basearch - Source
-#baseurl=https://download.example/pub/epel/next/9/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-next-source-9&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
-gpgcheck=1
+${_n}${__s3}9 - Next - $_ba - Source
+#${__u1}next/9${__s1}${__s2}
+${__u2}repo=epel-next-source-9${__f}
+$_e0
+$__k
+$_gc1
 EOF
-        cat <<'EOF' >$Dir_YumRepos/epel-next-testing.repo
+        _w epel-next-testing.repo <<EOF
 [epel-next-testing]
-name=Extra Packages for Enterprise Linux 9 - Next - Testing - $basearch
-#baseurl=https://download.example/pub/epel/testing/next/9/Everything/$basearch/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-9&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgcheck=1
-countme=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
+${_n}${__s3}9 - Next - Testing - $_ba
+#${__u1}testing/next/9${__s1}$_ba/
+${__u2}repo=epel-testing-next-9${__f}
+$_e0
+$_gc1
+$_cm1
+$__k
 
 [epel-next-testing-debuginfo]
-name=Extra Packages for Enterprise Linux 9 - Next - Testing - $basearch - Debug
-#baseurl=https://download.example/pub/epel/testing/next/9/Everything/$basearch/debug/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-debug-9&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
-gpgcheck=1
+${_n}${__s3}9 - Next - Testing - $_ba - Debug
+#${__u1}testing/next/9${__s1}$_ba/debug/
+${__u2}repo=epel-testing-next-debug-9${__f}
+$_e0
+$__k
+$_gc1
 
 [epel-next-testing-source]
-name=Extra Packages for Enterprise Linux 9 - Next - Testing - $basearch - Source
-#baseurl=https://download.example/pub/epel/testing/next/9/Everything/source/tree/
-metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-testing-next-source-9&arch=$basearch&infra=$infra&content=$contentdir
-enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
-gpgcheck=1
+${_n}${__s3}9 - Next - Testing - $_ba - Source
+#${__u1}testing/next/9${__s1}${__s2}
+${__u2}repo=epel-testing-next-source-9${__f}
+$_e0
+$__k
+$_gc1
 EOF
         ;;
     esac
