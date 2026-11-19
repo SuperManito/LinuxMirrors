@@ -1,0 +1,54 @@
+{% if page.meta.comments %}
+  <h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
+  {% if page.meta.comments_description %}
+    <blockquote>{{ page.meta.comments_description }}</blockquote>
+  {% endif %}
+  <script src="https://giscus.app/client.js"
+    data-repo="SuperManito/LinuxMirrors"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkzMzI2Nzg5NzI="
+    data-category="General"
+    data-category-id="DIC_kwDOE9RHPM4CWOQP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="{{'en' if i18n_page_locale == 'en' else 'zh-Hant' if i18n_page_locale == 'zh-Hant' else 'zh-CN'}}"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+  >
+  </script>
+
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+{% endif %}
