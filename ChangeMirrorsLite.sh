@@ -326,7 +326,7 @@ function handle_command_options() {
                     ;;
                 esac
             else
-                ocommand_error "$1" "$(msg "error.cmd.options.needProtocol")"
+                command_error "$1" "$(msg "error.cmd.options.needProtocol")"
             fi
             ;;
         ## 安装 EPEL 附加软件包
@@ -2289,7 +2289,7 @@ function change_mirrors_RedHat() {
     "${SYSTEM_ALMALINUX}")
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         10)
-            sed -e "s|^# baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -e "s|vault.almalinux.org|${SOURCE_VAULT:-${SOURCE}}/${SOURCE_VAULT_BRANCH:-"almalinux-vault"}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
@@ -2305,7 +2305,7 @@ function change_mirrors_RedHat() {
                 almalinux-sap.repo
             ;;
         9)
-            sed -e "s|^# baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+            sed -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|^mirrorlist=|#mirrorlist=|g" \
                 -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-${SOURCE}}/${SOURCE_VAULT_BRANCH:-"almalinux-vault"}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
@@ -2324,7 +2324,7 @@ function change_mirrors_RedHat() {
             ;;
         8)
             sed -e "s|^mirrorlist=|#mirrorlist=|g" \
-                -e "s|^# baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
+                -e "s|^#baseurl=https|baseurl=${WEB_PROTOCOL}|g" \
                 -e "s|repo.almalinux.org/vault|${SOURCE_VAULT:-${SOURCE}}/${SOURCE_VAULT_BRANCH:-"almalinux-vault"}|g" \
                 -e "s|repo.almalinux.org/almalinux|${SOURCE}/${SOURCE_BRANCH}|g" \
                 -i \
@@ -2810,101 +2810,7 @@ function get_package_manager() {
     echo "${command}"
 }
 
-function interactive_select_list() {
-    _SELECT_RESULT=""
-    eval "local -a __values=(\"\${${1}[@]}\")"
-    local -a __labels=()
-    local message="${2}"
-    local selected=0
-    local start=0
-    local page_size=$(($(tput lines 2>/dev/null) - 3))
-    if [[ "${3}" ]]; then
-        eval "__labels=(\"\${${3}[@]}\")"
-    fi
-    function clear_menu() {
-        tput rc 2>/dev/null
-        for ((i = 0; i < ${#__values[@]} + 1; i++)); do
-            echo -e "\r\033[K"
-        done
-        tput rc 2>/dev/null
-    }
-    function cleanup() {
-        clear_menu
-        tput rc 2>/dev/null
-        tput cnorm 2>/dev/null
-        tput rmcup 2>/dev/null
-        echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
-        exit 130
-    }
-    function draw_menu() {
-        tput clear 2>/dev/null
-        tput cup 0 0 2>/dev/null
-        echo -e "${message}"
-        local end=$((start + page_size - 1))
-        local label
-        if [ $end -ge ${#__values[@]} ]; then
-            end=${#__values[@]}-1
-        fi
-        for ((i = start; i <= end; i++)); do
-            if [[ "${__labels[$i]}" ]]; then
-                label="${__labels[$i]}"
-            else
-                label="${__values[$i]}"
-            fi
-            if [ "$i" -eq "${selected}" ]; then
-                echo -e "\e[34;4m➤ ${label}\e[0m"
-            else
-                echo -e "  ${label}"
-            fi
-        done
-    }
-    function read_key() {
-        IFS= read -rsn1 key
-        if [[ $key == $'\x1b' ]]; then
-            IFS= read -rsn2 key
-            key="$key"
-        fi
-        echo "$key"
-    }
-    tput smcup 2>/dev/null
-    tput sc 2>/dev/null
-    tput civis 2>/dev/null
-    trap "cleanup" INT TERM
-    draw_menu
-    while true; do
-        key=$(read_key)
-        case "$key" in
-        "[A" | "w" | "W")
-            if [ "${selected}" -gt 0 ]; then
-                selected=$((selected - 1))
-                if [ "${selected}" -lt "$start" ]; then
-                    start=$((start - 1))
-                fi
-            fi
-            ;;
-        "[B" | "s" | "S")
-            if [ "${selected}" -lt $((${#__values[@]} - 1)) ]; then
-                selected=$((selected + 1))
-                if [ "${selected}" -ge $((start + page_size)) ]; then
-                    start=$((start + 1))
-                fi
-            fi
-            ;;
-        "")
-            tput rmcup
-            break
-            ;;
-        *) ;;
-        esac
-        draw_menu
-    done
-    tput cnorm 2>/dev/null
-    tput rmcup 2>/dev/null
-    _SELECT_RESULT="${__values[${selected}]}"
-    if [ "${__labels[${selected}]}" ]; then
-        _SELECT_RESULT="${_SELECT_RESULT}@@${__labels[${selected}]}"
-    fi
-}
+function interactive_select_list() { :; }
 
 function interactive_select_boolean() {
     _SELECT_RESULT=""
@@ -2912,77 +2818,77 @@ function interactive_select_boolean() {
     local message="$1"
     local positive_title="${2:-"$(msg "interaction.common.yes")"}"
     local negative_title="${3:-"$(msg "interaction.common.no")"}"
-    local menu_height=3
-    local original_line
-    function store_position() {
-        original_line=$(tput lines 2>/dev/null)
-    }
-    function clear_menu() {
-        for ((i = 0; i < $menu_height; i++)); do
-            tput cuu1 2>/dev/null
-            tput el 2>/dev/null
-        done
-    }
+    local bool_final=0
+    local bool_drawn=0
+    local clear_seq="$(tput cuu1 2>/dev/null)$(tput el 2>/dev/null)"
+    local key
+    local saved_tty="$(stty -g 2>/dev/null)"
     function cleanup() {
-        clear_menu
+        [[ "${saved_tty}" ]] && stty "${saved_tty}" 2>/dev/null
+        printf '\033[?2026l'
+        printf '%b' "${clear_seq}${clear_seq}${clear_seq}"
         tput cnorm 2>/dev/null
         echo -e "\n\033[1;44m $(msg "interaction.common.tip") \033[0m \033[31m$(msg "interaction.common.operationCanceled")\033[0m\n"
         exit 130
     }
     function draw_menu() {
-        echo -e "╭─ ${message}"
-        echo -e "│"
-        if [ "${selected}" -eq 0 ]; then
-            echo -e "╰─ \033[34m●\033[0m ${positive_title}\033[2m / ○ ${negative_title}\033[0m"
+        local frame='\033[?2026h'
+        local choice
+        if [ "${bool_drawn}" -eq 1 ]; then
+            frame+="${clear_seq}${clear_seq}${clear_seq}"
+        fi
+        if [ "${bool_final}" -eq 1 ]; then
+            if [ "${selected}" -eq 0 ]; then
+                choice="╰─ \033[32m●\033[0m \033[1m${positive_title}\033[0m\033[2m / ○ ${negative_title}\033[0m"
+            else
+                choice="╰─ \033[2m○ ${positive_title} / \033[0m\033[32m●\033[0m \033[1m${negative_title}\033[0m"
+            fi
         else
-            echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[34m●\033[0m ${negative_title}"
+            if [ "${selected}" -eq 0 ]; then
+                choice="╰─ \033[34m●\033[0m ${positive_title}\033[2m / ○ ${negative_title}\033[0m"
+            else
+                choice="╰─ \033[2m○ ${positive_title} / \033[0m\033[34m●\033[0m ${negative_title}"
+            fi
         fi
-    }
-    function read_key() {
-        IFS= read -rsn1 key
-        if [[ $key == $'\x1b' ]]; then
-            IFS= read -rsn2 key
-            key="$key"
-        fi
-        echo "$key"
+        frame+='╭─ '"${message}"'\n│\n'"${choice}"'\n\033[?2026l'
+        printf '%b' "${frame}"
+        bool_drawn=1
     }
     tput civis 2>/dev/null
-    store_position
     trap "cleanup" INT TERM
     draw_menu
     while true; do
-        key=$(read_key)
-        case "$key" in
+        IFS= read -rsn1 key
+        if [[ "${key}" == $'\x1b' ]]; then
+            IFS= read -rsn2 key
+        fi
+        case "${key}" in
         "[D" | "a" | "A")
             if [ "${selected}" -gt 0 ]; then
                 selected=$((selected - 1))
-                clear_menu
                 draw_menu
             fi
             ;;
         "[C" | "d" | "D")
             if [ "${selected}" -lt 1 ]; then
                 selected=$((selected + 1))
-                clear_menu
                 draw_menu
             fi
             ;;
         "")
-            clear_menu
             break
             ;;
         *) ;;
         esac
     done
-    echo -e "╭─ ${message}"
-    echo -e "│"
+    bool_final=1
+    draw_menu
     if [ "${selected}" -eq 0 ]; then
-        echo -e "╰─ \033[32m●\033[0m \033[1m${positive_title}\033[0m\033[2m / ○ ${negative_title}\033[0m"
         _SELECT_RESULT="true"
     else
-        echo -e "╰─ \033[2m○ ${positive_title} / \033[0m\033[32m●\033[0m \033[1m${negative_title}\033[0m"
         _SELECT_RESULT="false"
     fi
+    trap - INT TERM
     tput cnorm 2>/dev/null
 }
 
@@ -3149,6 +3055,7 @@ function animate_exec() {
     fi
     tput cnorm 2>/dev/null
     rm -f "${temp_file}"
+    trap - INT TERM
     return $exit_status
 }
 
@@ -4982,7 +4889,7 @@ function gen_repo_files_AlmaLinux() {
 [appstream]
 ${__n}AppStream
 ${__u1}appstream
-# ${__u2}AppStream/$_ba/os/
+#${__u2}AppStream/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -4993,7 +4900,7 @@ $_em1
 [appstream-debuginfo]
 ${__n}AppStream - Debug
 ${__u1}appstream-debug
-# ${__u4}AppStream/debug/$_ba/
+#${__u4}AppStream/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5003,7 +4910,7 @@ $_em0
 [appstream-source]
 ${__n}AppStream - Source
 ${__u1}appstream-source
-# ${__u4}AppStream/Source/
+#${__u4}AppStream/Source/
 $_e0
 $_gc1
 $__k1
@@ -5014,7 +4921,7 @@ EOF
 [baseos]
 ${__n}BaseOS
 ${__u1}baseos
-# ${__u2}BaseOS/$_ba/os/
+#${__u2}BaseOS/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5025,7 +4932,7 @@ $_em1
 [baseos-debuginfo]
 ${__n}BaseOS - Debug
 ${__u1}baseos-debug
-# ${__u4}BaseOS/debug/$_ba/
+#${__u4}BaseOS/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5035,7 +4942,7 @@ $_em0
 [baseos-source]
 ${__n}BaseOS - Source
 ${__u1}baseos-source
-# ${__u4}BaseOS/Source/
+#${__u4}BaseOS/Source/
 $_e0
 $_gc1
 $__k1
@@ -5046,7 +4953,7 @@ EOF
 [crb]
 ${__n}CRB
 ${__u1}crb
-# ${__u2}CRB/$_ba/os/
+#${__u2}CRB/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5057,7 +4964,7 @@ $_em0
 [crb-debuginfo]
 ${__n}CRB - Debug
 ${__u1}crb-debug
-# ${__u4}CRB/debug/$_ba/
+#${__u4}CRB/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5067,7 +4974,7 @@ $_em0
 [crb-source]
 ${__n}CRB - Source
 ${__u1}crb-source
-# ${__u4}CRB/Source/
+#${__u4}CRB/Source/
 $_e0
 $_gc1
 $__k1
@@ -5078,7 +4985,7 @@ EOF
 [extras]
 ${__n}Extras
 ${__u1}extras
-# ${__u2}extras/$_ba/os/
+#${__u2}extras/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5089,7 +4996,7 @@ $_em0
 [extras-debuginfo]
 ${__n}Extras - Debug
 ${__u1}extras-debug
-# ${__u4}extras/debug/$_ba/
+#${__u4}extras/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5099,7 +5006,7 @@ $_em0
 [extras-source]
 ${__n}Extras - Source
 ${__u1}extras-source
-# ${__u4}extras/Source/
+#${__u4}extras/Source/
 $_e0
 $_gc1
 $__k1
@@ -5110,7 +5017,7 @@ EOF
 [highavailability]
 ${__n}${__s2}
 ${__u1}highavailability
-# ${__u2}${__s2}/$_ba/os/
+#${__u2}${__s2}/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5121,7 +5028,7 @@ $_em0
 [highavailability-debuginfo]
 ${__n}${__s2} - Debug
 ${__u1}highavailability-debug
-# ${__u4}${__s2}/debug/$_ba/
+#${__u4}${__s2}/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5131,7 +5038,7 @@ $_em0
 [highavailability-source]
 ${__n}${__s2} - Source
 ${__u1}highavailability-source
-# ${__u4}${__s2}/Source/
+#${__u4}${__s2}/Source/
 $_e0
 $_gc1
 $__k1
@@ -5142,7 +5049,7 @@ EOF
 [nfv]
 ${__n}NFV
 ${__u1}nfv
-# ${__u2}NFV/$_ba/os/
+#${__u2}NFV/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5153,7 +5060,7 @@ $_em0
 [nfv-debuginfo]
 ${__n}NFV - Debug
 ${__u1}nfv-debug
-# ${__u4}NFV/debug/$_ba/
+#${__u4}NFV/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5163,7 +5070,7 @@ $_em0
 [nfv-source]
 ${__n}NFV - Source
 ${__u1}nfv-source
-# ${__u4}NFV/Source/
+#${__u4}NFV/Source/
 $_e0
 $_gc1
 $__k1
@@ -5174,7 +5081,7 @@ EOF
 [rt]
 ${__n}RT
 ${__u1}rt
-# ${__u2}RT/$_ba/os/
+#${__u2}RT/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5185,7 +5092,7 @@ $_em0
 [rt-debuginfo]
 ${__n}RT - Debug
 ${__u1}rt-debug
-# ${__u4}RT/debug/$_ba/
+#${__u4}RT/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5195,7 +5102,7 @@ $_em0
 [rt-source]
 ${__n}RT - Source
 ${__u1}rt-source
-# ${__u4}RT/Source/
+#${__u4}RT/Source/
 $_e0
 $_gc1
 $__k1
@@ -5206,7 +5113,7 @@ EOF
 [saphana]
 ${__n}SAPHANA
 ${__u1}saphana
-# ${__u2}SAPHANA/$_ba/os/
+#${__u2}SAPHANA/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5217,7 +5124,7 @@ $_em0
 [saphana-debuginfo]
 ${__n}SAPHANA - Debug
 ${__u1}saphana-debug
-# ${__u4}SAPHANA/debug/$_ba/
+#${__u4}SAPHANA/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5227,7 +5134,7 @@ $_em0
 [saphana-source]
 ${__n}SAPHANA - Source
 ${__u1}saphana-source
-# ${__u4}SAPHANA/Source/
+#${__u4}SAPHANA/Source/
 $_e0
 $_gc1
 $__k1
@@ -5238,7 +5145,7 @@ EOF
 [sap]
 ${__n}SAP
 ${__u1}sap
-# ${__u2}SAP/$_ba/os/
+#${__u2}SAP/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5249,7 +5156,7 @@ $_em0
 [sap-debuginfo]
 ${__n}SAP - Debug
 ${__u1}sap-debug
-# ${__u4}SAP/debug/$_ba/
+#${__u4}SAP/debug/$_ba/
 $_e0
 $_gc1
 $__k1
@@ -5259,7 +5166,7 @@ $_em0
 [sap-source]
 ${__n}SAP - Source
 ${__u1}sap-source
-# ${__u4}SAP/Source/
+#${__u4}SAP/Source/
 $_e0
 $_gc1
 $__k1
@@ -5273,7 +5180,7 @@ EOF
 [appstream]
 ${__n}AppStream
 ${__u1}appstream
-# ${__u2}AppStream/$_ba/os/
+#${__u2}AppStream/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5284,7 +5191,7 @@ $_em1
 [appstream-debug]
 ${__n}AppStream - Debug
 ${__u1}appstream-debug
-# ${__u3}AppStream/debug/$_ba/
+#${__u3}AppStream/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5294,7 +5201,7 @@ $_em0
 [appstream-source]
 ${__n}AppStream - Source
 ${__u1}appstream-source
-# ${__u3}AppStream/Source/
+#${__u3}AppStream/Source/
 $_e0
 $_gc1
 $__k2
@@ -5305,7 +5212,7 @@ EOF
 [baseos]
 ${__n}BaseOS
 ${__u1}baseos
-# ${__u2}BaseOS/$_ba/os/
+#${__u2}BaseOS/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5316,7 +5223,7 @@ $_em1
 [baseos-debug]
 ${__n}BaseOS - Debug
 ${__u1}baseos-debug
-# ${__u3}BaseOS/debug/$_ba/
+#${__u3}BaseOS/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5326,7 +5233,7 @@ $_em0
 [baseos-source]
 ${__n}BaseOS - Source
 ${__u1}baseos-source
-# ${__u3}BaseOS/Source/
+#${__u3}BaseOS/Source/
 $_e0
 $_gc1
 $__k2
@@ -5337,7 +5244,7 @@ EOF
 [crb]
 ${__n}CRB
 ${__u1}crb
-# ${__u2}CRB/$_ba/os/
+#${__u2}CRB/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5348,7 +5255,7 @@ $_em0
 [crb-debug]
 ${__n}CRB - Debug
 ${__u1}crb-debug
-# ${__u3}CRB/debug/$_ba/
+#${__u3}CRB/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5358,7 +5265,7 @@ $_em0
 [crb-source]
 ${__n}CRB - Source
 ${__u1}crb-source
-# ${__u3}CRB/Source/
+#${__u3}CRB/Source/
 $_e0
 $_gc1
 $__k2
@@ -5369,7 +5276,7 @@ EOF
 [extras]
 ${__n}Extras
 ${__u1}extras
-# ${__u2}extras/$_ba/os/
+#${__u2}extras/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5380,7 +5287,7 @@ $_em0
 [extras-debug]
 ${__n}Extras - Debug
 ${__u1}extras-debug
-# ${__u3}extras/debug/$_ba/
+#${__u3}extras/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5390,7 +5297,7 @@ $_em0
 [extras-source]
 ${__n}Extras - Source
 ${__u1}extras-source
-# ${__u3}extras/Source/
+#${__u3}extras/Source/
 $_e0
 $_gc1
 $__k2
@@ -5401,7 +5308,7 @@ EOF
 [highavailability]
 ${__n}${__s2}
 ${__u1}highavailability
-# ${__u2}${__s2}/$_ba/os/
+#${__u2}${__s2}/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5412,7 +5319,7 @@ $_em0
 [highavailability-debug]
 ${__n}${__s2} - Debug
 ${__u1}highavailability-debug
-# ${__u3}${__s2}/debug/$_ba/
+#${__u3}${__s2}/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5422,7 +5329,7 @@ $_em0
 [highavailability-source]
 ${__n}${__s2} - Source
 ${__u1}highavailability-source
-# ${__u3}${__s2}/Source/
+#${__u3}${__s2}/Source/
 $_e0
 $_gc1
 $__k2
@@ -5433,7 +5340,7 @@ EOF
 [nfv]
 ${__n}NFV
 ${__u1}nfv
-# ${__u2}NFV/$_ba/os/
+#${__u2}NFV/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5444,7 +5351,7 @@ $_em0
 [nfv-debug]
 ${__n}NFV - Debug
 ${__u1}nfv-debug
-# ${__u3}NFV/debug/$_ba/
+#${__u3}NFV/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5454,7 +5361,7 @@ $_em0
 [nfv-source]
 ${__n}NFV - Source
 ${__u1}nfv-source
-# ${__u3}NFV/Source/
+#${__u3}NFV/Source/
 $_e0
 $_gc1
 $__k2
@@ -5465,7 +5372,7 @@ EOF
 [plus]
 ${__n}Plus
 ${__u1}plus
-# ${__u2}plus/$_ba/os/
+#${__u2}plus/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5476,7 +5383,7 @@ $_em0
 [plus-debug]
 ${__n}Plus - Debug
 ${__u1}plus-debug
-# ${__u3}plus/debug/$_ba/
+#${__u3}plus/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5486,7 +5393,7 @@ $_em0
 [plus-source]
 ${__n}Plus - Source
 ${__u1}plus-source
-# ${__u3}plus/Source/
+#${__u3}plus/Source/
 $_e0
 $_gc1
 $__k2
@@ -5497,7 +5404,7 @@ EOF
 [resilientstorage]
 ${__n}${__s3}
 ${__u1}resilientstorage
-# ${__u2}${__s3}/$_ba/os/
+#${__u2}${__s3}/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5508,7 +5415,7 @@ $_em0
 [resilientstorage-debug]
 ${__n}${__s3} - Debug
 ${__u1}resilientstorage-debug
-# ${__u3}${__s3}/debug/$_ba/
+#${__u3}${__s3}/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5518,7 +5425,7 @@ $_em0
 [resilientstorage-source]
 ${__n}${__s3} - Source
 ${__u1}resilientstorage-source
-# ${__u3}${__s3}/Source/
+#${__u3}${__s3}/Source/
 $_e0
 $_gc1
 $__k2
@@ -5529,7 +5436,7 @@ EOF
 [rt]
 ${__n}RT
 ${__u1}rt
-# ${__u2}RT/$_ba/os/
+#${__u2}RT/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5540,7 +5447,7 @@ $_em0
 [rt-debug]
 ${__n}RT - Debug
 ${__u1}rt-debug
-# ${__u3}RT/debug/$_ba/
+#${__u3}RT/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5550,7 +5457,7 @@ $_em0
 [rt-source]
 ${__n}RT - Source
 ${__u1}rt-source
-# ${__u3}RT/Source/
+#${__u3}RT/Source/
 $_e0
 $_gc1
 $__k2
@@ -5561,7 +5468,7 @@ EOF
 [sap]
 ${__n}SAP
 ${__u1}sap
-# ${__u2}SAP/$_ba/os/
+#${__u2}SAP/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5572,7 +5479,7 @@ $_em0
 [sap-debug]
 ${__n}SAP - Debug
 ${__u1}sap-debug
-# ${__u3}SAP/debug/$_ba/
+#${__u3}SAP/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5582,7 +5489,7 @@ $_em0
 [sap-source]
 ${__n}SAP - Source
 ${__u1}sap-source
-# ${__u3}SAP/Source/
+#${__u3}SAP/Source/
 $_e0
 $_gc1
 $__k2
@@ -5593,7 +5500,7 @@ EOF
 [saphana]
 ${__n}SAPHANA
 ${__u1}saphana
-# ${__u2}SAPHANA/$_ba/os/
+#${__u2}SAPHANA/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5604,7 +5511,7 @@ $_em0
 [saphana-debug]
 ${__n}SAPHANA - Debug
 ${__u1}saphana-debug
-# ${__u3}SAPHANA/debug/$_ba/
+#${__u3}SAPHANA/debug/$_ba/
 $_e0
 $_gc1
 $__k2
@@ -5614,7 +5521,7 @@ $_em0
 [saphana-source]
 ${__n}SAPHANA - Source
 ${__u1}saphana-source
-# ${__u3}SAPHANA/Source/
+#${__u3}SAPHANA/Source/
 $_e0
 $_gc1
 $__k2
@@ -5628,7 +5535,7 @@ EOF
 [ha]
 ${__n}${__s2}
 ${__u1}ha
-# ${__u2}${__s2}/$_ba/os/
+#${__u2}${__s2}/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5637,7 +5544,7 @@ $__k3
 [ha-source]
 ${__n}${__s2} Source
 ${__u1}ha-source
-# ${__u3}${__s2}/Source/
+#${__u3}${__s2}/Source/
 $_e0
 $_gc1
 $__k3
@@ -5645,7 +5552,7 @@ $__k3
 [ha-debuginfo]
 ${__n}${__s2} debuginfo
 ${__u1}ha-debuginfo
-# ${__u3}${__s2}/debug/$_ba/
+#${__u3}${__s2}/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5654,7 +5561,7 @@ EOF
 [nfv]
 ${__n}Real Time for NFV
 ${__u1}nfv
-# ${__u2}NFV/$_ba/os/
+#${__u2}NFV/$_ba/os/
 $_e0
 $_gc1
 $__k3
@@ -5662,7 +5569,7 @@ $__k3
 [nfv-source]
 ${__n}Real Time for NFV Sources
 ${__u1}nfv-source
-# ${__u3}NFV/Source/
+#${__u3}NFV/Source/
 $_e0
 $_gc1
 $__k3
@@ -5670,7 +5577,7 @@ $__k3
 [nfv-debuginfo]
 ${__n}Real Time for NFV Debuginfo
 ${__u1}nfv-debuginfo
-# ${__u3}NFV/debug/$_ba/
+#${__u3}NFV/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5679,7 +5586,7 @@ EOF
 [plus]
 ${__n}Plus
 ${__u1}plus
-# ${__u2}plus/$_ba/os/
+#${__u2}plus/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5688,7 +5595,7 @@ $__k3
 [plus-source]
 ${__n}Plus Source
 ${__u1}plus-source
-# ${__u3}plus/Source/
+#${__u3}plus/Source/
 $_e0
 $_gc1
 $__k3
@@ -5696,7 +5603,7 @@ $__k3
 [plus-debuginfo]
 ${__n}Plus debuginfo
 ${__u1}plus-debuginfo
-# ${__u3}plus/debug/$_ba/
+#${__u3}plus/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5705,7 +5612,7 @@ EOF
 [powertools]
 ${__n}PowerTools
 ${__u1}powertools
-# ${__u2}PowerTools/$_ba/os/
+#${__u2}PowerTools/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5714,7 +5621,7 @@ $__k3
 [powertools-source]
 ${__n}PowerTools Source
 ${__u1}powertools-source
-# ${__u3}PowerTools/Source/
+#${__u3}PowerTools/Source/
 $_e0
 $_gc1
 $__k3
@@ -5722,7 +5629,7 @@ $__k3
 [powertools-debuginfo]
 ${__n}PowerTools debuginfo
 ${__u1}powertools-debuginfo
-# ${__u3}PowerTools/debug/$_ba/
+#${__u3}PowerTools/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5731,7 +5638,7 @@ EOF
 [resilientstorage]
 ${__n}${__s3}
 ${__u1}resilientstorage
-# ${__u2}${__s3}/$_ba/os/
+#${__u2}${__s3}/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5740,7 +5647,7 @@ $__k3
 [resilientstorage-source]
 ${__n}${__s3} Source
 ${__u1}resilientstorage-source
-# ${__u3}${__s3}/Source/
+#${__u3}${__s3}/Source/
 $_e0
 $_gc1
 $__k3
@@ -5748,7 +5655,7 @@ $__k3
 [resilientstorage-debuginfo]
 ${__n}${__s3} debuginfo
 ${__u1}resilientstorage-debuginfo
-# ${__u3}${__s3}/debug/$_ba/
+#${__u3}${__s3}/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5757,7 +5664,7 @@ EOF
 [rt]
 ${__n}Real Time
 ${__u1}rt
-# ${__u2}RT/$_ba/os/
+#${__u2}RT/$_ba/os/
 $_e0
 $_gc1
 $__k3
@@ -5765,7 +5672,7 @@ $__k3
 [rt-source]
 ${__n}Real Time Sources
 ${__u1}rt-source
-# ${__u3}RT/Source/
+#${__u3}RT/Source/
 $_e0
 $_gc1
 $__k3
@@ -5773,7 +5680,7 @@ $__k3
 [rt-debuginfo]
 ${__n}Real Time Debuginfo
 ${__u1}rt-debuginfo
-# ${__u3}RT/debug/$_ba/
+#${__u3}RT/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5782,7 +5689,7 @@ EOF
 [sap]
 ${__n}SAP
 ${__u1}sap
-# ${__u2}SAP/$_ba/os/
+#${__u2}SAP/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5791,7 +5698,7 @@ $__k3
 [sap-source]
 ${__n}SAP Sources
 ${__u1}sap-source
-# ${__u3}SAP/Source/
+#${__u3}SAP/Source/
 $_e0
 $_gc1
 $__k3
@@ -5799,7 +5706,7 @@ $__k3
 [sap-debuginfo]
 ${__n}SAP Debuginfo
 ${__u1}sap-debuginfo
-# ${__u3}SAP/debug/$_ba/
+#${__u3}SAP/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5808,7 +5715,7 @@ EOF
 [saphana]
 ${__n}SAP HANA
 ${__u1}saphana
-# ${__u2}SAPHANA/$_ba/os/
+#${__u2}SAPHANA/$_ba/os/
 $_e0
 $_gc1
 $_cm1
@@ -5817,7 +5724,7 @@ $__k3
 [saphana-source]
 ${__n}SAP HANA Sources
 ${__u1}saphana-source
-# ${__u3}SAPHANA/Source/
+#${__u3}SAPHANA/Source/
 $_e0
 $_gc1
 $__k3
@@ -5825,7 +5732,7 @@ $__k3
 [saphana-debuginfo]
 ${__n}SAP HANA Debuginfo
 ${__u1}saphana-debuginfo
-# ${__u3}SAPHANA/debug/$_ba/
+#${__u3}SAPHANA/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5834,7 +5741,7 @@ EOF
 [baseos]
 ${__n}BaseOS
 ${__u1}baseos
-# ${__u2}BaseOS/$_ba/os/
+#${__u2}BaseOS/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5843,7 +5750,7 @@ $__k3
 [appstream]
 ${__n}AppStream
 ${__u1}appstream
-# ${__u2}AppStream/$_ba/os/
+#${__u2}AppStream/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5852,7 +5759,7 @@ $__k3
 [extras]
 ${__n}Extras
 ${__u1}extras
-# ${__u2}extras/$_ba/os/
+#${__u2}extras/$_ba/os/
 $_e1
 $_gc1
 $_cm1
@@ -5861,7 +5768,7 @@ $__k3
 [baseos-source]
 ${__n}BaseOS Source
 ${__u1}baseos-source
-# ${__u3}BaseOS/Source/
+#${__u3}BaseOS/Source/
 $_e0
 $_gc1
 $__k3
@@ -5869,7 +5776,7 @@ $__k3
 [appstream-source]
 ${__n}AppStream Source
 ${__u1}appstream-source
-# ${__u3}AppStream/Source/
+#${__u3}AppStream/Source/
 $_e0
 $_gc1
 $__k3
@@ -5877,7 +5784,7 @@ $__k3
 [extras-source]
 ${__n}Extras Source
 ${__u1}extras-source
-# ${__u3}extras/Source/
+#${__u3}extras/Source/
 $_e0
 $_gc1
 $__k3
@@ -5885,7 +5792,7 @@ $__k3
 [baseos-debuginfo]
 ${__n}BaseOS debuginfo
 ${__u1}baseos-debuginfo
-# ${__u3}BaseOS/debug/$_ba/
+#${__u3}BaseOS/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5893,7 +5800,7 @@ $__k3
 [appstream-debuginfo]
 ${__n}AppStream debuginfo
 ${__u1}appstream-debuginfo
-# ${__u3}AppStream/debug/$_ba/
+#${__u3}AppStream/debug/$_ba/
 $_e0
 $_gc1
 $__k3
@@ -5901,7 +5808,7 @@ $__k3
 [extras-debuginfo]
 ${__n}Extras debuginfo
 ${__u1}extras-debuginfo
-# ${__u3}extras/debug/$_ba/
+#${__u3}extras/debug/$_ba/
 $_e0
 $_gc1
 $__k3
