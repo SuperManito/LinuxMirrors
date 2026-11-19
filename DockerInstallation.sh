@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-05-16
+## Modified: 2026-11-19
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -66,14 +66,14 @@ mirror_list_extranet=(
     "mirrors.aliyun.com/docker-ce"
     "mirrors.tencent.com/docker-ce"
     "mirrors.huaweicloud.com/docker-ce"
-    "mirrors.volces.com/docker-ce"
+    "mirrors.volces.com/docker"
 )
 # 软件源内网地址列表
 mirror_list_intranet=(
     "mirrors.cloud.aliyuncs.com/docker-ce"
     "mirrors.tencentyun.com/docker-ce"
     "mirrors.myhuaweicloud.com/docker-ce"
-    "mirrors.ivolces.com/docker-ce"
+    "mirrors.ivolces.com/docker"
 )
 
 ## 赞助商广告

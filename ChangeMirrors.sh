@@ -2443,11 +2443,14 @@ $(gen_deb "${source_address}" "${SYSTEM_VERSION_CODENAME}" "${repo_components}")
                 SOURCE="archive.ubuntu.com"
                 SOURCE_BRANCH="ubuntu"
                 source_address="${SOURCE}/${SOURCE_BRANCH}"
+                source_security_branch="ubuntu"
             else
                 SOURCE="ports.ubuntu.com"
                 SOURCE_BRANCH="" # 官方源默认无分支（注：有 ubuntu-ports 重定向）
                 source_address="${SOURCE}"
+                source_security_branch="ubuntu-ports"
             fi
+            source_security_host="${SOURCE}"
         fi
         # 安全更新源
         source_security_address="${SOURCE_SECURITY:-${source_security_host}}/${SOURCE_SECURITY_BRANCH:-${source_security_branch}}"
@@ -2552,6 +2555,7 @@ $(gen_debian_deb_security "${source_security_address}" "${base_system_codename}"
                     SOURCE="ports.ubuntu.com"
                 fi
             fi
+            [[ "${USE_OFFICIAL_SOURCE}" == "true" ]] && source_security_host="${SOURCE}"
             repo_components="main restricted universe multiverse"
             source_address="${SOURCE_BASE_SYSTEM:-${SOURCE}}/${SOURCE_BASE_SYSTEM_BRANCH:-${base_system_branch}}"
             # 安全更新源
@@ -2726,12 +2730,14 @@ function change_mirrors_RedHat() {
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_CENTOS}" ]]; then
             SOURCE="vault.centos.org"
             SOURCE_BRANCH="centos"
+            SOURCE_VAULT_BRANCH="${SOURCE_VAULT_BRANCH:-centos}"
         else
             case "${SYSTEM_JUDGMENT}" in
             "${SYSTEM_CENTOS_STREAM}" | "${SYSTEM_ORACLE}")
                 if [[ "${SYSTEM_VERSION_ID_MAJOR}" == 8 ]]; then
                     SOURCE="vault.centos.org"
                     SOURCE_BRANCH="centos"
+                    SOURCE_VAULT_BRANCH="${SOURCE_VAULT_BRANCH:-centos}"
                 else
                     change_mirrors_or_install_EPEL # EPEL 附加软件包
                     return
@@ -2800,11 +2806,6 @@ function change_mirrors_RedHat() {
             -e "s|^mirrorlist=|#mirrorlist=|g" \
             -i \
             CentOS-*
-        if [[ "${DEVICE_ARCH_RAW}" == "x86_64" ]]; then
-            SOURCE_BRANCH="centos-vault"
-        else
-            SOURCE_BRANCH="centos-altarch"
-        fi
         case "${SYSTEM_VERSION_ID_MAJOR}" in
         8)
             # 最终版本为 8.5.2011（2022-02）

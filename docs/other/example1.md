@@ -27,7 +27,7 @@ function install_docker() {
             elif [[ "${sys_vendor}" == *"Tencent"* ]]; then
                 source_intranet_address="mirrors.tencentyun.com/docker-ce"
             elif [[ "${sys_vendor}" == *"Inspur"* ]]; then
-                source_intranet_address="mirrors.ivolces.com/docker-ce"
+                source_intranet_address="mirrors.ivolces.com/docker"
             fi
         else
             cat /etc/motd | grep "Alibaba Cloud " -q
