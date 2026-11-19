@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Author: SuperManito
-## Modified: 2026-05-16
+## Modified: 2026-11-19
 ## License: MIT
 ## GitHub: https://github.com/SuperManito/LinuxMirrors
 ## Website: https://linuxmirrors.cn
@@ -42,6 +42,7 @@ SYSTEM_MANJARO="Manjaro"
 SYSTEM_ALPINE="Alpine"
 SYSTEM_GENTOO="Gentoo"
 SYSTEM_NIXOS="NixOS"
+SYSTEM_VOID="Void"
 
 ## 定义系统版本文件
 File_LinuxRelease=/etc/os-release
@@ -402,8 +403,8 @@ function collect_system_info() {
             fi
             SYSTEM_VERSION_CODENAME="${DEBIAN_CODENAME:-"$(get_os_release_value VERSION_CODENAME)"}"
         fi
-        # Raspberry Pi OS
-        if [ -s "${File_RaspberryPiOSRelease}" ]; then
+        ## Raspberry Pi OS 判定
+        if [[ "${SYSTEM_FACTIONS}" == "${SYSTEM_DEBIAN}" ]] && [ -s "${File_RaspberryPiOSRelease}" ]; then
             SYSTEM_JUDGMENT="${SYSTEM_RASPBERRY_PI_OS}"
             SYSTEM_PRETTY_NAME="${SYSTEM_RASPBERRY_PI_OS}"
         fi
@@ -418,26 +419,22 @@ function collect_system_info() {
             ## 是否使用 DEB822 格式
             if [[ "${SYSTEM_VERSION_ID_MAJOR}" && "${SYSTEM_VERSION_ID_MAJOR}" -ge 13 ]]; then
                 USE_DEB822_FORMAT="true"
+            elif [ -f "${File_DebianSources}" ]; then
+                USE_DEB822_FORMAT="true"
             fi
         fi
         if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]]; then
             ## 是否使用 DEB822 格式
             if [[ "${SYSTEM_VERSION_ID_MAJOR}" && "${SYSTEM_VERSION_ID_MAJOR}" -ge 24 ]]; then
                 USE_DEB822_FORMAT="true"
+            elif [ -f "${File_UbuntuSources}" ]; then
+                USE_DEB822_FORMAT="true"
             fi
-        fi
-        # Debian DEB822 格式源文件
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_DEBIAN}" ]] && [ -f "${File_DebianSources}" ]; then
-            USE_DEB822_FORMAT="true"
-        fi
-        # Ubuntu DEB822 格式源文件
-        if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_UBUNTU}" ]] && [ -f "${File_UbuntuSources}" ]; then
-            USE_DEB822_FORMAT="true"
         fi
         ;;
     "${SYSTEM_REDHAT}")
         SYSTEM_JUDGMENT="$(awk '{printf $1}' $File_RedHatRelease)"
-        ## 特殊系统判断
+        ## 针对特定系统的判定
         # Red Hat Enterprise Linux
         grep -q "${SYSTEM_RHEL}" $File_RedHatRelease && SYSTEM_JUDGMENT="${SYSTEM_RHEL}"
         # CentOS Stream
@@ -551,11 +548,20 @@ function collect_system_info() {
             ;;
         "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
             case "${SYSTEM_JUDGMENT}" in
+            "${SYSTEM_ALMALINUX}")
+                SOURCE_BRANCH="alma"
+                ;;
             "${SYSTEM_FEDORA}")
                 SOURCE_BRANCH="fedora"
                 ;;
+            "${SYSTEM_ORACLE}")
+                SOURCE_BRANCH="oracle"
+                ;;
             "${SYSTEM_RHEL}")
                 SOURCE_BRANCH="rhel"
+                ;;
+            "${SYSTEM_ROCKY}")
+                SOURCE_BRANCH="rocky"
                 ;;
             *)
                 SOURCE_BRANCH="centos"
@@ -716,7 +722,9 @@ function configure_docker_ce_mirror() {
         SOURCE="download.docker.com"
     fi
     local -a commands=()
+
     case "${SYSTEM_FACTIONS}" in
+    ## Debian 系
     "${SYSTEM_DEBIAN}" | "${SYSTEM_OPENKYLIN}")
         ## 处理 GPG 密钥
         local file_keyring="/etc/apt/keyrings/docker.asc"
@@ -743,6 +751,8 @@ Signed-By: ${file_keyring}" >$File_DockerSources
         fi
         commands+=("apt-get update")
         ;;
+
+    ## RedHat 系
     "${SYSTEM_REDHAT}" | "${SYSTEM_OPENEULER}" | "${SYSTEM_OPENCLOUDOS}" | "${SYSTEM_ANOLISOS}" | "${SYSTEM_TENCENTOS}" | "${SYSTEM_KYLIN_SERVER}")
         local repo_file_url="${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/docker-ce.repo"
         local package_manager="$(get_package_manager)"
@@ -766,6 +776,7 @@ Signed-By: ${file_keyring}" >$File_DockerSources
             -e "s|http[s]\?://.*/linux/${SOURCE_BRANCH}/|${WEB_PROTOCOL}://${SOURCE}/linux/${SOURCE_BRANCH}/|g" \
             -i \
             $File_DockerRepo
+
         ## 处理版本号
         if [[ "${SOURCE_BRANCH_VERSION}" ]]; then
             # 指定版本
@@ -777,11 +788,13 @@ Signed-By: ${file_keyring}" >$File_DockerSources
             # 兼容处理
             local target_version
             case "${SYSTEM_VERSION_ID_MAJOR}" in
-            7 | 8 | 9 | 10)
+            7 | 8 | 9 | 10 | 11)
                 target_version="${SYSTEM_VERSION_ID_MAJOR}"
                 ;;
             *)
+                ## 默认版本号
                 target_version="8" # 注：部分系统使用9版本分支会有兼容性问题
+
                 ## 适配国产操作系统
                 # OpenCloudOS、Anolis OS 的 23 版本
                 if [[ "${SYSTEM_JUDGMENT}" == "${SYSTEM_OPENCLOUDOS}" || "${SYSTEM_JUDGMENT}" == "${SYSTEM_ANOLISOS}" ]]; then
@@ -806,6 +819,8 @@ Signed-By: ${file_keyring}" >$File_DockerSources
                             target_version="10"
                         elif [[ "${SYSTEM_VERSION_ID_MAJOR}" -gt 22 ]]; then
                             target_version="9"
+                        else
+                            target_version="8"
                         fi
                     fi
                 fi
@@ -849,6 +864,7 @@ Signed-By: ${file_keyring}" >$File_DockerSources
                 fi
                 ;;
             esac
+
             sed -e "s|\$releasever|${target_version}|g" \
                 -i \
                 $File_DockerRepo
@@ -856,6 +872,7 @@ Signed-By: ${file_keyring}" >$File_DockerSources
         fi
         ;;
     esac
+
     if [[ "${PURE_MODE}" == "true" ]]; then
         local exec_cmd=""
         for cmd in "${commands[@]}"; do
